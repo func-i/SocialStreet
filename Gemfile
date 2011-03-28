@@ -6,6 +6,7 @@ gem 'rails', '3.0.5'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'jquery-rails', '>= 0.2.6'
 
 # Use unicorn as the web server
 # gem 'unicorn'
