@@ -1,0 +1,19 @@
+<div class="block" id="block-lists">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><a href="#">Events</a></li>
+      <li><a href="#">Activity</a></li>
+      <li><a href="#block-forms">Comments</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title">Events</h2>
+    <div class="inner">
+      <ul class="list">
+        <% @events.each do |event| %>
+          <%= render event %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

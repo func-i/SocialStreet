@@ -8,6 +8,7 @@ gem 'rails', '3.0.5'
 gem 'pg'
 gem 'jquery-rails', '>= 0.2.6'
 gem 'web-app-theme', '>= 0.6.2'
+gem 'devise', '>= 1.2.0'
 
 # Use unicorn as the web server
 # gem 'unicorn'

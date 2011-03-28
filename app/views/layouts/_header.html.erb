@@ -1,0 +1,22 @@
+<div id="header">
+  <h1><a href="/">SocialStreet</a></h1>
+  <div id="user-navigation">
+    <ul class="wat-cf">
+      <% if user_signed_in? %>
+        <li><a href="#"><%= t("web-app-theme.profile", :default => "Profile") %></a></li>
+        <li><a href="#"><%= t("web-app-theme.settings", :default => "Settings") %></a></li>
+        <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></a></li>
+      <% else %>
+        <li><%= link_to 'Sign up', [:new, :user_registration] %></li>
+        <li><%= link_to 'Sign in', [:new, :user_session] %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div id="main-navigation">
+    <ul class="wat-cf">
+      <li class="first <%= 'active' if @on_events %>"><%= link_to 'Find Events', :events %></li>
+      <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
+      <li class=""><a href="#">Create Event</a></li>
+    </ul>
+  </div>
+</div>

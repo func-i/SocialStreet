@@ -1,0 +1,67 @@
+
+<div class="block" id="block-signup">
+  <h2>Sign up</h2>
+  <div class="content">
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form"}) do |f| %>
+      <%= devise_error_messages! %>
+
+
+      <div class="group wat-cf">
+        <div class="left">
+          <%= f.label :first_name, :class => "label" %>
+        </div>
+        <div class="right">
+          <%= f.text_field :first_name, :class => "text_field" %>
+          <span class="description">Ex: test@example.com</span>
+        </div>
+      </div>
+      <div class="group wat-cf">
+        <div class="left">
+          <%= f.label :last_name, :class => "label" %>
+        </div>
+        <div class="right">
+          <%= f.text_field :last_name, :class => "text_field" %>
+          <span class="description">Ex: test@example.com</span>
+        </div>
+      </div>
+
+      <div class="group wat-cf">
+        <div class="left">
+          <%= f.label :email, :class => "label" %>
+        </div>
+        <div class="right">
+          <%= f.text_field :email, :class => "text_field" %>
+          <span class="description">Ex: test@example.com</span>
+        </div>
+      </div>
+      <div class="group wat-cf">
+        <div class="left">
+          <%= f.label :password, :class => "label" %>
+        </div>
+        <div class="right">
+          <%= f.password_field :password, :class => "text_field" %>
+          <span class="description">Must contains the word 'yeah'</span>
+        </div>
+      </div>
+
+      <div class="group wat-cf">
+        <div class="left">
+          <%= f.label :password_confirmation, :class => "label" %>
+        </div>
+        <div class="right">
+          <%= f.password_field :password_confirmation, :class => "text_field" %>
+          <span class="description">Must contains the word 'yeah'</span>
+        </div>
+      </div>
+
+
+      <div class="group navform wat-cf">
+        <button class="button" type="submit">
+          <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Signup
+        </button>
+      </div>
+      <%= render :partial => "devise/shared/links" %>
+
+    <% end %>
+  </div>
+</div>

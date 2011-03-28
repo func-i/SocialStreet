@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SocialStreet</title>
+    <%= stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/default/style", "web-app-theme/override" %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <div id="container">
+      <%= render 'layouts/header' %>
+      <div id="box">
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

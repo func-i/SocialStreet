@@ -1,0 +1,30 @@
+<li style="margin-top: 5px">
+  <div class="left">
+    <a href="#"><img class="avatar" src="/images/web-app-theme/avatar.png" alt="avatar" /></a>
+  </div>
+  <div class="item">
+
+
+    <div style="float:left; width: 400px">
+      <strong><%= event.name %></strong><br/>
+      <em>YMCA - Toronto, Ontario</em>
+      <p>
+        <%= event.description %>
+        <%= event.description %>
+      </p>
+    </div>
+    <div style="float:left; width: 140px; height:100%;">
+      <% if event.free? %>
+        <strong>Free</strong>
+      <% else %>
+        <strong><%= number_to_currency(event.cost / 100) %></strong>
+      <% end %>
+      <br/>
+      <button class="button" style="margin: auto auto">Quick Attend</button></center>
+      <br/><br/>
+      <em>5</em> Connections <br/>
+      <em>20</em> Attending
+    </div>
+    <div class="clear"></div>
+  </div>
+</li>
