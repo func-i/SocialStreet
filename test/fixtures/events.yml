@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  description: MyText
+  held_on: 2011-03-28 12:35:21
+  cost: 1
+  free: false
+
+two:
+  name: MyString
+  description: MyText
+  held_on: 2011-03-28 12:35:21
+  cost: 1
+  free: false
