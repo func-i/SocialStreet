@@ -17,3 +17,33 @@
     </div>
   </div>
 </div>
+
+<% content_for :sidebar do %>
+  <%= form_tag '#', :method => :get do %>
+    <div class="block notice">
+      <h4>Location Filtering</h4>
+      <%= text_field_tag 'location', params[:location] %>
+      <%= select_tag 'radius', options_for_select(['10 km', '20 km', '50 km'], params[:radius]) %>
+    </div>
+
+    <div class="block notice">
+      <h4>Date Filtering</h4>
+      Pending ...
+    </div>
+
+    <div class="block notice">
+      <h4>Type Filtering</h4>
+      Pending ...
+    </div>
+
+    <button class="button">Go</button>
+    <%= link_to 'Clear', events_path %>
+    <div class="clear"></div>
+  <% end %>
+<% end %>
+
+<% content_for :end_of_body do %>
+  <%= javascript_tag do %>
+
+  <% end %>
+<% end %>

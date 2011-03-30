@@ -9,6 +9,7 @@ gem 'pg'
 gem 'jquery-rails', '>= 0.2.6'
 gem 'web-app-theme', '>= 0.6.2'
 gem 'devise', '>= 1.2.0'
+gem 'geocoder'
 
 # Use unicorn as the web server
 # gem 'unicorn'
