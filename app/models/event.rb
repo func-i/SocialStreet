@@ -25,6 +25,17 @@ class Event < ActiveRecord::Base
     # TODO: events.held_on needs to be offset to the user's / app's timezone not UTC which it is now - KV
     where(:held_on_day_of_week => days)
   }
+  scope :on_days_or_in_date_range, lambda {|days, from_date, to_date|
+    queries = []
+    if from_date && from_date = Time.zone.parse(from_date)
+      queries << "events.held_on >= '#{from_date.beginning_of_day.to_s(:db)}'"
+    end
+    if to_date && to_date = Time.zone.parse(to_date)
+      queries << "events.held_on <= '#{to_date.end_of_day.to_s(:db)}'"
+    end
+
+    where("events.held_on_day_of_week IN (?) OR (#{queries.join(" AND ")})", days)
+  }
 
   def location_address
     location.geocodable_address if location
