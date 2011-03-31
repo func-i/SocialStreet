@@ -1,0 +1,1 @@
+Time::DATE_FORMATS[:date_with_day] = "%A, %B %d, %Y"

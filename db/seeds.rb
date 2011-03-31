@@ -29,3 +29,29 @@ Event.create!(
       :postal => "M5V 1A8"
     }
   })
+
+Event.create!(
+  {:name => "Event 0003",
+    :description => "Fake description for Event based on some random string Lorem Ipsum style",
+    :held_on => 2.days.from_now,
+    :cost => 13000,
+    :location_attributes => {
+      :street => "",
+      :city => "Mississauga",
+      :state => "ON",
+      :postal => "L5L3M1"
+    }
+  })
+
+Event.create!(
+  {:name => "Event 0004",
+    :description => "Fake description for Event based on some random string Lorem Ipsum style",
+    :held_on => 4.days.from_now,
+    :cost => 1400,
+    :location_attributes => {
+      :street => "",
+      :city => "Toronto",
+      :state => "ON",
+      :postal => "M5V1C4"
+    }
+  })
