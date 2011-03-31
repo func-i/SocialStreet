@@ -8,7 +8,7 @@ class EventsController < ApplicationController
 
     distance = params[:distance].blank? ? 20 : params[:distance].to_i
 
-    @events = @events.near(params[:location], distance).order("distance") unless params[:location].blank?
+    @events = @events.near(params[:location], distance, :order => "distance") unless params[:location].blank?
 
     # The "days of the week" should be for all time and NOT within the bounds of the date range.
     # which means they are an OR condition and not an AND condition to the query - KV
