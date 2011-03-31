@@ -1,7 +1,7 @@
 <div class="block" id="block-lists">
   <div class="secondary-navigation">
     <ul class="wat-cf">
-      <li class="first active"><a href="#">Events</a></li>
+      <li class="first active"><a href="#">Events (<%= @events.count %>)</a></li>
       <li><a href="#">Activity</a></li>
       <li><a href="#block-forms">Comments</a></li>
     </ul>
@@ -39,14 +39,21 @@
       <%= text_field_tag 'to_date', params[:to_date], :class => "text_field" %>
 
       <%= label_tag 'days', 'Days of the Week', :class => "label" %>
-      <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> Mon
-      <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> Tue
-      <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> Wed
-      <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> Thu
-      <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> Fri
-      <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> Sat
-      <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> Sun
+      <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
+      <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
+      <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
+      <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
+      <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
+      <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
+      <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
 
+      <hr/>
+      <br/><br/>
+
+      <div id="timerange"></div>
+      <div id="timerange-label"></div>
+      <%= hidden_field_tag 'from_time', params[:from_time] %>
+      <%= hidden_field_tag 'to_time', params[:to_time] %>
     </div>
 
     <div class="block notice">
@@ -69,6 +76,49 @@
       $( "#to_date" ).datepicker({
         dateFormat: 'M. dd, yy'
       });
+      $('#timerange').slider({
+        range: true,
+        min: 0,
+        max: 1439,
+        step: 15,
+        values: [<%= params[:from_time] || 0 %>, <%= params[:to_time] || 1439 %>],
+        slide: slideTime
+      });
+
+      function initTimeLabel() {
+        slideTime(null, {
+          values: [
+            $("#timerange").slider("values", 0) ,
+            $("#timerange").slider("values", 1)
+          ]
+        }); // mimic slide event for time slider
+      }
+
+      function slideTime(event, ui) {
+        var minutes0 = parseInt(ui.values[0] % 60);
+        var hours0 = parseInt(ui.values[0] / 60 % 24);
+        var minutes1 = parseInt(ui.values[1] % 60);
+        var hours1 = parseInt(ui.values[1] / 60 % 24);
+        var startTime = getTime(hours0, minutes0);
+        var endTime = getTime(hours1, minutes1);
+        $("#timerange-label").text(startTime + ' - ' + endTime);
+        $('#from_time').val(ui.values[0]);
+        $('#to_time').val(ui.values[1]);
+      }
+
+      function getTime(hours, minutes) {
+        var time = null;
+        minutes = minutes + "";
+        if (hours < 12) {time = "AM";}
+        else {  time = "PM";}
+        if (hours == 0) {hours = 12;}
+        if (hours > 12) {hours = hours - 12; }
+        if (minutes.length == 1) {minutes = "0" + minutes;}
+        return hours + ":" + minutes + " " + time;
+      }
+
+      initTimeLabel();
+
     });
   </script>
 <% end %>

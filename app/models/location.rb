@@ -13,14 +13,21 @@ class Location < ActiveRecord::Base
 
   # Not the most human readable, so only used for geocoding services
   def geocodable_address
-    if street? || postal? || (city? && state?)
+    if has_geocodable_address?
       [street, city, state, country, postal].join(', ')
     end # otherwise return nil
   end
 
+  def has_geocodable_address?
+    street? || postal? || (city? && state?)
+  end
+
+  protected
+
   def geocodable_address_changed?
     street_changed? || city_changed? || state_changed? || country_changed? || postal_changed?
   end
+
 
 
 end

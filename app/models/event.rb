@@ -9,7 +9,7 @@ class Event < ActiveRecord::Base
   before_save :cache_day_of_week
 
   validates :name, :presence => true, :length => { :maximum => 60 }
-#  validates :description, :length => { :maximum => 200 }
+  #  validates :description, :length => { :maximum => 200 }
   validates :held_on, :presence => true
   validates :cost, :presence => true, :numericality => { :only_integer => true }, :unless => :free?
 
@@ -20,6 +20,14 @@ class Event < ActiveRecord::Base
   scope :on_or_before_date, lambda {|date|
     date = Time.zone.parse(date) # 
     where('events.held_on <= ?', date.end_of_day) if date
+  }
+  scope :at_or_after_time_of_day, lambda {|time|
+    interval = sql_interval_for_utc_offset
+    where("date_part('hour', events.held_on#{interval}) * 60 + date_part('minute', events.held_on#{interval}) >= ?", time)
+  }
+  scope :at_or_before_time_of_day, lambda {|time|
+    interval = sql_interval_for_utc_offset
+    where("date_part('hour', events.held_on#{interval}) * 60 + date_part('minute', events.held_on#{interval}) <= ?", time)
   }
   scope :held_on_days, lambda { |days| # days would look like ['0', '1', '2', ... ] which means ['sun', 'mon', 'tues']
     # TODO: events.held_on needs to be offset to the user's / app's timezone not UTC which it is now - KV
@@ -41,6 +49,17 @@ class Event < ActiveRecord::Base
     location.geocodable_address if location
   end
 
+  def self.sql_interval_for_utc_offset
+    interval = Time.zone.utc_offset / 60 / 60
+    interval = if interval < 0
+      " - interval '#{interval.abs} hours'"
+    elsif interval > 0
+      " + interval '#{interval} hours'"
+    else
+      ""
+    end
+  end
+
   protected
 
   def cache_lat_lng
@@ -55,6 +74,8 @@ class Event < ActiveRecord::Base
       self.held_on_day_of_week = held_on.wday # 0 is sunday
     end
   end
+
+
 
 
 end

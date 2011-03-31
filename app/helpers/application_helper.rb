@@ -5,7 +5,7 @@ module ApplicationHelper
   end
 
   def display_date_time(time)
-    time.to_s(:date_with_day)
+    time.to_s(:date_with_day) + " at " + time.to_s(:time12h) + " #{Time.zone.now.zone}"
   end
 
 end
