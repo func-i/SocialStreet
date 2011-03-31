@@ -27,7 +27,7 @@
       <%= text_field_tag 'location', params[:location], :class => "text_field" %>
 
       <%= label_tag 'radius', 'Radius', :class => "label" %>
-      <%= select_tag 'radius', options_for_select(['10 km', '20 km', '50 km'], params[:radius]) %>
+      <%= select_tag 'radius', options_for_select([['5 miles', '5'], ['10 miles', '10'], ['20 miles', '20'], ['50 miles', '50']], params[:radius]) %>
     </div>
 
     <div class="block notice">

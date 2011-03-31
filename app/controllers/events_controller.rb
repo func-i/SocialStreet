@@ -6,10 +6,10 @@ class EventsController < ApplicationController
     # EVENT LIST PAGE
     @events = Event
 
-    distance = params[:distance].blank? ? 20 : params[:distance].to_i
+    radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
-    @events = @events.near(params[:location], distance, :order => "distance") unless params[:location].blank?
-    # temporary comment
+    @events = @events.near(params[:location], radius, :order => "distance") unless params[:location].blank?
+    
     # The "days of the week" should be for all time and NOT within the bounds of the date range.
     # which means they are an OR condition and not an AND condition to the query - KV
     if params[:days].blank?
