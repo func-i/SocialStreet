@@ -1,12 +1,14 @@
-<div class="block" id="block-forms">
+<div class="block">
   <div class="secondary-navigation">
     <ul class="wat-cf">
-      <li class="first"><a href="#block-text">Basic Info</a></li>
-      <li><a href="#block-tables">Details</a></li>
+      <li class="first active"><a href="#basic" data-tab="#basic">Basic Info</a></li>
+      <li><a href="#details" data-tab="#details">Details</a></li>
+      <li><a href="#attendees" data-tab="#attendees">Attendee Options</a></li>
+      <li><a href="#cost" data-tab="#cost">Cost</a></li>
     </ul>
   </div>
   <div class="content">
-    <h2 class="title">Create Event &raquo; Basic Info</h2>
+    <h2 class="title">Create Event</h2>
     <div class="inner">
       <%= form_for @event, :html => {:class => "form"} do |form| %>
         <%= render form %>

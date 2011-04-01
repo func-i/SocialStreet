@@ -5,7 +5,7 @@
       <% if user_signed_in? %>
         <li><a href="#"><%= t("web-app-theme.profile", :default => "Profile") %></a></li>
         <li><a href="#"><%= t("web-app-theme.settings", :default => "Settings") %></a></li>
-        <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></a></li>
+        <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></li>
       <% else %>
         <li><%= link_to 'Sign up', [:new, :user_registration] %></li>
         <li><%= link_to 'Sign in', [:new, :user_session] %></li>

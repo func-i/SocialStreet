@@ -1,42 +1,89 @@
-<div class="group">
-  <label class="label">What?</label>
-  <%= form.select :event_type_id, options_from_collection_for_select(@event_types, :id, :name) %><br/>
-  <span class="description">Event type dropdown.</span>
-</div>
-<div class="group">
+<div id="basic" class="tab-content">
+  <h3>Basic Info</h3>
+  <div class="group">
+    <label class="label">What?</label>
+    <%= form.select :event_type_id, options_from_collection_for_select(@event_types, :id, :name) %><br/>
+    <span class="description">Event type dropdown.</span>
+  </div>
+  <div class="group">
 
-  <label class="label" for="post_title">Where?</label>
+    <label class="label" for="post_title">Where?</label>
 
-  <%= form.fields_for :location do |location_fields| %>
-    <%= location_fields.text_field :text , :class => "text_field" %>
-  <% end %>
-  <span class="description">Ideally a geocodeable location</span>
-</div>
-<div class="group">
-  <label class="label" for="post_title">When?</label>
-  <%= form.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
-  <br/>
-  <span class="description">Start Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
-</div>
-<div class="group">
-  <label class="label" for="post_title">Ends at?</label>
-  <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
-  <br/>
-  <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+    <%= form.fields_for :location do |location_fields| %>
+      <%= location_fields.text_field :text , :class => "text_field" %>
+    <% end %>
+    <span class="description">Ideally a geocodeable location</span>
+  </div>
+  <div class="group">
+    <label class="label" for="post_title">When?</label>
+    <%= form.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+    <br/>
+    <span class="description">Start Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+  </div>
 </div>
 
+<div id="details" style="display:none" class="tab-content">
+  <h3>Event Details</h3>
+  <div class="group">
+    <label class="label" for="post_title">Ends at?</label>
+    <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+    <br/>
+    <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+  </div>
 
-<div class="group">
-  <label class="label">Description</label>
-  <%= form.text_area :description, :rows => 10, :cols => 80, :class => "text_area" %>
-  <span class="description">Describe your event</span>
+
+  <div class="group">
+    <label class="label">Description</label>
+    <%= form.text_area :description, :rows => 10, :cols => 80, :class => "text_area" %>
+    <span class="description">Describe your event</span>
+  </div>
 </div>
+
+<div id="attendees" style="display:none" class="tab-content">
+  <h3>Attendee Options</h3>
+  <div class="group">
+    <label class="label" for="post_title">Minimum Attendees</label>
+    <%= form.text_field :minimum_attendees, :class => "text_field"  %>
+    <br/>
+    <span class="description">Minimum number of people needed for the event to happen</span>
+  </div>
+
+
+  <div class="group">
+    <label class="label">Maximum Attendees</label>
+    <%= form.text_field :maximum_attendees, :class => "text_field"  %>
+    <span class="description">Maximum number of people that can attend</span>
+  </div>
+
+  <div class="group">
+    <label class="label">Allow Guests?</label>
+    <%= form.check_box :guests_allowed %>
+    <span class="description">Select this to allow attendees to bring guests</span>
+  </div>
+</div>
+
+<div id="cost" style="display:none" class="tab-content">
+  <h3>Cost</h3>
+
+  <div class="group">
+    <label class="label">Cost (in Dollars)</label>
+    <%= form.text_field :cost_in_dollars, :class => "text_field"  %>
+    <span class="description">Cost (in $CA). Set to 0 for free. Default: 0</span>
+  </div>
+</div>
+
 
 
 <% content_for :end_of_body do %>
   <script>
     $(function() {
-      
+      $('ul.wat-cf > li > a').click(function(e){
+        $('.tab-content').hide();
+        $('.secondary-navigation li').removeClass('active');
+        $(this).closest('li').addClass('active');
+        $($(this).data('tab')).show();
+        return false;
+      })
     });
   </script>
 <% end %>

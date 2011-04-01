@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
 
   geocoded_by :location_address
+  humanize_price :cost # creates cost_in_dollars getter/setter methods
 
   belongs_to :location
   belongs_to :event_type
@@ -11,9 +12,12 @@ class Event < ActiveRecord::Base
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
-  validates :cost, :presence => true, :numericality => { :only_integer => true }, :unless => :free?
+  validates :cost, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
+  validates :minimum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
+  validates :maximum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 1, :allow_blank => true }
   validates :event_type, :presence => true
   validate :valid_dates
+  validate :valid_maximum_attendees
 
   default_value_for :starts_at do
     Time.zone.now.advance(:hours => 3).floor(15.minutes)
@@ -26,6 +30,8 @@ class Event < ActiveRecord::Base
       e.event_type.name
     end
   end
+  default_value_for :guests_allowed, true
+  default_value_for :cost_in_dollars, 0
 
   scope :on_or_after_date, lambda {|date|
     date = Time.zone.parse(date)
@@ -68,17 +74,12 @@ class Event < ActiveRecord::Base
   def location_address
     location.geocodable_address if location
   end
-  def start_date
-    (starts_at.to_date || Date.today).to_s(:date_picker)
+
+  def free?
+    !paid?
   end
-  def start_date=(date)
-    self.starts_at = Time.zone.parse(date + " " + start_time)
-  end
-  def start_time
-    (starts_at || Time.zone.now).to_s(:time_picker)
-  end
-  def start_time=(time)
-    self.starts_at = Time.zone.parse(start_date + " " + time)
+  def paid?
+    cost? && cost > 0
   end
 
   def self.sql_interval_for_utc_offset
@@ -104,6 +105,11 @@ class Event < ActiveRecord::Base
   def valid_dates
     if finishes_at?
       errors.add :finishes_at, 'must be after the event starts' if finishes_at <= starts_at
+    end
+  end
+  def valid_maximum_attendees
+    if minimum_attendees? && maximum_attendees? && maximum_attendees < minimum_attendees
+      errors.add :maximum_attendees, 'must be greater than or equal to the minimum'
     end
   end
   

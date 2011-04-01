@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110401172902) do
+ActiveRecord::Schema.define(:version => 20110401190610) do
 
   create_table "event_types", :force => true do |t|
     t.string   "name"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(:version => 20110401172902) do
     t.text     "description"
     t.datetime "starts_at"
     t.integer  "cost"
-    t.boolean  "free"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "location_id"
@@ -33,6 +32,9 @@ ActiveRecord::Schema.define(:version => 20110401172902) do
     t.float    "longitude"
     t.datetime "finishes_at"
     t.integer  "event_type_id"
+    t.integer  "minimum_attendees"
+    t.integer  "maximum_attendees"
+    t.boolean  "guests_allowed"
   end
 
   add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"

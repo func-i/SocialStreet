@@ -23,19 +23,10 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(
-      params[:event].merge({
-          :free => true
-        })
-    )
-    #      {:name => "My Event",
-    #        :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
-    #        :event_type => EventType.find_by_name('Soccer'),
-    #        :free => true,
-    #        :location_attributes => {
-    #          :text =>
-    #        }
-    #      })
+
+    @event = Event.new params[:event]
+
+    
     if @event.save
       redirect_to :events, :notice => "Event Created"
     else
