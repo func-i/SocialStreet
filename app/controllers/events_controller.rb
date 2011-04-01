@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  #  before_filter :load_events
+   before_filter :load_event_types
 
   def index
     # For testing only:
@@ -12,6 +12,7 @@ class EventsController < ApplicationController
     radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
     @events = @events.near(params[:location], radius, :order => "distance") unless params[:location].blank?
+    @events = @events.of_type(params[:types]) unless params[:types].blank?
     
     # The "days of the week" should be for all time and NOT within the bounds of the date range.
     # which means they are an OR condition and not an AND condition to the query - KV
@@ -35,7 +36,10 @@ class EventsController < ApplicationController
 
   protected
 
-  
+  def load_event_types
+    @event_types = EventType.order('name').all
+  end
+
   def nav_state
     @on_events = true
   end

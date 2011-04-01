@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   geocoded_by :location_address
 
   belongs_to :location
+  belongs_to :event_type
   accepts_nested_attributes_for :location
 
   before_save :cache_lat_lng
@@ -43,6 +44,11 @@ class Event < ActiveRecord::Base
     date_query = "OR (#{queries.join(" AND ")})" unless queries.blank? # Don't want "OR ()" showing up in there (SQL Error)
     interval = sql_interval_for_utc_offset
     where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?) #{date_query}", days)
+  }
+
+  # Expects type IDs, not EventType objects
+  scope :of_type, lambda {|type_ids|
+    where(:event_type_id => type_ids)
   }
 
   def location_address

@@ -48,7 +48,7 @@
         <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
         <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
       </div>
-      
+
 
       <div id="timerange" style="width:90%;margin: auto auto"></div>
       <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
@@ -61,7 +61,11 @@
 
     <div class="block notice">
       <h4>Type Filtering</h4>
-      Pending ...
+
+      <% @event_types.each do |event_type| %>
+        <%= check_box_tag 'types[]', event_type.id, (params[:types] || []).include?(event_type.id.to_s) %> <%= event_type.name %> <br/>
+      <% end %>
+
     </div>
 
     <button class="button">Go</button>
