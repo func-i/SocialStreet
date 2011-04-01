@@ -77,13 +77,13 @@
 <% content_for :end_of_body do %>
   <script>
     $(function() {
-      $('ul.wat-cf > li > a').click(function(e){
+      $('#main ul.wat-cf > li > a').click(function(e){
         $('.tab-content').hide();
         $('.secondary-navigation li').removeClass('active');
         $(this).closest('li').addClass('active');
         $($(this).data('tab')).show();
         return false;
-      })
+      });
     });
   </script>
 <% end %>
