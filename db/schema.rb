@@ -10,12 +10,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110401140316) do
+ActiveRecord::Schema.define(:version => 20110401141000) do
 
   create_table "events", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "held_on"
+    t.datetime "starts_at"
     t.integer  "cost"
     t.boolean  "free"
     t.datetime "created_at"
@@ -23,7 +23,11 @@ ActiveRecord::Schema.define(:version => 20110401140316) do
     t.integer  "location_id"
     t.float    "latitude"
     t.float    "longitude"
+    t.datetime "finishes_at"
   end
+
+  add_index "events", ["latitude", "longitude"], :name => "index_events_on_latitude_and_longitude"
+  add_index "events", ["starts_at", "finishes_at"], :name => "index_events_on_starts_at_and_finishes_at"
 
   create_table "locations", :force => true do |t|
     t.string   "street"
