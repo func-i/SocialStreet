@@ -24,7 +24,6 @@ Event.create!(
     :name => "Soccer at Turd Park!",
     :description => "Fake description for Event based on some random string Lorem Ipsum style",
     :starts_at => 10.days.from_now.beginning_of_day + 240.minutes,
-    :free => true,
     :event_type => types[:soccer],
     :location_attributes => {
       :street => "373 Front Street W \#1701",
