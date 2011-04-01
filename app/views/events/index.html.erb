@@ -39,16 +39,16 @@
       <%= text_field_tag 'to_date', params[:to_date], :class => "text_field" %>
 
       <%= label_tag 'days', 'Days of the Week', :class => "label" %>
-      <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
-      <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
-      <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
-      <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
-      <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
-      <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
-      <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
-
-      <hr/>
-      <br/><br/>
+      <div style="margin-bottom:10px">
+        <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
+        <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
+        <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
+        <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
+        <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
+        <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
+        <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
+      </div>
+      
 
       <div id="timerange" style="width:90%;margin: auto auto"></div>
       <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
