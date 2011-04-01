@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   #  before_filter :load_events
 
   def index
-
+  #Test
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
