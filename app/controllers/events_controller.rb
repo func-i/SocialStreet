@@ -3,6 +3,10 @@ class EventsController < ApplicationController
   #  before_filter :load_events
 
   def index
+
+    # For testing only:
+    Time.zone = params[:my_tz] unless params[:my_tz].blank?
+
     # EVENT LIST PAGE
     @events = Event
 

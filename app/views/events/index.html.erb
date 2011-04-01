@@ -50,10 +50,13 @@
       <hr/>
       <br/><br/>
 
-      <div id="timerange"></div>
-      <div id="timerange-label"></div>
+      <div id="timerange" style="width:90%;margin: auto auto"></div>
+      <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
+
+      </div>
       <%= hidden_field_tag 'from_time', params[:from_time] %>
       <%= hidden_field_tag 'to_time', params[:to_time] %>
+      <%= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
     </div>
 
     <div class="block notice">
