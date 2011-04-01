@@ -30,8 +30,8 @@ class Event < ActiveRecord::Base
     where("date_part('hour', events.held_on#{interval}) * 60 + date_part('minute', events.held_on#{interval}) <= ?", time)
   }
   scope :held_on_days, lambda { |days| # days would look like ['0', '1', '2', ... ] which means ['sun', 'mon', 'tues']
-    # TODO: events.held_on needs to be offset to the user's / app's timezone not UTC which it is now - KV
-    where(:held_on_day_of_week => days)
+    interval = sql_interval_for_utc_offset
+    where("EXTRACT(DOW FROM events.held_on#{interval}) IN (?)", days)
   }
   scope :on_days_or_in_date_range, lambda {|days, from_date, to_date|
     queries = [] # the date range queries are inside an OR so we build them like this - Don't know of a better way (yet) - KV
@@ -42,7 +42,8 @@ class Event < ActiveRecord::Base
       queries << "events.held_on <= '#{to_date.end_of_day.to_s(:db)}'"
     end
     date_query = "OR (#{queries.join(" AND ")})" unless queries.blank? # Don't want "OR ()" showing up in there (SQL Error)
-    where("events.held_on_day_of_week IN (?) #{date_query}", days)
+    interval = sql_interval_for_utc_offset
+    where("EXTRACT(DOW FROM events.held_on#{interval}) IN (?) #{date_query}", days)
   }
 
   def location_address
