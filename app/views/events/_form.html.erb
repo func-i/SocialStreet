@@ -1,0 +1,42 @@
+<div class="group">
+  <label class="label">What?</label>
+  <%= form.select :event_type_id, options_from_collection_for_select(@event_types, :id, :name) %><br/>
+  <span class="description">Event type dropdown.</span>
+</div>
+<div class="group">
+
+  <label class="label" for="post_title">Where?</label>
+
+  <%= form.fields_for :location do |location_fields| %>
+    <%= location_fields.text_field :text , :class => "text_field" %>
+  <% end %>
+  <span class="description">Ideally a geocodeable location</span>
+</div>
+<div class="group">
+  <label class="label" for="post_title">When?</label>
+  <%= form.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+  <br/>
+  <span class="description">Start Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+</div>
+<div class="group">
+  <label class="label" for="post_title">Ends at?</label>
+  <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+  <br/>
+  <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+</div>
+
+
+<div class="group">
+  <label class="label">Description</label>
+  <%= form.text_area :description, :rows => 10, :cols => 80, :class => "text_area" %>
+  <span class="description">Describe your event</span>
+</div>
+
+
+<% content_for :end_of_body do %>
+  <script>
+    $(function() {
+      
+    });
+  </script>
+<% end %>

@@ -5,6 +5,8 @@ class Location < ActiveRecord::Base
 
   has_many :events
 
+  validates :text,    :length => { :maximum => 200 }
+  validates :text,    :presence => true, :unless => :has_geocodable_address?
   validates :street,  :length => { :maximum => 100 }
   validates :city,    :length => { :maximum => 30 }
   validates :state,   :length => { :maximum => 30 }
@@ -15,17 +17,22 @@ class Location < ActiveRecord::Base
   def geocodable_address
     if has_geocodable_address?
       [street, city, state, country, postal].join(', ')
+    elsif has_geocodable_address_text?
+      text
     end # otherwise return nil
   end
 
   def has_geocodable_address?
     street? || postal? || (city? && state?)
   end
+  def has_geocodable_address_text?
+    text?
+  end
 
   protected
 
   def geocodable_address_changed?
-    street_changed? || city_changed? || state_changed? || country_changed? || postal_changed?
+    text_changed? || street_changed? || city_changed? || state_changed? || country_changed? || postal_changed?
   end
 
 

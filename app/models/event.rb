@@ -4,14 +4,28 @@ class Event < ActiveRecord::Base
 
   belongs_to :location
   belongs_to :event_type
+  
   accepts_nested_attributes_for :location
 
   before_save :cache_lat_lng
 
   validates :name, :presence => true, :length => { :maximum => 60 }
-  #  validates :description, :length => { :maximum => 200 }
   validates :starts_at, :presence => true
   validates :cost, :presence => true, :numericality => { :only_integer => true }, :unless => :free?
+  validates :event_type, :presence => true
+  validate :valid_dates
+
+  default_value_for :starts_at do
+    Time.zone.now.advance(:hours => 3).floor(15.minutes)
+  end
+  default_value_for :finishes_at do |e|
+    (e.starts_at || Time.zone.now.advance(:hours => 3)).advance(:hours => 3).floor(15.minutes)
+  end
+  default_value_for :name do |e|
+    if e.event_type
+      e.event_type.name
+    end
+  end
 
   scope :on_or_after_date, lambda {|date|
     date = Time.zone.parse(date)
@@ -54,6 +68,18 @@ class Event < ActiveRecord::Base
   def location_address
     location.geocodable_address if location
   end
+  def start_date
+    (starts_at.to_date || Date.today).to_s(:date_picker)
+  end
+  def start_date=(date)
+    self.starts_at = Time.zone.parse(date + " " + start_time)
+  end
+  def start_time
+    (starts_at || Time.zone.now).to_s(:time_picker)
+  end
+  def start_time=(time)
+    self.starts_at = Time.zone.parse(start_date + " " + time)
+  end
 
   def self.sql_interval_for_utc_offset
     interval = Time.zone.utc_offset / 60 / 60
@@ -72,6 +98,12 @@ class Event < ActiveRecord::Base
     if location && !location.new_record?
       self.latitude = location.latitude
       self.longitude = location.longitude
+    end
+  end
+
+  def valid_dates
+    if finishes_at?
+      errors.add :finishes_at, 'must be after the event starts' if finishes_at <= starts_at
     end
   end
   

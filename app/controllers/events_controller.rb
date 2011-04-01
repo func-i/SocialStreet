@@ -1,19 +1,76 @@
 class EventsController < ApplicationController
 
-   before_filter :load_event_types
+  before_filter :load_event_types
 
+  # FIND EVENT PAGE
   def index
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
-    # EVENT LIST PAGE
+    # Use the query params to find events (ideally this should be ONE SQL query with pagination)
+    find_events
+  end
+
+  # EVENT DETAIL PAGE
+  def show
+    
+  end
+
+  def new
+    @event = Event.new
+    @event.location ||= Location.new
+    prepare_for_form
+  end
+
+  def create
+    @event = Event.new(
+      params[:event].merge({
+          :free => true
+        })
+    )
+    #      {:name => "My Event",
+    #        :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
+    #        :event_type => EventType.find_by_name('Soccer'),
+    #        :free => true,
+    #        :location_attributes => {
+    #          :text =>
+    #        }
+    #      })
+    if @event.save
+      redirect_to :events, :notice => "Event Created"
+    else
+      flash.now[:error] = "Error saving event: #{@event.errors.full_messages.join(". ")}"
+      prepare_for_form
+      render :new
+    end
+  end
+
+  protected
+
+  def load_event_types
+    @event_types = EventType.order('name').all
+  end
+
+  def nav_state
+    if params[:action] == 'index'
+      @on_events = true
+    elsif params[:action] == 'create' || params[:action] == 'new'
+      @on_create_event = true
+    end
+  end
+
+  def prepare_for_form
+    load_event_types
+  end
+
+  def find_events
     @events = Event
 
     radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
     @events = @events.near(params[:location], radius, :order => "distance") unless params[:location].blank?
     @events = @events.of_type(params[:types]) unless params[:types].blank?
-    
+
     # The "days of the week" should be for all time and NOT within the bounds of the date range.
     # which means they are an OR condition and not an AND condition to the query - KV
     if params[:days].blank?
@@ -28,20 +85,6 @@ class EventsController < ApplicationController
     @events = @events.at_or_before_time_of_day(params[:to_time]) unless params[:to_time].blank?
 
     @events = @events.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
-  end
-
-  def show
-    # EVENT DETAIL PAGE
-  end
-
-  protected
-
-  def load_event_types
-    @event_types = EventType.order('name').all
-  end
-
-  def nav_state
-    @on_events = true
   end
 
 end

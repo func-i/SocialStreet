@@ -1,7 +1,11 @@
 module ApplicationHelper
 
   def address_for(location)
-    "#{location.street} #{location.city}, #{location.state}"
+    if location.text?
+      location.text
+    else
+      "#{location.street} #{location.city}, #{location.state}"
+    end
   end
 
   def display_date_time(time)

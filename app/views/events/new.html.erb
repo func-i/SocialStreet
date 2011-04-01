@@ -1,0 +1,25 @@
+<div class="block" id="block-forms">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><a href="#block-text">Basic Info</a></li>
+      <li><a href="#block-tables">Details</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title">Create Event &raquo; Basic Info</h2>
+    <div class="inner">
+      <%= form_for @event, :html => {:class => "form"} do |form| %>
+        <%= render form %>
+        <div class="group navform wat-cf">
+          <button class="button" type="submit">
+            <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Save
+          </button>
+          <a href="#header" class="button">
+            <img src="/images/web-app-theme/icons/cross.png" alt="Cancel"/> Cancel
+          </a>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

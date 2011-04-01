@@ -1,10 +1,11 @@
 <li style="margin-top: 5px">
   <div class="left">
-    <a href="#"><img class="avatar" src="/images/web-app-theme/avatar.png" alt="avatar" /></a>
+    <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), event %>
+    <br/>
+<%# For now, events always have a type (I think) so this || is unncessary, but just in case (Yes I know this is bad practice) - KV %>
+    <%= event.event_type.try(:name) || "Unknown Type" %>
   </div>
   <div class="item">
-
-
     <div style="float:left; width: 400px">
       <strong><%= event.name %></strong><br/>
       <em><%= address_for(event.location) %></em><br/>
@@ -13,7 +14,6 @@
         <em>Finish: <%= display_date_time(event.finishes_at) %></em><br/>
       <% end %>
       <p>
-        <%= event.description %>
         <%= event.description %>
       </p>
     </div>

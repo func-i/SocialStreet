@@ -16,7 +16,7 @@
     <ul class="wat-cf">
       <li class="first <%= 'active' if @on_events %>"><%= link_to 'Find Events', :events %></li>
       <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
-      <li class=""><a href="#">Create Event</a></li>
+      <li class="<%= 'active' if @on_create_event %>"><%= link_to 'Create Event', [:new, :event] %></a></li>
     </ul>
   </div>
 </div>
