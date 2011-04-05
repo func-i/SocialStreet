@@ -26,6 +26,7 @@ Event.create!(
     :starts_at => 10.days.from_now.beginning_of_day + 240.minutes,
     :event_type => types[:soccer],
     :location_attributes => {
+      :text => "SocialStreet Head Office",
       :street => "373 Front Street W \#1701",
       :city => "Toronto",
       :state => "ON"
@@ -40,6 +41,7 @@ Event.create!(
     :cost => 1200,
     :event_type => types[:squash],
     :location_attributes => {
+      :text => "YMCA Downtown (not really)",
       :street => "628 Fleet Street \#1601",
       :city => "Toronto",
       :state => "ON",
@@ -55,6 +57,7 @@ Event.create!(
     :event_type => types[:basketball],
     :cost => 13000,
     :location_attributes => {
+      :text => "Downtown Mississauga",
       :street => "",
       :city => "Mississauga",
       :state => "ON",
@@ -70,6 +73,7 @@ Event.create!(
     :event_type => types[:baseball],
     :cost => 1400,
     :location_attributes => {
+      :text => "Downtown Toronto",
       :street => "",
       :city => "Toronto",
       :state => "ON",
