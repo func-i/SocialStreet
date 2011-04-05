@@ -29,6 +29,10 @@ class Location < ActiveRecord::Base
     text?
   end
 
+  def geo_located?
+    latitude? && longitude?
+  end
+
   protected
 
   def geocodable_address_changed?
