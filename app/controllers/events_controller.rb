@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
 
   before_filter :load_event_types
+  before_filter :authenticate_user!, :only => [:create]
 
   # FIND EVENT PAGE
   def index
