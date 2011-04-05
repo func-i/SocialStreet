@@ -75,6 +75,15 @@ class Event < ActiveRecord::Base
     location.geocodable_address if location
   end
 
+  def geo_located?
+    location && location.geo_located?
+  end
+
+  # Stub
+  def custom_image?
+    false # for now
+  end
+
   def free?
     !paid?
   end

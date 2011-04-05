@@ -14,7 +14,7 @@ class EventsController < ApplicationController
 
   # EVENT DETAIL PAGE
   def show
-    
+    @event = Event.find params[:id]
   end
 
   def new

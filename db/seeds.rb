@@ -8,12 +8,12 @@
 ## STUB EVENT TYPES
 ################################
 types = {}
-types[:soccer] = EventType.create!(:name => 'Soccer')
-types[:basketball] = EventType.create!(:name => 'Basketball')
-types[:baseball] = EventType.create!(:name => 'Baseball')
-types[:football] = EventType.create!(:name => 'Football')
-types[:squash] = EventType.create!(:name => 'Squash')
-types[:hockey] = EventType.create!(:name => 'Hockey')
+types[:soccer] = EventType.create!(:name => 'Soccer', :image_path => "/images/type_icons/soccer.png")
+types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/type_icons/basketball.png")
+types[:baseball] = EventType.create!(:name => 'Baseball', :image_path => "/images/type_icons/baseball.png")
+types[:football] = EventType.create!(:name => 'Football', :image_path => "/images/type_icons/football.png")
+types[:squash] = EventType.create!(:name => 'Squash', :image_path => "/images/type_icons/squash.png")
+types[:hockey] = EventType.create!(:name => 'Hockey', :image_path => "/images/type_icons/hockey.png")
 
 ################################
 ## STUB EVENTS
@@ -26,6 +26,7 @@ Event.create!(
     :starts_at => 10.days.from_now.beginning_of_day + 240.minutes,
     :event_type => types[:soccer],
     :location_attributes => {
+      :text => "SocialStreet Head Office",
       :street => "373 Front Street W \#1701",
       :city => "Toronto",
       :state => "ON"
@@ -40,6 +41,7 @@ Event.create!(
     :cost => 1200,
     :event_type => types[:squash],
     :location_attributes => {
+      :text => "YMCA Downtown (not really)",
       :street => "628 Fleet Street \#1601",
       :city => "Toronto",
       :state => "ON",
@@ -55,6 +57,7 @@ Event.create!(
     :event_type => types[:basketball],
     :cost => 13000,
     :location_attributes => {
+      :text => "Downtown Mississauga",
       :street => "",
       :city => "Mississauga",
       :state => "ON",
@@ -70,6 +73,7 @@ Event.create!(
     :event_type => types[:baseball],
     :cost => 1400,
     :location_attributes => {
+      :text => "Downtown Toronto",
       :street => "",
       :city => "Toronto",
       :state => "ON",

@@ -1,13 +1,13 @@
 <li style="margin-top: 5px">
   <div class="left">
-    <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), event %>
+    <%= link_to(image_tag(event_image(event), :size => "50x50", :class => "avatar"), event) %>
     <br/>
-<%# For now, events always have a type (I think) so this || is unncessary, but just in case (Yes I know this is bad practice) - KV %>
-    <%= event.event_type.try(:name) || "Unknown Type" %>
+    <%# For now, events always have a type (I think) so this || is unncessary, but just in case (Yes I know this is bad practice) - KV %>
+    <center><%= event.event_type.try(:name) || "Unknown Type" %></center>
   </div>
   <div class="item">
     <div style="float:left; width: 400px">
-      <strong><%= event.name %></strong><br/>
+      <strong><%= link_to event.name, event %></strong><br/>
       <em><%= address_for(event.location) %></em><br/>
       <em>Start: <%= display_date_time(event.starts_at) %></em><br/>
       <% if event.finishes_at? %>

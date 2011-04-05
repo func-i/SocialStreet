@@ -1,0 +1,136 @@
+<div class="block">
+
+  <div class="content">
+    <%= image_tag(event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin: 15px;") %>
+    <h2 class="title"><%= @event.name %></h2>
+    
+    <div class="inner">
+      <p><%= @event.description %></p>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+
+<div class="block">
+
+  <div class="content">
+    <h2 class="title">Latest Activity</h2>
+    <div class="inner">
+      <ul class="list">
+        <li class="activity" style="margin-top:5px">
+
+          <div class="left">
+            <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
+          </div>
+          <div class="item">
+            <div style="float:left; width: 400px">
+              <strong>Brian Pullen joined the group</strong><br/>
+              <p>
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum
+              </p>
+            </div>
+            <div style="float:left; width: 140px; height:100%;">
+              [+]
+            </div>
+            <div class="clear"></div>
+          </div>
+
+        </li>
+        <li class="activity" style="margin-top:5px">
+
+          <div class="left">
+            <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
+          </div>
+          <div class="item">
+            <div style="float:left; width: 400px">
+              <strong>Brian Pullen joined the group</strong><br/>
+              <p>
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum
+              </p>
+            </div>
+            <div style="float:left; width: 140px; height:100%;">
+              [+]
+            </div>
+            <div class="clear"></div>
+          </div>
+
+        </li>
+        <li class="activity" style="margin-top:5px">
+
+          <div class="left">
+            <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
+          </div>
+          <div class="item">
+            <div style="float:left; width: 400px">
+              <strong>Brian Pullen joined the group</strong><br/>
+              <p>
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+                Lorem ipsum Lorem ipsum
+              </p>
+            </div>
+            <div style="float:left; width: 140px; height:100%;">
+              [+]
+            </div>
+            <div class="clear"></div>
+          </div>
+
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+<% content_for :sidebar do %>
+
+  <div class="block notice">
+    <h4>Actions</h4>
+    <button class="button">Join Event</button>
+    <div class="clear"></div>
+  </div>
+
+  <div class="block notice">
+    <h4>Location</h4>
+    <% if @event.geo_located? %>
+      <img src="http://maps.google.com/maps/api/staticmap?zoom=14&size=320x320&maptype=roadmap&sensor=false&markers=color:red%7Clabel:A%7C<%= @event.latitude %>,<%= @event.longitude %>" alt="location map" />
+    <% end %>
+    <% if l = @event.location %>
+      <% if l.text %>
+        <strong><%= l.text %></strong><br/>
+      <% end %>
+      <% if l.street? %>
+        <%= l.street %><br/>
+      <% end %>
+      <% if l.city? || l.state? %>
+        <%= l.city %> <%= l.state %><br/>
+      <% end %>
+      <% if l.country? %>
+        <%= l.country %><br/>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="block notice">
+    <h4>Organizers (x)</h4>
+  </div>
+
+  <div class="block notice">
+    <h4>Attending (x)</h4>
+  </div>
+
+  <div class="clear"></div>
+
+<% end %>
+
+<% content_for :end_of_body do %>
+
+<% end %>
