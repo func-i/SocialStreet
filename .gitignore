@@ -6,6 +6,7 @@ tmp/**/*
 nbproject
 nbproject/*
 config/database.yml
+config/secrets.yml
 public/javascripts/cache/*
 public/stylesheets/cache/*
 public/system

@@ -3,12 +3,11 @@
   <div id="user-navigation">
     <ul class="wat-cf">
       <% if user_signed_in? %>
-        <li><a href="#"><%= t("web-app-theme.profile", :default => "Profile") %></a></li>
-        <li><a href="#"><%= t("web-app-theme.settings", :default => "Settings") %></a></li>
+        <li><%= link_to 'Profile', '#' %></li>
+        <li><%= link_to "Authentications", [:authentications] %></li>
         <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></li>
       <% else %>
-        <li><%= link_to 'Sign up', [:new, :user_registration] %></li>
-        <li><%= link_to 'Sign in', [:new, :user_session] %></li>
+        <li><%= link_to 'Sign in', [:authentications] %></li>
       <% end %>
     </ul>
   </div>

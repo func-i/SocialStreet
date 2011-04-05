@@ -56,7 +56,11 @@ SocialStreet::Application.routes.draw do
     
   end
 
+  resources :authentications
+
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
+
+  match '/auth/:provider/callback' => 'authentications#create'
 
   # See how all your routes lay out with "rake routes"
 
