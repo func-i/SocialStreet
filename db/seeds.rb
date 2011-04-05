@@ -8,12 +8,12 @@
 ## STUB EVENT TYPES
 ################################
 types = {}
-types[:soccer] = EventType.create!(:name => 'Soccer')
-types[:basketball] = EventType.create!(:name => 'Basketball')
-types[:baseball] = EventType.create!(:name => 'Baseball')
-types[:football] = EventType.create!(:name => 'Football')
-types[:squash] = EventType.create!(:name => 'Squash')
-types[:hockey] = EventType.create!(:name => 'Hockey')
+types[:soccer] = EventType.create!(:name => 'Soccer', :image_path => "/images/type_icons/soccer.png")
+types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/type_icons/basketball.png")
+types[:baseball] = EventType.create!(:name => 'Baseball', :image_path => "/images/type_icons/baseball.png")
+types[:football] = EventType.create!(:name => 'Football', :image_path => "/images/type_icons/football.png")
+types[:squash] = EventType.create!(:name => 'Squash', :image_path => "/images/type_icons/squash.png")
+types[:hockey] = EventType.create!(:name => 'Hockey', :image_path => "/images/type_icons/hockey.png")
 
 ################################
 ## STUB EVENTS

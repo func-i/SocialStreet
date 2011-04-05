@@ -79,6 +79,11 @@ class Event < ActiveRecord::Base
     location && location.geo_located?
   end
 
+  # Stub
+  def custom_image?
+    false # for now
+  end
+
   def free?
     !paid?
   end
