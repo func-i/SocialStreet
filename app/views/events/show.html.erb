@@ -1,10 +1,13 @@
 <div class="block">
 
   <div class="content">
+    <%= image_tag(event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin: 15px;") %>
     <h2 class="title"><%= @event.name %></h2>
+    
     <div class="inner">
-      <%= @event.description %>
+      <p><%= @event.description %></p>
     </div>
+    <div class="clear"></div>
   </div>
 </div>
 
