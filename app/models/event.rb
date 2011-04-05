@@ -83,7 +83,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.sql_interval_for_utc_offset
-    interval = Time.zone.utc_offset / 60 / 60
+    interval = Time.zone.now.utc_offset / 60 / 60
     interval = if interval < 0
       " - interval '#{interval.abs} hours'"
     elsif interval > 0
