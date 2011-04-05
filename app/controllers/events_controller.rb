@@ -14,7 +14,7 @@ class EventsController < ApplicationController
   # EVENT DETAIL PAGE
   def show
     @event = Event.find params[:id]
-    @rsvp = @event.rsvps.by_user(current_user) if current_user
+    @rsvp = @event.rsvps.by_user(current_user).first if current_user
   end
 
   def new
