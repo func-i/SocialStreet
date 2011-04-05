@@ -2,10 +2,10 @@
 <div class="block" id="block-signup">
   <h2>Sign up</h2>
   <div class="content">
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form"}) do |f| %>
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form"}) do |form| %>
       <%= devise_error_messages! %>
 
-      <%= render f %>
+      <%= render form %>
 
       <div class="group navform wat-cf">
         <button class="button" type="submit">
