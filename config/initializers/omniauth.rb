@@ -1,7 +1,7 @@
 # Since we don't care to use the secrets.yml on production which is Heroku, we hard code those values here
 if Rails.env == 'production'
-  TWITTER_APP_CONSUMER_KEY = ''
-  TWITTER_APP_CONSUMER_SECRET = ''
+  TWITTER_APP_CONSUMER_KEY = 'Uqgqk2dtnjMNgIIV7QXfnA'
+  TWITTER_APP_CONSUMER_SECRET = 'xXKPdgUPjowXE2UlsbGdzD7qA7sUOvPyG26jEFavvY'
 else
   # each developer can have their own test applications in twitter / facebook / etc by editting the secrets.yml
   SECRETS = YAML.load_file("#{::Rails.root.to_s}/config/secrets.yml")
