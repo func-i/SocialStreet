@@ -20,7 +20,7 @@ class AuthenticationsController < ApplicationController
     elsif current_user
       current_user.authentications.create!(:provider => auth['provider'], :uid => auth['uid'])
       flash[:notice] = "Added #{auth['provider']} access to your account"
-      redirect_to root_url
+      redirect_to root_url # TODO: redirect to last location (check Devise docs)
     else
       user = User.new
       user.apply_omniauth(auth)
