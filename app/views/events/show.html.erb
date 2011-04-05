@@ -3,7 +3,7 @@
   <div class="content">
     <%= image_tag(event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin: 15px;") %>
     <h2 class="title"><%= @event.name %></h2>
-    
+
     <div class="inner">
       <p><%= @event.description %></p>
     </div>
@@ -94,14 +94,23 @@
 
   <div class="block notice">
     <h4>Actions</h4>
-    <button class="button">Join Event</button>
+    <% if @rsvp %>
+      <%= link_to 'Edit RSVP', [:edit, @event, :rsvp], :class => "button" %>
+    <% else %>
+      <%= link_to 'Join Event', [:new, @event, :rsvp], :class => "button" %>
+    <% end %>
     <div class="clear"></div>
   </div>
 
   <div class="block notice">
     <h4>Location</h4>
     <% if @event.geo_located? %>
-      <img src="http://maps.google.com/maps/api/staticmap?zoom=14&size=320x320&maptype=roadmap&sensor=false&markers=color:red%7Clabel:A%7C<%= @event.latitude %>,<%= @event.longitude %>" alt="location map" />
+      <center>
+        <img width="90%"
+             src="http://maps.google.com/maps/api/staticmap?zoom=14&size=320x320&maptype=roadmap&sensor=false&markers=color:red%7Clabel:A%7C<%= @event.latitude %>,<%= @event.longitude %>"
+             alt="location map" />
+      </center>
+      <br/>
     <% end %>
     <% if l = @event.location %>
       <% if l.text %>

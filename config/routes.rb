@@ -53,7 +53,7 @@ SocialStreet::Application.routes.draw do
   get 'how-it-works' => 'site#how', :as => 'how'
 
   resources :events do
-    
+    resources :rsvps
   end
 
   resources :authentications
