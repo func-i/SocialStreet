@@ -2,7 +2,7 @@
 
   <% if activity.of_type? :event_created  %>
     <div class="left">
-      <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
+      <%= link_to image_tag(activity.user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
     </div>
     <div class="item">
       <div style="float:left; width: 400px">
@@ -19,7 +19,7 @@
     </div>
   <% elsif activity.of_type? :event_rsvp_attending %>
     <div class="left">
-      <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
+      <%= link_to image_tag(activity.user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
     </div>
     <div class="item">
       <div style="float:left; width: 400px">

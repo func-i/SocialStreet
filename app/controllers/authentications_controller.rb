@@ -13,6 +13,7 @@ class AuthenticationsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
+#    raise auth.to_yaml
     authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
     if authentication
       flash[:notice] = "Welcome back #{authentication.user.name}"
