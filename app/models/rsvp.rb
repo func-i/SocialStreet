@@ -11,14 +11,6 @@ class Rsvp < ActiveRecord::Base
 
   has_many :activities, :as => :reference
 
-  def available_statuses
-    if event.maximum_attendees
-      @@statuses.except(:maybe)
-    else
-      @@statuses
-    end
-  end
-
   validates :event_id, :uniqueness => {:scope => [:user_id] }
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
@@ -29,9 +21,18 @@ class Rsvp < ActiveRecord::Base
 
   def validate_event_status
     if !available_statuses.has_value?(self.status)
-      errors.add(:base, "RSVP status not allowed")
+      errors.add :status, "not allowed"
     end
   end
+
+  def available_statuses
+    if event.maximum_attendees
+      @@statuses.except(:maybe)
+    else
+      @@statuses
+    end
+  end
+
 
 
 end
