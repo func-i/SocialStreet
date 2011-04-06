@@ -85,6 +85,10 @@ class Event < ActiveRecord::Base
     false # for now
   end
 
+  def num_attending
+    rsvps.attending.size
+  end
+
   def free?
     !paid?
   end

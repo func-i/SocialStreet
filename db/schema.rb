@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110405185730) do
+ActiveRecord::Schema.define(:version => 20110406133644) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(:version => 20110405185730) do
   end
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
+
+  create_table "rsvps", :force => true do |t|
+    t.integer  "event_id",   :null => false
+    t.integer  "user_id",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status"
+  end
+
+  add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"
+  add_index "rsvps", ["user_id"], :name => "index_rsvps_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false

@@ -7,11 +7,7 @@
 
       <%= render form %>
 
-      <div class="group navform wat-cf">
-        <button class="button" type="submit">
-          <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Signup
-        </button>
-      </div>
+      <%= render 'shared/form_submit_button' %>
       <%= render :partial => "devise/shared/links" %>
 
     <% end %>

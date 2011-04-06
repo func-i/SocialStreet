@@ -1,1 +1,20 @@
 /* Override here any style defined by web-app-theme */
+.form div.field_with_errors {
+  display: inline-block;
+}
+
+.errorExplanation {
+  margin:8px;
+  border: 1px solid #ffbbbb;
+  background-color: #ffdddd;
+  padding-bottom: 10px;
+}
+
+.errorExplanation ul {
+  margin-left: 40px;
+}
+
+.errorExplanation p {
+  margin-left: 20px;
+  margin-bottom: 2px;
+}
