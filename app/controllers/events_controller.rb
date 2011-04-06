@@ -17,6 +17,7 @@ class EventsController < ApplicationController
     @event = Event.find params[:id]
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
     @activities = @event.activities.most_recent_first.all # TODO: paginate @activities here (page = 1)
+    @comment = @event.comments.build
   end
 
   def new

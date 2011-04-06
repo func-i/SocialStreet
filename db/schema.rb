@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110406185948) do
+ActiveRecord::Schema.define(:version => 20110406193948) do
 
   create_table "activities", :force => true do |t|
     t.integer  "event_id"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20110406185948) do
   end
 
   add_index "activities", ["event_id"], :name => "index_activities_on_event_id"
+  add_index "activities", ["reference_type", "reference_id"], :name => "index_activities_on_reference_type_and_reference_id"
   add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
 
   create_table "authentications", :force => true do |t|
@@ -34,6 +35,17 @@ ActiveRecord::Schema.define(:version => 20110406185948) do
     t.datetime "updated_at"
     t.text     "auth_response"
   end
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
 
   create_table "event_types", :force => true do |t|
     t.string   "name"

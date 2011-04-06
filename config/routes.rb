@@ -54,6 +54,7 @@ SocialStreet::Application.routes.draw do
 
   resources :events do
     resources :rsvps
+    resources :comments, :only => [:create]
   end
 
   resources :authentications

@@ -1,0 +1,16 @@
+<div class="left">
+  <%= link_to image_tag(url_for_image, :class => "avatar"), '#' %>
+</div>
+<div class="item">
+  <div style="float:left; width: 400px">
+    <strong><%= title %></strong><br/>
+    <p>
+      <%= body %>
+    </p>
+    <em><%= time_ago_in_words activity.occurred_at %> ago</em>
+  </div>
+  <div style="float:left; width: 140px; height:100%;">
+    [+]
+  </div>
+  <div class="clear"></div>
+</div>

@@ -1,41 +1,26 @@
 <li class="activity" style="margin-top:5px">
 
   <% if activity.of_type? :event_created  %>
-    <div class="left">
-      <%= link_to image_tag(activity.user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
-    </div>
-    <div class="item">
-      <div style="float:left; width: 400px">
-        <strong><%= activity.user.try(:name) || "The owner" %> created the event.</strong><br/>
-        <p>
-          Blah
-        </p>
-        <em><%= time_ago_in_words activity.occurred_at %> ago</em>
-      </div>
-      <div style="float:left; width: 140px; height:100%;">
-        [+]
-      </div>
-      <div class="clear"></div>
-    </div>
+    <%= render 'shared/general_activity',
+      :activity => activity,
+      :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :title => "#{activity.user.try(:name) || "The owner"} created the event",
+      :body => "Blah"
+  %>
   <% elsif activity.of_type? :event_rsvp_attending %>
-    <div class="left">
-      <%= link_to image_tag(activity.user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
-    </div>
-    <div class="item">
-      <div style="float:left; width: 400px">
-        <strong><%= activity.user.try(:name) || "The owner" %> is attending the event.</strong><br/>
-        <p>
-          Maybe the RSVP can have a comment / note that would be displayed here?
-        </p>
-        <em><%= time_ago_in_words activity.occurred_at %> ago</em>
-      </div>
-      <div style="float:left; width: 140px; height:100%;">
-        [+]
-      </div>
-      <div class="clear"></div>
-    </div>
+    <%= render 'shared/general_activity',
+      :activity => activity,
+      :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :title => "#{activity.user.try(:name) || "The owner"} is attending the event",
+      :body => "Maybe the RSVP can have a comment / note that would be displayed here?"
+  %>
+  <% elsif activity.of_type? :event_comment %>
+    <%= render 'shared/general_activity',
+      :activity => activity,
+      :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :title => "#{activity.user.try(:name) || "The owner"} made a comment.",
+      :body => activity.reference.body
+  %>
   <% end %>
-
-
 
 </li>

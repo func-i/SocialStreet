@@ -2,7 +2,8 @@ class Activity < ActiveRecord::Base
 
   @@types = {
     :event_created => 'Event Created',
-    :event_rsvp_attending => 'Event RSVP Attending'
+    :event_rsvp_attending => 'Event RSVP Attending',
+    :event_comment => 'Event Comment'
   }.freeze
   cattr_accessor :types
 
