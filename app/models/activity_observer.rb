@@ -1,6 +1,6 @@
 class ActivityObserver < ActiveRecord::Observer
 
-  observe :event, :rsvp
+  observe :event, :rsvp, :comment
 
   def after_create(record)
 
@@ -10,6 +10,10 @@ class ActivityObserver < ActiveRecord::Observer
     elsif record.is_a?(Rsvp) && record.status == Rsvp.statuses[:attending]
       record.event.activities.create :user => record.user,
         :activity_type => Activity.types[:event_rsvp_attending],
+        :reference => record
+    elsif record.is_a?(Comment) && record.commentable.is_a?(Event)
+      record.commentable.activities.create :user => record.user,
+        :activity_type => Activity.types[:event_comment],
         :reference => record
     end
 
