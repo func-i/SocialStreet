@@ -7,7 +7,7 @@ class RsvpsController < ApplicationController
   before_filter :require_rsvp, :except => [:new, :create]
 
   def new
-
+    @rsvp = Rsvp.new
   end
 
   def edit
@@ -15,11 +15,23 @@ class RsvpsController < ApplicationController
   end
 
   def update
-    
+    @rsvp.attributes = params[:rsvp]
+    @rsvp.user = current_user
+    if @rsvp.save
+      redirect_to @event, :notice => "You have successfully updated your RSVP for '#{@event.name}' to '#{@rsvp.status}'"
+    else
+      render :new
+    end
   end
 
   def create
-
+    @rsvp = @event.rsvps.build(params[:rsvp])
+    @rsvp.user = current_user
+    if @rsvp.save
+      redirect_to @event, :notice => "You have successfully RSVP'd to '#{@event.name}' as '#{@rsvp.status}'"
+    else
+      render :new
+    end
   end
 
   protected

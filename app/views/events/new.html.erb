@@ -12,15 +12,7 @@
     <div class="inner">
       <%= form_for @event, :html => {:class => "form"} do |form| %>
         <%= render form %>
-        <div class="group navform wat-cf">
-          <button class="button" type="submit">
-            <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Save
-          </button>
-          <a href="#header" class="button">
-            <img src="/images/web-app-theme/icons/cross.png" alt="Cancel"/> Cancel
-          </a>
-        </div>
-
+        <%= render 'shared/form_submit_button' %>
       <% end %>
     </div>
   </div>
