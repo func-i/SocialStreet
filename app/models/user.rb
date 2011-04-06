@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable
+    :recoverable, :rememberable, :trackable
 
   has_many :authentications
   has_many :rsvps
@@ -11,8 +11,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name
 
-#  validates :first_name, :presence => true
-#  validates :last_name, :presence => true
+  #  validates :first_name, :presence => true
+  #  validates :last_name, :presence => true
 
   def apply_omniauth(omniauth)
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
@@ -29,6 +29,11 @@ class User < ActiveRecord::Base
       end
       self.email = user_info['email'] if !user_info['email'].blank? && self.email.blank?
     end
+    if omniauth['provider'] == 'facebook' && omniauth['user_info']
+      self.facebook_profile_picture_url = omniauth['user_info']['image'] if self.facebook_profile_picture_url.blank?
+    elsif omniauth['provider'] == 'twitter' && omniauth['user_info']
+      self.twitter_profile_picture_url = omniauth['user_info']['image'] if self.twitter_profile_picture_url.blank?
+    end
   end
 
   def name
@@ -39,6 +44,11 @@ class User < ActiveRecord::Base
     else
       "Sir/Madam" # for now, should have more conditions before this
     end
+  end
+
+  def avatar_url
+    # TODO: check for custom avatar image first, once it is implemented
+    facebook_profile_picture_url || twitter_profile_picture_url
   end
 
   
