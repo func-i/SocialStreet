@@ -4,9 +4,12 @@ class Rsvp < ActiveRecord::Base
     :not_attending => 'Not Attending',
     :maybe => 'Maybe',
   }
+  cattr_accessor :statuses
 
   belongs_to :user
   belongs_to :event
+
+  has_many :activities, :as => :reference
 
   def available_statuses
     if event.maximum_attendees
