@@ -4,16 +4,19 @@
 class ProfilesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :require_user
-
-  def show
-
-  end
   
   def edit
-
+    puts "edit!!!!!!!!!!!!!!!!!!!!!!!!"
   end
 
   def update
+    puts params[:user]
+    @user.attributes = params[:user]
+    if @user.save
+      redirect_to edit_profile_path , :notice => "You have successfully updated your profile"
+    else
+      redirect_to edit_profile_path, :notice => "Error updating your profile"
+    end
   end
 
   def require_user
