@@ -7,7 +7,7 @@ class RsvpsController < ApplicationController
   before_filter :require_rsvp, :except => [:new, :create]
 
   def new
-    @rsvp = Rsvp.new
+    @rsvp = @event.rsvps.build
   end
 
   def edit
@@ -43,5 +43,4 @@ class RsvpsController < ApplicationController
   def require_rsvp
     @rsvp = @event.rsvps.by_user(current_user).find params[:id].to_i
   end
-
 end

@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
 
   before_filter :load_event_types
+  before_filter :authenticate_user!, :only => [:create]
 
   # FIND EVENT PAGE
   def index
@@ -29,7 +30,6 @@ class EventsController < ApplicationController
     @event = Event.new params[:event]
     @event.user = current_user if current_user # TODO: remove if statement when enforced.
 
-    
     if @event.save
       redirect_to :events, :notice => "Event Created"
     else

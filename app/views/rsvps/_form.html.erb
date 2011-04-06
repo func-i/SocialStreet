@@ -1,6 +1,7 @@
 <%= form.error_messages %>
 <div class="group">
   <label class="label">Your RSVP Status:</label>
-  <%= form.select :status, Rsvp.statuses.values, :include_blank => true %><br/>
+  <%= form.select :status, @rsvp.available_statuses.values%>
+  <br/>
   <span class="description">Please set your RSVP status above.</span>
 </div>
