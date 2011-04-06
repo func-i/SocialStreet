@@ -17,74 +17,10 @@
     <h2 class="title">Latest Activity</h2>
     <div class="inner">
       <ul class="list">
-        <li class="activity" style="margin-top:5px">
-
-          <div class="left">
-            <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
-          </div>
-          <div class="item">
-            <div style="float:left; width: 400px">
-              <strong>Brian Pullen joined the group</strong><br/>
-              <p>
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum
-              </p>
-            </div>
-            <div style="float:left; width: 140px; height:100%;">
-              [+]
-            </div>
-            <div class="clear"></div>
-          </div>
-
-        </li>
-        <li class="activity" style="margin-top:5px">
-
-          <div class="left">
-            <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
-          </div>
-          <div class="item">
-            <div style="float:left; width: 400px">
-              <strong>Brian Pullen joined the group</strong><br/>
-              <p>
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum
-              </p>
-            </div>
-            <div style="float:left; width: 140px; height:100%;">
-              [+]
-            </div>
-            <div class="clear"></div>
-          </div>
-
-        </li>
-        <li class="activity" style="margin-top:5px">
-
-          <div class="left">
-            <%= link_to image_tag('web-app-theme/avatar.png', :class => "avant"), '#' %>
-          </div>
-          <div class="item">
-            <div style="float:left; width: 400px">
-              <strong>Brian Pullen joined the group</strong><br/>
-              <p>
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-                Lorem ipsum Lorem ipsum
-              </p>
-            </div>
-            <div style="float:left; width: 140px; height:100%;">
-              [+]
-            </div>
-            <div class="clear"></div>
-          </div>
-
-        </li>
+        <% @activities.each do |activity| %>
+          <%= render 'shared/activity', :activity => activity %>
+        <% end %>
       </ul>
-
     </div>
   </div>
 </div>

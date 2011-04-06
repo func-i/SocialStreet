@@ -3,9 +3,12 @@ class Event < ActiveRecord::Base
   geocoded_by :location_address
   humanize_price :cost # creates cost_in_dollars getter/setter methods
 
+  belongs_to :user
   belongs_to :location
   belongs_to :event_type
+  
   has_many :rsvps
+  has_many :activities
   
   accepts_nested_attributes_for :location
 
