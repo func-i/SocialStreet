@@ -4,6 +4,8 @@
     <h2 class="title">Create RSVP for <%= @event.name %></h2>
     <div class="inner">
       <%= form_for [@event, @rsvp], :html => {:class => "form"} do |form| %>
+        
+
         <%= render form %>
         <%= render 'shared/form_submit_button' %>
       <% end %>

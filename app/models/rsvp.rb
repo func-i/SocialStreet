@@ -11,7 +11,8 @@ class Rsvp < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :status, :presence => true, :inclusion => { :in => Rsvp.statuses.values }
+  validates :status, :inclusion => { :in => Rsvp.statuses.values }
+  validates :event_id, :uniqueness => {:scope => [:user_id] }
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }

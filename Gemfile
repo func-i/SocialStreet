@@ -13,6 +13,7 @@ gem 'devise', '>= 1.2.0'
 gem 'geocoder'
 
 gem "default_value_for"
+gem 'dynamic_form', :git => "git://github.com/joelmoss/dynamic_form.git"
 
 # Use unicorn as the web server
 # gem 'unicorn'
