@@ -95,7 +95,7 @@
   <div class="block notice">
     <h4>Actions</h4>
     <% if @rsvp %>
-      <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, :rsvp], :class => "button" %>
+      <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, @rsvp], :class => "button" %>
     <% else %>
       <%= link_to 'Join Event', [:new, @event, :rsvp], :class => "button" %>
     <% end %>
