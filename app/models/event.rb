@@ -14,6 +14,7 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :location
 
   before_save :cache_lat_lng
+  before_validation :set_default_title
   before_create :build_initial_rsvp
 
   validates :name, :presence => true, :length => { :maximum => 60 }
@@ -30,11 +31,6 @@ class Event < ActiveRecord::Base
   end
   default_value_for :finishes_at do |e|
     (e.starts_at || Time.zone.now.advance(:hours => 3)).advance(:hours => 3).floor(15.minutes)
-  end
-  default_value_for :name do |e|
-    if e.event_type
-      e.event_type.name
-    end
   end
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
@@ -158,6 +154,15 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def set_default_title
+    if self.name.blank?
+      self.name = event_type ? event_type.name : "Something"
+      self.name << (" @ " + (location_address ? location_address : "Somewhere"))
+      self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
+    end
+  end
+
+
   def valid_dates
     if finishes_at?
       errors.add :finishes_at, 'must be after the event starts' if finishes_at <= starts_at
@@ -171,6 +176,5 @@ class Event < ActiveRecord::Base
 
   def build_initial_rsvp
     rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
-  end
-  
+  end  
 end
