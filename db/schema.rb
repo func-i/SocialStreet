@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110407144857) do
+ActiveRecord::Schema.define(:version => 20110407165059) do
 
   create_table "activities", :force => true do |t|
     t.integer  "event_id"
@@ -74,8 +74,10 @@ ActiveRecord::Schema.define(:version => 20110407144857) do
     t.integer  "maximum_attendees"
     t.boolean  "guests_allowed"
     t.integer  "user_id"
+    t.integer  "activity_id"
   end
 
+  add_index "events", ["activity_id"], :name => "index_events_on_activity_id"
   add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"
   add_index "events", ["latitude", "longitude"], :name => "index_events_on_latitude_and_longitude"
   add_index "events", ["starts_at", "finishes_at"], :name => "index_events_on_starts_at_and_finishes_at"
@@ -129,7 +131,7 @@ ActiveRecord::Schema.define(:version => 20110407144857) do
     t.string   "twitter_profile_picture_url"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

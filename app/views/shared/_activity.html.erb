@@ -3,21 +3,18 @@
   <% if activity.of_type? :event_created  %>
     <%= render 'shared/general_activity',
       :activity => activity,
-      :allow_children => true,
       :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{activity.user.try(:name) || "The owner"} created the event"
   %>
   <% elsif activity.of_type? :event_rsvp_attending %>
     <%= render 'shared/general_activity',
       :activity => activity,
-      :allow_children => true,
       :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{activity.user.try(:name) || "The owner"} is attending the event"
   %>
   <% elsif activity.of_type?(:event_comment) %>
     <%= render 'shared/general_activity',
       :activity => activity,
-      :allow_children => true,
       :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{activity.user.try(:name) || "The owner"} made a comment.",
       :body => activity.reference.body
@@ -25,7 +22,6 @@
   <% elsif activity.of_type?(:activity_comment) %>
     <%= render 'shared/general_activity',
       :activity => activity,
-      :allow_children => false,
       :url_for_image => activity.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{activity.user.try(:name) || "The owner"} made a comment.",
       :body => activity.reference.body
