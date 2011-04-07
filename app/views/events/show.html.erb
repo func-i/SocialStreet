@@ -1,10 +1,15 @@
 <div class="block">
 
   <div class="content">
-    <%= image_tag(event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin: 15px;") %>
-    <h2 class="title"><%= @event.name %></h2>
+
+    <div style="float:left">
+      <%= image_tag(event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin:5px;") %>
+      <b><center><%= @event.event_type.try(:name) || "Unknown Type" %></center></b>
+    </div>
 
     <div class="inner">
+      <h2 class="title"><%= @event.name %></h2>
+
       <p><%= @event.description %></p>
     </div>
     <div class="clear"></div>
