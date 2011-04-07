@@ -6,7 +6,7 @@
 
   <div class="group">
     <label class="label">What?</label>
-    <%= form.select :event_type_id, options_from_collection_for_select(@event_types, :id, :name) %><br/>
+    <%= form.collection_select :event_type_id, @event_types, :id, :name %><br/>
     <span class="description">Event type dropdown.</span>
   </div>
   <div class="group">
@@ -33,6 +33,12 @@
     <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
     <br/>
     <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+  </div>
+
+  <div class="group">
+    <label class="label">Title</label>
+    <%= form.text_field :name, :rows => 10, :cols => 80, :class => "text_field" %>
+    <span class="description">Describe your event</span>
   </div>
 
 
