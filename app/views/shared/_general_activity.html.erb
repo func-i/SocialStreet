@@ -22,9 +22,9 @@
   <div class="clear"></div>
   <% if allow_children %>
   <%# TODO: Should paginate these perhaps ?  %>
-    <% activity.activities.oldest_first.all.each do |activity|  %>
-      <%= render 'shared/activity', :activity => activity %>
-    <% end  %>
+    <% activity.activities.oldest_first.all.each do |a|  %>
+      <%= render 'shared/activity', :activity => a %>
+    <% end %>
     <div class="activity-comment-container" style="margin-top:10px;margin-left:80px;">
       <%= form_for [activity, Comment.new], :html => {:class => "form"} do |form| %>
         <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:55%;float:left" %>
