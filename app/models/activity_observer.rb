@@ -11,12 +11,17 @@ class ActivityObserver < ActiveRecord::Observer
       record.event.activities.create :user => record.user,
         :activity_type => Activity.types[:event_rsvp_attending],
         :reference => record
-    elsif record.is_a?(Comment) && record.commentable.is_a?(Event)
-      record.commentable.activities.create :user => record.user,
-        :activity_type => Activity.types[:event_comment],
-        :reference => record
+    elsif record.is_a?(Comment)
+      if record.commentable.is_a?(Event)
+        record.commentable.activities.create :user => record.user,
+          :activity_type => Activity.types[:event_comment],
+          :reference => record
+      elsif record.commentable.is_a?(Activity)
+        record.commentable.activities.create :user => record.user,
+          :activity_type => Activity.types[:activity_comment],
+          :reference => record
+      end
     end
-
   end
 
   def before_update(record)

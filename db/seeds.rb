@@ -16,12 +16,21 @@ types[:squash] = EventType.create!(:name => 'Squash', :image_path => "/images/ty
 types[:hockey] = EventType.create!(:name => 'Hockey', :image_path => "/images/type_icons/hockey.png")
 
 ################################
+## STUB USERS
+################################
+user = User.create!(
+  {
+  }
+)
+
+################################
 ## STUB EVENTS
 ################################
 
 Event.create!(
   {
     :name => "Soccer at Turd Park!",
+    :user => user,
     :description => "Fake description for Event based on some random string Lorem Ipsum style",
     :starts_at => 10.days.from_now.beginning_of_day + 240.minutes,
     :event_type => types[:soccer],
@@ -35,6 +44,7 @@ Event.create!(
 
 Event.create!(
   {:name => "Squash Tournament",
+    :user => user,
     :description => "We love squash, do you?",
     :starts_at => 3.days.from_now.beginning_of_day + 480.minutes,
     :finishes_at => 3.days.from_now.beginning_of_day + 990.minutes,
@@ -51,6 +61,7 @@ Event.create!(
 
 Event.create!(
   {:name => "Basketball - We only play '21'",
+    :user => user,
     :description => "We suck at this, please help us",
     :starts_at => 2.days.from_now.beginning_of_day + 990.minutes,
     :finishes_at => 2.days.from_now.beginning_of_day + 1035.minutes,
@@ -67,6 +78,7 @@ Event.create!(
 
 Event.create!(
   {:name => "Baseball Tournament",
+    :user => user,
     :description => "Baseball although it's not as good as cricket, is what this event is about.",
     :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
     :finishes_at => 5.days.from_now.beginning_of_day + 990.minutes,
