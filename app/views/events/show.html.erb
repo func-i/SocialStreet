@@ -41,11 +41,15 @@
 
   <div class="block notice">
     <h4>Actions</h4>
-    <% if @rsvp %>
+    <% if @rsvp%>
       <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, @rsvp], :class => "button" %>
+      <% if @rsvp.administrator? %>
+        <%= link_to "Edit Event", [:edit, @event], :class => "button" %>
+      <% end %>
     <% else %>
       <%= link_to 'Join Event', [:new, @event, :rsvp], :class => "button" %>
     <% end %>
+
     <div class="clear"></div>
   </div>
 
