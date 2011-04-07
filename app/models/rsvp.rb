@@ -2,7 +2,7 @@ class Rsvp < ActiveRecord::Base
   @@statuses = {
     :attending => 'Attending',
     :not_attending => 'Not Attending',
-    :maybe => 'Maybe',
+    :maybe_attending => 'Maybe',
   }
   cattr_accessor :statuses
 
@@ -24,6 +24,7 @@ class Rsvp < ActiveRecord::Base
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }
   scope :attending, where(:status => @@statuses[:attending])
+  scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
 
   validate :validate_event_status
 

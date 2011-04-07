@@ -27,7 +27,10 @@
       <button class="button" style="margin: auto auto">Quick Attend</button></center>
       <br/><br/>
       <em>X</em> Connections <br/>
-      <em><%= event.num_attending %></em> Attending
+      <em>
+        <b><%=event.num_attending_or_maybe%></b><%if event.maximum_attendees%>/<%=event.maximum_attendees%><%end%>
+      </em> Attending
+      <%if(event.number_of_attendees_needed && event.number_of_attendees_needed>0)%>...need <%=event.number_of_attendees_needed%> more people<%end%>
     </div>
     <div class="clear"></div>
   </div>

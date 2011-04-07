@@ -32,13 +32,25 @@ class EventsController < ApplicationController
     @event.user = current_user if current_user # TODO: remove if statement when enforced.
 
     if @event.save
-      redirect_to :events, :notice => "Event Created"
+      redirect_to @event
     else
       flash.now[:error] = "Error saving event: #{@event.errors.full_messages.join(". ")}"
       prepare_for_form
       render :new
     end
   end
+
+    def number_of_attendees_needed
+    if minimum_attendees?
+      diff = minimum_attendees - num_attending
+      if diff < 0
+        0
+      end
+    else
+      0
+    end
+  end
+
 
   protected
 

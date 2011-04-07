@@ -92,12 +92,39 @@ class Event < ActiveRecord::Base
   def num_attending
     rsvps.attending.size
   end
+  def num_attending_or_maybe
+    rsvps.attending.size + rsvps.maybe_attending.size
+  end
 
   def free?
     !paid?
   end
   def paid?
     cost? && cost > 0
+  end
+
+  def number_of_attendees_needed
+    if minimum_attendees?
+      diff = minimum_attendees - num_attending
+      if diff < 0
+        return 0
+      else
+        return diff
+      end
+    else
+      return 0
+    end
+  end
+
+  def number_of_spots_left
+    if maximum_attendees?
+      diff = maximum_attendees - num_attending
+      if diff < 0
+        return 0
+      else
+        return diff
+      end
+    end
   end
 
   def self.sql_interval_for_utc_offset
