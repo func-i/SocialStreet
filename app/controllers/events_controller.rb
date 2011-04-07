@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_filter :load_event_types
+  before_filter :load_event_types, :only => [:index]
   before_filter :require_permission, :only => [:edit, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update]
   before_filter :load_activity, :only => [:new] # for event created through activity stream
@@ -58,7 +58,6 @@ class EventsController < ApplicationController
     end
   end
 
-
   protected
 
   def require_permission
@@ -68,7 +67,7 @@ class EventsController < ApplicationController
   end
 
   def load_event_types
-    @event_types = EventType.order('name').all
+    @event_types ||= EventType.order('name').all
   end
 
   def load_activity

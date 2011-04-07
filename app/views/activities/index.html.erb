@@ -1,0 +1,23 @@
+<div class="block" id="block-lists">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to 'Events', :events %></li>
+      <li class="active"><a href="#">News Feed (<%= @activities.count %>)</a></li>
+      <li><a href="#block-forms">Comments</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title">News Feed</h2>
+    <div class="inner">
+      <ul class="list">
+        <% @activities.each do |activity| %>
+          <%= render activity %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+  side bar content here
+<% end %>
