@@ -96,6 +96,10 @@ class Event < ActiveRecord::Base
     rsvps.attending.size + rsvps.maybe_attending.size
   end
 
+  def num_administrators
+    rsvps.administrators.size
+  end
+
   def free?
     !paid?
   end

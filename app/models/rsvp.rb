@@ -5,6 +5,7 @@ class Rsvp < ActiveRecord::Base
     :maybe_attending => 'Maybe',
   }
   cattr_accessor :statuses
+  #attr_accessor :administrator
 
   belongs_to :user
   belongs_to :event
@@ -12,11 +13,13 @@ class Rsvp < ActiveRecord::Base
   has_many :activities, :as => :reference
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }
+  validates :administrator, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }
   scope :attending, where(:status => @@statuses[:attending])
   scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
+  scope :administrators, where('administrator IS NOT NULL AND administrator > 0')
 
   validate :validate_event_status
 
@@ -27,7 +30,7 @@ class Rsvp < ActiveRecord::Base
   end
 
   def available_statuses
-    if event.maximum_attendees
+    if event && event.maximum_attendees
       @@statuses.except(:maybe)
     else
       @@statuses

@@ -32,6 +32,12 @@ class EventsController < ApplicationController
     @event.user = current_user if current_user # TODO: remove if statement when enforced.
 
     if @event.save
+      rsvp = @event.rsvps.build(:user=>@event.user, :status => Rsvp.statuses[:attending], :administrator => 1)
+
+      if !rsvp.save
+        flash.now[:error] = "Error making adding user rsvp to the event"
+      end
+      
       redirect_to @event
     else
       flash.now[:error] = "Error saving event: #{@event.errors.full_messages.join(". ")}"
@@ -39,18 +45,6 @@ class EventsController < ApplicationController
       render :new
     end
   end
-
-    def number_of_attendees_needed
-    if minimum_attendees?
-      diff = minimum_attendees - num_attending
-      if diff < 0
-        0
-      end
-    else
-      0
-    end
-  end
-
 
   protected
 
