@@ -51,6 +51,9 @@ class User < ActiveRecord::Base
     facebook_profile_picture_url || twitter_profile_picture_url
   end
 
+  def editable_by?(user)
+    self == user
+  end
   
   def password_required?
     # The '&& super' part of the code was in the Railscast but raises an error:

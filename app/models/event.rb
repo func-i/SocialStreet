@@ -90,9 +90,16 @@ class Event < ActiveRecord::Base
   def num_attending
     rsvps.attending.size
   end
+  def attendees_rsvps_list
+    rsvps.attending
+  end
   def num_attending_or_maybe
     rsvps.attending_or_maybe_attending.size
   end
+  def attending_or_maybe_rsvps_list
+    rsvps.attending_or_maybe_attending
+  end
+
 
   def num_administrators
     rsvps.administrators.size

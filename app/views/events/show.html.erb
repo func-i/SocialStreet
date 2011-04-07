@@ -90,6 +90,9 @@
 
   <div class="block notice">
     <h4>Attending (<%= @event.num_attending %>)</h4>
+    <% @event.attendees_rsvps_list.each do |attendee_rsvp| %>
+          <%= render 'shared/user_list_element', :user => attendee_rsvp.user%>
+    <% end %>
   </div>
 
   <div class="clear"></div>

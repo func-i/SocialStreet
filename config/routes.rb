@@ -62,7 +62,7 @@ SocialStreet::Application.routes.draw do
     resources :comments, :only => [:create]
   end
 
-  resource :profile
+  resources :profiles
 
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
 
