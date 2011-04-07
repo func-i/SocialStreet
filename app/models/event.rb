@@ -143,6 +143,12 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def editable_by?(user)
+    rsvp = rsvps.by_user(user).first
+
+    user == self.user || (rsvp && rsvp.administrator?)
+  end
+
   protected
 
   def cache_lat_lng

@@ -37,10 +37,4 @@ class Rsvp < ActiveRecord::Base
       @@statuses
     end
   end
-
-  def administrator?
-    administrator
-  end
-
-
 end

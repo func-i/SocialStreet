@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
 
   before_filter :load_event_types
-  before_filter :authenticate_user!, :only => [:create]
+  before_filter :require_permission, :only => [:edit, :update]
+  before_filter :authenticate_user!, :only => [:create, :edit, :update]
 
   # FIND EVENT PAGE
   def index
@@ -20,6 +21,7 @@ class EventsController < ApplicationController
     @comment = @event.comments.build
   end
 
+  #EVENT CREATE/EDIT PAGES
   def new
     @event = Event.new
     @event.location ||= Location.new
@@ -30,7 +32,7 @@ class EventsController < ApplicationController
     @event = Event.new params[:event]
     @event.user = current_user if current_user # TODO: remove if statement when enforced.
 
-    if @event.save 
+    if @event.save
       redirect_to @event
     else
       prepare_for_form
@@ -38,7 +40,30 @@ class EventsController < ApplicationController
     end
   end
 
+  def edit
+    prepare_for_form
+    render :new
+  end
+
+  def update
+    @event.attributes = params[:event]
+    
+    if @event.save
+      redirect_to @event
+    else
+      prepare_for_form
+      render :new
+    end
+  end
+
+
   protected
+
+  def require_permission
+    @event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !@event.editable_by?(current_user)
+  end
 
   def load_event_types
     @event_types = EventType.order('name').all
