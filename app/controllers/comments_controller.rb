@@ -18,6 +18,7 @@ class CommentsController < ApplicationController
 
   def load_commentable_resource
     @commentable = Event.find params[:event_id].to_i if params[:event_id]
+    @commentable = Activity.find params[:activity_id].to_i if params[:activity_id]
   end
 
 end

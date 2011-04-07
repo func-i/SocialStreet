@@ -6,12 +6,33 @@
   <div style="float:left; width: 400px">
     <strong><%= title %></strong>
     <p>
-      <%= body %>
+      <%= simple_format body %>
     </p>
     <em><%= time_ago_in_words activity.occurred_at %> ago</em>
   </div>
-  <div style="float:left; width: 140px; height:100%;">
-    [+]
-  </div>
+  <% if false %>
+    <div style="float:left; width: 140px; height:100%;">
+      <% if allow_children %>
+        <%= link_to "[+]", '#', :class => "create-comment-link" %>
+      <% end %>
+    </div>
+  <% end %>
   <div class="clear"></div>
+  <% if allow_children %>
+  <%# TODO: Should paginate these perhaps ?  %>
+    <% activity.activities.oldest_first.all.each do |activity|  %>
+      <%= render 'shared/activity', :activity => activity %>
+    <% end  %>
+    <div class="activity-comment-container" style="margin-top:10px;margin-left:80px;">
+      <%= form_for [activity, Comment.new], :html => {:class => "form"} do |form| %>
+        <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:75%;float:left" %>
+
+        <button class="button" type="submit" style="float: left;display:inline-block; margin-left: 10px; margin-top: 4px;">
+          <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Comment
+        </button>
+      <div class="clear"></div>
+
+      <% end  %>
+    </div>
+  <% end %>
 </div>
