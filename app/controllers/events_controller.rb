@@ -3,6 +3,7 @@ class EventsController < ApplicationController
   before_filter :load_event_types
   before_filter :require_permission, :only => [:edit, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update]
+  before_filter :load_activity, :only => [:new] # for event created through activity stream
 
   # FIND EVENT PAGE
   def index
@@ -25,6 +26,7 @@ class EventsController < ApplicationController
   def new
     @event = Event.new
     @event.location ||= Location.new
+    @event.activity = @activity # nil if no @activity (which is desired)
     prepare_for_form
   end
 
@@ -67,6 +69,11 @@ class EventsController < ApplicationController
 
   def load_event_types
     @event_types = EventType.order('name').all
+  end
+
+  def load_activity
+    # TODO: Perhaps creation through activity should be a separate controller/resource:  "/activities/x/events/new"
+    @activity = Activity.find_by_id params[:activity_id].to_i if params[:activity_id]
   end
 
   def nav_state

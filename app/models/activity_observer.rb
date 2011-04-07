@@ -6,7 +6,8 @@ class ActivityObserver < ActiveRecord::Observer
 
     if record.is_a? Event
       record.activities.create :user => record.user,
-        :activity_type => Activity.types[:event_created]
+        :activity_type => Activity.types[:event_created],
+        :activity => record.activity
     elsif record.is_a?(Rsvp) && record.status == Rsvp.statuses[:attending]
       record.event.activities.create :user => record.user,
         :activity_type => Activity.types[:event_rsvp_attending],

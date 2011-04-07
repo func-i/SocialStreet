@@ -1,6 +1,9 @@
 <%= form.error_messages %>
 <div id="basic" class="tab-content">
   <h3>Basic Info</h3>
+
+  <%= form.hidden_field :activity_id %>
+
   <div class="group">
     <label class="label">What?</label>
     <%= form.select :event_type_id, options_from_collection_for_select(@event_types, :id, :name) %><br/>

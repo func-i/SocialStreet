@@ -6,6 +6,7 @@ class Event < ActiveRecord::Base
   belongs_to :user
   belongs_to :location
   belongs_to :event_type
+  belongs_to :activity # if created through an activity stream
   
   has_many :rsvps
   has_many :activities
