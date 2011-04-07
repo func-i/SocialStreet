@@ -94,7 +94,7 @@ class Event < ActiveRecord::Base
     rsvps.attending.size
   end
   def num_attending_or_maybe
-    rsvps.attending.size + rsvps.maybe_attending.size
+    rsvps.attending_or_maybe_attending.size
   end
 
   def num_administrators
@@ -141,6 +141,12 @@ class Event < ActiveRecord::Base
     else
       ""
     end
+  end
+
+  def editable_by?(user)
+    rsvp = rsvps.by_user(user).first
+
+    user == self.user || (rsvp && rsvp.administrator?)
   end
 
   protected
