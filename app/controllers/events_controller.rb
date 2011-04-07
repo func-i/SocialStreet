@@ -58,7 +58,6 @@ class EventsController < ApplicationController
     end
   end
 
-
   protected
 
   def require_permission

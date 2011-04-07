@@ -18,6 +18,7 @@ class Activity < ActiveRecord::Base
 
   scope :newest_first, order("activities.occurred_at DESC")
   scope :oldest_first, order("activities.occurred_at ASC")
+  scope :top_level, where(:activity_id => nil)
 
   before_create :set_occurred_at
 
