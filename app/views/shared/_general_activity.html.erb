@@ -1,9 +1,10 @@
+<% body ||= nil %>
 <div class="left">
   <%= link_to image_tag(url_for_image, :class => "avatar"), '#' %>
 </div>
 <div class="item">
   <div style="float:left; width: 400px">
-    <strong><%= title %></strong><br/>
+    <strong><%= title %></strong>
     <p>
       <%= body %>
     </p>

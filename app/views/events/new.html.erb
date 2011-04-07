@@ -11,6 +11,7 @@
     <h2 class="title">Create Event</h2>
     <div class="inner">
       <%= form_for @event, :html => {:class => "form"} do |form| %>
+
         <%= render form %>
         <%= render 'shared/form_submit_button' %>
       <% end %>

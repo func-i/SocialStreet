@@ -95,12 +95,12 @@ ActiveRecord::Schema.define(:version => 20110407130704) do
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
 
   create_table "rsvps", :force => true do |t|
-    t.integer  "event_id",      :null => false
-    t.integer  "user_id",       :null => false
+    t.integer  "event_id",                     :null => false
+    t.integer  "user_id",                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
-    t.integer  "administrator"
+    t.integer  "administrator", :default => 0
   end
 
   add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"

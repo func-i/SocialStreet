@@ -13,14 +13,17 @@ class Activity < ActiveRecord::Base
 
   scope :most_recent_first, order("activities.occurred_at DESC")
 
-  default_value_for :occurred_at do
-    Time.zone.now
-  end
+  before_create :set_occurred_at
 
 
   def of_type?(type)
     activity_type == Activity.types[type]
   end
 
+  protected
+
+  def set_occurred_at
+    self.occurred_at = Time.zone.now
+  end
 
 end

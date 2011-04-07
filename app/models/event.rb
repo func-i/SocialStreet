@@ -14,6 +14,7 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :location
 
   before_save :cache_lat_lng
+  before_create :build_initial_rsvp
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
@@ -160,6 +161,10 @@ class Event < ActiveRecord::Base
     if minimum_attendees? && maximum_attendees? && maximum_attendees < minimum_attendees
       errors.add :maximum_attendees, 'must be greater than or equal to the minimum'
     end
+  end
+
+  def build_initial_rsvp
+    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
   end
   
 end

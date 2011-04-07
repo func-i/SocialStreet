@@ -27,20 +27,12 @@ class EventsController < ApplicationController
   end
 
   def create
-
     @event = Event.new params[:event]
     @event.user = current_user if current_user # TODO: remove if statement when enforced.
 
-    if @event.save
-      rsvp = @event.rsvps.build(:user=>@event.user, :status => Rsvp.statuses[:attending], :administrator => 1)
-
-      if !rsvp.save
-        flash.now[:error] = "Error making adding user rsvp to the event"
-      end
-      
+    if @event.save 
       redirect_to @event
     else
-      flash.now[:error] = "Error saving event: #{@event.errors.full_messages.join(". ")}"
       prepare_for_form
       render :new
     end
