@@ -37,10 +37,10 @@ class User < ActiveRecord::Base
   end
 
   def name
-    if username?
-      username
-    elsif first_name? || last_name?
+    if first_name? || last_name?
       "#{first_name} #{last_name}"
+    elsif username?
+      username
     else
       "Sir/Madam" # for now, should have more conditions before this
     end

@@ -1,8 +1,12 @@
-<div class="block">
-  <div class="content">
-    <h2 class="title"></h2>
-    <div class="inner">
-      <%=@user.first_name%>
-    </div>
+<% content_for :sidebar do %>
+  <div class="block notice">
+    <%= link_to image_tag(@user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
+    <br>
+
+    <center><b><%= @user.name %></b></center>
+
+    <div class="clear"></div>
   </div>
-</div>
+
+<% end %>
+

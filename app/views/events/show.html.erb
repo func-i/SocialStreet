@@ -86,6 +86,9 @@
 
   <div class="block notice">
     <h4>Organizers (<%= @event.num_administrators %>)</h4>
+    <% @event.administrators_rsvps_list.each do |administrator_rsvp| %>
+      <%= render 'shared/user_list_element', :user => administrator_rsvp.user%>
+    <% end %>
   </div>
 
   <div class="block notice">
