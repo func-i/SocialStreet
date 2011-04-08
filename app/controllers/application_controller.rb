@@ -14,12 +14,17 @@ class ApplicationController < ActionController::Base
     if session[:stored_request]
       return_path = session[:stored_request][:fullpath]
       #stored_method = session[:stored_request][:method]
-      stored_controller = session[:stored_request][:parameters] [:controller]
-      stored_action = session[:stored_request][:parameters] [:action]
+      stored_controller = session[:stored_request][:params] [:controller]
+      stored_action = session[:stored_request][:params][:action]
 
       #Add any controller/action specific logic here
       if stored_controller == 'events' && stored_action == 'create'
-        #return_path = create_event session[:stored_request][:parameters]
+        if create_or_edit_event(session[:stored_request][:params], :create)
+          return_path =  @event
+        else
+          return_path = new_event_path(@event)
+          #TODO - This does not display the saved data or errors, but just shows an empty form
+        end
       end
 
       #Clear the session
@@ -53,4 +58,15 @@ class ApplicationController < ActionController::Base
     # overwritten by controllers
   end
 
+  def create_or_edit_event(params, action)
+    if action == :create
+      #Create the event
+      @event = Event.new
+      @event.user = current_user if current_user # TODO: remove if statement when enforced.
+    end
+    
+    @event.attributes = params[:event]
+
+    return @event.save
+  end
 end

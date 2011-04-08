@@ -31,10 +31,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new params[:event]
-    @event.user = current_user if current_user # TODO: remove if statement when enforced.
-
-    if @event.save
+    if create_or_edit_event(params, :create)
       redirect_to @event
     else
       prepare_for_form
@@ -48,9 +45,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    @event.attributes = params[:event]
-    
-    if @event.save
+    if create_or_edit_event(params, :edit)
       redirect_to @event
     else
       prepare_for_form

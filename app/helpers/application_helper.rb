@@ -21,5 +21,4 @@ module ApplicationHelper
       'web-app-theme/avatar.png'
     end
   end
-
 end
