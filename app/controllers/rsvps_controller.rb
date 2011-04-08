@@ -2,12 +2,17 @@
 
 class RsvpsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_and_redirect!
   before_filter :require_event
-  before_filter :require_rsvp, :except => [:new, :create]
+  before_filter :require_rsvp, :except => [:create]
 
   def new
-    @rsvp = @event.rsvps.build
+    if @rsvp
+      render :edit
+    else
+      @rsvp = @event.rsvps.build
+    end
+
   end
 
   def edit
@@ -41,6 +46,8 @@ class RsvpsController < ApplicationController
   end
 
   def require_rsvp
-    @rsvp = @event.rsvps.by_user(current_user).find params[:id].to_i
+    @rsvp = @event.rsvps.by_user(current_user).first if current_user
+    #Khurram: Please verify that I can change this line to the above
+    #@rsvp = @event.rsvps.by_user(current_user).find params[:id].to_i
   end
 end

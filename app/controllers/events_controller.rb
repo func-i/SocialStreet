@@ -2,7 +2,7 @@ class EventsController < ApplicationController
 
   before_filter :load_event_types, :only => [:index]
   before_filter :require_permission, :only => [:edit, :update]
-  before_filter :authenticate_user!, :only => [:create, :edit, :update]
+  before_filter :authenticate_user_and_redirect!, :only => [:create, :edit, :update]
   before_filter :load_activity, :only => [:new] # for event created through activity stream
 
   # FIND EVENT PAGE
