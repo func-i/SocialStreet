@@ -1,8 +1,8 @@
 # RSVPs for the currently logged in user, for a given Event (by :event_id)
 
 class RsvpsController < ApplicationController
-
-  before_filter :authenticate_user_and_redirect!
+  before_filter :store_current_path, :only => [:new, :edit]
+  before_filter :authenticate_user!
   before_filter :require_event
   before_filter :require_rsvp, :except => [:create]
 

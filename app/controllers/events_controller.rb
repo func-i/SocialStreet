@@ -2,7 +2,9 @@ class EventsController < ApplicationController
 
   before_filter :load_event_types, :only => [:index]
   before_filter :require_permission, :only => [:edit, :update]
-  before_filter :authenticate_user_and_redirect!, :only => [:create, :edit, :update]
+  before_filter :store_current_path, :only => [:index, :show, :new, :edit]
+  before_filter :store_event_create, :only => [:create, :update]
+  before_filter :authenticate_user!, :only => [:create, :edit, :update]
   before_filter :load_activity, :only => [:new] # for event created through activity stream
 
   # FIND EVENT PAGE
@@ -54,6 +56,10 @@ class EventsController < ApplicationController
   end
 
   protected
+
+  def store_event_create
+    store_redirect(:controller => 'events', :action => 'create', :params => params)
+  end
 
   def require_permission
     @event = Event.find params[:id]
