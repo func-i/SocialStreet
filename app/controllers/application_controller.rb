@@ -16,8 +16,14 @@ class ApplicationController < ActionController::Base
 #  end
 
   def store_current_path
-    store_redirect(:path => request.fullpath)
+    session[:stored_previous_path] = session[:stored_current_path]
+    session[:stored_current_path] = request.fullpath
   end
+
+  def stored_path
+    session[:stored_current_path]
+  end
+
 
   def store_redirect(options = {})
     session[:stored_redirect] = Hash.new if !session[:stored_redirect]
@@ -50,12 +56,12 @@ class ApplicationController < ActionController::Base
         end
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
         if create_comment(session[:stored_redirect][:params])
-          return_path = session[:stored_redirect][:path]
+          return_path = session[:stored_current_path]
         else
           raise 'shit, what happened'
         end
       else
-        return_path = session[:stored_redirect][:path]
+        return_path = session[:stored_current_path]
       end
 
       clear_redirect

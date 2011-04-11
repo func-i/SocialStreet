@@ -4,16 +4,22 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!, :only => [:create]
 
   def create
-#
-#    @comment = @commentable.comments.build params[:comment]
-#    @comment.user = current_user
-#
-#    if @comment.save
-#      puts "REDIRECTING!!!!"
-#      redirect_to :back, :notice => "Comment added"
-#    else
-#      raise "shit, what now?"
-#    end
+    if create_comment(session[:stored_redirect][:params])
+      redirect_to stored_path
+    else
+      raise 'shit, what happened'
+    end
+
+    #
+    #    @comment = @commentable.comments.build params[:comment]
+    #    @comment.user = current_user
+    #
+    #    if @comment.save
+    #      puts "REDIRECTING!!!!"
+    #      redirect_to :back, :notice => "Comment added"
+    #    else
+    #      raise "shit, what now?"
+    #    end
   end
 
   protected
