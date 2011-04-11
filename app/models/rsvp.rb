@@ -1,11 +1,12 @@
 class Rsvp < ActiveRecord::Base
+  before_save :set_is_waiting
+
   @@statuses = {
     :attending => 'Attending',
     :not_attending => 'Not Attending',
     :maybe_attending => 'Maybe',
   }
   cattr_accessor :statuses
-  #attr_accessor :administrator
 
   belongs_to :user
   belongs_to :event
@@ -13,16 +14,29 @@ class Rsvp < ActiveRecord::Base
   has_many :activities, :as => :reference
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }
- # validates :administrator, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
+  validate :validate_event_status
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }
-  scope :attending, where(:status => @@statuses[:attending])
+  scope :attending, where(:status => @@statuses[:attending], :isWaiting => false)
+  scope :waiting, where(:status => @@statuses[:attending], :isWaiting => true)
   scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
   scope :attending_or_maybe_attending, where("status IN (?)", @@statuses.except(:not_attending).values)
-  scope :administrators, where('administrator IS NOT NULL AND administrator IS TRUE')
+  scope :administrators, where(:administrator => true)
 
-  validate :validate_event_status
+  default_value_for :administrator, false
+  default_value_for :isWaiting, false
+
+
+  def available_statuses
+    if event && event.maximum_attendees
+      return @@statuses.except(:maybe_attending)
+    else
+      return @@statuses
+    end
+  end
+
+  protected
 
   def validate_event_status
     if !available_statuses.has_value?(self.status)
@@ -30,11 +44,15 @@ class Rsvp < ActiveRecord::Base
     end
   end
 
-  def available_statuses
-    if event && event.maximum_attendees
-      @@statuses.except(:maybe)
-    else
-      @@statuses
+  def set_is_waiting
+    self.isWaiting = false
+
+    if status == @@statuses[:attending]
+      spots_left = event.number_of_spots_left
+      if spots_left && spots_left == 0
+        self.isWaiting = true
+      end
     end
+
   end
 end

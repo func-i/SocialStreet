@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110407165059) do
+ActiveRecord::Schema.define(:version => 20110411161534) do
 
   create_table "activities", :force => true do |t|
     t.integer  "event_id"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(:version => 20110407165059) do
     t.datetime "updated_at"
     t.string   "status"
     t.boolean  "administrator", :default => false
+    t.boolean  "isWaiting"
   end
 
   add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"

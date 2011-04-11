@@ -93,10 +93,24 @@ class Event < ActiveRecord::Base
   def attendees_rsvps_list
     rsvps.attending
   end
-  def num_attending_or_maybe
+  def num_waiting
+    rsvps.waiting.size
+  end
+  def waitees_rsvps_list
+    rsvps.waiting
+  end
+
+  def num_maybe_attending
+    rsvps.maybe_attending.size
+  end
+  def maybe_attendees_rsvps_list
+    rsvps.maybe_attending
+  end
+
+  def num_attending_or_maybe_attending
     rsvps.attending_or_maybe_attending.size
   end
-  def attending_or_maybe_rsvps_list
+  def attending_or_maybe_attendees_rsvps_list
     rsvps.attending_or_maybe_attending
   end
 

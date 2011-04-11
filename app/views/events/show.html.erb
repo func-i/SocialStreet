@@ -9,6 +9,11 @@
 
     <div class="inner">
       <h2 class="title"><%= @event.name %></h2>
+      <em><%= display_date_time(@event.starts_at) %></em>
+      <% if @event.finishes_at? %>
+        <em>until <%= display_date_time(@event.finishes_at) %></em>
+      <% end %>
+      <br/>
 
       <p><%= @event.description %></p>
     </div>
@@ -96,6 +101,16 @@
     <% @event.attendees_rsvps_list.each do |attendee_rsvp| %>
           <%= render 'shared/user_list_element', :user => attendee_rsvp.user%>
     <% end %>
+  </div>
+
+  <div class ="block notice">
+    <h4>
+    <%if @event.maximum_attendees%>
+      Waiting (<%= @event.num_waiting%>)
+    <%else%>
+      Maybe (<%= @event.num_maybe_attending%>)
+    <%end%>
+    </h4>
   </div>
 
   <div class="clear"></div>
