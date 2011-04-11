@@ -1,10 +1,10 @@
 class EventsController < ApplicationController
 
   before_filter :load_event_types, :only => [:index]
-  before_filter :require_permission, :only => [:edit, :update]
   before_filter :store_current_path, :only => [:index, :show, :new, :edit]
   before_filter :store_event_create, :only => [:create, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update]
+  before_filter :require_permission, :only => [:edit, :update]
   before_filter :load_activity, :only => [:new] # for event created through activity stream
 
   # FIND EVENT PAGE
@@ -26,9 +26,14 @@ class EventsController < ApplicationController
 
   #EVENT CREATE/EDIT PAGES
   def new
-    @event = Event.new
-    @event.location ||= Location.new
-    @event.activity = @activity # nil if no @activity (which is desired)
+    if session[:saved_created_event]
+      @event = session[:saved_created_event]
+    else
+      @event = Event.new
+      @event.location ||= Location.new
+      @event.activity = @activity # nil if no @activity (which is desired)
+    end
+    
     prepare_for_form
   end
 

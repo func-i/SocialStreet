@@ -45,7 +45,8 @@ class ApplicationController < ActionController::Base
         if create_or_edit_event(session[:stored_redirect][:params], :create)
           return_path = @event
         else
-          return_path = new_event_path(@event)
+          session[:saved_created_event] = @event
+          return_path = new_event_path
           # TODO - This should render the create event page with the already defined event information inside the form, but currently shows empty form
         end
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
