@@ -24,8 +24,14 @@
         <strong><%= number_to_currency(event.cost / 100) %></strong>
       <% end %>
       <br/>
-      <button class="button" style="margin: auto auto">Quick Attend</button></center>
+      <% if current_user && (rsvp = event.rsvps.by_user(current_user).first) %>
+        <%= link_to "#{rsvp.status}", [:edit, event, rsvp], :class => "button" %>
+      <%else%>
+        <%= link_to 'Quick Join', [:new, event, :rsvp], :class => "button" %>
+      <%end%>
+
       <br/><br/>
+      
       <em>X</em> Connections <br/>
       <em>
         <b><%=event.num_attending_or_maybe_attending%></b><%if event.maximum_attendees%>/<%=event.maximum_attendees%><%end%>
