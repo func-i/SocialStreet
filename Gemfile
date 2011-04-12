@@ -15,6 +15,8 @@ gem 'geocoder'
 gem "default_value_for"
 gem 'dynamic_form', :git => "git://github.com/joelmoss/dynamic_form.git"
 
+gem "meta_where"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

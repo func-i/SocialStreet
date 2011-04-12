@@ -38,6 +38,9 @@
       <%= label_tag 'to_date', 'To', :class => "label" %>
       <%= text_field_tag 'to_date', params[:to_date], :class => "text_field" %>
 
+      <%= label_tag 'date_range_inclusive', 'Inclusive?', :class => "label" %>
+      <%= check_box_tag 'inclusive', '1', (params[:inclusive] ? params[:inclusive] : 1) %>
+
       <%= label_tag 'days', 'Days of the Week', :class => "label" %>
       <div style="margin-bottom:10px">
         <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
