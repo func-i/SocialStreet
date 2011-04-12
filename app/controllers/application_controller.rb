@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
       @event = Event.new
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
     end
-    
+
     @event.attributes = params[:event]
 
     return @event.save

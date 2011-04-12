@@ -1,7 +1,5 @@
 <%= form.error_messages %>
 <div id="basic" class="tab-content">
-  <h3>Basic Info</h3>
-
   <%= form.hidden_field :activity_id %>
 
   <div class="group">
@@ -23,18 +21,18 @@
     <%= form.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
     <br/>
     <span class="description">Start Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+    <div class="group" id="EndDateTime" style="display:none">
+      <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+      <%= form.hidden_field :exclude_end_date, :id => 'exclude_end_date', :value=>'1'%>
+      <br/>
+      <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+    </div>
+    <br/>
+    <%=link_to_function "Add End Date & Time", "$('#EndDateTime').toggle(); $('#exclude_end_date').val(0)" %>
   </div>
 </div>
 
 <div id="details" style="display:none" class="tab-content">
-  <h3>Event Details</h3>
-  <div class="group">
-    <label class="label" for="post_title">Ends at?</label>
-    <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
-    <br/>
-    <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
-  </div>
-
   <div class="group">
     <label class="label">Title</label>
     <%= form.text_field :name, :rows => 10, :cols => 80, :class => "text_field" %>
@@ -47,10 +45,9 @@
     <%= form.text_area :description, :rows => 10, :cols => 80, :class => "text_area" %>
     <span class="description">Describe your event</span>
   </div>
-</div>
+</div
 
 <div id="attendees" style="display:none" class="tab-content">
-  <h3>Attendee Options</h3>
   <div class="group">
     <label class="label" for="post_title">Minimum Attendees</label>
     <%= form.text_field :minimum_attendees, :class => "text_field"  %>
@@ -73,8 +70,6 @@
 </div>
 
 <div id="cost" style="display:none" class="tab-content">
-  <h3>Cost</h3>
-
   <div class="group">
     <label class="label">Cost (in Dollars)</label>
     <%= form.text_field :cost_in_dollars, :class => "text_field"  %>

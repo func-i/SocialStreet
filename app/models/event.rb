@@ -14,6 +14,8 @@ class Event < ActiveRecord::Base
   
   accepts_nested_attributes_for :location
 
+  attr_accessor :exclude_end_date
+
   before_save :cache_lat_lng
   before_validation :set_default_title
   before_create :build_initial_rsvp
@@ -56,18 +58,6 @@ class Event < ActiveRecord::Base
     interval = sql_interval_for_utc_offset
     where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?)", days)
   }
-#  scope :on_days_or_in_date_range, lambda {|days, from_date, to_date|
-#    queries = [] # the date range queries are inside an OR so we build them like this - Don't know of a better way (yet) - KV
-#    if from_date && from_date = Time.zone.parse(from_date)
-#      queries << "events.starts_at >= '#{from_date.beginning_of_day.to_s(:db)}'"
-#    end
-#    if to_date && to_date = Time.zone.parse(to_date)
-#      queries << "events.starts_at <= '#{to_date.end_of_day.to_s(:db)}'"
-#    end
-#    date_query = "OR (#{queries.join(" AND ")})" unless queries.blank? # Don't want "OR ()" showing up in there (SQL Error)
-#    interval = sql_interval_for_utc_offset
-#    where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?) #{date_query}", days)
-#  }
   scope :on_days_or_in_date_range, lambda {|days, from_date, to_date, inclusive|
     if from_date && to_date && (from_date = Time.zone.parse(from_date)) && (to_date = Time.zone.parse(to_date))
       from_date = from_date.beginning_of_day
@@ -93,27 +83,22 @@ class Event < ActiveRecord::Base
       where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?)", days)
     end
   }
-#  scope :on_days_or_in_date_range, lambda {|days, from_date, to_date, inclusive|
-#    query = nil
-#    if days
-#      interval = sql_interval_for_utc_offset
-#      query = "EXTRACT(DOW FROM event.start_at#{interval}) IN (?)"
-#    end
-#    if from_date && to_date
-#      from_date = Time.zone.parse(from_date) if from_date
-#      to_date = Time.zone.parse(to_date) if to_date
-#      if inclusive
-#        where('events.starts_at BETWEEN ? AND ?', from_date.beginning_of_day, to_date.end_of_day)
-#      else
-#        where('events.starts_at NOT BETWEEN ? AND ?', from_date.beginning_of_day, to_date.end_of_day)
-#    end
-#  }
-
 
   # Expects type IDs, not EventType objects
   scope :of_type, lambda {|type_ids|
     where(:event_type_id => type_ids)
   }
+
+  def exclude_end_date
+    finishes_at ? 0 : 1
+  end
+
+  def exclude_end_date=(exclude_end_date_val)
+    if exclude_end_date_val != 0
+      self.finishes_at = nil
+      #TODO - Why doesn't this work?
+    end
+  end
 
   def location_address
     location.geocodable_address if location
@@ -227,7 +212,6 @@ class Event < ActiveRecord::Base
       self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
     end
   end
-
 
   def valid_dates
     if finishes_at?
