@@ -2,7 +2,7 @@
 # and open the template in the editor.
 
 class ProfilesController < ApplicationController
-  before_filter :store_current_path, :only => [:edit]
+  before_filter :store_current_path, :only => [:show, :edit]
   before_filter :authenticate_user!, :only => [:edit, :update]
   before_filter :require_user
   before_filter :require_permission, :only => [:edit, :update]
@@ -12,6 +12,7 @@ class ProfilesController < ApplicationController
   end
   
   def edit
+    @authentications = @user.authentications
   end
 
   def update
