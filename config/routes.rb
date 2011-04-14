@@ -58,11 +58,14 @@ SocialStreet::Application.routes.draw do
   end
 
   resources :authentications
+
   resources :activities do
     resources :comments, :only => [:create]
   end
 
-  resources :profiles
+  resources :profiles do
+    resources :comments
+  end
 
   resources :friendships
 

@@ -4,6 +4,7 @@ class Activity < ActiveRecord::Base
     :event_created => 'Event Created',
     :event_rsvp_attending => 'Event RSVP Attending',
     :event_comment => 'Event Comment',
+    :profile_comment => 'Profile Comment',
     :activity_comment => 'Activity Comment'
   }.freeze
   cattr_accessor :types

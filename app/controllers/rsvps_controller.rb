@@ -12,7 +12,6 @@ class RsvpsController < ApplicationController
     else
       @rsvp = @event.rsvps.build
     end
-
   end
 
   def edit

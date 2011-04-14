@@ -17,6 +17,7 @@ class Event < ActiveRecord::Base
   attr_accessor :exclude_end_date
 
   before_save :cache_lat_lng
+
   before_validation :set_default_title
   before_create :build_initial_rsvp
 
