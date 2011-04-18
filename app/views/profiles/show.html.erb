@@ -31,13 +31,13 @@
     <br/>
     <center><b><%= @user.name %></b></center>
 
-    <%if friendship = current_user.friendships.by_friend(@user).first %>
-      <%= link_to "Stop Following", friendship, :method => :delete %>
-    <%elsif @user != current_user%>
-      <%= link_to "Follow", friendships_path(:friend_id => @user), :method => :post %>
-    <%end%>
-    <div class="clear"></div>
-  </div>
+    <%#if friendship = current_user.friendships.by_friend(@user).first %>
+      <%#= link_to "Stop Following", friendship, :method => :delete %>
+    <%#elsif @user != current_user%>
+      <%#= link_to "Follow", friendships_path(:friend_id => @user), :method => :post %>
+    <%#end%>
+    <%#*<div class="clear"></div>%>
+  <%#*</div>%>
 
 <% end %>
 
