@@ -21,6 +21,11 @@ class Activity < ActiveRecord::Base
   scope :oldest_first, order("activities.occurred_at ASC")
   scope :top_level, where(:activity_id => nil)
 
+  # Expects type IDs, not EventType objects
+  scope :of_type, lambda {|type_ids|
+    where("events.event_type_id IN (?)", type_ids).includes(:event)
+  }
+
   before_create :set_occurred_at
 
 

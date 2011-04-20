@@ -69,6 +69,8 @@ SocialStreet::Application.routes.draw do
 
   resources :friendships
 
+  resources :search_filters
+
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
 
   match '/auth/:provider/callback' => 'authentications#create'

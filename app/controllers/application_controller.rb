@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
         if create_or_edit_event(session[:stored_redirect][:params], :create)
           return_path = @event
         else
-          session[:saved_created_event] = @event
+          session[:stored_params] = session[:stored_redirect][:params][:event]
           return_path = new_event_path
         end
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'

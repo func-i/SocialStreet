@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412225853) do
+ActiveRecord::Schema.define(:version => 20110420161647) do
 
   create_table "activities", :force => true do |t|
     t.integer  "event_id"
@@ -112,11 +112,33 @@ ActiveRecord::Schema.define(:version => 20110412225853) do
     t.datetime "updated_at"
     t.string   "status"
     t.boolean  "administrator", :default => false
-    t.boolean  "isWaiting"
+    t.boolean  "waiting"
   end
 
   add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"
   add_index "rsvps", ["user_id"], :name => "index_rsvps_on_user_id"
+
+  create_table "search_filters", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "location"
+    t.integer  "radius"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.boolean  "inclusive"
+    t.integer  "from_time"
+    t.integer  "to_time"
+    t.boolean  "day_0"
+    t.boolean  "day_1"
+    t.boolean  "day_2"
+    t.boolean  "day_3"
+    t.boolean  "day_4"
+    t.boolean  "day_5"
+    t.boolean  "day_6"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "search_filters", ["user_id"], :name => "index_search_filters_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                       :default => "", :null => false

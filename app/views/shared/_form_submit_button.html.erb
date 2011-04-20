@@ -2,7 +2,5 @@
   <button class="button" type="submit">
     <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Save
   </button>
-  <a href="#header" class="button">
-    <img src="/images/web-app-theme/icons/cross.png" alt="Cancel"/> Cancel
-  </a>
+  <%= link_to(image_tag('web-app-theme/icons/cross.png', :alt => "Cancel") + " Cancel", :back, :class => "button") %>
 </div>

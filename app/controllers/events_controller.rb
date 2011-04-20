@@ -26,12 +26,13 @@ class EventsController < ApplicationController
 
   #EVENT CREATE/EDIT PAGES
   def new
-    if session[:saved_created_event]
-      @event = session[:saved_created_event]
-    else
-      @event = Event.new
-      @event.location ||= Location.new
-      @event.activity = @activity # nil if no @activity (which is desired)
+    @event = Event.new
+    @event.location ||= Location.new
+    @event.activity = @activity # nil if no @activity (which is desired)
+    if session[:stored_params]
+      @event.attributes = session[:stored_params] # event params
+      @event.valid?
+      session[:stored_params] = nil
     end
     
     prepare_for_form

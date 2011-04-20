@@ -22,7 +22,7 @@ class RsvpsController < ApplicationController
     @rsvp.attributes = params[:rsvp]
     @rsvp.user = current_user
     if @rsvp.save
-      redirect_to @event, :notice => "You have successfully updated your RSVP for '#{@event.name}' to '#{@rsvp.status}'" + (@rsvp.isWaiting ? '. You are on the waiting list' : '')
+      redirect_to @event, :notice => "You have successfully updated your RSVP for '#{@event.name}' to '#{@rsvp.status}'" + (@rsvp.waiting? ? '. You are on the waiting list' : '')
     else
       render :new
     end
@@ -32,7 +32,7 @@ class RsvpsController < ApplicationController
     @rsvp = @event.rsvps.build(params[:rsvp])
     @rsvp.user = current_user
     if @rsvp.save
-      redirect_to @event, :notice => "You have successfully RSVP'd to '#{@event.name}' as '#{@rsvp.status}'" + (@rsvp.isWaiting ? '. You are on the waiting list' : '')
+      redirect_to @event, :notice => "You have successfully RSVP'd to '#{@event.name}' as '#{@rsvp.status}'" + (@rsvp.waiting? ? '. You are on the waiting list' : '')
     else
       render :new
     end

@@ -18,14 +18,14 @@ class Rsvp < ActiveRecord::Base
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }
-  scope :attending, where(:status => @@statuses[:attending], :isWaiting => false)
-  scope :waiting, where(:status => @@statuses[:attending], :isWaiting => true)
+  scope :attending, where(:status => @@statuses[:attending], :waiting => false)
+  scope :waiting, where(:status => @@statuses[:attending], :waiting => true)
   scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
   scope :attending_or_maybe_attending, where("status IN (?)", @@statuses.except(:not_attending).values)
   scope :administrators, where(:administrator => true)
 
   default_value_for :administrator, false
-  default_value_for :isWaiting, false
+  default_value_for :waiting, false
 
 
   def available_statuses
@@ -45,12 +45,12 @@ class Rsvp < ActiveRecord::Base
   end
 
   def set_is_waiting
-    self.isWaiting = false
+    self.waiting = false
 
     if status == @@statuses[:attending]
       spots_left = event.number_of_spots_left
       if spots_left && spots_left == 0
-        self.isWaiting = true
+        self.waiting = true
       end
     end
 
