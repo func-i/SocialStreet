@@ -73,11 +73,7 @@ class Event < ActiveRecord::Base
           where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?) AND (events.starts_at NOT BETWEEN ? AND ?)", days, from_date, to_date)
         end
       else
-        if inclusive
-          where('events.starts_at BETWEEN ? AND ?', from_date, to_date)
-        else
-          where('events.starts_at NOT BETWEEN ? AND ?', from_date, to_date)
-        end
+        where("events.starts_at #{ 'NOT' if !inclusive } BETWEEN ? AND ?", from_date, to_date)
       end
     elsif !days.blank?
       interval = sql_interval_for_utc_offset

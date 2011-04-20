@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
 #  end
 
   def store_current_path
-    session[:stored_previous_path] = session[:stored_current_path]
     session[:stored_current_path] = request.fullpath
   end
 
