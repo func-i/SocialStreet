@@ -2,33 +2,48 @@
 <div id="basic" class="tab-content">
   <%= form.hidden_field :activity_id %>
 
-  <div class="group">
-    <label class="label">What?</label>
-    <%= form.collection_select :event_type_id, @event_types, :id, :name %><br/>
-    <span class="description">Event type dropdown.</span>
-  </div>
-  <div class="group">
+  <%= form.fields_for :searchable do |searchable_fields| %>
+    <%= searchable_fields.fields_for :searchable_event_types do |event_type_fields| %>
+      <div class="group">
+        <label class="label">What?</label>
+        <%= event_type_fields.collection_select :event_type_id, @event_types, :id, :name %><br/>
+        <span class="description">Event type dropdown.</span>
+      </div>
+    <% end %>
+  <% end %>
 
+  <div class="group">
     <label class="label" for="post_title">Where?</label>
 
-    <%= form.fields_for :location do |location_fields| %>
-      <%= location_fields.text_field :text , :class => "text_field" %>
+    <%= form.fields_for :searchable do |searchable_fields| %>
+      <%= searchable_fields.fields_for :location do |location_fields| %>
+        <%= location_fields.text_field :text , :class => "text_field" %>
+      <% end %>
     <% end %>
+
     <span class="description">Ideally a geocodeable location</span>
   </div>
   <div class="group">
-    <label class="label" for="post_title">When?</label>
-    <%= form.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
-    <br/>
-    <span class="description">Start Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
-    <div class="group" id="EndDateTime" style="display:none">
-      <%= form.datetime_select :finishes_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
-      <%= form.hidden_field :exclude_end_date, :id => 'exclude_end_date', :value=>'1'%>
-      <br/>
-      <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
-    </div>
-    <br/>
-    <%=link_to_function "Add End Date & Time", "$('#EndDateTime').toggle(); $('#exclude_end_date').val(0)" %>
+    <%= form.fields_for :searchable do |searchable_fields| %>
+      <%= searchable_fields.fields_for :searchable_date_ranges do |date_range_fields| %>
+        <label class="label" for="post_title">When?</label>
+        <%= date_range_fields.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+        <br/>
+        <span class="description">Start Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+
+        <div class="group" id="EndDateTime" style="display:none">
+          <%= date_range_fields.datetime_select :ends_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+    <%#= form.hidden_field :exclude_end_date, :id => 'exclude_end_date', :value=>'1'%>
+          <br/>
+          <span class="description">End Date and time (Timezone: <%= Time.zone.now.zone %>)</span>
+        </div>
+        <br/>
+        <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle(); $('#exclude_end_date').val(0)" %>
+
+      <% end %>
+    <% end %>
+
+
   </div>
 </div>
 

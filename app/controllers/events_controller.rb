@@ -13,7 +13,7 @@ class EventsController < ApplicationController
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
     # Use the query params to find events (ideally this should be ONE SQL query with pagination)
-    find_events
+    find_searchables
   end
 
   # EVENT DETAIL PAGE
@@ -27,7 +27,10 @@ class EventsController < ApplicationController
   #EVENT CREATE/EDIT PAGES
   def new
     @event = Event.new
-    @event.location ||= Location.new
+    @event.searchable ||= Searchable.new
+    @event.searchable.location ||= Location.new
+    @event.searchable.searchable_date_ranges.build
+    @event.searchable.searchable_event_types.build
     @event.activity = @activity # nil if no @activity (which is desired)
     if session[:stored_params]
       @event.attributes = session[:stored_params] # event params
@@ -94,21 +97,29 @@ class EventsController < ApplicationController
     load_event_types
   end
 
-  def find_events
-    @events = Event
+  def find_searchables
+    @searchables = Searchable
 
     radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
-    @events = @events.near(params[:location], radius, :order => "distance") unless params[:location].blank?
-    @events = @events.of_type(params[:types]) unless params[:types].blank?
+    @searchables = @searchables.of_type(params[:types]) unless params[:types].blank?
 
-    @events = @events.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
+    @searchables = @searchables.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 
     # to_time and from_time are in integer (minute) format. 1439 = 11:59 PM (the day has 1440 minutes) - KV
-    @events = @events.at_or_after_time_of_day(params[:from_time]) unless params[:from_time].blank?
-    @events = @events.at_or_before_time_of_day(params[:to_time]) unless params[:to_time].blank?
-
-    @events = @events.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+    @searchables = @searchables.at_or_after_time_of_day(params[:from_time]) unless params[:from_time].blank?
+    @searchables = @searchables.at_or_before_time_of_day(params[:to_time]) unless params[:to_time].blank?
+    
+    # GEO LOCATION SEARCHING
+    unless params[:location].blank?
+      group_by = Searchable.columns.map { |c| "searchables.#{c.name}" }.join(',')
+      group_by += ',' + SearchableEventType.columns.map { |c| "searchable_event_types.#{c.name}" }.join(',') unless params[:types].blank?
+      group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',') if params[:days] || params[:from_day] || params[:to_day] || params[:to_time] || params[:from_time]
+      @searchables = @searchables.near(params[:location], radius).group(group_by)
+    end
+    
+    @searchables = @searchables.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+    
   end
 
 end

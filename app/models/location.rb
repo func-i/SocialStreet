@@ -3,7 +3,7 @@ class Location < ActiveRecord::Base
   geocoded_by :geocodable_address
   after_validation :geocode, :if => :geocodable_address_changed?
 
-  has_many :events
+  has_many :searchables
 
   validates :text,    :length => { :maximum => 200 }
   validates :text,    :presence => true, :unless => :has_geocodable_address?

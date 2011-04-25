@@ -10,7 +10,7 @@
     <div class="inner">
       <h2 class="title"><%= @event.name %></h2>
       <em><%= display_date_time(@event.starts_at) %></em>
-      <% if @event.finishes_at? %>
+      <% if @event.finishes_at %>
         <em>until <%= display_date_time(@event.finishes_at) %></em>
       <% end %>
       <br/>

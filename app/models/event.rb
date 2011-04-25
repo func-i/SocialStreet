@@ -1,10 +1,9 @@
 class Event < ActiveRecord::Base
 
-  geocoded_by :location_address
   humanize_price :cost # creates cost_in_dollars getter/setter methods
 
   belongs_to :user
-  belongs_to :location
+  belongs_to :searchable
   belongs_to :event_type
   belongs_to :activity # if created through an activity stream
   
@@ -12,11 +11,9 @@ class Event < ActiveRecord::Base
   has_many :activities
   has_many :comments, :as => :commentable
   
-  accepts_nested_attributes_for :location
+  accepts_nested_attributes_for :searchable
 
   attr_accessor :exclude_end_date
-
-  before_save :cache_lat_lng
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
@@ -30,72 +27,19 @@ class Event < ActiveRecord::Base
   validate :valid_dates
   validate :valid_maximum_attendees
 
-  default_value_for :starts_at do
-    Time.zone.now.advance(:hours => 3).floor(15.minutes)
-  end
-  default_value_for :finishes_at do |e|
-    (e.starts_at || Time.zone.now.advance(:hours => 3)).advance(:hours => 3).floor(15.minutes)
-  end
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
 
-  scope :on_or_after_date, lambda {|date|
-    date = Time.zone.parse(date)
-    where('events.starts_at >= ?', date.beginning_of_day) if date
-  }
-  scope :on_or_before_date, lambda {|date|
-    date = Time.zone.parse(date)
-    where('events.starts_at <= ?', date.end_of_day) if date
-  }
-  scope :at_or_after_time_of_day, lambda {|time|
-    interval = sql_interval_for_utc_offset
-    where("date_part('hour', events.starts_at#{interval}) * 60 + date_part('minute', events.starts_at#{interval}) >= ?", time)
-  }
-  scope :at_or_before_time_of_day, lambda {|time|
-    interval = sql_interval_for_utc_offset
-    where("date_part('hour', events.starts_at#{interval}) * 60 + date_part('minute', events.starts_at#{interval}) <= ?", time)
-  }
-  scope :starts_at_days, lambda { |days| # days would look like ['0', '1', '2', ... ] which means ['sun', 'mon', 'tues']
-    interval = sql_interval_for_utc_offset
-    where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?)", days)
-  }
-  scope :on_days_or_in_date_range, lambda {|days, from_date, to_date, inclusive|
-    if from_date && to_date && (from_date = Time.zone.parse(from_date)) && (to_date = Time.zone.parse(to_date))
-      from_date = from_date.beginning_of_day
-      to_date = to_date.end_of_day
-
-      if days
-        interval = sql_interval_for_utc_offset
-        if inclusive
-          where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?) OR (events.starts_at BETWEEN ? AND ?)", days, from_date, to_date)
-        else
-          #Exclusion should be treated as an OR condition, because we want to remove the days regardless q
-          where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?) AND (events.starts_at NOT BETWEEN ? AND ?)", days, from_date, to_date)
-        end
-      else
-        where("events.starts_at #{ 'NOT' if !inclusive } BETWEEN ? AND ?", from_date, to_date)
-      end
-    elsif !days.blank?
-      interval = sql_interval_for_utc_offset
-      where("EXTRACT(DOW FROM events.starts_at#{interval}) IN (?)", days)
-    end
-  }
-
-  # Expects type IDs, not EventType objects
-  scope :of_type, lambda {|type_ids|
-    where(:event_type_id => type_ids)
-  }
-
-  def exclude_end_date
-    finishes_at ? 0 : 1
-  end
-
-  def exclude_end_date=(exclude_end_date_val)
-    if exclude_end_date_val != 0
-      self.finishes_at = nil
-      #TODO - Why doesn't this work?
-    end
-  end
+#  def exclude_end_date
+#    finishes_at ? 0 : 1
+#  end
+#
+#  def exclude_end_date=(exclude_end_date_val)
+#    if exclude_end_date_val != 0
+#      self.finishes_at = nil
+#      #TODO - Why doesn't this work?
+#    end
+#  end
 
   def location_address
     location.geocodable_address if location
@@ -176,16 +120,6 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def self.sql_interval_for_utc_offset
-    interval = Time.zone.now.utc_offset / 60 / 60
-    interval = if interval < 0
-      " - interval '#{interval.abs} hours'"
-    elsif interval > 0
-      " + interval '#{interval} hours'"
-    else
-      ""
-    end
-  end
 
   def editable_by?(user)
     rsvp = rsvps.by_user(user).first
@@ -193,15 +127,33 @@ class Event < ActiveRecord::Base
     user == self.user || (rsvp && rsvp.administrator?)
   end
 
-  protected
+  # TEMPORARY HELPERS
 
-  def cache_lat_lng
-    if location && !location.new_record?
-      self.latitude = location.latitude
-      self.longitude = location.longitude
-    end
+  def location
+    searchable.try(:location)
+  end
+  def latitude
+    searchable.latitude
+  end
+  def longitude
+    searchable.longitude
   end
 
+  def event_type # assuming one event type per event (for now) - remove this helper when that is not the case
+    searchable.searchable_event_types.first.try :event_type
+  end
+
+  def starts_at # assuming non recurring events, for now
+    searchable.searchable_date_ranges.first.try :starts_at
+  end
+  
+  def finishes_at  # assuming non recurring events, for now
+    searchable.searchable_date_ranges.first.try :ends_at
+  end
+  
+  protected
+
+  
   def set_default_title
     if self.name.blank?
       self.name = event_type ? event_type.name : "Something"
@@ -211,9 +163,7 @@ class Event < ActiveRecord::Base
   end
 
   def valid_dates
-    if finishes_at?
-      errors.add :finishes_at, 'must be after the event starts' if finishes_at <= starts_at
-    end
+    errors.add :finishes_at, 'must be after the event starts' if finishes_at && finishes_at <= starts_at
   end
   def valid_maximum_attendees
     if minimum_attendees? && maximum_attendees? && maximum_attendees < minimum_attendees

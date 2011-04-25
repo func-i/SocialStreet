@@ -1,7 +1,7 @@
 <div class="block" id="block-lists">
   <div class="secondary-navigation">
     <ul class="wat-cf">
-      <li class="first active"><a href="#">Events (<%= @events.count %>)</a></li>
+      <li class="first active"><a href="#">Events (<%= @searchables.count %>)</a></li>
       <li><%= link_to "News Feed", :activities %></li>
       <li><a href="#block-forms">Comments</a></li>
     </ul>
@@ -10,8 +10,8 @@
     <h2 class="title">Events</h2>
     <div class="inner">
       <ul class="list">
-        <% @events.each do |event| %>
-          <%= render event %>
+        <% @searchables.each do |searchable| %>
+          <%= render 'searchable', :searchable => searchable %>
         <% end %>
       </ul>
     </div>

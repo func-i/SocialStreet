@@ -10,7 +10,7 @@
       <strong><%= link_to event.name, event %></strong><br/>
       <em><%= address_for(event.location) %></em><br/>
       <em>Start: <%= display_date_time(event.starts_at) %></em><br/>
-      <% if event.finishes_at? %>
+      <% if event.finishes_at %>
         <em>Finish: <%= display_date_time(event.finishes_at) %></em><br/>
       <% end %>
       <p>

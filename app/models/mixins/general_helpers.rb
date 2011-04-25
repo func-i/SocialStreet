@@ -7,6 +7,18 @@ module Mixins
     end
 
     module ClassMethods
+
+      def sql_interval_for_utc_offset
+        interval = Time.zone.now.utc_offset / 60 / 60
+        interval = if interval < 0
+          " - interval '#{interval.abs} hours'"
+        elsif interval > 0
+          " + interval '#{interval} hours'"
+        else
+          ""
+        end
+      end
+
       def humanize_price(field_name)
         # dynamically create getter and setter wrappers around field_name
         self.class_eval %{

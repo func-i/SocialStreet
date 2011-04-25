@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110420161647) do
+ActiveRecord::Schema.define(:version => 20110425202447) do
 
   create_table "activities", :force => true do |t|
     t.integer  "event_id"
@@ -22,11 +22,13 @@ ActiveRecord::Schema.define(:version => 20110420161647) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "activity_id"
+    t.integer  "searchable_id"
   end
 
   add_index "activities", ["activity_id"], :name => "index_activities_on_activity_id"
   add_index "activities", ["event_id"], :name => "index_activities_on_event_id"
   add_index "activities", ["reference_type", "reference_id"], :name => "index_activities_on_reference_type_and_reference_id"
+  add_index "activities", ["searchable_id"], :name => "index_activities_on_searchable_id"
   add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
 
   create_table "authentications", :force => true do |t|
@@ -45,9 +47,11 @@ ActiveRecord::Schema.define(:version => 20110420161647) do
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "searchable_id"
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
+  add_index "comments", ["searchable_id"], :name => "index_comments_on_searchable_id"
 
   create_table "event_types", :force => true do |t|
     t.string   "name"
@@ -61,26 +65,21 @@ ActiveRecord::Schema.define(:version => 20110420161647) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "starts_at"
     t.integer  "cost"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "location_id"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.datetime "finishes_at"
     t.integer  "event_type_id"
     t.integer  "minimum_attendees"
     t.integer  "maximum_attendees"
     t.boolean  "guests_allowed"
     t.integer  "user_id"
     t.integer  "activity_id"
+    t.integer  "searchable_id"
   end
 
   add_index "events", ["activity_id"], :name => "index_events_on_activity_id"
   add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"
-  add_index "events", ["latitude", "longitude"], :name => "index_events_on_latitude_and_longitude"
-  add_index "events", ["starts_at", "finishes_at"], :name => "index_events_on_starts_at_and_finishes_at"
+  add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
   create_table "friendships", :force => true do |t|
@@ -139,6 +138,40 @@ ActiveRecord::Schema.define(:version => 20110420161647) do
   end
 
   add_index "search_filters", ["user_id"], :name => "index_search_filters_on_user_id"
+
+  create_table "searchable_date_ranges", :force => true do |t|
+    t.integer  "searchable_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"
+
+  create_table "searchable_event_types", :force => true do |t|
+    t.integer  "searchable_id"
+    t.integer  "event_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "searchable_event_types", ["event_type_id"], :name => "index_searchable_event_types_on_event_type_id"
+  add_index "searchable_event_types", ["searchable_id"], :name => "index_searchable_event_types_on_searchable_id"
+
+  create_table "searchables", :force => true do |t|
+    t.integer  "location_id"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "searchables", ["location_id"], :name => "index_searchables_on_location_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                       :default => "", :null => false

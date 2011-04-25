@@ -4,16 +4,18 @@ class ApplicationController < ActionController::Base
   before_filter :nav_state
   before_filter :restricted
 
-#  def authenticate_user_and_redirect!
-#    #User will be forced to sign-in when:
-#    # => Creating/Editing an Event (onSubmit)
-#    # => Updating or Creating an RSVP to an Event (onLoad)
-#    # => Commenting on an Event (onSubmit)
-#    # => Editing / Updating their profile (hidden, therefore fail)
-#
-#    store_request
-#    authenticate_user!
-#  end
+  #  def authenticate_user_and_redirect!
+  #    #User will be forced to sign-in when:
+  #    # => Creating/Editing an Event (onSubmit)
+  #    # => Updating or Creating an RSVP to an Event (onLoad)
+  #    # => Commenting on an Event (onSubmit)
+  #    # => Editing / Updating their profile (hidden, therefore fail)
+  #
+  #    store_request
+  #    authenticate_user!
+  #  end
+
+  protected
 
   def store_current_path
     session[:stored_current_path] = request.fullpath
@@ -23,7 +25,6 @@ class ApplicationController < ActionController::Base
     session[:stored_current_path]
   end
 
-
   def store_redirect(options = {})
     session[:stored_redirect] = Hash.new if !session[:stored_redirect]
     
@@ -32,9 +33,9 @@ class ApplicationController < ActionController::Base
     session[:stored_redirect][:action] = options[:action] if options[:action]
     session[:stored_redirect][:params] = options[:params] if options[:params]
 
-   #puts "STORING REDIRECT"
-   #puts options.inspect
-   #puts session[:stored_redirect].inspect
+    #puts "STORING REDIRECT"
+    #puts options.inspect
+    #puts session[:stored_redirect].inspect
   end
 
   def clear_redirect
@@ -71,8 +72,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  protected
-
   def restricted
     authenticate_or_request_with_http_basic do |user_name, password|
       user_name == "ssusername" && password == "sspassword"
