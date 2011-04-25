@@ -1,21 +1,18 @@
-class ActivitiesController < ApplicationController
+class ActionsController < ApplicationController
 
   before_filter :load_event_types, :only => [:index]
   
   def index
     # TODO: search parameters (much like with events#index) , pagination , etc - KV
-    find_activities
+    find_actions
   end
 
   protected
 
-  def find_activities
-    @activities = Activity.top_level
-
-    @activities = @activities.of_type(params[:types]) unless params[:types].blank?
-    
-
-    @activities = @activities.newest_first.all
+  def find_actions
+    @actions = Action.top_level
+    @actions = @actions.of_type(params[:types]) unless params[:types].blank?
+    @actions = @actions.newest_first.all
   end
 
   def nav_state

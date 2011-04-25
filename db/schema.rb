@@ -10,26 +10,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110425202447) do
+ActiveRecord::Schema.define(:version => 20110425210315) do
 
-  create_table "activities", :force => true do |t|
+  create_table "actions", :force => true do |t|
     t.integer  "event_id"
     t.integer  "user_id"
     t.integer  "reference_id"
     t.string   "reference_type"
-    t.string   "activity_type"
+    t.string   "action_type"
     t.datetime "occurred_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "activity_id"
+    t.integer  "action_id"
     t.integer  "searchable_id"
   end
 
-  add_index "activities", ["activity_id"], :name => "index_activities_on_activity_id"
-  add_index "activities", ["event_id"], :name => "index_activities_on_event_id"
-  add_index "activities", ["reference_type", "reference_id"], :name => "index_activities_on_reference_type_and_reference_id"
-  add_index "activities", ["searchable_id"], :name => "index_activities_on_searchable_id"
-  add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
+  add_index "actions", ["action_id"], :name => "index_actions_on_action_id"
+  add_index "actions", ["event_id"], :name => "index_actions_on_event_id"
+  add_index "actions", ["reference_type", "reference_id"], :name => "index_actions_on_reference_type_and_reference_id"
+  add_index "actions", ["searchable_id"], :name => "index_actions_on_searchable_id"
+  add_index "actions", ["user_id"], :name => "index_actions_on_user_id"
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -73,11 +73,11 @@ ActiveRecord::Schema.define(:version => 20110425202447) do
     t.integer  "maximum_attendees"
     t.boolean  "guests_allowed"
     t.integer  "user_id"
-    t.integer  "activity_id"
     t.integer  "searchable_id"
+    t.integer  "action_id"
   end
 
-  add_index "events", ["activity_id"], :name => "index_events_on_activity_id"
+  add_index "events", ["action_id"], :name => "index_events_on_action_id"
   add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"
   add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"

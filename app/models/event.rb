@@ -5,10 +5,10 @@ class Event < ActiveRecord::Base
   belongs_to :user
   belongs_to :searchable
   belongs_to :event_type
-  belongs_to :activity # if created through an activity stream
+  belongs_to :action # if created through an activity stream
   
   has_many :rsvps
-  has_many :activities
+  has_many :actions
   has_many :comments, :as => :commentable
   
   accepts_nested_attributes_for :searchable

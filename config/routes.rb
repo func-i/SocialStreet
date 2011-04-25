@@ -59,7 +59,7 @@ SocialStreet::Application.routes.draw do
 
   resources :authentications
 
-  resources :activities do
+  resources :actions do
     resources :comments, :only => [:create]
   end
 

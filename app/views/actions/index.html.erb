@@ -2,7 +2,7 @@
   <div class="secondary-navigation">
     <ul class="wat-cf">
       <li class="first"><%= link_to 'Events', :events %></li>
-      <li class="active"><a href="#">News Feed (<%= @activities.count %>)</a></li>
+      <li class="active"><a href="#">News Feed (<%= @actions.count %>)</a></li>
       <li><a href="#block-forms">Comments</a></li>
     </ul>
   </div>
@@ -10,8 +10,8 @@
     <h2 class="title">News Feed</h2>
     <div class="inner">
       <ul class="list">
-        <% @activities.each do |activity| %>
-          <%= render activity %>
+        <% @actions.each do |action| %>
+          <%= render action %>
         <% end %>
       </ul>
     </div>

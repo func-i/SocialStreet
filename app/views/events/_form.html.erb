@@ -1,6 +1,6 @@
 <%= form.error_messages %>
 <div id="basic" class="tab-content">
-  <%= form.hidden_field :activity_id %>
+  <%= form.hidden_field :action_id %>
 
   <%= form.fields_for :searchable do |searchable_fields| %>
     <%= searchable_fields.fields_for :searchable_event_types do |event_type_fields| %>

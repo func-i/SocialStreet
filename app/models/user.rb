@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :authentications
   has_many :rsvps
-  has_many :activities
+  has_many :actions
   has_many :comments
   
   has_many :friendships

@@ -6,7 +6,7 @@ class Searchable < ActiveRecord::Base
 
   has_one :event
   has_one :comment
-  has_one :activity
+  has_one :action
 
   has_many :searchable_date_ranges
   has_many :searchable_event_types

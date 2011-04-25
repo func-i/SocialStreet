@@ -9,7 +9,7 @@ class ProfilesController < ApplicationController
 
 
   def show
-    @activities = @user.activities.newest_first.all
+    @actions = @user.actions.newest_first.all
   end
   
   def edit

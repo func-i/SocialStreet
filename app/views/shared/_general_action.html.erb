@@ -1,6 +1,6 @@
 <% body ||= nil %>
-<%# For now, only allow children (commenting, creating events, etc) for top-level activities - KV %>
-<% allow_children = !activity.activity %>
+<%# For now, only allow children (commenting, creating events, etc) for top-level actions - KV %>
+<% allow_children = !action.action %>
 <div class="left">
   <%= link_to image_tag(url_for_image, :class => "avatar"), '#' %>
 </div>
@@ -10,7 +10,7 @@
     <p>
       <%= simple_format body %>
     </p>
-    <em><%= time_ago_in_words activity.occurred_at %> ago</em>
+    <em><%= time_ago_in_words action.occurred_at %> ago</em>
   </div>
   <% if false %>
     <div style="float:left; width: 140px; height:100%;">
@@ -22,17 +22,17 @@
   <div class="clear"></div>
   <% if allow_children %>
   <%# TODO: Should paginate these perhaps ?  %>
-    <% activity.activities.oldest_first.all.each do |a|  %>
-      <%= render 'shared/activity', :activity => a %>
+    <% action.actions.oldest_first.all.each do |a|  %>
+      <%= render 'shared/action', :action => a %>
     <% end %>
-    <div class="activity-comment-container" style="margin-top:10px;margin-left:80px;">
-      <%= form_for [activity, Comment.new], :html => {:class => "form"} do |form| %>
+    <div class="action-comment-container" style="margin-top:10px;margin-left:80px;">
+      <%= form_for [action, Comment.new], :html => {:class => "form"} do |form| %>
         <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:55%;float:left" %>
 
         <button class="button" type="submit" style="float: left;display:inline-block; margin-left: 10px; margin-top: 4px;">
           <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Comment
         </button>
-        <%= link_to 'New Event', new_event_path(:activity_id => activity.id), :class => "button", :style => "float:left;margin-left:5px;margin-top:5px" %>
+        <%= link_to 'New Event', new_event_path(:action_id => action.id), :class => "button", :style => "float:left;margin-left:5px;margin-top:5px" %>
         <div class="clear"></div>
 
       <% end  %>

@@ -38,8 +38,8 @@
     <h2 class="title">Latest Activity</h2>
     <div class="inner">
       <ul class="list">
-        <% @activities.each do |activity| %>
-          <%= render 'shared/activity', :activity => activity %>
+        <% @actions.each do |actions| %>
+          <%= render 'shared/action', :action => action %>
         <% end %>
       </ul>
     </div>
@@ -122,7 +122,7 @@
     $(function() {
       $('.create-comment-link').click(function() {
         var $this = $(this);
-        $this.closest('.activity').find('.activity-comment-container').slideToggle();
+        $this.closest('.action').find('.action-comment-container').slideToggle();
         return false;
       });
     });

@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   before_filter :store_event_create, :only => [:create, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update]
   before_filter :require_permission, :only => [:edit, :update]
-  before_filter :load_activity, :only => [:new] # for event created through activity stream
+  before_filter :load_action, :only => [:new] # for event created through activity stream
 
   # FIND EVENT PAGE
   def index
@@ -20,7 +20,7 @@ class EventsController < ApplicationController
   def show
     @event = Event.find params[:id]
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
-    @activities = @event.activities.newest_first.all # TODO: paginate @activities here (page = 1)
+    @actions = @event.actions.newest_first.all # TODO: paginate @actions here (page = 1)
     @comment = @event.comments.build
   end
 
@@ -31,7 +31,7 @@ class EventsController < ApplicationController
     @event.searchable.location ||= Location.new
     @event.searchable.searchable_date_ranges.build
     @event.searchable.searchable_event_types.build
-    @event.activity = @activity # nil if no @activity (which is desired)
+    @event.action = @action # nil if no @action (which is desired)
     if session[:stored_params]
       @event.attributes = session[:stored_params] # event params
       @event.valid?
@@ -80,9 +80,9 @@ class EventsController < ApplicationController
     @event_types ||= EventType.order('name').all
   end
 
-  def load_activity
-    # TODO: Perhaps creation through activity should be a separate controller/resource:  "/activities/x/events/new"
-    @activity = Activity.find_by_id params[:activity_id].to_i if params[:activity_id]
+  def load_action
+    # TODO: Perhaps creation through action should be a separate controller/resource:  "/actions/x/events/new"
+    @action = Action.find_by_id params[:action_id].to_i if params[:action_id]
   end
 
   def nav_state
