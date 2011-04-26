@@ -23,8 +23,6 @@
   </div>
 </div>
 
-
-
 <% content_for :sidebar do %>
   <div class="block notice">
     <%= link_to image_tag(@user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
@@ -38,6 +36,23 @@
     <%#end%>
     <%#*<div class="clear"></div>%>
   <%#*</div>%>
+  </div>
+
+  <div class="block notice">
+    <H4>Upcoming Events</H4>
+    <% @events.each do |event|  %>
+      <div>
+        <strong><%= link_to event.name, event %></strong><br/>
+      </div>
+
+      <div>
+        <%=display_date_time(event.starts_at)%>
+      </div>
+
+      <br/>
+    <%end%>
+  </div>
+
 
 <% end %>
 

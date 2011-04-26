@@ -30,16 +30,25 @@ class Event < ActiveRecord::Base
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
 
-#  def exclude_end_date
-#    finishes_at ? 0 : 1
-#  end
-#
-#  def exclude_end_date=(exclude_end_date_val)
-#    if exclude_end_date_val != 0
-#      self.finishes_at = nil
-#      #TODO - Why doesn't this work?
-#    end
-#  end
+  scope :attended_by_user, lambda {|user|
+    includes(:rsvps).where({ :rsvps => {:user_id => user.id, :status => Rsvp::statuses[:attending] }})
+  }
+  scope :upcoming, lambda {
+    includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at > ?", Time.zone.now)
+    #joins(:searchable) & Searchable.on_or_after_date(Time.zone.now)
+  }
+  # SELECT xyz FROM events JOIN dateranges ON  dr.event_id = e.id WHERE dr.x = 1 OR dr.y = 1
+
+  #  def exclude_end_date
+  #    finishes_at ? 0 : 1
+  #  end
+  #
+  #  def exclude_end_date=(exclude_end_date_val)
+  #    if exclude_end_date_val != 0
+  #      self.finishes_at = nil
+  #      #TODO - Why doesn't this work?
+  #    end
+  #  end
 
   def location_address
     location.geocodable_address if location
