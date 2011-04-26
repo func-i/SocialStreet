@@ -64,6 +64,8 @@ class Searchable < ActiveRecord::Base
     includes(:searchable_event_types).where("searchable_event_types.event_type_id IN (?)", type_ids)
   }
 
+  scope :excluding_nested_actions, where("searchables.id NOT IN (SELECT searchable_id FROM actions WHERE actions.searchable_id = searchables.id AND actions.action_id IS NOT NULL)")
+
   def location_address
     location.geocodable_address if location
   end

@@ -19,7 +19,7 @@ class ExploreController < ApplicationController
   end
 
   def find_searchables
-    @searchables = Searchable
+    @searchables = Searchable.excluding_nested_actions
 
     radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
