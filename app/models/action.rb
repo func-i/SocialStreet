@@ -28,7 +28,7 @@ class Action < ActiveRecord::Base
   }
 
   before_create :set_occurred_at
-
+  before_validation :copy_searchable
 
   def of_type?(type)
     action_type == Action.types[type]
@@ -38,6 +38,13 @@ class Action < ActiveRecord::Base
 
   def set_occurred_at
     self.occurred_at = Time.zone.now
+  end
+
+  def copy_searchable
+    unless self.searchable
+      s = (action || event).try(:searchable)
+      self.searchable = s.clone(:include => [:searchable_date_ranges, :searchable_event_types]) if s
+    end
   end
 
 end

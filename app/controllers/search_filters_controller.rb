@@ -1,7 +1,6 @@
 class SearchFiltersController < ApplicationController
 
   
-
   def create
     attrs = {
       :location => nullable_param(:location),
@@ -9,8 +8,8 @@ class SearchFiltersController < ApplicationController
       :from_date => params[:from_date].blank? ? nil : Time.zone.parse(params[:from_date]),
       :to_date => params[:to_date].blank? ? nil : Time.zone.parse(params[:to_date]),
       :inclusive => nullable_param(:inclusive),
-      :from_time => nullabe_param(:from_time),
-      :to_time => nullabe_param(:to_time),
+      :from_time => nullable_param(:from_time),
+      :to_time => nullable_param(:to_time),
       :day_0 => day_selected?(0),
       :day_1 => day_selected?(1),
       :day_2 => day_selected?(2),
@@ -21,12 +20,12 @@ class SearchFiltersController < ApplicationController
     }
 
     @search_filter = SearchFilter.new(attrs)
-    @serach_filter.user = current_user
+    @search_filter.user = current_user
 
     if @search_filter.save
-      
+      render :text => @search_filter.inspect
     else
-      # shouldn't really ever go in here unless there's a bug or something unexpected
+      render :text => @search_filter.errors.full_messages.inspect # shouldn't really ever go in here unless there's a bug or something unexpected
     end
   end
 

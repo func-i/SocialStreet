@@ -1,13 +1,7 @@
 <div class="block" id="block-lists">
-  <div class="secondary-navigation">
-    <ul class="wat-cf">
-      <li class="first active"><a href="#">Events (<%= @searchables.count %>)</a></li>
-      <li><%= link_to "News Feed", :actions %></li>
-      <li><a href="#block-forms">Comments</a></li>
-    </ul>
-  </div>
+  
   <div class="content">
-    <h2 class="title">Events</h2>
+    <h2 class="title">Explore</h2>
     <div class="inner">
       <ul class="list">
         <% @searchables.each do |searchable| %>
@@ -19,7 +13,7 @@
 </div>
 
 <% content_for :sidebar do %>
-  <%= form_tag '#', :method => :get, :class => "form" do %>
+  <%= form_tag '#', :method => :get, :class => "form", "data-save-action" => search_filters_path do %>
     <div class="block notice">
       <h4>Location Filtering</h4>
 
@@ -72,6 +66,7 @@
     </div>
 
     <button class="button">Go</button>
+    <button class="button save-button">Save</button>
     <%= link_to 'Clear', events_path %>
     <div class="clear"></div>
   <% end %>
@@ -80,6 +75,21 @@
 <% content_for :end_of_body do %>
   <script>
     $(function() {
+     
+      $('.save-button').click(function(e) {
+        var f = $(this.form);
+        this.form.action = f.data('save-action');
+        this.form.method = 'POST' // create
+        var csrf_token = $('meta[name=csrf-token]').attr('content');
+        var csrf_param = $('meta[name=csrf-param]').attr('content');
+        var metadata_input = '<input name="_method" value="POST" type="hidden" />';
+        if (csrf_param !== undefined && csrf_token !== undefined) {
+        	metadata_input += '<input name="' + csrf_param + '" value="' + csrf_token + '" type="hidden" />';
+          f.append(metadata_input);
+        }
+        //return false;
+      });
+
       $( "#from_date" ).datepicker({
         dateFormat: 'M. dd, yy'
       });

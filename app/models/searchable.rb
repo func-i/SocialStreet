@@ -5,7 +5,6 @@ class Searchable < ActiveRecord::Base
   belongs_to :location
 
   has_one :event
-  has_one :comment
   has_one :action
 
   has_many :searchable_date_ranges
@@ -61,7 +60,7 @@ class Searchable < ActiveRecord::Base
   }
 
   # Expects type IDs, not EventType objects
-  scope :of_type, lambda {|type_ids|
+  scope :with_event_types, lambda {|type_ids|
     includes(:searchable_event_types).where("searchable_event_types.event_type_id IN (?)", type_ids)
   }
 
@@ -71,6 +70,12 @@ class Searchable < ActiveRecord::Base
 
   def geo_located?
     location && location.geo_located?
+  end
+
+  def comment
+    if action
+      action.reference if action.reference.is_a? Comment
+    end
   end
 
   protected

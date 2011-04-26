@@ -38,6 +38,7 @@ GEM
     arel (2.0.9)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
+    deep_cloneable (1.2.3)
     default_value_for (1.0.1)
     devise (1.2.0)
       bcrypt-ruby (~> 2.1.2)
@@ -144,6 +145,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  deep_cloneable
   default_value_for
   devise (>= 1.2.0)
   dynamic_form!

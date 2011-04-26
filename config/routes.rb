@@ -51,6 +51,7 @@ SocialStreet::Application.routes.draw do
   root :to => "site#index"
 
   get 'how-it-works' => 'site#how', :as => 'how'
+  get 'explore' => 'explore#index', :as => 'explore'
 
   resources :events do
     resources :rsvps

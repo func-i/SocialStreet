@@ -1,6 +1,6 @@
 <% body ||= nil %>
 <%# For now, only allow children (commenting, creating events, etc) for top-level actions - KV %>
-<% allow_children = !action.action %>
+<% allow_children = !action.try(:action) %>
 <div class="left">
   <%= link_to image_tag(url_for_image, :class => "avatar"), '#' %>
 </div>
