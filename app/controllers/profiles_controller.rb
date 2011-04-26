@@ -14,6 +14,8 @@ class ProfilesController < ApplicationController
 #    @events = @user.rsvp_events.
 
     @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
+
+    @user_profile_facebook = @user.authentications.facebook.first
   end
   
   def edit

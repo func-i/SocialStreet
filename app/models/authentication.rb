@@ -4,4 +4,6 @@ class Authentication < ActiveRecord::Base
 
   belongs_to :user
 
+  scope :facebook, where(:provider => "facebook")
+
 end
