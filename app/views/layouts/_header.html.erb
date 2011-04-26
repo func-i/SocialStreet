@@ -6,7 +6,8 @@
         <li><%= link_to 'Profile', edit_profile_path(current_user) %></li>
         <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></li>
       <% else %>
-        <li><%= link_to 'Sign in', [:new, :user_session] %></li>
+        <!--<li><%= link_to 'Sign in', [:new, :user_session] %></li>-->
+        <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <% end %>
     </ul>
   </div>
