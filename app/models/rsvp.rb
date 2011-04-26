@@ -10,7 +10,7 @@ class Rsvp < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :event
-
+  
   has_many :actions, :as => :reference
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }

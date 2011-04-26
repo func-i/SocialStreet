@@ -10,6 +10,10 @@ class ProfilesController < ApplicationController
 
   def show
     @actions = @user.actions.newest_first.all
+    #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
+#    @events = @user.rsvp_events.
+
+    @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
   end
   
   def edit
