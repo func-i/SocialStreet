@@ -98,9 +98,20 @@ class ApplicationController < ActionController::Base
     @commentable = Event.find params[:event_id].to_i if params[:event_id]
     @commentable = Action.find params[:action_id].to_i if params[:action_id]
 
-    @comment = @commentable.comments.build params[:comment]
+    @comment = Comment.new params[:comment]
+    @comment.commentable = @commentable
     @comment.user = current_user
 
+    if search_filters_present?
+      @search_filter = SearchFilter.new_from_params(params)
+      @comment.search_filter = @search_filter
+      # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
+    end
+
     return @comment.save
+  end
+
+  def search_filters_present?
+    params[:from_date] || params[:location] || params[:from_time]
   end
 end

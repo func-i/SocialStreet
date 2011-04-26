@@ -1,5 +1,18 @@
+<div class="block">
+  <div class="content">
+    <h2 class="title">Add Comment</h2>
+    <div class="inner">
+      <%= form_for @comment, :html => { :class => "form" } do |form| %>
+        <%= form.text_area :body, :cols => "80", :rows => "2", :style => "float:left" %>
+      
+        <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
+        <div class="clear"></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <div class="block" id="block-lists">
-  
   <div class="content">
     <h2 class="title">Explore</h2>
     <div class="inner">
@@ -13,7 +26,7 @@
 </div>
 
 <% content_for :sidebar do %>
-  <%= form_tag '#', :method => :get, :class => "form", "data-save-action" => search_filters_path do %>
+  <%= form_tag '#', :method => :get, :class => "form search-params", "data-save-action" => search_filters_path do %>
     <div class="block notice">
       <h4>Location Filtering</h4>
 
@@ -76,7 +89,7 @@
   <script>
     $(function() {
      
-      $('.save-button').click(function(e) {
+      $('button.save-button').click(function(e) {
         var f = $(this.form);
         this.form.action = f.data('save-action');
         this.form.method = 'POST' // create
@@ -87,7 +100,12 @@
         	metadata_input += '<input name="' + csrf_param + '" value="' + csrf_token + '" type="hidden" />';
           f.append(metadata_input);
         }
-        //return false;
+      });
+
+      $('button.comment-button').click(function(e) {
+        var f = $('form.search-params');
+        var s = f.serialize();
+        this.form.action = this.form.action + '?' + s;
       });
 
       $( "#from_date" ).datepicker({

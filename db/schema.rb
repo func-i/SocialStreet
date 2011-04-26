@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110425210315) do
+ActiveRecord::Schema.define(:version => 20110426172422) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -48,9 +48,11 @@ ActiveRecord::Schema.define(:version => 20110425210315) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "searchable_id"
+    t.integer  "search_filter_id"
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
+  add_index "comments", ["search_filter_id"], :name => "index_comments_on_search_filter_id"
   add_index "comments", ["searchable_id"], :name => "index_comments_on_searchable_id"
 
   create_table "event_types", :force => true do |t|

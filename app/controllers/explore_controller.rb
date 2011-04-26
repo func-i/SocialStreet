@@ -4,6 +4,7 @@ class ExploreController < ApplicationController
   before_filter :store_current_path
 
   def index
+    @comment = Comment.new
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
