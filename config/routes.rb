@@ -53,6 +53,8 @@ SocialStreet::Application.routes.draw do
   get 'how-it-works' => 'site#how', :as => 'how'
   get 'explore' => 'explore#index', :as => 'explore'
 
+  resources :comments, :only => [:create]
+
   resources :events do
     resources :rsvps
     resources :comments, :only => [:create]

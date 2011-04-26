@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+
   before_filter :load_commentable_resource
   before_filter :store_comment_request, :only => [:create]
   before_filter :authenticate_user!, :only => [:create]
@@ -9,17 +10,6 @@ class CommentsController < ApplicationController
     else
       raise 'shit, what happened'
     end
-
-    #
-    #    @comment = @commentable.comments.build params[:comment]
-    #    @comment.user = current_user
-    #
-    #    if @comment.save
-    #      puts "REDIRECTING!!!!"
-    #      redirect_to :back, :notice => "Comment added"
-    #    else
-    #      raise "shit, what now?"
-    #    end
   end
 
   protected
