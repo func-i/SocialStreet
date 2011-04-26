@@ -5,7 +5,8 @@ class Action < ActiveRecord::Base
     :event_rsvp_attending => 'Event RSVP Attending',
     :event_comment => 'Event Comment',
     :profile_comment => 'Profile Comment',
-    :action_comment => 'Action Comment'
+    :action_comment => 'Action Comment',
+    :search_comment => 'Search Comment'
   }.freeze
   cattr_accessor :types
 
@@ -42,7 +43,8 @@ class Action < ActiveRecord::Base
 
   def copy_searchable
     unless self.searchable
-      s = (action || event).try(:searchable)
+      s = (action || event || reference)
+      s = s.searchable if s && s.respond_to?(:searchable)
       self.searchable = s.clone(:include => [:searchable_date_ranges, :searchable_event_types]) if s
     end
   end
