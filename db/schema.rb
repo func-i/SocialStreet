@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110426191853) do
+ActiveRecord::Schema.define(:version => 20110427153939) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(:version => 20110426191853) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "text"
+    t.integer  "radius"
   end
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
@@ -149,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20110426191853) do
     t.datetime "ends_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "dow"
   end
 
   add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"

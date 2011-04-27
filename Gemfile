@@ -6,6 +6,7 @@ gem 'rails', '3.0.5'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'silent-postgres'
 gem 'jquery-rails', '>= 0.2.6'
 gem 'web-app-theme', '>= 0.6.2'
 gem 'omniauth'

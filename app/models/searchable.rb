@@ -6,6 +6,7 @@ class Searchable < ActiveRecord::Base
 
   has_one :event
   has_one :action
+  has_one :comment
 
   has_many :searchable_date_ranges
   has_many :searchable_event_types
@@ -35,8 +36,9 @@ class Searchable < ActiveRecord::Base
   }
   scope :starts_at_days, lambda { |days| # days would look like ['0', '1', '2', ... ] which means ['sun', 'mon', 'tues']
     interval = sql_interval_for_utc_offset
-    includes(:searchable_date_ranges).where("EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?)", days)
+    includes(:searchable_date_ranges).where("searchable_date_ranges.dow IN (?) OR EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?)", days, days)
   }
+  
   scope :on_days_or_in_date_range, lambda {|days, from_date, to_date, inclusive|
     if from_date && to_date && (from_date = Time.zone.parse(from_date)) && (to_date = Time.zone.parse(to_date))
       from_date = from_date.beginning_of_day
@@ -45,17 +47,16 @@ class Searchable < ActiveRecord::Base
       if days
         interval = sql_interval_for_utc_offset
         if inclusive
-          includes(:searchable_date_ranges).where("EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?) OR (searchable_date_ranges.starts_at BETWEEN ? AND ?)", days, from_date, to_date)
+          includes(:searchable_date_ranges).where("searchable_date_ranges.dow IN (?) OR EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?) OR (searchable_date_ranges.starts_at BETWEEN ? AND ?)", days, days, from_date, to_date)
         else
           #Exclusion should be treated as an OR condition, because we want to remove the days regardless q
-          includes(:searchable_date_ranges).where("EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?) AND (searchable_date_ranges.starts_at NOT BETWEEN ? AND ?)", days, from_date, to_date)
+          includes(:searchable_date_ranges).where("(searchable_date_ranges.dow IN (?) OR EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?)) AND (searchable_date_ranges.starts_at NOT BETWEEN ? AND ?)", days, days, from_date, to_date)
         end
       else
-        includes(:searchable_date_ranges).where("searchable_date_ranges.starts_at #{ 'NOT' if !inclusive } BETWEEN ? AND ?", from_date, to_date)
+        includes(:searchable_date_ranges).where("searchable_date_ranges.starts_at #{'NOT' if !inclusive} BETWEEN ? AND ?", from_date, to_date)
       end
     elsif !days.blank?
-      interval = sql_interval_for_utc_offset
-      includes(:searchable_date_ranges).where("EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?)", days)
+      starts_at_days(days)
     end
   }
 
@@ -65,6 +66,12 @@ class Searchable < ActiveRecord::Base
   }
 
   scope :excluding_nested_actions, where("searchables.id NOT IN (SELECT searchable_id FROM actions WHERE actions.searchable_id = searchables.id AND actions.action_id IS NOT NULL)")
+  # for some reason :excluding_comments scope causes a PG SQL ERROR and I don't know why, yet - KV
+  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
+
+  # called from the explore controller/action
+  scope :with_excludes_for_explore, excluding_nested_actions#.excluding_comments
+  
 
   def location_address
     location.geocodable_address if location
@@ -74,10 +81,54 @@ class Searchable < ActiveRecord::Base
     location && location.geo_located?
   end
 
-  def comment
-    if action
-      action.reference if action.reference.is_a? Comment
+#  def comment
+#    if action
+#      action.reference if action.reference.is_a? Comment
+#    end
+#  end
+
+  def global_comment?
+    comment
+  end
+
+  # search filter params from the form
+  def self.new_from_params(params)
+    attrs = {
+      
+    }
+    
+    attrs[:location_attributes] = { :text => params[:location], :radius => params[:radius] } unless params[:location].blank?
+    attrs[:searchable_date_ranges_attributes] = []
+
+    if !params[:from_date].blank? || !params[:to_date].blank?
+      attrs[:searchable_date_ranges_attributes] << {
+        :start_date => params[:from_date].blank? ? nil : Date.parse(params[:from_date]),
+        :end_date => params[:to_date].blank? ? nil : Date.parse(params[:to_date]) 
+      }
     end
+
+    if params[:from_time].to_i > 0 || params[:to_time].to_i < 1439
+      attrs[:searchable_date_ranges_attributes] << {
+        :start_time => params[:from_time].to_i,
+        :end_time => params[:to_time].to_i
+      }
+    end
+
+    unless params[:days].blank?
+      params[:days].each do |day|
+        attrs[:searchable_date_ranges_attributes] << {:dow => day}
+      end
+    end
+    
+    unless params[:types].blank?
+      attrs[:searchable_event_types_attributes] = []
+      params[:types].each do |t_id|
+        attrs[:searchable_event_types_attributes] << { :event_type_id => t_id }
+      end
+    end
+
+
+    new(attrs)
   end
 
   protected
@@ -87,6 +138,10 @@ class Searchable < ActiveRecord::Base
       self.latitude = location.latitude
       self.longitude = location.longitude
     end
+  end
+
+  def self.day_selected?(params, day)
+    params[:days] && params[:days].include?(day.to_s)
   end
 
 

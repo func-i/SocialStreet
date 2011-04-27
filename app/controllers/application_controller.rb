@@ -102,19 +102,9 @@ class ApplicationController < ActionController::Base
     @comment.commentable = @commentable
     @comment.user = current_user
 
-    if search_filters_present?
-      @search_filter = SearchFilter.new_from_params(params)
-      @comment.commentable = @search_filter
-
+    if search_filters_present? 
       # Build the Searchable object for the Comment
-      attrs = {}
-      attrs[:location_attributes] = { :text => @search_filter.location } if @search_filter.location
-      attrs[:searchable_date_ranges_attributes] = []
-      attrs[:searchable_date_ranges_attributes] << { :start_date => @search_filter.from_date, :end_date => @search_filter.to_date } if @search_filter.from_date? || @search_filter.to_date?
-      attrs[:searchable_date_ranges_attributes] << { :start_time => @search_filter.from_time, :end_time => @search_filter.to_time } if @search_filter.from_time? || @search_filter.to_time?
-      attrs[:searchable_event_types_attributes] = [{:event_type => EventType.first}] # TODO: implement - KV
-      
-      @comment.searchable = Searchable.new(attrs)
+      @comment.searchable = Searchable.new_from_params(params)
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     end
 

@@ -21,7 +21,7 @@ class ActionObserver < ActiveRecord::Observer
         record.commentable.actions.create :user => record.user,
           :action_type => Action.types[:action_comment],
           :reference => record
-      elsif record.commentable.is_a?(SearchFilter)
+      elsif record.commentable.nil? # global search filter
         Action.create :user => record.user,
           :action_type => Action.types[:search_comment],
           :reference => record
