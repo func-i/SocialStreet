@@ -40,7 +40,7 @@ class ExploreController < ApplicationController
           (params[:from_time] && params[:from_time].to_i > 0)
         group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',') 
       end
-      @searchables = @searchables.near(params[:location], radius).group(group_by)
+      @searchables = @searchables.near(params[:location], radius, :select => "searchables.*").group(group_by)
     end
 
     @searchables = @searchables.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
