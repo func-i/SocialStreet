@@ -90,6 +90,11 @@
     $(function() {
      
       $('button.save-button').click(function(e) {
+        var f = $('form.search-params');
+        var s = f.serialize();
+        window.location = '<%= new_search_subscription_url %>?' + s;
+        return false;
+/*
         var f = $(this.form);
         this.form.action = f.data('save-action');
         this.form.method = 'POST' // create
@@ -100,6 +105,7 @@
         	metadata_input += '<input name="' + csrf_param + '" value="' + csrf_token + '" type="hidden" />';
           f.append(metadata_input);
         }
+        */
       });
 
       $('button.comment-button').click(function(e) {

@@ -1,0 +1,14 @@
+<div class="block">
+
+  <div class="content">
+    <h2 class="title">Create a new Search Subscription</h2>
+    <div class="inner">
+      <%= form_for @search_subscription, 
+        :url => search_subscriptions_url(:q => params.except(:controller, :action, :utf8)),
+        :html => {:class => "form"} do |form| %>
+        <%= render form %>
+        <%= render 'shared/form_submit_button' %>
+      <% end %>
+    </div>
+  </div>
+</div>

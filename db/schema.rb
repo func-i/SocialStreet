@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427181217) do
+ActiveRecord::Schema.define(:version => 20110427203544) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(:version => 20110427181217) do
     t.string   "frequency"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
   end
 
   add_index "search_subscriptions", ["searchable_id"], :name => "index_search_subscriptions_on_searchable_id"
