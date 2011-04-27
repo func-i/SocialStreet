@@ -13,7 +13,7 @@
   </div>
   <div id="main-navigation">
     <ul class="wat-cf">
-      <li class="first <%= 'active' if @on_events %>"><%= link_to 'Explore', explore_path %></li>
+      <li class="first <%= 'active' if @on_explore %>"><%= link_to 'Explore', explore_path %></li>
       <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
       <li class="<%= 'active' if @on_create_event %>"><%= link_to 'Create Event', [:new, :event] %></li>
     </ul>

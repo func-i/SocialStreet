@@ -46,4 +46,10 @@ class ExploreController < ApplicationController
     @searchables = @searchables.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
   end
 
+  def nav_state
+
+      @on_explore = true
+
+  end
+
 end
