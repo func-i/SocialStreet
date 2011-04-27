@@ -72,7 +72,7 @@ SocialStreet::Application.routes.draw do
 
   resources :friendships
 
-  resources :search_filters
+  resources :search_subscriptions
 
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427153939) do
+ActiveRecord::Schema.define(:version => 20110427181217) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -105,6 +105,17 @@ ActiveRecord::Schema.define(:version => 20110427153939) do
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
 
+  create_table "notification_subscriptions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "searchable_id"
+    t.string   "frequency"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notification_subscriptions", ["searchable_id"], :name => "index_notification_subscriptions_on_searchable_id"
+  add_index "notification_subscriptions", ["user_id"], :name => "index_notification_subscriptions_on_user_id"
+
   create_table "rsvps", :force => true do |t|
     t.integer  "event_id",                         :null => false
     t.integer  "user_id",                          :null => false
@@ -118,27 +129,16 @@ ActiveRecord::Schema.define(:version => 20110427153939) do
   add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"
   add_index "rsvps", ["user_id"], :name => "index_rsvps_on_user_id"
 
-  create_table "search_filters", :force => true do |t|
+  create_table "search_subscriptions", :force => true do |t|
     t.integer  "user_id"
-    t.string   "location"
-    t.integer  "radius"
-    t.datetime "from_date"
-    t.datetime "to_date"
-    t.boolean  "inclusive"
-    t.integer  "from_time"
-    t.integer  "to_time"
-    t.boolean  "day_0"
-    t.boolean  "day_1"
-    t.boolean  "day_2"
-    t.boolean  "day_3"
-    t.boolean  "day_4"
-    t.boolean  "day_5"
-    t.boolean  "day_6"
+    t.integer  "searchable_id"
+    t.string   "frequency"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "search_filters", ["user_id"], :name => "index_search_filters_on_user_id"
+  add_index "search_subscriptions", ["searchable_id"], :name => "index_search_subscriptions_on_searchable_id"
+  add_index "search_subscriptions", ["user_id"], :name => "index_search_subscriptions_on_user_id"
 
   create_table "searchable_date_ranges", :force => true do |t|
     t.integer  "searchable_id"

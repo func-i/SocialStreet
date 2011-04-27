@@ -23,6 +23,4 @@ class ActionsController < ApplicationController
     @event_types ||= EventType.order('name').all
   end
 
-
-
 end

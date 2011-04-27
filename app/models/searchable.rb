@@ -67,10 +67,11 @@ class Searchable < ActiveRecord::Base
 
   scope :excluding_nested_actions, where("searchables.id NOT IN (SELECT searchable_id FROM actions WHERE actions.searchable_id = searchables.id AND actions.action_id IS NOT NULL)")
   # for some reason :excluding_comments scope causes a PG SQL ERROR and I don't know why, yet - KV
-  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
-
+#  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
+  scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
+  scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
   # called from the explore controller/action
-  scope :with_excludes_for_explore, excluding_nested_actions#.excluding_comments
+  scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_comments
   
 
   def location_address
@@ -80,12 +81,6 @@ class Searchable < ActiveRecord::Base
   def geo_located?
     location && location.geo_located?
   end
-
-#  def comment
-#    if action
-#      action.reference if action.reference.is_a? Comment
-#    end
-#  end
 
   def global_comment?
     comment
