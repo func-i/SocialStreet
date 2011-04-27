@@ -10,6 +10,8 @@ class SearchSubscription < ActiveRecord::Base
   }
   cattr_accessor :frequencies
 
+  validates :name, :presence => true
+
   default_value_for :frequency, @@frequencies[:daily]
 
   def self.new_from_params(params)

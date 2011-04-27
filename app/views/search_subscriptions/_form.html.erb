@@ -5,3 +5,10 @@
   <br/>
   <span class="description">Please specify a name for your search subscription.</span>
 </div>
+
+<div class="group">
+  <label class="label">Frequency</label>
+  <%= form.select :frequency, SearchSubscription::frequencies.values %>
+  <br/>
+  <span class="description">Please specify a frequency.</span>
+</div>
