@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
   has_many :connections
   has_many :connected_users, :through => :connections, :source => :to_user
 
+  has_many :invitations #
+  has_many :received_invitations, :class_name => "Invitation", :foreign_key => "to_user_id"
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,

@@ -1,5 +1,7 @@
 class Connection < ActiveRecord::Base
 
+  make_searchable :fields => %w{users.first_name users.last_name users.email}, :include => [:to_user]
+
   belongs_to :user
   belongs_to :to_user, :class_name => "User"
 

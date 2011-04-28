@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110428144118) do
+ActiveRecord::Schema.define(:version => 20110428182955) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -93,12 +93,20 @@ ActiveRecord::Schema.define(:version => 20110428144118) do
   add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
-  create_table "friendships", :force => true do |t|
+  create_table "invitations", :force => true do |t|
+    t.integer  "event_id"
     t.integer  "user_id"
-    t.integer  "friend_id"
+    t.integer  "to_user_id"
+    t.integer  "rsvp_id"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "invitations", ["event_id"], :name => "index_invitations_on_event_id"
+  add_index "invitations", ["rsvp_id"], :name => "index_invitations_on_rsvp_id"
+  add_index "invitations", ["to_user_id"], :name => "index_invitations_on_to_user_id"
+  add_index "invitations", ["user_id"], :name => "index_invitations_on_user_id"
 
   create_table "locations", :force => true do |t|
     t.string   "street"
