@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427203544) do
+ActiveRecord::Schema.define(:version => 20110428144118) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -52,6 +52,17 @@ ActiveRecord::Schema.define(:version => 20110427203544) do
 
   add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
   add_index "comments", ["searchable_id"], :name => "index_comments_on_searchable_id"
+
+  create_table "connections", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "to_user_id"
+    t.integer  "strength"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "connections", ["to_user_id"], :name => "index_connections_on_to_user_id"
+  add_index "connections", ["user_id"], :name => "index_connections_on_user_id"
 
   create_table "event_types", :force => true do |t|
     t.string   "name"
@@ -195,9 +206,11 @@ ActiveRecord::Schema.define(:version => 20110427203544) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
+    t.string   "fb_uid"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["fb_uid"], :name => "index_users_on_fb_uid"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

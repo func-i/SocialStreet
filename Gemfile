@@ -18,6 +18,8 @@ gem 'dynamic_form', :git => "git://github.com/joelmoss/dynamic_form.git"
 
 gem 'deep_cloneable'
 
+gem 'fb_graph'
+
 #gem "meta_where"
 
 # Use unicorn as the web server
