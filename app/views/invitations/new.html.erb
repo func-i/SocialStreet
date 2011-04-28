@@ -1,0 +1,220 @@
+<style>
+  .user {
+    float: left;
+    margin-right: 5px;
+    width: 95px;
+    height: 80px;
+    border: 1px solid #EEE;
+    border-radius: 5px;
+    padding-top: 10px;
+    margin-bottom: 5px;
+
+  }
+  .user.selected {
+    background-color: #DDD;
+  }
+  .user-list {
+    width: 430px;
+    float:left;
+    border: 1px solid blue;
+    border-radius: 10px;
+    padding: 10px;
+    height: 400px;
+    overflow: scroll;
+  }
+  .selected-list {
+    width: 300px;
+    float: left;
+    margin-left: 10px;
+    border: 1px solid green;
+    border-radius: 10px;
+    padding: 10px;
+    height: 400px;
+    overflow: scroll;
+  }
+  .selected-list .user {
+    width: 100%;
+    text-align: left;
+    height: 65px;
+  }
+  .selected-list .user .avatar {
+    float: left;
+    margin-left: 10px;
+  }
+  .selected-list .user .name {
+    float: left;
+    margin-top: 5px;
+    margin-left: 10px;
+  }
+  .selected-list .user.selected {
+    background-color: #EEE;
+  }
+  .user-list .user {
+    text-align: center;
+    cursor: pointer;
+  }
+  .user-list .user p {
+    margin: auto auto;
+
+  }
+  .remove-btn {
+    display: none;
+  }
+  .selected-list .remove-btn {
+    display: block;
+    float: right;
+    margin-right: 10px;
+  }
+
+  .search-bar {
+    margin-bottom: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    width: 408px;
+    padding: 10px;
+  }
+  .search-bar input.search-field {
+    height: 14px;
+    border-radius: 10px;
+    padding: 4px;
+    width: 200px;
+  }
+
+
+
+</style>
+
+<div class="block">
+  <div class="content">
+    <h2 class="title">Invite your friends</h2>
+
+    <div class="inner">
+
+
+
+      <div class="user-searcher">
+
+        <div class="search-bar">
+          <form action="" method="GET">
+            <input type="text" class="search-field" placeholder="Name or email" />
+          </form>
+        </div>
+
+        <div class="user-list">
+          <% @connections.each do |c| %>
+            <% user = c.to_user %>
+            <div class="user" data-user-id="<%= user.id %>">
+
+              <div class="avatar"><%= image_tag user.avatar_url %></div>
+              <span class="name"><%= user.name %></span>
+              <%= link_to '[X]','#', :class=>"remove-btn" %>
+
+              <div class="clear"></div>
+              <input type="hidden" name="user_ids[]" value="<%= user.id %>"></input>
+
+
+            </div>
+          <% end %>
+          <div class="clear"></div>
+        </div>
+
+        <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "form" do  %>
+          <div class="selected-list">
+            <div class="clear"></div>
+          </div>
+        <% end %>
+
+        <div class="clear"></div>
+
+      </div>
+
+      <%= render 'shared/form_submit_button' %>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var searchURL = '<%= connections_path %>';
+  var timeout = null;
+  
+  $(function() {
+    
+    var $selectedList = $('.selected-list');
+    var $userList = $('.user-list');
+    
+    $('.user-list .user').live('click', function(e) {
+      var $this = $(this);
+      var userId = $this.data('user-id');
+      if ($this.hasClass('selected')) {
+        $this.removeClass('selected');
+        $selectedList.find('.user[data-user-id="'+userId+'"]').remove();
+      } else {
+        $this.addClass('selected');
+        $selectedList.prepend($this.clone());
+      }
+    });
+    // Need to use .live() b/c elements in selected-list are dynamically added
+    // So they may not be there at DOM ready time
+    $('.selected-list .user .remove-btn').live('click', function(e) {
+      var $user = $(this).closest('.user');
+      var userId = $user.data('user-id');
+      $user.remove();
+      $userList.find('.user[data-user-id="'+userId+'"]').removeClass('selected');
+      return false;
+    });
+
+    $('.search-bar .search-field').keyup(function(e) {
+      if (timeout) {
+        clearTimeout(timeout);
+        delete timeout;
+      }
+      var query = this.value;
+      timeout = setTimeout(function() {
+        console.log('querying: ' + query);
+        $.getJSON(searchURL, {query: query}, function(data, textStatus, jqHXR) {
+          $userList.empty();
+          $.each(data, function(i, user) {
+            var u = $('<div class="user" data-user-id="'+user.id+'">' +
+              '<div class="avatar"><img src="'+ user.avatar_url+'" alt="Avatar"></img></div>' +
+              '<span class="name">'+user.name+'</span>' +
+              '<a href="#" class="remove-btn">[X]</a>' +
+              '<div class="clear"></div>' +
+              '<input type="hidden" name="user_ids[]" value="'+user.id+'"></input>' +
+              '</div>');
+            if ($selectedList.find('.user[data-user-id="'+user.id+'"]')[0]) {
+              u.addClass('selected');
+            }
+            $userList.append(u);
+          });
+        });
+      }, 280);
+    });
+
+    $('.search-bar form').submit(function() {
+      var $input = $(this).find('input.search-field');
+      var email = $input.val();
+      if (isEmail(email)) {
+        $input.val('');
+        var u = $('<div class="user email-only">' +
+          '<div class="avatar"><img src="/images/avatar.gif" alt="Avatar"></img></div>' +
+          '<span class="name">'+email+'</span>' +
+          '<a href="#" class="remove-btn">[X]</a>' +
+          '<div class="clear"></div>' +
+          '<input type="hidden" name="emails[]" value="'+email+'"></input>' +
+          '</div>');
+        $selectedList.prepend(u);
+      }
+      return false;
+    });
+
+    $('button.button').click(function() {
+      $('form.form').submit();
+    });
+  });
+
+  function isEmail(string) {
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return reg.test(string);
+  }
+</script>

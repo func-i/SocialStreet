@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110428203218) do
+ActiveRecord::Schema.define(:version => 20110428203640) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -53,6 +53,17 @@ ActiveRecord::Schema.define(:version => 20110428203218) do
   add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
   add_index "comments", ["searchable_id"], :name => "index_comments_on_searchable_id"
 
+  create_table "connections", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "to_user_id"
+    t.integer  "strength"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "connections", ["to_user_id"], :name => "index_connections_on_to_user_id"
+  add_index "connections", ["user_id"], :name => "index_connections_on_user_id"
+
   create_table "event_types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -81,6 +92,22 @@ ActiveRecord::Schema.define(:version => 20110428203218) do
   add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"
   add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
+  create_table "invitations", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.integer  "to_user_id"
+    t.integer  "rsvp_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email"
+  end
+
+  add_index "invitations", ["event_id"], :name => "index_invitations_on_event_id"
+  add_index "invitations", ["rsvp_id"], :name => "index_invitations_on_rsvp_id"
+  add_index "invitations", ["to_user_id"], :name => "index_invitations_on_to_user_id"
+  add_index "invitations", ["user_id"], :name => "index_invitations_on_user_id"
 
   create_table "locations", :force => true do |t|
     t.string   "street"
@@ -179,9 +206,11 @@ ActiveRecord::Schema.define(:version => 20110428203218) do
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
     t.string   "comment_notification_frequency"
+    t.string   "fb_uid"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["fb_uid"], :name => "index_users_on_fb_uid"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

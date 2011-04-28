@@ -18,9 +18,15 @@ class User < ActiveRecord::Base
 
   has_many :rsvp_events, :through => :rsvps, :source => :event, :conditions => "rsvps.status = "
 
+  has_many :connections
+  has_many :connected_users, :through => :connections, :source => :to_user
+
+  has_many :invitations #
+  has_many :received_invitations, :class_name => "Invitation", :foreign_key => "to_user_id"
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me,
+    :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes, :fb_uid, :facebook_profile_picture_url
 
   default_value_for :comment_notification_frequency do
     SearchSubscription.frequencies[:immediate]
@@ -65,6 +71,10 @@ class User < ActiveRecord::Base
   def avatar_url
     # TODO: check for custom avatar image first, once it is implemented
     facebook_profile_picture_url || twitter_profile_picture_url
+  end
+
+  def fb_auth_token
+    authentications.first.fb_auth_token
   end
 
   def editable_by?(user)
