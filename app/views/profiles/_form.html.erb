@@ -88,6 +88,14 @@
       <th>None</th>
     </tr>
 
+    <tr>
+      <td>Comments</td>
+        <td><%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:immediate]%></td>
+        <td><%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:daily]%></td>
+        <td><%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:weekly]%></td>
+        <td><%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:none]%></td>
+    </tr>
+
 
     <% if @subscriptions && !@subscriptions.empty?%>
       <% form.fields_for :search_subscriptions do |builder| %>
