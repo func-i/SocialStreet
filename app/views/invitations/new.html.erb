@@ -110,6 +110,7 @@
               <%= link_to '[X]','#', :class=>"remove-btn" %>
 
               <div class="clear"></div>
+              <input type="hidden" name="user_ids[]" value="<%= user.id %>"></input>
 
 
             </div>
@@ -117,14 +118,18 @@
           <div class="clear"></div>
         </div>
 
-        <div class="selected-list">
-          <div class="clear"></div>
-        </div>
-
+        <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "form" do  %>
+          <div class="selected-list">
+            <div class="clear"></div>
+          </div>
+        <% end %>
 
         <div class="clear"></div>
 
       </div>
+
+      <%= render 'shared/form_submit_button' %>
+
     </div>
   </div>
 </div>
@@ -137,7 +142,6 @@
     
     var $selectedList = $('.selected-list');
     var $userList = $('.user-list');
-    
     
     $('.user-list .user').live('click', function(e) {
       var $this = $(this);
@@ -176,6 +180,7 @@
               '<span class="name">'+user.name+'</span>' +
               '<a href="#" class="remove-btn">[X]</a>' +
               '<div class="clear"></div>' +
+              '<input type="hidden" name="user_ids[]" value="'+user.id+'"></input>' +
               '</div>');
             if ($selectedList.find('.user[data-user-id="'+user.id+'"]')[0]) {
               u.addClass('selected');
@@ -187,15 +192,29 @@
     });
 
     $('.search-bar form').submit(function() {
-      var email = $(this).find('input.search-field').val();
-      var u = $('<div class="user email-only">' +
-              '<div class="avatar"><img src="/images/avatar.gif" alt="Avatar"></img></div>' +
-              '<span class="name">'+email+'</span>' +
-              '<a href="#" class="remove-btn">[X]</a>' +
-              '<div class="clear"></div>' +
-              '</div>');
-      $selectedList.prepend(u);
+      var $input = $(this).find('input.search-field');
+      var email = $input.val();
+      if (isEmail(email)) {
+        $input.val('');
+        var u = $('<div class="user email-only">' +
+          '<div class="avatar"><img src="/images/avatar.gif" alt="Avatar"></img></div>' +
+          '<span class="name">'+email+'</span>' +
+          '<a href="#" class="remove-btn">[X]</a>' +
+          '<div class="clear"></div>' +
+          '<input type="hidden" name="emails[]" value="'+email+'"></input>' +
+          '</div>');
+        $selectedList.prepend(u);
+      }
       return false;
     });
+
+    $('button.button').click(function() {
+      $('form.form').submit();
+    });
   });
+
+  function isEmail(string) {
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return reg.test(string);
+  }
 </script>
