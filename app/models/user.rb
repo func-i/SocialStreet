@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :search_subscriptions_attributes
 
   accepts_nested_attributes_for :search_subscriptions
 

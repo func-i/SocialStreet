@@ -75,7 +75,11 @@
   <div class ="clear"></div>
 </div>
 <div id="subscriptions" style="display:none" class="tab-content">
-  <table BORDER="1" CELLPADDING="2" CELLSPACING="2" WIDTH="500">
+  <table class="table">
+    <tr>
+    <th></th>
+    <th colspan="4"><center>Notification Frequency</center></th>
+    </tr>
     <tr>
       <th>Name</th>
       <th>Instant</th>
@@ -93,6 +97,7 @@
           <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:daily]%></td>
           <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:weekly]%></td>
           <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:none]%></td>
+          <td><%= link_to "delete", builder.object, :method => :delete, :confirm => 'Are you sure?'%></td>
         </tr>
       <%end%>
     <%end%>

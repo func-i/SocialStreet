@@ -7,9 +7,11 @@ class Searchable < ActiveRecord::Base
   has_one :event
   has_one :action
   has_one :comment
+  has_one :search_subscription
 
-  has_many :searchable_date_ranges
-  has_many :searchable_event_types
+  has_many :searchable_date_ranges, :dependent => :destroy
+  has_many :searchable_event_types, :dependent => :destroy
+
   has_many :event_types, :through => :searchable_event_types
 
   accepts_nested_attributes_for :location

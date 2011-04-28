@@ -17,5 +17,14 @@ class SearchSubscriptionsController < ApplicationController
     end
   end
 
+  def destroy
+    @search_subscription = SearchSubscription.find params[:id]
+    if @search_subscription.destroy
+      redirect_to :back
+    else
+      raise "WHAT THE F***"
+    end
+  end
+
 
 end

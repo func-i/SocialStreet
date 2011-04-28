@@ -1,7 +1,6 @@
 class SearchSubscription < ActiveRecord::Base
-
   belongs_to :user
-  belongs_to :searchable
+  belongs_to :searchable, :dependent => :destroy
 
   @@frequencies = {
     :immediate => 'Immediate',
