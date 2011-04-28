@@ -20,7 +20,11 @@ class User < ActiveRecord::Base
 
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :search_subscriptions_attributes
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes
+
+  default_value_for :comment_notification_frequency do
+    SearchSubscription.frequencies[:immediate]
+  end
 
   accepts_nested_attributes_for :search_subscriptions
 
