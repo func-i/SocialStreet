@@ -29,7 +29,6 @@ class Authentication < ActiveRecord::Base
     if facebook?
       fb = FbGraph::User.new('me', :access_token => fb_auth_token)
       fb.friends.each do |friend|
-        puts friend.identifier
         u = User.find_by_fb_uid(friend.identifier)
         u ||= User.create({
             :fb_uid => friend.identifier,
