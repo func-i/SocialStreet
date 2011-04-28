@@ -8,8 +8,8 @@ class AuthenticationsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
-#    raise auth.to_yaml
     authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
+    
     if authentication
       flash[:notice] = "Welcome back #{authentication.user.name}"
       sign_in_and_redirect(:user, authentication.user)
@@ -18,6 +18,11 @@ class AuthenticationsController < ApplicationController
       current_user.save!
       flash[:notice] = "Added #{auth['provider']} access to your account"
       redirect_to root_url # TODO: redirect to last location (check Devise docs)
+    elsif auth['provider'] == 'facebook' && user = User.find_by_fb_uid(auth['uid'])
+      user.apply_omniauth(auth)
+      user.save!
+      flash[:notice] = 'Hello and welcome to SocialStreet. We had you in our DB already.'
+      sign_in_and_redirect(:user, user)
     else
       user = User.new
       user.apply_omniauth(auth)

@@ -56,7 +56,10 @@ SocialStreet::Application.routes.draw do
   resources :comments, :only => [:create]
 
   resources :events do
-    resources :rsvps
+    resources :rsvps do 
+      resources :invitations
+    end
+
     resources :comments, :only => [:create]
   end
 
@@ -70,7 +73,7 @@ SocialStreet::Application.routes.draw do
     resources :comments
   end
 
-  resources :friendships
+  resources :connections, :only => [:index]
 
   resources :search_subscriptions
 
