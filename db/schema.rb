@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427203544) do
+ActiveRecord::Schema.define(:version => 20110428182801) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -82,13 +82,6 @@ ActiveRecord::Schema.define(:version => 20110427203544) do
   add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
-  create_table "friendships", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "friend_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "locations", :force => true do |t|
     t.string   "street"
     t.string   "city"
@@ -104,17 +97,6 @@ ActiveRecord::Schema.define(:version => 20110427203544) do
   end
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
-
-  create_table "notification_subscriptions", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "searchable_id"
-    t.string   "frequency"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "notification_subscriptions", ["searchable_id"], :name => "index_notification_subscriptions_on_searchable_id"
-  add_index "notification_subscriptions", ["user_id"], :name => "index_notification_subscriptions_on_user_id"
 
   create_table "rsvps", :force => true do |t|
     t.integer  "event_id",                         :null => false
@@ -152,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20110427203544) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "dow"
+    t.boolean  "inclusive"
   end
 
   add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"

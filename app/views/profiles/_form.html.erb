@@ -1,5 +1,6 @@
-<div id="profile_settings" class="tab-content">
-  <h3>Profile Settings</h3>
+<%= form.error_messages %>
+<div id="profile" class="tab-content">
+  <h3>Profile</h3>
 
   <div class="left">
     <%= link_to image_tag(@user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
@@ -29,48 +30,85 @@
   </div>
   <div class ="clear"></div>
 
-<!--  <div class ="right">
-    <% content_for :head do %>
-      <%= stylesheet_link_tag 'authentications' %>
-    <% end %>
+  <!--  <div class ="right">
+  <% content_for :head do %>
+    <%= stylesheet_link_tag 'authentications' %>
+  <% end %>
 
-    <% if @authentications %>
-      <% unless @authentications.empty? %>
-        <p><strong>You can sign in to this account using:</strong></p>
-        <div class="authentications">
-          <% for authentication in @authentications %>
-            <div class="authentication">
-              <%= image_tag "authicons/#{authentication.provider}_32.png", :size => "32x32" %>
-              <div class="provider"><%= authentication.provider.titleize %></div>
-              <div class="uid"><%= authentication.uid %></div>
-              <%= link_to "X", authentication, :confirm => 'Are you sure you want to remove this authentication option?', :method => :delete, :class => "remove" %>
-            </div>
-          <% end %>
-          <div class="clear"></div>
-        </div>
+  <% if @authentications %>
+    <% unless @authentications.empty? %>
+              <p><strong>You can sign in to this account using:</strong></p>
+              <div class="authentications">
+      <% for authentication in @authentications %>
+                    <div class="authentication">
+        <%= image_tag "authicons/#{authentication.provider}_32.png", :size => "32x32" %>
+                      <div class="provider"><%= authentication.provider.titleize %></div>
+                      <div class="uid"><%= authentication.uid %></div>
+        <%= link_to "X", authentication, :confirm => 'Are you sure you want to remove this authentication option?', :method => :delete, :class => "remove" %>
+                    </div>
       <% end %>
-      <p><strong>Add another service to sign in with:</strong></p>
-    <% else %>
-      <p><strong>Sign in through one of these services:</strong></p>
+                <div class="clear"></div>
+              </div>
     <% end %>
+          <p><strong>Add another service to sign in with:</strong></p>
+  <% else %>
+          <p><strong>Sign in through one of these services:</strong></p>
+  <% end %>
 
-    <a href="/auth/twitter" class="auth_provider">
-      <%= image_tag "authicons/twitter_64.png", :size => "64x64", :alt => "Twitter" %>
-      Twitter
-    </a>
-    <a href="/auth/facebook" class="auth_provider">
-      <%= image_tag "authicons/facebook_64.png", :size => "64x64", :alt => "Facebook" %>
-      Facebook
-    </a>
-    <a href="/auth/google_apps" class="auth_provider">
-      <%= image_tag "authicons/google_64.png", :size => "64x64", :alt => "Google" %>
-      Google
-    </a>
-    <a href="/auth/open_id" class="auth_provider">
-      <%= image_tag "authicons/openid_64.png", :size => "64x64", :alt => "OpenID" %>
-      OpenID
-    </a>
-  </div>-->
+      <a href="/auth/twitter" class="auth_provider">
+  <%= image_tag "authicons/twitter_64.png", :size => "64x64", :alt => "Twitter" %>
+        Twitter
+      </a>
+      <a href="/auth/facebook" class="auth_provider">
+  <%= image_tag "authicons/facebook_64.png", :size => "64x64", :alt => "Facebook" %>
+        Facebook
+      </a>
+      <a href="/auth/google_apps" class="auth_provider">
+  <%= image_tag "authicons/google_64.png", :size => "64x64", :alt => "Google" %>
+        Google
+      </a>
+      <a href="/auth/open_id" class="auth_provider">
+  <%= image_tag "authicons/openid_64.png", :size => "64x64", :alt => "OpenID" %>
+        OpenID
+      </a>
+    </div>-->
   <div class ="clear"></div>
 </div>
+<div id="subscriptions" style="display:none" class="tab-content">
+  <table BORDER="1" CELLPADDING="2" CELLSPACING="2" WIDTH="500">
+    <tr>
+      <th>Name</th>
+      <th>Instant</th>
+      <th>Daily</th>
+      <th>Weekly</th>
+      <th>None</th>
+    </tr>
 
+
+    <% if @subscriptions && !@subscriptions.empty?%>
+      <% form.fields_for :search_subscriptions do |builder| %>
+        <tr>
+          <td><%=link_to builder.object.name, explore_path(builder.object.url_params)%></td>
+          <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:immediate]%></td>
+          <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:daily]%></td>
+          <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:weekly]%></td>
+          <td><%=builder.radio_button :frequency, SearchSubscription.frequencies[:none]%></td>
+        </tr>
+      <%end%>
+    <%end%>
+  </table>
+</div>
+
+<% content_for :end_of_body do %>
+  <script>
+    $(function() {
+      $('#main ul.wat-cf > li > a').click(function(e){
+        $('.tab-content').hide();
+        $('.secondary-navigation li').removeClass('active');
+        $(this).closest('li').addClass('active');
+        $($(this).data('tab')).show();
+        return false;
+      });
+    });
+  </script>
+<% end %>

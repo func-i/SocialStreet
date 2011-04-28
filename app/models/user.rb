@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :actions
   has_many :comments
   has_many :events # events this user has created (event.user_id == my.id)
+  has_many :search_subscriptions
   
   has_many :friendships
   has_many :friends, :through => :friendships
@@ -20,6 +21,8 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name
+
+  accepts_nested_attributes_for :search_subscriptions
 
   validates :email, :uniqueness => { :allow_blank => true }
 

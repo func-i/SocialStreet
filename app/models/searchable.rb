@@ -67,7 +67,7 @@ class Searchable < ActiveRecord::Base
 
   scope :excluding_nested_actions, where("searchables.id NOT IN (SELECT searchable_id FROM actions WHERE actions.searchable_id = searchables.id AND actions.action_id IS NOT NULL)")
   # for some reason :excluding_comments scope causes a PG SQL ERROR and I don't know why, yet - KV
-#  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
+  #  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
   scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
   scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
   # called from the explore controller/action
@@ -98,7 +98,8 @@ class Searchable < ActiveRecord::Base
     if !params[:from_date].blank? || !params[:to_date].blank?
       attrs[:searchable_date_ranges_attributes] << {
         :start_date => params[:from_date].blank? ? nil : Date.parse(params[:from_date]),
-        :end_date => params[:to_date].blank? ? nil : Date.parse(params[:to_date]) 
+        :end_date => params[:to_date].blank? ? nil : Date.parse(params[:to_date]),
+        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false)
       }
     end
 
@@ -122,8 +123,36 @@ class Searchable < ActiveRecord::Base
       end
     end
 
-
     new(attrs)
+  end
+
+  def url_params
+    params = {}
+
+    #Event Types
+    params[:types] = searchable_event_types.collect {|searchable_event_type| searchable_event_type.event_type_id} unless searchable_event_types.blank?
+
+    #Location
+    if location
+      params[:location] = location.text
+      params[:radius] = location.radius
+    end
+
+    unless searchable_date_ranges.blank?
+      #Days of the week
+      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
+
+      #Date Ranges
+      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
+      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
+      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
+
+      #Time Ranges
+      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
+      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
+    end
+
+    return params
   end
 
   protected

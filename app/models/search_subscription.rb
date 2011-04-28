@@ -7,6 +7,7 @@ class SearchSubscription < ActiveRecord::Base
     :immediate => 'Immediate',
     :daily => 'Daily',
     :weekly => 'Weekly',
+    :none => 'None'
   }
   cattr_accessor :frequencies
 
@@ -19,6 +20,10 @@ class SearchSubscription < ActiveRecord::Base
     SearchSubscription.new(:searchable => searchable)
   end
 
+  def url_params   
+    self.searchable.url_params
+  end
+
   protected
 
   def self.nullable_param(params, key)
@@ -28,5 +33,4 @@ class SearchSubscription < ActiveRecord::Base
   def self.day_selected?(params, day)
     params[:days] && params[:days].include?(day.to_s)
   end
-
 end

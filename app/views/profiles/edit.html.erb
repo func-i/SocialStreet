@@ -1,6 +1,11 @@
 <div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><a href="#profile" data-tab="#profile">Profile</a></li>
+      <li><a href="#subscriptions" data-tab="#subscriptions">Subscriptions</a></li>
+    </ul>
+  </div>
   <div class="content">
-    <h2 class="title"></h2>
     <div class="inner">
       <%= form_for @user, :url => profile_path, :html => {:class => "form"} do |form| %>
         <%= render form %>

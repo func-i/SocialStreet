@@ -20,6 +20,7 @@ class ProfilesController < ApplicationController
   
   def edit
     @authentications = @user.authentications
+    @subscriptions = @user.search_subscriptions
   end
 
   def update
