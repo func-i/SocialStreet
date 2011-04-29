@@ -110,7 +110,7 @@
               <%= link_to '[X]','#', :class=>"remove-btn" %>
 
               <div class="clear"></div>
-              <input type="hidden" name="user_ids[]" value="<%= user.id %>"></input>
+              <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
 
 
             </div>
@@ -142,6 +142,7 @@
     
     var $selectedList = $('.selected-list');
     var $userList = $('.user-list');
+    var lastQuery = '';
     
     $('.user-list .user').live('click', function(e) {
       var $this = $(this);
@@ -170,38 +171,42 @@
         delete timeout;
       }
       var query = this.value;
-      timeout = setTimeout(function() {
-        console.log('querying: ' + query);
-        $.getJSON(searchURL, {query: query}, function(data, textStatus, jqHXR) {
-          $userList.empty();
-          $.each(data, function(i, user) {
-            var u = $('<div class="user" data-user-id="'+user.id+'">' +
-              '<div class="avatar"><img src="'+ user.avatar_url+'" alt="Avatar"></img></div>' +
-              '<span class="name">'+user.name+'</span>' +
-              '<a href="#" class="remove-btn">[X]</a>' +
-              '<div class="clear"></div>' +
-              '<input type="hidden" name="user_ids[]" value="'+user.id+'"></input>' +
-              '</div>');
-            if ($selectedList.find('.user[data-user-id="'+user.id+'"]')[0]) {
-              u.addClass('selected');
-            }
-            $userList.append(u);
+      if (lastQuery != query) {
+        timeout = setTimeout(function() {
+          console.log('querying: ' + query);
+          lastQuery = query;
+          $.getJSON(searchURL, {query: query}, function(data, textStatus, jqHXR) {
+            $userList.empty();
+            $.each(data, function(i, user) {
+              var u = $('<div class="user" data-user-id="'+user.id+'">' +
+                '<div class="avatar"><img src="'+ user.avatar_url+'" alt="Avatar"></img></div>' +
+                '<span class="name">'+user.name+'</span>' +
+                '<a href="#" class="remove-btn">[X]</a>' +
+                '<div class="clear"></div>' +
+                '<input type="hidden" name="user_ids[]" value="'+user.id+'"/>' +
+                '</div>');
+              if ($selectedList.find('.user[data-user-id="'+user.id+'"]')[0]) {
+                u.addClass('selected');
+              }
+              $userList.append(u);
+            });
           });
-        });
-      }, 280);
+        }, 280);
+      }
     });
 
     $('.search-bar form').submit(function() {
       var $input = $(this).find('input.search-field');
       var email = $input.val();
-      if (isEmail(email)) {
+      // make sure it's a valid email that was not already included in the list
+      if (isEmail(email) && $selectedList.find('input[value="'+email+'"]').size() == 0) {
         $input.val('');
         var u = $('<div class="user email-only">' +
           '<div class="avatar"><img src="/images/avatar.gif" alt="Avatar"></img></div>' +
           '<span class="name">'+email+'</span>' +
           '<a href="#" class="remove-btn">[X]</a>' +
           '<div class="clear"></div>' +
-          '<input type="hidden" name="emails[]" value="'+email+'"></input>' +
+          '<input type="hidden" name="emails[]" value="'+email+'"/>' +
           '</div>');
         $selectedList.prepend(u);
       }
