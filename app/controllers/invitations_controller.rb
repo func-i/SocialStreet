@@ -7,12 +7,13 @@ class InvitationsController < ApplicationController
     @event = Event.find params[:event_id].to_i
     @rsvp = @event.rsvps.find params[:rsvp_id].to_i
     @connections = current_user.connections.most_relevant_first.limit(30).all
+    @invitations = @rsvp.invitations
   end
 
   # Note: It's actually creating multiple invitations here
   def create
     @event = Event.find params[:event_id].to_i
-    @rsvp = @event.rsvps.find params[:rsvp_id].to_i
+    @rsvp = current_user.rsvps.for_event(@event).find params[:rsvp_id].to_i
     
     params[:emails].each do |email|
       if user = User.find_by_email(email)
@@ -28,8 +29,9 @@ class InvitationsController < ApplicationController
       end
     end unless params[:user_ids].blank?
 
+    num_invited = (params[:user_ids] || []).size + (params[:emails] || []).size
     # TODO: Handle validation issues with non-unique invitations (maybe?)
-    redirect_to @event, :notice => "You've RSVP'd and invited your friends. [[Link to modify invitations]]"
+    redirect_to @event, :notice => "You've invited #{num_invited} of your friends to this event. [[Link to modify invitations]]"
   end
 
 end

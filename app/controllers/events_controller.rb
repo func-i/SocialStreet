@@ -33,7 +33,7 @@ class EventsController < ApplicationController
 
   def create
     if create_or_edit_event(params, :create)
-      redirect_to @event
+      redirect_to [:new, @event, @event.rsvps.first, :invitation], :notice => "Your event is created. You can invite some of your friends below."
     else
       prepare_for_form
       render :new

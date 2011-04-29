@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
       #User has stored a redirect path for use after authentication
       if session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'
         if create_or_edit_event(session[:stored_redirect][:params], :create)
-          return_path = @event
+          return_path = [:new, @event, @event.rsvps.first, :invitation] # step2 - invite friends to new event - KV
         else
           session[:stored_params] = session[:stored_redirect][:params][:event]
           return_path = new_event_path

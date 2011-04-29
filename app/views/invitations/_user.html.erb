@@ -1,0 +1,14 @@
+<% pre_existing ||= false  %>
+
+<div class="user <%= 'selected cannot-remove' if invited?(user) %>" data-user-id="<%= user.id %>">
+
+  <div class="avatar"><%= image_tag user.avatar_url %></div>
+  <span class="name"><%= user.name %></span>
+  <%= link_to '[X]','#', :class=>"remove-btn" unless pre_existing %>
+
+  <div class="clear"></div>
+  <% unless pre_existing %>
+    <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
+  <% end %>
+
+</div>

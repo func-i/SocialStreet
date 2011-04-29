@@ -12,6 +12,7 @@ class Rsvp < ActiveRecord::Base
   belongs_to :event
   
   has_many :actions, :as => :reference
+  has_many :invitations # invitations sent out by the user of this rsvp also link to this rsvp
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }
   validate :validate_event_status

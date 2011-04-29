@@ -103,23 +103,16 @@
         <div class="user-list">
           <% @connections.each do |c| %>
             <% user = c.to_user %>
-            <div class="user" data-user-id="<%= user.id %>">
-
-              <div class="avatar"><%= image_tag user.avatar_url %></div>
-              <span class="name"><%= user.name %></span>
-              <%= link_to '[X]','#', :class=>"remove-btn" %>
-
-              <div class="clear"></div>
-              <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
-
-
-            </div>
+            <%= render 'user', :user => user %>
           <% end %>
           <div class="clear"></div>
         </div>
 
         <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "form" do  %>
           <div class="selected-list">
+            <% @invitations.each do |i| %>
+              <%= render 'invitation', :invitation => i %>
+            <% end %>
             <div class="clear"></div>
           </div>
         <% end %>
@@ -147,10 +140,11 @@
     $('.user-list .user').live('click', function(e) {
       var $this = $(this);
       var userId = $this.data('user-id');
-      if ($this.hasClass('selected')) {
+      // make sure it's removeable before removing the invite
+      if ($this.hasClass('selected') && !$this.hasClass('cannot-remove')) {
         $this.removeClass('selected');
         $selectedList.find('.user[data-user-id="'+userId+'"]').remove();
-      } else {
+      } else if (!$this.hasClass('selected')) {
         $this.addClass('selected');
         $selectedList.prepend($this.clone());
       }
