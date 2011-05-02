@@ -10,6 +10,7 @@ class ExploreController < ApplicationController
 
     # Use the query params to find events (ideally this should be ONE SQL query with pagination)
     find_searchables
+    find_overlapping_subscriptions
   end
 
   protected
@@ -18,18 +19,33 @@ class ExploreController < ApplicationController
     @event_types ||= EventType.order('name').all
   end
 
+  def find_overlapping_subscriptions
+    @overlapping_subscriptions = Searchable.with_only_subscriptions
+
+    @overlapping_subscriptions = apply_filter(@overlapping_subscriptions)
+
+    @overlapping_subscriptions = @overlapping_subscriptions.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+    
+  end
+
   def find_searchables
     @searchables = Searchable.with_excludes_for_explore
 
+    @searchables = apply_filter(@searchables)
+
+    @searchables = @searchables.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+  end
+
+  def apply_filter(search_object)
     radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
-    @searchables = @searchables.with_event_types(params[:types]) unless params[:types].blank?
+    search_object = search_object.with_event_types(params[:types]) unless params[:types].blank?
 
-    @searchables = @searchables.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
+    search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 
     # to_time and from_time are in integer (minute) format. 1439 = 11:59 PM (the day has 1440 minutes) - KV
-    @searchables = @searchables.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > 0
-    @searchables = @searchables.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < 1439
+    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > 0
+    search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < 1439
 
     # GEO LOCATION SEARCHING
     unless params[:location].blank?
@@ -39,12 +55,12 @@ class ExploreController < ApplicationController
       if !params[:days].blank? || !params[:from_date].blank? || !params[:to_date].blank? ||
           (!params[:to_time].blank? && params[:to_time].to_i < 1439) ||
           (!params[:from_time].blank? && params[:from_time].to_i > 0)
-        group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',') 
+        group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',')
       end
-      @searchables = @searchables.near(params[:location], radius, :select => "searchables.*").group(group_by)
+      search_object = search_object.near(params[:location], radius, :select => "searchables.*").group(group_by)
     end
 
-    @searchables = @searchables.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+    return search_object
   end
 
   def nav_state

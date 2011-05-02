@@ -2,7 +2,7 @@
   <div class="left">
     <%= link_to(image_tag(event_image(event), :size => "50x50", :class => "avatar"), event) %>
     <br/>
-    <%# For now, events always have a type (I think) so this || is unncessary, but just in case (Yes I know this is bad practice) - KV %>
+<%# For now, events always have a type (I think) so this || is unncessary, but just in case (Yes I know this is bad practice) - KV %>
     <center><%= event.event_type.try(:name) || "Unknown Type" %></center>
   </div>
   <div class="item">
@@ -31,12 +31,23 @@
       <%end%>
 
       <br/><br/>
-      
-      <em>X</em> Connections <br/>
+
       <em>
         <b><%=event.num_attending_or_maybe_attending%></b><%if event.maximum_attendees%>/<%=event.maximum_attendees%><%end%>
       </em> Attending
       <%if(event.number_of_attendees_needed && event.number_of_attendees_needed>0)%>...need <%=event.number_of_attendees_needed%> more people<%end%>
+
+      <br/>
+
+      <%attendees = event.attending_users.connected_with(current_user)%>
+      <%if attendees.size > 0%>
+        <!--<em> <%= pluralize(attendees.size, "Connection") %> </em><br/> -->
+        Connections:<br/>
+        <%for attendee in attendees.limit(5)%>
+          <%= link_to image_tag(attendee.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant", :title => attendee.name, :size=> "30x30"), profile_path(attendee) %>
+        <%end%>
+      <%end %>
+
     </div>
     <div class="clear"></div>
   </div>

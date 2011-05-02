@@ -8,6 +8,8 @@ class Event < ActiveRecord::Base
   belongs_to :action # if created through an activity stream
   
   has_many :rsvps
+  has_many :rsvp_users, :through => :rsvps, :source => :user
+
   has_many :actions
   has_many :comments, :as => :commentable
   
@@ -61,6 +63,10 @@ class Event < ActiveRecord::Base
   # Stub
   def custom_image?
     false # for now
+  end
+
+  def attending_users
+    User.attending_event(self).where("rsvps.status IN (?)", Rsvp::statuses.except(:not_attending).values)
   end
 
   def num_attending

@@ -11,14 +11,10 @@ class User < ActiveRecord::Base
   has_many :events # events this user has created (event.user_id == my.id)
   has_many :search_subscriptions
   
-  has_many :friendships
-  has_many :friends, :through => :friendships
-  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
-  has_many :inverse_friends, :through => :inverse_friendships, :source => :user
-
   has_many :rsvp_events, :through => :rsvps, :source => :event, :conditions => "rsvps.status = "
 
   has_many :connections
+  has_many :incoming_connections, :class_name => "Connection", :foreign_key => "to_user_id"
   has_many :connected_users, :through => :connections, :source => :to_user
 
   has_many :invitations #
@@ -35,6 +31,18 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :search_subscriptions
 
   validates :email, :uniqueness => { :allow_blank => true }
+
+  scope :connected_with, lambda {|user|
+    includes(:incoming_connections).where("connections.user_id = ?", user.id)
+  }
+  scope :attending_event, lambda {|event|
+    includes(:rsvps).where("rsvps.event_id = ?", event.id)
+  }
+
+  # RSVP: event.rsvps.attending.connected_with(me).includes(:user)
+  # users = event.attending_users.connected_with(user)
+  #user.connected_with(event.attending_users)
+
 
   def apply_omniauth(omniauth)
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
