@@ -74,7 +74,8 @@ class Searchable < ActiveRecord::Base
   scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
   # called from the explore controller/action
   scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_comments
-  
+
+  scope :with_only_subscriptions, joins(:search_subscription)
 
   def location_address
     location.geocodable_address if location
