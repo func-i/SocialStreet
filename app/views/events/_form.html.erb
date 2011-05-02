@@ -17,11 +17,14 @@
 
     <%= form.fields_for :searchable do |searchable_fields| %>
       <%= searchable_fields.fields_for :location do |location_fields| %>
-        <%= location_fields.text_field :text , :class => "text_field" %>
+        <%= location_fields.text_field :text , :class => "text_field", :style=>"width:948px;", :id => "location-name-field" %>
+        <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
+        <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
       <% end %>
     <% end %>
+    <div id="event-location-map" style="width:950px;height:300px;"></div>
 
-    <span class="description">Ideally a geocodeable location</span>
+
   </div>
   <div class="group">
     <%= form.fields_for :searchable do |searchable_fields| %>
@@ -65,7 +68,7 @@
 <div id="attendees" style="display:none" class="tab-content">
   <div class="group">
     <label class="label" for="post_title">Minimum Attendees</label>
-    <%= form.text_field :minimum_attendees, :class => "text_field"  %>
+<%= form.text_field :minimum_attendees, :class => "text_field"  %>
     <br/>
     <span class="description">Minimum number of people needed for the event to happen</span>
   </div>
@@ -73,13 +76,13 @@
 
   <div class="group">
     <label class="label">Maximum Attendees</label>
-    <%= form.text_field :maximum_attendees, :class => "text_field"  %>
+<%= form.text_field :maximum_attendees, :class => "text_field"  %>
     <span class="description">Maximum number of people that can attend</span>
   </div>
 
   <div class="group">
     <label class="label">Allow Guests?</label>
-    <%= form.check_box :guests_allowed %>
+<%= form.check_box :guests_allowed %>
     <span class="description">Select this to allow attendees to bring guests</span>
   </div>
 </div>
@@ -87,7 +90,7 @@
 <div id="cost" style="display:none" class="tab-content">
   <div class="group">
     <label class="label">Cost (in Dollars)</label>
-    <%= form.text_field :cost_in_dollars, :class => "text_field"  %>
+<%= form.text_field :cost_in_dollars, :class => "text_field"  %>
     <span class="description">Cost (in $CA). Set to 0 for free. Default: 0</span>
   </div>
 </div>
@@ -106,5 +109,73 @@
         return false;
       });
     });
+  </script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <script>
+    var geocoder;
+    var map;
+    var infoWindow;
+    var markers = [];
+    $(function() {
+      infoWindow = new google.maps.InfoWindow();
+      geocoder = new google.maps.Geocoder();
+      var latlng = new google.maps.LatLng(-34.397, 150.644);
+      var myOptions = {
+        zoom: 8,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
+    });
+
+    function searchLocations(e) {
+      console.log(e);
+      var loc = e.target.value;
+      geocoder.geocode( { 'address': loc }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          $.each(markers, function(index, marker) {
+            marker.setMap(null);
+          });
+          markers = [];
+          $.each(results, function(index, result) {
+            var marker = new google.maps.Marker({
+              map: map,
+              position: result.geometry.location,
+              title: result.formatted_address
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              selectMarker(marker, true);
+            });
+            markers.push(marker);
+          });
+          selectMarker(markers[0], false);
+        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+          alert("No results found, please drop a pin to tell us where this is");
+        } else {
+          alert("Geocode was not successful for the following reason: " + status);
+        }
+      });
+      return false;
+    }
+
+    function selectMarker(marker, changeInputField) {
+      infoWindow.setContent(marker.title);
+      infoWindow.open(map, marker);
+      var latlng = marker.getPosition();
+      $('#location-lat-field').val(latlng.lat());
+      $('#location-lng-field').val(latlng.lng());
+      if (changeInputField) $('#location-name-field').val(marker.title);
+    }
+    // don't allow enter to submit form
+    
+    $('#location-name-field').keydown(function(e) {
+      if (e.keyCode == 13) {
+        e.stopPropagation();
+        searchLocations(e);
+        return false;
+      }
+      return true;
+    });
+    $('#location-name-field').change(searchLocations);
   </script>
 <% end %>

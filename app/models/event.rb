@@ -166,7 +166,7 @@ class Event < ActiveRecord::Base
   def set_default_title
     if self.name.blank?
       self.name = event_type ? event_type.name : "Something"
-      self.name << (" @ " + (location_address ? location_address : "Somewhere"))
+      self.name << (" @ " + (location_address ? location_address.to_s.split(",").first.strip : "Somewhere"))
       self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
     end
   end
