@@ -117,6 +117,7 @@
     var infoWindow;
     var markers = [];
     var dropPinState = false; // true if button to drop pins is selected
+    var selectedMarker = null;
     // for testing only;
     var chicago = new google.maps.LatLng(41.850033, -87.6500523);
     $(function() {
@@ -157,6 +158,8 @@
         selectMarker(marker, true);
       });
       markers.push(marker);
+
+      selectMarker(marker);
 
       //map.setCenter(location);
     }
@@ -222,22 +225,32 @@
       return false;
     }
 
+    function updateMarkerTitle() {
+
+    }
+
     function selectMarker(marker, changeInputField) {
-      if (marker.getAnimation() != null) {
-        marker.setAnimation(null);
-      } else {
+      selectedMarker = marker;
+      
+      if (marker.getAnimation() == null) {
         marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {
           if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
         }, 200);
       }
-      infoWindow.setContent(marker.title);
+
+      var html = "<table>" +
+        "Name: <input type='text' id='marker-name-field' value='"+marker.title+"'/>";
+
+      infoWindow.setContent(html);
       infoWindow.open(map, marker);
+
       var latlng = marker.getPosition();
       $('#location-lat-field').val(latlng.lat());
       $('#location-lng-field').val(latlng.lng());
       if (changeInputField) $('#location-name-field').val(marker.title);
     }
+
     // don't allow enter to submit form
     
     $('#location-name-field').keydown(function(e) {
@@ -247,6 +260,11 @@
         return false;
       }
       return true;
+    });
+
+    $('#marker-name-field').live('keyup', function(e) {
+      $('#location-name-field').val(this.value);
+      selectedMarker.setTitle(this.value);
     });
     $('#location-name-field').change(searchLocations);
   </script>
