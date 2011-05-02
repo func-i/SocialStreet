@@ -1,3 +1,7 @@
+if Rails.env.development?
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+end
+
 # Since we don't care to use the secrets.yml on production which is Heroku, we hard code those values here
 if Rails.env == 'production'
   TWITTER_APP_CONSUMER_KEY = 'Uqgqk2dtnjMNgIIV7QXfnA'
@@ -14,6 +18,6 @@ else
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :twitter, TWITTER_APP_CONSUMER_KEY, TWITTER_APP_CONSUMER_SECRET
-  provider :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
+  provider :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, {:client_options => {:ssl => {:ca_path => "/etc/ssl/certs"}}}
   #  provider :linked_in, 'CONSUMER_KEY', 'CONSUMER_SECRET'
 end
