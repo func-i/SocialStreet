@@ -1,6 +1,4 @@
 SocialStreet::Application.routes.draw do
-  get "dashboard/index"
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -77,7 +75,8 @@ SocialStreet::Application.routes.draw do
 
   resource :dashboard, :only => [:show], :controller => :dashboard
 
-  resources :connections, :only => [:index]
+  resources :connections, :only => [:index] # for AJAX lookup
+  resources :locations, :only => [:index] # for AJAX lookup 
 
   resources :search_subscriptions
 

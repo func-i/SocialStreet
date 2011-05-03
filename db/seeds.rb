@@ -43,7 +43,8 @@ Event.create!(
         :text => "SocialStreet Head Office",
         :street => "373 Front Street W \#1701",
         :city => "Toronto",
-        :state => "ON"
+        :state => "ON",
+        :user_id => user.id
       }
     }
   })
@@ -68,7 +69,8 @@ Event.create!(
         :street => "628 Fleet Street \#1601",
         :city => "Toronto",
         :state => "ON",
-        :postal => "M5V 1A8"
+        :postal => "M5V 1A8",
+        :user_id => user.id
       }
     }
   })
@@ -93,7 +95,8 @@ Event.create!(
         :street => "",
         :city => "Mississauga",
         :state => "ON",
-        :postal => "L5L3M1"
+        :postal => "L5L3M1",
+        :user_id => user.id
       }
     }
   })
@@ -118,7 +121,8 @@ Event.create!(
         :street => "",
         :city => "Toronto",
         :state => "ON",
-        :postal => "M5V1C4"
+        :postal => "M5V1C4",
+        :user_id => user.id
       }
     }
   })
