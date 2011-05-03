@@ -1,7 +1,7 @@
 class Location < ActiveRecord::Base
 
   geocoded_by :geocodable_address
-  after_validation :geocode, :if => :geocodable_address_changed?
+  after_validation :geocode, :if => :should_geocode?
 
   has_many :searchables
 
@@ -39,6 +39,13 @@ class Location < ActiveRecord::Base
     text_changed? || street_changed? || city_changed? || state_changed? || country_changed? || postal_changed?
   end
 
-
+  def should_geocode?
+    # only if lat/lng not provided by user/form
+    if new_record? && !geo_located?
+      return true
+    else
+      return geocodable_address_changed? && !latitude_changed? && !longitude_changed?
+    end
+  end
 
 end
