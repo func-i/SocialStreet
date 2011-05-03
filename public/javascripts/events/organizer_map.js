@@ -4,6 +4,8 @@ var infoWindow;
 var markers = [];
 var dropPinState = false; // true if button to drop pins is selected
 var selectedMarker = null;
+var controlUI = null;
+
 // for testing only;
 var chicago = new google.maps.LatLng(41.850033, -87.6500523);
 $(function() {
@@ -25,10 +27,16 @@ $(function() {
 
   google.maps.event.addListener(map, 'click', function(event) {
     if (dropPinState) {
+      disableDropPinState();
       placeMarker(event.latLng, $('#location-name-field').val());
     }
   });
 });
+
+function disableDropPinState() {
+  dropPinState = false;
+  controlUI.style.backgroundColor = 'white';
+}
 
 function placeMarker(location, title) {
 
@@ -58,7 +66,7 @@ function DropPinControl(controlDiv, map) {
   controlDiv.style.padding = '5px';
 
   // Set CSS for the control border
-  var controlUI = document.createElement('DIV');
+  controlUI = document.createElement('DIV');
   controlUI.style.backgroundColor = 'white';
   controlUI.style.borderStyle = 'solid';
   controlUI.style.borderWidth = '2px';
@@ -79,8 +87,7 @@ function DropPinControl(controlDiv, map) {
   // Setup the click event listeners: simply set the map to Chicago
   google.maps.event.addDomListener(controlUI, 'click', function() {
     if (dropPinState) {
-      dropPinState = false;
-      controlUI.style.backgroundColor = 'white';
+      disableDropPinState();
     } else {
       dropPinState = true;
       controlUI.style.backgroundColor = '#9999DD';
@@ -137,6 +144,7 @@ function selectMarker(marker, changeInputField) {
   $('#location-lat-field').val(latlng.lat());
   $('#location-lng-field').val(latlng.lng());
   if (changeInputField) $('#location-name-field').val(marker.title);
+  setTimeout(function() { $('#marker-name-field').focus(); }, 100);
 }
 
 // don't allow enter to submit form
@@ -150,8 +158,15 @@ $('#location-name-field').keydown(function(e) {
   return true;
 });
 
+
 $('#marker-name-field').live('keyup', function(e) {
   $('#location-name-field').val(this.value);
   selectedMarker.setTitle(this.value);
+  return true;
+}).live('keydown', function(e) {
+  if (e.keyCode == 13) {
+    e.stopPropagation();
+    return false;
+  }
 });
 $('#location-name-field').change(searchLocations);
