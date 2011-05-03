@@ -1,6 +1,6 @@
-<%if @passed_events && !@passed_events.empty?%>
+<%if @feedback_records && !@feedback_records.empty?%>
   <div class="block">
-    <%@passed_events.each do |record|%>
+    <%@feedback_records.each do |record|%>
       <%= render 'feedback_record', :record => record%>
     <%end%>
   </div>

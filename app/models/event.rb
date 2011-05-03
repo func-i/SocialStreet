@@ -26,7 +26,7 @@ class Event < ActiveRecord::Base
   validates :minimum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
   validates :maximum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 1, :allow_blank => true }
   validates :event_type, :presence => true
-  validate :valid_dates
+  #validate :valid_dates
   validate :valid_maximum_attendees
 
   default_value_for :guests_allowed, true
@@ -167,7 +167,7 @@ class Event < ActiveRecord::Base
   def starts_at # assuming non recurring events, for now
     searchable.searchable_date_ranges.first.try :starts_at
   end
-  
+
   def finishes_at  # assuming non recurring events, for now
     searchable.searchable_date_ranges.first.try :ends_at
   end
@@ -183,9 +183,9 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def valid_dates
-    errors.add :finishes_at, 'must be after the event starts' if finishes_at && finishes_at <= starts_at
-  end
+#  def valid_dates
+#    errors.add :finishes_at, 'must be after the event starts' if finishes_at && finishes_at <= starts_at
+#  end
   def valid_maximum_attendees
     if minimum_attendees? && maximum_attendees? && maximum_attendees < minimum_attendees
       errors.add :maximum_attendees, 'must be greater than or equal to the minimum'
