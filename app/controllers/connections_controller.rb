@@ -6,7 +6,7 @@ class ConnectionsController < ApplicationController
     render :json => @connections.collect {|c| {
         :id => c.to_user.id,
         :name => c.to_user.name,
-        :avatar_url => c.to_user.avatar_url,
+        :avatar_url => c.to_user.avatar_url
       }
     }
   end

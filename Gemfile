@@ -20,6 +20,10 @@ gem 'deep_cloneable'
 
 gem 'fb_graph'
 
+group :development do
+  gem 'thin'
+end
+
 #gem "meta_where"
 
 # Use unicorn as the web server

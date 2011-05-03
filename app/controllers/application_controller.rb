@@ -90,6 +90,7 @@ class ApplicationController < ActionController::Base
     end
 
     @event.attributes = params[:event]
+    @event.location.user = current_user if @event.location
 
     return @event.save
   end

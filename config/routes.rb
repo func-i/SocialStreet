@@ -73,9 +73,12 @@ SocialStreet::Application.routes.draw do
     resources :comments
   end
 
-  resources :connections, :only => [:index]
+  resources :connections, :only => [:index] # for AJAX lookup
+  resources :locations, :only => [:index] # for AJAX lookup 
 
   resources :search_subscriptions
+
+
 
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
 

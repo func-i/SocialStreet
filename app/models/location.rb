@@ -1,9 +1,12 @@
 class Location < ActiveRecord::Base
 
+  make_searchable :fields => %w{locations.text}
+
   geocoded_by :geocodable_address
   after_validation :geocode, :if => :should_geocode?
 
   has_many :searchables
+  belongs_to :user
 
   validates :text,    :length => { :maximum => 200 }
   validates :text,    :presence => true, :unless => :has_geocodable_address?
@@ -13,6 +16,14 @@ class Location < ActiveRecord::Base
   validates :country, :length => { :maximum => 30 }
   validates :postal,  :length => { :maximum => 10 }
 
+  # Search for locations by relevance for user
+  scope :searched_by, lambda { |user, query, near, radius|
+    with_keywords(query).
+      near("#{near.first.to_s},#{near.last.to_s}", radius).
+      order("(CASE #{"WHEN locations.user_id = #{user.id} THEN 2" if user} WHEN
+        (locations.system IS NOT NULL AND locations.system = true) THEN 1 ELSE 0 END) DESC, distance DESC")
+  }
+  
   # Not the most human readable, so only used for geocoding services
   def geocodable_address
     if has_geocodable_address?

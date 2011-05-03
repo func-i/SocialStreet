@@ -168,7 +168,6 @@ class Event < ActiveRecord::Base
   
   protected
 
-  
   def set_default_title
     if self.name.blank?
       self.name = event_type ? event_type.name : "Something"

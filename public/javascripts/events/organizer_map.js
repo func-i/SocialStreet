@@ -112,7 +112,16 @@ function searchLocations(e) {
       });
       selectMarker(markers[0], false);
     } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-      alert("No results found, please drop a pin to tell us where this is");
+      var lat = map.getCenter().lat(), lng = map.getCenter().lng();
+      $.getJSON(locationSearchURL, {query: loc, lat: lat, lng: lng, radius: 50}, function(data, textStatus, jqHXR) {
+        if (data.length > 0) {
+          $.each(data, function(index, result) {
+          placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
+        });
+        } else {
+          alert("No results found, please drop a pin to tell us where this is");
+        }
+      });
     } else {
       alert("Geocode was not successful for the following reason: " + status);
     }
