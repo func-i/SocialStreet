@@ -21,6 +21,7 @@ class ProfilesController < ApplicationController
   def edit
     @authentications = @user.authentications
     @subscriptions = @user.search_subscriptions
+    @events_where_administrator = Event.administered_by_user(current_user).upcoming.all
   end
 
   def update

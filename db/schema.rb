@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110428203640) do
+ActiveRecord::Schema.define(:version => 20110503142755) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -92,6 +92,13 @@ ActiveRecord::Schema.define(:version => 20110428203640) do
   add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"
   add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
+  create_table "feedbacks", :force => true do |t|
+    t.integer  "rsvp_id"
+    t.boolean  "responded"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "invitations", :force => true do |t|
     t.integer  "event_id"
