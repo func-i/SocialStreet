@@ -113,11 +113,15 @@
 </div>
 <div id="events" style="display:none" class="tab-content">
   <table class="table">
+    <tr>
+      <th>Administered Events</th>
+    </tr>
 
     <%if @events_where_administrator && !@events_where_administrator.empty?%>
       <%@events_where_administrator.each do |event|%>
         <tr>
-          <td><% link_to event.name, event%></td>
+          <td><%= link_to event.name, event%></td>
+          <td><%= link_to "Edit Event", [:edit, event], :class => "button" %></td>
         </tr>
       <%end%>
     <%end%>
