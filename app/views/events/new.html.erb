@@ -13,6 +13,12 @@
 
         <%= render form %>
         <%= render 'shared/form_submit_button' %>
+
+        <%if @event.id != nil && @event.user == current_user%>
+          <div class="left">
+            <%= link_to "Cancel Event", @event, :method => :delete, :confirm => 'Are you sure?'%>
+          </div>
+        <%end%>
       <% end %>
     </div>
   </div>

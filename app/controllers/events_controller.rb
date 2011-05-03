@@ -54,6 +54,17 @@ class EventsController < ApplicationController
     end
   end
 
+  def destroy
+    @event = Event.find params[:id]
+    if @event.destroy
+      #TODO - send emails to everyone
+      redirect_to :root
+    else
+      raise "WHAT THE F***"
+    end
+  end
+
+
   protected
 
   def store_event_create
