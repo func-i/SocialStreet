@@ -1,0 +1,45 @@
+<%if @passed_events && !@passed_events.empty?%>
+  <div class="block">
+    <%@passed_events.each do |record|%>
+      <%= render 'feedback_record', :record => record%>
+    <%end%>
+  </div>
+<%end%>
+<div class="block">
+  SUGGESTED/FEATURED EVENTS
+</div>
+
+<div class="block">
+  FEED
+</div>
+
+<% content_for :sidebar do %>
+
+  <%if @upcoming_events && !@upcoming_events.empty?%>
+    <div class="block notice">
+      <h4>Upcoming</h4>
+      <% @upcoming_events.each do |event|  %>
+        <div>
+          <strong><%= link_to event.name, event %></strong><br/>
+        </div>
+
+        <div>
+          <%=display_date_time(event.starts_at)%>
+        </div>
+        <br/>
+      <%end%>
+    </div>
+  <%end%>
+
+  <%if @invitations && !@invitations.empty?%>
+    <div class="block notice">
+      <h4>Invitations</h4>
+      <% @invitations.each do |invitation|  %>
+        <%=invitation.user%>
+        <br/>
+      <%end%>
+
+    </div>
+  <%end%>
+
+<% end %>

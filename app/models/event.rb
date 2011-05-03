@@ -37,8 +37,14 @@ class Event < ActiveRecord::Base
   }
   scope :upcoming, lambda {
     includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at > ?", Time.zone.now)
-    #joins(:searchable) & Searchable.on_or_after_date(Time.zone.now)
   }
+  scope :passed, lambda {
+    includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at < ?", Time.zone.now)
+  }
+  scope :administered_by_user, lambda {|user|
+    includes(:rsvps).where({ :rsvps => {:user_id => user.id, :administrator => true }})
+  }
+
   # SELECT xyz FROM events JOIN dateranges ON  dr.event_id = e.id WHERE dr.x = 1 OR dr.y = 1
 
   #  def exclude_end_date

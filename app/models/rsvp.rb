@@ -1,5 +1,6 @@
 class Rsvp < ActiveRecord::Base
   before_save :set_is_waiting
+  before_save :create_feedback
 
   @@statuses = {
     :attending => 'Attending',
@@ -13,6 +14,7 @@ class Rsvp < ActiveRecord::Base
   
   has_many :actions, :as => :reference
   has_many :invitations # invitations sent out by the user of this rsvp also link to this rsvp
+  has_one :feedback
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }
   validate :validate_event_status
@@ -56,4 +58,28 @@ class Rsvp < ActiveRecord::Base
     end
 
   end
+
+  def create_feedback
+    if self.status == Rsvp.statuses[:attending] || self.status == Rsvp.statuses[:maybe_attending]
+      if self.feedback
+        return
+      else
+        #Create feedback record
+        self.feedback = Feedback.new()
+
+        if self.feedback.save
+          return
+        else
+          return
+        end
+      end
+    else
+      if self.feedback && !self.feedback.responded?
+        self.feedback.destroy
+      else
+        return
+      end
+    end
+  end
+
 end
