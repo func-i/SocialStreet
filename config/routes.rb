@@ -60,6 +60,7 @@ SocialStreet::Application.routes.draw do
       resources :invitations
     end
 
+    resources :administrators
     resources :comments, :only => [:create]
   end
 

@@ -28,22 +28,6 @@
     <%= link_to image_tag(@user.avatar_url || 'web-app-theme/avatar.png'), '#' %>
     <br/>
     <center><b><%= @user.name %></b></center>
-
-    <%if @user_profile_facebook && current_user != @user && !current_user.friendships.by_friend(@user).first%>
-      <form target="_blank" action="http://www.facebook.com/addfriend.php">
-        <input name="id" type="hidden" value="<%=@user_profile_facebook.uid%>"/>
-        <input type="image" value="Connect with me on Facebook!" src="http://www.bloganol.com/wp-content/uploads/2010/03/addmefb.png" style="width:111px;height:22px;margin:0px;padding:0px;" />
-      </form>
-    <!--should replace with http://www.facebook.com/dialog/friends/?id=brent&app_id=123050457758183&redirect_uri=http://www.example.com/response/-->
-    <%end%>
-
-    <%#if friendship = current_user.friendships.by_friend(@user).first %>
-      <%#= link_to "Stop Following", friendship, :method => :delete %>
-    <%#elsif @user != current_user%>
-      <%#= link_to "Follow", friendships_path(:friend_id => @user), :method => :post %>
-    <%#end%>
-    <%#*<div class="clear"></div>%>
-  <%#*</div>%>
   </div>
 
   <div class="block notice">
