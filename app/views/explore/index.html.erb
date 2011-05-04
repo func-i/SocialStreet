@@ -1,25 +1,19 @@
-<div class="block">
+<div class="block" id="block-lists">
   <div class="content">
-    <h2 class="title">Add Comment</h2>
-    <div class="inner">
+    <div style="float:right;height:30px;padding:10px;margin:15px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
       <%= form_for @comment, :html => { :class => "form" } do |form| %>
-        <%= form.text_area :body, :cols => "80", :rows => "2", :style => "float:left" %>
+        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
 
         <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
         <div class="clear"></div>
       <% end %>
     </div>
-  </div>
-</div>
-
-<div class="block" id="block-lists">
-  <div class="content">
-    <h2 class="title">Explore (<%= @searchables.size %> results)</h2>
+    <h2 class="title">Explore (<span id="num-results"><%= @searchables.size %></span> results)
+      <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
+    </h2>
     <div class="inner">
-      <ul class="list">
-        <% @searchables.each do |searchable| %>
-          <%= render 'searchable', :searchable => searchable %>
-        <% end %>
+      <ul class="list" id="explore-results">
+        <%= render 'results' %>
       </ul>
     </div>
   </div>

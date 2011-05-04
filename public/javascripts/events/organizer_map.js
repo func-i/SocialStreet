@@ -97,27 +97,36 @@ function DropPinControl(controlDiv, map) {
   });
 }
 
+function clearMarkers() {
+  $.each(markers, function(index, marker) {
+    marker.setMap(null);
+  });
+  markers = [];
+}
+
 function searchLocations(e) {
   var loc = e.target.value;
   geocoder.geocode( {
     'address': loc
   }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      $.each(markers, function(index, marker) {
-        marker.setMap(null);
-      });
-      markers = [];
+      clearMarkers()
       $.each(results, function(index, result) {
         placeMarker(result.geometry.location, result.formatted_address);
       });
       selectMarker(markers[0], false);
     } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
       var lat = map.getCenter().lat(), lng = map.getCenter().lng();
-      $.getJSON(locationSearchURL, {query: loc, lat: lat, lng: lng, radius: 50}, function(data, textStatus, jqHXR) {
+      $.getJSON(locationSearchURL, {
+        query: loc,
+        lat: lat,
+        lng: lng,
+        radius: 50
+      }, function(data, textStatus, jqHXR) {
         if (data.length > 0) {
           $.each(data, function(index, result) {
-          placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
-        });
+            placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
+          });
         } else {
           alert("No results found, please drop a pin to tell us where this is");
         }
@@ -153,7 +162,9 @@ function selectMarker(marker, changeInputField) {
   $('#location-lat-field').val(latlng.lat());
   $('#location-lng-field').val(latlng.lng());
   if (changeInputField) $('#location-name-field').val(marker.title);
-  setTimeout(function() { $('#marker-name-field').focus(); }, 100);
+  setTimeout(function() {
+    $('#marker-name-field').focus();
+  }, 100);
 }
 
 // don't allow enter to submit form

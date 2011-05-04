@@ -1,8 +1,8 @@
 <% content_for :sidebar do %>
-  <%= form_tag '#', :method => :get, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
+  <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
     <div class="block notice">
       <h4>Location Filtering</h4>
-      <%= text_field_tag 'map_location', params[:map_location], :class => "text_field", :placeholder => "Move map to ..." %>
+      <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit", :placeholder => "Move map to ..." %>
       <div id="location-map" style="width:100%;height:300px;"></div>
       <%= hidden_field_tag 'location', params[:location] %>
       <%= hidden_field_tag 'radius', params[:radius] %>
@@ -72,7 +72,33 @@
 
 <% content_for :end_of_body do %>
   <script>
+    var refreshTimer = null;
+    function refreshResults() {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
+      }
+      refreshTimer = setTimeout(function() {
+        $('form.search-params').submit();
+      }, 400);
+    }
+
     $(function() {
+
+      $('form.search-params').bind('ajax:beforeSend', function() {
+        $('#explore-results').fadeTo('slow', 0.3);
+        $('#ajax-spinner').show();
+        return true;
+      }).bind('ajax:success', function() {
+        if ($.active == 1) {
+          $('#explore-results').fadeTo('slow', 1);
+          $('#ajax-spinner').hide();
+        }
+      });
+
+      $("form.search-params ").
+        find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
+        change(refreshResults); // on change of the search form fields, refresh the results
 
       $('button.save-button').click(function(e) {
         var f = $('form.search-params');
@@ -99,7 +125,8 @@
         max: 1439,
         step: 15,
         values: [<%= params[:from_time] || 0 %>, <%= params[:to_time] || 1439 %>],
-        slide: slideTime
+        slide: slideTime,
+        change: refreshResults
       });
 
       function initTimeLabel() {
@@ -149,6 +176,27 @@
     var infoWindow;
     var geocoder;
 
+    function clearMarkers() {
+      $.each(markers, function(index, marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+    }
+
+    function placeMarker(location, title) {
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: location,
+        title: title
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        selectMarker(marker, true);
+      });
+      markers.push(marker);
+    }
+    
     $(function() {
 
       function moveMap(e) {
@@ -214,27 +262,15 @@
             Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
           radius = Math.max(Math.round(radius), 1);
           $('#radius').val(radius);
+          refreshResults();
         }, 15);
       }
 
       google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
       google.maps.event.addListener(map, 'dragend', changeLocationParams);
       google.maps.event.addListener(map, 'resize', changeLocationParams);
-      $(window).resize(changeLocationParams);
+      //$(window).resize(changeLocationParams);
 
-      function placeMarker(location, title) {
-
-        var marker = new google.maps.Marker({
-          map: map,
-          position: location,
-          title: title
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-          selectMarker(marker, true);
-        });
-        markers.push(marker);
-      }
 
       function selectMarker(marker) {
         selectedMarker = marker;

@@ -49,7 +49,13 @@ class ExploreController < ApplicationController
     search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < 1439
 
     # GEO LOCATION SEARCHING
-    unless params[:location].blank?
+
+    # TODO: Temporary default handling for user's initial location
+    if params[:location].blank?
+      params[:location] = "43.7427662,-79.3922001"
+      params[:radius] = 14
+    end
+
       group_by = Searchable.columns.map { |c| "searchables.#{c.name}" }.join(',')
       group_by += ',' + SearchableEventType.columns.map { |c| "searchable_event_types.#{c.name}" }.join(',') unless params[:types].blank?
 
@@ -59,7 +65,6 @@ class ExploreController < ApplicationController
         group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',')
       end
       search_object = search_object.near(params[:location], radius, :select => "searchables.*").group(group_by)
-    end
 
     return search_object
   end
