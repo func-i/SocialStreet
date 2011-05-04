@@ -12,12 +12,12 @@ class Action < ActiveRecord::Base
 
   belongs_to :event
   belongs_to :user
-  belongs_to :searchable
+  belongs_to :searchable, :dependent => :destroy
   belongs_to :action # tree based, but only 1 level deep
   belongs_to :reference, :polymorphic => true
 
-  has_many :comments, :as => :commentable # comments can be made against an action. so an action has many comments
-  has_many :actions # child actions (1 level deep). Eg child comments, child event creations, etc
+  has_many :comments, :as => :commentable, :dependent => :destroy # comments can be made against an action. so an action has many comments
+  has_many :actions, :dependent => :destroy # child actions (1 level deep). Eg child comments, child event creations, etc
 
   scope :newest_first, order("actions.occurred_at DESC")
   scope :oldest_first, order("actions.occurred_at ASC")

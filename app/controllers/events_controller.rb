@@ -2,7 +2,7 @@ class EventsController < ApplicationController
 
   before_filter :store_current_path, :only => [:show, :new, :edit]
   before_filter :store_event_create, :only => [:create, :update]
-  before_filter :authenticate_user!, :only => [:create, :edit, :update]
+  before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy]
   before_filter :require_permission, :only => [:edit, :update, :destroy]
   before_filter :load_action, :only => [:new] # for event created through activity stream
 
@@ -72,7 +72,7 @@ class EventsController < ApplicationController
   def require_permission
     @event = Event.find params[:id]
 
-    raise ActiveRecord::RecordNotFound if !@event.editable_by?(current_user)
+    raise ActiveRecord::RecordNotFound if !@event.editable?(current_user)
   end
 
   def load_event_types

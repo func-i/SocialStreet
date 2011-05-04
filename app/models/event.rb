@@ -3,15 +3,15 @@ class Event < ActiveRecord::Base
   humanize_price :cost # creates cost_in_dollars getter/setter methods
 
   belongs_to :user
-  belongs_to :searchable
+  belongs_to :searchable, :dependent => :destroy
   belongs_to :event_type
   belongs_to :action # if created through an activity stream
   
-  has_many :rsvps
+  has_many :rsvps, :dependent => :destroy
   has_many :rsvp_users, :through => :rsvps, :source => :user
 
-  has_many :actions
-  has_many :comments, :as => :commentable
+  has_many :actions, :dependent => :destroy
+  has_many :comments, :as => :commentable, :dependent => :destroy
   
   accepts_nested_attributes_for :searchable
 
@@ -19,6 +19,7 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
+  before_destroy :validate_destroy
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
@@ -148,6 +149,17 @@ class Event < ActiveRecord::Base
     user == self.user || (rsvp && rsvp.administrator?)
   end
 
+  EDITABLE_OFFSET = 0
+  def editable_time?
+    #editable if not within X hours before the start_time
+    return (starts_at - EDITABLE_OFFSET > Time.zone.now)
+  end
+
+  def editable?(user)
+    editable_by?(user) && editable_time?
+  end
+
+
   # TEMPORARY HELPERS
 
   def location
@@ -193,5 +205,11 @@ class Event < ActiveRecord::Base
 
   def build_initial_rsvp
     rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
-  end  
+  end
+
+  
+  def validate_destroy
+    #Fail if the event cannot be edited
+    return editable?    
+  end
 end
