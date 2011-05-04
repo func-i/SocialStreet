@@ -56,15 +56,15 @@ class ExploreController < ApplicationController
       params[:radius] = 14
     end
 
-      group_by = Searchable.columns.map { |c| "searchables.#{c.name}" }.join(',')
-      group_by += ',' + SearchableEventType.columns.map { |c| "searchable_event_types.#{c.name}" }.join(',') unless params[:types].blank?
+    group_by = Searchable.columns.map { |c| "searchables.#{c.name}" }.join(',')
+    group_by += ',' + SearchableEventType.columns.map { |c| "searchable_event_types.#{c.name}" }.join(',') unless params[:types].blank?
 
-      if !params[:days].blank? || !params[:from_date].blank? || !params[:to_date].blank? ||
-          (!params[:to_time].blank? && params[:to_time].to_i < 1439) ||
-          (!params[:from_time].blank? && params[:from_time].to_i > 0)
-        group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',')
-      end
-      search_object = search_object.near(params[:location], radius, :select => "searchables.*").group(group_by)
+    if !params[:days].blank? || !params[:from_date].blank? || !params[:to_date].blank? ||
+        (!params[:to_time].blank? && params[:to_time].to_i < 1439) ||
+        (!params[:from_time].blank? && params[:from_time].to_i > 0)
+      group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',')
+    end
+    search_object = search_object.near(params[:location], radius, :select => "searchables.*", :order => "searchables.created_at DESC").group(group_by)
 
     return search_object
   end
