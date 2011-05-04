@@ -7,13 +7,14 @@ var selectedMarker = null;
 var controlUI = null;
 
 // for testing only;
-var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
+
 $(function() {
   infoWindow = new google.maps.InfoWindow();
   geocoder = new google.maps.Geocoder();
   var myOptions = {
     zoom: 12,
-    center: chicago,
+    center: toronto,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
@@ -140,7 +141,7 @@ function selectMarker(marker, changeInputField) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
       if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-    }, 200);
+    }, 740);
   }
 
   var html = "<table>" +

@@ -103,17 +103,17 @@
   <div class="block notice">
     <h4>Attending (<%= @event.num_attending %>)</h4>
     <% @event.attendees_rsvps_list.each do |attendee_rsvp| %>
-          <%= render 'shared/user_list_element', :user => attendee_rsvp.user%>
+      <%= render 'shared/user_list_element', :user => attendee_rsvp.user%>
     <% end %>
   </div>
 
   <div class ="block notice">
     <h4>
-    <%if @event.maximum_attendees%>
-      Waiting (<%= @event.num_waiting%>)
-    <%else%>
-      Maybe (<%= @event.num_maybe_attending%>)
-    <%end%>
+      <%if @event.maximum_attendees%>
+        Waiting (<%= @event.num_waiting%>)
+      <%else%>
+        Maybe (<%= @event.num_maybe_attending%>)
+      <%end%>
     </h4>
   </div>
 

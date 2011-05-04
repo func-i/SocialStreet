@@ -4,7 +4,7 @@
     <div class="inner">
       <%= form_for @comment, :html => { :class => "form" } do |form| %>
         <%= form.text_area :body, :cols => "80", :rows => "2", :style => "float:left" %>
-      
+
         <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
         <div class="clear"></div>
       <% end %>
@@ -29,12 +29,15 @@
   <%= form_tag '#', :method => :get, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
     <div class="block notice">
       <h4>Location Filtering</h4>
-
+      <div id="location-map" style="width:100%;height:300px;"></div>
       <%= label_tag 'location', 'Near', :class => "label" %>
       <%= text_field_tag 'location', params[:location], :class => "text_field" %>
 
       <%= label_tag 'radius', 'Radius', :class => "label" %>
-      <%= select_tag 'radius', options_for_select([['5 miles', '5'], ['10 miles', '10'], ['20 miles', '20'], ['50 miles', '50']], params[:radius]) %>
+      <%= text_field_tag 'radius', params[:radius] %>
+
+      <%= label_tag 'zoom', 'Zoom', :class => "label" %>
+      <%= text_field_tag 'zoom', params[:zoom] %>
     </div>
 
     <div class="block notice">
@@ -81,9 +84,10 @@
     <button class="button">Go</button>
     <button class="button save-button">Save</button>
     <%= link_to 'Clear', explore_path %>
+    <div class="clear"></div>
 
     <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
-      <div class="block notice">
+      <div class="block notice" style="margin-top:10px">
         <h4>Similar Users</h4>
         <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
           <%if overlapping_subscriber.search_subscription.user != current_user%>
@@ -102,24 +106,12 @@
 <% content_for :end_of_body do %>
   <script>
     $(function() {
-     
+
       $('button.save-button').click(function(e) {
         var f = $('form.search-params');
         var s = f.serialize();
         window.location = '<%= new_search_subscription_url %>?' + s;
         return false;
-/*
-        var f = $(this.form);
-        this.form.action = f.data('save-action');
-        this.form.method = 'POST' // create
-        var csrf_token = $('meta[name=csrf-token]').attr('content');
-        var csrf_param = $('meta[name=csrf-param]').attr('content');
-        var metadata_input = '<input name="_method" value="POST" type="hidden" />';
-        if (csrf_param !== undefined && csrf_token !== undefined) {
-        	metadata_input += '<input name="' + csrf_param + '" value="' + csrf_token + '" type="hidden" />';
-          f.append(metadata_input);
-        }
-        */
       });
 
       $('button.comment-button').click(function(e) {
@@ -180,5 +172,97 @@
     });
 
 
+  </script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+  <script>
+    var markers = [];
+    var map = null;
+    var selectedMarker = null;
+    var infoWindow;
+    $(function() {
+      /* geolocation and map stuff */
+  <% if params[:location] %>
+        var loc = new google.maps.LatLng(<%= params[:location].split(",").first %>, <%= params[:location].split(",").last %>);
+  <% else %>
+        var loc = new google.maps.LatLng(43.7427662, -79.3922001);
+  <% end %>
+      
+      var myOptions = {
+        zoom: <%= params[:zoom] || 10 %>,
+        center: loc,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("location-map"), myOptions);
+      infoWindow = new google.maps.InfoWindow();
+      
+      function changeLocationParams(event) {
+        setTimeout(function() {
+          var lat = map.getCenter().lat(), lng = map.getCenter().lng();
+          $('#location').val(lat + ',' + lng);
+          var zoom = map.getZoom();
+          $('#zoom').val(zoom);
+        
+          bounds = map.getBounds();
+
+          center = bounds.getCenter();
+          ne = bounds.getNorthEast();
+
+          // r = radius of the earth in statute miles
+          var r = 3963.0;
+
+          // Convert lat or lng from decimal degrees into radians (divide by 57.2958)
+          var lat1 = center.lat() / 57.2958;
+          var lon1 = center.lng() / 57.2958;
+          var lat2 = ne.lat() / 57.2958;
+          var lon2 = ne.lng() / 57.2958;
+
+          // distance = circle radius from center to Northeast corner of bounds
+          var radius = r * Math.acos(Math.sin(lat1) * Math.sin(lat2) +
+            Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
+          radius = Math.max(Math.round(radius), 1);
+          $('#radius').val(radius);
+        }, 15);
+      }
+
+      google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
+      google.maps.event.addListener(map, 'dragend', changeLocationParams);
+      google.maps.event.addListener(map, 'resize', changeLocationParams);
+
+      function placeMarker(location, title) {
+
+        var marker = new google.maps.Marker({
+          map: map,
+          position: location,
+          title: title
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          selectMarker(marker, true);
+        });
+        markers.push(marker);
+      }
+
+      function selectMarker(marker) {
+        selectedMarker = marker;
+
+        if (marker.getAnimation() == null) {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(function() {
+            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+          }, 740);
+        }
+
+        infoWindow.setContent(marker.title);
+        infoWindow.open(map, marker);
+      }
+
+  <% @searchables.each do |searchable| %>
+    <% if searchable.event && searchable.geo_located? %>
+          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
+    <% end %>
+  <% end %>
+      
+    });
   </script>
 <% end %>
