@@ -98,7 +98,6 @@ function DropPinControl(controlDiv, map) {
 }
 
 function searchLocations(e) {
-  console.log(e);
   var loc = e.target.value;
   geocoder.geocode( {
     'address': loc

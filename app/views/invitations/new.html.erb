@@ -167,7 +167,6 @@
       var query = this.value;
       if (lastQuery != query) {
         timeout = setTimeout(function() {
-          console.log('querying: ' + query);
           lastQuery = query;
           $.getJSON(searchURL, {query: query}, function(data, textStatus, jqHXR) {
             $userList.empty();
