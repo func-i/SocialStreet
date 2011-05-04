@@ -40,12 +40,12 @@
       <br/>
 
       <% if current_user %>
-        <% attendees = event.attending_users.connected_with(current_user)%>
+        <% attendees = event.attending_users.connected_with(current_user) %>
         <% if attendees.size > 0%>
             <!--<em> <%= pluralize(attendees.size, "Connection") %> </em><br/> -->
           Connections:<br/>
-          <% for attendee in attendees.limit(5)%>
-            <%= link_to image_tag(attendee.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant", :title => attendee.name, :size=> "30x30"), profile_path(attendee) %>
+          <% attendees.limit(5).each do |attendee| %>
+            <%= link_to image_tag(attendee.avatar_url || 'web-app-theme/avatar.png', :title => attendee.name, :size=> "30x30"), profile_path(attendee) %>
           <% end %>
         <% end %>
       <% end %>

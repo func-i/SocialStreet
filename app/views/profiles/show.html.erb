@@ -25,7 +25,7 @@
 
 <% content_for :sidebar do %>
   <div class="block notice">
-    <%= link_to image_tag(@user.try(:avatar_url) || 'web-app-theme/avatar.png', :class => "avant"), '#' %>
+    <%= link_to image_tag(@user.avatar_url || 'web-app-theme/avatar.png'), '#' %>
     <br/>
     <center><b><%= @user.name %></b></center>
 
