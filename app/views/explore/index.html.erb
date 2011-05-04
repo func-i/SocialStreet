@@ -178,6 +178,8 @@
   <script>
     var markers = [];
     var map = null;
+    var selectedMarker = null;
+    var infoWindow;
     $(function() {
       /* geolocation and map stuff */
   <% if params[:location] %>
@@ -192,7 +194,8 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("location-map"), myOptions);
-
+      infoWindow = new google.maps.InfoWindow();
+      
       function changeLocationParams(event) {
         setTimeout(function() {
           var lat = map.getCenter().lat(), lng = map.getCenter().lng();
@@ -231,29 +234,34 @@
         var marker = new google.maps.Marker({
           map: map,
           position: location,
-          title: title,
-          draggable:true,
-          animation: google.maps.Animation.DROP
+          title: title
         });
 
         google.maps.event.addListener(marker, 'click', function() {
           selectMarker(marker, true);
         });
         markers.push(marker);
-
-        //selectMarker(marker);
-
-        //map.setCenter(location);
       }
 
-      <% @searchables.each_with_index do |searchable, i| %>
-        <% if searchable.event && searchable.geo_located? %>
+      function selectMarker(marker) {
+        selectedMarker = marker;
+
+        if (marker.getAnimation() == null) {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
           setTimeout(function() {
-            placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
-          }, <%= i * 100 %>);
-          
-        <% end %>
-      <% end %>
+            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+          }, 740);
+        }
+
+        infoWindow.setContent(marker.title);
+        infoWindow.open(map, marker);
+      }
+
+  <% @searchables.each do |searchable| %>
+    <% if searchable.event && searchable.geo_located? %>
+          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
+    <% end %>
+  <% end %>
       
     });
   </script>
