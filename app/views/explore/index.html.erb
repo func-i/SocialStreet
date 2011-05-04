@@ -29,15 +29,11 @@
   <%= form_tag '#', :method => :get, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
     <div class="block notice">
       <h4>Location Filtering</h4>
+      <%= text_field_tag 'map_location', params[:map_location], :class => "text_field", :placeholder => "Move map to ..." %>
       <div id="location-map" style="width:100%;height:300px;"></div>
-      <%= label_tag 'location', 'Near', :class => "label" %>
-      <%= text_field_tag 'location', params[:location], :class => "text_field" %>
-
-      <%= label_tag 'radius', 'Radius', :class => "label" %>
-      <%= text_field_tag 'radius', params[:radius] %>
-
-      <%= label_tag 'zoom', 'Zoom', :class => "label" %>
-      <%= text_field_tag 'zoom', params[:zoom] %>
+      <%= hidden_field_tag 'location', params[:location] %>
+      <%= hidden_field_tag 'radius', params[:radius] %>
+      <%= hidden_field_tag 'zoom', params[:zoom] %>
     </div>
 
     <div class="block notice">
@@ -96,8 +92,6 @@
         <%end%>
       </div>
     <%end%>
-
-
 
     <div class="clear"></div>
   <% end %>
@@ -177,10 +171,34 @@
 
   <script>
     var markers = [];
-    var map = null;
-    var selectedMarker = null;
+    var map;
+    var selectedMarker;
     var infoWindow;
+    var geocoder;
+    
     $(function() {
+      
+      function moveMap(e) {
+        var loc = e.target.value;
+        geocoder.geocode( {
+          'address': loc
+        }, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            changeLocationParams();
+          }
+        });
+      }
+
+      $('#map_location').keydown(function(e) {
+        if (e.keyCode == 13) {
+          e.stopPropagation();
+          moveMap(e);
+          return false;
+        }
+        return true;
+      });
+
       /* geolocation and map stuff */
   <% if params[:location] %>
         var loc = new google.maps.LatLng(<%= params[:location].split(",").first %>, <%= params[:location].split(",").last %>);
@@ -195,6 +213,7 @@
       };
       map = new google.maps.Map(document.getElementById("location-map"), myOptions);
       infoWindow = new google.maps.InfoWindow();
+      geocoder = new google.maps.Geocoder();
       
       function changeLocationParams(event) {
         setTimeout(function() {
@@ -228,6 +247,7 @@
       google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
       google.maps.event.addListener(map, 'dragend', changeLocationParams);
       google.maps.event.addListener(map, 'resize', changeLocationParams);
+      $(window).resize(changeLocationParams);
 
       function placeMarker(location, title) {
 
