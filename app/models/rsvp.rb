@@ -41,7 +41,6 @@ class Rsvp < ActiveRecord::Base
 
   protected
 
-
   def attending?
     self.status == @@statuses[:attending]
   end

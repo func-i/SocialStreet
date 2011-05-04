@@ -94,7 +94,10 @@
   </div>
 
   <div class="block notice">
-    <h4>Organizers (<%= @event.num_administrators %>)</h4>
+    <h4>Organizers</h4>
+    <% if @event.user == current_user %>
+      <%= link_to "Add", [:new, @event, :administrator], :class => "button" %>
+    <% end %>
     <% @event.administrators_rsvps_list.each do |administrator_rsvp| %>
       <%= render 'shared/user_list_element', :user => administrator_rsvp.user%>
     <% end %>

@@ -147,7 +147,7 @@ class Event < ActiveRecord::Base
   def editable_by?(user)
     rsvp = rsvps.by_user(user).first
 
-    user == self.user || (rsvp && rsvp.administrator?)
+    user == self.user || (rsvp && rsvp.administrator)
   end
 
   EDITABLE_OFFSET = 0
