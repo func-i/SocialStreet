@@ -1,10 +1,8 @@
-<%if @feedback_records && !@feedback_records.empty?%>
-  <div class="block">
-    <%@feedback_records.each do |record|%>
-      <%= render 'feedback_record', :record => record%>
-    <%end%>
-  </div>
-<%end%>
+<div class="block">
+  <%@feedbacks.each do |record|%>
+    <%= render 'feedback_record', :record => record%>
+  <%end unless @feedbacks.blank?%>
+</div>
 <div class="block">
   SUGGESTED/FEATURED EVENTS
 </div>
@@ -15,7 +13,7 @@
 
 <% content_for :sidebar do %>
 
-  <%if @upcoming_events && !@upcoming_events.empty?%>
+  <% if !@upcoming_events.blank?%>
     <div class="block notice">
       <h4>Upcoming</h4>
       <% @upcoming_events.each do |event|  %>
@@ -31,11 +29,14 @@
     </div>
   <%end%>
 
-  <%if @invitations && !@invitations.empty?%>
+  <% if !@invitations_by_event.blank? %>
     <div class="block notice">
       <h4>Invitations</h4>
-      <% @invitations.each do |invitation|  %>
-        <%=invitation.user%>
+      <% @invitations_by_event.each do |event, invitation_array|  %>
+        <strong><%= link_to event.name, event %></strong><br/>
+        <% invitation_array.each do |invitation| %>
+          <%= link_to image_tag(invitation.user.avatar_url || 'web-app-theme/avatar.png', :class => "avant", :title => invitation.user.name, :size=> "30x30"), profile_path(invitation.user) %>
+        <% end %>
         <br/>
       <%end%>
 
