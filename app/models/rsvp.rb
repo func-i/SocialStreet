@@ -14,7 +14,7 @@ class Rsvp < ActiveRecord::Base
   
   has_many :actions, :as => :reference
   has_many :invitations # invitations sent out by the user of this rsvp also link to this rsvp
-  has_one :feedback
+  has_one :feedback, :dependent => :destroy
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }
   validate :validate_event_status
