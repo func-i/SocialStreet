@@ -5,6 +5,7 @@ class RsvpsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :require_event
   before_filter :require_rsvp, :except => [:create]
+  before_filter :require_permission, :only => [:edit, :update]
 
   def new
     if @rsvp
@@ -50,5 +51,9 @@ class RsvpsController < ApplicationController
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
     #Khurram: Please verify that I can change this line to the above
     #@rsvp = @event.rsvps.by_user(current_user).find params[:id].to_i
+  end
+
+  def require_permission
+    raise ActiveRecord::RecordNotFound if !@event.editable?(current_user)
   end
 end

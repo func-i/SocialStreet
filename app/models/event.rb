@@ -16,6 +16,7 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :searchable
 
   attr_accessor :exclude_end_date
+  attr_accessor :current_user
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
@@ -159,6 +160,14 @@ class Event < ActiveRecord::Base
     editable_by?(user) && editable_time?
   end
 
+  def cancellable_by?(user)
+    self.user == user
+  end
+
+  def cancellable?(user)
+    return cancellable_by?(user) && editable_time?
+  end
+
 
   # TEMPORARY HELPERS
 
@@ -210,6 +219,6 @@ class Event < ActiveRecord::Base
   
   def validate_destroy
     #Fail if the event cannot be edited
-    return editable?    
+    return cancellable?(current_user)
   end
 end
