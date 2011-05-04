@@ -1,6 +1,4 @@
 class Rsvp < ActiveRecord::Base
-  before_save :set_is_waiting
-  before_save :create_feedback
 
   @@statuses = {
     :attending => 'Attending',
@@ -30,6 +28,8 @@ class Rsvp < ActiveRecord::Base
   default_value_for :administrator, false
   default_value_for :waiting, false
 
+  before_save :set_is_waiting
+  before_save :create_feedback
 
   def available_statuses
     if event && event.maximum_attendees
@@ -41,11 +41,21 @@ class Rsvp < ActiveRecord::Base
 
   protected
 
+
+  def attending?
+    self.status == @@statuses[:attending]
+  end
+
   def validate_event_status
     if !available_statuses.has_value?(self.status)
       errors.add :status, "not allowed"
     end
   end
+
+  # This is causing really wierd behavior and not working - not sure why - wtf ? - KV
+#  def set_is_waiting2
+#    self.waiting = attending? && event.number_of_spots_left == 0 # spots_left may be nil
+#  end
 
   def set_is_waiting
     self.waiting = false
@@ -56,28 +66,19 @@ class Rsvp < ActiveRecord::Base
         self.waiting = true
       end
     end
-
+  end
+  
+  def attending_or_maybe_attending?
+    self.status == Rsvp.statuses[:attending] || self.status == Rsvp.statuses[:maybe_attending]
   end
 
   def create_feedback
-    if self.status == Rsvp.statuses[:attending] || self.status == Rsvp.statuses[:maybe_attending]
-      if self.feedback
-        return
-      else
-        #Create feedback record
-        self.feedback = Feedback.new()
-
-        if self.feedback.save
-          return
-        else
-          return
-        end
-      end
-    else
-      if self.feedback && !self.feedback.responded?
+    if self.status_changed?
+      if attending_or_maybe_attending?  # attending therefore we want feedback from them
+        self.feedback = Feedback.new unless self.feedback
+        self.feedback.save
+      elsif self.feedback && !self.feedback.responded? # not attending, therefore no feedback required
         self.feedback.destroy
-      else
-        return
       end
     end
   end

@@ -42,7 +42,6 @@ class EventsController < ApplicationController
 
   def edit
     prepare_for_form
-    render :new
   end
 
   def update
@@ -50,7 +49,7 @@ class EventsController < ApplicationController
       redirect_to @event
     else
       prepare_for_form
-      render :new
+      render :edit
     end
   end
 
