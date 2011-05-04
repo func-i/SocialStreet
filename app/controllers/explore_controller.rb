@@ -23,8 +23,9 @@ class ExploreController < ApplicationController
     @overlapping_subscriptions = Searchable.with_only_subscriptions
 
     @overlapping_subscriptions = apply_filter(@overlapping_subscriptions)
-
-    @overlapping_subscriptions = @overlapping_subscriptions.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+    
+    # this executes a full search, which is bad, we want to paginate (eventually)
+    @overlapping_subscriptions = @overlapping_subscriptions.all.uniq_by {|s| s.search_subscription.user_id } 
     
   end
 
@@ -64,9 +65,7 @@ class ExploreController < ApplicationController
   end
 
   def nav_state
-
-      @on_explore = true
-
+    @on_explore = true
   end
 
 end

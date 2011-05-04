@@ -81,9 +81,10 @@
     <button class="button">Go</button>
     <button class="button save-button">Save</button>
     <%= link_to 'Clear', explore_path %>
-
+    <div class="clear"></div>
+    
     <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
-      <div class="block notice">
+      <div class="block notice" style="margin-top:10px">
         <h4>Similar Users</h4>
         <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
           <%if overlapping_subscriber.search_subscription.user != current_user%>
