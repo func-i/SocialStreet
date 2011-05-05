@@ -116,12 +116,18 @@ function searchLocations(e) {
       });
       selectMarker(markers[0], false);
     } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-      var lat = map.getCenter().lat(), lng = map.getCenter().lng();
+      
+      var sw = map.getBounds().getSouthWest();
+      var ne = map.getBounds().getNorthEast();
+      var sw_lat = sw.lat(), sw_lng = sw.lng();
+      var ne_lat = ne.lat(), ne_lng = ne.lng();
+      
       $.getJSON(locationSearchURL, {
         query: loc,
-        lat: lat,
-        lng: lng,
-        radius: 50
+        sw_lat: sw_lat,
+        sw_lng: sw_lng,
+        ne_lat: ne_lat,
+        ne_lng: ne_lng
       }, function(data, textStatus, jqHXR) {
         if (data.length > 0) {
           $.each(data, function(index, result) {
