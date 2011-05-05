@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110503151121) do
+ActiveRecord::Schema.define(:version => 20110505155753) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -130,10 +130,25 @@ ActiveRecord::Schema.define(:version => 20110503151121) do
     t.integer  "radius"
     t.integer  "user_id"
     t.boolean  "system"
+    t.float    "sw_lat"
+    t.float    "sw_lng"
+    t.float    "ne_lat"
+    t.float    "ne_lng"
   end
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
   add_index "locations", ["user_id"], :name => "index_locations_on_user_id"
+
+  create_table "notification_subscriptions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "searchable_id"
+    t.string   "frequency"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notification_subscriptions", ["searchable_id"], :name => "index_notification_subscriptions_on_searchable_id"
+  add_index "notification_subscriptions", ["user_id"], :name => "index_notification_subscriptions_on_user_id"
 
   create_table "rsvps", :force => true do |t|
     t.integer  "event_id",                         :null => false
@@ -215,8 +230,8 @@ ActiveRecord::Schema.define(:version => 20110503151121) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "comment_notification_frequency"
     t.string   "fb_uid"
+    t.string   "comment_notification_frequency"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

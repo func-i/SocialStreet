@@ -38,7 +38,6 @@ class ExploreController < ApplicationController
   end
 
   def apply_filter(search_object)
-    radius = params[:radius].blank? ? 20 : params[:radius].to_i
 
     search_object = search_object.with_event_types(params[:types]) unless params[:types].blank?
 
@@ -50,21 +49,16 @@ class ExploreController < ApplicationController
 
     # GEO LOCATION SEARCHING
 
+    # order: ne_lat, ne_lng, sw_lat, sw_lng
     # TODO: Temporary default handling for user's initial location
-    if params[:location].blank?
-      params[:location] = "43.7427662,-79.3922001"
-      params[:radius] = 14
+    if params[:map_bounds].blank?
+      params[:map_bounds] = "43.958661074786455,-78.99006997304684,43.362570924106635,-79.79756509023434"
     end
+    params[:map_center] = "43.66061599944655,-79.3938175316406" if params[:map_center].blank?
+    params[:map_zoom] = 9 unless params[:map_zoom]
 
-    group_by = Searchable.columns.map { |c| "searchables.#{c.name}" }.join(',')
-    group_by += ',' + SearchableEventType.columns.map { |c| "searchable_event_types.#{c.name}" }.join(',') unless params[:types].blank?
-
-    if !params[:days].blank? || !params[:from_date].blank? || !params[:to_date].blank? ||
-        (!params[:to_time].blank? && params[:to_time].to_i < 1439) ||
-        (!params[:from_time].blank? && params[:from_time].to_i > 0)
-      group_by += ',' + SearchableDateRange.columns.map { |c| "searchable_date_ranges.#{c.name}" }.join(',')
-    end
-    search_object = search_object.near(params[:location], radius, :select => "searchables.*", :order => "searchables.created_at DESC").group(group_by)
+    bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
+    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")
 
     return search_object
   end

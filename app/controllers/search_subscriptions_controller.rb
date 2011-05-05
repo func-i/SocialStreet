@@ -1,5 +1,8 @@
 class SearchSubscriptionsController < ApplicationController
 
+  before_filter :store_current_path, :only => [:new]
+  before_filter :authenticate_user!, :only => [:create]
+
   def new
     @search_subscription = SearchSubscription.new_from_params(params)
   end

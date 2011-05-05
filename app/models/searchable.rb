@@ -77,6 +77,10 @@ class Searchable < ActiveRecord::Base
 
   scope :with_only_subscriptions, joins(:search_subscription)
 
+  scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
+    includes(:location) & Location.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng)
+  }
+
   def location_address
     location.geocodable_address if location
   end
@@ -95,7 +99,28 @@ class Searchable < ActiveRecord::Base
       
     }
     
-    attrs[:location_attributes] = { :text => params[:location], :radius => params[:radius] } unless params[:location].blank?
+    # assume map_center is set if map_bounds is set - KV
+    if !params[:map_bounds].blank?
+      # lat/lng order: ne_lat, ne_lng, sw_lat, sw_lng
+      bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
+      attrs[:location_attributes] = {
+        :text => params[:map_location],
+        :ne_lat => bounds[0],
+        :ne_lng => bounds[1],
+        :sw_lat => bounds[2],
+        :sw_lng => bounds[3],
+        :latitude => params[:map_center].split(",").first.to_f,
+        :longitude => params[:map_center].split(",").last.to_f
+      }
+    elsif !params[:map_center].blank?
+      lat,lng = params[:map_center].split(",")
+      attrs[:location_attributes] = {
+        :text => params[:map_location],
+        :latitude => lat.to_f,
+        :longitude => lng.to_f
+      }
+    end
+    
     attrs[:searchable_date_ranges_attributes] = []
 
     if !params[:from_date].blank? || !params[:to_date].blank?
@@ -125,7 +150,7 @@ class Searchable < ActiveRecord::Base
         attrs[:searchable_event_types_attributes] << { :event_type_id => t_id }
       end
     end
-
+    
     new(attrs)
   end
 
@@ -137,8 +162,14 @@ class Searchable < ActiveRecord::Base
 
     #Location
     if location
-      params[:location] = location.text
-      params[:radius] = location.radius
+      params[:map_location] = location.text
+      params[:map_center] = "#{location.latitude},#{location.longitude}"
+      # assume all 4 points set if 1 set for bounds - KV
+      # order: ne_lat, ne_lng, sw_lat, sw_lng
+      if location.sw_lat?
+        params[:map_bounds] = "#{location.ne_lat},#{location.ne_lng},#{location.sw_lat},#{location.sw_lng}"
+        params[:map_fit_bounds] = "1"
+      end
     end
 
     unless searchable_date_ranges.blank?
