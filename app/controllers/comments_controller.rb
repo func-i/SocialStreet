@@ -5,10 +5,12 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!, :only => [:create]
 
   def create
-    if create_comment(session[:stored_redirect][:params])
-      redirect_to stored_path
-    else
-      raise 'shit, what happened'
+    @success = create_comment(session[:stored_redirect][:params])
+    respond_to do |format|
+      format.json
+      format.html {
+        redirect_to stored_path, :notice => "Thank you for your generous comment"
+      }
     end
   end
 

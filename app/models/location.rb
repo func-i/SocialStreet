@@ -26,8 +26,7 @@ class Location < ActiveRecord::Base
 
   # Search for locations by relevance for user
   scope :searched_by, lambda { |user, query, ne_lat, ne_lng, sw_lat, sw_lng|
-    with_keywords(query).
-      in_bounds(ne_lat, ne_lng, sw_lat, sw_lng).
+    with_keywords(query).in_bounds(ne_lat, ne_lng, sw_lat, sw_lng).
       order("(CASE #{"WHEN locations.user_id = #{user.id} THEN 2" if user} WHEN
         (locations.system IS NOT NULL AND locations.system = true) THEN 1 ELSE 0 END) DESC, locations.updated_at DESC")
   }

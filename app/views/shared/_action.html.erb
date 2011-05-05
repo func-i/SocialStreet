@@ -2,36 +2,36 @@
   <% if action.of_type? :event_created  %>
     <% if action.action %>
       <%# It's a nested action (1 level deep) and therefore should show more details about the event %>
-      <%= render 'explore/event', :event => action.event %>
+      <%= render 'explore/event.html', :event => action.event %>
     <% else %>
-      <%= render 'shared/general_action',
+      <%= render 'shared/general_action.html',
         :action => action,
         :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
         :title => "#{action.user.try(:name) || "The owner"} created the event"
     %>
     <% end %>
   <% elsif action.of_type? :event_rsvp_attending %>
-    <%= render 'shared/general_action',
+    <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{action.user.try(:name) || "The owner"} is attending the event"
   %>
   <% elsif action.of_type?(:event_comment) %>
-    <%= render 'shared/general_action',
+    <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{action.user.try(:name) || "The owner"} made a comment.",
       :body => action.reference.body
   %>
   <% elsif action.of_type?(:action_comment) %>
-    <%= render 'shared/general_action',
+    <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{action.user.try(:name) || "The owner"} made a comment.",
       :body => action.reference.body
   %>
   <% elsif action.of_type?(:search_comment) %>
-    <%= render 'shared/general_action',
+    <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
       :title => "#{action.user.try(:name) || "The owner"} made a comment on this search filter.",

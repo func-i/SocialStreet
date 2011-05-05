@@ -1,21 +1,24 @@
 <div class="block" id="block-lists">
   <div class="content">
-    <div style="float:right;height:30px;padding:10px;margin:15px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
-      <%= form_for @comment, :html => { :class => "form" } do |form| %>
-        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
 
+    <div id="comment-box" style="float:right;height:30px;padding:10px;margin:15px 15px 0px 0px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
+      <%= form_for @comment, :remote => true, :format => :json, :html => { :class => "form comment-form" } do |form| %>
+        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
         <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
         <div class="clear"></div>
       <% end %>
     </div>
+    
     <h2 class="title">Explore (<span id="num-results"><%= @searchables.size %></span> results)
       <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
     </h2>
+
     <div class="inner">
-      <ul class="list" id="explore-results">
+      <ul class="list" id="explore-results" style="margin-top:40px">
         <%= render 'results' %>
       </ul>
     </div>
+
   </div>
 </div>
 
@@ -24,9 +27,39 @@
 <% content_for :end_of_body do %>
   <script>
     $(function() {
+
+      $('form.comment-form').bind('ajax:beforeSend', function(e, xhr, settings) {
+        $('button.comment-button').attr('disabled', 'disable');
+        $('#comment-box').fadeTo('fast', 0.3);
+        return true;
+      }).bind('ajax:success', function(e, data, status, xhr) {
+        $('#comment_body').val('');
+        $('button.comment-button').attr('disabled', null);
+        $('#comment-box').fadeTo('slow', 1);
+        var $elem = $(data.html).hide();
+        var $list = $('#explore-results');
+        $list.prepend($elem);
+        $elem.slideDown('fast');
+      });
+
+      $('form.action-subcomment-form').live('ajax:beforeSend', function(e, xhr, settings) {
+        var $form = $(e.target);
+        $form.find('button').attr('disabled', 'disabled');
+        var $container = $form.closest('.action-comment-container');
+        $container.fadeTo('fast', 0.3);
+        return true;
+      }).live('ajax:success', function(e, data, status, xhr) {
+        var $form = $(e.target);
+        var $elem = $(data.html).hide();
+        var $container = $form.closest('.action-comment-container');
+        $form.find('button').attr('disabled', null);
+        $container.fadeTo('fast', 1.0).before($elem);
+        $elem.slideDown('fast');
+      });
+
       $('.create-comment-link').live('click',function() {
         var $this = $(this);
-        $this.closest('.action').find('.action-comment-container').slideToggle();
+        $this.closest('.action').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
         return false;
       });
     });

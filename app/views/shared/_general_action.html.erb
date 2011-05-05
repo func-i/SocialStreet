@@ -25,7 +25,7 @@
       <%= render 'shared/action', :action => a %>
     <% end %>
     <div class="action-comment-container" style="margin-top:10px;margin-left:0px;display:none">
-      <%= form_for [action, Comment.new], :html => {:class => "form"} do |form| %>
+      <%= form_for [action, Comment.new], :remote => true, :format => :json, :html => {:class => "form action-subcomment-form"} do |form| %>
         <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:55%;float:left" %>
 
         <button class="button" type="submit" style="float: left;display:inline-block; margin-left: 10px; margin-top: 4px;">
