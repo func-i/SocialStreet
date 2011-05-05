@@ -11,7 +11,6 @@ class Connection < ActiveRecord::Base
 
   default_value_for :strength, 1
 
-  
-
+  default_value_for :facebook_friend, false
 
 end

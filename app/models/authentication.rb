@@ -38,7 +38,7 @@ class Authentication < ActiveRecord::Base
           })
         
         c = user.connections.to_user(u).first
-        c ||= user.connections.create({:to_user => u})
+        c ||= user.connections.create({:to_user => u, :facebook_friend => true})
         
       end
     end
