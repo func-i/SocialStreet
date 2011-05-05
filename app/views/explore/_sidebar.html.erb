@@ -196,6 +196,20 @@
       });
       markers.push(marker);
     }
+
+    function selectMarker(marker) {
+      selectedMarker = marker;
+
+      if (marker.getAnimation() == null) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+          if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+        }, 740);
+      }
+
+      infoWindow.setContent(marker.title);
+      infoWindow.open(map, marker);
+    }
     
     $(function() {
 
@@ -226,7 +240,8 @@
       var myOptions = {
         zoom: <%= params[:map_zoom] %>,
         center: loc,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false
       };
       map = new google.maps.Map(document.getElementById("location-map"), myOptions);
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
@@ -259,20 +274,6 @@
     google.maps.event.addListener(map, 'dragend', changeLocationParams);
     google.maps.event.addListener(map, 'resize', changeLocationParams);
     //$(window).resize(changeLocationParams);
-
-    function selectMarker(marker) {
-      selectedMarker = marker;
-
-      if (marker.getAnimation() == null) {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() {
-          if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-        }, 740);
-      }
-
-      infoWindow.setContent(marker.title);
-      infoWindow.open(map, marker);
-    }
 
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>

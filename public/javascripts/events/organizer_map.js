@@ -15,7 +15,8 @@ $(function() {
   var myOptions = {
     zoom: 12,
     center: toronto,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    streetViewControl: false
   };
   map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
   // Create the DIV to hold the control and call the DropPinControl() constructor
