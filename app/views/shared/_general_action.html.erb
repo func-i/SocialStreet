@@ -7,26 +7,25 @@
 <div class="item">
   <div style="float:left; width: 400px">
     <strong><%= title %></strong>
-    <p>
-      <%= simple_format body %>
-    </p>
+    <%= simple_format(body) unless body.blank? %>
     <em><%= time_ago_in_words action.occurred_at %> ago</em>
   </div>
-  <% if false %>
-    <div style="float:left; width: 140px; height:100%;">
-      <% if allow_children %>
-        <%= link_to "[+]", '#', :class => "create-comment-link" %>
-      <% end %>
-    </div>
-  <% end %>
+  
+  <div style="float:left; width: 140px; height:100%;">
+    <% if allow_children %>
+      <%= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
+    <% end %>
+  </div>
+
   <div class="clear"></div>
   <% if allow_children %>
+
   <%# TODO: Should paginate these perhaps ?  %>
     <% action.actions.oldest_first.all.each do |a|  %>
       <%= render 'shared/action', :action => a %>
     <% end %>
-    <div class="action-comment-container" style="margin-top:10px;margin-left:80px;">
-      <%= form_for [action, Comment.new], :html => {:class => "form"} do |form| %>
+    <div class="action-comment-container" style="margin-top:10px;margin-left:0px;display:none">
+      <%= form_for [action, Comment.new], :remote => true, :format => :json, :html => {:class => "form action-subcomment-form"} do |form| %>
         <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:55%;float:left" %>
 
         <button class="button" type="submit" style="float: left;display:inline-block; margin-left: 10px; margin-top: 4px;">

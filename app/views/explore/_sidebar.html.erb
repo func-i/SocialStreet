@@ -1,12 +1,12 @@
 <% content_for :sidebar do %>
-  <%= form_tag '#', :method => :get, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
+  <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
     <div class="block notice">
       <h4>Location Filtering</h4>
-      <%= text_field_tag 'map_location', params[:map_location], :class => "text_field", :placeholder => "Move map to ..." %>
+      <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit", :placeholder => "Move map to ..." %>
       <div id="location-map" style="width:100%;height:300px;"></div>
-      <%= hidden_field_tag 'location', params[:location] %>
-      <%= hidden_field_tag 'radius', params[:radius] %>
-      <%= hidden_field_tag 'zoom', params[:zoom] %>
+      <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
+      <%= hidden_field_tag 'map_center', params[:map_center] %>
+      <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
     </div>
 
     <div class="block notice">
@@ -72,7 +72,33 @@
 
 <% content_for :end_of_body do %>
   <script>
+    var refreshTimer = null;
+    function refreshResults() {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
+      }
+      refreshTimer = setTimeout(function() {
+        $('form.search-params').submit();
+      }, 250);
+    }
+
     $(function() {
+
+      $('form.search-params').bind('ajax:beforeSend', function() {
+        $('#explore-results').fadeTo('fast', 0.5);
+        $('#ajax-spinner').show();
+        return true;
+      }).bind('ajax:success', function() {
+        if ($.active == 1) {
+          $('#explore-results').fadeTo('fast', 1);
+          $('#ajax-spinner').hide();
+        }
+      });
+
+      $("form.search-params ").
+        find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
+        change(refreshResults); // on change of the search form fields, refresh the results
 
       $('button.save-button').click(function(e) {
         var f = $('form.search-params');
@@ -99,7 +125,8 @@
         max: 1439,
         step: 15,
         values: [<%= params[:from_time] || 0 %>, <%= params[:to_time] || 1439 %>],
-        slide: slideTime
+        slide: slideTime,
+        change: refreshResults
       });
 
       function initTimeLabel() {
@@ -149,6 +176,27 @@
     var infoWindow;
     var geocoder;
 
+    function clearMarkers() {
+      $.each(markers, function(index, marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+    }
+
+    function placeMarker(location, title) {
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: location,
+        title: title
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        selectMarker(marker, true);
+      });
+      markers.push(marker);
+    }
+    
     $(function() {
 
       function moveMap(e) {
@@ -173,89 +221,65 @@
       });
 
       /* geolocation and map stuff */
-  <% if params[:location] %>
-        var loc = new google.maps.LatLng(<%= params[:location].split(",").first %>, <%= params[:location].split(",").last %>);
-  <% else %>
-        var loc = new google.maps.LatLng(43.7427662, -79.3922001);
-  <% end %>
-
+      var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
+  
       var myOptions = {
-        zoom: <%= params[:zoom] || 10 %>,
+        zoom: <%= params[:map_zoom] %>,
         center: loc,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("location-map"), myOptions);
-      infoWindow = new google.maps.InfoWindow();
-      geocoder = new google.maps.Geocoder();
+  <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
+    <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
+    <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
+      map.fitBounds(new google.maps.LatLngBounds(
+      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+  <% end %>
+    infoWindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
 
-      function changeLocationParams(event) {
+    function changeLocationParams(event) {
+      setTimeout(function() {
+        var zoom = map.getZoom();
+        $('#map_zoom').val(zoom);
+
+        bounds = map.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getSouthWest();
+
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
+        refreshResults();
+      }, 15);
+    }
+
+    google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
+    google.maps.event.addListener(map, 'dragend', changeLocationParams);
+    google.maps.event.addListener(map, 'resize', changeLocationParams);
+    //$(window).resize(changeLocationParams);
+
+    function selectMarker(marker) {
+      selectedMarker = marker;
+
+      if (marker.getAnimation() == null) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {
-          var lat = map.getCenter().lat(), lng = map.getCenter().lng();
-          $('#location').val(lat + ',' + lng);
-          var zoom = map.getZoom();
-          $('#zoom').val(zoom);
-
-          bounds = map.getBounds();
-
-          center = bounds.getCenter();
-          ne = bounds.getNorthEast();
-
-          // r = radius of the earth in statute miles
-          var r = 3963.0;
-
-          // Convert lat or lng from decimal degrees into radians (divide by 57.2958)
-          var lat1 = center.lat() / 57.2958;
-          var lon1 = center.lng() / 57.2958;
-          var lat2 = ne.lat() / 57.2958;
-          var lon2 = ne.lng() / 57.2958;
-
-          // distance = circle radius from center to Northeast corner of bounds
-          var radius = r * Math.acos(Math.sin(lat1) * Math.sin(lat2) +
-            Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
-          radius = Math.max(Math.round(radius), 1);
-          $('#radius').val(radius);
-        }, 15);
+          if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+        }, 740);
       }
 
-      google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
-      google.maps.event.addListener(map, 'dragend', changeLocationParams);
-      google.maps.event.addListener(map, 'resize', changeLocationParams);
-      $(window).resize(changeLocationParams);
-
-      function placeMarker(location, title) {
-
-        var marker = new google.maps.Marker({
-          map: map,
-          position: location,
-          title: title
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-          selectMarker(marker, true);
-        });
-        markers.push(marker);
-      }
-
-      function selectMarker(marker) {
-        selectedMarker = marker;
-
-        if (marker.getAnimation() == null) {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-          setTimeout(function() {
-            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-          }, 740);
-        }
-
-        infoWindow.setContent(marker.title);
-        infoWindow.open(map, marker);
-      }
+      infoWindow.setContent(marker.title);
+      infoWindow.open(map, marker);
+    }
 
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
-          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
+        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
     <% end %>
   <% end %>
 
-    });
+  });
   </script>
 <% end %>
