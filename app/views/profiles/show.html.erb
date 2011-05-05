@@ -27,7 +27,12 @@
   <div class="block notice">
     <%= link_to image_tag(@user.avatar_url || 'web-app-theme/avatar.png'), '#' %>
     <br/>
-    <center><b><%= @user.name %></b></center>
+    <b><%= @user.name %></b>
+    <br/>
+    <% if current_user && current_user.can_friend?(@user) %>
+      <%= link_to 'Add as Facebook Friend', '#' %>
+    <% end %>
+
   </div>
 
   <div class="block notice">

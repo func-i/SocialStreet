@@ -5,8 +5,17 @@ class InvitationsController < ApplicationController
   # Note: It's actually allowing the creation of multiple invitations here
   def new
     @event = Event.find params[:event_id].to_i
-    @rsvp = @event.rsvps.find params[:rsvp_id].to_i
+    
     @connections = current_user.connections.most_relevant_first.limit(30).all
+
+    @rsvp = @event.rsvps.find params[:rsvp_id].to_i
+
+    @event.action.user_list.each do |user|
+      if user != current_user && current_user.invitations.for_event(@event).to_user(user).blank?
+        current_user.invitations.create :event => @event, :rsvp => @rsvp, :to_user => user
+      end
+    end unless @event.action.blank?
+    
     @invitations = @rsvp.invitations
   end
 

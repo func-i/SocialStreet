@@ -35,6 +35,10 @@ class Action < ActiveRecord::Base
     action_type == Action.types[type]
   end
 
+  def user_list
+    ([self.user] + actions.joins(:user).all.collect(&:user)).uniq
+  end
+
   protected
 
   def set_occurred_at

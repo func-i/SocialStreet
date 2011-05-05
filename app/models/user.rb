@@ -76,6 +76,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def can_friend?(user)
+    connection = self.connections.to_user(user).first
+    return !(connection && connection.facebook_friend?)
+  end
+
   def avatar_url
     # TODO: check for custom avatar image first, once it is implemented
     facebook_profile_picture_url || twitter_profile_picture_url
