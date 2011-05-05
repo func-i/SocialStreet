@@ -6,12 +6,12 @@ class CommentsController < ApplicationController
 
   def create
     @success = create_comment(session[:stored_redirect][:params])
-    respond_to do |format|
-      format.json
-      format.html {
-        redirect_to stored_path, :notice => "Thank you for your generous comment"
-      }
+    if request.xhr?
+      render :partial => 'shared/action', :locals => { :action => @comment.action }
+    else
+      redirect_to stored_path, :notice => "Thank you for your generous comment"
     end
+    
   end
 
   protected

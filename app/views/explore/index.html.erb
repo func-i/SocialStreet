@@ -2,7 +2,7 @@
   <div class="content">
 
     <div id="comment-box" style="float:right;height:30px;padding:10px;margin:15px 15px 0px 0px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
-      <%= form_for @comment, :remote => true, :format => :json, :html => { :class => "form comment-form" } do |form| %>
+      <%= form_for @comment, :remote => true, :html => {"data-type" => "html",:class => "form comment-form" } do |form| %>
         <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
         <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
         <div class="clear"></div>
@@ -36,7 +36,7 @@
         $('#comment_body').val('');
         $('button.comment-button').attr('disabled', null);
         $('#comment-box').fadeTo('slow', 1);
-        var $elem = $(data.html).hide();
+        var $elem = $(data).hide();
         var $list = $('#explore-results');
         $list.prepend($elem);
         $elem.slideDown('fast');
@@ -50,9 +50,10 @@
         return true;
       }).live('ajax:success', function(e, data, status, xhr) {
         var $form = $(e.target);
-        var $elem = $(data.html).hide();
+        var $elem = $(data).hide();
         var $container = $form.closest('.action-comment-container');
         $form.find('button').attr('disabled', null);
+        $form.find('textarea').val('');
         $container.fadeTo('fast', 1.0).before($elem);
         $elem.slideDown('fast');
       });
