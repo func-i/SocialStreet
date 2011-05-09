@@ -1,6 +1,6 @@
 <li style="margin-top: 5px">
   <div class="left">
-    <%= link_to(image_tag(event_image(event), :size => "50x50", :class => "avatar"), event) %>
+    <%= link_to(image_tag(url_for_event_image(event), :size => "50x50", :class => "avatar"), event) %>
     <br/>
 <%# For now, events always have a type (I think) so this || is unncessary, but just in case (Yes I know this is bad practice) - KV %>
     <center><%= event.event_type.try(:name) || "Unknown Type" %></center>

@@ -12,9 +12,9 @@ module ApplicationHelper
     time.to_s(:date_with_day) + " at " + time.to_s(:time12h) + " #{Time.zone.now.zone}"
   end
 
-  def event_image(event)
-    if event.custom_image?
-      "custom image URL here"
+  def url_for_event_image(event)
+    if event.photo?
+      event.photo.thumb.url
     elsif event.event_type && event.event_type.image_path?
       event.event_type.image_path
     else
