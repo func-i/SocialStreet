@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   before_filter :store_current_path, :only => [:show, :new, :edit]
   before_filter :store_event_create, :only => [:create, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy]
-  before_filter :require_permission, :only => [:edit, :update, :destroy]
+  before_filter :require_editable_event, :only => [:edit, :update, :destroy]
   before_filter :load_action, :only => [:new] # for event created through activity stream
 
   # EVENT DETAIL PAGE
@@ -54,7 +54,6 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    @event = Event.find params[:id]
     if @event.cancellable?(current_user)
       @event.canceled = true
       @event.save
@@ -72,7 +71,7 @@ class EventsController < ApplicationController
     store_redirect(:controller => 'events', :action => 'create', :params => params)
   end
 
-  def require_permission
+  def require_editable_event
     @event = Event.find params[:id]
 
     raise ActiveRecord::RecordNotFound if !@event.editable?(current_user)
