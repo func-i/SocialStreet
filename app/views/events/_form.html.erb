@@ -67,39 +67,39 @@
     <%= form.check_box :facebook %>
     <span class="description">Post to Facebook</span>"
   </div>
-</div
-
-<!--
-<div id="attendees" style="display:none" class="tab-content">
-  <div class="group">
-    <label class="label" for="post_title">Minimum Attendees</label>
-<%= form.text_field :minimum_attendees, :class => "text_field"  %>
-    <br/>
-    <span class="description">Minimum number of people needed for the event to happen</span>
-  </div>
-
-
-  <div class="group">
-    <label class="label">Maximum Attendees</label>
-<%= form.text_field :maximum_attendees, :class => "text_field"  %>
-    <span class="description">Maximum number of people that can attend</span>
-  </div>
-
-  <div class="group">
-    <label class="label">Allow Guests?</label>
-<%= form.check_box :guests_allowed %>
-    <span class="description">Select this to allow attendees to bring guests</span>
-  </div>
 </div>
 
-<div id="cost" style="display:none" class="tab-content">
-  <div class="group">
-    <label class="label">Cost (in Dollars)</label>
-<%= form.text_field :cost_in_dollars, :class => "text_field"  %>
-    <span class="description">Cost (in $CA). Set to 0 for free. Default: 0</span>
+<% if false %>
+  <div id="attendees" style="display:none" class="tab-content">
+    <div class="group">
+      <label class="label" for="post_title">Minimum Attendees</label>
+      <%= form.text_field :minimum_attendees, :class => "text_field"  %>
+      <br/>
+      <span class="description">Minimum number of people needed for the event to happen</span>
+    </div>
+
+
+    <div class="group">
+      <label class="label">Maximum Attendees</label>
+      <%= form.text_field :maximum_attendees, :class => "text_field"  %>
+      <span class="description">Maximum number of people that can attend</span>
+    </div>
+
+    <div class="group">
+      <label class="label">Allow Guests?</label>
+      <%= form.check_box :guests_allowed %>
+      <span class="description">Select this to allow attendees to bring guests</span>
+    </div>
   </div>
-</div>
--->
+
+  <div id="cost" style="display:none" class="tab-content">
+    <div class="group">
+      <label class="label">Cost (in Dollars)</label>
+      <%= form.text_field :cost_in_dollars, :class => "text_field"  %>
+      <span class="description">Cost (in $CA). Set to 0 for free. Default: 0</span>
+    </div>
+  </div>
+<% end %>
 
 <% content_for :end_of_body do %>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
