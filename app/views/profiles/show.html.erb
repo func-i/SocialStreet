@@ -30,7 +30,7 @@
     <b><%= @user.name %></b>
     <br/>
     <% if current_user && current_user.can_friend?(@user) %>
-      <%= link_to 'Add as Facebook Friend', '#' %>
+      <%= link_to 'Add to Facebook', '#', :class => "add-to-fb-button", "data-fb-uid" => @user.fb_uid %>
     <% end %>
   </div>
 
@@ -50,5 +50,35 @@
   </div>
 
 
+<% end %>
+
+<% content_for :end_of_body do %>
+  <script>
+    $(function() {
+      $('.add-to-fb-button').click(function(e) {
+        e.stopPropagation();
+        var $btn = $(this);
+        var friendId = $btn.data('fb-uid');
+        console.log(friendId);
+        FB.ui(
+        {
+          method: 'friends',
+          name: 'Name goes here',
+          id: friendId
+        },
+        function(response) {
+          console.log(response);
+          if (response && response.action == 1) {
+            alert('Friend request was sent');
+            $btn.remove();
+          } else {
+            alert('Friend request was not sent.');
+          }
+        }
+      );
+        return false;
+      });
+    });
+  </script>
 <% end %>
 

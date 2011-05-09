@@ -79,6 +79,8 @@ class User < ActiveRecord::Base
   end
 
   def can_friend?(user)
+    return false if(self == user)
+
     connection = self.connections.to_user(user).first
     !(connection && connection.facebook_friend?)
   end
