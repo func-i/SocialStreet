@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20110509191632) do
     t.integer  "searchable_id"
     t.integer  "action_id"
     t.string   "photo"
+    t.boolean  "canceled"
   end
 
   add_index "events", ["action_id"], :name => "index_events_on_action_id"
@@ -141,17 +142,6 @@ ActiveRecord::Schema.define(:version => 20110509191632) do
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
   add_index "locations", ["user_id"], :name => "index_locations_on_user_id"
-
-  create_table "notification_subscriptions", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "searchable_id"
-    t.string   "frequency"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "notification_subscriptions", ["searchable_id"], :name => "index_notification_subscriptions_on_searchable_id"
-  add_index "notification_subscriptions", ["user_id"], :name => "index_notification_subscriptions_on_user_id"
 
   create_table "rsvps", :force => true do |t|
     t.integer  "event_id",                         :null => false
@@ -233,8 +223,8 @@ ActiveRecord::Schema.define(:version => 20110509191632) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "fb_uid"
     t.string   "comment_notification_frequency"
+    t.string   "fb_uid"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
