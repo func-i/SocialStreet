@@ -77,7 +77,9 @@ SocialStreet::Application.routes.draw do
   resource :dashboard, :only => [:show], :controller => :dashboard
 
   resources :connections, :only => [:index] # for AJAX lookup
-  resources :locations, :only => [:index] # for AJAX lookup 
+  resources :locations, :only => [:index] # for AJAX lookup
+
+  resources :feedbacks, :only => [:update, :show] # for providing feedback through the dash
 
   resources :search_subscriptions
 

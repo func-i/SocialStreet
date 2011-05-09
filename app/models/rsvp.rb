@@ -25,6 +25,8 @@ class Rsvp < ActiveRecord::Base
   scope :attending_or_maybe_attending, where("status IN (?)", @@statuses.except(:not_attending).values)
   scope :administrators, where(:administrator => true)
 
+  scope :excluding_user, lambda {|user| where("rsvps.user_id <> ?", user.id) }
+
   default_value_for :administrator, false
   default_value_for :waiting, false
 

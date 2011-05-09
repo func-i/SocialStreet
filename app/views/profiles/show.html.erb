@@ -1,13 +1,13 @@
 <%#*<div class="block">%>
-  <%#*<div class="content">%>
-    <%#*<h2 class="title">Add Comment</h2>%>
-    <%#*<div class="inner">%>
-      <%#= form_for [@user, @comment], :html => { :class => "form" } do |form| %>
-        <%#= form.text_area :body, :cols => "80", :rows => "2" %>
-        <%#= render 'shared/form_submit_button'  %>
-      <%# end %>
-    <%#*</div>%>
-  <%#*</div>%>
+<%#*<div class="content">%>
+<%#*<h2 class="title">Add Comment</h2>%>
+<%#*<div class="inner">%>
+<%#= form_for [@user, @comment], :html => { :class => "form" } do |form| %>
+<%#= form.text_area :body, :cols => "80", :rows => "2" %>
+<%#= render 'shared/form_submit_button'  %>
+<%# end %>
+<%#*</div>%>
+<%#*</div>%>
 <%#*</div>%>
 
 <div class="block">
@@ -32,7 +32,6 @@
     <% if current_user && current_user.can_friend?(@user) %>
       <%= link_to 'Add as Facebook Friend', '#' %>
     <% end %>
-
   </div>
 
   <div class="block notice">

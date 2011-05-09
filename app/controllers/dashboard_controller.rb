@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
         (@invitations_by_event[invitation.event] ||= []) << invitation unless Rsvp.for_event(invitation.event).by_user(current_user).first
       end
       
-      @feedbacks = Feedback.by_user(User.find(2)).awaiting_response
+      @feedbacks = Feedback.by_user(current_user).awaiting_response
     else
       redirect_to :explore
     end

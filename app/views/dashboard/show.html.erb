@@ -1,11 +1,13 @@
 <% unless @feedbacks.blank? %>
   <div class="block">
     <div class="content">
+      <h2 class="title">Holla' Back</h2>
       <div class="inner">
-        <h2 class="title">Holla' Back</h2>
-        <% @feedbacks.each do |record| %>
-          <%= render 'feedback_record', :record => record%>
-        <% end unless @feedbacks.blank? %>
+        <ul class="list">
+          <% @feedbacks.each do |feedback| %>
+            <%= render 'feedback', :feedback => feedback %>
+          <% end %>
+        </ul>
       </div>
     </div>
   </div>

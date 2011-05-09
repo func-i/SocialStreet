@@ -1,0 +1,39 @@
+<div class="block">
+  <div class="content">
+    <h2 class="title">Other people that attended <%= @event.name  %></h2>
+    <div class="inner">
+      <ul class="list">
+        <% @rsvps.each do |rsvp| %>
+          <%= render 'rsvp', :rsvp => rsvp %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<% content_for :end_of_body do %>
+  <script>
+    $(function() {
+      $('.add-to-fb-button').click(function(e) {
+        e.stopPropagation();
+        var friendId = $(this).data('fb-uid');
+        console.log(friendId);
+        FB.ui(
+        {
+          method: 'friends',
+          name: 'Name goes here',
+          id: friendId
+        },
+        function(response) {
+          if (response && response.post_id) {
+            alert('Post was published.');
+          } else {
+            alert('Post was not published.');
+          }
+        }
+      );
+        return false;
+      });
+    });
+  </script>
+<% end %>

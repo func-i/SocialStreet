@@ -9,4 +9,7 @@ class Feedback < ActiveRecord::Base
   scope :awaiting_response, lambda{
     includes(:rsvp => {:event => {:searchable => [:searchable_date_ranges] }}).where("NOT feedbacks.responded AND searchable_date_ranges.starts_at < ?", Time.zone.now)
   }
+
+  
+
 end

@@ -1,0 +1,24 @@
+<% event = feedback.rsvp.event %>
+
+<li style="margin-top: 5px">
+  <div class="left">
+    <%= link_to(image_tag(event_image(event), :size => "50x50", :class => "avatar"), event) %>
+    <br/>
+    <center><%= event.event_type.try(:name) || "Unknown Type" %></center>
+  </div>
+  <div class="item">
+    <strong><%= link_to event.name, event %></strong><br/>
+    <em><%= address_for(event.location) %></em><br/>
+    <br/>
+
+    <% form_for feedback do |form| %>
+      How was it? <%= form.select :score, [['1 out of 5', 1], ['2 out of 5', 2],
+        ['3 out of 5', 3], ['4 out of 5', 4], ['5 out of 5', 5], ['I Didn\'t attend', '']] %>
+      <%= form.submit 'Submit Feedback' %>
+    <% end  %>
+
+  </div>
+
+  <div class="clear"></div>
+</li>
+

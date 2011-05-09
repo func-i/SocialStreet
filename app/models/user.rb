@@ -6,10 +6,12 @@ class User < ActiveRecord::Base
 
   has_many :authentications
   has_many :rsvps
+  has_many :feedbacks, :through => :rsvps
   has_many :actions
   has_many :comments
   has_many :events # events this user has created (event.user_id == my.id)
   has_many :search_subscriptions
+  
   
   has_many :rsvp_events, :through => :rsvps, :source => :event, :conditions => "rsvps.status = "
 
@@ -78,7 +80,7 @@ class User < ActiveRecord::Base
 
   def can_friend?(user)
     connection = self.connections.to_user(user).first
-    return !(connection && connection.facebook_friend?)
+    !(connection && connection.facebook_friend?)
   end
 
   def avatar_url
