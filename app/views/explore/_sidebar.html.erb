@@ -1,12 +1,20 @@
 <% content_for :sidebar do %>
   <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
     <div class="block notice">
-      <h4>Location Filtering</h4>
       <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit", :placeholder => "Move map to ..." %>
       <div id="location-map" style="width:100%;height:300px;"></div>
       <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
       <%= hidden_field_tag 'map_center', params[:map_center] %>
       <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+    </div>
+
+    <div class="block notice">
+      <h4>Type Filtering</h4>
+
+      <% @event_types.each do |event_type| %>
+        <%= check_box_tag 'types[]', event_type.id, (params[:types] || []).include?(event_type.id.to_s) %> <%= event_type.name %> <br/>
+      <% end %>
+
     </div>
 
     <div class="block notice">
@@ -39,15 +47,6 @@
       <%= hidden_field_tag 'from_time', params[:from_time] %>
       <%= hidden_field_tag 'to_time', params[:to_time] %>
       <%= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
-    </div>
-
-    <div class="block notice">
-      <h4>Type Filtering</h4>
-
-      <% @event_types.each do |event_type| %>
-        <%= check_box_tag 'types[]', event_type.id, (params[:types] || []).include?(event_type.id.to_s) %> <%= event_type.name %> <br/>
-      <% end %>
-
     </div>
 
     <button class="button">Go</button>

@@ -17,10 +17,12 @@ class Event < ActiveRecord::Base
 
   attr_accessor :exclude_end_date
   attr_accessor :current_user
+  attr_accessor :facebook
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
   before_destroy :validate_destroy
+  after_create :post_to_facebook
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
@@ -33,6 +35,7 @@ class Event < ActiveRecord::Base
 
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
+  default_value_for :facebook, true
 
   scope :attended_by_user, lambda {|user|
     includes(:rsvps).where({ :rsvps => {:user_id => user.id, :status => Rsvp::statuses[:attending] }})
@@ -59,6 +62,7 @@ class Event < ActiveRecord::Base
   #      #TODO - Why doesn't this work?
   #    end
   #  end
+
 
   def location_address
     location.geocodable_address if location
@@ -220,5 +224,11 @@ class Event < ActiveRecord::Base
   def validate_destroy
     #Fail if the event cannot be edited
     return cancellable?(current_user)
+  end
+
+  def post_to_facebook
+    if self.facebook
+      puts "FUCK YOU"
+    end
   end
 end
