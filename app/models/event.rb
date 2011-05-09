@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
-  before_destroy :validate_destroy
+  #before_destroy :validate_destroy
   after_create :post_to_facebook
 
   validates :name, :presence => true, :length => { :maximum => 60 }
@@ -36,12 +36,13 @@ class Event < ActiveRecord::Base
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
   default_value_for :facebook, true
+  default_value_for :canceled, false
 
   scope :attended_by_user, lambda {|user|
     includes(:rsvps).where({ :rsvps => {:user_id => user.id, :status => Rsvp::statuses[:attending] }})
   }
   scope :upcoming, lambda {
-    includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at > ?", Time.zone.now)
+    includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at > ? AND events.canceled = false", Time.zone.now)
   }
   scope :passed, lambda {
     includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at < ?", Time.zone.now)
@@ -172,7 +173,6 @@ class Event < ActiveRecord::Base
     return cancellable_by?(user) && editable_time?
   end
 
-
   # TEMPORARY HELPERS
 
   def location
@@ -196,7 +196,8 @@ class Event < ActiveRecord::Base
   def finishes_at  # assuming non recurring events, for now
     searchable.searchable_date_ranges.first.try :ends_at
   end
-  
+
+
   protected
 
   def set_default_title
@@ -218,12 +219,6 @@ class Event < ActiveRecord::Base
 
   def build_initial_rsvp
     rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
-  end
-
-  
-  def validate_destroy
-    #Fail if the event cannot be edited
-    return cancellable?(current_user)
   end
 
   def post_to_facebook

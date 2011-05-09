@@ -9,13 +9,18 @@ class ProfilesController < ApplicationController
 
 
   def show
-    @actions = @user.actions.newest_first.all
-    #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
-#    @events = @user.rsvp_events.
+    if @user.sign_in_count > 0
+      @actions = @user.actions.newest_first.all
+      #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
+  #    @events = @user.rsvp_events.
 
-    @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
+      @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
 
-    @user_profile_facebook = @user.authentications.facebook.first
+      @user_profile_facebook = @user.authentications.facebook.first
+    else
+      raise ActiveRecord::RecordNotFound
+    end
+
   end
   
   def edit

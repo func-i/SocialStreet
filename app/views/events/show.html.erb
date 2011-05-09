@@ -53,15 +53,22 @@
     <h4>Actions</h4>
     <% if @event.editable_time? %>
       <% if @rsvp%>
-        <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, @rsvp], :class => "button" %>
-        <%= link_to "Invite People", [:new, @event, @rsvp, :invitation], :class => "button" %>
+
+        <% if !@event.canceled? %>
+          <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, @rsvp], :class => "button" %>
+          <%= link_to "Invite People", [:new, @event, @rsvp, :invitation], :class => "button" %>
+        <% end %>
 
         <% if @event.editable_by?(current_user) %>
           <%= link_to "Edit Event", [:edit, @event], :class => "button" %>
         <% end %>
-      <% else %>
+
+      <% elsif !@event.canceled? %>
+
         <%= link_to 'Join Event', [:new, @event, :rsvp], :class => "button" %>
+
       <% end %>
+
     <% end %>
 
     <div class="clear"></div>

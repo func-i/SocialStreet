@@ -55,8 +55,9 @@ class EventsController < ApplicationController
 
   def destroy
     @event = Event.find params[:id]
-    @event.current_user = current_user
-    if @event.destroy
+    if @event.cancellable?(current_user)
+      @event.canceled = true
+      @event.save
       #TODO - send emails to everyone
       redirect_to :root
     else
