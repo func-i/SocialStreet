@@ -16,7 +16,8 @@
     $(function() {
       $('.add-to-fb-button').click(function(e) {
         e.stopPropagation();
-        var friendId = $(this).data('fb-uid');
+        var $btn = $(this);
+        var friendId = $btn.data('fb-uid');
         console.log(friendId);
         FB.ui(
         {
@@ -25,10 +26,12 @@
           id: friendId
         },
         function(response) {
-          if (response && response.post_id) {
-            alert('Post was published.');
+          console.log(response);
+          if (response && response.action == 1) {
+            alert('Friend request was sent');
+            $btn.remove();
           } else {
-            alert('Post was not published.');
+            alert('Friend request was not sent.');
           }
         }
       );
