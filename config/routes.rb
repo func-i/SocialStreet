@@ -57,7 +57,9 @@ SocialStreet::Application.routes.draw do
 
   resources :events do
     resources :rsvps do 
-      resources :invitations
+      resources :invitations do
+        get :change, :on => :collection
+      end
     end
 
     resources :administrators

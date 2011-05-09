@@ -54,7 +54,7 @@
     <% if @event.editable_time? %>
       <% if @rsvp%>
         <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, @rsvp], :class => "button" %>
-        <%= link_to "Invite People", [:new, @event, @rsvp, :invitation], :class => "button" %>
+        <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %>
 
         <% if @event.editable_by?(current_user) %>
           <%= link_to "Edit Event", [:edit, @event], :class => "button" %>

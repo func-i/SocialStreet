@@ -1,6 +1,6 @@
 <% user = invitation.to_user %>
 <% if user %>
-  <%= render 'user', :user => user, :pre_existing => true %>
+  <%= render 'user', :user => user, :pre_existing => !invitation.new_record? %>
 <% else %>
   <div class="user email-only">
 
