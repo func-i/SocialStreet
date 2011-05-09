@@ -10,8 +10,7 @@ class CommentsController < ApplicationController
       render :partial => 'shared/action', :locals => { :action => @comment.action }
     else
       redirect_to stored_path, :notice => "Thank you for your generous comment"
-    end
-    
+    end    
   end
 
   protected

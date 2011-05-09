@@ -45,7 +45,7 @@
             <!--<em> <%= pluralize(attendees.size, "Connection") %> </em><br/> -->
           Connections:<br/>
           <% attendees.limit(5).each do |attendee| %>
-            <%= link_to image_tag(attendee.avatar_url || 'web-app-theme/avatar.png', :title => attendee.name, :size=> "30x30"), profile_path(attendee) %>
+            <%= avatar attendee %>
           <% end %>
         <% end %>
       <% end %>

@@ -3,8 +3,8 @@
   <h3>Profile</h3>
 
   <div class="left">
-    <%= link_to image_tag(@user.avatar_url || 'web-app-theme/avatar.png'), '#' %>
-    <br>
+    <%= avatar @user %>
+    <br/>
     Edit Image <!--TODO implement edit-->
   </div>
 

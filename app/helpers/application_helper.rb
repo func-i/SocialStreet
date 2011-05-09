@@ -21,4 +21,19 @@ module ApplicationHelper
       'web-app-theme/avatar.png'
     end
   end
+
+  def url_for_avatar(user)
+    user.avatar_url || 'web-app-theme/avatar.png'
+  end
+
+  def avatar_image(user, options)
+    image_tag(url_for_avatar(user),
+      :title => user.name,
+      :size=> options[:size] || "30x30")
+  end
+
+  def avatar(user, options={})
+    link_to(avatar_image(user, options), profile_path(user))
+  end
+
 end

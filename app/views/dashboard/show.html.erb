@@ -1,22 +1,38 @@
+<% unless @feedbacks.blank? %>
+  <div class="block">
+    <div class="content">
+      <div class="inner">
+        <h2 class="title">Holla' Back</h2>
+        <% @feedbacks.each do |record| %>
+          <%= render 'feedback_record', :record => record%>
+        <% end unless @feedbacks.blank? %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <div class="block">
-  <%@feedbacks.each do |record|%>
-    <%= render 'feedback_record', :record => record%>
-  <%end unless @feedbacks.blank?%>
-</div>
-<div class="block">
-  SUGGESTED/FEATURED EVENTS
+  <div class="content">
+    <div class="inner">
+      <h2 class="title">Suggested / Featured Events</h2>
+    </div>
+  </div>
 </div>
 
 <div class="block">
-  FEED
+  <div class="content">
+    <div class="inner">
+      <h2 class="title">Word on the Street</h2>
+    </div>
+  </div>
 </div>
 
 <% content_for :sidebar do %>
 
-  <% if !@upcoming_events.blank?%>
+  <% unless @upcoming_events.blank? %>
     <div class="block notice">
       <h4>Upcoming</h4>
-      <% @upcoming_events.each do |event|  %>
+      <% @upcoming_events.each do |event| %>
         <div>
           <strong><%= link_to event.name, event %></strong><br/>
         </div>
@@ -25,22 +41,21 @@
           <%=display_date_time(event.starts_at)%>
         </div>
         <br/>
-      <%end%>
+      <% end %>
     </div>
-  <%end%>
+  <% end %>
 
-  <% if !@invitations_by_event.blank? %>
+  <% unless @invitations_by_event.blank? %>
     <div class="block notice">
       <h4>Invitations</h4>
       <% @invitations_by_event.each do |event, invitation_array|  %>
         <strong><%= link_to event.name, event %></strong><br/>
         <% invitation_array.each do |invitation| %>
-          <%= link_to image_tag(invitation.user.avatar_url || 'web-app-theme/avatar.png', :class => "avant", :title => invitation.user.name, :size=> "30x30"), profile_path(invitation.user) %>
+          <%= render 'invitation', :invitation => invitation %>
         <% end %>
         <br/>
-      <%end%>
-
+      <% end %>
     </div>
-  <%end%>
+  <% end %>
 
 <% end %>

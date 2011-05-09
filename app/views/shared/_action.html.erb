@@ -6,34 +6,34 @@
     <% else %>
       <%= render 'shared/general_action.html',
         :action => action,
-        :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+        :url_for_image => url_for_avatar(action.user),
         :title => "#{action.user.try(:name) || "The owner"} created the event"
     %>
     <% end %>
   <% elsif action.of_type? :event_rsvp_attending %>
     <%= render 'shared/general_action.html',
       :action => action,
-      :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :url_for_image => url_for_avatar(action.user),
       :title => "#{action.user.try(:name) || "The owner"} is attending the event"
   %>
   <% elsif action.of_type?(:event_comment) %>
     <%= render 'shared/general_action.html',
       :action => action,
-      :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :url_for_image => url_for_avatar(action.user),
       :title => "#{action.user.try(:name) || "The owner"} made a comment.",
       :body => action.reference.body
   %>
   <% elsif action.of_type?(:action_comment) %>
     <%= render 'shared/general_action.html',
       :action => action,
-      :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :url_for_image => url_for_avatar(action.user),
       :title => "#{action.user.try(:name) || "The owner"} made a comment.",
       :body => action.reference.body
   %>
   <% elsif action.of_type?(:search_comment) %>
     <%= render 'shared/general_action.html',
       :action => action,
-      :url_for_image => action.user.try(:avatar_url) || 'web-app-theme/avatar.png',
+      :url_for_image => url_for_avatar(action.user),
       :title => "#{action.user.try(:name) || "The owner"} made a comment on this search filter.",
       :body => action.reference.body
   %>
