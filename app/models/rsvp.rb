@@ -22,10 +22,16 @@ class Rsvp < ActiveRecord::Base
   scope :attending, where(:status => @@statuses[:attending], :waiting => false)
   scope :waiting, where(:status => @@statuses[:attending], :waiting => true)
   scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
-  scope :attending_or_maybe_attending, where("status IN (?)", @@statuses.except(:not_attending).values)
+  scope :attending_or_maybe_attending, where("rsvps.status IN (?)", @@statuses.except(:not_attending).values)
   scope :administrators, where(:administrator => true)
 
   scope :excluding_user, lambda {|user| where("rsvps.user_id <> ?", user.id) }
+
+  scope :also_attended_by, lambda {|user| 
+    joins(
+      "INNER JOIN rsvps AS joined_rsvps ON joined_rsvps.event_id = rsvps.event_id AND joined_rsvps.user_id = #{user.id}"
+    ).where("joined_rsvps.status IN (?)", @@statuses.except(:not_attending).values)
+  }
 
   default_value_for :administrator, false
   default_value_for :waiting, false

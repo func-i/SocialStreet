@@ -12,6 +12,47 @@
 
 <div class="block">
   <div class="content">
+    <h2 class="title">Common Friends</h2>
+    <div class="inner">
+      <ul class="list">
+        <% @common_connections.each do |connection| %>
+          <%= render 'shared/user_list_element', :user => connection.to_user%>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="block">
+  <div class="content">
+    <h2 class="title">Common Events</h2>
+    <div class="inner">
+      <ul class="list">
+        <% @connected_rsvps.each do |rsvp| %>
+          <strong><%= link_to rsvp.event.name, rsvp.event %></strong><br/>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="block">
+  <div class="content">
+    <h2 class="title">Common Actions</h2>
+    <div class="inner">
+      <ul class="list">
+        <% @connected_actions.each do |action| %>
+          #TODO
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="block">
+  <div class="content">
     <h2 class="title">Latest Activity</h2>
     <div class="inner">
       <ul class="list">
