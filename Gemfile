@@ -20,6 +20,9 @@ gem 'deep_cloneable'
 
 gem 'fb_graph'
 
+gem 'mini_magick'
+gem 'carrierwave'
+
 group :development do
   gem 'thin'
 end

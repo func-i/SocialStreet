@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
 
   humanize_price :cost # creates cost_in_dollars getter/setter methods
+  mount_uploader :photo, EventPhotoUploader
 
   belongs_to :user
   belongs_to :searchable, :dependent => :destroy

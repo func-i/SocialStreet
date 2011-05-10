@@ -31,7 +31,13 @@ class ApplicationController < ActionController::Base
     session[:stored_redirect][:path] = options[:path] if options[:path]
     session[:stored_redirect][:controller] = options[:controller] if options[:controller]
     session[:stored_redirect][:action] = options[:action] if options[:action]
-    session[:stored_redirect][:params] = options[:params] if options[:params]
+    session[:stored_redirect][:params] = options[:params].clone if options[:params]
+    
+    # Don't want the photo (temp image file) data being stored in session.
+    # If we do that, it will result in "Can't dump File" exception - KV
+    if session[:stored_redirect][:params] && session[:stored_redirect][:params][:event]
+      session[:stored_redirect][:params][:event] = session[:stored_redirect][:params][:event].except(:photo)
+    end
 
     #puts "STORING REDIRECT"
     #puts options.inspect

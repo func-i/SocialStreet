@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110509185137) do
+ActiveRecord::Schema.define(:version => 20110509191632) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20110509185137) do
     t.integer  "user_id"
     t.integer  "searchable_id"
     t.integer  "action_id"
+    t.string   "photo"
     t.boolean  "canceled"
   end
 

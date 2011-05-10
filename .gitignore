@@ -10,6 +10,7 @@ config/secrets.yml
 public/javascripts/cache/*
 public/stylesheets/cache/*
 public/system
+public/uploads
 public/assets
 coverage
 system

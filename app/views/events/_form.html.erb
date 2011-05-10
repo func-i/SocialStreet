@@ -64,6 +64,14 @@
   </div>
 
   <div class="group">
+    <label class="label">Image</label>
+    <%= image_tag(@event.photo.thumb.url) if @event.photo? %>
+    <%= form.file_field :photo %>
+    <%#= form.hidden_field :photo_cache %>
+    <span class="description">Provide a custom event picture</span>
+  </div>
+
+  <div class="group">
     <%= form.check_box :facebook %>
     <span class="description">Post to Facebook</span>"
   </div>
