@@ -17,27 +17,39 @@ class Connection < ActiveRecord::Base
     )
  }
 
-  default_value_for :strength, 1
+  default_value_for :strength, 0
 
   default_value_for :facebook_friend, false
+
+  COMMENT_STRENGTH_INCREASE = 1
+  INVITATION_STRENGTH_INCREASE = 5
 
   def self.connect_with_users_in_action_thread(user, an_action)
       threaded_actions = Action.threaded_with(an_action).all
 
       threaded_actions.each do |action|
-        shared_comment_thread(user, action.user)
+        c = create_or_update_connection(user, action.user, COMMENT_STRENGTH_INCREASE)
+
+        #TODO - should this work both ways? or should a connection only be created when the user initiates
+        #create_connection(action.user, user)
       end
   end
 
-  def self.shared_comment_thread(commentee_user, commented_user)
-    return false if commentee_user.id == commented_user.id
+  def self.connect_users_from_invitations(from_user, to_user)
+    c = create_or_update_connection(from_user, to_user, INVITATION_STRENGTH_INCREASE)
 
-    c = commentee_user.connections.to_user(commented_user).first
-    c ||= commentee_user.connections.create({:to_user => commented_user})
+    #TODO - should this work both ways
+    c = create_or_update_connection(to_user, from_user, INVITATION_STRENGTH_INCREASE)
+  end
 
-    #TODO - should this work both ways? or should a connection only be created when the user initiates
-    #c = commented_user.connections.to_user(commentee_user).first
-    #c ||= commented_user.connections.create({:to_user => commentee_user})
+  def self.create_or_update_connection(user, to_user, strength_increase = 0)
+    return false if user.id == to_user.id
 
+    c = user.connections.to_user(to_user).first
+    c ||= user.connections.create({:to_user => to_user})
+
+    c.strength += strength_increase
+
+    c.save
   end
 end

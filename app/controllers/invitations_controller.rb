@@ -26,15 +26,15 @@ class InvitationsController < ApplicationController
   def create
     params[:emails].each do |email|
       if user = User.find_by_email(email)
-        current_user.invitations.create :event => @event, :rsvp => @rsvp, :to_user => user
+        create_invitation(@event, @rsvp, current_user, user)
       else
-        current_user.invitations.create :event => @event, :rsvp => @rsvp, :email => email
+        create_invitation(@event, @rsvp, current_user, nil, email)
       end
     end unless params[:emails].blank?
 
     params[:user_ids].each do |user_id|
       if user = User.find_by_id(user_id)
-        current_user.invitations.create :event => @event, :rsvp => @rsvp, :to_user => user
+        create_invitation(@event, @rsvp, current_user, user)
       end
     end unless params[:user_ids].blank?
 
@@ -52,6 +52,12 @@ class InvitationsController < ApplicationController
 
   def load_connections
     @connections = current_user.connections.most_relevant_first.limit(30).all
+  end
+
+  def create_invitation(event, rsvp, from_user, to_user, email = nil)
+    from_user.invitations.create :event => event, :rsvp => rsvp, :to_user => to_user, :email => email
+
+    Connection.connect_users_from_invitations(from_user, to_user)
   end
 
 end
