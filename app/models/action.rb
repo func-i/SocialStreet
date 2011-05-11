@@ -42,6 +42,11 @@ class Action < ActiveRecord::Base
     )
   }
 
+  scope :threaded_with, lambda {|a|
+    id = a.action_id || a.id
+    where("actions.action_id = ? OR actions.id = ?", id, id)
+  }
+
   before_create :set_occurred_at
   before_validation :copy_searchable
 

@@ -3,13 +3,13 @@
 
 class ProfilesController < ApplicationController
   before_filter :store_current_path, :only => [:show, :edit]
-  before_filter :authenticate_user!, :only => [:edit, :update]
+  before_filter :authenticate_user!, :only => [:show, :edit, :update]
   before_filter :require_user
   before_filter :require_permission, :only => [:edit, :update]
 
 
   def show
-    if true #@user.sign_in_count > 0
+    if @user.sign_in_count > 0
       @actions = @user.actions.newest_first.all
       #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
   #    @events = @user.rsvp_events.

@@ -93,12 +93,19 @@ class ApplicationController < ActionController::Base
       #Create the event
       @event = Event.new
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
+
+
     end
 
     @event.attributes = params[:event]
     @event.location.user = current_user if @event.location
 
-    return @event.save
+    if @event.save
+      Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
+      return true
+    end
+
+    return false
   end
 
   def create_comment(params)
@@ -115,7 +122,12 @@ class ApplicationController < ActionController::Base
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     end
 
-    return @comment.save
+    if @comment.save
+      Connection.connect_with_users_in_action_thread(@comment.user, @comment.action)
+      return true
+    end
+
+    return false
   end
 
   def search_filters_present?

@@ -17,10 +17,27 @@ class Connection < ActiveRecord::Base
     )
  }
 
-      "INNER JOIN rsvps AS joined_rsvps ON joined_rsvps.event_id = rsvps.event_id AND joined_rsvps.user_id = #{user.id}"
-
   default_value_for :strength, 1
 
   default_value_for :facebook_friend, false
 
+  def self.connect_with_users_in_action_thread(user, an_action)
+      threaded_actions = Action.threaded_with(an_action).all
+
+      threaded_actions.each do |action|
+        shared_comment_thread(user, action.user)
+      end
+  end
+
+  def self.shared_comment_thread(commentee_user, commented_user)
+    return false if commentee_user.id == commented_user.id
+
+    c = commentee_user.connections.to_user(commented_user).first
+    c ||= commentee_user.connections.create({:to_user => commented_user})
+
+    #TODO - should this work both ways? or should a connection only be created when the user initiates
+    #c = commented_user.connections.to_user(commentee_user).first
+    #c ||= commented_user.connections.create({:to_user => commentee_user})
+
+  end
 end

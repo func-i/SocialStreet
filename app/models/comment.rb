@@ -8,5 +8,4 @@ class Comment < ActiveRecord::Base
   # incase there are more possible action records for a comment, such as deletion or editing
   has_one :action, :as => :reference   
   
-
 end
