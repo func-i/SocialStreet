@@ -30,15 +30,15 @@ class Connection < ActiveRecord::Base
       c = create_or_update_connection(user, action.user, COMMENT_STRENGTH_INCREASE)
 
       #TODO - should this work both ways? or should a connection only be created when the user initiates
-      #create_connection(action.user, user)
+      c = create_or_update_connection(action.user, user, 0)
     end
   end
 
   def self.connect_users_from_invitations(from_user, to_user)
     c = create_or_update_connection(from_user, to_user, INVITATION_STRENGTH_INCREASE)
 
-    #TODO - should this work both ways
-    c = create_or_update_connection(to_user, from_user, INVITATION_STRENGTH_INCREASE)
+    #TODO - should this work both ways? if i'm invited by someone, does that make me closer?
+    c = create_or_update_connection(to_user, from_user, 0)
   end
 
   def self.connect_with_users_from_event(user, event)
@@ -46,6 +46,7 @@ class Connection < ActiveRecord::Base
       c = create_or_update_connection(user, rsvp.user, EVENT_ATTENDANCE_STENGTH_INCREASE)
 
       #TODO - should the connection be this way? or the opposite so only ppl who didn't go end up with improper connections
+      c = create_or_update_connection(rsvp.user, user, 0)
     end
   end
 
@@ -55,7 +56,7 @@ class Connection < ActiveRecord::Base
     c = user.connections.to_user(to_user).first
     c ||= user.connections.create({:to_user => to_user})
 
-    c.strength += strength_increase
+    c.strength += strength_increase #TODO - make this time sensitive
 
     c.save
   end
