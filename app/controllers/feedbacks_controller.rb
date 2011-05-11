@@ -12,10 +12,14 @@ class FeedbacksController < ApplicationController
     @feedback.attributes = params[:feedback]
     @feedback.responded = true
 
-    
 
     if @feedback.save
-      redirect_to @feedback, :notice => 'Thank you for your feedback.'
+      if nil == @feedback.score
+        redirect_to :back, :notice => 'Thank you for your feedback.'
+      else
+        Connection.connect_with_users_from_event(current_user, @feedback.rsvp.event)
+        redirect_to @feedback, :notice => 'Thank you for your feedback.'
+      end
     else
       redirect_to :back, :notice => "Error: #{@feedback.errors.full_messages.first}"
     end

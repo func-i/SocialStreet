@@ -50,7 +50,7 @@ class Connection < ActiveRecord::Base
   end
 
   def self.create_or_update_connection(user, to_user, strength_increase = 0)
-    return false if user.id == to_user.id
+    return nil if user.id == to_user.id
 
     c = user.connections.to_user(to_user).first
     c ||= user.connections.create({:to_user => to_user})
