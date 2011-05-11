@@ -24,7 +24,7 @@ class AdministratorsController < ApplicationController
       end
     end unless params[:user_ids].blank?
 
-    redirect_to @event, :notice => "BLAHHHH"
+    redirect_to @event, :notice => "Added Administrators"
 
   end
   

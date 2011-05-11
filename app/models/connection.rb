@@ -15,7 +15,7 @@ class Connection < ActiveRecord::Base
     ).order(
       "connections.strength * connections.strength * joined_connections.strength DESC"
     )
- }
+  }
 
   default_value_for :strength, 0
 
@@ -23,16 +23,15 @@ class Connection < ActiveRecord::Base
 
   COMMENT_STRENGTH_INCREASE = 1
   INVITATION_STRENGTH_INCREASE = 5
+  EVENT_ATTENDANCE_STENGTH_INCREASE = 3
 
   def self.connect_with_users_in_action_thread(user, an_action)
-      threaded_actions = Action.threaded_with(an_action).all
+    Action.threaded_with(an_action).all.each do |action|
+      c = create_or_update_connection(user, action.user, COMMENT_STRENGTH_INCREASE)
 
-      threaded_actions.each do |action|
-        c = create_or_update_connection(user, action.user, COMMENT_STRENGTH_INCREASE)
-
-        #TODO - should this work both ways? or should a connection only be created when the user initiates
-        #create_connection(action.user, user)
-      end
+      #TODO - should this work both ways? or should a connection only be created when the user initiates
+      #create_connection(action.user, user)
+    end
   end
 
   def self.connect_users_from_invitations(from_user, to_user)
@@ -40,6 +39,14 @@ class Connection < ActiveRecord::Base
 
     #TODO - should this work both ways
     c = create_or_update_connection(to_user, from_user, INVITATION_STRENGTH_INCREASE)
+  end
+
+  def self.connect_with_users_from_event(user, event)
+    event.rsvps.attending_or_maybe_attending.all.each do |rsvp|
+      c = create_or_update_connection(user, rsvp.user, EVENT_ATTENDANCE_STENGTH_INCREASE)
+
+      #TODO - should the connection be this way? or the opposite so only ppl who didn't go end up with improper connections
+    end
   end
 
   def self.create_or_update_connection(user, to_user, strength_increase = 0)
