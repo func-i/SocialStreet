@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
 
   before_filter :load_commentable_resource
   before_filter :store_comment_request, :only => [:create]
-  before_filter :authenticate_user!, :only => [:create]
+  before_filter :authenticate_user!, :only => [:create]#, :if => Proc.new { |c| !c.request.xhr? } 
 
   def create
     @success = create_comment(session[:stored_redirect][:params])

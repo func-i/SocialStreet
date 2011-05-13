@@ -54,6 +54,12 @@
 
 <% content_for :end_of_body do %>
   <script>
+    $('.create-comment-link').live('click',function() {
+      var $this = $(this);
+      $this.closest('.action').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
+      return false;
+    });
+      
     $(function() {
       $('.add-to-fb-button').click(function(e) {
         e.stopPropagation();

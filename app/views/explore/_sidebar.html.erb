@@ -70,6 +70,7 @@
 <% end %>
 
 <% content_for :end_of_body do %>
+  <%= javascript_include_tag 'jquery.pageless' %>
   <script>
     var refreshTimer = null;
     function refreshResults() {
@@ -82,8 +83,17 @@
       }, 250);
     }
 
-    $(function() {
+    function makePageless(numPages, currentPage) {
+      $('#explore-results').pageless({ totalPages: numPages,
+        url: '<%= explore_path %>',
+        params: $('form.search-params').serializeObject(),
+        loaderMsg: 'Loading more results',
+        currentPage: currentPage
+      });
+    }
 
+    $(function() {
+     
       $('form.search-params').bind('ajax:beforeSend', function() {
         $('#explore-results').fadeTo('fast', 0.5);
         $('#ajax-spinner').show();
@@ -161,6 +171,8 @@
       }
 
       initTimeLabel();
+
+      makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
     });
 
@@ -246,40 +258,40 @@
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-      map.fitBounds(new google.maps.LatLngBounds(
-      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+        map.fitBounds(new google.maps.LatLngBounds(
+        new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+        new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
-    infoWindow = new google.maps.InfoWindow();
-    geocoder = new google.maps.Geocoder();
+      infoWindow = new google.maps.InfoWindow();
+      geocoder = new google.maps.Geocoder();
 
-    function changeLocationParams(event) {
-      setTimeout(function() {
-        var zoom = map.getZoom();
-        $('#map_zoom').val(zoom);
+      function changeLocationParams(event) {
+        setTimeout(function() {
+          var zoom = map.getZoom();
+          $('#map_zoom').val(zoom);
 
-        bounds = map.getBounds();
-        ne = bounds.getNorthEast();
-        sw = bounds.getSouthWest();
-        c = bounds.getSouthWest();
+          bounds = map.getBounds();
+          ne = bounds.getNorthEast();
+          sw = bounds.getSouthWest();
+          c = bounds.getSouthWest();
 
-        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-        $('#map_center').val(c.lat() + ',' + c.lng());
-        refreshResults();
-      }, 15);
-    }
+          $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+          $('#map_center').val(c.lat() + ',' + c.lng());
+          refreshResults();
+        }, 15);
+      }
 
-    google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
-    google.maps.event.addListener(map, 'dragend', changeLocationParams);
-    google.maps.event.addListener(map, 'resize', changeLocationParams);
-    //$(window).resize(changeLocationParams);
+      google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
+      google.maps.event.addListener(map, 'dragend', changeLocationParams);
+      google.maps.event.addListener(map, 'resize', changeLocationParams);
+      //$(window).resize(changeLocationParams);
 
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
-        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
+          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
     <% end %>
   <% end %>
 
-  });
+    });
   </script>
 <% end %>

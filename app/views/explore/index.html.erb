@@ -9,7 +9,7 @@
       <% end %>
     </div>
     
-    <h2 class="title">Explore (<span id="num-results"><%= @searchables.size %></span> results)
+    <h2 class="title">Explore (<span id="num-results"><%= @total_count %></span> results)
       <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
     </h2>
 
@@ -40,6 +40,14 @@
         var $list = $('#explore-results');
         $list.prepend($elem);
         $elem.slideDown('fast');
+      }).bind('ajax:error', function(e, xhr, status, error) {
+        if (xhr.status == 401) {
+          window.location.href = '<%= new_user_session_path %>';
+        } else {
+          alert('Error occurred:' + error);
+        }
+        $('button.comment-button').attr('disabled', null);
+        $('#comment-box').fadeTo('slow', 1);
       });
 
       $('form.action-subcomment-form').live('ajax:beforeSend', function(e, xhr, settings) {
@@ -56,6 +64,16 @@
         $form.find('textarea').val('');
         $container.fadeTo('fast', 1.0).before($elem);
         $elem.slideDown('fast');
+      }).bind('ajax:error', function(e, xhr, status, error) {
+        if (xhr.status == 401) {
+          window.location.href = '<%= new_user_session_path %>';
+        } else {
+          alert('Error occurred:' + error);
+        }
+        var $form = $(e.target);
+        var $container = $form.closest('.action-comment-container');
+        $form.find('button').attr('disabled', null);
+        $container.fadeTo('fast', 1.0).before($elem);
       });
 
       $('.create-comment-link').live('click',function() {

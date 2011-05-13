@@ -7,7 +7,7 @@
 <div class="item">
   <div style="float:left; width: 400px">
     <strong><%= title %></strong>
-    <%= simple_format(body) unless body.blank? %>
+    <%= simple_format(h(body)) unless body.blank? %>
     <em><%= time_ago_in_words action.occurred_at %> ago</em>
   </div>
   

@@ -109,16 +109,20 @@ class ApplicationController < ActionController::Base
     @comment.commentable = @commentable
     @comment.user = current_user
 
-    if search_filters_present? 
+    if search_filters_present?(params)
       # Build the Searchable object for the Comment
       @comment.searchable = Searchable.new_from_params(params)
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     end
 
+    unless request.xhr?
+      flash[:notice] = "Thank you for your generous comment."
+    end
+
     return @comment.save
   end
 
-  def search_filters_present?
+  def search_filters_present?(params)
     params[:from_date] || params[:location] || params[:from_time]
   end
   

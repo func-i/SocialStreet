@@ -223,8 +223,8 @@ ActiveRecord::Schema.define(:version => 20110509191632) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "comment_notification_frequency"
     t.string   "fb_uid"
+    t.string   "comment_notification_frequency"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

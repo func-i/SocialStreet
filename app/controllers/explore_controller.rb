@@ -10,7 +10,12 @@ class ExploreController < ApplicationController
 
     # Use the query params to find events (ideally this should be ONE SQL query with pagination)
     find_searchables
-    find_overlapping_subscriptions
+
+    if request.xhr? && params[:page] # pagination request
+      render :partial => 'results'
+    else
+      find_overlapping_subscriptions
+    end
   end
 
   protected
@@ -34,7 +39,11 @@ class ExploreController < ApplicationController
 
     @searchables = apply_filter(@searchables)
 
-    @searchables = @searchables.all # this executes a full search, which is bad, we want to paginate (eventually) - KV
+    @per_page = 10
+    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+    @searchables = @searchables.limit(@per_page).offset(@offset)
+    @total_count = @searchables.count
+    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
   end
 
   def apply_filter(search_object)
@@ -48,7 +57,7 @@ class ExploreController < ApplicationController
     search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < 1439
 
     # GEO LOCATION SEARCHING
-
+    
     # order: ne_lat, ne_lng, sw_lat, sw_lng
     # TODO: Temporary default handling for user's initial location
     if params[:map_bounds].blank?
@@ -59,7 +68,7 @@ class ExploreController < ApplicationController
 
     bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
     search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")
-
+    
     return search_object
   end
 
