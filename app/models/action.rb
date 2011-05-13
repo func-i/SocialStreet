@@ -28,6 +28,25 @@ class Action < ActiveRecord::Base
     where("events.event_type_id IN (?)", type_ids).includes(:event)
   }
 
+  scope :connected_with, lambda {|user|
+    joins(
+      "INNER JOIN actions AS joined_actions
+       ON (
+            (
+              joined_actions.action_id = actions.action_id
+              OR joined_actions.action_id = actions.id
+              OR joined_actions.id = actions.action_id
+            )
+            AND joined_actions.user_id = #{user.id}
+          )"
+    )
+  }
+
+  scope :threaded_with, lambda {|a|
+    id = a.action_id || a.id
+    where("actions.action_id = ? OR actions.id = ?", id, id)
+  }
+
   before_create :set_occurred_at
   before_validation :copy_searchable
 

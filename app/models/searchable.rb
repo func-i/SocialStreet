@@ -72,8 +72,11 @@ class Searchable < ActiveRecord::Base
   #  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
   scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
   scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
+  scope :excluding_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
+
   # called from the explore controller/action
-  scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_comments
+  #scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_comments
+  scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_actions
 
   scope :with_only_subscriptions, joins(:search_subscription)
 

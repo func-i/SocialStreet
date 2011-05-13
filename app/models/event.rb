@@ -224,7 +224,8 @@ class Event < ActiveRecord::Base
 
   def post_to_facebook
     if self.facebook
-      puts "FUCK YOU"
+      #Post to event to facebook
+      
     end
   end
 end

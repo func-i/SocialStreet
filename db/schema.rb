@@ -87,8 +87,8 @@ ActiveRecord::Schema.define(:version => 20110509191632) do
     t.integer  "user_id"
     t.integer  "searchable_id"
     t.integer  "action_id"
-    t.string   "photo"
     t.boolean  "canceled"
+    t.string   "photo"
   end
 
   add_index "events", ["action_id"], :name => "index_events_on_action_id"

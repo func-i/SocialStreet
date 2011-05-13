@@ -3,7 +3,7 @@
 
 class ProfilesController < ApplicationController
   before_filter :store_current_path, :only => [:show, :edit]
-  before_filter :authenticate_user!, :only => [:edit, :update]
+  before_filter :authenticate_user!, :only => [:show, :edit, :update]
   before_filter :require_user
   before_filter :require_permission, :only => [:edit, :update]
 
@@ -17,6 +17,13 @@ class ProfilesController < ApplicationController
       @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
 
       @user_profile_facebook = @user.authentications.facebook.first
+
+      @connected_rsvps = current_user.rsvps.attending_or_maybe_attending.also_attended_by(@user).order("rsvps.created_at DESC")
+
+      @connected_actions = current_user.actions.connected_with(@user).newest_first.limit(10)
+
+      @common_connections = current_user.connections.common_with_ordered_by_strength(@user).limit(10)
+
     else
       raise ActiveRecord::RecordNotFound
     end
