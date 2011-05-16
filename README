@@ -1,1 +1,28 @@
-Welcome to the SocialStreet Web Application ...
+SocialStreet
+
+SocialStreet is a web app that makes it easy for people to plan/find and attend local events.
+
+Initial Setup for Development:
+
+- Download the source
+- Setup a new config/database.yml file based on config/database.example.yml
+- Setup a new config/secrets.yml file based on config/secrets.example.yml
+  - For the secret keys, setup a Facebook app under your real/developer account: http://www.facebook.com/developers
+  - Set the site URL to: http://localhost:3000/ (Site Domain can be left blank)
+  - You can call it something like: SocialStreet-dev
+  - You do not need to give other developers access to this app, since its just for your development sandbox
+- Install PostgreSQL 8.3, 8.4 or 9
+- Install the pg gem (might be a bit of a pain on OSX)
+- Download and install Redis: http://redis.io/download
+- Open a terminal tab to the [REDIS_ROOT (where you extracted and installed it) dir, and run: ./src/redis-server
+- Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
+- Open a terminal tab to the [APP_ROOT] dir, and run: resque-web
+- Open a terminal tab to the [APP_ROOT] dir, and run: rails server
+
+Docs:
+
+- http://redis.io/download
+- https://github.com/defunkt/resque
+- http://redis.io/topics/data-types#sorted-sets
+- https://github.com/ezmobius/redis-rb
+- http://blog.waxman.me/how-to-build-a-fast-news-feed-in-redis
