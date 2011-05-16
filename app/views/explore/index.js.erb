@@ -6,3 +6,4 @@ clearMarkers();
     placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
   <% end %>
 <% end %>
+makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
