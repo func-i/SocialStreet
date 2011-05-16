@@ -23,6 +23,11 @@ gem 'fb_graph'
 gem 'mini_magick'
 gem 'carrierwave'
 
+gem "hiredis", "~> 0.3.1"
+gem "redis", "~> 2.2.0", :require => ["redis/connection/hiredis", "redis"]
+
+gem 'resque', :git => "git://github.com/defunkt/resque.git"
+
 group :development do
   gem 'thin'
 end

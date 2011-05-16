@@ -5,3 +5,5 @@ require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
 SocialStreet::Application.load_tasks
+
+require 'resque/tasks'
