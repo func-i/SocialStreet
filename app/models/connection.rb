@@ -5,6 +5,8 @@ class Connection < ActiveRecord::Base
   belongs_to :user
   belongs_to :to_user, :class_name => "User"
 
+  before_save :set_rank
+
   scope :to_user, lambda { |user| where(:to_user_id => user.id) }
 
   scope :most_relevant_first, order("connections.strength DESC, connections.updated_at DESC")
@@ -58,6 +60,35 @@ class Connection < ActiveRecord::Base
 
     c.strength += strength_increase #TODO - make this time sensitive
 
-    c.save
+    c.save!
+  end
+
+  protected
+
+  def set_rank
+    #find rank based on strength
+    insert_rank_obj = Connection.select("rank").where("connections.user_id = ? AND connections.strength < ?", self.user_id, self.strength).order("rank").first
+
+    if insert_rank_obj
+      old_rank = self.rank
+
+      #insert into list at object rank
+      self.rank = insert_rank_obj.rank
+
+      puts "JOSHY"
+      puts "Connection #{self.id}: #{old_rank} -> #{self.rank}"
+
+      #increase the rank of all objects between this rank and old rank
+      if old_rank
+        Connection.update_all "rank = rank + 1",
+          ["connections.user_id = ? AND connections.rank >= ? AND connections.rank < ?", self.user_id, self.rank, old_rank]
+      else
+        Connection.update_all "rank = rank + 1",
+          ["connections.user_id = ? AND connections.rank >= ?", self.user_id, self.rank]
+      end
+    else
+      #insert into end of list
+      self.rank = Connection.where("connections.user_id = ?", self.user_id).count
+    end
   end
 end
