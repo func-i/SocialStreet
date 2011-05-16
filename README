@@ -17,6 +17,7 @@ Initial Setup for Development:
 - Open a terminal tab to the [REDIS_ROOT (where you extracted and installed it) dir, and run: ./src/redis-server
 - Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
 - Open a terminal tab to the [APP_ROOT] dir, and run: resque-web
+  - This will start another web server here: http://localhost:5678/
 - Open a terminal tab to the [APP_ROOT] dir, and run: rails server
 
 Docs:
@@ -26,3 +27,7 @@ Docs:
 - http://redis.io/topics/data-types#sorted-sets
 - https://github.com/ezmobius/redis-rb
 - http://blog.waxman.me/how-to-build-a-fast-news-feed-in-redis
+
+Docs used for Slicehost Server setup:
+
+- http://library.linode.com/databases/redis/ubuntu-10.04-lucid
