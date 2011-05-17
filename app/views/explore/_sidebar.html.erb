@@ -1,6 +1,7 @@
 <% content_for :sidebar do %>
   <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
-    <div class="block notice">
+    <div class="block notice" style="position:relative">
+      <div id="location-not-found">Not Found</div>
       <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit", :placeholder => "Move map to ..." %>
       <div id="location-map" style="width:100%;height:300px;"></div>
       <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
@@ -232,6 +233,9 @@
           if (status == google.maps.GeocoderStatus.OK) {
             map.setCenter(results[0].geometry.location);
             changeLocationParams();
+            $('#location-not-found').hide();
+          } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+            $('#location-not-found').show();
           }
         });
       }
