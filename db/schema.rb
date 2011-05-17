@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110516150536) do
+ActiveRecord::Schema.define(:version => 20110517142013) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -225,8 +225,9 @@ ActiveRecord::Schema.define(:version => 20110516150536) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "comment_notification_frequency"
     t.string   "fb_uid"
+    t.string   "comment_notification_frequency"
+    t.string   "photo"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

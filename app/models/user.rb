@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable
 
+  mount_uploader :photo, UserPhotoUploader
+
   has_many :authentications
   has_many :rsvps
   has_many :feedbacks, :through => :rsvps
@@ -23,7 +25,7 @@ class User < ActiveRecord::Base
   has_many :received_invitations, :class_name => "Invitation", :foreign_key => "to_user_id"
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me,
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :photo,
     :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes, :fb_uid, :facebook_profile_picture_url
 
   default_value_for :comment_notification_frequency do
@@ -87,7 +89,7 @@ class User < ActiveRecord::Base
 
   def avatar_url
     # TODO: check for custom avatar image first, once it is implemented
-    facebook_profile_picture_url || twitter_profile_picture_url
+    photo? ? photo.thumb.url : facebook_profile_picture_url || twitter_profile_picture_url
   end
 
   def fb_auth_token
