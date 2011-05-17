@@ -12,6 +12,7 @@ class Action < ActiveRecord::Base
 
   belongs_to :event
   belongs_to :user
+  belongs_to :to_user, :class_name => "User" # in the case of comments from one user to another (wall post)
   belongs_to :searchable, :dependent => :destroy
   belongs_to :action # tree based, but only 1 level deep
   belongs_to :reference, :polymorphic => true
@@ -45,6 +46,10 @@ class Action < ActiveRecord::Base
   scope :threaded_with, lambda {|a|
     id = a.action_id || a.id
     where("actions.action_id = ? OR actions.id = ?", id, id)
+  }
+
+  scope :for_user, lambda { |user|
+    includes(:reference).where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
   }
 
   before_create :set_occurred_at

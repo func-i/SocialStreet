@@ -18,3 +18,18 @@
   margin-left: 20px;
   margin-bottom: 2px;
 }
+
+#location-not-found {
+  border-radius: 5px;
+  border: 1px solid gray;
+  background-color: #DDD;
+  opacity: 0.8;
+  position: absolute;
+  right: 10px;
+  top: 11px;
+  color: red;
+  padding: 1px;
+  display: none;
+  z-index: 2;
+
+}

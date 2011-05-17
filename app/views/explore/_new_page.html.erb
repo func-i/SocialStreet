@@ -1,5 +1,5 @@
 <script>
-  $('#explore-results').append('<%= escape_javascript render(:partial => 'results') %>');
+  $('#action-list').append('<%= escape_javascript render(:partial => 'results') %>');
 <% @searchables.each do |searchable| %>
   <% if searchable.event && searchable.geo_located? %>
       placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');

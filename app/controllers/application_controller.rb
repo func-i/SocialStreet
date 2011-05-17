@@ -111,6 +111,7 @@ class ApplicationController < ActionController::Base
   def create_comment(params)
     @commentable = Event.find params[:event_id].to_i if params[:event_id]
     @commentable = Action.find params[:action_id].to_i if params[:action_id]
+    @commentable = User.find params[:profile_id].to_i if params[:profile_id]
 
     @comment = Comment.new params[:comment]
     @comment.commentable = @commentable
