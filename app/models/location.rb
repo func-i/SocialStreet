@@ -24,6 +24,10 @@ class Location < ActiveRecord::Base
     where(final_sql)
   }
 
+  scope :overlapping_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
+
+  }
+
   # Search for locations by relevance for user
   scope :searched_by, lambda { |user, query, ne_lat, ne_lng, sw_lat, sw_lng|
     with_keywords(query).in_bounds(ne_lat, ne_lng, sw_lat, sw_lng).

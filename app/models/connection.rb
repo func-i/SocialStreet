@@ -19,6 +19,8 @@ class Connection < ActiveRecord::Base
     )
   }
 
+  scope :ranked_less_or_eq, lambda { |rank| where("connections.rank <= ?", rank)}
+
   default_value_for :strength, 0
 
   default_value_for :facebook_friend, false
@@ -74,9 +76,6 @@ class Connection < ActiveRecord::Base
 
       #insert into list at object rank
       self.rank = insert_rank_obj.rank
-
-      puts "JOSHY"
-      puts "Connection #{self.id}: #{old_rank} -> #{self.rank}"
 
       #increase the rank of all objects between this rank and old rank
       if old_rank
