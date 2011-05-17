@@ -82,7 +82,7 @@
 
   // settings params: totalPages
   var init = function (opts) {
-    if (settings.inited) return;
+//    if (settings.inited) return;
     settings.inited = TRUE;
 
     if (opts) $.extend(settings, opts);
