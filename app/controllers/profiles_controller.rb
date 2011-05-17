@@ -3,31 +3,29 @@
 
 class ProfilesController < ApplicationController
   before_filter :store_current_path, :only => [:show, :edit]
-  before_filter :authenticate_user!, :only => [:show, :edit, :update]
+  before_filter :authenticate_user!
   before_filter :require_user
   before_filter :require_permission, :only => [:edit, :update]
 
 
   def show
-    if @user.sign_in_count > 0
-      @actions = @user.actions.newest_first.all
-      #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
-  #    @events = @user.rsvp_events.
+    @actions = Action.for_user(@user).newest_first.top_level.all
+#    @actions = @user.actions.newest_first.all
 
-      @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
+    #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
+    #    @events = @user.rsvp_events.
 
-      @user_profile_facebook = @user.authentications.facebook.first
+    @events = Event.attended_by_user(@user).upcoming.order("starts_at").limit(5)
 
-      @connected_rsvps = current_user.rsvps.attending_or_maybe_attending.also_attended_by(@user).order("rsvps.created_at DESC")
+    @user_profile_facebook = @user.authentications.facebook.first
 
-      @connected_actions = current_user.actions.connected_with(@user).newest_first.limit(10)
+    @connected_rsvps = current_user.rsvps.attending_or_maybe_attending.also_attended_by(@user).order("rsvps.created_at DESC")
 
-      @common_connections = current_user.connections.common_with_ordered_by_strength(@user).limit(10)
+    @connected_actions = current_user.actions.connected_with(@user).newest_first.limit(10)
 
-    else
-      raise ActiveRecord::RecordNotFound
-    end
+    @common_connections = current_user.connections.common_with_ordered_by_strength(@user).limit(10)
 
+    @comment = Comment.new
   end
   
   def edit
@@ -47,6 +45,7 @@ class ProfilesController < ApplicationController
 
   def require_user
     @user = User.find params[:id]
+    raise ActiveRecord::RecordNotFound unless @user.sign_in_count > 0
   end
 
   def require_permission

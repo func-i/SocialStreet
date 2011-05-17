@@ -73,7 +73,7 @@ SocialStreet::Application.routes.draw do
   end
 
   resources :profiles do
-    resources :comments
+    resources :comments, :only => [:create]
   end
 
   resource :dashboard, :only => [:show], :controller => :dashboard

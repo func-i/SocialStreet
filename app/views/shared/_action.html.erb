@@ -7,6 +7,7 @@
       <%= render 'shared/general_action.html',
         :action => action,
         :url_for_image => url_for_avatar(action.user),
+        :link_for_image => profile_path(action.user),
         :title => "#{action.user.try(:name) || "The owner"} created the event"
     %>
     <% end %>
@@ -14,12 +15,14 @@
     <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => url_for_avatar(action.user),
+      :link_for_image => profile_path(action.user),
       :title => "#{action.user.try(:name) || "The owner"} is attending the event"
   %>
   <% elsif action.of_type?(:event_comment) %>
     <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => url_for_avatar(action.user),
+      :link_for_image => profile_path(action.user),
       :title => "#{action.user.try(:name) || "The owner"} made a comment.",
       :body => action.reference.body
   %>
@@ -27,6 +30,7 @@
     <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => url_for_avatar(action.user),
+      :link_for_image => profile_path(action.user),
       :title => "#{action.user.try(:name) || "The owner"} made a comment.",
       :body => action.reference.body
   %>
@@ -34,7 +38,16 @@
     <%= render 'shared/general_action.html',
       :action => action,
       :url_for_image => url_for_avatar(action.user),
+      :link_for_image => profile_path(action.user),
       :title => "#{action.user.try(:name) || "The owner"} made a comment on this search filter.",
+      :body => action.reference.body
+  %>
+  <% elsif action.of_type?(:profile_comment) %>
+    <%= render 'shared/general_action.html',
+      :action => action,
+      :url_for_image => url_for_avatar(action.user),
+      :link_for_image => profile_path(action.user),
+      :title => "#{action.user.try(:name) || "The owner"} made a comment to #{action.to_user.name}.",
       :body => action.reference.body
   %>
   <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110517142013) do
+ActiveRecord::Schema.define(:version => 20110517151544) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -23,12 +23,14 @@ ActiveRecord::Schema.define(:version => 20110517142013) do
     t.datetime "updated_at"
     t.integer  "action_id"
     t.integer  "searchable_id"
+    t.integer  "to_user_id"
   end
 
   add_index "actions", ["action_id"], :name => "index_actions_on_action_id"
   add_index "actions", ["event_id"], :name => "index_actions_on_event_id"
   add_index "actions", ["reference_type", "reference_id"], :name => "index_actions_on_reference_type_and_reference_id"
   add_index "actions", ["searchable_id"], :name => "index_actions_on_searchable_id"
+  add_index "actions", ["to_user_id"], :name => "index_actions_on_to_user_id"
   add_index "actions", ["user_id"], :name => "index_actions_on_user_id"
 
   create_table "authentications", :force => true do |t|
