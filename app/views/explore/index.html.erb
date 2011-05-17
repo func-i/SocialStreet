@@ -8,13 +8,15 @@
         <div class="clear"></div>
       <% end %>
     </div>
-    
+
+    <%= render 'shared/commenting' %>
+
     <h2 class="title">Explore (<span id="num-results"><%= @total_count %></span> results)
       <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
     </h2>
 
     <div class="inner">
-      <ul class="list" id="explore-results" style="margin-top:40px">
+      <ul class="list" id="action-list" style="margin-top:40px">
         <%= render 'results' %>
       </ul>
     </div>
@@ -24,64 +26,4 @@
 
 <%= render 'sidebar' %>
 
-<% content_for :end_of_body do %>
-  <script>
-    $(function() {
-
-      $('form.comment-form').bind('ajax:beforeSend', function(e, xhr, settings) {
-        $('button.comment-button').attr('disabled', 'disable');
-        $('#comment-box').fadeTo('fast', 0.3);
-        return true;
-      }).bind('ajax:success', function(e, data, status, xhr) {
-        $('#comment_body').val('');
-        $('button.comment-button').attr('disabled', null);
-        $('#comment-box').fadeTo('slow', 1);
-        var $elem = $(data).hide();
-        var $list = $('#explore-results');
-        $list.prepend($elem);
-        $elem.slideDown('fast');
-      }).bind('ajax:error', function(e, xhr, status, error) {
-        if (xhr.status == 401) {
-          window.location.href = '<%= new_user_session_path %>';
-        } else {
-          alert('Error occurred:' + error);
-        }
-        $('button.comment-button').attr('disabled', null);
-        $('#comment-box').fadeTo('slow', 1);
-      });
-
-      $('form.action-subcomment-form').live('ajax:beforeSend', function(e, xhr, settings) {
-        var $form = $(e.target);
-        $form.find('button').attr('disabled', 'disabled');
-        var $container = $form.closest('.action-comment-container');
-        $container.fadeTo('fast', 0.3);
-        return true;
-      }).live('ajax:success', function(e, data, status, xhr) {
-        var $form = $(e.target);
-        var $elem = $(data).hide();
-        var $container = $form.closest('.action-comment-container');
-        $form.find('button').attr('disabled', null);
-        $form.find('textarea').val('');
-        $container.fadeTo('fast', 1.0).before($elem);
-        $elem.slideDown('fast');
-      }).bind('ajax:error', function(e, xhr, status, error) {
-        if (xhr.status == 401) {
-          window.location.href = '<%= new_user_session_path %>';
-        } else {
-          alert('Error occurred:' + error);
-        }
-        var $form = $(e.target);
-        var $container = $form.closest('.action-comment-container');
-        $form.find('button').attr('disabled', null);
-        $container.fadeTo('fast', 1.0).before($elem);
-      });
-
-      $('.create-comment-link').live('click',function() {
-        var $this = $(this);
-        $this.closest('.action').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
-        return false;
-      });
-    });
-  </script>
-<% end %>
 

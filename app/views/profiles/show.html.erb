@@ -49,29 +49,28 @@
   </div>
 </div>
 
-
 <div class="block">
   <div class="content">
-    <h2 class="title">Add Comment</h2>
-    <div class="inner">
-      <%= form_for [@user, @comment], :url => profile_comments_path(@user), :html => { :class => "form" } do |form| %>
-        <%= form.text_area :body, :cols => "80", :rows => "2" %>
-        <%= render 'shared/form_submit_button'  %>
+    
+    <div id="comment-box" style="float:right;height:30px;padding:10px;margin:15px 15px 0px 0px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
+      <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "html",:class => "form comment-form" } do |form| %>
+        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
+        <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
+        <div class="clear"></div>
       <% end %>
     </div>
-  </div>
-</div>
 
-<div class="block">
-  <div class="content">
+    <%= render 'shared/commenting' %>
+
     <h2 class="title">Latest Activity</h2>
     <div class="inner">
-      <ul class="list">
+      <ul class="list" id="action-list">
         <% @actions.each do |action| %>
           <%= render 'shared/action', :action => action %>
         <% end %>
       </ul>
     </div>
+    
   </div>
 </div>
 
@@ -106,18 +105,12 @@
 
 <% content_for :end_of_body do %>
   <script>
-    $('.create-comment-link').live('click',function() {
-      var $this = $(this);
-      $this.closest('.action').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
-      return false;
-    });
       
     $(function() {
       $('.add-to-fb-button').click(function(e) {
         e.stopPropagation();
         var $btn = $(this);
         var friendId = $btn.data('fb-uid');
-        console.log(friendId);
         FB.ui(
         {
           method: 'friends',
@@ -125,7 +118,6 @@
           id: friendId
         },
         function(response) {
-          console.log(response);
           if (response && response.action == 1) {
             alert('Friend request was sent');
             $btn.remove();
