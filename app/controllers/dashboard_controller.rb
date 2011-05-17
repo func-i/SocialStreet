@@ -1,7 +1,10 @@
 class DashboardController < ApplicationController
   def show
     if current_user
-
+      redis = Redis.new
+      @feed = Feed.for_user(redis, current_user, 20)
+      redis.quit
+      
       @upcoming_events = Event.attended_by_user(current_user).upcoming.order("starts_at").all
 
       invitations = Invitation.to_user(current_user).all#TODO - Should only display invitations where the user does not have an rsvp
