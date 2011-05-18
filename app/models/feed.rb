@@ -1,7 +1,4 @@
 class Feed
-
-  attr_accessor :type
-
   def self.encode(feed)
     feed.to_json
   end
