@@ -14,14 +14,7 @@ class SearchSubscription < ActiveRecord::Base
 
   default_value_for :frequency, @@frequencies[:daily]
 
-  scope :with_event_types_or_null, lambda{ |event_type_ids|
-    joins("LEFT OUTER JOIN searchable_event_types
-            ON searchable_event_types.searchable_id = search_subscriptions.searchable_id").
-      where("searchable_event_types.event_type_id IN (#{event_type_ids}
-            OR searchable_event_types.event_type_id IS NULL")
-  }
-
-  scope overlapping_date_ranges, lambda { |start_date, start_time, end_date, end_time|
+  scope :overlapping_date_ranges, lambda { |start_date, start_time, end_date, end_time|
     #this function assumes that each date has its own record...TODO - remake searchable_date_ranges
     #start date/time is within subscription bounds
     query = "(searchable_date_range.start_date <= #{start_date}
@@ -67,6 +60,31 @@ class SearchSubscription < ActiveRecord::Base
 
     #date range - TODO
     subscriptions = subscriptions.overlapping_date_ranges(start_date, start_time, end_date, end_time)
+  end
+
+  def matches_date_ranges?(date_ranges)
+    !!searchable.searchable_date_ranges.select { |dr| dr.overlapping_with? date_ranges }.first
+  end
+
+
+  def self.matching_event(event)
+
+    #type
+    type = event.event_type
+
+    #date
+    starts = event.starts_at
+    ends = event.finishes_at
+
+    #location
+    location_lat = event.latitude
+    location_long = event.longitude
+
+    searchables = Searchable.with_only_subscriptions.with_event_types([type.id]).bounds...
+#    s.matching_date_ranges(event.searchable.searchable_date_ranges.all)
+
+    #TODO - Location
+    searchables.all.select { |s| s.search_subscription.matches_date_ranges?(event.searchable.searchable_date_ranges.all) }
   end
 
   def self.new_from_params(params)

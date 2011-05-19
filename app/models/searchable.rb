@@ -83,6 +83,48 @@ class Searchable < ActiveRecord::Base
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     includes(:location) & Location.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng)
   }
+  
+=begin
+  scope :matching_date_ranges, lambda { |date_ranges| # events date ranges
+    interval = sql_interval_for_utc_offset
+    query, values = [], []
+    
+    date_ranges.each do |dr|
+      query << "(
+        (( searchable_date_ranges.starts_at IS NOT NULL AND searchable_date_ranges.ends_at IS NOT NULL
+            AND (
+              searchable_date_ranges.starts_at#{interval} BETWEEN ? AND ?
+              OR searchable_date_ranges.ends_at#{interval} BETWEEN ? AND ?
+              OR ? BETWEEN searchable_date_ranges.starts_at#{interval} AND searchable_date_ranges.ends_at#{interval}
+              OR ? BETWEEN searchable_date_ranges.starts_at#{interval} AND searchable_date_ranges.ends_at#{interval}
+            )
+        )
+        OR (
+          searchable_date_ranges.starts_at IS NULL AND searchable_date_ranges.ends_at IS NULL 
+          AND ( searchable_date_ranges.dow IS NOT NULL AND searchable_date_ranges.dow = ? )
+        ))
+        AND (
+          searchable_date_ranges.start_time IS NOT NULL OR searchable_date_ranges.end_time IS NULL
+          OR searchable_date_ranges.start_time BETWEEN ? AND ?
+          OR searchable_date_ranges.end_time BETWEEN ? AND ?
+          OR ? BETWEEN searchable_date_ranges.start_time AND searchable_date_ranges.end_time
+          OR ? BETWEEN searchable_date_ranges.start_time AND searchable_date_ranges.end_time
+        )
+      "
+      values += [ 
+        dr.starts_at.beginning_of_day, dr.ends_at.end_of_day,
+        dr.starts_at.beginning_of_day, dr.ends_at.end_of_day,
+        dr.starts_at.beginning_of_day, dr.ends_at.end_of_day,
+        dr.starts_at.beginning_of_day, dr.ends_at.end_of_day,
+        dr.starts_at.wday ] # wday = day of week (0 to 6)
+    end
+
+    unless query.empty?
+      includes(:searchable_date_ranges).
+        where(query.join(" OR "), values)
+    end
+  }
+=end
 
   def location_address
     location.geocodable_address if location

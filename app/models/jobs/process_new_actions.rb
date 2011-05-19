@@ -1,22 +1,23 @@
 # Create the initial connections via facebook
 class Jobs::CleanupDashboardSet
-@queue = :connections
+
+  @queue = :actions
 
   CONNECTION_RANK_LIMIT_EVENT_CREATE = 40
   CONNECTION_RANK_LIMIT_EVENT_RSVP = 30
   CONNECTION_RANK_LIMIT_COMMENT = 20
 
   def self.perform(action_id)
-    an_action = Action.find(action_id)
+    action = Action.find(action_id)
 
     #Add action to any user who has subscribed to it
-    handle_subscriptions(an_action)
+    handle_subscriptions(action)
 
     #Add to any user who was part of the action chain
-    handle_action_chain(an_action)
+    handle_action_chain(action)
 
     #Add to any user who is connected to the actor
-    handle_connections(an_action)
+    handle_connections(action)
 
   end
 
@@ -47,9 +48,7 @@ class Jobs::CleanupDashboardSet
 
       connections = Connection.to_user(an_action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_COMMENT)
     end
-      
-    
-    
+
     redis = Redis.new
 
     connections.all.each do |connection|
@@ -91,43 +90,13 @@ class Jobs::CleanupDashboardSet
 
     if(action.action_type == Action.types[:event_created])
       event = action.event
+      subscriptions = SearchSubscription.matching_event(event)
 
-      #type
-      types = event.event_type
-
-      #date
-      start_date = event.starts_at
-      end_date = event.finishes_at
-
-      #time
-      start_time = nil #TODO
-      end_time = nil #TODO
-
-      #location
-      location_lat = event.latitude
-      location_long = event.longitude
     elsif(action.action_type == Action.types[:search_comment]) #TODO action comments where reply to search comment)
       #TODO
     end
 
-    @subscriptions = Searchable.with_only_subscriptions
-
-    #types
-    @subscriptions = @subscriptions.with_event_types(types)
-
-    #date
-    #TODO-Replace nil with days extract from event
-    @subscriptions = @subscriptions.on_days_or_in_date_range(nil, event.starts_at, event.finishes_at)
-
-    #Time
-    #TODO
-    @subscriptions = @subscriptions.at_or_after_time_of_day()
-    @subscriptions = @subscriptions.at_or_before_time_of_day()
-
-    #TODO - Location
-    @subscriptions = @subscriptions
-
-    @subscriptions.all.each do |subscription|
+    subscriptions.each do |subscription|
       #Add to the user subscription email. Note that this could send the same event twice for two different subscriptions, make sure to handle
 
       #Add to the users dashboard
