@@ -51,8 +51,8 @@ class SearchableDateRange < ActiveRecord::Base
     end
   end
 
-  def overlapping_with?(date_range)
-    overlapping_dates_with?(date_range) && overlapping_dates_with?(date_range)
+  def overlapping_with?(date_ranges)
+    !!date_ranges.select {|dr| overlapping_dates_with?(dr) && overlapping_dates_with?(dr) }.first
   end
 
   def has_dates?

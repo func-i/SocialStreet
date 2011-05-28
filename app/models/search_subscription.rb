@@ -72,19 +72,14 @@ class SearchSubscription < ActiveRecord::Base
     #type
     type = event.event_type
 
-    #date
-    starts = event.starts_at
-    ends = event.finishes_at
-
-    #location
+    #TODO - Location bounds scope
     location_lat = event.latitude
     location_long = event.longitude
 
-    searchables = Searchable.with_only_subscriptions.with_event_types([type.id]).bounds...
-#    s.matching_date_ranges(event.searchable.searchable_date_ranges.all)
-
-    #TODO - Location
-    searchables.all.select { |s| s.search_subscription.matches_date_ranges?(event.searchable.searchable_date_ranges.all) }
+    searchables = Searchable.with_only_subscriptions.with_event_types([type.id])
+    searchables = searchables.all.select { |s| s.search_subscription.matches_date_ranges?(event.searchable.searchable_date_ranges.all) }
+    subscriptions = searchables.collect &:search_subscription
+    return subscriptions
   end
 
   def self.new_from_params(params)

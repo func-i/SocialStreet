@@ -3,6 +3,8 @@ class FeedObserver < ActiveRecord::Observer
   observe :action
 
   def after_create(action)
+    Resque.enqueue(Jobs::ProcessNewAction, action.id)
+
 #
 #    if action.comment_to_someone?
 #      if action.sub_action?
