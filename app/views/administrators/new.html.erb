@@ -90,8 +90,6 @@
 
     <div class="inner">
 
-
-
       <div class="user-searcher">
 
         <div class="search-bar">
@@ -102,7 +100,7 @@
 
         <div class="user-list">
           <% @rsvps.each do |rsvp| %>
-            <%= render 'user', :user => rsvp.user %>
+            <%= render 'user', :user => rsvp.user, :pre_existing => rsvp.administrator? %>
           <% end %>
           <% @connections.each do |connection| %>
             <%= render 'user', :user => connection.to_user %>
