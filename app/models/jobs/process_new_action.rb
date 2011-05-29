@@ -39,12 +39,16 @@ class Jobs::ProcessNewAction
       connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_EVENT_CREATE)
 
     elsif action.action_type == Action.types[:event_rsvp_attending]
-      #RSVP - set event id
-      feed.feed_type = FeedItem.types[:event_rsvp]
-      feed.event_id = action.event_id
+      unless action.user == action.event.user # if its the owner of the event, no need to log it
+        #RSVP - set event id
+        feed.feed_type = FeedItem.types[:event_rsvp]
+        feed.event_id = action.event_id
 
-      connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_EVENT_CREATE)
-    else
+        connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_EVENT_CREATE)
+      end
+    elsif action.action_type == Action.types[:event_comment] ||
+        action.action_type == Action.types[:profile_comment] ||
+        action.action_type == Action.types[:search_comment]
       #Comments - set base action_id
       feed.feed_type = FeedItem.types[:comment]
       feed.action_id = action.action.id
@@ -55,7 +59,7 @@ class Jobs::ProcessNewAction
     connections.all.each do |connection|
       #add to dashboard
       Feed.push(redis, connection.user, feed)
-    end
+    end unless connections.blank?
 
   end
 
@@ -85,13 +89,15 @@ class Jobs::ProcessNewAction
     # => Search Filter Comments
     feed = FeedItem.new
     
-    if(action.action_type == Action.types[:event_created])
+    if action.action_type == Action.types[:event_created]
       event = action.event
       subscriptions = SearchSubscription.matching_event(event)
       feed.feed_type = FeedItem.types[:event_created]
       feed.event_id = action.event_id
-    elsif(action.action_type == Action.types[:search_comment]) #TODO action comments where reply to search comment)
-      #TODO
+    elsif action.action_type == Action.types[:search_comment]
+      #TODO action comments where reply to search comment)
+      subscriptions = SearchSubscription.matching_search_comment(action.comment)
+      
     end
 
     subscriptions.each do |subscription|

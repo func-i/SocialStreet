@@ -66,20 +66,25 @@ class SearchSubscription < ActiveRecord::Base
     !!searchable.searchable_date_ranges.select { |dr| dr.overlapping_with? date_ranges }.first
   end
 
+  def self.matching_search_comment(comment)
+    matching_searchable(comment.searchable)
+  end
 
-  def self.matching_event(event)
-
-    #type
-    type = event.event_type
+  def self.matching_searchable(searchable)
+    type_ids = searchable.event_type_ids
 
     #TODO - Location bounds scope
-    location_lat = event.latitude
-    location_long = event.longitude
+    bounds = searchable.lat_lng_bounds
+    searchables = Searchable.with_only_subscriptions.
+      with_event_types(type_ids).
+      intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).all.
+      select { |s| s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all) }
 
-    searchables = Searchable.with_only_subscriptions.with_event_types([type.id])
-    searchables = searchables.all.select { |s| s.search_subscription.matches_date_ranges?(event.searchable.searchable_date_ranges.all) }
-    subscriptions = searchables.collect &:search_subscription
-    return subscriptions
+    searchables.collect &:search_subscription
+  end
+
+  def self.matching_event(event)
+    matching_searchable(event.searchable)
   end
 
   def self.new_from_params(params)

@@ -16,16 +16,21 @@ class Location < ActiveRecord::Base
   validates :country, :length => { :maximum => 30 }
   validates :postal,  :length => { :maximum => 10 }
 
+  # FIXME: This is incomplete, as it doesnt take into account meridian, and it is untested.
+  #        Need to find an example of this implemented from a Geo perspective, to save time and effort. - KV
+  # http://silentmatt.com/rectangle-intersection/
+  scope :intersecting_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
+    where("locations.sw_lat < #{ne_lat} AND locations.ne_lat > #{sw_lat}
+      AND locations.sw_lng < #{ne_lng} AND locations.ne_lng > #{sw_lng}
+      ")
+  }
+
   # Taken from GeoKit / GeoKit Rails bounds logic - KV
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     # The lng_sql checks if the bounds crosses the meridian. Taken from GeoKit / GeoKit Rails bounds logic
     lng_sql = sw_lng > ne_lng ? "(locations.longitude<#{ne_lng} OR locations.longitude>#{sw_lng})" : "locations.longitude>#{sw_lng} AND locations.longitude<#{ne_lng}"
     final_sql = "locations.latitude>#{sw_lat} AND locations.latitude<#{ne_lat} AND #{lng_sql}"
     where(final_sql)
-  }
-
-  scope :overlapping_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
-
   }
 
   # Search for locations by relevance for user
@@ -57,6 +62,36 @@ class Location < ActiveRecord::Base
   def geo_located?
     latitude? && longitude?
   end
+
+  # it's not a pin point location, rather a bounding box
+  # bounding box = sw_lat/lng and ne lat/lng
+  def bounding_box?
+    sw_lat? && sw_lng? && ne_lat? && lw_lng?
+  end
+
+  # order: ne_lat, ne_lng, sw_lat, sw_lng
+  def bounds
+    if bounding_box?
+      [ne_lat, ne_lng, sw_lat, sw_lng]
+    elsif geo_located?
+      [latitude, longitude, latitude, longitude] # point represented as a box
+    end
+  end
+
+  # this code isn't the most optimized, there should ideall be only 4 checks, but there are 8
+  #  def intersects_with?(location)
+  #    contains?(location.bounds[0])
+  #  end
+  #
+  #  def contains?(lat, lng)
+  #    box = bounds
+  #    res = lat > box[2] && point.lat < box[0]
+  #    if crosses_meridian?
+  #      res &= lng < box[1] || lng > box[3]
+  #    else
+  #      res &= lng < box[1] && lng > box[3]
+  #    end
+  #  end
 
   protected
 

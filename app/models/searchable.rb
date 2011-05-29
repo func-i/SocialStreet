@@ -83,6 +83,10 @@ class Searchable < ActiveRecord::Base
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     includes(:location) & Location.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng)
   }
+
+  scope :intersecting_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
+    includes(:location) & Location.intersecting_bounds(ne_lat, ne_lng, sw_lat, sw_lng)
+  }
   
 =begin
   scope :matching_date_ranges, lambda { |date_ranges| # events date ranges
@@ -136,6 +140,14 @@ class Searchable < ActiveRecord::Base
 
   def global_comment?
     comment
+  end
+
+  def event_type_ids
+    searchable_event_types.all.collect &:event_type_id
+  end
+
+  def lat_lng_bounds
+    location.bounds
   end
 
   # search filter params from the form
