@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110517151544) do
+ActiveRecord::Schema.define(:version => 20110518160424) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -188,6 +188,21 @@ ActiveRecord::Schema.define(:version => 20110517151544) do
 
   add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"
 
+  create_table "searchable_date_time", :force => true do |t|
+    t.integer  "searchable_id"
+    t.date     "date"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "dow"
+    t.boolean  "inclusive"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+  end
+
+  add_index "searchable_date_time", ["searchable_id"], :name => "index_searchable_date_time_on_searchable_id"
+
   create_table "searchable_event_types", :force => true do |t|
     t.integer  "searchable_id"
     t.integer  "event_type_id"
@@ -207,6 +222,17 @@ ActiveRecord::Schema.define(:version => 20110517151544) do
   end
 
   add_index "searchables", ["location_id"], :name => "index_searchables_on_location_id"
+
+  create_table "tmp_feed_items", :force => true do |t|
+    t.integer  "action_id"
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.string   "feed_type"
+    t.string   "inserted_because"
+    t.datetime "last_touched"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                                         :default => "", :null => false

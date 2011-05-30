@@ -21,7 +21,7 @@ class SearchSubscription < ActiveRecord::Base
             OR searchable_event_types.event_type_id IS NULL")
   }
 
-  scope overlapping_date_ranges, lambda { |start_date, start_time, end_date, end_time|
+  scope :overlapping_date_ranges, lambda { |start_date, start_time, end_date, end_time|
     #this function assumes that each date has its own record...TODO - remake searchable_date_ranges
     #start date/time is within subscription bounds
     query = "(searchable_date_range.start_date <= #{start_date}
@@ -66,7 +66,7 @@ class SearchSubscription < ActiveRecord::Base
     subscriptions = subscriptions.with_event_types_or_null(event_type_id_array)
 
     #date range - TODO
-    subscriptions = subscriptions.overlapping_date_ranges(start_date, start_time, end_date, end_time)
+    #subscriptions = subscriptions.overlapping_date_ranges(start_date, start_time, end_date, end_time)
   end
 
   def self.new_from_params(params)

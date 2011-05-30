@@ -1,0 +1,21 @@
+ <%
+#We need to display:
+#=> Events from Subscriptions (done, show same as explore page)
+#=> Comments on Search Filter from Subscriptions
+#=> Events from Connections (done, show who created along with explore page info)
+#=> RSVPs to Events from Connections
+#=> Comments on Events from Connections / Participation
+#=> Comments on Profiles from Connections / Participation
+#=> Comments on Search Filter from Connections / Participation
+#=> Comments on Actions from Connections / Participation
+%>
+
+
+
+<% if feed_item.feed_type == FeedItem.types[:event_created] %>
+  <%= render 'event', :feed_item => feed_item %>
+<% elsif feed_item.feed_type == FeedItem.types[:rsvp]  %>
+  <%= render 'rsvp', :feed_item => feed_item %>
+<% elsif feed_item.feed_type == FeedItem.types[:comment]  %>
+  <%= render 'comment', :feed_item => feed_item %>
+<% end %>
