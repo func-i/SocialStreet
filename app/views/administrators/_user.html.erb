@@ -1,14 +1,13 @@
-<% pre_existing ||= false  %>
+<% pre_existing ||= (user == current_user || !@event.user == user) %>
 
-<div class="user <%= 'selected cannot-remove' if (user == current_user || !@event.user == user) %>" data-user-id="<%= user.id %>">
+<div class="user <%= 'selected' if pre_existing %> <%= 'cannot-remove' if (user == current_user || !@event.user == user) %>" data-user-id="<%= user.id %>">
 
   <div class="avatar"><%= image_tag user.avatar_url %></div>
   <span class="name"><%= user.name %></span>
-  <%= link_to '[X]','#', :class=>"remove-btn" unless pre_existing %>
+  <%= link_to '[X]','#', :class=>"remove-btn" unless (user == current_user || !@event.user == user) %>
 
   <div class="clear"></div>
-  <% unless pre_existing %>
-    <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
-  <% end %>
+
+  <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
 
 </div>

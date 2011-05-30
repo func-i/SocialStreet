@@ -7,25 +7,38 @@ class AdministratorsController < ApplicationController
   before_filter :require_permission, :only => [:edit, :update]
 
   def new
-    @rsvps = Rsvp.for_event(@event).all
+    @rsvps = @event.rsvps.all
     @connections = current_user.connections.most_relevant_first.all
-    @administrator_rsvps = Rsvp.for_event(@event).administrators.all
+    @administrator_rsvps = @rsvps.select &:administrator?
   end
 
   def create
+
+    num_added, num_removed = 0,0
+
     params[:user_ids].each do |user_id|
       if user = User.find_by_id(user_id)
-        if rsvp = @event.rsvps.where(:user_id => user_id).first
+        rsvp = @event.rsvps.where(:user_id => user_id).first
+        if rsvp && !rsvp.administrator?
           rsvp.administrator = true
           rsvp.save
-        else
+          num_added += 1
+        elsif rsvp.blank?
           rsvp = @event.rsvps.create :user => user, :administrator => true, :status => Rsvp.statuses[:maybe_attending]
+          num_added += 1
         end
       end
     end unless params[:user_ids].blank?
 
-    redirect_to @event, :notice => "Added Administrators"
+    @event.rsvps.administrators.all.each do |rsvp|
+      if !(params[:user_ids] || []).include? rsvp.user_id.to_s
+        rsvp.administrator = false
+        rsvp.save
+        num_removed += 1
+      end
+    end
 
+    redirect_to @event, :notice => "Added #{num_added} and removed #{num_removed} Administrators."
   end
   
   protected

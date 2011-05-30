@@ -14,11 +14,16 @@ Initial Setup for Development:
 - Install PostgreSQL 8.3, 8.4 or 9
 - Install the pg gem (might be a bit of a pain on OSX)
 - Download and install Redis: http://redis.io/download
-- Open a terminal tab to the [REDIS_ROOT (where you extracted and installed it) dir, and run: ./src/redis-server
-- Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
-- Open a terminal tab to the [APP_ROOT] dir, and run: resque-web
+- Start Redis Server:
+  - Open a terminal tab to the [REDIS_ROOT (where you extracted and installed it) dir, and run: ./src/redis-server
+- Run 1 Resque Worker:
+  - Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
+- Start Resque Web Server (optional, for debugging):
+  - Open a terminal tab to the [APP_ROOT] dir, and run: resque-web
   - This will start another web server here: http://localhost:5678/
-- Open a terminal tab to the [APP_ROOT] dir, and run: rails server
+  - This page should show 1 worker waiting for a job: http://0.0.0.0:5678/workers
+- Start the SocialStreet App Server (duh):
+  - Open a terminal tab to the [APP_ROOT] dir, and run: rails server
 
 Docs:
 

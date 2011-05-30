@@ -32,6 +32,10 @@ group :development do
   gem 'thin'
 end
 
+group :test, :development do
+  gem "rspec-rails", "~> 2.6"
+end
+
 #gem "meta_where"
 
 # Use unicorn as the web server
