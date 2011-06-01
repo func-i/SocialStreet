@@ -21,11 +21,11 @@ class Location < ActiveRecord::Base
   # http://silentmatt.com/rectangle-intersection/
   scope :intersecting_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     where("locations.sw_lat < #{ne_lat} AND locations.ne_lat > #{sw_lat}
-      AND locations.sw_lng < #{ne_lng} AND locations.ne_lng > #{sw_lng}
-      ")
+      AND locations.sw_lng < #{ne_lng} AND locations.ne_lng > #{sw_lng}")
   }
 
   # Taken from GeoKit / GeoKit Rails bounds logic - KV
+  # This is used for the explore page, to find events (points) within a bounds
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     # The lng_sql checks if the bounds crosses the meridian. Taken from GeoKit / GeoKit Rails bounds logic
     lng_sql = sw_lng > ne_lng ? "(locations.longitude<#{ne_lng} OR locations.longitude>#{sw_lng})" : "locations.longitude>#{sw_lng} AND locations.longitude<#{ne_lng}"

@@ -3,10 +3,10 @@ class SearchableDateRange < ActiveRecord::Base
   belongs_to :searchable
 
   default_value_for :starts_at do
-    Time.zone.now.advance(:hours => 3).floor(15.minutes)
+#    Time.zone.now.advance(:hours => 3).floor(15.minutes)
   end
   default_value_for :ends_at do |e|
-    (e.starts_at || Time.zone.now.advance(:hours => 3)).advance(:hours => 3).floor(15.minutes)
+#    (e.starts_at || Time.zone.now.advance(:hours => 3)).advance(:hours => 3).floor(15.minutes)
   end
 
   validate :valid_dates
@@ -16,7 +16,7 @@ class SearchableDateRange < ActiveRecord::Base
   end
 
   def matches?(date_ranges)
-    !!date_ranges.select { |dr| matches_date_range?(dr) }.first
+    !!date_ranges.detect { |dr| matches_date_range?(dr) }
   end
 
   def overlapping_dates_with?(date_range)
@@ -52,15 +52,15 @@ class SearchableDateRange < ActiveRecord::Base
   end
 
   def overlapping_with?(date_ranges)
-    !!date_ranges.select {|dr| overlapping_dates_with?(dr) && overlapping_dates_with?(dr) }.first
+    !!date_ranges.detect {|dr| overlapping_dates_with?(dr) && overlapping_times_with?(dr) }
   end
 
   def has_dates?
-    starts_at? && ends_at?
+    (starts_at? && ends_at?)
   end
 
   def has_times?
-    start_time? && end_time? && (start_time > 0 || end_time < 1439)
+    start_time? && end_time? && (start_time > DAY_FIRST_MINUTE || end_time < DAY_LAST_MINUTE)
   end
 
   def dates_overlap_with?(starts_at, ends_at)

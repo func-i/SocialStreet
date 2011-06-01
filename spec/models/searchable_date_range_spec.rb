@@ -2,6 +2,36 @@ require 'spec_helper'
 
 describe SearchableDateRange do
 
+  describe "overlapping_with?" do
+
+    before :each do
+      @dr1 = SearchableDateRange.new
+      @dr2 = SearchableDateRange.new
+      @dr1.start_time = nil
+      @dr1.end_time = nil
+      @dr2.start_time = nil
+      @dr2.end_time = nil
+      @dr1.starts_at = nil
+      @dr1.ends_at = nil
+      @dr2.starts_at = nil
+      @dr2.ends_at = nil
+    end
+
+    describe "where DR2 has dow+time range but DR1 has only datetime ranges" do
+      it "should be false if DR2's time falls within the date range but the dow does not fall within the 3 day date range" do
+        @dr2.start_time = 780 # 1pm
+        @dr2.end_time = 900 # 3pm
+        @dr2.dow = 4 # thursday
+
+        @dr1.starts_at = Time.zone.now.beginning_of_week + 840.minutes # starts monday at 2pm
+        @dr1.ends_at = Time.zone.now.beginning_of_week + 2.days + 960.minutes # ends wednesday at 4pm
+
+        @dr1.should_not be_overlapping_with([@dr2])
+      end
+    end
+
+  end
+
   describe "overlapping_times_with?" do
 
     before :each do
@@ -11,6 +41,10 @@ describe SearchableDateRange do
       @dr1.end_time = nil
       @dr2.start_time = nil
       @dr2.end_time = nil
+      @dr1.starts_at = nil
+      @dr1.ends_at = nil
+      @dr2.starts_at = nil
+      @dr2.ends_at = nil
     end
 
     describe "where both DRs have times set" do
@@ -62,20 +96,36 @@ describe SearchableDateRange do
       end
     end
 
-    describe "where DR2 has times but DR1 has only datetime ranges" do
-      it "should be true if the time falls within the date range and the date range is 1 day long" do
-        
+    describe "where DR2 has dow+time range but DR1 has only datetime ranges" do
+      it "should be true if DR2's dow and time falls within the date range and the date range is 1 day long" do
+        @dr2.start_time = 780 # 1pm
+        @dr2.end_time = 900 # 3pm
+        @dr2.dow = 2 # tuesday
+
+        @dr1.starts_at = Time.zone.now.beginning_of_week + 1.day + 840.minutes # starts tuesday at 2pm
+        @dr1.ends_at = Time.zone.now.beginning_of_week + 1.day + 960.minutes # ends tuesday at 4pm 
 
         @dr1.should be_overlapping_times_with(@dr2)
       end
-      it "should be true if the time falls within the middle of the date range and the date range is 3 days long" do
-        
-        @dr1.should be_overlapping_dates_with(@dr2)
-      end
-      it "should be false if the time does not fall within the 3 day date range" do
+      it "should be false if DR2's dow falls within the date range but the time of day does not fall within the 1 day date range" do
+        @dr2.start_time = 975 # 4:15pm
+        @dr2.end_time = 1080 # 6:00pm
+        @dr2.dow = 2 # tuesday
 
-        
-        @dr1.should_not be_overlapping_dates_with(@dr2)
+        @dr1.starts_at = Time.zone.now.beginning_of_week + 1.day + 840.minutes # starts tuesday at 2pm
+        @dr1.ends_at = Time.zone.now.beginning_of_week + 1.day + 960.minutes # ends tuesday at 4pm
+
+        @dr1.should_not be_overlapping_times_with(@dr2)
+      end
+      it "should be true if the time falls within the middle of the date range and the date range is 3 days long" do
+        @dr2.start_time = 780 # 1pm
+        @dr2.end_time = 900 # 3pm
+        @dr2.dow = 2 # tuesday
+
+        @dr1.starts_at = Time.zone.now.beginning_of_week + 840.minutes # starts monday at 2pm
+        @dr1.ends_at = Time.zone.now.beginning_of_week + 2.days + 960.minutes # ends wednesday at 4pm
+
+        @dr1.should be_overlapping_times_with(@dr2)
       end
     end
 

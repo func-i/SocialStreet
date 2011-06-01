@@ -53,13 +53,13 @@ class ExploreController < ApplicationController
     search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 
     # to_time and from_time are in integer (minute) format. 1439 = 11:59 PM (the day has 1440 minutes) - KV
-    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > 0
-    search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < 1439
+    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > DAY_FIRST_MINUTE
+    search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < DAY_LAST_MINUTE
 
     # GEO LOCATION SEARCHING
     
     # order: ne_lat, ne_lng, sw_lat, sw_lng
-    # TODO: Temporary default handling for user's initial location
+    # TODO: Temporary default handling for user's initial location, need to read user's location and use that LatLng here
     if params[:map_bounds].blank?
       params[:map_bounds] = "43.958661074786455,-78.99006997304684,43.362570924106635,-79.79756509023434"
     end
