@@ -20,6 +20,27 @@ class Searchable < ActiveRecord::Base
 
   before_save :cache_lat_lng
 
+  scope :with_keywords, lambda { |keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
+    unless keywords.blank?
+      chain = includes(:event).includes(:comment)
+      query = []
+      args = {}
+      
+      keywords.each_with_index do |k, i|
+        query << "comments.body LIKE :key#{i} 
+          OR events.name LIKE :key#{i}
+          OR events.description LIKE :key#{i} 
+          OR searchables.id IN ( 
+            SELECT searchable_id FROM searchable_event_types
+              WHERE searchable_event_types.searchable_id = searchables.id
+              AND searchable_event_types.name LIKE :key#{i}
+          )"
+        args["key#{i}".to_sym] = "%#{k}%"
+      end
+      chain.where(query.join(" OR "), args)
+    end
+  }
+
   scope :on_or_after_date, lambda {|date|
     date = Time.zone.parse(date) if date.is_a? String
     includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at >= ?', date.beginning_of_day) if date
@@ -204,10 +225,16 @@ class Searchable < ActiveRecord::Base
       end
     end
     
-    unless params[:types].blank?
+    unless params[:keywords].blank?
       attrs[:searchable_event_types_attributes] = []
-      params[:types].each do |t_id|
-        attrs[:searchable_event_types_attributes] << { :event_type_id => t_id }
+      params[:keywords].each do |keyword|
+        # if the event_type is already in the db, then link the near searchable_event_type record to it
+        # otherwise, have it create a new one
+        event_type = EventType.find_by_name(keyword)
+        attrs[:searchable_event_types_attributes] << { 
+          :event_type_id => event_type.try(:id),
+          :name => keyword
+        }
       end
     end
     
@@ -218,7 +245,9 @@ class Searchable < ActiveRecord::Base
     params = {}
 
     #Event Types
-    params[:types] = searchable_event_types.collect {|searchable_event_type| searchable_event_type.event_type_id} unless searchable_event_types.blank?
+    params[:keywords] = searchable_event_types.collect { |searchable_event_type|
+      searchable_event_type.name ||  searchable_event_type.event_type.try(:name)
+    } unless searchable_event_types.blank?
 
     #Location
     if location
@@ -260,6 +289,11 @@ class Searchable < ActiveRecord::Base
 
   def self.day_selected?(params, day)
     params[:days] && params[:days].include?(day.to_s)
+  end
+
+  # both fields and keywords are arrays
+  def self.keyword_conditions_for(fields, keywords)
+    fields.collect {|f| "#{f} LIKE '%#{keywords.first}%'"  }.join(" OR ")
   end
 
 

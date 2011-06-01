@@ -4,6 +4,7 @@ class ExploreController < ApplicationController
   before_filter :store_current_path
 
   def index
+#    params[:keywords] = ['Baseball', 'Hockey']
     @comment = Comment.new
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
@@ -48,7 +49,7 @@ class ExploreController < ApplicationController
 
   def apply_filter(search_object)
 
-    search_object = search_object.with_event_types(params[:types]) unless params[:types].blank?
+    search_object = search_object.with_keywords(params[:keywords]) unless params[:keywords].blank?
 
     search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 

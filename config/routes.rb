@@ -54,7 +54,7 @@ SocialStreet::Application.routes.draw do
   get 'explore' => 'explore#index', :as => 'explore'
 
   resources :comments, :only => [:create]
-
+  resources :event_types, :only => [:index] # for autocomplete
   resources :events do
     resources :rsvps do 
       resources :invitations do
