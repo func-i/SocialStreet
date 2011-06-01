@@ -23,7 +23,7 @@ class ProfilesController < ApplicationController
 
     @connected_actions = current_user.actions.connected_with(@user).newest_first.limit(10)
 
-    @common_connections = current_user.connections.common_with_ordered_by_strength(@user).limit(10)
+    @common_connections = current_user.connections.common_with(@user).limit(10)
 
     @comment = Comment.new
   end

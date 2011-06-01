@@ -11,11 +11,9 @@ class Connection < ActiveRecord::Base
 
   scope :most_relevant_first, order("connections.strength DESC, connections.updated_at DESC")
 
-  scope :common_with_ordered_by_strength, lambda{ |user|
+  scope :common_with, lambda{ |user|
     joins("INNER JOIN connections AS joined_connections
        ON joined_connections.to_user_id = connections.to_user_id AND joined_connections.user_id = #{user.id}"
-    ).order(
-      "connections.strength * connections.strength * joined_connections.strength DESC"
     )
   }
 
