@@ -131,10 +131,10 @@
       });
       $('#timerange').slider({
         range: true,
-        min: 0,
-        max: 1439,
+        min: <%= DAY_FIRST_MINUTE %>,
+        max: <%= DAY_LAST_MINUTE %>,
         step: 15,
-        values: [<%= params[:from_time] || 0 %>, <%= params[:to_time] || 1439 %>],
+        values: [<%= params[:from_time] || DAY_FIRST_MINUTE %>, <%= params[:to_time] || DAY_LAST_MINUTE %>],
         slide: slideTime,
         change: refreshResults
       });

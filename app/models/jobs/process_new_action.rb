@@ -97,7 +97,6 @@ class Jobs::ProcessNewAction
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
       subscriptions = SearchSubscription.matching_search_comment(action.comment)
-      
     end
 
     subscriptions.each do |subscription|

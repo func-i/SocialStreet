@@ -152,9 +152,7 @@ class Searchable < ActiveRecord::Base
 
   # search filter params from the form
   def self.new_from_params(params)
-    attrs = {
-      
-    }
+    attrs = {}
     
     # assume map_center is set if map_bounds is set - KV
     if !params[:map_bounds].blank?
@@ -180,24 +178,29 @@ class Searchable < ActiveRecord::Base
     
     attrs[:searchable_date_ranges_attributes] = []
 
+    # Apply the time range from the time slider (if it's been used by the user) to each date range record
     if !params[:from_date].blank? || !params[:to_date].blank?
-      attrs[:searchable_date_ranges_attributes] << {
-        :start_date => params[:from_date].blank? ? nil : Date.parse(params[:from_date]),
-        :end_date => params[:to_date].blank? ? nil : Date.parse(params[:to_date]),
-        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false)
+      date_range_attrs = {
+        :starts_at => params[:from_date].blank? ? nil : Date.parse(params[:from_date]).beginning_of_day,
+        :ends_at => params[:to_date].blank? ? nil : Date.parse(params[:to_date]).end_of_day,
+        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false),
       }
+      if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+        date_range_attrs[:start_time] = params[:from_time].to_i
+        date_range_attrs[:end_time] = params[:to_time].to_i
+      end
+      attrs[:searchable_date_ranges_attributes] << date_range_attrs
     end
 
-    if params[:from_time].to_i > 0 || params[:to_time].to_i < 1439
-      attrs[:searchable_date_ranges_attributes] << {
-        :start_time => params[:from_time].to_i,
-        :end_time => params[:to_time].to_i
-      }
-    end
-
+    # Apply the time range from the time slider (if it's been used by the user) to each day-of-week (dow) record
     unless params[:days].blank?
       params[:days].each do |day|
-        attrs[:searchable_date_ranges_attributes] << {:dow => day}
+        date_range_attrs = { :dow => day }
+        if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+          date_range_attrs[:start_time] = params[:from_time].to_i
+          date_range_attrs[:end_time] = params[:to_time].to_i
+        end
+        attrs[:searchable_date_ranges_attributes] << date_range_attrs
       end
     end
     

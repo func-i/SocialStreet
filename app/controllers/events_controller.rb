@@ -19,7 +19,11 @@ class EventsController < ApplicationController
     @event = Event.new
     @event.searchable ||= Searchable.new
     @event.searchable.location ||= Location.new
-    @event.searchable.searchable_date_ranges.build
+    # start/end datetimes are no longer defaulted in the model
+    @event.searchable.searchable_date_ranges.build({ 
+      :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
+      :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
+    })
     @event.searchable.searchable_event_types.build
     @event.action = @action # nil if no @action (which is desired)
     if session[:stored_params]

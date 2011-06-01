@@ -19,11 +19,17 @@ Initial Setup for Development:
 - Run 1 Resque Worker:
   - Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
 - Start Resque Web Server (optional, for debugging):
-  - Open a terminal tab to the [APP_ROOT] dir, and run: resque-web
+  - Open a terminal tab to the [APP_ROOT] dir, and run: bundle exec resque-web
   - This will start another web server here: http://localhost:5678/
   - This page should show 1 worker waiting for a job: http://0.0.0.0:5678/workers
 - Start the SocialStreet App Server (duh):
   - Open a terminal tab to the [APP_ROOT] dir, and run: rails server
+
+Running Tests (RSpec specs)
+- For all tests, from the [APP_ROOT], run the command: rspec spec
+  - If that doesn't work, try running: rake spec
+- For a single test based on its line number, run the command: rspec spec/models/searchable_date_range_spec.rb:69
+  - In this example, it runs the first spec ("it" statement) that it can find at or above line 69 in searchable_date_range
 
 Docs:
 
