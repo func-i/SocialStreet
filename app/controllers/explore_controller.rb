@@ -42,8 +42,8 @@ class ExploreController < ApplicationController
 
     @per_page = 10
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    @searchables = @searchables.limit(@per_page).offset(@offset)
     @total_count = @searchables.count
+    @searchables = @searchables.limit(@per_page).offset(@offset)
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
   end
 

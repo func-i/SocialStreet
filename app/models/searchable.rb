@@ -93,11 +93,14 @@ class Searchable < ActiveRecord::Base
   #  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
   scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
   scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
-  scope :excluding_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
-
+  scope :only_search_comment_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
+  scope :excluding_actions, includes(:action).where("actions.id IS NULL")
+  scope :including_search_comments, where("searchables.id NOT IN (SELECT comments.searchable_id FROM comments
+    INNER JOIN actions ON actions.reference_id = comments.id AND actions.reference_type = 'Comment'
+    WHERE comments.searchable_id = searchables.id AND (actions.action_type <> 'Search Comment' OR actions.action_id IS NULL))")
   # called from the explore controller/action
-  #scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_comments
-  scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_actions
+  
+  scope :with_excludes_for_explore, excluding_actions.excluding_subscriptions.excluding_actions.including_search_comments
 
   scope :with_only_subscriptions, joins(:search_subscription)
 
