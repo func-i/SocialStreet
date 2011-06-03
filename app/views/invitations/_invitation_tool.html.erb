@@ -100,10 +100,10 @@
           </form>
         </div>
 
-        <div class="user-list">
+        <div class="user-list">          
           <% @connections.each do |c| %>
-            <% user = c.to_user %>
-            <%= render 'user', :user => user %>
+            <% user = c.to_user %>            
+            <%= render 'user', :user => user, :connection_strength => c.strength %>
           <% end %>
           <div class="clear"></div>
         </div>
