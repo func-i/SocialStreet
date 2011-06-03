@@ -51,7 +51,7 @@ class InvitationsController < ApplicationController
   end
 
   def load_connections
-    @connections = current_user.connections.most_relevant_first.limit(30).all
+    @connections = current_user.connections.most_relevant_first.all
   end
 
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
