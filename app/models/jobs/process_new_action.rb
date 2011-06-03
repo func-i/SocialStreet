@@ -69,7 +69,9 @@ class Jobs::ProcessNewAction
     # => events to action treads (will appear twice in some peoples dashboards, fixme)
     return false if action.action.blank?
 
-    feed = FeedItem.new :feed_type => FeedItem.types[:comment], :action_id => action.action.id
+    feed = FeedItem.new 
+    feed.feed_type = FeedItem.types[:comment]
+    feed.action_id = action.action.id
     
     action_list = Actions.threaded_with(action)
 
@@ -97,7 +99,6 @@ class Jobs::ProcessNewAction
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
       subscriptions = SearchSubscription.matching_search_comment(action.comment)
-      
     end
 
     subscriptions.each do |subscription|

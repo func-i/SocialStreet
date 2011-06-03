@@ -34,7 +34,7 @@ Event.create!(
     :description => "Fake description for Event based on some random string Lorem Ipsum style",
     :searchable_attributes => {
       :searchable_event_types_attributes => [
-        { :event_type => types[:soccer] }
+        { :event_type => types[:soccer], :name => "Soccer" }
       ],
       :searchable_date_ranges_attributes => [
         { :starts_at => 10.days.from_now.beginning_of_day + 240.minutes }
@@ -56,7 +56,7 @@ Event.create!(
     :cost => 1200,
     :searchable_attributes => {
       :searchable_event_types_attributes => [
-        { :event_type => types[:squash] }
+        { :event_type => types[:squash], :name => "Squash" }
       ],
       :searchable_date_ranges_attributes => [
         {
@@ -82,7 +82,7 @@ Event.create!(
     :cost => 13000,
     :searchable_attributes => {
       :searchable_event_types_attributes => [
-        { :event_type => types[:basketball] }
+        { :event_type => types[:basketball], :name => "Basketball" }
       ],
       :searchable_date_ranges_attributes => [
         {
@@ -108,7 +108,7 @@ Event.create!(
     :cost => 1400,
     :searchable_attributes => {
       :searchable_event_types_attributes => [
-        { :event_type => types[:baseball] }
+        { :event_type => types[:baseball], :name => "Baseball" }
       ],
       :searchable_date_ranges_attributes => [
         {

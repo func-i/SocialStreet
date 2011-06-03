@@ -35,12 +35,12 @@ class Action < ActiveRecord::Base
     joins(
       "INNER JOIN actions AS joined_actions
        ON (
-            (
+            joined_actions.user_id = #{user.id}
+            AND (
               joined_actions.action_id = actions.action_id
               OR joined_actions.action_id = actions.id
               OR joined_actions.id = actions.action_id
             )
-            AND joined_actions.user_id = #{user.id}
           )"
     )
   }

@@ -14,3 +14,15 @@ $.fn.serializeObject = function()
     });
     return o;
 };
+
+$(function() {
+  $('.remove-parent').live('click', function(event) {
+    var $this = $(this);
+    var parentSelector = $this.data('parent-selector');
+    if (parentSelector) {
+      $this.closest(parentSelector).remove();
+    }
+    $this.trigger('ss:removed');
+    return false;
+  });
+})
