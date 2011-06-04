@@ -209,9 +209,9 @@ class Event < ActiveRecord::Base
     end
   end
 
-#  def valid_dates
-#    errors.add :finishes_at, 'must be after the event starts' if finishes_at && finishes_at <= starts_at
-#  end
+  #  def valid_dates
+  #    errors.add :finishes_at, 'must be after the event starts' if finishes_at && finishes_at <= starts_at
+  #  end
   def valid_maximum_attendees
     if minimum_attendees? && maximum_attendees? && maximum_attendees < minimum_attendees
       errors.add :maximum_attendees, 'must be greater than or equal to the minimum'
@@ -224,8 +224,12 @@ class Event < ActiveRecord::Base
 
   def post_to_facebook
     if self.facebook
-      #Post to event to facebook
-      
+      me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
+      me.feed!(
+        :message=>"SocialStreet Event created",
+        :link=>"http://localhost/events/#{self.id}"
+      )      
     end
   end
+  
 end

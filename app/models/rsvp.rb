@@ -39,6 +39,8 @@ class Rsvp < ActiveRecord::Base
   before_save :set_is_waiting
   before_save :create_feedback
 
+  after_save {|record| record.post_to_facebook("Changed RSVP status for SocialStreet Event #{record.event.name} to #{record.status}")}
+
   def available_statuses
     if event && event.maximum_attendees
       return @@statuses.except(:maybe_attending)
@@ -60,9 +62,9 @@ class Rsvp < ActiveRecord::Base
   end
 
   # This is causing really wierd behavior and not working - not sure why - wtf ? - KV
-#  def set_is_waiting2
-#    self.waiting = attending? && event.number_of_spots_left == 0 # spots_left may be nil
-#  end
+  #  def set_is_waiting2
+  #    self.waiting = attending? && event.number_of_spots_left == 0 # spots_left may be nil
+  #  end
 
   def set_is_waiting
     self.waiting = false
@@ -88,6 +90,14 @@ class Rsvp < ActiveRecord::Base
         self.feedback.destroy
       end
     end
+  end
+
+  def post_to_facebook(message)
+    me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
+    me.feed!(
+      :message=>message,
+      :link=>"http://localhost/events/#{self.id}"
+    )
   end
 
 end
