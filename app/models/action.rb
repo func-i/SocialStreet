@@ -20,8 +20,6 @@ class Action < ActiveRecord::Base
   has_many :comments, :as => :commentable, :dependent => :destroy # comments can be made against an action. so an action has many comments
   has_many :actions, :dependent => :destroy # child actions (1 level deep). Eg child comments, child event creations, etc
 
-  after_save :queue_action_processor
-
   scope :newest_first, order("actions.occurred_at DESC")
   scope :oldest_first, order("actions.occurred_at ASC")
   scope :top_level, where(:action_id => nil)
@@ -77,11 +75,6 @@ class Action < ActiveRecord::Base
       s = s.searchable if s && s.respond_to?(:searchable)
       self.searchable = s.clone(:include => [:searchable_date_ranges, :searchable_event_types]) if s
     end
-  end
-
-  def queue_action_processor
-    puts "JOSH QUEUING (#{self.inspect})"
-    Resque.enqueue(Jobs::ProcessNewActions, self.id)
   end
 
 end
