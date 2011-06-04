@@ -92,12 +92,9 @@ class Rsvp < ActiveRecord::Base
     end
   end
 
+  # TODO: Make sure to check for Facebook permissions to make sure access is given to post to wall - JS
   def post_to_facebook(message)
-    me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
-    me.feed!(
-      :message=>message,
-      :link=>"http://localhost/events/#{self.id}"
-    )
+    user.post_to_facebook_wall(message, "http://localhost/events/#{self.id}")
   end
 
 end

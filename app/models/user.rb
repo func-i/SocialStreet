@@ -107,5 +107,15 @@ class User < ActiveRecord::Base
     (authentications.empty? || !password.blank?) # && super
   end
 
+  def post_to_facebook_wall(message, link)
+#    if fb_uid? && auth = authentications.facebook.first
+#      me = FbGraph::User.me(auth.auth_response["credentials"]["token"])
+#      me.feed!(
+#        :message => message,
+#        :link => link
+#      )
+#    end
+  end
+
   
 end

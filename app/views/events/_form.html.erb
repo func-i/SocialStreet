@@ -2,15 +2,22 @@
 <div id="basic" class="tab-content">
   <%= form.hidden_field :action_id %>
 
-  <%= form.fields_for :searchable do |searchable_fields| %>
-    <%= searchable_fields.fields_for :searchable_event_types do |event_type_fields| %>
-      <div class="group">
-        <label class="label">What?</label>
-        <%= event_type_fields.collection_select :event_type_id, @event_types, :id, :name %><br/>
-        <span class="description">Event type dropdown.</span>
-      </div>
-    <% end %>
-  <% end %>
+  <div class="group">
+    <label class="label">What?</label>
+    <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit", :placeholder => "Enter keywords here..." %>
+    <ul id="keywords">
+      <% (@event.searchable.keywords || []).each do |keyword| %>
+        <% unless keyword.blank? %>
+          <li class="keyword-pill">
+            <input type="hidden" name="event[searchable_attributes][keywords][]" value="<%= keyword %>" />
+            <%= keyword %>
+            <%= link_to(image_tag('web-app-theme/icons/cross.png', :alt => "[X]"), '#', :class => "remove-parent", "data-parent-selector" => ".keyword-pill") %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+    <div class="clear"></div>
+  </div>
 
   <div class="group">
     <label class="label" for="post_title">Where?</label>
@@ -67,7 +74,7 @@
     <label class="label">Image</label>
     <%= image_tag(@event.photo.thumb.url) if @event.photo? %>
     <%= form.file_field :photo %>
-    <%#= form.hidden_field :photo_cache %>
+<%#= form.hidden_field :photo_cache %>
     <span class="description">Provide a custom event picture</span>
   </div>
 
@@ -112,9 +119,11 @@
 <% content_for :end_of_body do %>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
   <script>
+    var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
+    var keywordsParamKey  = "event[searchable_attributes][keywords][]";
     var locationSearchURL = '<%= locations_path(:format => :json) %>';
   </script>
-  <%= javascript_include_tag 'events/form', 'events/organizer_map' %>
+  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field' %>
   <% if @event.location.try(:geo_located?) %>
     <script>
       $(function() {

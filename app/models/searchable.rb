@@ -20,6 +20,7 @@ class Searchable < ActiveRecord::Base
 
   before_save :cache_lat_lng
 
+  # overriding the with_keywords scope that is normally specified in SuperSearchable mixin
   scope :with_keywords, lambda { |keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
     unless keywords.blank?
       chain = includes(:event).includes(:comment)
@@ -27,15 +28,19 @@ class Searchable < ActiveRecord::Base
       args = {}
       
       keywords.each_with_index do |k, i|
-        query << "comments.body LIKE :key#{i} 
-          OR events.name LIKE :key#{i}
-          OR events.description LIKE :key#{i} 
+        query << "UPPER(comments.body) LIKE :key#{i}
+          OR UPPER(events.name) LIKE :key#{i}
+          OR UPPER(events.description) LIKE :key#{i}
           OR searchables.id IN ( 
-            SELECT searchable_id FROM searchable_event_types
+            SELECT searchable_event_types.searchable_id FROM searchable_event_types, event_types
               WHERE searchable_event_types.searchable_id = searchables.id
-              AND searchable_event_types.name LIKE :key#{i}
+              AND event_types.id = searchable_event_types.event_type_id
+              AND (
+                UPPER(searchable_event_types.name) LIKE :key#{i}
+                OR UPPER(event_types.name) LIKE :key#{i}
+              )
           )"
-        args["key#{i}".to_sym] = "%#{k}%"
+        args["key#{i}".to_sym] = "%#{k.upcase}%"
       end
       chain.where(query.join(" OR "), args)
     end
@@ -242,6 +247,25 @@ class Searchable < ActiveRecord::Base
     end
     
     new(attrs)
+  end
+
+  def keywords
+    searchable_event_types.collect &:name
+  end
+
+  def keywords=(keywords_array)
+    keywords_array.each do |keyword|
+      unless keyword.blank?
+        # if the event_type is already in the db, then link the near searchable_event_type record to it
+        # otherwise, have it create a new one
+        event_type = EventType.find_by_name(keyword) # could be nil
+        self.searchable_event_types.build({
+            :event_type => event_type,
+            :name => keyword
+          })
+      end
+    end
+    
   end
 
   def url_params

@@ -4,7 +4,7 @@
 
     <div style="float:left">
       <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin:5px;") %>
-      <b><center><%= @event.event_type.try(:name) || "Unknown Type" %></center></b>
+      <b><center><%= event_type_name @event %></center></b>
     </div>
 
     <div class="inner">

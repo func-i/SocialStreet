@@ -24,7 +24,6 @@ class EventsController < ApplicationController
       :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
       :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
     })
-    @event.searchable.searchable_event_types.build
     @event.action = @action # nil if no @action (which is desired)
     if session[:stored_params]
       @event.attributes = session[:stored_params] # event params
