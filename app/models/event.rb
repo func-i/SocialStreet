@@ -222,13 +222,13 @@ class Event < ActiveRecord::Base
     rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
   end
 
-  def post_to_facebook
+  def post_to_facebook(message=nil)
     if self.facebook
       me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
       me.feed!(
         :message=>"SocialStreet Event created",
         :link=>"http://localhost/events/#{self.id}"
-      )      
+      ) if message
     end
   end
   
