@@ -1,5 +1,23 @@
 <% content_for :sidebar do %>
   <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
+
+
+    <div class="block notice">
+      <h4>Keywords</h4>
+
+      <%= text_field_tag 'q', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit", :placeholder => "Enter keywords here..." %>
+      <ul id="keywords">
+        <% (params[:keywords] || []).each do |keyword| %>
+          <li class="keyword-pill">
+            <input type="hidden" name="keywords[]" value="<%= keyword %>" />
+            <%= keyword %>
+            <%= link_to(image_tag('web-app-theme/icons/cross.png', :alt => "[X]"), '#', :class => "remove-parent", "data-parent-selector" => ".keyword-pill") %>
+          </li>
+        <% end %>
+      </ul>
+      <div class="clear"></div>
+    </div>
+
     <div class="block notice" style="position:relative">
       <div id="location-not-found">Not Found</div>
       <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit", :placeholder => "Move map to ..." %>
@@ -7,15 +25,6 @@
       <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
       <%= hidden_field_tag 'map_center', params[:map_center] %>
       <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
-    </div>
-
-    <div class="block notice">
-      <h4>Type Filtering</h4>
-
-      <% @event_types.each do |event_type| %>
-        <%= check_box_tag 'types[]', event_type.id, (params[:types] || []).include?(event_type.id.to_s) %> <%= event_type.name %> <br/>
-      <% end %>
-
     </div>
 
     <div class="block notice">
@@ -73,6 +82,63 @@
 <% content_for :end_of_body do %>
   <%= javascript_include_tag 'jquery.pageless' %>
   <script>
+
+    $(function() {
+
+      function addKeyword(keyword) {
+          if ($('#keywords .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0) return false;
+          $('<li class="keyword-pill">' +
+            '<input type="hidden" name="keywords[]" value="'+keyword+'">' +
+            keyword +
+            '<a href="#" class="remove-parent" data-parent-selector=".keyword-pill">' +
+            '<img src="/images/web-app-theme/icons/cross.png" />' +
+            '</li>').hide().appendTo($('#keywords')).fadeIn('slow');
+          refreshResults();
+      }
+
+      $('.keyword-pill').live('ss:removed', function() {
+        refreshResults();
+      });
+
+      $('#q-textfield').keydown(function(e) {
+        if (e.keyCode == 13) {
+          console.log('enter pressed');
+          addKeyword(this.value);
+          this.value = '';
+          e.stopPropagation();
+          return false;
+        }
+        return true;
+      });
+
+
+      var cache = {"ba": ['bax','ball','bullshit']},
+      lastXhr;
+      $( "#q-textfield" ).autocomplete({
+        minLength: 2,
+        source: function( request, response ) {
+          var term = request.term;
+          if ( term in cache ) {
+            response( cache[ term ] );
+            return;
+          }
+
+          lastXhr = $.getJSON( "<%= event_types_path(:format => :json) %>", request, function( data, status, xhr ) {
+            cache[ term ] = data;
+            if ( xhr === lastXhr ) {
+              response( data );
+            }
+          });
+        },
+        select: function( event, ui ) {
+          console.log('item selected');
+          this.value = '';
+          addKeyword(ui.item.value);
+          return false;
+        }
+      });
+    });
+
     var refreshTimer = null;
     function refreshResults() {
       if (refreshTimer) {
@@ -131,10 +197,10 @@
       });
       $('#timerange').slider({
         range: true,
-        min: 0,
-        max: 1439,
+        min: <%= DAY_FIRST_MINUTE %>,
+        max: <%= DAY_LAST_MINUTE %>,
         step: 15,
-        values: [<%= params[:from_time] || 0 %>, <%= params[:to_time] || 1439 %>],
+        values: [<%= params[:from_time] || DAY_FIRST_MINUTE %>, <%= params[:to_time] || DAY_LAST_MINUTE %>],
         slide: slideTime,
         change: refreshResults
       });

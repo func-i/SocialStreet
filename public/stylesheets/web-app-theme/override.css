@@ -33,3 +33,19 @@
   z-index: 2;
 
 }
+
+
+#keywords {
+  list-style: none;
+}
+
+#keywords li.keyword-pill {
+  border: none;
+  background-color: #CCC;
+  background-image: none;
+  background-position: inherit;
+  float: left;
+  padding: 6px;
+  border-radius: 4px;
+  margin: 4px;
+}

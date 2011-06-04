@@ -4,6 +4,7 @@ class ExploreController < ApplicationController
   before_filter :store_current_path
 
   def index
+#    params[:keywords] = ['Baseball', 'Hockey']
     @comment = Comment.new
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
@@ -41,25 +42,25 @@ class ExploreController < ApplicationController
 
     @per_page = 10
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    @searchables = @searchables.limit(@per_page).offset(@offset)
     @total_count = @searchables.count
+    @searchables = @searchables.limit(@per_page).offset(@offset)
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
   end
 
   def apply_filter(search_object)
 
-    search_object = search_object.with_event_types(params[:types]) unless params[:types].blank?
+    search_object = search_object.with_keywords(params[:keywords]) unless params[:keywords].blank?
 
     search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 
     # to_time and from_time are in integer (minute) format. 1439 = 11:59 PM (the day has 1440 minutes) - KV
-    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > 0
-    search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < 1439
+    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > DAY_FIRST_MINUTE
+    search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < DAY_LAST_MINUTE
 
     # GEO LOCATION SEARCHING
     
     # order: ne_lat, ne_lng, sw_lat, sw_lng
-    # TODO: Temporary default handling for user's initial location
+    # TODO: Temporary default handling for user's initial location, need to read user's location and use that LatLng here
     if params[:map_bounds].blank?
       params[:map_bounds] = "43.958661074786455,-78.99006997304684,43.362570924106635,-79.79756509023434"
     end

@@ -20,6 +20,27 @@ class Searchable < ActiveRecord::Base
 
   before_save :cache_lat_lng
 
+  scope :with_keywords, lambda { |keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
+    unless keywords.blank?
+      chain = includes(:event).includes(:comment)
+      query = []
+      args = {}
+      
+      keywords.each_with_index do |k, i|
+        query << "comments.body LIKE :key#{i} 
+          OR events.name LIKE :key#{i}
+          OR events.description LIKE :key#{i} 
+          OR searchables.id IN ( 
+            SELECT searchable_id FROM searchable_event_types
+              WHERE searchable_event_types.searchable_id = searchables.id
+              AND searchable_event_types.name LIKE :key#{i}
+          )"
+        args["key#{i}".to_sym] = "%#{k}%"
+      end
+      chain.where(query.join(" OR "), args)
+    end
+  }
+
   scope :on_or_after_date, lambda {|date|
     date = Time.zone.parse(date) if date.is_a? String
     includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at >= ?', date.beginning_of_day) if date
@@ -72,11 +93,14 @@ class Searchable < ActiveRecord::Base
   #  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
   scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
   scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
-  scope :excluding_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
-
+  scope :only_search_comment_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
+  scope :excluding_actions, includes(:action).where("actions.id IS NULL")
+  scope :including_search_comments, where("searchables.id NOT IN (SELECT comments.searchable_id FROM comments
+    INNER JOIN actions ON actions.reference_id = comments.id AND actions.reference_type = 'Comment'
+    WHERE comments.searchable_id = searchables.id AND (actions.action_type <> 'Search Comment' OR actions.action_id IS NULL))")
   # called from the explore controller/action
-  #scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_comments
-  scope :with_excludes_for_explore, excluding_nested_actions.excluding_subscriptions.excluding_actions
+  
+  scope :with_excludes_for_explore, excluding_actions.excluding_subscriptions.excluding_actions.including_search_comments
 
   scope :with_only_subscriptions, joins(:search_subscription)
 
@@ -152,9 +176,7 @@ class Searchable < ActiveRecord::Base
 
   # search filter params from the form
   def self.new_from_params(params)
-    attrs = {
-      
-    }
+    attrs = {}
     
     # assume map_center is set if map_bounds is set - KV
     if !params[:map_bounds].blank?
@@ -180,31 +202,42 @@ class Searchable < ActiveRecord::Base
     
     attrs[:searchable_date_ranges_attributes] = []
 
+    # Apply the time range from the time slider (if it's been used by the user) to each date range record
     if !params[:from_date].blank? || !params[:to_date].blank?
-      attrs[:searchable_date_ranges_attributes] << {
-        :start_date => params[:from_date].blank? ? nil : Date.parse(params[:from_date]),
-        :end_date => params[:to_date].blank? ? nil : Date.parse(params[:to_date]),
-        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false)
+      date_range_attrs = {
+        :starts_at => params[:from_date].blank? ? nil : Date.parse(params[:from_date]).beginning_of_day,
+        :ends_at => params[:to_date].blank? ? nil : Date.parse(params[:to_date]).end_of_day,
+        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false),
       }
+      if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+        date_range_attrs[:start_time] = params[:from_time].to_i
+        date_range_attrs[:end_time] = params[:to_time].to_i
+      end
+      attrs[:searchable_date_ranges_attributes] << date_range_attrs
     end
 
-    if params[:from_time].to_i > 0 || params[:to_time].to_i < 1439
-      attrs[:searchable_date_ranges_attributes] << {
-        :start_time => params[:from_time].to_i,
-        :end_time => params[:to_time].to_i
-      }
-    end
-
+    # Apply the time range from the time slider (if it's been used by the user) to each day-of-week (dow) record
     unless params[:days].blank?
       params[:days].each do |day|
-        attrs[:searchable_date_ranges_attributes] << {:dow => day}
+        date_range_attrs = { :dow => day }
+        if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+          date_range_attrs[:start_time] = params[:from_time].to_i
+          date_range_attrs[:end_time] = params[:to_time].to_i
+        end
+        attrs[:searchable_date_ranges_attributes] << date_range_attrs
       end
     end
     
-    unless params[:types].blank?
+    unless params[:keywords].blank?
       attrs[:searchable_event_types_attributes] = []
-      params[:types].each do |t_id|
-        attrs[:searchable_event_types_attributes] << { :event_type_id => t_id }
+      params[:keywords].each do |keyword|
+        # if the event_type is already in the db, then link the near searchable_event_type record to it
+        # otherwise, have it create a new one
+        event_type = EventType.find_by_name(keyword)
+        attrs[:searchable_event_types_attributes] << { 
+          :event_type_id => event_type.try(:id),
+          :name => keyword
+        }
       end
     end
     
@@ -215,7 +248,9 @@ class Searchable < ActiveRecord::Base
     params = {}
 
     #Event Types
-    params[:types] = searchable_event_types.collect {|searchable_event_type| searchable_event_type.event_type_id} unless searchable_event_types.blank?
+    params[:keywords] = searchable_event_types.collect { |searchable_event_type|
+      searchable_event_type.name ||  searchable_event_type.event_type.try(:name)
+    } unless searchable_event_types.blank?
 
     #Location
     if location
@@ -257,6 +292,11 @@ class Searchable < ActiveRecord::Base
 
   def self.day_selected?(params, day)
     params[:days] && params[:days].include?(day.to_s)
+  end
+
+  # both fields and keywords are arrays
+  def self.keyword_conditions_for(fields, keywords)
+    fields.collect {|f| "#{f} LIKE '%#{keywords.first}%'"  }.join(" OR ")
   end
 
 

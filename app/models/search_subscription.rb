@@ -21,22 +21,6 @@ class SearchSubscription < ActiveRecord::Base
             OR searchable_event_types.event_type_id IS NULL")
   }
 
-  scope :overlapping_date_ranges, lambda { |start_date, start_time, end_date, end_time|
-    #this function assumes that each date has its own record...TODO - remake searchable_date_ranges
-    #start date/time is within subscription bounds
-    query = "(searchable_date_range.start_date <= #{start_date}
-            AND searchable_date_range.end_date >= #{start_date}
-            AND searchable_date_range.start_time <= #{start_time}
-            AND searchable_date_range.end_time >= #{start_time})"
-
-    if end_date && end_time
-      query = query.where("searchable_date_range")
-    end
-
-    joins("LEFT OUTER JOIN searchable_date_range
-            ON searchable_date_range.searchable_id = search_subscriptions.searchable_id")
-  }
-
   scope :bounding_location, lambda { |latitude, longitude|
     joins("INNER JOIN locations L
          ON searchables.location_id = locations.id AND
@@ -58,19 +42,8 @@ class SearchSubscription < ActiveRecord::Base
     )
   }
 
-  def self.find_matching_subscriptions(latitude, longitude, event_type_id_array = nil, start_date = nil, start_time = nil, end_date = nil, end_time = nil)
-    #location bounds
-    subscriptions = subscriptions.bounding_location(latitude, longitude)
-
-    #event types
-    subscriptions = subscriptions.with_event_types_or_null(event_type_id_array)
-
-    #date range - TODO
-    #subscriptions = subscriptions.overlapping_date_ranges(start_date, start_time, end_date, end_time)
-  end
-
   def matches_date_ranges?(date_ranges)
-    !!searchable.searchable_date_ranges.select { |dr| dr.overlapping_with? date_ranges }.first
+    !!searchable.searchable_date_ranges.detect { |dr| dr.overlapping_with? date_ranges }
   end
 
   def self.matching_search_comment(comment)
@@ -80,13 +53,12 @@ class SearchSubscription < ActiveRecord::Base
   def self.matching_searchable(searchable)
     type_ids = searchable.event_type_ids
 
-    #TODO - Location bounds scope
     bounds = searchable.lat_lng_bounds
     searchables = Searchable.with_only_subscriptions.
       with_event_types(type_ids).
       intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).all.
       select { |s| s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all) }
-
+    
     searchables.collect &:search_subscription
   end
 
