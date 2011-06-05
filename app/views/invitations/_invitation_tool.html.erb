@@ -103,7 +103,7 @@
         <div class="user-list">          
           <% @connections.each do |c| %>
             <% user = c.to_user %>            
-            <%= render 'user', :user => user, :connection_strength => c.strength %>
+            <%= render 'user', :user => user %>
           <% end %>
           <div class="clear"></div>
         </div>
