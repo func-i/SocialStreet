@@ -1,1 +1,13 @@
 <%= render 'invitation_tool' %>
+
+<% content_for :end_of_body do %>
+  <%= javascript_include_tag 'jquery.pageless' -%>
+  <script>
+    $('#invitation-user-list').pageless({
+      totalPages: <%= @num_pages -%>,
+      url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
+      loaderMsg: 'Loading more results',
+      currentPage: <%= params[:page] || 1 %>
+    });
+  </script>
+<%- end -%>

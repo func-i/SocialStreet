@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :searchable, :dependent => :destroy
-  belongs_to :event_type
+  
   belongs_to :action # if created through an activity stream
   
   has_many :rsvps, :dependent => :destroy
@@ -30,7 +30,7 @@ class Event < ActiveRecord::Base
   validates :cost, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
   validates :minimum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
   validates :maximum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 1, :allow_blank => true }
-  validates :event_type, :presence => true
+#  validates :event_type, :presence => true
   #validate :valid_dates
   validate :valid_maximum_attendees
 
@@ -186,8 +186,12 @@ class Event < ActiveRecord::Base
     searchable.longitude
   end
 
-  def event_type # assuming one event type per event (for now) - remove this helper when that is not the case
-    searchable.searchable_event_types.first.try :event_type
+  def searchable_event_types
+    searchable.searchable_event_types
+  end
+
+  def event_types
+    searchable.searchable_event_types.collect(&:event_type).compact
   end
 
   def starts_at # assuming non recurring events, for now
@@ -203,7 +207,7 @@ class Event < ActiveRecord::Base
 
   def set_default_title
     if self.name.blank?
-      self.name = event_type ? event_type.name : "Something"
+      self.name = (searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
       self.name << (" @ " + (location_address ? location_address.to_s.split(",").first.strip : "Somewhere"))
       self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
     end
@@ -222,14 +226,10 @@ class Event < ActiveRecord::Base
     rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
   end
 
+  # TODO: Make sure to check for Facebook permissions to make sure access is given to post to wall - JS
   def post_to_facebook(message=nil)
-    if self.facebook
-      #me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
-      #me.feed!(
-        #:message=>"SocialStreet Event created",
-        #:link=>"http://localhost/events/#{self.id}"
-      #) if message
-    end
+    user.post_to_facebook_wall(message || "SocialStreet Event created",
+      "http://localhost/events/#{self.id}") if self.facebook
   end
   
 end

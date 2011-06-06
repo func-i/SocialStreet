@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def event_type_name(event)
+    !event.searchable_event_types.empty? ? event.searchable_event_types.collect(&:name).join(", ") : "Unknown Type"
+  end
+
   def address_for(location)
     if location.text?
       location.text
@@ -15,8 +19,8 @@ module ApplicationHelper
   def url_for_event_image(event)
     if event.photo?
       event.photo.thumb.url
-    elsif event.event_type && event.event_type.image_path?
-      event.event_type.image_path
+    elsif !event.event_types.blank? && et = event.event_types.detect {|et| et.image_path? }
+      et.image_path
     else
       'web-app-theme/avatar.png'
     end

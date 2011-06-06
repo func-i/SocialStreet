@@ -1,14 +1,9 @@
 <% pre_existing ||= false  %>
 
-<div class="user <%= 'selected cannot-remove' if invited?(user) %>" data-user-id="<%= user.id %>" style="<%= defined?(connection_strength) ? "height: 110px" : ""  -%>">
+<div class="user <%= 'selected cannot-remove' if invited?(user) %>" data-user-id="<%= user.id %>">
 
   <div class="avatar"><%= avatar_image user, :size => "50x50" %></div>
   <span class="name"><%= user.name %></span>
-
-  <%- if defined? connection_strength -%>
-    <br/>
-    <span class="name" style="font-style: italic; font-size: 10px;">Connection Strength: <%= connection_strength %></span>
-  <%- end -%>
 
   <%= link_to '[X]','#', :class=>"remove-btn" unless pre_existing %>
 
@@ -16,5 +11,4 @@
   <% unless pre_existing %>
     <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
   <% end %>
-
 </div>

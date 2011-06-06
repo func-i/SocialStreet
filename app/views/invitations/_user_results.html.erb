@@ -1,0 +1,4 @@
+<% @connections.each do |c| %>
+  <% user = c.to_user %>
+  <%= render 'user', :user => user %>
+<% end %>

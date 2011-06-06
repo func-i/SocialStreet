@@ -9,19 +9,19 @@
 ################################
 types = {}
 types[:soccer] = EventType.create!(:name => 'Soccer', :image_path => "/images/type_icons/soccer.png")
+types[:futball] = EventType.create!(:name => 'Futball', :synonym => types[:soccer] )
 types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/type_icons/basketball.png")
 types[:baseball] = EventType.create!(:name => 'Baseball', :image_path => "/images/type_icons/baseball.png")
 types[:football] = EventType.create!(:name => 'Football', :image_path => "/images/type_icons/football.png")
 types[:squash] = EventType.create!(:name => 'Squash', :image_path => "/images/type_icons/squash.png")
 types[:hockey] = EventType.create!(:name => 'Hockey', :image_path => "/images/type_icons/hockey.png")
+types[:table_tennis] = EventType.create!(:name => 'Table Tennis', :image_path => "/images/type_icons/table_tennis.png")
+types[:ping_pong] = EventType.create!(:name => 'Ping Pong', :synonym => types[:table_tennis] )
 
 ################################
 ## STUB USERS
 ################################
-user = User.create!(
-  {
-  }
-)
+user = User.create!({})
 
 ################################
 ## STUB EVENTS

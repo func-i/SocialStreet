@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110601181339) do
+ActiveRecord::Schema.define(:version => 20110604174537) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -74,9 +74,11 @@ ActiveRecord::Schema.define(:version => 20110601181339) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_path"
+    t.integer  "synonym_id"
   end
 
   add_index "event_types", ["name"], :name => "index_event_types_on_name"
+  add_index "event_types", ["synonym_id"], :name => "index_event_types_on_synonym_id"
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -84,7 +86,6 @@ ActiveRecord::Schema.define(:version => 20110601181339) do
     t.integer  "cost"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "event_type_id"
     t.integer  "minimum_attendees"
     t.integer  "maximum_attendees"
     t.boolean  "guests_allowed"
@@ -96,7 +97,6 @@ ActiveRecord::Schema.define(:version => 20110601181339) do
   end
 
   add_index "events", ["action_id"], :name => "index_events_on_action_id"
-  add_index "events", ["event_type_id"], :name => "index_events_on_event_type_id"
   add_index "events", ["searchable_id"], :name => "index_events_on_searchable_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
@@ -254,8 +254,8 @@ ActiveRecord::Schema.define(:version => 20110601181339) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "comment_notification_frequency"
     t.string   "fb_uid"
+    t.string   "comment_notification_frequency"
     t.string   "photo"
   end
 

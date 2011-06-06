@@ -100,12 +100,8 @@
           </form>
         </div>
 
-        <div class="user-list">          
-          <% @connections.each do |c| %>
-            <% user = c.to_user %>            
-            <%= render 'user', :user => user, :connection_strength => c.strength %>
-          <% end %>
-          <div class="clear"></div>
+        <div class="user-list" id="invitation-user-list">
+          <%= render "user_results" -%>          
         </div>
 
         <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "form" do  %>

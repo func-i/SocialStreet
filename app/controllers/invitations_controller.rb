@@ -14,6 +14,9 @@ class InvitationsController < ApplicationController
     end unless @event.action.blank?
     
     @invitations = @rsvp.invitations
+    
+    render :partial => 'user_results' if request.xhr? && params[:page] # pagination request
+
   end
 
   def change
@@ -51,7 +54,15 @@ class InvitationsController < ApplicationController
   end
 
   def load_connections
-    @connections = current_user.connections.most_relevant_first.all
+
+    # => TODO: Add search user search functionality to endless pagination.
+
+    @per_page = 10
+    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+    @connections = current_user.connections.most_relevant_first.limit(@per_page).offset(@offset)
+    @total_count = @connections.count
+    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+    
   end
 
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
