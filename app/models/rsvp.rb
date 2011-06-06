@@ -93,11 +93,11 @@ class Rsvp < ActiveRecord::Base
   end
 
   def post_to_facebook(message)
-    me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
-    me.feed!(
-      :message=>message,
-      :link=>"http://localhost/events/#{self.id}"
-    )
+#    me = FbGraph::User.me(user.authentications.last.auth_response["credentials"]["token"])
+#    me.feed!(
+#      :message=>message,
+#      :link=>"http://localhost/events/#{self.id}"
+#    )
   end
 
 end

@@ -188,6 +188,21 @@ ActiveRecord::Schema.define(:version => 20110601181339) do
 
   add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"
 
+  create_table "searchable_date_time", :force => true do |t|
+    t.integer  "searchable_id"
+    t.date     "date"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "dow"
+    t.boolean  "inclusive"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+  end
+
+  add_index "searchable_date_time", ["searchable_id"], :name => "index_searchable_date_time_on_searchable_id"
+
   create_table "searchable_event_types", :force => true do |t|
     t.integer  "searchable_id"
     t.integer  "event_type_id"
