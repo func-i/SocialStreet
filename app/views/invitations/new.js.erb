@@ -1,0 +1,8 @@
+$('#invitation-user-list').html('<%= escape_javascript render(:partial => 'user_results') %>');
+$('#invitation-user-list').pageless({
+totalPages: <%= @num_pages -%>,
+url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
+loaderMsg: 'Loading more results',
+params: $('form.search-params').serializeObject(),
+currentPage: <%= params[:page] || 1 %>
+});
