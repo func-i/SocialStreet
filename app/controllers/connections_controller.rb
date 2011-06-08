@@ -28,7 +28,9 @@ class ConnectionsController < ApplicationController
     elsif request.post?
       # => Post requests from facebook will update the subscription information.
       # => Post is sent as json.  Read and parse jason request.
-      json_post = JSON.parse(params[])
+      #json_post = JSON.parse(params[])
+
+      raise params.inspect
 
     end
   end

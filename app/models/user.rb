@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
     includes(:rsvps).where("rsvps.event_id = ?", event.id)
   }
 
+  after_create :subscribe_to_facebook_realtime
+
   # RSVP: event.rsvps.attending.connected_with(me).includes(:user)
   # users = event.attending_users.connected_with(user)
   #user.connected_with(event.attending_users)
@@ -107,15 +109,35 @@ class User < ActiveRecord::Base
     (authentications.empty? || !password.blank?) # && super
   end
 
-  def post_to_facebook_wall(message, link)
-#    if fb_uid? && auth = authentications.facebook.first
-#      me = FbGraph::User.me(auth.auth_response["credentials"]["token"])
-#      me.feed!(
-#        :message => message,
-#        :link => link
-#      )
-#    end
+  def facebook_access_token
+    # => Check for a fb_uid (authenticated through FB)
+    # => Check for an facebook authentication then parse the hashed field auth_response for {:credentials=>{:token=>"value"}}
+    if fb_uid? && auth = authentications.facebook.first
+      auth.auth_response["credentials"]["token"]
+    end
   end
 
-  
+  def facebook_user
+    # => Load the FB user through fb_graph if there is an access_token
+    FbGraph::User.me(facebook_access_token) if facebook_access_token
+  end
+
+  def post_to_facebook_wall(message, link)
+    # => Load the fb_user and post to their feed using fb_graph
+    #      me = facebook_user
+    #      me.feed!(
+    #        :message => message,
+    #        :link => link
+    #      ) if me
+  end
+
+  def subscribe_to_facebook_realtime
+    app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret => FACEBOOK_APP_SECRET)
+    app.subscribe!(
+      :object => "user",
+      :fields => "friends",
+      :callback_url => "http://staging.socialstreet.com/connections/facebook_realtime",
+      :verify_token => facebook_access_token
+    ) if facebook_access_token && Rails.env.eql?("production")
+  end 
 end
