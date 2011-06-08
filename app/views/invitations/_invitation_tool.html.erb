@@ -20,7 +20,7 @@
     border-radius: 10px;
     padding: 10px;
     height: 400px;
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
   .selected-list {
     width: 300px;
@@ -103,7 +103,7 @@
           <%- end -%>
         </div>
 
-        <div class="user-list" id="invitation-user-list">
+        <div class="user-list" id="invitation-user-list" style="overflow: scroll;">
           <%= render "user_results" -%>
         </div>
 
@@ -131,8 +131,7 @@
   var timeout = null;
 
   $(function() {
-
-    var $selectedList = $('.selected-list');
+    
     var $userList = $('.user-list');
     var lastQuery = '';
 
@@ -158,18 +157,54 @@
       return false;
     });
 
-    $('#user_search').keyup(function(e) {
-      e.stopPropagation();
-      $('form.search-params').submit();
-    });
+    var refreshTimer = null;
+
+    function refreshResults() {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
+      }
+      refreshTimer = setTimeout(function() {
+        $('form.search-params').submit();
+      }, 250);
+    }
 
     
+    var $selectedList = $('.selected-list');
 
-    
+    function addEmail() {
+
+      var $input = $('#user_search');
+      var email = $input.val();
+
+      alert(email);
+
+      // make sure it's a valid email that was not already included in the list
+      if (isEmail(email) && $selectedList.find('input[value="'+email+'"]').size() == 0) {
+        $input.val('');
+        var u = $('<div class="user email-only">' +
+          '<div class="avatar"><img src="/images/avatar.gif" alt="Avatar"></img></div>' +
+          '<span class="name">'+email+'</span>' +
+          '<a href="#" class="remove-btn">[X]</a>' +
+          '<div class="clear"></div>' +
+          '<input type="hidden" name="emails[]" value="'+email+'"/>' +
+          '</div>');
+        $selectedList.prepend(u);
+      }
+    }
+
+    $('#user_search').keyup(function(e) {      
+      if (e.keyCode == 13) {        
+        addEmail();
+      }
+      else
+        refreshResults();
+    });    
 
     $('button.button').click(function() {
       $('form.form').submit();
     });
+    
   });
 
   function isEmail(string) {

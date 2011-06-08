@@ -12,8 +12,7 @@ class ExploreController < ApplicationController
     # Use the query params to find events
     find_searchables
 
-    if request.xhr? && params[:page] # pagination request
-      raise params[:page].inspect
+    if request.xhr? && params[:page] # pagination request      
       render :partial => 'new_page'
     else
       find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
@@ -41,7 +40,7 @@ class ExploreController < ApplicationController
 
     @searchables = apply_filter(@searchables)
 
-    @per_page = 10
+    @per_page = 2
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     @total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)
