@@ -15,6 +15,7 @@ $(function() {
   var myOptions = {
     zoom: 12,
     center: toronto,
+    mapTypeControl: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     streetViewControl: false
   };
