@@ -215,7 +215,7 @@
       });
 
       google.maps.event.addListener(marker, 'click', function() {
-        selectMarker(marker, true);
+        //selectMarker(marker, true); //Commented out until proper functionality is determined
       });
       markers.push(marker);
     }
@@ -303,8 +303,9 @@
       //$(window).resize(changeLocationParams);
 
   <% @searchables.each do |searchable| %>
-    <% if searchable.event && searchable.geo_located? %>
-          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
+    <% #if searchable.event && searchable.geo_located? %>
+      <% if searchable.geo_located? %>
+          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>
 

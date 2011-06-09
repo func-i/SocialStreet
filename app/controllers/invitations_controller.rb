@@ -69,7 +69,10 @@ class InvitationsController < ApplicationController
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
     from_user.invitations.create :event => event, :rsvp => rsvp, :to_user => to_user, :email => email
 
-    Connection.connect_users_from_invitations(from_user, to_user)
+    if to_user
+      #Todo - handle when only have email
+      Connection.connect_users_from_invitations(from_user, to_user)
+    end
   end
 
 end
