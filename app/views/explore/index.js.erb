@@ -2,8 +2,8 @@ $('#num-results').text('<%= @searchables.size %>');
 $('#action-list').html('<%= escape_javascript(render('results')) %>');
 clearMarkers();
 <% @searchables.each do |searchable| %>
-  <% if searchable.event && searchable.geo_located? %>
-    placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= escape_javascript(searchable.event.name) %>');
+  <% if searchable.geo_located? %>
+    placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
   <% end %>
 <% end %>
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
