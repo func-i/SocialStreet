@@ -23,6 +23,9 @@ class InvitationsController < ApplicationController
     load_connections
 
     @invitations = @rsvp.invitations
+
+    render "new" if request.xhr?
+
   end
 
   # Note: It's actually creating multiple invitations here
