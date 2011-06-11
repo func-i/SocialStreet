@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   mount_uploader :photo, UserPhotoUploader
 
+  make_searchable :fields => %w{users.first_name users.last_name users.email}
+
   has_many :authentications
   has_many :rsvps
   has_many :feedbacks, :through => :rsvps
@@ -43,7 +45,7 @@ class User < ActiveRecord::Base
     includes(:rsvps).where("rsvps.event_id = ?", event.id)
   }
 
-  after_create :subscribe_to_facebook_realtime
+  #after_create :subscribe_to_facebook_realtime
 
   # RSVP: event.rsvps.attending.connected_with(me).includes(:user)
   # users = event.attending_users.connected_with(user)

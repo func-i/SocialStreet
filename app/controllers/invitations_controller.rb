@@ -62,9 +62,21 @@ class InvitationsController < ApplicationController
 
     @per_page = 10
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    @connections = current_user.connections.most_relevant_first.limit(@per_page).offset(@offset)
-    @connections = @connections.with_keywords(params[:user_search]) unless params[:user_search].blank?
-    @total_count = @connections.count
+    
+    # => TODO: see if you can take that inline string notation out
+    @users = User.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, COALESCE(MAX(connections.strength), 0) as conn_str, COALESCE(MAX(connections.created_at),'1900-01-01') as conn_date").
+      joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
+      where("users.id <> ?", current_user.id).
+      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
+      order("conn_str DESC, conn_date ASC")   
+
+    @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
+    @users = @users.limit(@per_page).offset(@offset)
+
+    tot_usr_count = User.where("users.id <> ?", current_user.id)
+    tot_usr_count = tot_usr_count.with_keywords(params[:user_search]) unless params[:user_search].blank?
+    @total_count = tot_usr_count.count
+        
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
     
   end
