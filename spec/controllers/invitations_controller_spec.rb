@@ -58,6 +58,19 @@ describe InvitationsController do
     it "should have @users with a count of 10" do
       assigns[:users].all.size.should == 10
     end
+
+    it "should have @invitations set" do
+      assigns[:invitations].should_not be_nil
+    end
+
+    it "should have @number of invitations set to what was invited" do
+      @other_users.first(10).each{|ou| @rsvp.invitations.create(:event=>@event, :user=>@user, :to_user=>ou)}
+      assigns[:invitations].count.should == 10
+    end
+
+    it "should render new" do
+      response.should render_template("new")
+    end
     
   end
 
@@ -83,6 +96,12 @@ describe InvitationsController do
       assigns[:offset].should == 10
     end
 
+    it "should render new" do
+      get :new, :event_id => @event.id, :rsvp_id=>@rsvp.id, :page=>2
+      response.should render_template("new")
+    end
+
+
   end
 
   describe "GET /change WITH PARAMS" do
@@ -105,6 +124,29 @@ describe InvitationsController do
     it "should have an offset of 10 when page = 2" do
       get :change, :event_id => @event.id, :rsvp_id=>@rsvp.id, :page=>2
       assigns[:offset].should == 10
+    end
+
+    it "should render change" do
+      get :change, :event_id => @event.id, :rsvp_id=>@rsvp.id, :page=>2
+      response.should render_template("change")
+    end
+
+  end
+
+  describe "XHR /new WITH PARAMS" do
+
+    it "should render user_results with page param" do
+      xhr :get, :new, :event_id => @event.id, :rsvp_id=>@rsvp.id, :page=>2
+      response.should render_template("_user_results")
+    end
+
+  end
+
+  describe "XHR /change WITHOUT PARAMS" do
+
+    it "should render /new" do
+      xhr :get, :change, :event_id => @event.id, :rsvp_id=>@rsvp.id
+      response.should render_template("new")
     end
 
   end

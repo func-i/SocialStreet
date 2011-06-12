@@ -1,11 +1,11 @@
 Factory.define :user do |user|
   user.first_name 'Person'
   user.sequence(:last_name) {|n| "#{n}"}
-  user.sequence(:email) {|n| "email#{n}@socialstreet.com"}
+  user.sequence(:email) {|n| "email#{n}@mytestapp.com"}
 end
 
 Factory.define :event_type do |et|
-  et.name "Ball Hockey"
+  et.name "New Event Type"
 end
 
 Factory.define :event do |event|
