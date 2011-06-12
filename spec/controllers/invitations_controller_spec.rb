@@ -11,12 +11,26 @@ describe InvitationsController do
     @rsvp = @event.rsvps.first
 
     @other_users = []
-    50.times{@other_users << Factory.create(:user)}
+    25.times{@other_users << Factory.create(:user_with_sign_in)}
+    25.times{@other_users << Factory.create(:user)}
 
     @connections = @other_users.each{|ou| @user.connections.create(:to_user=>ou)}
 
     request.env['warden'] = mock(Warden, :authenticate => @user,
       :authenticate! => @user)
+  end
+
+  describe "Spec settings" do
+    it "should have 26 signed in users" do
+      # => Create signed in users for pagination testing
+      # => 25 fake users, 1 event user, 1 rsvp user
+      User.has_signed_in.count.should == 27
+    end
+
+    it "should have 25 users that have never signed in" do
+      # => Creating non signed in users so that some are not selected
+      User.where("sign_in_count=0").count.should == 25
+    end
   end
 
   describe "GET /new WITHOUT PARAMS" do
@@ -48,7 +62,7 @@ describe InvitationsController do
     end
 
     it "should have a total count equal to User.count-1" do
-      assigns[:total_count].should == User.where("users.id <> ?", @user.id).count
+      assigns[:total_count].should == User.has_signed_in.where("users.id <> ?", @user.id).count
     end
 
     it "should have User.count / 10 number of pages" do
@@ -83,12 +97,12 @@ describe InvitationsController do
 
     it "should have total_count of all users except current_user when search is 'Person'" do
       get :new, :event_id => @event.id, :rsvp_id=>@rsvp.id, :user_search=>'Person'
-      assigns[:total_count].should ==  User.where("users.id <> ?", @user.id).count
+      assigns[:total_count].should ==  User.has_signed_in.where("users.id <> ?", @user.id).count
     end
 
     it "should return less than all users when search is 'Person \\w'" do
       get :new, :event_id => @event.id, :rsvp_id=>@rsvp.id, :user_search=>"Person #{@other_users[10].last_name[0..-2]}"
-      assigns[:total_count].should < User.where("users.id <> ?", @user.id).count
+      assigns[:total_count].should < User.has_signed_in.where("users.id <> ?", @user.id).count
     end
 
     it "should have an offset of 10 when page = 2" do
@@ -113,12 +127,12 @@ describe InvitationsController do
 
     it "should have total_count of all users except current_user when search is 'Person'" do
       get :change, :event_id => @event.id, :rsvp_id=>@rsvp.id, :user_search=>'Person'
-      assigns[:total_count].should ==  User.where("users.id <> ?", @user.id).count
+      assigns[:total_count].should ==  User.has_signed_in.where("users.id <> ?", @user.id).count
     end
 
     it "should return less than all users when search is 'Person \\w'" do
       get :change, :event_id => @event.id, :rsvp_id=>@rsvp.id, :user_search=>"Person #{@other_users[10].last_name[0..-2]}"
-      assigns[:total_count].should < User.where("users.id <> ?", @user.id).count
+      assigns[:total_count].should < User.has_signed_in.where("users.id <> ?", @user.id).count
     end
 
     it "should have an offset of 10 when page = 2" do

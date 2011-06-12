@@ -1,7 +1,15 @@
+Factory.sequence :email do |n|
+  "email#{n}@mytestapp.com"
+end
+
 Factory.define :user do |user|
   user.first_name 'Person'
   user.sequence(:last_name) {|n| "#{n}"}
-  user.sequence(:email) {|n| "email#{n}@mytestapp.com"}
+  user.email {Factory.next(:email)}  
+end
+
+Factory.define :user_with_sign_in, :parent=>:user do |user|
+  user.sign_in_count 1
 end
 
 Factory.define :event_type do |et|
@@ -10,13 +18,13 @@ end
 
 Factory.define :event do |event|
   event.name "New Event"
-  event.association :user
+  event.association :user, :factory => :user_with_sign_in
   event.association :searchable
   event.after_create{|e| Factory(:rsvp, :event=>e)}
 end
 
 Factory.define :rsvp do |rsvp|
-  rsvp.association :user
+  rsvp.association :user, :factory => :user_with_sign_in
   rsvp.association :event
   rsvp.status "Attending"
 end

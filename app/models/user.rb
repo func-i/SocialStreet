@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
     includes(:rsvps).where("rsvps.event_id = ?", event.id)
   }
 
+  scope :has_signed_in, where("sign_in_count > 0")
+
   #after_create :subscribe_to_facebook_realtime
 
   # RSVP: event.rsvps.attending.connected_with(me).includes(:user)
