@@ -64,19 +64,17 @@ class InvitationsController < ApplicationController
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     
     # => TODO: see if you can take that inline string notation out
-    @users = User.select("users.id").
+    @users = User.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
       joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
       where("users.id <> ?", current_user.id).
       where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
-      group("users.id")      
+      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at")
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
     @total_count = @users.count.size
     
-    @users = @users.
-      select("users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, COALESCE(MAX(connections.strength), 0) as conn_str, COALESCE(MAX(connections.created_at),'1900-01-01') as conn_date").
-      group("users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
-      order("conn_str DESC, conn_date ASC").
+    @users = @users.     
+      order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST").
       limit(@per_page).
       offset(@offset)
        
