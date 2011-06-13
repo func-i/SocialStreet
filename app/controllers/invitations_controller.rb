@@ -64,19 +64,22 @@ class InvitationsController < ApplicationController
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     
     # => TODO: see if you can take that inline string notation out
-    @users = User.has_signed_in.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, COALESCE(MAX(connections.strength), 0) as conn_str, COALESCE(MAX(connections.created_at),'1900-01-01') as conn_date").
+    @users = User.select("users.id").
       joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
       where("users.id <> ?", current_user.id).
-      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
-      order("conn_str DESC, conn_date ASC")   
+      where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
+      group("users.id")      
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
-    @users = @users.limit(@per_page).offset(@offset)
-
-    tot_usr_count = User.has_signed_in.where("users.id <> ?", current_user.id)
-    tot_usr_count = tot_usr_count.with_keywords(params[:user_search]) unless params[:user_search].blank?
-    @total_count = tot_usr_count.count
-        
+    @total_count = @users.count.size
+    
+    @users = @users.
+      select("users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, COALESCE(MAX(connections.strength), 0) as conn_str, COALESCE(MAX(connections.created_at),'1900-01-01') as conn_date").
+      group("users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
+      order("conn_str DESC, conn_date ASC").
+      limit(@per_page).
+      offset(@offset)
+       
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
     
   end
