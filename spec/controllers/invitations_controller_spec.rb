@@ -19,7 +19,7 @@ describe InvitationsController do
   end
 
   describe "Spec settings" do
-    it "should have 26 signed in users" do
+    it "should have 27 signed in users" do
       # => Create signed in users for pagination testing
       # => 25 fake users, 1 event user, 1 rsvp user
       User.has_signed_in.count.should == 27
