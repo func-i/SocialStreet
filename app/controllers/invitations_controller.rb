@@ -68,13 +68,13 @@ class InvitationsController < ApplicationController
       joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
       where("users.id <> ?", current_user.id).
       where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
-      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at")
+      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
+      order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST")
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
     @total_count = @users.count.size
     
-    @users = @users.     
-      order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST").
+    @users = @users.
       limit(@per_page).
       offset(@offset)
        
