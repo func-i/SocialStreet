@@ -30,6 +30,7 @@ class Jobs::ProcessNewAction
     # => RSVP
     # => Comments (event, action/replies, profile and search filter)
     feed = FeedItem.new
+    feed.inserted_because = FeedItem.reasons[:connection]
     
     if action.action_type == Action.types[:event_created]
       #Event Create - set event id
@@ -69,15 +70,18 @@ class Jobs::ProcessNewAction
     # => events to action treads (will appear twice in some peoples dashboards, fixme)
     return false if action.action.blank?
 
-    feed = FeedItem.new 
+    feed = FeedItem.new
+    feed.inserted_because = FeedItem.reasons[:participated]
     feed.feed_type = FeedItem.types[:comment]
-    feed.action_id = action.action.id
+    feed.action_id = an_action.action.id
     
-    action_list = Actions.threaded_with(action)
+    action_list = Action.threaded_with(action)
 
-    action_list.all.each do |action|
+    action_list.all.each do |a|
       #add to dashboard
-      Feed.push(redis, action.user, feed)
+      if a.user.id != action.user.id
+        Feed.push(redis, a.user, feed)
+      end
 
       #add to email
       #TODO
