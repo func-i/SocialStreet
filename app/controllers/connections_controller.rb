@@ -19,17 +19,13 @@ class ConnectionsController < ApplicationController
       # => To accept the request you have to respond with the params["hub.challenge"] value as plain/text
       # => TODO: Check to make sure the verify token is for the individual user that the initial subscription was make for.
       if params["hub.mode"].eql?("subscribe")
-        user = User.find_by_fb_uid params["hub.verify_token"]
-
-        # => TODO:  Add the db field users.subscribe_to_facebook
-        user.update_attribute("subscribed_to_facebook", true) if user
+        user = User.find_by_fb_uid params["hub.verify_token"]       
         render :text=>params["hub.challenge"], :layout=>false
       end
     elsif request.post?
-      # => Post requests from facebook will update the subscription information.
-      # => Post is sent as json.  Read and parse jason request.
-      json_post = JSON.parse(params[])
 
+      Resque.enqueue(Jobs::Facebook::ResponseHandler, params)
+      render :text=>"ok", :status=>200
     end
   end
 

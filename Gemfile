@@ -28,6 +28,7 @@ gem "hiredis", "~> 0.3.1"
 gem "redis", "~> 2.2.0", :require => ["redis/connection/hiredis", "redis"]
 
 gem 'resque', :git => "git://github.com/defunkt/resque.git"
+gem 'json'
 
 group :development do
   gem 'thin'
@@ -35,6 +36,7 @@ end
 
 group :test, :development do
   gem "rspec-rails", "~> 2.6"
+  gem 'factory_girl_rails'
 end
 
 #gem "meta_where"

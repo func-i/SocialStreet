@@ -177,8 +177,6 @@
       var $input = $('#user_search');
       var email = $input.val();
 
-      alert(email);
-
       // make sure it's a valid email that was not already included in the list
       if (isEmail(email) && $selectedList.find('input[value="'+email+'"]').size() == 0) {
         $input.val('');

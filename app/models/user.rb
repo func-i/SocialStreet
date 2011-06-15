@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   mount_uploader :photo, UserPhotoUploader
 
+  make_searchable :fields => %w{users.first_name users.last_name users.email}
+
   has_many :authentications
   has_many :rsvps
   has_many :feedbacks, :through => :rsvps
@@ -42,6 +44,8 @@ class User < ActiveRecord::Base
   scope :attending_event, lambda {|event|
     includes(:rsvps).where("rsvps.event_id = ?", event.id)
   }
+
+  scope :has_signed_in, where("sign_in_count > 0")
 
   # RSVP: event.rsvps.attending.connected_with(me).includes(:user)
   # users = event.attending_users.connected_with(user)
@@ -107,15 +111,26 @@ class User < ActiveRecord::Base
     (authentications.empty? || !password.blank?) # && super
   end
 
-  def post_to_facebook_wall(message, link)
-#    if fb_uid? && auth = authentications.facebook.first
-#      me = FbGraph::User.me(auth.auth_response["credentials"]["token"])
-#      me.feed!(
-#        :message => message,
-#        :link => link
-#      )
-#    end
+  def facebook_access_token
+    # => Check for a fb_uid (authenticated through FB)
+    # => Check for an facebook authentication then parse the hashed field auth_response for {:credentials=>{:token=>"value"}}
+    if fb_uid? && auth = authentications.facebook.first
+      auth.auth_response["credentials"]["token"]
+    end
   end
 
+  def facebook_user
+    # => Load the FB user through fb_graph if there is an access_token
+    FbGraph::User.me(facebook_access_token) if facebook_access_token
+  end
+
+  def post_to_facebook_wall(message, link)
+    # => Load the fb_user and post to their feed using fb_graph
+    #      me = facebook_user
+    #      me.feed!(
+    #        :message => message,
+    #        :link => link
+    #      ) if me
+  end
   
 end

@@ -78,7 +78,12 @@ SocialStreet::Application.routes.draw do
 
   resource :dashboard, :only => [:show], :controller => :dashboard
 
-  resources :connections, :only => [:index] # for AJAX lookup
+  resources :connections do 
+    collection do
+      match "facebook_realtime"
+    end
+  end
+  
   resources :locations, :only => [:index] # for AJAX lookup
 
   resources :feedbacks, :only => [:update, :show] # for providing feedback through the dash

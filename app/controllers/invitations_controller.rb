@@ -23,6 +23,9 @@ class InvitationsController < ApplicationController
     load_connections
 
     @invitations = @rsvp.invitations
+
+    render "new" if request.xhr?
+
   end
 
   # Note: It's actually creating multiple invitations here
@@ -59,9 +62,22 @@ class InvitationsController < ApplicationController
 
     @per_page = 10
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    @connections = current_user.connections.most_relevant_first.limit(@per_page).offset(@offset)
-    @connections = @connections.with_keywords(params[:user_search]) unless params[:user_search].blank?
-    @total_count = @connections.count
+    
+    # => TODO: see if you can take that inline string notation out
+    @users = User.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
+      joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
+      where("users.id <> ?", current_user.id).
+      where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
+      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
+      order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST")   
+
+    @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
+    @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
+    
+    @users = @users.
+      limit(@per_page).
+      offset(@offset)
+       
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
     
   end
