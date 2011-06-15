@@ -47,8 +47,6 @@ class User < ActiveRecord::Base
 
   scope :has_signed_in, where("sign_in_count > 0")
 
-  #after_create :subscribe_to_facebook_realtime
-
   # RSVP: event.rsvps.attending.connected_with(me).includes(:user)
   # users = event.attending_users.connected_with(user)
   #user.connected_with(event.attending_users)
@@ -134,14 +132,5 @@ class User < ActiveRecord::Base
     #        :link => link
     #      ) if me
   end
-
-  def subscribe_to_facebook_realtime
-    app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret => FACEBOOK_APP_SECRET)
-    app.subscribe!(
-      :object => "user",
-      :fields => "friends",
-      :callback_url => "http://staging.socialstreet.com/connections/facebook_realtime",
-      :verify_token => facebook_access_token
-    ) if facebook_access_token && Rails.env.eql?("production")
-  end 
+  
 end

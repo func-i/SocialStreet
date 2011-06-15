@@ -22,16 +22,13 @@ class ConnectionsController < ApplicationController
         user = User.find_by_fb_uid params["hub.verify_token"]
 
         # => TODO:  Add the db field users.subscribe_to_facebook
-        user.update_attribute("subscribed_to_facebook", true) if user
+        user.update_attribute("subscribed_to_fb_realtime", true) if user
         render :text=>params["hub.challenge"], :layout=>false
       end
     elsif request.post?
-      # => Post requests from facebook will update the subscription information.
-      # => Post is sent as json.  Read and parse jason request.
-      #json_post = JSON.parse(params[])
 
-      raise params.inspect
-
+      Resque.enqueue(Jobs::Facebook::ResponseHandler, params)
+      render :text=>"ok", :status=>200
     end
   end
 
