@@ -66,7 +66,7 @@ class Location < ActiveRecord::Base
   # it's not a pin point location, rather a bounding box
   # bounding box = sw_lat/lng and ne lat/lng
   def bounding_box?
-    sw_lat? && sw_lng? && ne_lat? && lw_lng?
+    sw_lat? && sw_lng? && ne_lat? && ne_lng?
   end
 
   # order: ne_lat, ne_lng, sw_lat, sw_lng

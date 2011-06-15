@@ -52,7 +52,7 @@ class Jobs::ProcessNewAction
         action.action_type == Action.types[:search_comment]
       #Comments - set base action_id
       feed.feed_type = FeedItem.types[:comment]
-      feed.action_id = action.action.id
+      feed.action_id = action.action.try(:id) || action.id # use parent action if one exists incase its a reply
 
       connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_COMMENT)
     end
@@ -102,7 +102,7 @@ class Jobs::ProcessNewAction
       feed.event_id = action.event_id
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
-      subscriptions = SearchSubscription.matching_search_comment(action.comment)
+      subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
     end
 
     subscriptions.each do |subscription|
