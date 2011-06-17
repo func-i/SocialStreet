@@ -1,4 +1,4 @@
-class SSFB::Tools
+class Ssfb::Tools
 
   def self.subscribe_to_facebook_realtime
     app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret => FACEBOOK_APP_SECRET)
