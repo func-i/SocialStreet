@@ -111,26 +111,19 @@ class User < ActiveRecord::Base
     (authentications.empty? || !password.blank?) # && super
   end
 
-  def facebook_access_token
-    # => Check for a fb_uid (authenticated through FB)
-    # => Check for an facebook authentication then parse the hashed field auth_response for {:credentials=>{:token=>"value"}}
-    if fb_uid? && auth = authentications.facebook.first
-      auth.auth_response["credentials"]["token"]
-    end
-  end
-
   def facebook_user
     # => Load the FB user through fb_graph if there is an access_token
-    FbGraph::User.me(facebook_access_token) if facebook_access_token
+    FbGraph::User.me(fb_auth_token) if fb_auth_token
   end
 
-  def post_to_facebook_wall(message, link)
-    # => Load the fb_user and post to their feed using fb_graph
-    #      me = facebook_user
-    #      me.feed!(
-    #        :message => message,
-    #        :link => link
-    #      ) if me
+  def post_to_facebook_wall(args = {})
+
+    # => Load the fb_user and post to their feed using fb_graph    
+    facebook_user.feed!(
+      :message => args[:message],
+      :link => args[:link]
+    ) if facebook_user && facebook_user.permissions.include?(:publish_stream) && !args[:message].blank?
+    
   end
   
 end

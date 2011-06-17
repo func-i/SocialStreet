@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110604174537) do
+ActiveRecord::Schema.define(:version => 20110615033018) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -188,21 +188,6 @@ ActiveRecord::Schema.define(:version => 20110604174537) do
 
   add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"
 
-  create_table "searchable_date_time", :force => true do |t|
-    t.integer  "searchable_id"
-    t.date     "date"
-    t.integer  "start_time"
-    t.integer  "end_time"
-    t.integer  "dow"
-    t.boolean  "inclusive"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "starts_at"
-    t.datetime "ends_at"
-  end
-
-  add_index "searchable_date_time", ["searchable_id"], :name => "index_searchable_date_time_on_searchable_id"
-
   create_table "searchable_event_types", :force => true do |t|
     t.integer  "searchable_id"
     t.integer  "event_type_id"
@@ -238,7 +223,6 @@ ActiveRecord::Schema.define(:version => 20110604174537) do
   create_table "users", :force => true do |t|
     t.string   "email",                                         :default => "", :null => false
     t.string   "encrypted_password",             :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                                 :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -254,8 +238,8 @@ ActiveRecord::Schema.define(:version => 20110604174537) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "comment_notification_frequency"
     t.string   "fb_uid"
+    t.string   "comment_notification_frequency"
     t.string   "photo"
   end
 

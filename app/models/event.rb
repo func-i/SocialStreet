@@ -22,15 +22,15 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
-  #before_destroy :validate_destroy
-  after_create :post_to_facebook
+  after_create {|record| record.user.post_to_facebook_wall(:message => "SocialStreet Event Created")}
+  #before_destroy :validate_destroy  
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
   validates :cost, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
   validates :minimum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
   validates :maximum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 1, :allow_blank => true }
-#  validates :event_type, :presence => true
+  #  validates :event_type, :presence => true
   #validate :valid_dates
   validate :valid_maximum_attendees
 
@@ -50,7 +50,7 @@ class Event < ActiveRecord::Base
   }
   scope :administered_by_user, lambda {|user|
     includes(:rsvps).where({ :rsvps => {:user_id => user.id, :administrator => true }})
-  }
+  }  
 
   # SELECT xyz FROM events JOIN dateranges ON  dr.event_id = e.id WHERE dr.x = 1 OR dr.y = 1
 
@@ -224,12 +224,6 @@ class Event < ActiveRecord::Base
 
   def build_initial_rsvp
     rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
-  end
-
-  # TODO: Make sure to check for Facebook permissions to make sure access is given to post to wall - JS
-  def post_to_facebook(message=nil)
-    user.post_to_facebook_wall(message || "SocialStreet Event created",
-      "http://localhost/events/#{self.id}") if self.facebook
   end
   
 end

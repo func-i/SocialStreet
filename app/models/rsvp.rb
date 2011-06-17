@@ -39,7 +39,9 @@ class Rsvp < ActiveRecord::Base
   before_save :set_is_waiting
   before_save :create_feedback
 
-  after_save {|record| record.post_to_facebook("Changed RSVP status for SocialStreet Event #{record.event.name} to #{record.status}")}
+  after_save {|record| record.user.post_to_facebook_wall(
+      :message => "Changed RSVP status for SocialStreet Event #{record.event.name} to #{record.status}"
+    )}
 
   def available_statuses
     if event && event.maximum_attendees
@@ -90,11 +92,6 @@ class Rsvp < ActiveRecord::Base
         self.feedback.destroy
       end
     end
-  end
-
-  # TODO: Make sure to check for Facebook permissions to make sure access is given to post to wall - JS
-  def post_to_facebook(message)
-    user.post_to_facebook_wall(message, "http://localhost/events/#{self.id}")
   end
 
 end

@@ -18,6 +18,6 @@ else
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :twitter, TWITTER_APP_CONSUMER_KEY, TWITTER_APP_CONSUMER_SECRET
-  provider :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, {:client_options => {:ssl => {:ca_path => Rails.env.development? ? "/opt/local/etc/openssl" : "/etc/ssl/certs"}}}
+  provider :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, {:scope=>"publish_stream,email,offline_access", :client_options => {:ssl => {:ca_path => Rails.env.development? ? "/opt/local/etc/openssl" : "/etc/ssl/certs"}}}
   #  provider :linked_in, 'CONSUMER_KEY', 'CONSUMER_SECRET'
 end
