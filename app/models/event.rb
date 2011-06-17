@@ -27,6 +27,7 @@ class Event < ActiveRecord::Base
   #before_destroy :validate_destroy  
   after_create :make_searchable_explorable
 
+
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
   validates :cost, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
@@ -204,6 +205,7 @@ class Event < ActiveRecord::Base
     searchable.searchable_date_ranges.first.try :ends_at
   end
 
+  
   protected
 
   def make_searchable_explorable
