@@ -6,7 +6,7 @@ class Ssfb::Tools
       :object => "user",
       :fields => "friends,permissions",
       :callback_url => "http://staging.socialstreet.com/connections/facebook_realtime",
-      :verify_token => user.facebook_access_token
+      :verify_token => '1234'
     ) #if facebook_access_token# && Rails.env.eql?("production")
   end 
 
