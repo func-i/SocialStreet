@@ -4,11 +4,10 @@ class Ssfb::Tools
     app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret => FACEBOOK_APP_SECRET)
     app.subscribe!(
       :object => "user",
-      :fields => "friends,permissions",
+      :fields => "friends",
       :callback_url => "http://staging.socialstreet.com/connections/facebook_realtime",
       :verify_token => '1234'
-    ) #if facebook_access_token# && Rails.env.eql?("production")
+    )
   end 
-
 
 end
