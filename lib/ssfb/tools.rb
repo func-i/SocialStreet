@@ -5,7 +5,7 @@ class SSFB::Tools
     app.subscribe!(
       :object => "user",
       :fields => "friends,permissions",
-      :callback_url => "http://99.232.169.50:3000/connections/facebook_realtime",
+      :callback_url => "http://staging.socialstreet.com/connections/facebook_realtime",
       :verify_token => user.facebook_access_token
     ) if facebook_access_token# && Rails.env.eql?("production")
   end 
