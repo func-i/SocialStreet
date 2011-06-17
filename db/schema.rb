@@ -10,7 +10,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110615033018) do
+
+ActiveRecord::Schema.define(:version => 20110615163022) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -205,6 +206,7 @@ ActiveRecord::Schema.define(:version => 20110615033018) do
     t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "explorable"
   end
 
   add_index "searchables", ["location_id"], :name => "index_searchables_on_location_id"

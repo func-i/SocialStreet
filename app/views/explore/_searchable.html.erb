@@ -1,7 +1,9 @@
 <% if searchable.event %>
   <%= render 'event', :event => searchable.event %>
-<% elsif searchable.action %>
-  <%= render 'shared/action', :action => searchable.action %>
+<% elsif searchable.comment %>
+  <%= render 'shared/action', :action => searchable.comment.action %>
 <% else  %>
-    <%= debug searchable %>
+  <% unless Rails.env.production? %>
+    <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
+  <% end %>
 <% end %>

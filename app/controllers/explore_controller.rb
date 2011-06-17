@@ -36,11 +36,11 @@ class ExploreController < ApplicationController
   end
 
   def find_searchables
-    @searchables = Searchable.with_excludes_for_explore
+    @searchables = Searchable.explorable
 
     @searchables = apply_filter(@searchables)
 
-    @per_page = 2
+    @per_page = 10
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     @total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)

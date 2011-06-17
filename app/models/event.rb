@@ -22,8 +22,10 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_title
   before_create :build_initial_rsvp
+
   after_create {|record| record.user.post_to_facebook_wall(:message => "SocialStreet Event Created")}
   #before_destroy :validate_destroy  
+  after_create :make_searchable_explorable
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
@@ -202,8 +204,11 @@ class Event < ActiveRecord::Base
     searchable.searchable_date_ranges.first.try :ends_at
   end
 
-
   protected
+
+  def make_searchable_explorable
+    searchable.update_attributes :explorable => true if searchable
+  end
 
   def set_default_title
     if self.name.blank?

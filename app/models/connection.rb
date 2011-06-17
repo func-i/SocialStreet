@@ -24,8 +24,8 @@ class Connection < ActiveRecord::Base
   default_value_for :facebook_friend, false
 
   COMMENT_STRENGTH_INCREASE = 1
-  INVITATION_STRENGTH_INCREASE = 5
   EVENT_ATTENDANCE_STENGTH_INCREASE = 3
+  INVITATION_STRENGTH_INCREASE = 5
 
   def self.connect_with_users_in_action_thread(user, an_action)
     Action.threaded_with(an_action).all.each do |action|
