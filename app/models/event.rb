@@ -23,7 +23,7 @@ class Event < ActiveRecord::Base
   before_validation :set_default_title
   before_create :build_initial_rsvp
 
-  after_create {|record| record.user.post_to_facebook_wall(:message => "SocialStreet Event Created")}
+  after_create {|record| record.user.post_to_facebook_wall(:message => "SocialStreet Event Created: #{record.name}")}
   #before_destroy :validate_destroy  
   after_create :make_searchable_explorable
 
@@ -230,7 +230,7 @@ class Event < ActiveRecord::Base
   end
 
   def build_initial_rsvp
-    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
+    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1, :skip_facebook => true) if rsvps.empty?
   end
   
 end

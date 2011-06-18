@@ -6,6 +6,7 @@ class Rsvp < ActiveRecord::Base
     :maybe_attending => 'Maybe',
   }
   cattr_accessor :statuses
+  attr_accessor :skip_facebook
 
   belongs_to :user
   belongs_to :event
@@ -41,7 +42,7 @@ class Rsvp < ActiveRecord::Base
 
   after_save {|record| record.user.post_to_facebook_wall(
       :message => "Changed RSVP status for SocialStreet Event #{record.event.name} to #{record.status}"
-    )}
+    ) unless skip_facebook }
 
   def available_statuses
     if event && event.maximum_attendees
