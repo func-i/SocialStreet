@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
   end
 
   def fb_auth_token
-    authentications.first.fb_auth_token
+    authentications.first.fb_auth_token unless authentications.empty?
   end
 
   def editable_by?(user)
