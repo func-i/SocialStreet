@@ -55,10 +55,18 @@ class ApplicationController < ActionController::Base
       #User has stored a redirect path for use after authentication
       if session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'
         if create_or_edit_event(session[:stored_redirect][:params], :create)
-          return_path = [:new, @event, @event.rsvps.first, :invitation] # step2 - invite friends to new event - KV
+          if current_user.fb_friends_imported?
+            return_path = [:new, @event, @event.rsvps.first, :invitation] # step2 - invite friends to new event - KV
+          else
+            return_path = import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @event.rsvps.first))
+          end
         else
           session[:stored_params] = session[:stored_redirect][:params][:event]
-          return_path = new_event_path
+          if current_user.fb_friends_imported?
+            return_path = new_event_path
+          else
+            return_path = import_facebook_friends_connections_path(:return => new_event_path)
+          end
         end
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
         if create_comment(session[:stored_redirect][:params])
@@ -74,7 +82,7 @@ class ApplicationController < ActionController::Base
       
       return return_path
     else
-      super
+      import_facebook_friends_connections_path
     end
   end
   

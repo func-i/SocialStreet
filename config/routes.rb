@@ -56,6 +56,11 @@ SocialStreet::Application.routes.draw do
   resources :comments, :only => [:create]
   resources :event_types, :only => [:index] # for autocomplete
   resources :events do
+
+    member do
+      get "post_to_facebook"
+    end
+
     resources :rsvps do 
       resources :invitations do
         get :change, :on => :collection
@@ -81,6 +86,8 @@ SocialStreet::Application.routes.draw do
   resources :connections do 
     collection do
       match "facebook_realtime"
+      match "import_facebook_friends"
+      match "import_friends"
     end
   end
   

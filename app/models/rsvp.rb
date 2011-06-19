@@ -6,7 +6,7 @@ class Rsvp < ActiveRecord::Base
     :maybe_attending => 'Maybe',
   }
   cattr_accessor :statuses
-  attr_accessor :skip_facebook
+  attr_accessor :facebook
 
   belongs_to :user
   belongs_to :event
@@ -17,6 +17,8 @@ class Rsvp < ActiveRecord::Base
 
   validates :event_id, :uniqueness => {:scope => [:user_id] }
   validate :validate_event_status
+
+  default_value_for :facebook, true
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }
@@ -40,9 +42,7 @@ class Rsvp < ActiveRecord::Base
   before_save :set_is_waiting
   before_save :create_feedback
 
-  after_save {|record| record.user.post_to_facebook_wall(
-      :message => "Changed RSVP status for SocialStreet Event #{record.event.name} to #{record.status}"
-    ) unless skip_facebook }
+  after_save :post_to_facebook
 
   def available_statuses
     if event && event.maximum_attendees
@@ -92,6 +92,17 @@ class Rsvp < ActiveRecord::Base
       elsif self.feedback && !self.feedback.responded? # not attending, therefore no feedback required
         self.feedback.destroy
       end
+    end
+  end
+
+  def post_to_facebook
+    if self.facebook && !self.posted_to_facebook?
+      self.user.post_to_facebook_wall(
+        :message => "Changed RSVP status for SocialStreet Event #{self.event.name} to #{self.status}"
+      )
+
+      update_attribute("posted_to_facebook", true)
+
     end
   end
 

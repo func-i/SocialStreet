@@ -1,7 +1,7 @@
 <li class="action" style="margin-top:5px">
   <% if action.of_type? :event_created  %>
     <% if action.action %>
-      <%# It's a nested action (1 level deep) and therefore should show more details about the event %>
+    <%# It's a nested action (1 level deep) and therefore should show more details about the event %>
       <%= render 'explore/event.html', :event => action.event %>
     <% else %>
       <%= render 'shared/general_action.html',

@@ -233,22 +233,7 @@ class Event < ActiveRecord::Base
   end
 
   def build_initial_rsvp
-    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1, :skip_facebook => true) if rsvps.empty?
-  end
-
-  def post_to_facebook_walls
-
-    if facebook
-
-      # => Post to the users friends walls
-      user.facebook_user.friends.each do |fb_friend|
-        fb_friend.feed!(
-          :message => "Your friend #{user.name} has created a new SocialStreet Event: #{self.name}",
-          :link => nil
-        )
-      end if user.facebook_user
-    end
-    
-  end
+    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1, :facebook => false) if rsvps.empty?
+  end 
   
 end

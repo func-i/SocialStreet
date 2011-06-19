@@ -1,7 +1,12 @@
 <%= form.error_messages %>
 <div class="group">
   <label class="label">Your RSVP Status:</label>
-  <%= form.select :status, @rsvp.available_statuses.values%>
+  <%= form.select :status, @rsvp.available_statuses.values %>
   <br/>
   <span class="description">Please set your RSVP status above.</span>
 </div>
+<div class="group">
+  <%= form.check_box :facebook %>
+  <span class="description">Post to Facebook</span>
+</div>
+

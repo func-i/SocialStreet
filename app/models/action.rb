@@ -6,7 +6,8 @@ class Action < ActiveRecord::Base
     :event_comment => 'Event Comment',
     :profile_comment => 'Profile Comment',
     :action_comment => 'Action Comment',
-    :search_comment => 'Search Comment'
+    :search_comment => 'Search Comment',
+    :facebook_post => 'Posted to Facebook'
   }.freeze
   cattr_accessor :types
 

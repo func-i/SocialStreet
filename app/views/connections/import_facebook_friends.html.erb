@@ -1,0 +1,19 @@
+<div class="block" id="block-lists">
+  <div class="content" style="margin: 0 auto; width: 500px; padding: 50px 0 50px 0;">
+    <h3>Please wait while we import your Facebook friends</h3>
+    <%= image_tag "load.gif", :style => "padding-left: 180px;" -%>
+  </div>
+</div>
+
+<%= form_tag import_friends_connections_path, :remote => true, :id => "import_form" do -%>
+  <%= hidden_field_tag "return", params[:return] -%>
+<%- end -%>
+
+<script>
+  $(function() {
+    $('#import_form').submit();
+  });
+</script>
+
+
+

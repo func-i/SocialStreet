@@ -1,5 +1,7 @@
 class ConnectionsController < ApplicationController
 
+  before_filter :authenticate_user!, :only => [:import_facebook_friends, :import_friends, :index]
+
   # assume ajax / json for now (it's bad practice but this is prototype code) - KV
   def index
     @connections = current_user.connections.with_keywords(params[:query]).most_relevant_first.limit(10).all
@@ -10,6 +12,19 @@ class ConnectionsController < ApplicationController
       }
     }
   end
+
+  def import_friends
+    Jobs::CreateConnectionsFromFacebook.perform(current_user.id) if current_user
+    current_user.update_attribute("fb_friends_imported", true)
+    render(:update) {|page| page.redirect_to(params[:return] || root_path)}
+  end
+
+  def import_facebook_friends
+    if current_user.fb_friends_imported?
+      redirect_to(params[:return] || root_path)
+    end
+  end
+
 
   def facebook_realtime
     

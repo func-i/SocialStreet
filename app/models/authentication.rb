@@ -26,7 +26,7 @@ class Authentication < ActiveRecord::Base
   end
 
   def load_facebook_friends
-    Resque.enqueue(Jobs::CreateConnectionsFromFacebook, user.id) if facebook?
+    #Resque.enqueue(Jobs::CreateConnectionsFromFacebook, user.id) if facebook?
   end
 
 end

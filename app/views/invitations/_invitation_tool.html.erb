@@ -114,11 +114,17 @@
             <% end %>
             <div class="clear"></div>
           </div>
+
+          <div class="clear"></div>
+          <div class="group">
+            <br />
+            <%= check_box_tag :facebook, true, true %>
+            <span class="description">Post to Facebook</span>
+          </div>
+
         <% end %>
 
-        <div class="clear"></div>
-
-      </div>
+      </div>      
 
       <%= render 'shared/form_submit_button' %>
 

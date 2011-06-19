@@ -2,7 +2,7 @@ class EventsController < ApplicationController
 
   before_filter :store_current_path, :only => [:show, :new, :edit]
   before_filter :store_event_create, :only => [:create, :update]
-  before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy]
+  before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
   before_filter :require_editable_event, :only => [:edit, :update, :destroy]
   before_filter :load_action, :only => [:new] # for event created through activity stream
 
@@ -21,9 +21,9 @@ class EventsController < ApplicationController
     @event.searchable.location ||= Location.new
     # start/end datetimes are no longer defaulted in the model
     @event.searchable.searchable_date_ranges.build({ 
-      :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
-      :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
-    })
+        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
+        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
+      })
     @event.action = @action # nil if no @action (which is desired)
     if session[:stored_params]
       @event.attributes = session[:stored_params] # event params
@@ -65,6 +65,22 @@ class EventsController < ApplicationController
     else
       raise "WHAT THE F***"
     end
+  end
+
+  def post_to_facebook
+    @event = Event.find params[:id]
+
+    @rsvp = @event.rsvps.by_user(current_user).first if current_user
+    if @rsvp.nil?
+      @event.rsvps.create!(:status => "Maybe", :facebook => true, :user => current_user)
+    else
+      @rsvp.facebook = true
+      @rsvp.save
+    end
+    
+    flash[:notice] = "This event's information has been posted to your wall"
+
+    redirect_to @event
   end
 
 
