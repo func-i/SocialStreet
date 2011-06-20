@@ -162,5 +162,21 @@ describe InvitationsController do
     end
 
   end
+
+  describe "GET /new with user without fb_friends_imported should redirect" do
+    it "should redirect to /connections/import_facebook_friends" do
+      @event.user.update_attribute("fb_friends_imported", false)
+      get :new,  :event_id => @event.id, :rsvp_id => @rsvp.id
+      response.should redirect_to(:controller => "connections", :action => "import_facebook_friends", :return => new_event_rsvp_invitation_path(@event, @rsvp))
+    end
+  end
+
+  describe "GET /change with user without fb_friends_imported should redirect" do
+    it "should redirect to /connections/import_facebook_friends" do
+      @event.user.update_attribute("fb_friends_imported", false)
+      get :change,  :event_id => @event.id, :rsvp_id => @rsvp.id
+      response.should redirect_to(:controller => "connections", :action => "import_facebook_friends", :return => change_event_rsvp_invitations_path(@event, @rsvp))
+    end
+  end
   
 end

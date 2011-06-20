@@ -5,7 +5,8 @@ end
 Factory.define :user do |user|
   user.first_name 'Person'
   user.sequence(:last_name) {|n| "#{n}"}
-  user.email {Factory.next(:email)}  
+  user.email {Factory.next(:email)}
+  user.fb_friends_imported true
 end
 
 Factory.define :user_with_sign_in, :parent=>:user do |user|

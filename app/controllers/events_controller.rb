@@ -74,8 +74,10 @@ class EventsController < ApplicationController
     if @rsvp.nil?
       @event.rsvps.create!(:status => "Maybe", :facebook => true, :user => current_user)
     else
-      @rsvp.facebook = true
-      @rsvp.save
+      unless @rsvp.posted_to_faceook?
+        @rsvp.facebook = true
+        @rsvp.save
+      end
     end
     
     flash[:notice] = "This event's information has been posted to your wall"
