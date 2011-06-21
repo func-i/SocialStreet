@@ -3,7 +3,8 @@ class Rsvp < ActiveRecord::Base
   @@statuses = {
     :attending => 'Attending',
     :not_attending => 'Not Attending',
-    :maybe_attending => 'Maybe'
+    :maybe_attending => 'Maybe',
+    :interested => 'Interested'
   }
   
   cattr_accessor :statuses
@@ -53,9 +54,9 @@ class Rsvp < ActiveRecord::Base
 
   def available_statuses
     if event && event.maximum_attendees
-      return @@statuses.except(:maybe_attending)
+      return @@statuses.except(:maybe_attending).except(:interested)
     else
-      return @@statuses
+      return @@statuses.except(:interested)
     end
   end
 
@@ -66,7 +67,7 @@ class Rsvp < ActiveRecord::Base
   end
 
   def validate_event_status
-    if !available_statuses.has_value?(self.status)
+    if !available_statuses.has_value?(self.status) && !self.status.eql?("Interested")
       errors.add :status, "not allowed"
     end
   end
