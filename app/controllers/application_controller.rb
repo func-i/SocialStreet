@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
   def restricted
     #    authenticate_or_request_with_http_basic do |user_name, password|
     #      user_name == "ssusername" && password == "sspassword"
-    #    end if Rails.env.production?
+    #    end if Rails.env.staging?
   end
 
   def nav_state

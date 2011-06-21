@@ -105,11 +105,25 @@ class Jobs::ProcessNewAction
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
     end
 
+    if subscriptions.blank?
+      # return 
+      raise "no subs found for action: #{ action.id }"
+    end
+    
     subscriptions.each do |subscription|
       #Add to the user subscription email. Note that this could send the same event twice for two different subscriptions, make sure to handle
 
       #Add to the users dashboard
-      Feed.push(redis, subscription.user, feed) #TODO
-    end unless subscriptions.blank?
+      Feed.push(redis, subscription.user, feed)
+    end 
+
+#    subscriptions.select(&:immediate?).uniq_by(&:user_id).each do |subscription|
+#
+#    end
+    
+    subscriptions.select(&:immediate?).uniq_by(&:user_id).each do |subscription|
+      Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
+    end
+
   end
 end

@@ -75,6 +75,10 @@ class SearchSubscription < ActiveRecord::Base
     self.searchable.url_params
   end
 
+  def immediate?
+    frequency == @@frequencies[:immediate]
+  end
+
   protected
 
   def self.nullable_param(params, key)

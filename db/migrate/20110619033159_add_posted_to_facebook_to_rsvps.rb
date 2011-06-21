@@ -4,6 +4,6 @@ class AddPostedToFacebookToRsvps < ActiveRecord::Migration
   end
 
   def self.down
-    add_column :rsvps, :posted_to_facebook
+    remove_column :rsvps, :posted_to_facebook
   end
 end

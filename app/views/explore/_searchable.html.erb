@@ -3,7 +3,7 @@
 <% elsif searchable.comment %>
   <%= render 'shared/action', :action => searchable.comment.action %>
 <% else  %>
-  <% unless Rails.env.production? %>
+  <% unless Rails.env.production? || Rails.env.staging?  %>
     <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
   <% end %>
 <% end %>

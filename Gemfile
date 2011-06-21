@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
+gem 'rails', '3.0.9'
 gem 'rake', '0.9.2'
 
 # Bundle edge Rails instead:
@@ -31,6 +31,7 @@ gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'json'
 
 group :development do
+  gem 'rails-dev-boost', :git => 'git://github.com/thedarkone/rails-dev-boost.git', :require => 'rails_development_boost'
   gem 'thin'
 end
 
