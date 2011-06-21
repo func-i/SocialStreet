@@ -9,7 +9,11 @@ class Jobs::ProcessNewAction
 
   def self.perform(action_id)
 
-    action = Action.find(action_id)
+    action = Action.find_by_id(action_id)
+    unless action
+      sleep 2
+      action = Action.find(action_id)
+    end
     redis = Redis.new
     
     #Add action to any user who has subscribed to it
@@ -117,9 +121,9 @@ class Jobs::ProcessNewAction
       Feed.push(redis, subscription.user, feed)
     end 
 
-#    subscriptions.select(&:immediate?).uniq_by(&:user_id).each do |subscription|
-#
-#    end
+    #    subscriptions.select(&:immediate?).uniq_by(&:user_id).each do |subscription|
+    #
+    #    end
     
     subscriptions.select(&:immediate?).uniq_by(&:user_id).each do |subscription|
       Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
