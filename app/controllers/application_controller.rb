@@ -82,7 +82,7 @@ class ApplicationController < ActionController::Base
       
       return return_path
     else
-      import_facebook_friends_connections_path
+      super
     end
   end
   

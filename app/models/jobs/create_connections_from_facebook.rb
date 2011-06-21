@@ -39,6 +39,8 @@ class Jobs::CreateConnectionsFromFacebook
       friends = friends.next
 
     end
+
+    user.update_attribute("fb_friends_imported", true)
     
   end
 
