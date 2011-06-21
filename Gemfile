@@ -31,6 +31,7 @@ gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'json'
 
 group :development do
+  gem 'rails-dev-boost', :git => 'git://github.com/thedarkone/rails-dev-boost.git', :require => 'rails_development_boost'
   gem 'thin'
 
   # Boosts dev server response time significantly but if you have refresh issues, remove this gem

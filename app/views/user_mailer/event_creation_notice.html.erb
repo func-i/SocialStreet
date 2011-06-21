@@ -1,0 +1,13 @@
+<h1>New Activity</h1>
+<p>
+  <%= @event.user.name %> created an activity in your community of interest:
+</p>
+<p>
+  Name: <%= @event.name %><br/>
+  Location: <%= @event.location.geocodable_address || "Unknown" %><br/>
+  Start Date: <%= @event.starts_at.to_s(:date_with_time) %><br/>
+  ...
+</p>
+<p>
+  To view this event, just follow this link: <%= event_url(@event) %> .
+</p>

@@ -15,7 +15,15 @@ SocialStreet::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  #  config.action_mailer.raise_delivery_errors = false
+
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+    :location => '/usr/sbin/sendmail',
+    :arguments => "-i -t -f no-reply@socialstreet.com"
+  }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
