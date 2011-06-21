@@ -13,6 +13,9 @@ class Jobs::EmailUserForSubscription
       email = UserMailer.event_creation_notice(user, event, subscription)
       email.deliver
     elsif action.action_type == Action.types[:search_comment]
+      comment = action.reference
+      email = UserMailer.search_comment_notice(user, comment, subscription)
+      email.deliver
     end
     
   end

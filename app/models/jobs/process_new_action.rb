@@ -110,10 +110,12 @@ class Jobs::ProcessNewAction
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
+      raise "No Subs found!!!" if subscriptions.blank?
     end
 
     return if subscriptions.blank?
 
+    # ADD TO DASHBOARD / NEWS STREAM (NO UNIQUENESS REQUIRED)
     subscriptions.each do |subscription|
       #Add to the user subscription email. Note that this could send the same event twice for two different subscriptions, make sure to handle
 
@@ -121,6 +123,7 @@ class Jobs::ProcessNewAction
       Feed.push(redis, subscription.user, feed)
     end 
 
+    
     # no need to uniq_by(&:user_id) (which we were doing before) b/c of @users_emailed hash being used to uniqueness
     subscriptions.select(&:immediate?).each do |subscription|
       user_id = subscription.user_id.to_s
@@ -129,6 +132,5 @@ class Jobs::ProcessNewAction
         @users_emailed[user_id] = true
       end
     end
-
   end
 end
