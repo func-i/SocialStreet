@@ -74,7 +74,7 @@ class EventsController < ApplicationController
     if @rsvp.nil?
       @event.rsvps.create!(:status => "Maybe", :facebook => true, :user => current_user)
     else
-      unless @rsvp.posted_to_faceook?
+      unless @rsvp.posted_to_facebook?
         @rsvp.facebook = true
         @rsvp.save
       end
