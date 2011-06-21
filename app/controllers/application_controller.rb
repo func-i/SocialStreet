@@ -101,13 +101,11 @@ class ApplicationController < ActionController::Base
       #Create the event
       @event = Event.new
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
-
-
     end
 
     @event.attributes = params[:event]
     @event.location.user = current_user if @event.location
-
+    
     if @event.save
       Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
       return true

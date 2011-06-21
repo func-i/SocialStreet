@@ -20,6 +20,12 @@ class Event < ActiveRecord::Base
   attr_accessor :current_user
   attr_accessor :facebook
 
+  # => Because this is an accessor the checkbox on the forms will populate it with "0"
+  # => If it is set to "0" then set it to false
+  def facebook=(val)
+    @facebook = (val.eql?("0") ? false : val)
+  end
+
   before_validation :set_default_title
   before_create :build_initial_rsvp
   
@@ -70,7 +76,6 @@ class Event < ActiveRecord::Base
   #      #TODO - Why doesn't this work?
   #    end
   #  end
-
 
   def location_address
     location.geocodable_address if location

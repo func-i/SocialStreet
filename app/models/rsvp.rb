@@ -8,6 +8,12 @@ class Rsvp < ActiveRecord::Base
   cattr_accessor :statuses
   attr_accessor :facebook
 
+  # => Because this is an accessor the checkbox on the forms will populate it with "0"
+  # => If it is set to "0" then set it to false
+  def facebook=(val)
+    @facebook = (val.eql?("0") ? false : val)
+  end
+
   belongs_to :user
   belongs_to :event
   
