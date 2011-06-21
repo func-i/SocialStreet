@@ -3,8 +3,9 @@ class Rsvp < ActiveRecord::Base
   @@statuses = {
     :attending => 'Attending',
     :not_attending => 'Not Attending',
-    :maybe_attending => 'Maybe',
+    :maybe_attending => 'Maybe'
   }
+  
   cattr_accessor :statuses
   attr_accessor :facebook
 

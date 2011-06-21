@@ -10,6 +10,12 @@ class Invitation < ActiveRecord::Base
 
   attr_accessor :facebook
 
+  # => Because this is an accessor the checkbox on the forms will populate it with "0"
+  # => If it is set to "0" then set it to false
+  def facebook=(val)
+    @facebook = (val.eql?("0") ? false : val)
+  end
+
   default_value_for :facebook, true
 
   after_create :post_to_facebook
@@ -25,6 +31,5 @@ class Invitation < ActiveRecord::Base
       ) if fb_friend && self.facebook
     end
   end
-
 
 end
