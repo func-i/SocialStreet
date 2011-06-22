@@ -31,6 +31,13 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "New comment by #{comment.user.name} on SocialStreet")
   end
 
+  def event_invitation_notice(invitation)
+    @user = invitation.to_user
+    @invitation = invitation
+    @event = invitation.event
+    mail(:to => @user.email, :subject => "#{invitation.user.name} invited you to '#{invitation.event.name}' on SocialStreet")
+  end
+
   def test_notice(user)
     @user = user
     mail(:to => user.email, :subject => "This is a test email")

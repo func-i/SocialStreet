@@ -1,6 +1,6 @@
-<h1>New Activity</h1>
+<h1>Event Invitation</h1>
 <p>
-  <%= @event.user.name %> created an activity in your community of interest:
+  <%= @invitation.user.name %> has invited you to an event.
 </p>
 <p>
   Name: <%= link_to @event.name, event_url(@event) %><br/>
@@ -8,6 +8,7 @@
   Start Date: <%= @event.starts_at.to_s(:date_with_time) %><br/>
   ...
 </p>
+
 <p>
-  <%= link_to 'Click here', event_url(@event) %> to view this event, just follow this link.
+  <%= link_to 'Click here', new_event_rsvp_url(@event) %> to RSVP to this event.
 </p>
