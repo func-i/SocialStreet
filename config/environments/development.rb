@@ -14,10 +14,8 @@ SocialStreet::Application.configure do
   config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
-  # Don't care if the mailer can't send
-  #  config.action_mailer.raise_delivery_errors = false
-
 # Uncomment this code below and change the 2 boolean flags to test email delivery through Gmail from localhost - KV
+
 #  config.action_mailer.delivery_method = :smtp
 #  config.action_mailer.smtp_settings = {
 #    :address              => "smtp.gmail.com",

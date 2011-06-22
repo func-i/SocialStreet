@@ -135,5 +135,12 @@ class Jobs::ProcessNewAction
         @users_emailed[user_id] = true
       end
     end
+
+    subscriptions.select(&:not_immediate?).each do |subscription|
+      user_id = subscription.user_id.to_s
+      action_id = action.action.try(:id) || action.id
+      redis.zadd "digest_actions:#{subscription.id}", "#{Time.now.to_i}", action_id.to_s
+    end
+
   end
 end

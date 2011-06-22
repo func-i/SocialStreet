@@ -2,6 +2,8 @@ class SearchableDateRange < ActiveRecord::Base
 
   belongs_to :searchable
 
+  @@dows = %w{Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
+
   default_value_for :starts_at do
 #    Time.zone.now.advance(:hours => 3).floor(15.minutes)
   end
@@ -10,6 +12,22 @@ class SearchableDateRange < ActiveRecord::Base
   end
 
   validate :valid_dates
+
+  def to_s
+    s = ""
+    if dow
+      s << @@dows[dow].pluralize
+    end
+    if start_time? && start_time > DAY_FIRST_MINUTE
+      if end_time? && end_time < DAY_LAST_MINUTE
+        s << " between #{start_time} and #{end_time}"
+      else
+        s << " after #{start_time}"
+      end
+    elsif end_time? && end_time < DAY_LAST_MINUTE
+      " before #{end_time}"
+    end
+  end
 
   def valid_dates
     errors.add :ends_at, 'must be after the event starts' if ends_at && ends_at <= starts_at

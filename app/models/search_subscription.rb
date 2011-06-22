@@ -42,6 +42,9 @@ class SearchSubscription < ActiveRecord::Base
     )
   }
 
+  scope :daily, where(:frequency => @@frequencies[:daily])
+  scope :weekly, where(:frequency => @@frequencies[:weekly])
+
   def matches_date_ranges?(date_ranges)
     !!searchable.searchable_date_ranges.detect { |dr| dr.overlapping_with? date_ranges }
   end
@@ -77,6 +80,9 @@ class SearchSubscription < ActiveRecord::Base
 
   def immediate?
     frequency == @@frequencies[:immediate]
+  end
+  def not_immediate?
+    ![@@frequencies[:immediate], @@frequencies[:none]].include? frequency
   end
 
   protected

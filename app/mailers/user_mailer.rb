@@ -38,6 +38,15 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "#{invitation.user.name} invited you to '#{invitation.event.name}' on SocialStreet")
   end
 
+  def daily_subscription_digest(subscription, actions, start_time, end_time)
+    @actions = actions
+    @subscription = subscription
+    # time ranges used to determine which sub-actions to render, since @actions is always top-level actions
+    @start_time = start_time
+    @end_time = end_time
+    mail(:to => @subscription.user.email, :subject => "Your daily summary for '#{subscription.name}' on SocialStreet")
+  end
+
   def test_notice(user)
     @user = user
     mail(:to => user.email, :subject => "This is a test email")
