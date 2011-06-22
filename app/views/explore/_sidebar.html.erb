@@ -80,11 +80,22 @@
 <% end %>
 
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'jquery.pageless', 'keywords_field' %>
+  <%= javascript_include_tag 'jquery.pageless', 'keywords_field', "amplify.store", "history.adapter.jquery", "history", "history.html4" %>
   <script>
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
     var refreshTimer = null;
     var keywordsParamKey = "keywords[]";
+
+    function getSearchParams() {
+      return "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val() + "&" + $('[name="keywords\\[\\]"]').serialize();;
+    }
+
+    function searchChanged() {
+      History.pushState({state:2}, "Search Map", getSearchParams());
+      refreshResults();
+    }
+
+
     function refreshResults() {
       if (refreshTimer) {
         clearInterval(refreshTimer);
@@ -105,6 +116,21 @@
     }
 
     $(function() {
+
+      // Prepare
+      var History = window.History; // Note: We are using a capital H instead of a lower h
+      if ( !History.enabled ) {
+        // History.js is disabled for this browser.
+        // This is because we can optionally choose to support HTML4 browsers or not.
+        return false;
+      }
+
+      // Bind to StateChange Event
+      History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+        var State = History.getState(); // Note: We are using History.getState() instead of event.state
+        History.log(State.data, State.title, State.url);
+      });
+
      
       $('form.search-params').bind('ajax:beforeSend', function() {
         $('#action-list').fadeTo('fast', 0.5);
@@ -289,10 +315,12 @@
           bounds = map.getBounds();
           ne = bounds.getNorthEast();
           sw = bounds.getSouthWest();
-          c = bounds.getSouthWest();
+          c = bounds.getCenter();
 
           $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
           $('#map_center').val(c.lat() + ',' + c.lng());
+
+          History.replaceState({state:1}, "Search Map", getSearchParams());
           refreshResults();
         }, 15);
       }
@@ -304,7 +332,7 @@
 
   <% @searchables.each do |searchable| %>
     <% #if searchable.event && searchable.geo_located? %>
-      <% if searchable.geo_located? %>
+    <% if searchable.geo_located? %>
           placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>

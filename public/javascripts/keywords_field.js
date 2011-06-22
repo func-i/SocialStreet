@@ -8,11 +8,11 @@ $(function() {
       '<a href="#" class="remove-parent" data-parent-selector=".keyword-pill">' +
       '<img src="/images/web-app-theme/icons/cross.png" />' +
       '</li>').hide().appendTo($('#keywords')).fadeIn('slow');
-    if (typeof refreshResults == "function") refreshResults();
+    if (typeof searchChanged == "function") searchChanged();
   }
 
   $('.keyword-pill').live('ss:removed', function() {
-    if (typeof refreshResults == "function") refreshResults();
+    if (typeof searchChanged == "function") searchChanged();
   });
 
   $('#q-textfield').keydown(function(e) {
