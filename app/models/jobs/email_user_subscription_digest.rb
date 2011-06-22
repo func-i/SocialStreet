@@ -16,7 +16,7 @@ class Jobs::EmailUserSubscriptionDigest
     email = UserMailer.daily_subscription_digest(subscription, actions, start_time, end_time)
     email.deliver
 
-    redis.del key # remove all data for the subscription
+    redis.del key # remove all data for this subscription
     
     redis.quit
   end
