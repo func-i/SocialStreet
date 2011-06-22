@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110615163022) do
+ActiveRecord::Schema.define(:version => 20110619033159) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -148,13 +148,14 @@ ActiveRecord::Schema.define(:version => 20110615163022) do
   add_index "locations", ["user_id"], :name => "index_locations_on_user_id"
 
   create_table "rsvps", :force => true do |t|
-    t.integer  "event_id",                         :null => false
-    t.integer  "user_id",                          :null => false
+    t.integer  "event_id",                              :null => false
+    t.integer  "user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
-    t.boolean  "administrator", :default => false
+    t.boolean  "administrator",      :default => false
     t.boolean  "waiting"
+    t.boolean  "posted_to_facebook", :default => false
   end
 
   add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"
@@ -187,21 +188,6 @@ ActiveRecord::Schema.define(:version => 20110615163022) do
   end
 
   add_index "searchable_date_ranges", ["searchable_id"], :name => "index_searchable_date_ranges_on_searchable_id"
-
-  create_table "searchable_date_time", :force => true do |t|
-    t.integer  "searchable_id"
-    t.date     "date"
-    t.integer  "start_time"
-    t.integer  "end_time"
-    t.integer  "dow"
-    t.boolean  "inclusive"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "starts_at"
-    t.datetime "ends_at"
-  end
-
-  add_index "searchable_date_time", ["searchable_id"], :name => "index_searchable_date_time_on_searchable_id"
 
   create_table "searchable_event_types", :force => true do |t|
     t.integer  "searchable_id"
@@ -237,9 +223,8 @@ ActiveRecord::Schema.define(:version => 20110615163022) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                         :default => "", :null => false
-    t.string   "encrypted_password",             :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                                 :default => "", :null => false
+    t.string   "email",                                         :default => "",    :null => false
+    t.string   "encrypted_password",             :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -255,9 +240,10 @@ ActiveRecord::Schema.define(:version => 20110615163022) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "comment_notification_frequency"
     t.string   "fb_uid"
+    t.string   "comment_notification_frequency"
     t.string   "photo"
+    t.boolean  "fb_friends_imported",                           :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
