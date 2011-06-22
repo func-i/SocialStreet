@@ -15,6 +15,23 @@ SocialStreet::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
+  #  config.action_mailer.raise_delivery_errors = false
+
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+    :location => '/usr/sbin/sendmail',
+    :arguments => "-i -t -f no-reply@socialstreet.com"
+  }
+#  config.action_mailer.delivery_method = :smtp
+#  config.action_mailer.smtp_settings = {
+#    :address              => "smtp.gmail.com",
+#    :port                 => 587,
+#    :domain               => 'baci.lindsaar.net',
+#    :user_name            => 'notify@socialstreet.com',
+#    :password             => 'ssP@ssw0rd',
+#    :authentication       => 'plain',
+#    :enable_starttls_auto => true  }
+  config.action_mailer.perform_deliveries = false
   config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the Rails logger

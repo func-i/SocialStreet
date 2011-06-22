@@ -1,10 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
+gem 'rails', '3.0.9'
 gem 'rake', '0.9.2'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
 gem 'silent-postgres'
@@ -32,6 +29,8 @@ gem 'json'
 
 group :development do
   gem 'thin'
+  # Boosts dev server response time significantly but if you have refresh issues, remove this gem
+  gem 'rails-dev-boost', :git => 'git://github.com/thedarkone/rails-dev-boost.git', :require => 'rails_development_boost'
 end
 
 group :test, :development do

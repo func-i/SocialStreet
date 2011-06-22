@@ -8,8 +8,15 @@ class Jobs::ProcessNewAction
   CONNECTION_RANK_LIMIT_COMMENT = 20
 
   def self.perform(action_id)
+    
+    action = Action.find_by_id(action_id)
+    # so we don't send instant emails multiple times to the same user for this action, b/c that would be bad ...
+    @users_emailed = {}
 
-    action = Action.find(action_id)
+    unless action
+      sleep 2
+      action = Action.find(action_id)
+    end
     redis = Redis.new
     
     #Add action to any user who has subscribed to it
@@ -103,13 +110,27 @@ class Jobs::ProcessNewAction
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
+      raise "No Subs found!!!" if subscriptions.blank?
     end
 
+    return if subscriptions.blank?
+
+    # ADD TO DASHBOARD / NEWS STREAM (NO UNIQUENESS REQUIRED)
     subscriptions.each do |subscription|
       #Add to the user subscription email. Note that this could send the same event twice for two different subscriptions, make sure to handle
 
       #Add to the users dashboard
-      Feed.push(redis, subscription.user, feed) #TODO
-    end unless subscriptions.blank?
+      Feed.push(redis, subscription.user, feed)
+    end 
+
+    
+    # no need to uniq_by(&:user_id) (which we were doing before) b/c of @users_emailed hash being used to uniqueness
+    subscriptions.select(&:immediate?).each do |subscription|
+      user_id = subscription.user_id.to_s
+      unless @users_emailed[user_id]
+        Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
+        @users_emailed[user_id] = true
+      end
+    end
   end
 end

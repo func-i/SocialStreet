@@ -31,6 +31,18 @@ Running Tests (RSpec specs)
 - For a single test based on its line number, run the command: rspec spec/models/searchable_date_range_spec.rb:69
   - In this example, it runs the first spec ("it" statement) that it can find at or above line 69 in searchable_date_range
 
+Using Facebook (IMPORTANT)
+- You should create and use facebook "test" users to test in development mode, using the following steps:
+  - Open a rails console with command: rails c
+  - Create an fb_graph app instance: app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret=>FACEBOOK_APP_SECRET)
+  - Create a 1st test user: user1 = app.test_user!(:installed => true, :permissions => :read_stream)
+  - Create a 2nd test user: user2 = app.test_user!(:installed => true, :permissions => :read_stream)
+  - Friend the 2 users: user1.friend!(user2) 
+  - Get user1's login_url (so you can login into SS w/ that user): user1.login_url
+  - Assuming you are not signed into Facrbook, Paste the login URL into your browser
+  - Goto your local SS instance (http://localhost:3000) and click Sign-in
+- Facebook info on Test Users: https://developers.facebook.com/docs/test_users/
+
 Docs:
 
 - http://redis.io/download
@@ -38,7 +50,8 @@ Docs:
 - http://redis.io/topics/data-types#sorted-sets
 - https://github.com/ezmobius/redis-rb
 - http://blog.waxman.me/how-to-build-a-fast-news-feed-in-redis
+- https://developers.facebook.com/docs/test_users/
 
-Docs used for Slicehost Server setup:
+Article used for Slicehost Server setup:
 
 - http://library.linode.com/databases/redis/ubuntu-10.04-lucid
