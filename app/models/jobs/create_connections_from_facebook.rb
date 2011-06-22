@@ -13,9 +13,9 @@ class Jobs::CreateConnectionsFromFacebook
     uids_no_longer_friends = user.connections.where(:facebook_friend => true).collect(&:to_user).collect(&:fb_uid) - friends.collect(&:identifier)
 
     uids_no_longer_friends.each do |no_friend_id|
-      no_user = User.find_by_fb_uid(no_friend_id)      
+      no_user = User.find_by_fb_uid(no_friend_id)
       user.connections.to_user(no_user).each{|c| c.update_attribute("facebook_friend", false)}
-    end   
+    end
 
     # => Not sure why there is a while loop here when only the users friends are creating connections
     # => user.facebook_user.friends.next seems to always eql? [] which means this will only loop through once.
@@ -32,7 +32,7 @@ class Jobs::CreateConnectionsFromFacebook
         c = user.connections.to_user(u).first
         c ||= user.connections.create({:to_user => u})
 
-        c.update_attribute("facebook_friend", true)        
+        c.update_attribute("facebook_friend", true)
 
       end
 
@@ -42,6 +42,33 @@ class Jobs::CreateConnectionsFromFacebook
 
     user.update_attribute("fb_friends_imported", true)
     
+  end
+
+  def self.find_worker(user_id)
+    Resque.workers.each do |worker|
+      if !worker.job.empty? && worker.job["payload"]["class"].eql?(self.name) && worker.job["payload"]["args"].eql?([user_id])
+        return worker
+      end
+    end
+    nil # => Explicitly return nil showing that no worker is running this job
+  end
+
+  def self.perform_sync_or_wait_for_async(user_id)
+    
+    # => Remove the job from the queue it is in there so we don't get duplicate connection creation jobs conflicting
+    begin
+      Resque.dequeue(Jobs::CreateConnectionsFromFacebook, user_id)
+    rescue Exception => e
+      # => The queue probably could not be found
+    end
+
+    unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+      while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+        # => Do nothing, just keep checking for the completion of the worker
+      end
+    else
+      Jobs::CreateConnectionsFromFacebook.perform(user_id)
+    end
   end
 
 end

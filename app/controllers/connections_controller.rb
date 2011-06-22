@@ -13,22 +13,14 @@ class ConnectionsController < ApplicationController
     }
   end
 
-  def import_friends
-
-    # => Remove the job from the queue it is in there so we don't get duplicate connection creation jobs conflicting
-    begin
-      Resque.dequeue(Jobs::CreateConnectionsFromFacebook, current_user.id)
-    rescue Exception => e
-      # => The queue probably could not be found
-    end
-    
-    Jobs::CreateConnectionsFromFacebook.perform(current_user.id) if current_user    
+  def import_friends   
+    Jobs::CreateConnectionsFromFacebook.perform_sync_or_wait_for_async(current_user.id) if current_user
     render :update do |page|
       page.redirect_to(params[:return].blank? ? root_path : params[:return])
     end
   end
 
-  def import_facebook_friends
+  def import_facebook_friends    
     if current_user.fb_friends_imported?
       redirect_to(params[:return] || root_path)
     end

@@ -53,7 +53,7 @@ class RsvpsController < ApplicationController
     #@rsvp = @event.rsvps.by_user(current_user).find params[:id].to_i
   end
 
-  def require_permission
+  def require_permission    
     raise ActiveRecord::RecordNotFound if !@event.editable?(current_user)
   end
 end
