@@ -11,16 +11,24 @@ class UserMailer < ActionMailer::Base
   end
 
   # TODO: Maybe mention the subscription or link to subscription for unsubscribing ? 
-  def event_creation_notice(user, event, subscription)
+  def event_creation_notice(user, event)
     @user = user
     @event = event
     mail(:to => user.email, :subject => "New activity of interest to you on SocialStreet")
   end
 
-  def search_comment_notice(user, comment, subscription)
+  # Top-level search /explore comments
+  def search_comment_notice(user, comment)
     @user = user
     @comment = comment
-    mail(:to => user.email, :subject => "New comment by #{user.name} on SocialStreet")
+    mail(:to => user.email, :subject => "New comment by #{comment.user.name} on SocialStreet")
+  end
+
+  # Non-top-level comment replies to an existing comment thread (on the search explore page, or otherwise)
+  def action_comment_notice(user, comment)
+    @user = user
+    @comment = comment
+    mail(:to => user.email, :subject => "New comment by #{comment.user.name} on SocialStreet")
   end
 
   def test_notice(user)

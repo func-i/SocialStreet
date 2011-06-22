@@ -80,18 +80,22 @@ class Jobs::ProcessNewAction
     feed = FeedItem.new
     feed.inserted_because = FeedItem.reasons[:participated]
     feed.feed_type = FeedItem.types[:comment]
-    feed.action_id = an_action.action.id
+    feed.action_id = action.action.id
     
     action_list = Action.threaded_with(action)
 
     action_list.all.each do |a|
       #add to dashboard
       if a.user.id != action.user.id
-        Feed.push(redis, a.user, feed)
+        # add to dashboard / news feed
+        Feed.push(redis, a.user, feed) 
+        # email notice to user
+        # TODO: here we should perhaps check their profile settings to see if they want to be notified? - KV
+        unless @users_emailed[a.user_id.to_s]
+          Resque.enqueue(Jobs::EmailUserForActionChain, action.id, a.id)
+          @users_emailed[a.user_id.to_s] = true
+        end
       end
-
-      #add to email
-      #TODO
     end
   end
 
@@ -110,7 +114,6 @@ class Jobs::ProcessNewAction
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
-      raise "No Subs found!!!" if subscriptions.blank?
     end
 
     return if subscriptions.blank?

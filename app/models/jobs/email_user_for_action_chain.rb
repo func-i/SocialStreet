@@ -1,11 +1,12 @@
-class Jobs::EmailUserForSubscription
+class Jobs::EmailUserForActionChain
 
   @queue = :emails
 
-  def self.perform(subscription_id, action_id)
-    subscription = SearchSubscription.find subscription_id
+  # the "orig_action_id" is the action that was in the same chain as the new action represented by "action_id"
+  def self.perform(action_id, orig_action_id)
     action = Action.find action_id
-    user = subscription.user
+    orig_action = Action.find orig_action_id
+    user = orig_action.user # user to notify
 
     if action.action_type == Action.types[:event_created]
       event = action.event
@@ -15,9 +16,10 @@ class Jobs::EmailUserForSubscription
       email = UserMailer.search_comment_notice(user, comment)
     elsif action.action_type == Action.types[:action_comment]
       comment = action.reference
-      email = UserMailer.action_comment_notice(user, comment, nil)
+      email = UserMailer.action_comment_notice(user, comment)
     end
     
     email.deliver if email
+    
   end
 end

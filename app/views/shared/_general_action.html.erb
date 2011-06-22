@@ -11,7 +11,7 @@
     <%= simple_format(h(body)) unless body.blank? %>
     <em><%= time_ago_in_words action.occurred_at %> ago</em>
   </div>
-  
+
   <div style="float:left; width: 140px; height:100%;">
     <% if allow_children %>
       <%= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
@@ -22,9 +22,11 @@
   <% if allow_children %>
 
   <%# TODO: Should paginate these perhaps ?  %>
+  <ul class="list">
     <% action.actions.oldest_first.all.each do |a|  %>
       <%= render 'shared/action', :action => a %>
     <% end %>
+  </ul>
     <div class="action-comment-container" style="margin-top:10px;margin-left:0px;display:none">
       <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form"} do |form| %>
         <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:55%;float:left" %>
