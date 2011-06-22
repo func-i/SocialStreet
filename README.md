@@ -1,8 +1,11 @@
 SocialStreet
+================
+
+### Description
 
 SocialStreet is a web app that makes it easy for people to plan/find and attend local events.
 
-Initial Setup for Development:
+### Initial Setup for Development:
 
 - Download the source
 - Setup a new config/database.yml file based on config/database.example.yml
@@ -25,13 +28,13 @@ Initial Setup for Development:
 - Start the SocialStreet App Server (duh):
   - Open a terminal tab to the [APP_ROOT] dir, and run: rails server
 
-Running Tests (RSpec specs)
+### Running Tests (RSpec specs)
 - For all tests, from the [APP_ROOT], run the command: rspec spec
   - If that doesn't work, try running: rake spec
 - For a single test based on its line number, run the command: rspec spec/models/searchable_date_range_spec.rb:69
   - In this example, it runs the first spec ("it" statement) that it can find at or above line 69 in searchable_date_range
 
-Using Facebook (IMPORTANT)
+### Using Facebook (IMPORTANT)
 - You should create and use facebook "test" users to test in development mode, using the following steps:
   - Open a rails console with command: rails c
   - Create an fb_graph app instance: app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret=>FACEBOOK_APP_SECRET)
@@ -43,7 +46,7 @@ Using Facebook (IMPORTANT)
   - Goto your local SS instance (http://localhost:3000) and click Sign-in
 - Facebook info on Test Users: https://developers.facebook.com/docs/test_users/
 
-Background jobs (For SearchSubscription Email Digests)
+### Background jobs (For SearchSubscription Email Digests)
 - On our Staging/Production server(s)... Daily and Weekly search subscription email digests are sent by leveraging Crontab + Rake + Redis + Resque
   - On the server, a cron task executes a sh script which runs our rake commands located in lib/tasks/crons.rake
   - These rake tasks go through Redis looking for any subscriptions that have items that need to be emailed out
@@ -62,7 +65,7 @@ Background jobs (For SearchSubscription Email Digests)
       - r.zrevrange(key, 0, 999) # returns up to 1000 ActionIDs that need to be sent to the subscription associated with this 'key'
       - r.quit # disconnect from Redis
 
-Docs:
+### Docs:
 
 - http://redis.io/download
 - https://github.com/defunkt/resque
@@ -71,6 +74,6 @@ Docs:
 - http://blog.waxman.me/how-to-build-a-fast-news-feed-in-redis
 - https://developers.facebook.com/docs/test_users/
 
-Article used for Slicehost Server setup:
+### Article used for Slicehost Server setup:
 
 - http://library.linode.com/databases/redis/ubuntu-10.04-lucid
