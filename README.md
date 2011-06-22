@@ -37,12 +37,14 @@ SocialStreet is a web app that makes it easy for people to plan/find and attend 
 ### Using Facebook (IMPORTANT)
 - You should create and use facebook "test" users to test in development mode, using the following steps:
 
-    rails c # Open a rails console with command
+
+    rails c # go into rails console (development mode)
     app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret=>FACEBOOK_APP_SECRET) # Create an fb_graph app instance
     user1 = app.test_user!(:installed => true, :permissions => :read_stream) # Create a 1st test user
     user2 = app.test_user!(:installed => true, :permissions => :read_stream) # Create a 2nd test user
     user1.friend!(user2) # Friend the 2 users
     user1.login_url # Get user1's login_url (so you can login into SS w/ that user)
+
 
 - Now, assuming you are not signed into Facrbook, Paste the login URL into your browser
 - Goto your local SS instance (http://localhost:3000) and click Sign-in
@@ -71,7 +73,7 @@ Other helpful tips:
 
 To see what's pending in the Redis (queues) order sets for email digests, run:
 
-    rails c development # go into rails console
+    rails c # go into rails console (development mode)
     r = Redis.new
     r.keys 'digest_actions:*' # returns list of subscriptions that have ActionIds to be emailed in the next digest email
     key = r.keys 'digest_actions:*'.first # as an example, lets use the first key ...
