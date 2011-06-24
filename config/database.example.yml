@@ -11,7 +11,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: SocialStreet_development
+  database: socialstreet_development
   pool: 5
   username: postgres
   password:

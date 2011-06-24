@@ -62,12 +62,17 @@ class Jobs::CreateConnectionsFromFacebook
       # => The queue probably could not be found
     end
 
-    unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-      while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-        # => Do nothing, just keep checking for the completion of the worker
+    # => Check one more time to see if it completed after the dequeue
+    unless User.find(user_id).fb_friends_imported?
+
+      unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+        while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+          # => Do nothing, just keep checking for the completion of the worker
+        end
+      else
+        Jobs::CreateConnectionsFromFacebook.perform(user_id)
       end
-    else
-      Jobs::CreateConnectionsFromFacebook.perform(user_id)
+      
     end
   end
 
