@@ -61,18 +61,16 @@ class Jobs::CreateConnectionsFromFacebook
     rescue Exception => e
       # => The queue probably could not be found
     end
-
-    # => Check one more time to see if it completed after the dequeue
-    unless User.find(user_id).fb_friends_imported?
-
-      unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-        while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-          # => Do nothing, just keep checking for the completion of the worker
-        end
-      else
-        Jobs::CreateConnectionsFromFacebook.perform(user_id)
+    
+    unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+      while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+        # => Do nothing, just keep checking for the completion of the worker
       end
-      
+    else
+      # => Check one more time to see if it completed after the dequeue
+      unless User.find(user_id).fb_friends_imported?
+        Jobs::CreateConnectionsFromFacebook.perform(user_id)
+      end      
     end
   end
 
