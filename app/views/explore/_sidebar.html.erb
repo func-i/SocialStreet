@@ -240,9 +240,11 @@
     
     $(function() {
       if(history && history.pushState) {
-        $(window).bind("popstate", function(){
-          window.location = location.href;
-        });
+        if(!$.browser.webit==true){
+          $(window).bind("popstate", function(){
+            //window.location = location.href;
+          });
+        }
       }
 
       function moveMap(e) {
