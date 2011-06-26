@@ -58,9 +58,9 @@ class EventsController < ApplicationController
 
   def destroy
     if @event.cancellable?(current_user)
-      @event.canceled = true
-      @event.save
-      #TODO - send emails to everyone
+      if @event.cancel
+        #TODO - send emails to everyone
+      end
       redirect_to :root
     else
       raise "WHAT THE F***"

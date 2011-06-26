@@ -4,7 +4,7 @@ class ExploreController < ApplicationController
   before_filter :store_current_path
 
   def index
-#    params[:keywords] = ['Baseball', 'Hockey']
+    #    params[:keywords] = ['Baseball', 'Hockey']
     @comment = Comment.new
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
@@ -45,17 +45,27 @@ class ExploreController < ApplicationController
     @total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+
   end
 
   def apply_filter(search_object)
 
+    search_object = search_object.where(:ignored => false)
     search_object = search_object.with_keywords(params[:keywords]) unless params[:keywords].blank?
 
     search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 
     # to_time and from_time are in integer (minute) format. 1439 = 11:59 PM (the day has 1440 minutes) - KV
-    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) if params[:from_time] && params[:from_time].to_i > DAY_FIRST_MINUTE
+    search_object = search_object.at_or_after_time_of_day(params[:from_time].to_i) 
     search_object = search_object.at_or_before_time_of_day(params[:to_time].to_i) if params[:to_time] && params[:to_time].to_i < DAY_LAST_MINUTE
+
+    # => By default only show events today and in the future unless a date search is specified.
+    if params[:from_date].blank? && params[:to_date].blank?
+      search_object = search_object.on_or_after_date(Date.today)
+    else
+      search_object = search_object.on_or_after_date(params[:from_date]) unless params[:from_date].blank?
+      search_object = search_object.on_or_before_date(params[:to_date]) unless params[:to_date].blank?
+    end
 
     # GEO LOCATION SEARCHING
     
@@ -68,7 +78,7 @@ class ExploreController < ApplicationController
     params[:map_zoom] = 9 unless params[:map_zoom]
 
     bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
-    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")
+    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")    
     
     return search_object
   end

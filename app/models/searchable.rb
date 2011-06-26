@@ -323,6 +323,9 @@ class Searchable < ActiveRecord::Base
       self.latitude = location.latitude
       self.longitude = location.longitude
     end
+
+    # => before_save callbacks need to return true otherwise they won't save
+    return true
   end
 
   def self.day_selected?(params, day)
