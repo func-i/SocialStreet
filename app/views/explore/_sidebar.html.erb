@@ -120,8 +120,9 @@
     }).bind('ajax:success', function() {
       if ($.active == 1) {
         $('#action-list').fadeTo('fast', 1);
-        $('#ajax-spinner').hide();
       }
+    }).bind('ajax:complete', function() {
+      $('#ajax-spinner').hide();
     });
 
     $("form.search-params ").

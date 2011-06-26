@@ -1,4 +1,11 @@
 $('#num-results').text('<%= @searchables.size %>');
+
+<%- if @searchables.size < @per_page -%>
+  $('#comment_suggest').show();
+<%- else -%>
+  $('#comment_suggest').hide();
+<%- end -%>
+
 $('#action-list').html('<%= escape_javascript(render('results')) %>');
 clearMarkers();
 <% @searchables.each do |searchable| %>
