@@ -50,7 +50,7 @@ class ExploreController < ApplicationController
 
   def apply_filter(search_object)
 
-    search_object = search_object.where(:ignored => false)
+    #search_object = search_object.where(:ignored => false)
     search_object = search_object.with_keywords(params[:keywords]) unless params[:keywords].blank?
 
     search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
@@ -61,7 +61,7 @@ class ExploreController < ApplicationController
 
     # => By default only show events today and in the future unless a date search is specified.
     if params[:from_date].blank? && params[:to_date].blank?
-      search_object = search_object.on_or_after_date(Date.today)
+      #search_object = search_object.on_or_after_date(Date.today)
     else
       search_object = search_object.on_or_after_date(params[:from_date]) unless params[:from_date].blank?
       search_object = search_object.on_or_before_date(params[:to_date]) unless params[:to_date].blank?
