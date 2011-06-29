@@ -41,6 +41,10 @@ class ExploreController < ApplicationController
     @searchables = apply_filter(@searchables)
 
     @per_page = 10
+    
+    # => The threshold for showing the comment suggest
+    @comment_suggest_limit = 5
+
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     @total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)

@@ -1,6 +1,6 @@
 $('#num-results').text('<%= @searchables.size %>');
 
-<%- if @searchables.size < @per_page -%>
+<%- if @searchables.size < @comment_suggest_limit -%>
   $('#comment_suggest').show();
 <%- else -%>
   $('#comment_suggest').hide();
