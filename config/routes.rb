@@ -61,6 +61,10 @@ SocialStreet::Application.routes.draw do
       get "post_to_facebook"
     end
 
+    collection do
+      match "load_events"
+    end
+
     resources :rsvps do 
       resources :invitations do
         get :change, :on => :collection

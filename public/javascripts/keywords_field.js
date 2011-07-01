@@ -48,7 +48,7 @@ function arraySubtract(ara1,ara2) {
 $(function() {
     
     function keywordHandler(keyword) {
-        if(addKeyword(keyword))
+        if(addKeyword(keyword))            
             if (typeof refreshResults == "function") {
                 if(history && history.pushState)
                     history.pushState(null, null, getSearchParams());

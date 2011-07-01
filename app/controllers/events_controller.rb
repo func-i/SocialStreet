@@ -85,6 +85,25 @@ class EventsController < ApplicationController
     redirect_to @event
   end
 
+  def load_events
+
+    if params[:map_bounds].blank?
+      params[:map_bounds] = "43.958661074786455,-78.99006997304684,43.362570924106635,-79.79756509023434"
+    end
+    
+    params[:map_center] = "43.66061599944655,-79.3938175316406" if params[:map_center].blank?
+    params[:map_zoom] = 9 unless params[:map_zoom]
+
+    # => remove all previous longitude and latitude specifications from the AREL object so that they can be modified to expand the search
+    #search_object.where_values.delete_if { |where_value| (where_value.include?("locations.longitude") || where_value.include?("locations.latitude")) rescue false}
+    #search_object.where_values.delete_if { |where_value| (where_value.name == :latitude || where_value.name == :longitude) rescue false}
+
+    bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
+    @searchables = Searchable.explorable
+    @searchables = @searchables.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")
+    
+  end
+
 
   protected
 

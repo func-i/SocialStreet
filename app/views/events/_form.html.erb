@@ -130,5 +130,48 @@
         placeMarker(new google.maps.LatLng(<%= @event.location.latitude %>, <%= @event.location.longitude %>), $('#location-name-field').val());
       });
     </script>
+  <%- elsif @event.new_record? -%>
+    <script>
+
+      var refreshTimer = null;
+
+      function getSearchParams() {
+
+        var bounds = map.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
+
+        return 'map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+         
+      }
+
+      function refreshResults() {
+        if (refreshTimer) {
+          clearInterval(refreshTimer);
+          delete refreshTimer;
+        }
+        refreshTimer = setTimeout(function() {
+          $.getScript('load_events?' + getSearchParams());
+        }, 250);
+      }
+
+      function placeEventMarker(location, title) {
+
+        var marker = new google.maps.Marker({
+          map: map,
+          position: location,
+          title: title
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          //selectMarker(marker, true); //Commented out until proper functionality is determined
+        });
+        markers.push(marker);
+      }
+
+    </script>
   <% end %>
+
+
 <% end %>
