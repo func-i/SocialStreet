@@ -1,3 +1,10 @@
 <% @searchables.each do |searchable| %>
   <%= render 'searchable', :searchable => searchable %>
 <% end %>
+
+<%- unless @similar_results.blank? -%>
+  <h2 class="title" style="margin-left: 0px;">Similar Results</h2>
+  <% @similar_results.each do |similar_searchable| %>
+    <%= render 'searchable', :searchable => similar_searchable %>
+  <% end %>
+<%- end -%>
