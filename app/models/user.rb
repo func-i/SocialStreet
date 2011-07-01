@@ -117,13 +117,7 @@ class User < ActiveRecord::Base
   end
 
   def post_to_facebook_wall(args = {})
-
-    # => Load the fb_user and post to their feed using fb_graph    
-    facebook_user.feed!(
-      :message => args[:message],
-      :link => args[:link]
-    ) if facebook_user && facebook_user.permissions.include?(:publish_stream) && !args[:message].blank?
-    
+    Resque.enqueue(Jobs::Facebook::PostToFbWall, self.id, args) if facebook_user && facebook_user.permissions.include?(:publish_stream) && !args[:message].blank?
   end
 
   def rsvp_for_event(event)
