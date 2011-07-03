@@ -64,6 +64,15 @@ class ExploreController < ApplicationController
           
           expanded_bounds = Geocoder::Calculations.bounding_box(params[:map_center].split(",").map{|i| i.to_f}, 100, :units=>:km)          
           @similar_results = apply_filter(@similar_results, :from_date => nil, :to_date => nil, :map_bounds => [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(","))
+        when 2
+          # => Relax keywords
+          @similar_results = Searchable.explorable
+          expanded_bounds = Geocoder::Calculations.bounding_box(params[:map_center].split(",").map{|i| i.to_f}, 100, :units=>:km)
+          @similar_results = apply_filter(@similar_results,
+            :from_date => nil,
+            :to_date => nil,
+            :map_bounds => [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(","),
+            :keywords => nil)
         end
 
         @similar_results = @similar_results.where("searchables.id NOT IN(?)", @searchables.collect(&:id)) if @total_count>0
