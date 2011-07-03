@@ -1,3 +1,4 @@
+clearMarkers();
 <%- @searchables.each do |searchable| -%>    
   <% if searchable.geo_located? %>
     placeEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');

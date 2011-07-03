@@ -123,7 +123,7 @@
     var keywordsParamKey  = "event[searchable_attributes][keywords][]";
     var locationSearchURL = '<%= locations_path(:format => :json) %>';
   </script>
-  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field' %>
+  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared' %>
   <% if @event.location.try(:geo_located?) %>
     <script>
       $(function() {
@@ -142,7 +142,11 @@
         sw = bounds.getSouthWest();
         c = bounds.getCenter();
 
-        return 'map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+        var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+        if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+          return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+        else
+          return str;
          
       }
 
@@ -152,7 +156,7 @@
           delete refreshTimer;
         }
         refreshTimer = setTimeout(function() {
-          $.getScript('load_events?' + getSearchParams());
+          $.getScript('load_events' + getSearchParams());
         }, 250);
       }
 
