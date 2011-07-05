@@ -7,3 +7,4 @@ require 'rake'
 SocialStreet::Application.load_tasks
 
 require 'resque/tasks'
+require 'resque_scheduler/tasks'
