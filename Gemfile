@@ -25,6 +25,7 @@ gem "hiredis", "~> 0.3.1"
 gem "redis", "~> 2.2.0", :require => ["redis/connection/hiredis", "redis"]
 
 gem 'resque', :git => "git://github.com/defunkt/resque.git"
+gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 
 group :development do
