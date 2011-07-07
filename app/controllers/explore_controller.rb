@@ -6,6 +6,7 @@ class ExploreController < ApplicationController
   def index
     #    params[:keywords] = ['Baseball', 'Hockey']
     @comment = Comment.new
+
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
@@ -33,6 +34,73 @@ class ExploreController < ApplicationController
     # this executes a full search, which is bad, we want to paginate (eventually)
     @overlapping_subscriptions = @overlapping_subscriptions.all.uniq_by {|s| s.search_subscription.user_id } 
     
+  end
+
+  def find_searchables_2
+    @searchables = []
+
+    @per_page = 5
+    @offset = params[:offset] #TODO - save state
+    MAX_FILTER_LEVEL = 3
+    @filter_level = params[:filter_level] #TODO - save state
+
+    #We ignore total count, so if total_count is divisible by per_page, then we will run an empty query first
+    while @filter_level <= MAX_FILTER_LEVEL && @searchables.length < @per_page
+      #get any filter overrides
+      filter_parameter_hash = get_filter(@filter_level)
+
+      #apply the filter to get results
+      current_search = Searchable.explorable
+      current_search = apply_filter(current_search, filter_parameter_hash)
+
+      #order results by created_date...TODO - should this be last touched?
+      current_search.order("searchables.created_at DESC")
+
+      #get current page
+      current_search = current_search.limit(@per_page).offset(@offset)
+
+      #add page to searchables
+      @searchables += current_search.all
+
+      #TODO - the result may already be in the previous list
+
+      #check if filter range needs to be updated
+      #update per page
+      if @searchables.length < @per_page
+        @filter_level += 1
+
+        @per_page = @per_page - @searchables.length
+        @offset = 0
+      end
+    end
+
+    #TODO - Need to save state of @offset and @filter_level
+  end
+
+  def get_filter(filter_level)
+    return_hash = {}
+
+    if filter_level.blank? || 0 == filter_level
+      return return_hash
+    end
+
+    if filter_level >= 1
+      return_hash[:from_date] = nil
+      return_hash[:to_date] = nil
+    end
+
+    if filter_level >= 2
+      #TODO - this should be changed, its not correct as it assumes a square
+      expanded_bounds = Geocoder::Calculations.bounding_box(params[:map_center].split(",").map{|i| i.to_f}, 100, :units=>:km)
+
+      return_hash[:map_bounds] = [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(",")
+    end
+
+    if filter_level >= 3
+      return_hash[:keywords] = nil
+    end
+
+    return return_hash
   end
 
   def find_searchables
@@ -130,7 +198,8 @@ class ExploreController < ApplicationController
     #search_object.where_values.delete_if { |where_value| (where_value.name == :latitude || where_value.name == :longitude) rescue false}
     
     bounds = map_bounds.split(",").collect { |point| point.to_f }
-    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")    
+
+    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])    
     
     return search_object
   end
