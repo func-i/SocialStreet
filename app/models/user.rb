@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
   end
 
   def post_to_facebook_wall(args = {})
-    Resque.enqueue(Jobs::Facebook::PostToFbWall, self.id, args) if facebook_user && facebook_user.permissions.include?(:publish_stream) && !args[:message].blank?
+    Resque.enqueue_in(30.minutes, Jobs::Facebook::PostToFbWall, self.id, args) if facebook_user && facebook_user.permissions.include?(:publish_stream) && !args[:message].blank?
   end
 
   def rsvp_for_event(event)

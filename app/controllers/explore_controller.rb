@@ -40,7 +40,7 @@ class ExploreController < ApplicationController
 
     @searchables = apply_filter(@searchables)
 
-    @per_page = 10
+    @per_page = 5
     
     # => The threshold for showing the comment suggest
     @comment_suggest_limit = 5
@@ -48,8 +48,7 @@ class ExploreController < ApplicationController
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     @total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)
-    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
-
+    
     # => Expand Search here to find similar results
     if @total_count < @comment_suggest_limit
       3.times do |i|
@@ -74,15 +73,20 @@ class ExploreController < ApplicationController
             :map_bounds => [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(","),
             :keywords => nil)
         end
+        
+        @similar_results = @similar_results.where("searchables.id NOT IN(?)", @searchables.collect(&:id)) unless @searchables.empty?
 
-        @similar_results = @similar_results.where("searchables.id NOT IN(?)", @searchables.collect(&:id)) if @total_count>0
+        break if @similar_results.count > 50
+      end      
 
-        break if @similar_results.count > @per_page
-      end
-
-      @similar_results = @similar_results.limit(5).offset(@offset)
+      @total_count = @similar_results.count
+      @similar_results = @similar_results.limit(@per_page).offset(@offset)     
+      
 
     end
+    
+    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+
     
   end
 
