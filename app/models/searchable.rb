@@ -264,7 +264,10 @@ class Searchable < ActiveRecord::Base
       unless keyword.blank?
         # if the event_type is already in the db, then link the near searchable_event_type record to it
         # otherwise, have it create a new one
-        event_type = EventType.find_by_name(keyword) # could be nil
+        keyword = keyword.downcase
+
+        event_type = EventType.where("lower(name) = ?", keyword).first # could be nil
+
         self.searchable_event_types.build({
             :event_type => event_type,
             :name => keyword
