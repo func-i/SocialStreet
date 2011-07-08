@@ -80,7 +80,7 @@
 <% end %>
 
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam', 'marker_clusterer' %>
+  <%= javascript_include_tag 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
   <script>
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
     var refreshTimer = null;
