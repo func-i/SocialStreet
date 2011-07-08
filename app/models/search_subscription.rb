@@ -46,7 +46,7 @@ class SearchSubscription < ActiveRecord::Base
   scope :weekly, where(:frequency => @@frequencies[:weekly])
 
   def matches_date_ranges?(date_ranges)
-    !!searchable.searchable_date_ranges.detect { |dr| dr.overlapping_with? date_ranges }
+    searchable.searchable_date_ranges.blank? || !!searchable.searchable_date_ranges.detect { |dr| dr.overlapping_with? date_ranges }
   end
 
   def self.matching_search_comment(comment)
@@ -59,9 +59,9 @@ class SearchSubscription < ActiveRecord::Base
     bounds = searchable.lat_lng_bounds
     searchables = Searchable.with_only_subscriptions.
       with_event_types(type_ids).
-      intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).all.
-      select { |s| searchable.searchable_date_ranges.empty? || s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all) }
-    
+      intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).
+      all.select { |s| s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all)}
+
     searchables.collect &:search_subscription
   end
 

@@ -129,13 +129,14 @@ class Jobs::ProcessNewAction
     
     # no need to uniq_by(&:user_id) (which we were doing before) b/c of @users_emailed hash being used to uniqueness
     subscriptions.select(&:immediate?).each do |subscription|
+
       user_id = subscription.user_id.to_s
       unless @users_emailed[user_id]
         Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
         @users_emailed[user_id] = true
       end
     end
-
+    
     subscriptions.select(&:not_immediate?).each do |subscription|
       user_id = subscription.user_id.to_s
       action_id = action.action.try(:id) || action.id
