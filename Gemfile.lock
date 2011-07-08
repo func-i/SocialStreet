@@ -3,7 +3,7 @@ GIT
   revision: 3d2d25b3080b7cf49656b256146245d3bdd210b6
   specs:
     resque (1.17.1)
-      json (>= 1.4.6, < 1.6)
+      json (< 1.6, >= 1.4.6)
       redis-namespace (~> 1.0.2)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
