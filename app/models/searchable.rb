@@ -244,7 +244,10 @@ class Searchable < ActiveRecord::Base
       params[:keywords].each do |keyword|
         # if the event_type is already in the db, then link the near searchable_event_type record to it
         # otherwise, have it create a new one
-        event_type = EventType.find_by_name(keyword)
+        lower_keyword = keyword.downcase
+
+        event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
+
         attrs[:searchable_event_types_attributes] << { 
           :event_type_id => event_type.try(:id),
           :name => keyword
@@ -259,14 +262,25 @@ class Searchable < ActiveRecord::Base
     searchable_event_types.collect &:name
   end
 
+  def searchable_keywords
+    keywords = []
+
+    searchable_event_types.each do |set|
+      keywords << set.name
+      keywords << set.event_type.name if set.event_type
+    end
+
+    return keywords.uniq_by{|k| k.downcase}
+  end
+
   def keywords=(keywords_array)
     keywords_array.each do |keyword|
       unless keyword.blank?
         # if the event_type is already in the db, then link the near searchable_event_type record to it
         # otherwise, have it create a new one
-        keyword = keyword.downcase
+        lower_keyword = keyword.downcase
 
-        event_type = EventType.where("lower(name) = ?", keyword).first # could be nil
+        event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
 
         self.searchable_event_types.build({
             :event_type => event_type,

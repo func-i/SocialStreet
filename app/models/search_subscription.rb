@@ -57,6 +57,7 @@ class SearchSubscription < ActiveRecord::Base
     type_ids = searchable.event_type_ids
 
     bounds = searchable.lat_lng_bounds
+
     searchables = Searchable.with_only_subscriptions.
       with_event_types(type_ids).
       intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).
