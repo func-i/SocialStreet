@@ -47,6 +47,33 @@ class Searchable < ActiveRecord::Base
     end
   }
 
+  scope :with_keywords_that_match_text_or_keywords, lambda { |text, searchable|
+    if !text.blank? || searchable.searchable_event_types.count > 0
+      chain = joins("INNER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
+      chain = chain.joins("INNER JOIN event_types AS et ON set.event_type_id = et.id")
+      query = []
+      args = {}
+
+      searchable.searchable_event_types.each_with_index{ |k,i|
+          query << "LOWER(set.name) LIKE :key#{i}
+            OR set.event_type_id = :key_b#{i}"
+
+        args["key#{i}".to_sym] = "%#{k.name.downcase}%"
+        args["key_b#{i}".to_sym] = "#{k.event_type_id}"
+      }
+
+      text_array = text.split(' ') #TODO - this doesn't work when the keywords are multiple words (ex: Ping Pong)
+      text_array.each_with_index { |k,i|
+        query << "LOWER(set.name) LIKE :key#{i}
+          OR LOWER(et.name) LIKE :key#{i}"
+
+        args["key#{i}".to_sym] = "%#{k.downcase}%"
+      }
+      
+      chain.where(query.join(" OR "), args)
+    end
+  }
+
   scope :on_or_after_date, lambda {|date|
     date = Time.zone.parse(date) if date.is_a? String
     includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at >= ?', date.beginning_of_day) if date
