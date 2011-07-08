@@ -120,28 +120,23 @@ class Jobs::ProcessNewAction
 
     # ADD TO DASHBOARD / NEWS STREAM (NO UNIQUENESS REQUIRED)
     subscriptions.each do |subscription|
-      #Add to the user subscription email. Note that this could send the same event twice for two different subscriptions, make sure to handle
+      if subscription.user_id != action.user_id
+        #Add to the user subscription email
+        user_id = subscription.user_id.to_s
 
-      #Add to the users dashboard
-      Feed.push(redis, subscription.user, feed)
-    end 
+        if subscription.immediate?
+          unless @users_emailed[user_id]
+            Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
+            @users_emailed[user_id] = true
+          end
+        elsif subscription.not_immediate?
+          action_id = action.action.try(:id) || action.id
+          redis.zadd "digest_actions:#{subscription.id}", "#{Time.now.to_i}", action_id.to_s
+        end
 
-    
-    # no need to uniq_by(&:user_id) (which we were doing before) b/c of @users_emailed hash being used to uniqueness
-    subscriptions.select(&:immediate?).each do |subscription|
-
-      user_id = subscription.user_id.to_s
-      unless @users_emailed[user_id]
-        Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
-        @users_emailed[user_id] = true
+        #Add to the users dashboard
+        Feed.push(redis, subscription.user, feed)
       end
-    end
-    
-    subscriptions.select(&:not_immediate?).each do |subscription|
-      user_id = subscription.user_id.to_s
-      action_id = action.action.try(:id) || action.id
-      redis.zadd "digest_actions:#{subscription.id}", "#{Time.now.to_i}", action_id.to_s
-    end
-
+    end     
   end
 end
