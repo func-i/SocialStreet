@@ -1,6 +1,6 @@
 clearMarkers();
 
-<%-
+<%#-
 # => Find locations that are within 1 km each other
 # => That have any matching keywords
 # => And remove the oldest one
@@ -8,16 +8,22 @@ clearMarkers();
 
 num_kms = 1
 @searchables.select{|s| s.geo_located? && s.event}.combination(2).each do |s_combs|
-  s1, s2 = s_combs[0], s_combs[1]
-  if (s1.searchable_event_types - s2.searchable_event_types).size <= s1.searchable_event_types.size && Geocoder::Calculations.distance_between([s1.location.latitude, s1.location.longitude], [s2.location.latitude, s2.location.longitude], :units => :km) < num_kms
-    @searchables = @searchables - [s_combs.sort_by(&:created_at).reverse.first]
-  end
+s1, s2 = s_combs[0], s_combs[1]
+if (s1.searchable_event_types - s2.searchable_event_types).size <= s1.searchable_event_types.size && Geocoder::Calculations.distance_between([s1.location.latitude, s1.location.longitude], [s2.location.latitude, s2.location.longitude], :units => :km) < num_kms
+@searchables = @searchables - [s_combs.sort_by(&:created_at).reverse.first]
+end
 end
 
 -%>
 
-<%- @searchables.each do |searchable| -%>    
-  <% if searchable.geo_located? %>    
-    placeEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+clearClusterMarkers();
+
+<%- @searchables.select{|s| s.event}.each do |searchable| -%>
+  <% if searchable.geo_located? %>
+    console.log('<%= searchable.inspect -%>');
+    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
   <%- end -%>
 <%- end -%>
+
+placeClusterMarkers();
+

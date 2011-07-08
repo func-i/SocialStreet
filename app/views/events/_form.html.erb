@@ -123,7 +123,7 @@
     var keywordsParamKey  = "event[searchable_attributes][keywords][]";
     var locationSearchURL = '<%= locations_path(:format => :json) %>';
   </script>
-  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared' %>
+  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared', 'marker_clusterer' %>
   <% if @event.location.try(:geo_located?) %>
     <script>
       $(function() {
@@ -160,10 +160,9 @@
         }, 250);
       }
 
-      function placeEventMarker(location, title) {
+      function createEventMarker(location, title) {
 
         var marker = new google.maps.Marker({
-          map: map,
           position: location,
           title: title
         });
