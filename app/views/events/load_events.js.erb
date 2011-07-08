@@ -19,8 +19,7 @@ end
 clearClusterMarkers();
 
 <%- @searchables.select{|s| s.event}.each do |searchable| -%>
-  <% if searchable.geo_located? %>
-    console.log('<%= searchable.inspect -%>');
+  <% if searchable.geo_located? %>    
     createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
   <%- end -%>
 <%- end -%>
