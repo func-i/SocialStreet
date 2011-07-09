@@ -23,7 +23,10 @@ $(function() {
     map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
 
     // Set the MarkerClusterer here
-    var mcOptions = {gridSize: 50, maxZoom: 12};
+    var mcOptions = {
+        gridSize: 50,
+        maxZoom: 12
+    };
     mc = new MarkerClusterer(map, markers, mcOptions)
 
     // Create the DIV to hold the control and call the DropPinControl() constructor
@@ -47,7 +50,9 @@ function disableDropPinState() {
     controlUI.style.backgroundColor = 'white';
 }
 
-function placeMarker(location, title) {
+function placeMarker(location, title, contents) {
+
+    console.log(contents);
 
     var marker = new google.maps.Marker({
         map: map,
@@ -56,15 +61,46 @@ function placeMarker(location, title) {
         draggable:true,
         animation: google.maps.Animation.DROP
     });
-
+    
     google.maps.event.addListener(marker, 'click', function() {
+
+        var html = "";
+        var linkText = " <a href=\"#\" onclick=\"$('#marker-name').html($('#set-title').html()); setTitle(); $(this).hide(); return false;\">Set</a>"
+        html +=  "<div id='hidden-link' style='display:none'> " + linkText + "</div>"
+        html += "Name: <div id='marker-name'>" + marker.title + linkText + "</div><br />";
+        html += "<div id='set-title' style='display:none'><input id='marker-name-field' type='text' value='" + marker.title + "'/></div>"
+        
+        if(contents != undefined) {            
+            if(contents.street_address != undefined)
+                html += contents.street_address + "<br />"
+
+            if(contents.locality != undefined)
+                html += contents.locality + "<br />"
+
+            if(contents.administrative_area_level_1 != undefined)
+                html += contents.administrative_area_level_1 + "<br />"
+            
+            if(contents.country != undefined)
+                html += contents.country + "<br />"
+
+            if(contents.postal_code != undefined)
+                html += contents.postal_code + "<br />"
+        }
+
+        infoWindow.setContent(html);
         selectMarker(marker, true);
+        infoWindow.open(map, marker);
+        
+
     });
     markers.push(marker);
-
-    selectMarker(marker);
+    google.maps.event.trigger(marker, 'click');
 
 //map.setCenter(location);
+}
+
+function setTitle() {
+    $('#marker-name-field').val($('#location-name-field').val());
 }
 
 function DropPinControl(controlDiv, map) {
@@ -120,7 +156,14 @@ function searchLocations(e) {
         if (status == google.maps.GeocoderStatus.OK) {
             clearMarkers()
             $.each(results, function(index, result) {
-                placeMarker(result.geometry.location, result.formatted_address);
+
+                var infoContents = {};
+
+                // Isolate the various address components
+                $.each(result.address_components, function(ci, component) {
+                    infoContents[component.types["0"]] = component.short_name;
+                });
+                placeMarker(result.geometry.location, e.target.value, infoContents);
             });
             selectMarker(markers[0], false);
         } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
@@ -166,12 +209,6 @@ function selectMarker(marker, changeInputField) {
         }, 740);
     }
 
-    var html = "<table>" +
-    "Name: <input type='text' id='marker-name-field' value='"+marker.title+"'/>";
-
-    infoWindow.setContent(html);
-    infoWindow.open(map, marker);
-
     var latlng = marker.getPosition();
     $('#location-lat-field').val(latlng.lat());
     $('#location-lng-field').val(latlng.lng());
@@ -199,7 +236,9 @@ $('#marker-name-field').live('keyup', function(e) {
     return true;
 }).live('keydown', function(e) {
     if (e.keyCode == 13) {
-        e.stopPropagation();
+        e.stopPropagation();        
+        $('#marker-name').html(this.value + $('#hidden-link').html());
+        $('#set-title').children('input')[0].value = this.value;
         return false;
     }
 });
