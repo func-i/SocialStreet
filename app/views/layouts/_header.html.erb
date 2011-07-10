@@ -1,22 +1,21 @@
 <div id="header">
-  <h1><a href="/">SocialStreet</a></h1>
-  <div id="user-navigation">
-    <ul class="wat-cf">
+  <div class="holder">
+    <h1 class="logo"><%= link_to "Social Street", root_path -%></h1>
+    <form action="#" class="form-explore">
+      <fieldset>
+        <input type="submit" value="Explore" title="Explore" class="submit" onclick="window.location='/explore'; return false;" />
+        <span class="text"><input title="Basketball" value="Basketball" /></span>
+      </fieldset>
+    </form>
+    <%= link_to "Add Activity", "#", :class => "btn-add" -%>
+    <ul class="nav-serv">
+      <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
       <% if user_signed_in? %>
-        <li><%= link_to 'Dashboard', dashboard_path %></li>
-        <li><%= link_to 'Profile', edit_profile_path(current_user) %></li>
         <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></li>
       <% else %>
-        <!--<li><%= link_to 'Sign in', [:new, :user_session] %></li>-->
+  <!--<li><%= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
-      <% end %>
-    </ul>
-  </div>
-  <div id="main-navigation">
-    <ul class="wat-cf">
-      <li class="first <%= 'active' if @on_explore %>"><%= link_to 'Explore', explore_path %></li>
-      <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
-      <li class="<%= 'active' if @on_create_event %>"><%= link_to 'Create Event', [:new, :event] %></li>
+      <%- end -%>
     </ul>
   </div>
 </div>

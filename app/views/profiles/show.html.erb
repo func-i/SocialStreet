@@ -10,96 +10,113 @@
 <%#*</div>%>
 <%#*</div>%>
 
-<div class="block">
-  <div class="content">
-    <h2 class="title">Common Friends</h2>
-    <div class="inner">
-      <ul class="list">
-        <% @common_connections.each do |connection| %>
-          <%= render 'shared/user_list_element', :user => connection.to_user%>
-        <% end %>
-      </ul>
+<div class="profile">
+  <%= avatar @user %>
+  <div class="text">
+    <div class="text-content">
+      <h2><%= @user.name %> <span class="​​city">Toronto, ON</span></h2>
+      <%- if @user.fb_uid? -%>
+        <span class="link">Facebook: <%= link_to "URL Link", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true -%></span>
+      <%- end -%>
     </div>
+    <% if current_user && current_user.can_friend?(@user) %>
+      <%= link_to 'Add to Facebook', '#', :class => "btn-add add-to-fb-button", "data-fb-uid" => @user.fb_uid %>
+    <% end %>
   </div>
 </div>
 
-<div class="block">
-  <div class="content">
-    <h2 class="title">Common Events</h2>
-    <div class="inner">
-      <ul class="list">
-        <% @connected_rsvps.each do |rsvp| %>
-          <strong><%= link_to rsvp.event.name, rsvp.event %></strong><br/>
-        <% end %>
-      </ul>
-    </div>
-  </div>
+
+<div class="post-message">
+  <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "html", :class => "form-post-message Post-Message form comment-form" } do |form| %>
+    <fieldset>
+      <div class="text">
+        <%= form.text_field :body, :title => "Post a Message" -%>
+      </div>
+      <div class="info">
+        <p>Your message will be posted to <span>X (address)</span> with the keywords <span>Y (keyword)</span>.</p>
+        <p>Others in this community will be able to see and reply to your post.</p>
+      </div>
+    </fieldset>
+  <%- end -%>
+  <%= render 'shared/commenting' %>
 </div>
 
-<div class="block">
-  <div class="content">
-    <h2 class="title">Common Actions</h2>
-    <div class="inner">
-      <ul class="list">
-        <% @connected_actions.each do |action| %>
-          <%=action.inspect%>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<div class="block">
-  <div class="content">
-    
-    <div id="comment-box" style="float:right;height:30px;padding:10px;margin:15px 15px 0px 0px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
-      <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "html",:class => "form comment-form" } do |form| %>
-        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
-        <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
-        <div class="clear"></div>
-      <% end %>
-    </div>
-
-    <%= render 'shared/commenting' %>
-
-    <h2 class="title">Latest Activity</h2>
-    <div class="inner">
-      <ul class="list" id="action-list">
-        <% @actions.each do |action| %>
-          <%= render 'shared/action', :action => action %>
-        <% end %>
-      </ul>
-    </div>
-    
+<div id="comment-box" class="post-holder Post-Holder" >
+  <div id="action-list">
+    <% @actions.each do |action| %>
+      <%= render 'shared/action', :action => action %>
+    <% end %>
   </div>
 </div>
 
 <% content_for :sidebar do %>
-  <div class="block notice">
-    <%= avatar @user %>
-    <br/>
-    <b><%= @user.name %></b>
-    <br/>
-    <% if current_user && current_user.can_friend?(@user) %>
-      <%= link_to 'Add to Facebook', '#', :class => "add-to-fb-button", "data-fb-uid" => @user.fb_uid %>
-    <% end %>
+  <div class="box box-list">
+    <div class="heading">
+      <a href="#" class="view">view in calendar</a>
+      <h3>Upcoming Activities</h3>
+    </div>
+    <div class="box-content">
+      <ul>
+        <% @events.each do |event|  %>
+          <li>
+            <h4><%= link_to event.name, event %></h4>
+            <p>
+              <strong><%= event.searchable_event_types.first.name -%></strong>
+              <em class="date"><%= event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} %Y") -%></em>
+            </p>
+          </li>
+        <%  end %>
+      </ul>
+      <div class="more">
+        <%= link_to "And #{@events.size} more", '#' -%>
+      </div>
+    </div>
+
   </div>
 
-  <div class="block notice">
-    <H4>Upcoming Events</H4>
-    <% @events.each do |event|  %>
-      <div>
-        <strong><%= link_to event.name, event %></strong><br/>
-      </div>
+  <div class="connections">
+    <div class="ttl">
+      <a href="#" class="close">close</a>
+      <h3>Common Connections</h3>
+    </div>
 
-      <div>
-        <%=display_date_time(event.starts_at)%>
+    <div class="slide">
+      <div class="box people-list">
+        <div class="heading">
+          <h3>People you both know:</h3>
+        </div>
+        <div class="box-content">
+          <ul class="list-img">
+            <% @common_connections.each do |connection| %>
+              <%= render 'shared/user_list_element', :user => connection.to_user%>
+            <% end %>
+          </ul>
+          <div class="more">
+            <%= link_to "And #{@common_connections.size} more", '#' -%>
+          </div>
+        </div>
       </div>
-
-      <br/>
-    <%end%>
+    </div>
   </div>
 
+  <div class="box box-list">
+    <div class="heading">
+      <h3>You both attended:</h3>
+    </div>
+    <div class="box-content">
+      <ul>
+        <% @connected_rsvps.first(5).each do |rsvp| %>
+          <li>
+            <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
+            <p><strong><%= rsvp.event.searchable_event_types.first.name -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
+          </li>
+        <% end %>
+      </ul>
+      <div class="more">
+        <%= link_to "And #{@connected_rsvps.size} more", '#' -%>
+      </div>
+    </div>
+  </div>
 
 <% end %>
 

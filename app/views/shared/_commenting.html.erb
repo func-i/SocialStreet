@@ -1,7 +1,6 @@
 <% content_for :end_of_body do %>
   <script>
     $(function() {
-
       $('form.comment-form').bind('ajax:beforeSend', function(e, xhr, settings) {
         $('button.comment-button').attr('disabled', 'disable');
         $('#comment-box').fadeTo('fast', 0.3);
