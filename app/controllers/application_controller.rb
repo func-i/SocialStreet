@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
     @event.attributes = params[:event]
     @event.location.user = current_user if @event.location
     
-    if @event.save
+    if @event.save      
       Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
       return true
     end

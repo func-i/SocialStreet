@@ -48,6 +48,9 @@ class EventsController < ApplicationController
   end
 
   def update
+
+    @event.searchable.searchable_event_types.destroy_all
+
     if create_or_edit_event(params, :edit)
       redirect_to @event
     else
