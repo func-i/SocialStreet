@@ -25,7 +25,8 @@ $(function() {
     // Set the MarkerClusterer here
     var mcOptions = {
         gridSize: 50,
-        maxZoom: 12
+        maxZoom: 12,
+        zoomOnClick: false
     };
     mc = new MarkerClusterer(map, markers, mcOptions)
 
