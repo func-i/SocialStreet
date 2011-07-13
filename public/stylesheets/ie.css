@@ -4,3 +4,10 @@
 	position:relative;
 	margin-top:expression(- this.offsetHeight + "px");
 }
+.pop-up .heading strong {
+	line-height: 25px;
+	zoom: 1;
+	display: block;
+	filter:progid:DXImageTransform.Microsoft.Blur (pixelradius=1, enabled='true')
+	progid:DXImageTransform.Microsoft.Shadow (color=#000000, direction=150, Strength=2);
+}

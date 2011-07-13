@@ -1,55 +1,158 @@
-<div class="block">
-
-  <div class="content">
-
-    <div style="float:left">
-      <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar", :style => "float:left;margin:5px;") %>
-      <b><center><%= event_type_name @event %></center></b>
+<div class="profile">
+  <div class="profile-holder">
+    <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
+    <div class="text">
+      <div class="row">
+        <div class="text-content">
+          <h2><%= @event.location.text %></h2>
+          <p>
+            <% if l = @event.location %>              
+              <% if l.street? %>
+                <%= l.street %><br/>
+              <% end %>
+              <% if l.city? || l.state? %>
+                <%= l.city %> <%= l.state %><br/>
+              <% end %>
+              <% if l.country? %>
+                <%= l.country %><br/>
+              <% end %>
+            <% end %>
+          </p>
+        </div>
+        <a href="#" class="btn-share">Share</a>
+      </div>
     </div>
-
-    <div class="inner">
-      <h2 class="title"><%= @event.name %></h2>
-      <em><%= display_date_time(@event.starts_at) %></em>
-      <% if @event.finishes_at %>
-        <em>until <%= display_date_time(@event.finishes_at) %></em>
-      <% end %>
-      <br/>
-
-      <p><%= simple_format @event.description %></p>
-    </div>
-    <div class="clear"></div>
+    <div class="info">
+      <div class="col">
+        <a href="#" class="btn-attend"><span>Attend</span></a>
+        <%- unless @event.canceled? -%>
+          <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
+        <%- end -%>
+      </div>
+      <div class="col-holder">
+        <div class="col">
+          <span>Start Day:</span>
+          <strong><%= @event.starts_at.strftime("%B %d") %></strong>
+        </div>
+        <% if @event.finishes_at %>
+          <div class="col">
+            <span>End Day:</span>
+            <strong><%= @event.finishes_at.strftime("%B %d") %></strong>
+          </div>
+        <%- end -%>
+        <div class="col">
+          <span>Start Time:</span>
+          <strong><%= @event.starts_at.strftime("%l:%M %p") -%></strong>
+        </div>
+        <div class="col">
+          <span>End Time:</span>
+          <strong><%= @event.finishes_at.strftime("%l:%M %p") -%></strong>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <div class="keyword">
+    <%- @event.searchable_event_types.each do |set| -%>
+      <%= link_to set.name, '#', :onclick => "return false;" -%>
+    <%- end -%>
+  </div>
+</div>
+<div class="post-message">
+  <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "html",:class => "form-post-message Post-Message form comment-form" } do |form| %>
+    <fieldset>
+      <div class="text">
+        <%= form.text_field :body, :title => "Post a Message" -%>
+      </div>
+      <div class="info">
+        <p>Your message will be posted to <span>X (address)</span> with the keywords <span>Y (keyword)</span>.</p>
+        <p>Others in this community will be able to see and reply to your post.</p>
+      </div>
+    </fieldset>
+  <%- end -%>
+  <%= render 'shared/commenting' %>
+</div>
+<div id="comment-box" class="post-holder Post-Holder" >
+  <div id="action-list">
+    <% @actions.each do |action| %>
+      <%= render 'shared/action', :action => action %>
+    <% end %>
   </div>
 </div>
 
-<div class="block">
-  <div class="content">
+<% content_for :sidebar do %> 
 
-    <div id="comment-box" style="float:right;height:30px;padding:10px;margin:15px 15px 0px 0px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
-      <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "html",:class => "form comment-form" } do |form| %>
-        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
-        <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
-        <div class="clear"></div>
-      <% end %>
+  <div class="box map">
+    <div class="heading">
+      <h3>
+        <% if l = @event.location %>
+          <% if l.text %>
+            <strong><%= l.text %></strong><br/>
+          <% end %>
+          <% if l.street? %>
+            <%= l.street %><br/>
+          <% end %>
+          <% if l.city? || l.state? %>
+            <%= l.city %> <%= l.state %><br/>
+          <% end %>
+          <% if l.country? %>
+            <%= l.country %><br/>
+          <% end %>
+        <% end %>
+      </h3>
     </div>
+    <div class="map-holder">
+      <% if @event.geo_located? %>
+        <img src="http://maps.google.com/maps/api/staticmap?zoom=14&size=317x217&maptype=roadmap&sensor=false&markers=color:red%7Clabel:A%7C<%= @event.latitude %>,<%= @event.longitude %>"
+             alt="location map" />
+           <% end %>
+    </div>
+  </div>
 
-    <%= render 'shared/commenting' %>
-
-    <h2 class="title">Latest Activity</h2>
-
-    <div class="inner">
-      <ul class="list" id="action-list">
-        <% @actions.each do |action| %>
-          <%= render 'shared/action', :action => action unless action.of_type? :event_created %>
+  <div class="box people-list">
+    <div class="heading">
+      <h3>Attending</h3>
+      <a href="#" class="btn-view">View all</a>
+    </div>
+    <div class="box-content">
+      <ul class="list-img">
+        <% @event.attendees_rsvps_list.each do |attendee_rsvp| %>
+          <li><%= render 'shared/user_list_element', :user => attendee_rsvp.user%></li>
         <% end %>
       </ul>
     </div>
   </div>
-</div>
 
+  <div class="box people-list">
+    <div class="heading">
+      <h3>Organizers</h3>
+      <a href="#" class="btn-view">View all</a>
+    </div>
+    <div class="box-content">
+      <ul class="list-img">
+        <% if @event.user == current_user %>
+          <%= link_to "Add", [:new, @event, :administrator], :class => "button" %>
+        <% end %>
+        <% @event.administrators_rsvps_list.each do |administrator_rsvp| %>
+          <li><%= render 'shared/user_list_element', :user => administrator_rsvp.user%></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 
-<% content_for :sidebar do %>
+  <div class="box people-list">
+    <div class="heading">
+      <h3>
+        <%if @event.maximum_attendees%>
+          Waiting (<%= @event.num_waiting%>)
+        <%else%>
+          Maybe (<%= @event.num_maybe_attending%>)
+        <%end%>
+      </h3>
+    </div>
+  </div>
 
   <div class="block notice">
+    <p>TODO Format for these actions!</p>
     <h4>Actions</h4>
     <% if @event.editable_time? %>
       <% if @rsvp%>
@@ -76,60 +179,5 @@
 
     <div class="clear"></div>
   </div>
-
-  <div class="block notice">
-    <h4>Location</h4>
-    <% if @event.geo_located? %>
-      <center>
-        <img width="90%"
-             src="http://maps.google.com/maps/api/staticmap?zoom=14&size=320x320&maptype=roadmap&sensor=false&markers=color:red%7Clabel:A%7C<%= @event.latitude %>,<%= @event.longitude %>"
-             alt="location map" />
-      </center>
-      <br/>
-    <% end %>
-    <% if l = @event.location %>
-      <% if l.text %>
-        <strong><%= l.text %></strong><br/>
-      <% end %>
-      <% if l.street? %>
-        <%= l.street %><br/>
-      <% end %>
-      <% if l.city? || l.state? %>
-        <%= l.city %> <%= l.state %><br/>
-      <% end %>
-      <% if l.country? %>
-        <%= l.country %><br/>
-      <% end %>
-    <% end %>
-  </div>
-
-  <div class="block notice">
-    <h4>Organizers</h4>
-    <% if @event.user == current_user %>
-      <%= link_to "Add", [:new, @event, :administrator], :class => "button" %>
-    <% end %>
-    <% @event.administrators_rsvps_list.each do |administrator_rsvp| %>
-      <%= render 'shared/user_list_element', :user => administrator_rsvp.user%>
-    <% end %>
-  </div>
-
-  <div class="block notice">
-    <h4>Attending (<%= @event.num_attending %>)</h4>
-    <% @event.attendees_rsvps_list.each do |attendee_rsvp| %>
-      <%= render 'shared/user_list_element', :user => attendee_rsvp.user%>
-    <% end %>
-  </div>
-
-  <div class ="block notice">
-    <h4>
-      <%if @event.maximum_attendees%>
-        Waiting (<%= @event.num_waiting%>)
-      <%else%>
-        Maybe (<%= @event.num_maybe_attending%>)
-      <%end%>
-    </h4>
-  </div>
-
-  <div class="clear"></div>
 
 <% end %>
