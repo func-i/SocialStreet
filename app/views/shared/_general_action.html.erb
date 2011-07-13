@@ -5,38 +5,31 @@
 
 <%= link_to image_tag(url_for_image, :class => "avatar"), link_for_image %>
 
-<div class="item">
-  <div style="float:left; width: 400px">
-    <strong><%= title %></strong>
-    <%= simple_format(h(body)) unless body.blank? %>
-    <em><%= time_ago_in_words action.occurred_at %> ago</em>
-  </div>
-
-  <div style="float:left; width: 140px; height:100%;">
-    <% if allow_children %>
-      <%= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
-    <% end %>
-  </div>
-
-  <div class="clear"></div>
+<div class="text">
+  <h3><%= raw title %></h3>
+  <%= simple_format(h("\"#{body.strip}\"")) unless body.blank? %>
+  <span class="time"><%= time_ago_in_words action.occurred_at %> ago</span>
   <% if allow_children %>
-
-  <%# TODO: Should paginate these perhaps ?  %>
-    <ul class="list">
-      <% action.actions.oldest_first.all.each do |a|  %>
-        <%= render 'shared/action', :action => a %>
-      <% end %>
-    </ul>
-    <div class="action-comment-container" style="margin-top:10px;margin-left:0px;display:none">
-      <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form"} do |form| %>
-        <%= form.text_area :body, :cols => "50", :rows => "2", :class=>"text_area", :style=>"width:55%;float:left" %>
-
-        <button class="button" type="submit" style="float: left;display:inline-block; margin-left: 10px; margin-top: 4px;">
-          <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Comment
-        </button>
-        <%= link_to 'New Event', new_event_path(:action_id => action.id), :class => "button", :style => "float:left;margin-left:5px;margin-top:5px" %>
-        <div class="clear"></div>
-      <% end %>
-    </div>
+    <%= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
   <% end %>
 </div>
+
+
+<% if allow_children %>
+  <div class="post-holder">
+  <%# TODO: Should paginate these perhaps ?  %>
+
+    <% action.actions.oldest_first.all.each do |a|  %>
+      <%= render 'shared/action', :action => a %>
+    <% end %>
+
+    <div class="post action-comment-container" style="display:none;">
+      <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form form-comment"} do |form| %>
+        <fieldset>
+          <%= submit_tag "Add Activity", :class => "submit" -%>
+          <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+<% end %>

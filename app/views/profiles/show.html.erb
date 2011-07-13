@@ -14,7 +14,11 @@
   <%= avatar @user %>
   <div class="text">
     <div class="text-content">
-      <h2><%= @user.name %> <span class="​​city">Toronto, ON</span></h2>
+      <h2>
+        <%= @user.name %> <br />
+<%#- TODO get address and city from facebook where you allow that information in the permissions.  -%>
+        <span class="​​city">Toronto, ON</span>
+      </h2>
       <%- if @user.fb_uid? -%>
         <span class="link">Facebook: <%= link_to "URL Link", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true -%></span>
       <%- end -%>

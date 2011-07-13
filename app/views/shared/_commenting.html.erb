@@ -23,6 +23,10 @@
         $('#comment-box').fadeTo('slow', 1);
       });
 
+      $('#comment_body').click(function(){ $('form.comment-form').addClass('send'); return false;});
+      $(document).bind("click", function() { $('form.comment-form').removeClass('send');});
+
+
       $('form.action-subcomment-form').live('ajax:beforeSend', function(e, xhr, settings) {
         var $form = $(e.target);
         $form.find('button').attr('disabled', 'disabled');
@@ -51,7 +55,7 @@
 
       $('.create-comment-link').live('click',function() {
         var $this = $(this);
-        $this.closest('.action').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
+        $this.closest('.post').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
         return false;
       });
     });
