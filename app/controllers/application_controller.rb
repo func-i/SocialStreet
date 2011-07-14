@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
 
     if @comment.save
       @comment.reload
-      flash[:notice] = "Thank you for your generous comment." unless request.xhr?
+      #flash[:notice] = "Thank you for your generous comment." unless request.xhr?
       Connection.connect_with_users_in_action_thread(@comment.user, @comment.action)
       return true
     end

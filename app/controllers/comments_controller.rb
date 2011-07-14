@@ -9,7 +9,8 @@ class CommentsController < ApplicationController
     if request.xhr?
       render :partial => 'shared/action', :locals => { :action => @comment.action }
     else
-      redirect_to stored_path, :notice => "Thank you for your generous comment"
+      redirect_to stored_path
+      #redirect_to stored_path, :notice => "Thank you for your generous comment"
     end    
   end
 

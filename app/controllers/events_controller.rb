@@ -10,8 +10,25 @@ class EventsController < ApplicationController
   def show
     @event = Event.find params[:id]
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
-    @actions = @event.actions.newest_first.all # TODO: paginate @actions here (page = 1)
     @comment = @event.comments.build
+
+    #action list - and pagination
+    @actions = @event.actions.newest_first
+
+    @per_page = 5
+    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+    @total_count = @actions.count
+    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+
+    @actions = @actions.limit(@per_page).offset(@offset)
+
+    puts "JOSH IS HERE"
+
+    if request.xhr? && params[:page] # pagination request
+      render :partial => 'new_page'
+    end
+
+    puts "END"
   end
 
   #EVENT CREATE/EDIT PAGES
@@ -36,7 +53,8 @@ class EventsController < ApplicationController
 
   def create
     if create_or_edit_event(params, :create)
-      redirect_to [:new, @event, @event.rsvps.first, :invitation], :notice => "Your event is created. You can invite some of your friends below."
+      #redirect_to [:new, @event, @event.rsvps.first, :invitation], :notice => "Your event is created. You can invite some of your friends below."
+      redirect_to [:new, @event, @event.rsvps.first, :invitation]
     else
       prepare_for_form
       render :new
@@ -82,8 +100,8 @@ class EventsController < ApplicationController
         @rsvp.save
       end
     end
-    
-    flash[:notice] = "This event's information has been posted to your wall"
+
+    flash[:notice] = "The event has been posted to your Facebook wall"
 
     redirect_to @event
   end

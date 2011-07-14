@@ -18,11 +18,12 @@
         <div class="w2">
           <%= render 'layouts/header' %>
           <div id="wrapper" class="wat-cf">
-            <%- #=render 'layouts/flash_notices' -%>
             <div id="main">
               <div class="main-top">
                 <div class="holder">
+                  <%=  render 'layouts/flash_notices' -%>
 
+                  <%= yield :blue_bar%>
                 </div>
               </div>
               <div class="holder">

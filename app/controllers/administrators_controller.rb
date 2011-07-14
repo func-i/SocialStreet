@@ -38,7 +38,8 @@ class AdministratorsController < ApplicationController
       end
     end
 
-    redirect_to @event, :notice => "Added #{num_added} and removed #{num_removed} Administrators."
+    #redirect_to @event, :notice => "Added #{num_added} and removed #{num_removed} Administrators."
+    redirect_to @event
   end
   
   protected

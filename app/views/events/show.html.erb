@@ -1,13 +1,36 @@
+<% content_for :blue_bar do %>
+  <div class="col1">
+    <% if @event.editable_time? && @rsvp%>
+      <% if @event.editable_by?(current_user) %>
+        <div class="admin-view">
+          <strong>
+            <%= link_to "Edit this event", [:edit, @event] %>
+          </strong>
+          <% if @event.user == current_user %>
+            or
+            <strong>
+              <%= link_to "+add administrators", [:new, @event, :administrator] %>
+            </strong>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col2"></div>
+<% end %>
+
 <div class="profile">
   <div class="profile-holder">
     <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
     <div class="text">
       <div class="row">
         <div class="text-content">
-<<<<<<< HEAD
           <h2><%= @event.name %></h2>
           <p>
             <% if l = @event.location %>
+              <% if l.text %>
+                <%= l.text %>
+              <%  end %>
               <% if l.street? %>
                 <%= l.street %><br/>
               <% end %>
@@ -20,48 +43,54 @@
             <% end %>
           </p>
         </div>
-        <a href="#" class="btn-share">Share</a>
+
+        <%= link_to "Share", [:post_to_facebook, @event], :class => "btn-share" -%>
+
+      </div>
+      <div class="info">
+        <div class="col">
+          <%- if !@event.canceled? && @event.editable_time?%>
+            <%- if @rsvp && Rsvp.statuses[:attending] == @rsvp.status   -%>
+              <%= link_to [:edit, @event, @rsvp], :class => "btn-attending" do %>
+                <span>Attending</span>
+              <% end %>
+              <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
+            <%- else -%>
+              <%= link_to [:new, @event, :rsvp], :class => "btn-attend" do %>
+                <span>Attend</span>
+              <% end %>
+    <%#Invites should be here too, but currently requires @rsvp%>
+            <%- end %>
+          <%- end -%>
+        </div>
+        <div class="col-holder">
+          <div class="col">
+            <span>Start Day:</span>
+            <strong><%= @event.starts_at.strftime("%B %d") %></strong>
+          </div>
+          <% if @event.finishes_at && @event.end_date != @event.start_date %>
+            <div class="col">
+              <span>End Day:</span>
+              <strong><%= @event.finishes_at.strftime("%B %d") %></strong>
+            </div>
+          <%- end -%>
+          <div class="col">
+            <span>Start Time:</span>
+            <strong><%= @event.starts_at.strftime("%l:%M %p") -%></strong>
+          </div>
+          <% if @event.finishes_at %>
+            <div class="col">
+              <span>End Time:</span>
+              <strong><%= @event.finishes_at.strftime("%l:%M %p") -%></strong>
+            </div>
+          <%- end -%>
+        </div>
       </div>
     </div>
-    <div class="info">
-      <div class="col">
-        <%- if @rsvp -%>
-          <a href="#" class="btn-attending"><span>Attending</span></a>
-          <%- if !@event.canceled?-%>
-            <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
-          <%- end -%>
-        <%- else -%>
-          <a href="#" class="btn-attend"><span>Attend</span></a>
-          <%#Invites should be here too, but currently requires @rsvp%>
-        <%- end -%>
-      </div>
-      <div class="col-holder">
-        <div class="col">
-          <span>Start Day:</span>
-          <strong><%= @event.starts_at.strftime("%B %d") %></strong>
-        </div>
-        <% if @event.finishes_at && @event.end_date != @event.start_date %>
-          <div class="col">
-            <span>End Day:</span>
-            <strong><%= @event.finishes_at.strftime("%B %d") %></strong>
-          </div>
-        <%- end -%>
-        <div class="col">
-          <span>Start Time:</span>
-          <strong><%= @event.starts_at.strftime("%l:%M %p") -%></strong>
-        </div>
-        <% if @event.finishes_at %>
-          <div class="col">
-            <span>End Time:</span>
-            <strong><%= @event.finishes_at.strftime("%l:%M %p") -%></strong>
-          </div>
-        <%- end -%>
-      </div>
-    </div>    
   </div>
   <div class="keyword">
     <%- @event.searchable_event_types.each do |set| -%>
-      <%= link_to set.name, '#', :onclick => "return false;" -%>
+      <span class="name"><%= set.name %></span>
     <%- end -%>
   </div>
 </div>
@@ -72,8 +101,6 @@
         <%= form.text_field :body, :title => "Post a Message" -%>
       </div>
       <div class="info">
-        <p>Your message will be posted to <span>X (address)</span> with the keywords <span>Y (keyword)</span>.</p>
-        <p>Others in this community will be able to see and reply to your post.</p>
       </div>
     </fieldset>
   <%- end -%>
@@ -81,13 +108,11 @@
 </div>
 <div id="comment-box" class="post-holder Post-Holder" >
   <div id="action-list">
-    <% @actions.each do |action| %>
-      <%= render 'shared/action', :action => action %>
-    <% end %>
+    <%=  render :partial => 'actions' %>
   </div>
 </div>
 
-<% content_for :sidebar do %> 
+<% content_for :sidebar do %>
 
   <div class="box map">
     <div class="heading">
@@ -144,33 +169,21 @@
     </div>
   </div>
 
-  <div class="block notice">
-    <p>TODO Format for these actions!</p>
-    <h4>Actions</h4>
-    <% if @event.editable_time? %>
-      <% if @rsvp%>
+<% end %>
 
-        <% if !@event.canceled? %>
-          <%= link_to "Edit RSVP (#{@rsvp.status})", [:edit, @event, @rsvp], :class => "button" %>
-          <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %>
-        <% end %>
+<% content_for :end_of_body do %>
 
-        <% if @event.editable_by?(current_user) %>
-          <%= link_to "Edit Event", [:edit, @event], :class => "button" %>
-        <% end %>
+  <%= javascript_include_tag 'jquery.pageless' %>
 
-        <%- unless @rsvp.posted_to_facebook? -%>
-          <%= link_to "Post to Facebook", [:post_to_facebook, @event], :class => "button" -%>
-        <%- end -%>
+  <script>
+    function makePageless(numPages, currentPage) {
+      $('#action-list').pageless({ totalPages: numPages,
+        url: '<%= @event %>',
+        loaderMsg: 'Loading more results',
+        currentPage: currentPage
+      });
+    }
 
-      <% elsif !@event.canceled? %>
-        <%= link_to 'Join Event', [:new, @event, :rsvp], :class => "button" %>
-        <%= link_to "Post to Facebook", [:post_to_facebook, @event], :class => "button" -%>
-      <% end %>
-
-    <% end %>
-
-    <div class="clear"></div>
-  </div>
-
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+  </script>
 <% end %>

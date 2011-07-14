@@ -1,1 +1,5 @@
-<%= avatar user %>
+<% if defined?(exclude_link) %>
+  <%= avatar user, :exclude_link => exclude_link%>
+<% else %>
+  <%= avatar user %>
+<% end %>

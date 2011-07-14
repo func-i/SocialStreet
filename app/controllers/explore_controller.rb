@@ -86,8 +86,6 @@ class ExploreController < ApplicationController
     end
     
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
-
-    
   end
 
   def apply_filter(search_object, args = {})

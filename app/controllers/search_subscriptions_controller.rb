@@ -13,7 +13,7 @@ class SearchSubscriptionsController < ApplicationController
     @search_subscription.attributes = params[:search_subscription]
 
     if @search_subscription.save
-      flash[:notice] = "You have subscripted to this search. You will be notified when there are new events for your criteria"
+      #flash[:notice] = "You have subscripted to this search. You will be notified when there are new events for your criteria"
       redirect_to explore_path(params[:q])
     else
       render :new

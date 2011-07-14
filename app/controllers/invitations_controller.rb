@@ -56,7 +56,8 @@ class InvitationsController < ApplicationController
 
     num_invited = (params[:user_ids] || []).size + (params[:emails] || []).size
     # TODO: Handle validation issues with non-unique invitations (maybe?)
-    redirect_to @event, :notice => "You've invited #{num_invited} of your friends to this event. [[Link to modify invitations]]"
+    #redirect_to @event, :notice => "You've invited #{num_invited} of your friends to this event. [[Link to modify invitations]]"
+    redirect_to @event
   end
 
   protected

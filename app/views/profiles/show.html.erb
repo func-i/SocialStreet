@@ -11,7 +11,7 @@
 <%#*</div>%>
 
 <div class="profile">
-  <%= avatar @user %>
+  <%= avatar @user, :size => "99x94" %>
   <div class="text">
     <div class="text-content">
       <h2>
@@ -37,8 +37,6 @@
         <%= form.text_field :body, :title => "Post a Message" -%>
       </div>
       <div class="info">
-        <p>Your message will be posted to <span>X (address)</span> with the keywords <span>Y (keyword)</span>.</p>
-        <p>Others in this community will be able to see and reply to your post.</p>
       </div>
     </fieldset>
   <%- end -%>
@@ -61,7 +59,7 @@
     </div>
     <div class="box-content">
       <ul>
-        <% @events.each do |event|  %>
+        <% @upcoming_events.each do |event|  %>
           <li>
             <h4><%= link_to event.name, event %></h4>
             <p>
@@ -71,48 +69,132 @@
           </li>
         <%  end %>
       </ul>
+      <% if @upcoming_events_remaining >  0 %>
+        <div class="more">
+          <%= link_to "And #{@upcoming_events_remaining} more", "#" %>
+        </div>
+      <% end %>
     </div>
 
   </div>
 
-  <div class="connections">
-    <div class="ttl">
-      <a href="#" class="close">close</a>
-      <h3>Common Connections</h3>
-    </div>
+  <% if !(@common_people.empty? && @connected_rsvps.empty? && @connected_actions.empty?) %>
+    <div class="connections">
+      <div class="ttl">
+        <!--<a href="#" class="close">close</a>-->
+        <h3>Common Connections</h3>
+      </div>
 
-    <div class="slide">
-      <div class="box people-list">
-        <div class="heading">
-          <h3>People you both know:</h3>
-        </div>
-        <div class="box-content">
-          <ul class="list-img">
-            <% @common_connections.each do |connection| %>
-              <%= render 'shared/user_list_element', :user => connection.to_user%>
-            <% end %>
-          </ul>
-        </div>
+      <div class="slide">
+
+        <% unless @common_people.empty? %>
+          <div class="box people-list">
+            <div class="heading">
+              <h3>People you both know:</h3>
+            </div>
+            <div class="box-content">
+              <ul class="list-img">
+                <% @common_people.each do |person| %>
+                  <%= render 'shared/user_list_element', :user => person.to_user, :exclude_link => true%>
+                <% end %>
+              </ul>
+              <% if @common_people_remaining >  0 %>
+                <div class="more">
+                  <span><%=  "And #{@common_people_remaining} more" %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% unless @connected_rsvps.empty? %>
+          <div class="box box-list">
+            <div class="heading">
+              <h3>You both attended:</h3>
+            </div>
+            <div class="box-content">
+              <ul>
+                <% @connected_rsvps.each do |rsvp| %>
+                  <li>
+                    <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
+                    <p><strong><%= rsvp.event.searchable_event_types.first.name unless rsvp.event.searchable_event_types.empty? -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
+                  </li>
+                <% end %>
+              </ul>
+              <% if @connected_rsvps_remaining >  0 %>
+                <div class="more">
+                  <span><%=  "And #{@connected_rsvps_remaining} more" %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% unless @connected_actions.empty?%>
+          <div class="box box-list">
+            <div class="heading">
+              <h3>You both commented on:</h3>
+            </div>
+            <div class="box-content">
+              <ul class="comments-list">
+                <% @connected_actions.each do |action| %>
+                  <% action = action.action || action %>
+                  <% common_comments = action.comments_belonging_to_users([current_user, @user]) %>
+                  <% if action.of_type?(:event_comment) %>
+                    <li>
+                      <h4><%= link_to action.event.name, action.event %></h4>
+                      <ul>
+                        <% common_comments.each do |comment| %>
+                          <li>
+                            <em class ="date"><%=comment.created_at.strftime("%d/%m/%y")%></em>
+                            <%=  truncate(comment.body, :length => 30) %>
+                            <%=  link_to(comment.user.try(:name), profile_path(comment.user), :class => "author")%>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </li>
+                <% elsif action.of_type?(:search_comment) %>
+                    <li>
+                      <h4>A <%= link_to "Search Filter", '#' %></h4>
+                      <ul>
+                        <% common_comments.each do |comment| %>
+                          <li>
+                            <em class ="date"><%=comment.created_at.strftime("%d/%m/%y")%></em>
+                            <%=  truncate(comment.body, :length => 30) %>
+                            <%=  link_to(comment.user.try(:name), profile_path(comment.user), :class => "author")%>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </li>
+                <% elsif action.of_type?(:profile_comment) %>
+                    <li>
+                      <h4><%= link_to action.to_user.try(:name) + "'s", profile_path(action.to_user) %> profile</h4>
+                      <ul>
+                        <% common_comments.each do |comment| %>
+                          <li>
+                            <em class ="date"><%=comment.created_at.strftime("%d/%m/%y")%></em>
+                            <%=  truncate(comment.body, :length => 30) %>
+                            <%=  link_to(comment.user.try(:name), profile_path(comment.user), :class => "author")%>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </li>
+                <% else %>
+                  <%#Currently don't handle RSVP comments...but don't think layout will allow in the end%>
+                <% end %>
+              <% end %>
+              </ul>
+              <% if @connected_actions_remaining >  0 %>
+                <div class="more">
+                  <span><%=  "And #{@connected_actions_remaining} more" %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <%end%>
       </div>
     </div>
-  </div>
-
-  <div class="box box-list">
-    <div class="heading">
-      <h3>You both attended:</h3>
-    </div>
-    <div class="box-content">
-      <ul>
-        <% @connected_rsvps.each do |rsvp| %>
-          <li>
-            <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
-            <p><strong><%= rsvp.event.searchable_event_types.first.name -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-
+  <% end %>
 <% end %>
 
 <% content_for :end_of_body do %>

@@ -163,6 +163,8 @@ class Event < ActiveRecord::Base
 
 
   def editable_by?(user)
+    return false if user == nil
+    
     rsvp = rsvps.by_user(user).first
 
     user == self.user || (rsvp && rsvp.administrator)

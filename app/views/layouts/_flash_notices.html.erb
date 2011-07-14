@@ -1,7 +1,7 @@
-<div class="flash">
+<div class="col1">
   <% flash.each do |type, message| -%>
-    <div class="message <%= type %>">
-      <p><%= message %></p>
+    <div class="flash">
+      <strong><%= message %></strong>
     </div>
   <% end -%>
 </div>
