@@ -7,7 +7,11 @@
 
 <div class="text">
   <h3><%= raw title %></h3>
-  <%= simple_format(h("\"#{body.strip}\"")) unless body.blank? %>
+  <%= simple_format(h("\"#{body.strip}\""), :class => "comment-body") unless body.blank? %>
+  <span class="more">
+    <%= link_to "Show more", '#', :class => 'comment-body-more', :style => "display:none;" -%>
+  </span>
+  <div class="comment-body-extra" style="display:none"></div>
   <span class="time"><%= time_ago_in_words action.occurred_at %> ago</span>
   <% if allow_children %>
     <%= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
@@ -33,3 +37,5 @@
     </div>
   </div>
 <% end %>
+
+
