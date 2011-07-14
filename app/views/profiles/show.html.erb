@@ -71,9 +71,6 @@
           </li>
         <%  end %>
       </ul>
-      <div class="more">
-        <%= link_to "And #{@events.size} more", '#' -%>
-      </div>
     </div>
 
   </div>
@@ -95,9 +92,6 @@
               <%= render 'shared/user_list_element', :user => connection.to_user%>
             <% end %>
           </ul>
-          <div class="more">
-            <%= link_to "And #{@common_connections.size} more", '#' -%>
-          </div>
         </div>
       </div>
     </div>
@@ -109,16 +103,13 @@
     </div>
     <div class="box-content">
       <ul>
-        <% @connected_rsvps.first(5).each do |rsvp| %>
+        <% @connected_rsvps.each do |rsvp| %>
           <li>
             <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
             <p><strong><%= rsvp.event.searchable_event_types.first.name -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
           </li>
         <% end %>
       </ul>
-      <div class="more">
-        <%= link_to "And #{@connected_rsvps.size} more", '#' -%>
-      </div>
     </div>
   </div>
 
@@ -147,6 +138,26 @@
           }
         }
       );
+        return false;
+      });
+
+
+      $.each($('.comment-body'), function(index, ele){
+        if($(ele).html().length > 200) {
+          var html = $(ele).html();
+          // take the first 200 characters and truncate them then create a show more div.
+          var firstTwoHundred = html.substring(0, 200) + "...";
+          var totalComment = html;
+
+          $(ele).html(firstTwoHundred);
+          $(ele).siblings('.comment-body-extra').first().html(totalComment);
+          $(ele).siblings('.more').children('.comment-body-more').first().show();
+        }
+      });
+
+      $('.comment-body-more').live('click', function(){
+        $(this).closest('.more').first().siblings('.comment-body').html($(this).closest('.more').siblings('.comment-body').siblings('.comment-body-extra').first().html());
+        $(this).hide();
         return false;
       });
     });
