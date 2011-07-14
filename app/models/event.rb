@@ -214,6 +214,14 @@ class Event < ActiveRecord::Base
     searchable.searchable_date_ranges.first.try :ends_at
   end
 
+  def start_date
+    searchable.searchable_date_ranges.first.try :start_date
+  end
+
+  def end_date
+    searchable.searchable_date_ranges.first.try :end_date
+  end
+
   def cancel
     update_attribute("canceled", true)
     searchable.update_attribute("ignored", true)

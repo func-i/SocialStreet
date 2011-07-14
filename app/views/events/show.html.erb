@@ -4,29 +4,22 @@
     <div class="text">
       <div class="row">
         <div class="text-content">
-          <h2><%= @event.location.text %></h2>
-          <p>
-            <% if l = @event.location %>              
-              <% if l.street? %>
-                <%= l.street %><br/>
-              <% end %>
-              <% if l.city? || l.state? %>
-                <%= l.city %> <%= l.state %><br/>
-              <% end %>
-              <% if l.country? %>
-                <%= l.country %><br/>
-              <% end %>
-            <% end %>
-          </p>
+          <h2><%= @event.name %></h2>
+          <p><%=  @event.location.text %></p>
         </div>
         <a href="#" class="btn-share">Share</a>
       </div>
     </div>
     <div class="info">
       <div class="col">
-        <a href="#" class="btn-attend"><span>Attend</span></a>
-        <%- unless @event.canceled? -%>
-          <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
+        <%- if @rsvp -%>
+          <a href="#" class="btn-attending"><span>Attending</span></a>
+          <%- if !@event.canceled?-%>
+            <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
+          <%- end -%>
+        <%- else -%>
+          <a href="#" class="btn-attend"><span>Attend</span></a>
+          <%#Invites should be here too, but currently requires @rsvp%>
         <%- end -%>
       </div>
       <div class="col-holder">
@@ -34,7 +27,7 @@
           <span>Start Day:</span>
           <strong><%= @event.starts_at.strftime("%B %d") %></strong>
         </div>
-        <% if @event.finishes_at %>
+        <% if @event.finishes_at && @event.end_date != @event.start_date %>
           <div class="col">
             <span>End Day:</span>
             <strong><%= @event.finishes_at.strftime("%B %d") %></strong>
@@ -44,10 +37,12 @@
           <span>Start Time:</span>
           <strong><%= @event.starts_at.strftime("%l:%M %p") -%></strong>
         </div>
-        <div class="col">
-          <span>End Time:</span>
-          <strong><%= @event.finishes_at.strftime("%l:%M %p") -%></strong>
-        </div>
+        <% if @event.finishes_at %>
+          <div class="col">
+            <span>End Time:</span>
+            <strong><%= @event.finishes_at.strftime("%l:%M %p") -%></strong>
+          </div>
+        <%- end -%>
       </div>
     </div>    
   </div>
@@ -129,25 +124,10 @@
     </div>
     <div class="box-content">
       <ul class="list-img">
-        <% if @event.user == current_user %>
-          <%= link_to "Add", [:new, @event, :administrator], :class => "button" %>
-        <% end %>
         <% @event.administrators_rsvps_list.each do |administrator_rsvp| %>
           <li><%= render 'shared/user_list_element', :user => administrator_rsvp.user%></li>
         <% end %>
       </ul>
-    </div>
-  </div>
-
-  <div class="box people-list">
-    <div class="heading">
-      <h3>
-        <%if @event.maximum_attendees%>
-          Waiting (<%= @event.num_waiting%>)
-        <%else%>
-          Maybe (<%= @event.num_maybe_attending%>)
-        <%end%>
-      </h3>
     </div>
   </div>
 
