@@ -11,7 +11,7 @@
 <%#*</div>%>
 
 <div class="profile">
-  <%= avatar @user %>
+  <%= avatar @user, :size => "100x95" %>
   <div class="text">
     <div class="text-content">
       <h2>
@@ -54,65 +54,72 @@
 </div>
 
 <% content_for :sidebar do %>
-  <div class="box box-list">
-    <div class="heading">
-      <a href="#" class="view">view in calendar</a>
-      <h3>Upcoming Activities</h3>
-    </div>
-    <div class="box-content">
-      <ul>
-        <% @events.each do |event|  %>
-          <li>
-            <h4><%= link_to event.name, event %></h4>
-            <p>
-              <strong><%= event.searchable_event_types.first.name -%></strong>
-              <em class="date"><%= event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} %Y") -%></em>
-            </p>
-          </li>
-        <%  end %>
-      </ul>
-    </div>
 
-  </div>
-
-  <div class="connections">
-    <div class="ttl">
-      <a href="#" class="close">close</a>
-      <h3>Common Connections</h3>
-    </div>
-
-    <div class="slide">
-      <div class="box people-list">
-        <div class="heading">
-          <h3>People you both know:</h3>
+  <%- unless @events.empty? && @common_connections.empty? && @connected_rsvps.empty? -%>
+    <div class="connections">
+      <%- unless @events.empty? -%>
+        <div class="box box-list">
+          <div class="heading">
+            <a href="#" class="view">view in calendar</a>
+            <h3>Upcoming Activities</h3>
+          </div>
+          <div class="box-content">
+            <ul>
+              <% @events.each do |event|  %>
+                <li>
+                  <h4><%= link_to event.name, event %></h4>
+                  <p>
+                    <strong><%= event.searchable_event_types.first.name -%></strong>
+                    <em class="date"><%= event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} %Y") -%></em>
+                  </p>
+                </li>
+              <%  end %>
+            </ul>
+          </div>
         </div>
-        <div class="box-content">
-          <ul class="list-img">
-            <% @common_connections.each do |connection| %>
-              <%= render 'shared/user_list_element', :user => connection.to_user%>
-            <% end %>
-          </ul>
+      <%- end -%>
+
+      <%- unless @common_connections.empty? -%>
+        <div class="ttl">
+          <a href="#" class="close">close</a>
+          <h3>Common Connections</h3>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="box box-list">
-    <div class="heading">
-      <h3>You both attended:</h3>
-    </div>
-    <div class="box-content">
-      <ul>
-        <% @connected_rsvps.each do |rsvp| %>
-          <li>
-            <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
-            <p><strong><%= rsvp.event.searchable_event_types.first.name -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
+        <div class="slide">
+          <div class="box people-list">
+            <div class="heading">
+              <h3>People you both know:</h3>
+            </div>
+            <div class="box-content">
+              <ul class="list-img">
+                <% @common_connections.each do |connection| %>
+                  <%= render 'shared/user_list_element', :user => connection.to_user%>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <%- end -%>
 
+      <%- unless @connected_rsvps.empty? -%>
+        <div class="box box-list">
+          <div class="heading">
+            <h3>You both attended:</h3>
+          </div>
+          <div class="box-content">
+            <ul>
+              <% @connected_rsvps.each do |rsvp| %>
+                <li>
+                  <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
+                  <p><strong><%= rsvp.event.searchable_event_types.first.name -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <%- end -%>
+    </div>
+  <%- end -%>
 <% end %>
 
 <% content_for :end_of_body do %>
@@ -140,26 +147,7 @@
       );
         return false;
       });
-
-
-      $.each($('.comment-body'), function(index, ele){
-        if($(ele).html().length > 200) {
-          var html = $(ele).html();
-          // take the first 200 characters and truncate them then create a show more div.
-          var firstTwoHundred = html.substring(0, 200) + "...";
-          var totalComment = html;
-
-          $(ele).html(firstTwoHundred);
-          $(ele).siblings('.comment-body-extra').first().html(totalComment);
-          $(ele).siblings('.more').children('.comment-body-more').first().show();
-        }
-      });
-
-      $('.comment-body-more').live('click', function(){
-        $(this).closest('.more').first().siblings('.comment-body').html($(this).closest('.more').siblings('.comment-body').siblings('.comment-body-extra').first().html());
-        $(this).hide();
-        return false;
-      });
+      
     });
   </script>
 <% end %>

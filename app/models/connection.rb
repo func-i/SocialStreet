@@ -13,7 +13,7 @@ class Connection < ActiveRecord::Base
 
   scope :common_with, lambda{ |user|
     joins("INNER JOIN connections AS joined_connections
-       ON joined_connections.to_user_id = connections.to_user_id AND joined_connections.user_id = #{user.id}"
+       ON joined_connections.to_user_id = connections.to_user_id AND joined_connections.user_id = #{user.id} AND joined_connections.to_user_id <> connections.user_id"
     )
   }
 

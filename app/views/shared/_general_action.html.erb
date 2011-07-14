@@ -13,9 +13,9 @@
   </span>
   <div class="comment-body-extra" style="display:none"></div>
   <span class="time"><%= time_ago_in_words action.occurred_at %> ago</span>
-  <% if allow_children %>
-    <%= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
-  <% end %>
+<%# if allow_children %>
+<%#= link_to image_tag("comment.png", :size => "20x20"), '#', :class => "create-comment-link", :title=>"Add a comment" %>
+<%# end %>
 </div>
 
 
@@ -27,14 +27,16 @@
       <%= render 'shared/action', :action => a %>
     <% end %>
 
-    <div class="post action-comment-container" style="display:none;">
-      <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form form-comment"} do |form| %>
-        <fieldset>
-          <%= submit_tag "Add Activity", :class => "submit" -%>
-          <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
-        </fieldset>
-      <% end %>
-    </div>
+    <%- if allow_children -%>
+      <div class="post action-comment-container">
+        <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form form-comment"} do |form| %>
+          <fieldset>
+            <%= link_to 'New Event', new_event_path(:action_id => action.id), :class => "submit" %>
+            <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
+          </fieldset>
+        <% end %>
+      </div>
+    <%- end -%>
   </div>
 <% end %>
 

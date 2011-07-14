@@ -58,6 +58,36 @@
         $this.closest('.post').find('.action-comment-container').slideToggle('fast').find('textarea').focus();
         return false;
       });
+
+      $.each($('.comment-body'), function(index, ele){
+        if($(ele).html().length > 200) {
+          var html = $(ele).html();
+          // take the first 200 characters and truncate them then create a show more div.
+          var firstTwoHundred = html.substring(0, 200) + "...";
+          var totalComment = html;
+
+          $(ele).html(firstTwoHundred);
+          $(ele).siblings('.comment-body-extra').first().html(totalComment);
+          $(ele).siblings('.more').children('.comment-body-more').first().show();
+        }
+      });
+
+      $('.comment-body-more').live('click', function(){
+        $(this).closest('.more').first().siblings('.comment-body').html($(this).closest('.more').siblings('.comment-body').siblings('.comment-body-extra').first().html());
+        $(this).hide();
+        return false;
+      });
+
+      $('.textarea').keydown(function(e) {
+        if (e.keyCode == 13) {
+          if(e.shiftKey != true){
+            console.log('enter pressed');
+            $(this).closest('.form-comment').submit();
+            return false;
+          }
+        }
+      });
+
     });
   </script>
 <% end %>
