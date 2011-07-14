@@ -51,7 +51,8 @@ class Action < ActiveRecord::Base
   }
 
   scope :for_user, lambda { |user|
-    includes(:reference).where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
+    #includes(:reference).where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
+    where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
   }
 
   before_create :set_occurred_at

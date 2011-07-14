@@ -9,12 +9,12 @@ class ProfilesController < ApplicationController
 
 
   def show
-    @actions = Action.for_user(@user).newest_first.top_level.all
 #    @actions = @user.actions.newest_first.all
 
     #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
     #    @events = @user.rsvp_events.
 
+    puts "JOSH IS HERE"
 
     @user_profile_facebook = @user.authentications.facebook.first
 
@@ -37,6 +37,20 @@ class ProfilesController < ApplicationController
 
 
     @comment = Comment.new
+
+    #Action List
+    @actions = Action.for_user(@user).top_level.newest_first
+
+    @per_page = 5
+    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+    @total_count = @actions.count
+    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+
+    @actions = @actions.limit(@per_page).offset(@offset)
+
+    if request.xhr? && params[:page] # pagination request
+      render :partial => 'new_page'
+    end
   end
   
   def edit

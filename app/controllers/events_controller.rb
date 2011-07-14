@@ -22,13 +22,9 @@ class EventsController < ApplicationController
 
     @actions = @actions.limit(@per_page).offset(@offset)
 
-    puts "JOSH IS HERE"
-
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
     end
-
-    puts "END"
   end
 
   #EVENT CREATE/EDIT PAGES
