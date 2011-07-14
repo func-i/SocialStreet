@@ -6,7 +6,7 @@
         <div class="text-content">
           <h2><%= @event.location.text %></h2>
           <p>
-            <% if l = @event.location %>              
+            <% if l = @event.location %>
               <% if l.street? %>
                 <%= l.street %><br/>
               <% end %>
@@ -25,8 +25,12 @@
     <div class="info">
       <div class="col">
         <a href="#" class="btn-attend"><span>Attend</span></a>
-        <%- unless @event.canceled? -%>
-          <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
+        <% if @event.editable_time? %>
+          <% if @rsvp%>
+            <%- unless @event.canceled? -%>
+              <p>or <%= link_to "Invite People", [:change, @event, @rsvp, :invitations], :class => "button" %></p>
+            <%- end -%>
+          <%- end -%>
         <%- end -%>
       </div>
       <div class="col-holder">
