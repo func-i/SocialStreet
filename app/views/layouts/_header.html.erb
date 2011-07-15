@@ -9,14 +9,44 @@
     </form>
     <%= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
     <ul class="nav-serv">
+
       <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
+
       <% if user_signed_in? %>
-        <li><%= link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => "logout" %></li>
+        <li class="link-login">
+          <%= link_to current_user.try(:name), '#' %>
+          <ul>
+            <li><%=link_to "Settings", '#'%></li>
+            <li><%=link_to "Dashboard", '#'%></li>
+            <li><%=link_to "Sign Out", destroy_user_session_path, :class => "logout"%></li>
+          </ul>
+        </li>
       <% else %>
   <!--<li><%= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
+
+    <div class="video-box" style="display:none">
+      <div class="vb">
+        <div class="video-holder">
+          <img width="520" height="240" src="images/img16.png" alt="image description"/>
+        </div>
+        <div class="text">
+          <strong class="ttl">How it works</strong>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed rhoncus orci. Quisque posuere elit sed erat vulputate sed mollis odio lobortis. Sed dui elit, cursus eu dignissim vestibulum, porttitor id lectus. Mauris suscipit nisi at urna eleifend luctus. </p>
+        </div>
+        <a href="#" class="btn-close">close</a>
+      </div>
+      <strong class="note">Do something</strong>
+      <form action="#" class="form-explore">
+        <fieldset>
+          <input type="submit" value="Explore" title="Explore" class="submit" />
+          <span class="text"><input title="Basketball" value="Basketball" /></span>
+        </fieldset>
+      </form>
+    </div>
+
   </div>
 </div>
 
