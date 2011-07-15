@@ -14,8 +14,6 @@ class ProfilesController < ApplicationController
     #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
     #    @events = @user.rsvp_events.
 
-    puts "JOSH IS HERE"
-
     @user_profile_facebook = @user.authentications.facebook.first
 
     @upcoming_events = Event.attended_by_user(@user).upcoming.order("starts_at")
@@ -46,7 +44,7 @@ class ProfilesController < ApplicationController
     @total_count = @actions.count
     @num_pages = (@total_count.to_f / @per_page.to_f).ceil
 
-    @actions = @actions.limit(@per_page).offset(@offset)
+    @actions = @actions.includes(:reference).limit(@per_page).offset(@offset)
 
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
