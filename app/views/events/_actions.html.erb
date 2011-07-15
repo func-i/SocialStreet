@@ -1,0 +1,3 @@
+<% @actions.each do |action| %>
+  <%= render 'shared/action', :action => action unless action.of_type? :event_created%>
+<% end %>

@@ -39,6 +39,7 @@ class Action < ActiveRecord::Base
               joined_actions.action_id = actions.action_id
               OR joined_actions.action_id = actions.id
               OR joined_actions.id = actions.action_id
+           
             )
           )"
     )
@@ -50,7 +51,8 @@ class Action < ActiveRecord::Base
   }
 
   scope :for_user, lambda { |user|
-    includes(:reference).where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
+    #includes(:reference).where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
+    where("actions.user_id = ? OR actions.to_user_id = ?", user.id, user.id)
   }
 
   before_create :set_occurred_at
@@ -62,6 +64,49 @@ class Action < ActiveRecord::Base
 
   def user_list
     ([self.user] + actions.joins(:user).all.collect(&:user)).uniq
+  end
+
+  def comments_belonging_to_users(user_array)
+    return_arr = []
+
+    act = self.action || self
+
+    user_array.each do |user|
+      if act.reference.user_id == user.id
+        return_arr << act.reference
+      end
+    end
+
+    act.comments.each do |c|
+      user_array.each do |user|
+        if c.user_id == user.id
+          return_arr << c
+        end
+      end
+    end
+
+    return return_arr
+  end
+
+
+  def belongs_to_users(user_array)
+    return_arr = []
+
+    user_array.each do |user|
+      if self.user == user
+        return_arr << self
+      end
+    end
+
+    self.actions.each do |a|
+      user_array.each do |user|
+        if a.user == user
+          return_arr << a
+        end
+      end
+    end
+
+    return return_arr
   end
 
   protected

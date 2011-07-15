@@ -37,7 +37,11 @@ module ApplicationHelper
   end
 
   def avatar(user, options={})
-    link_to(avatar_image(user, options), profile_path(user))
+    if options[:exclude_link] && options[:exclude_link] == true
+      avatar_image(user, options)
+    else
+      link_to(avatar_image(user, options), profile_path(user))
+    end
   end
 
   def link_to_popup_modal(title, div_id, options = {}, html_options = {})

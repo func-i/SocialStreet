@@ -163,6 +163,8 @@ class Event < ActiveRecord::Base
 
 
   def editable_by?(user)
+    return false if user == nil
+    
     rsvp = rsvps.by_user(user).first
 
     user == self.user || (rsvp && rsvp.administrator)
@@ -212,6 +214,14 @@ class Event < ActiveRecord::Base
 
   def finishes_at  # assuming non recurring events, for now
     searchable.searchable_date_ranges.first.try :ends_at
+  end
+
+  def start_date
+    searchable.searchable_date_ranges.first.try :start_date
+  end
+
+  def end_date
+    searchable.searchable_date_ranges.first.try :end_date
   end
 
   def cancel

@@ -113,7 +113,8 @@ class User < ActiveRecord::Base
 
   def facebook_user
     # => Load the FB user through fb_graph if there is an access_token
-    FbGraph::User.new(:access_token => fb_auth_token) if fb_auth_token
+    FbGraph::User.me(fb_auth_token) if fb_auth_token
+    #FbGraph::User.new(:access_token => fb_auth_token) if fb_auth_token
   end
 
   def post_to_facebook_wall(args = {})
