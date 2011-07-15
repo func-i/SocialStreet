@@ -12,7 +12,6 @@ class FeedbacksController < ApplicationController
     @feedback.attributes = params[:feedback]
     @feedback.responded = true
 
-
     if @feedback.save
       if nil == @feedback.score
         redirect_to :back, :notice => 'Thank you for your feedback.'

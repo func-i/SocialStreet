@@ -1,10 +1,13 @@
 <%= form.error_messages %>
+
+<label class="label">What?</label>
+<%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit", :placeholder => "Enter keywords here..." %>
+
+
 <div id="basic" class="tab-content">
   <%= form.hidden_field :action_id %>
 
   <div class="group">
-    <label class="label">What?</label>
-    <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit", :placeholder => "Enter keywords here..." %>
     <ul id="keywords">
       <% (@event.searchable.keywords || []).each do |keyword| %>
         <% unless keyword.blank? %>

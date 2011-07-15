@@ -1,39 +1,38 @@
 <%= form.error_messages %>
-<div id="profile" class="tab-content">
-  <h3>Profile</h3>
-
-  <div class="left">
-    <%= avatar @user %>
-    <br/>
-    Edit Image <!--TODO implement edit-->
+<div id="profile" class="tab-content profile-general">
+  <div class="row row-photo">
+    <span>User Photo</span>
+    <div class="col">
+      <%= avatar @user, :size => "81x78" %>
+      <strong class="link-download"><a href="#">edit photo</a></strong>
+    </div>
   </div>
 
-  <div class="right">
-    <div class="group">
-      <label class="label">First Name</label>
-      <%= form.text_field :first_name, :class => "text_field"  %>
-    </div>
-    <div class="group">
-      <label class="label">Last Name</label>
-      <%= form.text_field :last_name, :class => "text_field"  %>
-    </div>
-    <div class="group">
-      <label class="label">Username</label>
-      <%= form.text_field :username, :class => "text_field"  %>
-    </div>
-    <div class="group">
-      <label class="label">Email</label>
-      <%= form.text_field :email, :class => "text_field"  %>
-    </div>
-
-    <div class="group">
-      <label class="label">Photo</label>
-      <%= form.file_field :photo %>
-    </div>
-
-    <%= render 'shared/form_submit_button' %>
+  <div class="row">
+    <label for="firstname">First Name</label>
+    <%= form.text_field :first_name, :class => "text"  %>
   </div>
-  <div class ="clear"></div>
+
+  <div class="row">
+    <label class="label">Last Name</label>
+    <%= form.text_field :last_name, :class => "text"  %>
+  </div>
+
+  <div class="row">
+    <label class="label">Username</label>
+    <%= form.text_field :username, :class => "text"  %>
+  </div>
+
+  <div class="row">
+    <label class="label">Email</label>
+    <%= form.text_field :email, :class => "text"  %>
+  </div>
+
+  <div class="row">
+    <label class="label">Photo</label>
+    <%= form.file_field :photo %>
+  </div>
+  <%= render 'shared/form_submit_button' %>
 
   <!--  <div class ="right">
   <% content_for :head do %>
@@ -42,22 +41,22 @@
 
   <% if @authentications %>
     <% unless @authentications.empty? %>
-                              <p><strong>You can sign in to this account using:</strong></p>
-                              <div class="authentications">
+                                                          <p><strong>You can sign in to this account using:</strong></p>
+                                                          <div class="authentications">
       <% for authentication in @authentications %>
-                                            <div class="authentication">
+                                                                                      <div class="authentication">
         <%= image_tag "authicons/#{authentication.provider}_32.png", :size => "32x32" %>
-                                              <div class="provider"><%= authentication.provider.titleize %></div>
-                                              <div class="uid"><%= authentication.uid %></div>
+                                                                                        <div class="provider"><%= authentication.provider.titleize %></div>
+                                                                                        <div class="uid"><%= authentication.uid %></div>
         <%= link_to "X", authentication, :confirm => 'Are you sure you want to remove this authentication option?', :method => :delete, :class => "remove" %>
-                                            </div>
+                                                                                      </div>
       <% end %>
-                                <div class="clear"></div>
-                              </div>
+                                                            <div class="clear"></div>
+                                                          </div>
     <% end %>
-                  <p><strong>Add another service to sign in with:</strong></p>
+                                <p><strong>Add another service to sign in with:</strong></p>
   <% else %>
-                  <p><strong>Sign in through one of these services:</strong></p>
+                                <p><strong>Sign in through one of these services:</strong></p>
   <% end %>
 
       <a href="/auth/twitter" class="auth_provider">
@@ -79,7 +78,7 @@
     </div>-->
   <div class ="clear"></div>
 </div>
-<div id="subscriptions" style="display:none" class="tab-content">
+<div id="subscriptions" style="display:none" class="tab-content profile-general">
   <table class="table">
     <tr>
       <th></th>
@@ -116,7 +115,7 @@
     <%end%>
   </table>
 </div>
-<div id="events" style="display:none" class="tab-content">
+<div id="events" style="display:none" class="tab-content profile-general">
   <%if @events_where_administrator && !@events_where_administrator.empty?%>
     <table class="table">
       <%@events_where_administrator.each do |event|%>

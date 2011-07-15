@@ -1,24 +1,26 @@
 <% event = feedback.rsvp.event %>
 
-<li style="margin-top: 5px">
-  <div class="left">
+<div class="post-wrapper">
+  <div class="post">
     <%= link_to(image_tag(url_for_event_image(event), :size => "50x50", :class => "avatar"), event) %>
-    <br/>
-    <center><%= event_type_name event %></center>
+    <div class="text">
+      <h3><a href="#"><%= event_type_name event %></a></h3>
+      <span class="time"><%= address_for(event.location) %><span>Yesterday</span></span>
+      <span class="info-attend">Did not attend</span>
+    </div>
   </div>
-  <div class="item">
-    <strong><%= link_to event.name, event %></strong><br/>
-    <em><%= address_for(event.location) %></em><br/>
-    <br/>
-
-    <% form_for feedback do |form| %>
-      How was it? <%= form.select :score, [['1 out of 5', 1], ['2 out of 5', 2],
-        ['3 out of 5', 3], ['4 out of 5', 4], ['5 out of 5', 5], ['I Didn\'t attend', '']] %>
-      <%= form.submit 'Submit Feedback' %>
+  <div class="rate-box">
+    <strong>Rate Event:</strong>
+    <% form_for feedback do |form| %>      
+      <ul class="star-rating">
+        <li class="<%= "active" if feedback.score.to_i >= 1-%>"><a href="#" class="one-star star-click">1</a></li>
+        <li class="<%= "active" if feedback.score.to_i >= 2-%>"><a href="#" class="two-stars star-click">2</a></li>
+        <li class="<%= "active" if feedback.score.to_i >= 3-%>"><a href="#" class="three-stars star-click">3</a></li>
+        <li class="<%= "active" if feedback.score.to_i >= 4-%>"><a href="#" class="four-stars star-click">4</a></li>
+        <li class="<%= "active" if feedback.score.to_i >= 5-%>"><a href="#" class="five-stars star-click">5</a></li>
+      </ul>
+      <%= form.hidden_field :score, :class => "hidden-score" -%>
     <% end  %>
-
   </div>
-
-  <div class="clear"></div>
-</li>
+</div>
 

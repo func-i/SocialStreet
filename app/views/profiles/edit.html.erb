@@ -1,16 +1,18 @@
-<div class="block">
-  <div class="secondary-navigation">
-    <ul class="wat-cf">
+<%- content_for :main_top do -%>
+  <div class="secondary-navigation col1">
+    <ul class="wat-cf tabset">
       <li class="first active"><a href="#profile" data-tab="#profile">Profile</a></li>
       <li><a href="#subscriptions" data-tab="#subscriptions">Subscriptions</a></li>
       <li><a href="#events" data-tab="#events">My Events</a></li>
     </ul>
   </div>
-  <div class="content">
-    <div class="inner">
-      <%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
-        <%= render form %>
-      <% end %>
-    </div>
+<%- end -%>
+
+<div class="content">
+  <div class="inner">
+    <%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
+      <%= render form %>
+    <% end %>
   </div>
 </div>
+

@@ -40,4 +40,13 @@ module ApplicationHelper
     link_to(avatar_image(user, options), profile_path(user))
   end
 
+  def link_to_popup_modal(title, div_id, options = {}, html_options = {})
+    klass = options.delete(:class)
+    options.merge!(
+      :class => "popup-modal #{klass}".strip,
+      "popup-div-id" => div_id)
+    
+    link_to title, '#', options, html_options
+  end
+
 end

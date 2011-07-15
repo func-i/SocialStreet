@@ -25,6 +25,16 @@ $(function() {
         $this.trigger('ss:removed');
         return false;
     });
+
+    $('.popup-modal').live('click', function() {
+        var divId = '#' + $(this).attr('popup-div-id');
+        $(divId).show();
+        return false;
+    });
+
+    $('.btn-close').live('click', function() {
+       $(this).closest('.heading').closest('.pop-up1').hide();
+    });
 })
 
 $.extend({

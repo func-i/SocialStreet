@@ -1,25 +1,25 @@
-<div class="block">
-  <div class="secondary-navigation">
-    <ul class="wat-cf">
-      <li class="first active"><a href="#basic" data-tab="#basic">Basic Info</a></li>
-      <li><a href="#details" data-tab="#details">Details</a></li>
-      <!--<li><a href="#attendees" data-tab="#attendees">Attendee Options</a></li>
-      <li><a href="#cost" data-tab="#cost">Cost</a></li>-->
-    </ul>
-  </div>
-  <div class="content">
-    <div class="inner">
-      <%= form_for @event, :html => {:class => "form", :multipart => true} do |form| %>
 
-        <%= render form %>
-        <%= render 'shared/form_submit_button' %>
+<div class="secondary-navigation col1">
+  <ul class="wat-cf tabset">
+    <li class="first active"><a href="#basic" data-tab="#basic">Basic Info</a></li>
+    <li><a href="#details" data-tab="#details">Details</a></li>
+    <!--<li><a href="#attendees" data-tab="#attendees">Attendee Options</a></li>
+    <li><a href="#cost" data-tab="#cost">Cost</a></li>-->
+  </ul>
+</div>
 
-        <% if @event.cancellable_by?(current_user) %>
-          <div class="left">
-            <%= link_to "Cancel Event", @event, :method => :delete, :confirm => 'Are you sure?'%>
-          </div>
-        <% end %>
+<div class="content">
+  <div class="inner">
+    <%= form_for @event, :html => {:class => "form", :multipart => true} do |form| %>
+
+      <%= render form %>
+      <%= render 'shared/form_submit_button' %>
+
+      <% if @event.cancellable_by?(current_user) %>
+        <div class="left">
+          <%= link_to "Cancel Event", @event, :method => :delete, :confirm => 'Are you sure?'%>
+        </div>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>

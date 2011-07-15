@@ -1,16 +1,24 @@
 <% unless @feedbacks.blank? %>
-  <div class="block">
-    <div class="content">
-      <h2 class="title">Holla' Back</h2>
-      <div class="inner">
-        <ul class="list">
-          <% @feedbacks.each do |feedback| %>
-            <%= render 'feedback', :feedback => feedback %>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+
+  <div class="feedback">
+    <% @feedbacks.each do |feedback| %>
+      <%= render 'feedback', :feedback => feedback %>
+    <% end %>
   </div>
+
+  <script type="text/javascript">
+    $('.star-click').click(function() {
+      $(this).closest('.star-rating').siblings('.hidden-score').val($(this).html());
+      $(this).closest('.star-rating').closest('.edit_feedback').submit();
+      return false;
+    });
+  </script>
+
+
+
+
+
+
 <% end %>
 
 <div class="block">
@@ -38,6 +46,16 @@
 <% content_for :sidebar do %>
 
   <% unless @upcoming_events.blank? %>
+
+    <div class="box box-list">
+      <div class="heading">
+        <a href="#" class="view">View all</a>
+        <h3>Upcoming Activities</h3>
+      </div>
+      <div class="box-content"></div>
+    </div>
+
+
     <div class="block notice">
       <h4>Upcoming</h4>
       <% @upcoming_events.each do |event| %>

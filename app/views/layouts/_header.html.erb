@@ -7,7 +7,7 @@
         <span class="text"><input title="Basketball" value="Basketball" /></span>
       </fieldset>
     </form>
-    <%= link_to "Add Activity", "#", :class => "btn-add" -%>
+    <%= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
     <ul class="nav-serv">
       <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
       <% if user_signed_in? %>
@@ -17,5 +17,16 @@
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
+  </div>
+</div>
+
+
+<div id="create-event" class="pop-up1" style="display:none">
+  <div class="heading">
+    <strong>Add a new activity</strong>
+    <%= link_to "close", '#', :class => "btn-close" -%>
+  </div>
+  <div class="pop-up1-content">    
+    <%#= render :template => "events/new" -%>
   </div>
 </div>

@@ -21,8 +21,10 @@ SocialStreet is a web app that makes it easy for people to plan/find and attend 
   - Open a terminal tab to the [REDIS_ROOT (where you extracted and installed it) dir, and run: ./src/redis-server
 - Run 1 Resque Worker:
   - Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
+- Run 1 Resque Scheduler:
+  - Open a terminal tab to the [APP_ROOT] dir, and run: rake resque:scheduler 
 - Start Resque Web Server (optional, for debugging):
-  - Open a terminal tab to the [APP_ROOT] dir, and run: bundle exec resque-web
+  - Open a terminal tab to the [APP_ROOT] dir, and run: bundle exec resque-web ~/yourapp/config/resque_config.rb
   - This will start another web server here: http://localhost:5678/
   - This page should show 1 worker waiting for a job: http://0.0.0.0:5678/workers
 - Start the SocialStreet App Server (duh):
