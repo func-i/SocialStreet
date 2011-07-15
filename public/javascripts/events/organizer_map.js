@@ -41,7 +41,7 @@ $(function() {
     google.maps.event.addListener(map, 'click', function(event) {
         if (dropPinState) {
             disableDropPinState();
-            placeMarker(event.latLng, $('#location-name-field').val());
+            placeMarker(event.latLng, $('.location-name-field').val());
         }
     });
 });
@@ -101,7 +101,7 @@ function placeMarker(location, title, contents) {
 }
 
 function setTitle() {
-    $('#marker-name-field').val($('#location-name-field').val());
+    $('#marker-name-field').val($('.location-name-field').val());
 }
 
 function DropPinControl(controlDiv, map) {
@@ -213,7 +213,7 @@ function selectMarker(marker, changeInputField) {
     var latlng = marker.getPosition();
     $('#location-lat-field').val(latlng.lat());
     $('#location-lng-field').val(latlng.lng());
-    if (changeInputField) $('#location-name-field').val(marker.title);
+    if (changeInputField) $('.location-name-field').val(marker.title);
     setTimeout(function() {
         $('#marker-name-field').focus();
     }, 100);
@@ -221,7 +221,7 @@ function selectMarker(marker, changeInputField) {
 
 // don't allow enter to submit form
 
-$('#location-name-field').keydown(function(e) {
+$('.location-name-field').keydown(function(e) {
     if (e.keyCode == 13) {
         e.stopPropagation();
         searchLocations(e);
@@ -232,7 +232,7 @@ $('#location-name-field').keydown(function(e) {
 
 
 $('#marker-name-field').live('keyup', function(e) {
-    $('#location-name-field').val(this.value);
+    $('.location-name-field').val(this.value);
     selectedMarker.setTitle(this.value);
     return true;
 }).live('keydown', function(e) {
@@ -243,7 +243,7 @@ $('#marker-name-field').live('keyup', function(e) {
         return false;
     }
 });
-$('#location-name-field').change(searchLocations);
+$('.location-name-field').change(searchLocations);
 
 function clearClusterMarkers() {
     mc.clearMarkers();

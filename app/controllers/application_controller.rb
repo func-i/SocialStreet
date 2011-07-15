@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :nav_state
   before_filter :restricted
+  before_filter :prepare_create_event_event
 
   #  def authenticate_user_and_redirect!
   #    #User will be forced to sign-in when:
@@ -94,6 +95,25 @@ class ApplicationController < ActionController::Base
 
   def nav_state
     # overwritten by controllers
+  end
+
+  def prepare_create_event_event
+    @event_for_create = Event.new
+    @event_for_create.searchable ||= Searchable.new
+    @event_for_create.searchable.location ||= Location.new
+    @event_for_create.searchable.searchable_date_ranges.build({
+        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
+        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
+      })
+    #@event.action = @action - TODO - need to do this in javascript
+
+    if session[:stored_params]
+      @event.attributes = session[:stored_params] # event params
+      @event.valid?
+      session[:stored_params] = nil
+    end
+
+    #@event_types_for_create ||= EventType.order('name').all
   end
 
   def create_or_edit_event(params, action)

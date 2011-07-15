@@ -65,7 +65,7 @@ $(function() {
         }
     });
 
-    $('#q-textfield').keydown(function(e) {
+    $('.q-textfield').keydown(function(e) {
         if (e.keyCode == 13) {
             console.log('enter pressed');
             keywordHandler(this.value);
@@ -81,7 +81,7 @@ $(function() {
     // So if user types "ba" again it uses the local cache instead of doing another AJAX request - KV
     var cache = {},
     lastXhr;
-    $( "#q-textfield" ).autocomplete({
+    $( ".q-textfield" ).autocomplete({
         minLength: 2,
         source: function( request, response ) {
             var term = request.term;

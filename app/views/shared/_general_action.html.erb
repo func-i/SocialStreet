@@ -31,7 +31,8 @@
       <div class="post action-comment-container">
         <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form form-comment"} do |form| %>
           <fieldset>
-            <%= link_to 'New Event', new_event_path(:action_id => action.id), :class => "submit" %>
+            <%= link_to_popup_modal '', "create-event", :action_id => action.id, :class => "submit" -%>
+            <% #link_to '', new_event_path(:action_id => action.id), :class => "submit" %>
             <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
           </fieldset>
         <% end %>
