@@ -1,11 +1,11 @@
 function addKeyword(keyword) {
     if ($('#keywords .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0) return false;
     $('<li class="keyword-pill">' +
-        '<input type="hidden" name="'+keywordsParamKey+'" value="'+keyword+'">' +
-        keyword +
-        '<a href="#" class="remove-parent" data-parent-selector=".keyword-pill">' +
-        '<img src="/images/web-app-theme/icons/cross.png" />' +
-        '</li>').hide().appendTo($('#keywords')).fadeIn('slow');
+      keyword +
+      '<a href="#" class="close">close</a>' +
+      '<input type="hidden" name="event[searchable_attributes][keywords][]" value="' +keyword + '" />' +
+      '</li>'
+    ).hide().appendTo($('#keywords')).fadeIn('slow');
     return true;
 }
 

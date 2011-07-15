@@ -42,7 +42,7 @@ body {
 	color: #999;
 	font: 14px Arial, Helvetica, sans-serif;
 	min-width: 980px;
-	background: #fff url(../images/bg-body.png) repeat-y 50% 0;
+	background: #fff url(../images/bg-body.gif) repeat-y 50% 0;
 }
 img{border-style:none;}
 a{text-decoration:none; color:#0981be;}
@@ -68,20 +68,14 @@ form, fieldset {
 	display: table-row;
 }
 #header {
-	background: url("../images/bg-header.png") repeat-x #333;
-	position: relative;
+	background: url("../images/bg-header.gif") repeat-x #333;
+	overflow: hidden;
 	width: 100%;
-	z-index: 3;
 }
-#header:after {
-	clear: both;
-	content: "";
-	display: block;
-}
-#header.open { padding: 0; }
 #header .holder {
 	margin: 0 auto;
-	padding: 18px 0 17px;
+	overflow: hidden;
+	padding: 17px 0 18px;
 	width: 983px;
 }
 .logo {
