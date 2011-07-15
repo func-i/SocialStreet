@@ -1,4 +1,4 @@
-* http://meyerweb.com/eric/tools/css/reset/
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -347,7 +347,7 @@ form, fieldset {
 	padding: 8px 0 0 3px;
 	width: 640px;
 }
-.profile .keyword a {
+.profile .keyword span {
 	background: #ccc;
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -358,7 +358,7 @@ form, fieldset {
 	margin: 0 2px 0 0;
 	padding: 0 13px;
 }
-.profile .keyword a:hover { text-decoration: none; }
+.profile .keyword span:hover { text-decoration: none; }
 .profile img {
 	float: left;
 	margin: 0 12px 0 0;
@@ -812,6 +812,11 @@ form, fieldset {
 	padding: 0 11px 10px;
 }
 .box .more a {
+	float: right;
+	font: bold 11px/14px Arial, Helvetica, sans-serif;
+	color: #ccc;
+}
+.box .more span {
 	float: right;
 	font: bold 11px/14px Arial, Helvetica, sans-serif;
 	color: #ccc;
@@ -1424,4 +1429,10 @@ form, fieldset {
 }
 .admin-view strong {
 	font-weight: bold;
+}
+.flash {
+    font-size: 16px;
+    overflow: hidden;
+    padding: 16px 0 23px;
+    text-align: center;
 }
