@@ -12,13 +12,12 @@
       $(this).closest('.star-rating').closest('.edit_feedback').submit();
       return false;
     });
+
+    $('.did-not-attend').click(function() {
+      $(this).closest('.edit_feedback').submit();
+    });
+
   </script>
-
-
-
-
-
-
 <% end %>
 
 <div class="block">
@@ -45,33 +44,41 @@
 
 <% content_for :sidebar do %>
 
-  <% unless @upcoming_events.blank? %>
-
-    <div class="box box-list">
-      <div class="heading">
-        <a href="#" class="view">View all</a>
-        <h3>Upcoming Activities</h3>
-      </div>
-      <div class="box-content"></div>
-    </div>
-
-
-    <div class="block notice">
-      <h4>Upcoming</h4>
-      <% @upcoming_events.each do |event| %>
-        <div>
-          <strong><%= link_to event.name, event %></strong><br/>
-        </div>
-
-        <div>
-          <%=display_date_time(event.starts_at)%>
-        </div>
-        <br/>
-      <% end %>
-    </div>
-  <% end %>
+  <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_unshown => @upcoming_events_remaining} %>
 
   <% unless @invitations_by_event.blank? %>
+    <div class="box box-list">
+      <div class ="heading">
+        <a href="#" class="view">View all</a>
+        <h3>Outstanding Invitations</h3>
+      </div>
+      <div class="box-content">
+        <ul>
+          <% @invitations_by_event.each do |event, invitation_array| %>
+            <li>
+              <h4><%= link_to event.name, event %></h4>
+              <p>
+                <% event.searchable_event_types.each do |set| %>
+                  <strong><%= set.try(:name) %></strong>
+                <% end %>
+                <em class="date">
+                  <%=event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} @ %l:%M %p")%>
+                </em>
+              </p>
+            </li>
+          <% end %>
+        </ul>
+        <% if @invitations_remaining >  0 %>
+          <div class="more">
+            <%= link_to "And #{@invitations_remaining} more", "#" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+
+
+
     <div class="block notice">
       <h4>Invitations</h4>
       <% @invitations_by_event.each do |event, invitation_array|  %>
@@ -83,5 +90,3 @@
       <% end %>
     </div>
   <% end %>
-
-<% end %>

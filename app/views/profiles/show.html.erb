@@ -50,31 +50,7 @@
 </div>
 
 <% content_for :sidebar do %>
-  <div class="box box-list">
-    <div class="heading">
-      <a href="#" class="view">view in calendar</a>
-      <h3>Upcoming Activities</h3>
-    </div>
-    <div class="box-content">
-      <ul>
-        <% @upcoming_events.each do |event|  %>
-          <li>
-            <h4><%= link_to event.name, event %></h4>
-            <p>
-              <strong><%= event.searchable_event_types.first.try(:name) -%></strong>
-              <em class="date"><%= event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} %Y") -%></em>
-            </p>
-          </li>
-        <%  end %>
-      </ul>
-      <% if @upcoming_events_remaining >  0 %>
-        <div class="more">
-          <%= link_to "And #{@upcoming_events_remaining} more", "#" %>
-        </div>
-      <% end %>
-    </div>
-
-  </div>
+  <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_unshown => @upcoming_events_remaining} %>
 
   <% if !(@common_people.empty? && @connected_rsvps.empty? && @connected_actions.empty?) %>
     <div class="connections">

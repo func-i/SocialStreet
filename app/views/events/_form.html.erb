@@ -88,7 +88,7 @@
 
       var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
       if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-        return str + "&" + $('[name="event_for_create\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
       else
         return str;
          

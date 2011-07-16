@@ -8,11 +8,48 @@
   </div>
 <%- end -%>
 
-<div class="content">
-  <div class="inner">
-    <%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
-      <%= render form %>
-    <% end %>
+<%- content_for :sidebar do -%>
+  <div class="box profile">
+    <%= avatar @user, :size => "100x95" %>
+    <div class="text-content">
+      <span class="info">Facebook: /<a href="#">jSmith</a></span>
+      <h3><%= @user.name %><span class="city">Toronto, ON</span></h3>
+    </div>
   </div>
+<% end %>
+
+
+<div class="profile-general">
+  <%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
+    <div class="row row-photo">
+      <span>User Photo</span>
+      <div class="col">
+        <%= avatar @user, :size => "81x78" %>
+        <strong class="link-download">
+          <a href="#">edit photo</a></strong> TODO
+      </div>
+    </div>
+    <div class="row">
+      <label for="nickname1">Name</label>
+      <%= form.text_field :name, :class => "text", :id => "nickname1" %>
+    </div>
+    <div class="row">
+      <label for="email1">Email</label>
+      <%= form.text_field :email, :class => "text", :id => "email1" %>
+    </div>
+    <div class="row">
+      <span>Sex</span>
+      <div class="col">
+        <div class="row">
+          <input name="sex" id="male1" type="radio" class="radio" />
+          <label for="male1">Male</label>
+        </div>
+        <div class="row">
+          <input name="sex" id="female1" type="radio" class="radio" />
+          <label for="female1">Female</label>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
 

@@ -15,7 +15,7 @@ module ApplicationHelper
   def display_date_time(time)
     time.to_s(:date_with_day) + " at " + time.to_s(:time12h) + " #{Time.zone.now.zone}"
   end
-
+  
   def url_for_event_image(event)
     if event.photo?
       event.photo.thumb.url

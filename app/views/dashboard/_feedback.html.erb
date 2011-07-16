@@ -1,17 +1,17 @@
 <% event = feedback.rsvp.event %>
 
 <div class="post-wrapper">
+  <% form_for feedback do |form| %>
   <div class="post">
     <%= link_to(image_tag(url_for_event_image(event), :size => "50x50", :class => "avatar"), event) %>
     <div class="text">
-      <h3><a href="#"><%= event_type_name event %></a></h3>
-      <span class="time"><%= address_for(event.location) %><span>Yesterday</span></span>
-      <span class="info-attend">Did not attend</span>
+      <h3><a href="#"><%= event.name %></a></h3>
+      <span class="time"><%= address_for(event.location) %> <span>Yesterday - TODO</span></span>
+      <a href="#" class="did-not-attend" value=""><span class="info-attend">Did not attend</span></a>
     </div>
   </div>
   <div class="rate-box">
     <strong>Rate Event:</strong>
-    <% form_for feedback do |form| %>      
       <ul class="star-rating">
         <li class="<%= "active" if feedback.score.to_i >= 1-%>"><a href="#" class="one-star star-click">1</a></li>
         <li class="<%= "active" if feedback.score.to_i >= 2-%>"><a href="#" class="two-stars star-click">2</a></li>
@@ -20,7 +20,7 @@
         <li class="<%= "active" if feedback.score.to_i >= 5-%>"><a href="#" class="five-stars star-click">5</a></li>
       </ul>
       <%= form.hidden_field :score, :class => "hidden-score" -%>
-    <% end  %>
   </div>
+  <% end  %>
 </div>
 
