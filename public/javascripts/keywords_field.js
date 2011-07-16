@@ -2,7 +2,7 @@ function addKeyword(keyword) {
     if ($('#keywords .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0) return false;
     $('<li class="keyword-pill">' +
       keyword +
-      '<a href="#" class="close">close</a>' +
+      '<a href="#" class="close remove-parent" data-parent-selector = ".keyword-pill">close</a>' +
       '<input type="hidden" name="event[searchable_attributes][keywords][]" value="' +keyword + '" />' +
       '</li>'
     ).hide().appendTo($('#keywords')).fadeIn('slow');

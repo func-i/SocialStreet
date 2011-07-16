@@ -26,16 +26,47 @@ $(function() {
         return false;
     });
 
-    $('.popup-modal').live('click', function() {
+    $('.popup-modal').live('click', function() {       
         var divId = '#' + $(this).attr('popup-div-id');
         $(divId).show();
+
+        if(document.getElementById("TB_overlay") === null){
+            $("body").append("<div id='TB_overlay'></div>");
+            $("#TB_overlay").addClass("TB_overlayBG");
+            $("#TB_overlay").click(function(){
+                removeModal($(divId))
+            });
+        }
+
+        
+        if($(divId).find('.row-map').length > 0)
+            google.maps.event.trigger(map, 'resize');
+
         return false;
     });
 
     $('.btn-close').live('click', function() {
-       $(this).closest('.heading').closest('.pop-up1').hide();
+        removeModal(this);
+    });
+
+    $('.link-close').live('click', function() {
+        removeModal(this);
     });
 })
+
+function removeModal(element) {
+    var ele;
+
+    if($(element).hasClass('.pop-up'))
+        ele = $(element)
+    else
+        ele = $(element).closest('.pop-up')
+
+    $(ele).fadeOut("fast", function() {
+        $('#TB_overlay').trigger("unload").unbind().remove();
+    }); 
+}
+
 
 $.extend({
     getUrlVars: function(){

@@ -10,9 +10,8 @@
   <ul id="keywords" class="keyword">
     <% (@event_for_create.searchable.keywords || []).each do |keyword| %>
       <% unless keyword.blank? %>
-        #TODO - Fix javascript
         <li class="keyword-pill">
-          <%= keyword %><a href="#" class="close">close</a>
+          <%= keyword %><%= link_to("close", '#', :class => "close remove-parent", "data-parent-selector" => ".keyword-pill") %>
           <input type="hidden" name="event[searchable_attributes][keywords][]" value="<%= keyword %>" />
         </li>
       <% end %>
@@ -30,7 +29,7 @@
       <% end %>
     <% end %>
   </div>
-  <div id="event-location-map" class="row-map">
+  <div id="event-location-map" class="row-map" style="height:300px">
     <!--img width="497" height="229" src="images/img-map.png" alt="image description"/-->
   </div>
 
@@ -38,16 +37,23 @@
     <span>When?</span>
 
     <%= form.fields_for :searchable do |searchable_fields| %>
-      #TODO
-      <div class="col">
-        <span><label for="date">Start Date:</label></span>
-
-      </div>
-      <div class="col">
-        <span><label for="time">Start Time:</label></span>
-      </div>
-      <a href="#">+ Add an End Date and Time</a>
-    <%end%>
+      <%= searchable_fields.fields_for :searchable_date_ranges do |date_range_fields| %>
+        <div class="col">
+          <span><label for="date">Start Date:</label></span>
+          <%= date_range_fields.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+        </div>
+        <div class="col">
+          <span><label for="time">Start Time:</label></span>
+        </div>
+        <div class="col" id="EndDateTime" style="display:none">
+          <%= date_range_fields.datetime_select :ends_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
+    <%#= form.hidden_field :exclude_end_date, :id => 'exclude_end_date', :value=>'1'%>
+          <br/>
+          <span><label for="time">End Date and time (Timezone: <%= Time.zone.now.zone %>)</label></span>
+        </div>
+        <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle(); $('#exclude_end_date').val(0)" %>
+      <%  end %>
+    <%- end -%>
   </div>
 
   <div class="title-row">
@@ -55,70 +61,70 @@
   </div>
 
   <div class="row-btn">
-    <a href="#" class="btn"><span>Save</span></a>
-    or <a href="#">cancel</a>
+    <%= submit_tag "Save", :class => "btn" -%>    
+    or <a href="#" class="link-close">cancel</a>
   </div>
 </fieldset>
 
 <% content_for :end_of_body do %>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script>
-  var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
-  var keywordsParamKey  = "event[searchable_attributes][keywords][]";
-  var locationSearchURL = '<%= locations_path(:format => :json) %>';
-</script>
-<%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared', 'marker_clusterer' %>
-<% if @event_for_create.location.try(:geo_located?) %>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
   <script>
-    $(function() {
-      placeMarker(new google.maps.LatLng(<%= @event_for_create.location.latitude %>, <%= @event_for_create.location.longitude %>), $('.location-name-field').val());
-    });
+    var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
+    var keywordsParamKey  = "event[searchable_attributes][keywords][]";
+    var locationSearchURL = '<%= locations_path(:format => :json) %>';
   </script>
-<%- elsif @event_for_create.new_record? -%>
-  <script>
+  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared', 'marker_clusterer' %>
+  <% if @event_for_create.location.try(:geo_located?) %>
+    <script>
+      $(function() {
+        placeMarker(new google.maps.LatLng(<%= @event_for_create.location.latitude %>, <%= @event_for_create.location.longitude %>), $('.location-name-field').val());
+      });
+    </script>
+  <%- elsif @event_for_create.new_record? -%>
+    <script>
 
-    var refreshTimer = null;
+      var refreshTimer = null;
 
-    function getSearchParams() {
+      function getSearchParams() {
 
-      var bounds = map.getBounds();
-      ne = bounds.getNorthEast();
-      sw = bounds.getSouthWest();
-      c = bounds.getCenter();
+        var bounds = map.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
 
-      var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-      else
-        return str;
+        var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+        if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+          return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+        else
+          return str;
          
-    }
-
-    function refreshResults() {
-      if (refreshTimer) {
-        clearInterval(refreshTimer);
-        delete refreshTimer;
       }
-      refreshTimer = setTimeout(function() {
-        $.getScript('load_events' + getSearchParams());
-      }, 250);
-    }
 
-    function createEventMarker(location, title) {
+      function refreshResults() {
+        if (refreshTimer) {
+          clearInterval(refreshTimer);
+          delete refreshTimer;
+        }
+        refreshTimer = setTimeout(function() {
+          $.getScript('/events/load_events' + getSearchParams());
+        }, 250);
+      }
 
-      var marker = new google.maps.Marker({
-        position: location,
-        title: title
-      });
+      function createEventMarker(location, title) {
 
-      google.maps.event.addListener(marker, 'click', function() {
-        //selectMarker(marker, true); //Commented out until proper functionality is determined
-      });
-      markers.push(marker);
-    }
+        var marker = new google.maps.Marker({
+          position: location,
+          title: title
+        });
 
-  </script>
-<% end %>
+        google.maps.event.addListener(marker, 'click', function() {
+          //selectMarker(marker, true); //Commented out until proper functionality is determined
+        });
+        markers.push(marker);
+      }
+
+    </script>
+  <% end %>
 
 
 <% end %>
