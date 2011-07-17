@@ -1,13 +1,13 @@
 <% user = invitation.to_user %>
 <% if user %>
-  <%= render 'user', :user => user, :pre_existing => !invitation.new_record? %>
+  <%= render 'invitations/user', :user => user, :pre_existing => !invitation.new_record? %>
 <% else %>
-  <div class="user email-only">
+  <!--<div class="user email-only">
 
-    <div class="avatar"><%= image_tag "/images/avatar.gif" %></div>
-    <span class="name"><%= invitation.email %></span>
+    <div class="avatar"><%#= image_tag "/images/avatar.gif" %></div>
+    <span class="name"><%#= invitation.email %></span>
     
     <div class="clear"></div>
 
-  </div>
+  </div>-->
 <% end %>

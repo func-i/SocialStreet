@@ -1,10 +1,10 @@
-$('#invitation-user-list').html('<%= escape_javascript render(:partial => 'user_results') %>');
+$('#invitation-user-list').html('<%= escape_javascript render(:partial => 'invitations/user_results') %>');
 $('#invitation-user-list').pageless({
 container: '#invitation-user-list',
 totalPages: <%= @num_pages -%>,
 url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
 loaderMsg: 'Loading more results',
-params: $('form.search-params').serializeObject(),
+params: $('form.search-params-invitations').serializeObject(),
 currentPage: <%= params[:page] || 1 %>
 });
 

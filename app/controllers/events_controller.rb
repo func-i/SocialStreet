@@ -22,9 +22,12 @@ class EventsController < ApplicationController
 
     @actions = @actions.limit(@per_page).offset(@offset)
 
+    # => Administrator objects
     @rsvps = @event.rsvps.all
     @connections = current_user.connections.most_relevant_first.all
     @administrator_rsvps = @rsvps.select &:administrator?
+
+    load_invitations_objects
 
 
     if request.xhr? && params[:page] # pagination request
@@ -162,5 +165,50 @@ class EventsController < ApplicationController
   def prepare_for_form
     load_event_types
   end
+
+  def load_invitations_objects
+    
+    if current_user.fb_friends_imported?
+      load_connections
+
+      @event.action.user_list.each do |user|
+        if user != current_user && current_user.invitations.for_event(@event).to_user(user).blank?
+          @rsvp.invitations.build :event => @event, :user => current_user, :to_user => user
+        end
+      end unless @event.action.blank?
+
+      @invitations = @rsvp.invitations
+     
+    else
+      redirect_to import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @rsvp))
+    end
+  end
+
+  def load_connections
+
+    # => TODO: Add search user search functionality to endless pagination.
+
+    @per_page = 10
+    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+
+    # => TODO: see if you can take that inline string notation out
+    @users = User.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
+      joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
+      where("users.id <> ?", current_user.id).
+      where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
+      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
+      order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST")
+
+    @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
+    @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
+
+    @users = @users.
+      limit(@per_page).
+      offset(@offset)
+
+    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+
+  end
+
 
 end

@@ -1,4 +1,4 @@
-<%= render 'invitation_tool' %>
+<%= render 'invitations/invitation_tool' %>
 
 <% content_for :end_of_body do %>
   <%= javascript_include_tag 'jquery.pageless' -%>
@@ -9,7 +9,7 @@
         totalPages: <%= @num_pages -%>,
         url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
         loaderMsg: 'Loading more results',
-        params: $('form.search-params').serializeObject(),
+        params: $('form.search-params-invitations').serializeObject(),
         currentPage: <%= params[:page] || 1 %>
       });
     });
