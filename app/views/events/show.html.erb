@@ -9,7 +9,8 @@
           <% if @event.user == current_user %>
             or
             <strong>
-              <%= link_to "+add administrators", [:new, @event, :administrator] %>
+              <%= link_to_popup_modal "+add administrators", "add-administrators" -%>
+        <%#= link_to "+add administrators", [:new, @event, :administrator] %>
             </strong>
           <% end %>
         </div>
@@ -90,7 +91,9 @@
   </div>
   <div class="keyword">
     <%- @event.searchable_event_types.each do |set| -%>
-      <span class="name"><%= set.name %></span>
+      <%= link_to "#", :onclick => "return false;" do-%>
+        <span><%= set.name %></span>
+      <%- end -%>
     <%- end -%>
   </div>
 </div>
@@ -170,6 +173,37 @@
   </div>
 
 <% end %>
+
+
+<%= content_for :popup_modals do -%>
+  <div id="add-administrators" class="pop-up pop-up-modal" style="display:none;">
+    <div class="pop-up1 pop-up2">
+      <div class="heading">
+        <strong>Add Administrators</strong>
+        <%= link_to "close", '#', :class => "btn-close" -%>
+      </div>
+      <div class="pop-up1-content">
+        <%= render :template => "administrators/new" -%>
+      </div>
+    </div>
+    <%= form_tag event_administrators_path(@event), :method => :post, :class => "admin-form" do  %>
+      <div class="day-detail friend">
+        <div class="heading">
+          <strong class="day"><%= @administrator_rsvps.count -%></strong>
+          <span class="day-info">Administrators</span>
+        </div>
+        <div class="friends-list-holder">
+          <ul class="selected-list">
+            <% @administrator_rsvps.each do |administrator_rsvp| %>
+              <%= render 'administrators/administrator_rsvp', :rsvp => administrator_rsvp %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <%- end -%>
+  </div>
+<%- end -%>
+
 
 <% content_for :end_of_body do %>
 

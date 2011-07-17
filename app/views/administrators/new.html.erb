@@ -1,131 +1,44 @@
 <style>
-  .user {
-    float: left;
-    margin-right: 5px;
-    width: 95px;
-    height: 80px;
-    border: 1px solid #EEE;
-    border-radius: 5px;
-    padding-top: 10px;
-    margin-bottom: 5px;
-
-  }
   .user.selected {
     background-color: #DDD;
   }
-  .user-list {
-    width: 430px;
-    float:left;
-    border: 1px solid blue;
-    border-radius: 10px;
-    padding: 10px;
-    height: 400px;
+  .user-list {   
     overflow: scroll;
   }
-  .selected-list {
-    width: 300px;
-    float: left;
-    margin-left: 10px;
-    border: 1px solid green;
-    border-radius: 10px;
-    padding: 10px;
-    height: 400px;
+  .selected-list {    
     overflow: scroll;
   }
-  .selected-list .user {
-    width: 100%;
-    text-align: left;
-    height: 65px;
-  }
-  .selected-list .user .avatar {
-    float: left;
-    margin-left: 10px;
-  }
-  .selected-list .user .name {
-    float: left;
-    margin-top: 5px;
-    margin-left: 10px;
-  }
-  .selected-list .user.selected {
-    background-color: #EEE;
-  }
-  .user-list .user {
-    text-align: center;
-    cursor: pointer;
-  }
-  .user-list .user p {
-    margin: auto auto;
 
-  }
   .remove-btn {
     display: none;
   }
   .selected-list .remove-btn {
-    display: block;
-    float: right;
-    margin-right: 10px;
+    display: block;    
   }
-
-  .search-bar {
-    margin-bottom: 10px;
-    border: 1px solid red;
-    border-radius: 5px;
-    width: 408px;
-    padding: 10px;
-  }
-  .search-bar input.search-field {
-    height: 14px;
-    border-radius: 10px;
-    padding: 4px;
-    width: 200px;
-  }
-
-
-
 </style>
 
-<div class="block">
-  <div class="content">
-    <h2 class="title">Add Organizers</h2>
-
-    <div class="inner">
-
-      <div class="user-searcher">
-
-        <div class="search-bar">
-          <form action="" method="GET">
-            <input type="text" class="search-field" placeholder="Name or email" />
-          </form>
-        </div>
-
-        <div class="user-list">
-          <% @rsvps.each do |rsvp| %>
-            <%= render 'user', :user => rsvp.user, :pre_existing => rsvp.administrator? %>
-          <% end %>
-          <% @connections.each do |connection| %>
-            <%= render 'user', :user => connection.to_user %>
-          <% end %>
-
-          <div class="clear"></div>
-        </div>
-
-        <%= form_tag event_administrators_path(@event), :method => :post, :class => "form" do  %>
-          <div class="selected-list">
-            <% @administrator_rsvps.each do |administrator_rsvp| %>
-              <%= render 'administrator_rsvp', :rsvp => administrator_rsvp %>
-            <% end %>
-            <div class="clear"></div>
-          </div>
+<div class="form-holder">
+  <div class="row">
+    <form action="" method="GET">
+      <input type="text" class="search-field text text1" placeholder="Friends or email" />
+    </form>
+  </div>
+  <p><strong>Check as many friends or enter one email at a time</strong></p>
+</div>
+<div class="users-holder">
+  <div class="users-list">
+    <div class="ul1 user-list">
+      <ul>
+        <% @rsvps.each do |rsvp| %>
+          <%= render 'administrators/user', :user => rsvp.user, :pre_existing => rsvp.administrator? %>
         <% end %>
-
-        <div class="clear"></div>
-
-      </div>
-
-      <%= render 'shared/form_submit_button' %>
-
+        <% @connections.each do |connection| %>
+          <%= render 'administrators/user', :user => connection.to_user %>
+        <% end %>
+      </ul>
     </div>
   </div>
+  <%= render 'shared/form_submit_button' %>
 </div>
 
 <script>
@@ -162,8 +75,8 @@
 
     
 
-    $('button.button').click(function() {
-      $('form.form').submit();
+    $('input.button').click(function() {
+      $('form.admin-form').submit();
     });
   });
 

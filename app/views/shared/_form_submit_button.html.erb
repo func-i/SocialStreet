@@ -1,6 +1,4 @@
-<div class="group navform wat-cf">
-  <button class="button" type="submit">
-    <img src="/images/web-app-theme/icons/tick.png" alt="Save" /> Save
-  </button>
-  <%= link_to(image_tag('web-app-theme/icons/cross.png', :alt => "Cancel") + " Cancel", :back, :class => "button") %>
+<div class="row-btn">
+  <%= submit_tag "Save", :class => "btn button" -%>
+  or <a href="#" class="link-close">cancel</a>
 </div>

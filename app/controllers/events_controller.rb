@@ -22,6 +22,11 @@ class EventsController < ApplicationController
 
     @actions = @actions.limit(@per_page).offset(@offset)
 
+    @rsvps = @event.rsvps.all
+    @connections = current_user.connections.most_relevant_first.all
+    @administrator_rsvps = @rsvps.select &:administrator?
+
+
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
     end

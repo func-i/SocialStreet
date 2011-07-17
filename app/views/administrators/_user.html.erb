@@ -1,13 +1,13 @@
 <% pre_existing ||= (user == current_user || !@event.user == user) %>
 
-<div class="user <%= 'selected' if pre_existing %> <%= 'cannot-remove' if (user == current_user || !@event.user == user) %>" data-user-id="<%= user.id %>">
 
-  <div class="avatar"><%= image_tag user.avatar_url %></div>
-  <span class="name"><%= user.name %></span>
-  <%= link_to '[X]','#', :class=>"remove-btn" unless (user == current_user || !@event.user == user) %>
-
-  <div class="clear"></div>
-
+<li class="user <%= 'selected' if pre_existing %> <%= 'cannot-remove' if (user == current_user || !@event.user == user) %>" data-user-id="<%= user.id %>">
+  <%= avatar(user) %>
+  <div class="text-holder">
+    <strong class="ttl"><%= user.name %></strong>
+  </div>
+  <%= link_to '[X]','#', :class=>"close remove-btn" unless (user == current_user || !@event.user == user) %>
   <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
+</li>
 
-</div>
+

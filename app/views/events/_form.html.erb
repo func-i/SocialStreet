@@ -42,14 +42,9 @@
           <span><label for="date">Start Date:</label></span>
           <%= date_range_fields.datetime_select :starts_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
         </div>
-        <div class="col">
-          <span><label for="time">Start Time:</label></span>
-        </div>
         <div class="col" id="EndDateTime" style="display:none">
-          <%= date_range_fields.datetime_select :ends_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
-    <%#= form.hidden_field :exclude_end_date, :id => 'exclude_end_date', :value=>'1'%>
-          <br/>
           <span><label for="time">End Date and time (Timezone: <%= Time.zone.now.zone %>)</label></span>
+          <%= date_range_fields.datetime_select :ends_at, :start_year => Time.now.year, :minute_step => 15 %> <%= Time.zone.now.zone %>
         </div>
         <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle(); $('#exclude_end_date').val(0)" %>
       <%  end %>
@@ -57,11 +52,29 @@
   </div>
 
   <div class="title-row">
-    <p><a href="#">+ Title, Description, Event Icon</a></p>
+    <p><%= link_to_function "+ Title, Description, Event Icon", "$('#row-title').toggle()" -%></p>
+  </div>
+
+  <div id="row-title" style="display:none;">
+    <div class="col">
+      <label for="title">Title</label>
+      <%= form.text_field :name, :rows => 10, :cols => 80, :class => "text_field text" %>
+    </div>
+
+    <div class="col">
+      <label class="label">Description</label>
+      <%= form.text_area :description, :rows => 10, :cols => 80, :class => "text_area text" %>
+    </div>
+
+    <div class="col">
+      <label class="label">Image</label>
+      <%= image_tag(@event_for_create.photo.thumb.url) if @event_for_create.photo? %>
+      <%= form.file_field :photo %>
+    </div>
   </div>
 
   <div class="row-btn">
-    <%= submit_tag "Save", :class => "btn" -%>    
+    <%= submit_tag "Save", :class => "btn" -%>
     or <a href="#" class="link-close">cancel</a>
   </div>
 </fieldset>
