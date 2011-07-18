@@ -47,7 +47,7 @@ class InvitationsController < ApplicationController
         create_invitation(@event, @rsvp, current_user, nil, email)
       end
     end unless params[:emails].blank?
-
+    
     params[:user_ids].each do |user_id|
       if user = User.find_by_id(user_id)
         create_invitation(@event, @rsvp, current_user, user)

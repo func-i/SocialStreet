@@ -1,11 +1,14 @@
 <% pre_existing ||= false  %>
+<% are_invited ||= false  %>
 
 
 <li class="user-invitation <%= 'selected cannot-remove' if invited?(user) %>" data-user-id="<%= user.id %>">
-  <%= avatar(user) %>
+  <%= avatar(user, :exclude_link => true) %>
   <div class="text-holder">
     <strong class="ttl"><%= user.name %></strong>
   </div>
-  <%= link_to '[X]','#', :class=>"close remove-btn" unless (user == current_user || !@event.user == user) %>
-  <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
+  <% unless pre_existing %>
+    <%= link_to '[X]','#', :class=>"close remove-btn" %>
+    <input type="hidden" name="user_ids[]" value="<%= user.id %>"/>
+  <% end %>
 </li>

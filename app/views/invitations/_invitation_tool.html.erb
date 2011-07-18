@@ -42,6 +42,9 @@
     var $userList = $('.user-list');
     var lastQuery = '';
 
+    //User clicks on a user profile in the user list.
+    //If not selected: 1) Highlight 2) Add to selected user list 3) Update counter
+    //...if selected, do opposite of this
     $('.user-list .user-invitation').live('click', function(e) {
       var $this = $(this);
       var userId = $this.data('user-id');
@@ -49,19 +52,26 @@
       // make sure it's removeable before removing the invite
       if ($this.hasClass('selected') && !$this.hasClass('cannot-remove')) {
         $this.removeClass('selected');
-        $selectedListInvitations.find('.user[data-user-id="'+userId+'"]').remove();
+        $selectedListInvitations.find('[data-user-id="'+userId+'"]').remove();
+        $invitationsCount.text(parseInt($invitationsCount.text()) - 1)
       } else if (!$this.hasClass('selected')) {
         $this.addClass('selected');
         $selectedListInvitations.prepend($this.clone());
+        $invitationsCount.text(parseInt($invitationsCount.text()) + 1)
       }
     });
+
+    //User click on the x in the selected user list.
+    //1) Remove from list 2)Unhighlight from main user list 3) decrease counter
     // Need to use .live() b/c elements in selected-list are dynamically added
     // So they may not be there at DOM ready time
     $('.selected-list-invitations .user-invitation .remove-btn').live('click', function(e) {
       var $user = $(this).closest('.user-invitation');
       var userId = $user.data('user-id');
+
       $user.remove();
-      $userList.find('.user[data-user-id="'+userId+'"]').removeClass('selected');
+      $userList.find('[data-user-id="'+userId+'"]').removeClass('selected');
+      $invitationsCount.text(parseInt($invitationsCount.text()) - 1)
       return false;
     });
 
@@ -80,6 +90,7 @@
 
     
     var $selectedListInvitations = $('.selected-list-invitations');
+    var $invitationsCount = $('.invitation-count');
 
     function addEmail() {
 
@@ -89,14 +100,19 @@
       // make sure it's a valid email that was not already included in the list
       if (isEmail(email) && $selectedListInvitations.find('input[value="'+email+'"]').size() == 0) {
         $input.val('');
-        var u = $('<div class="user email-only">' +
-          '<div class="avatar"><img src="/images/avatar.gif" alt="Avatar"></img></div>' +
-          '<span class="name">'+email+'</span>' +
-          '<a href="#" class="remove-btn">[X]</a>' +
-          '<div class="clear"></div>' +
-          '<input type="hidden" name="emails[]" value="'+email+'"/>' +
-          '</div>');
+        
+        var u = $('<li class="user-invitation selected email-only">' +
+          '<img alt="Picture" height="30" width="30" src="/images/avatar.gif" Title="Email"></img>' + 
+          '<div class="avatar"><img' +
+          '<div class="text-holder">' +
+          '<strong class="ttl">' + email + '</strong>' +
+          '</div>' +
+          '<a href="#" class="close remove-btn">[X]</a>' +
+          '<input type="hidden" name="emails[]" value="' + email + '"/>' +
+          '</li>');
+
         $selectedListInvitations.prepend(u);
+        $invitationsCount.text(parseInt($invitationsCount.text()) + 1)
       }
     }
 
@@ -108,10 +124,10 @@
         refreshResults();
     });    
 
-    $('button.button').click(function() {
-      $('form.form').submit();
+    $('input.button').click(function() {
+      $('form.invite-form').submit();
     });
-    
+
   });
 
   function isEmail(string) {

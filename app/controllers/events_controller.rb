@@ -24,7 +24,9 @@ class EventsController < ApplicationController
 
     # => Administrator objects
     @rsvps = @event.rsvps.all
+
     @connections = current_user.connections.most_relevant_first.all
+
     @administrator_rsvps = @rsvps.select &:administrator?
 
     load_invitations_objects
@@ -188,7 +190,7 @@ class EventsController < ApplicationController
 
     # => TODO: Add search user search functionality to endless pagination.
 
-    @per_page = 10
+    @per_page = 24
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
 
     # => TODO: see if you can take that inline string notation out

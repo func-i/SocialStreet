@@ -473,7 +473,7 @@ form, fieldset {
     padding: 8px 0 0 3px;
     width: 640px;
 }
-.profile .keyword a {
+.profile .keyword span {
     background: #ccc;
     border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -483,10 +483,7 @@ form, fieldset {
     font: bold 15px/27px Arial, Helvetica, sans-serif;
     margin: 0 2px 0 0;
     padding: 0 13px;
-    cursor: pointer;
 }
-.profile .keyword a:hover { text-decoration: none; }
-.profile .keyword a:hover span { text-decoration: underline; }
 .profile img {
     float: left;
     margin: 0 12px 0 0;
