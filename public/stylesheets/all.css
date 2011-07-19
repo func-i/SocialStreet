@@ -912,6 +912,10 @@ form, fieldset {
 	overflow: hidden;
 	position: relative;
 }
+.feedback .hidden-record {
+	display: none;
+}
+
 .feedback .post {
 	border-bottom: 1px solid #d2e9f3;
 	padding: 5px 95px 13px 0;
@@ -1238,12 +1242,12 @@ form, fieldset {
 	position: absolute;
 	top: 78px;
 	width: 1001px;
-	z-index: 10;
+	z-index: 102;
 }
 .pop-up-calendar {
 	float: left;
 	position: relative;
-	z-index: 2;
+	z-index: 102;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -1481,7 +1485,7 @@ form, fieldset {
 	margin: 0 0 0 -342px;
 	top: 76px;
 	position: absolute;
-	z-index: 2;
+	z-index: 102;
 	width: auto;
 }
 .pop-up1 {

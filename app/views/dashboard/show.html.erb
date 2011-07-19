@@ -1,8 +1,8 @@
 <% unless @feedbacks.blank? %>
 
   <div class="feedback">
-    <% @feedbacks.each do |feedback| %>
-      <%= render 'feedback', :feedback => feedback %>
+    <% @feedbacks.each_with_index do |feedback, index| %>
+      <%= render 'feedback', :feedback => feedback, :display_record => (index < 5) %>
     <% end %>
   </div>
 
@@ -10,12 +10,28 @@
     $('.star-click').click(function() {
       $(this).closest('.star-rating').siblings('.hidden-score').val($(this).html());
       $(this).closest('.star-rating').closest('.edit_feedback').submit();
+
+      showNextRecord($(this));
+
+      $(this).closest('.feedback-wrapper').remove();
+
       return false;
     });
 
     $('.did-not-attend').click(function() {
       $(this).closest('.edit_feedback').submit();
+
+      showNextRecord($(this));
+
+      $(this).closest('.feedback-wrapper').remove();
     });
+
+    function showNextRecord(t){
+      var u = $(t).closest('.feedback-wrapper').siblings(".hidden-record");
+      if(u != null && u[0] != null){
+        $(u[0]).removeClass('hidden-record')
+      }
+    }
 
   </script>
 <% end %>

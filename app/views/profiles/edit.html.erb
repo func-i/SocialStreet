@@ -112,8 +112,8 @@
 <div id="events" class="events-holder events tab-content" style="display:none">
   <table>
     <tbody>
-      <% if @event_where_administrator.blank? %>
-      <h4>You are not currently administrator of any events</h4>
+      <% if @events_where_administrator && @events_where_administrator.empty? %>
+        <h4>You are not currently administrator of any events</h4>
     <% else %>
       <% @events_where_administrator.each do |event| %>
         <tr>
@@ -126,22 +126,22 @@
             <strong><%= event.starts_at.strftime("%B %d") %></strong>
           </td>
           <td>
-            <% if event.finishes_at && event.end_date != event.start_date %>
-              <span>End Day:</span>
-              <strong><%= event.finishes_at.strftime("%B %d") %></strong>
-            <% end %>
-          </td>
-          <td>
             <span>Start Time:</span>
             <strong><%= event.starts_at.strftime("%l:%M %p") %></strong>
           </td>
-          <td>
-            <% if event.finishes_at %>
+          <% if event.end_date && event.end_date != event.start_date %>
+            <td>
+              <span>End Day:</span>
+              <strong><%= event.finishes_at.strftime("%B %d") %></strong>
+            </td>
+          <% end %>
+          <% if event.finishes_at %>
+            <td>
               <span>End Time:</span>
               <strong><%=  event.finishes_at.strftime("%l:%M %p") %></strong>
-            <% end %>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     <% end %>
     </tbody>
