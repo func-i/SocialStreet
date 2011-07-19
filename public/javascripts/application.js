@@ -38,6 +38,13 @@ $(function() {
             });
         }
 
+        if( $(this).attr('action_id') != null)
+        {
+            //this is for creating event from comment section
+            var u = $(divId).find('#event_action_id')
+            u.val($(this).attr('action_id'))
+        }
+
         
         if($(divId).find('.row-map').length > 0)
             google.maps.event.trigger(map, 'resize');

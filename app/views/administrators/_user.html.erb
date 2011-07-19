@@ -2,7 +2,7 @@
 
 
 <li class="user <%= 'selected' if pre_existing %> <%= 'cannot-remove' if (user == current_user || !@event.user == user) %>" data-user-id="<%= user.id %>">
-  <%= avatar(user) %>
+  <%= avatar(user, :exclude_link => true) %>
   <div class="text-holder">
     <strong class="ttl"><%= user.name %></strong>
   </div>
