@@ -16,17 +16,17 @@ SocialStreet::Application.configure do
 
 # Uncomment this code below and change the 2 boolean flags to test email delivery through Gmail from localhost - KV
 
-#  config.action_mailer.delivery_method = :smtp
-#  config.action_mailer.smtp_settings = {
-#    :address              => "smtp.gmail.com",
-#    :port                 => 587,
-#    :domain               => 'socialstreet.com',
-#    :user_name            => 'notify@socialstreet.com',
-#    :password             => 'ssP@ssw0rd',
-#    :authentication       => 'plain',
-#    :enable_starttls_auto => true  }
-  config.action_mailer.perform_deliveries = false # change to true for testing emails
-  config.action_mailer.raise_delivery_errors = false # change to true for testing emails
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => 'socialstreet.com',
+    :user_name            => 'notify@socialstreet.com',
+    :password             => 'ssP@ssw0rd',
+    :authentication       => 'plain',
+    :enable_starttls_auto => true  }
+  config.action_mailer.perform_deliveries = true # change to true for testing emails
+  config.action_mailer.raise_delivery_errors = true # change to true for testing emails
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

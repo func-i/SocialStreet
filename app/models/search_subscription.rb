@@ -46,27 +46,28 @@ class SearchSubscription < ActiveRecord::Base
   scope :weekly, where(:frequency => @@frequencies[:weekly])
 
   def matches_date_ranges?(date_ranges)
-    !!searchable.searchable_date_ranges.detect { |dr| dr.overlapping_with? date_ranges }
+    searchable.searchable_date_ranges.blank? || !!searchable.searchable_date_ranges.detect { |dr| dr.overlapping_with? date_ranges }
   end
 
   def self.matching_search_comment(comment)
-    matching_searchable(comment.searchable)
+    matching_searchable(comment.searchable, comment.body)
   end
 
-  def self.matching_searchable(searchable)
-    type_ids = searchable.event_type_ids
-
+  def self.matching_searchable(searchable, text_to_match_keywords = null)
     bounds = searchable.lat_lng_bounds
+
     searchables = Searchable.with_only_subscriptions.
-      with_event_types(type_ids).
-      intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).all.
-      select { |s| searchable.searchable_date_ranges.empty? || s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all) }
-    
+      with_keywords_that_match_text_or_keywords(text_to_match_keywords, searchable).
+      intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).
+      all.select { |s| s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all)}
+
     searchables.collect &:search_subscription
   end
 
   def self.matching_event(event)
-    matching_searchable(event.searchable)
+    text = event.description + " " + event.name
+
+    matching_searchable(event.searchable, text)
   end
 
   def self.new_from_params(params)

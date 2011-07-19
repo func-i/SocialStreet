@@ -107,7 +107,7 @@ class ExploreController < ApplicationController
 
     # => By default only show events today and in the future unless a date search is specified.
     if from_date.blank? && to_date.blank?
-      #search_object = search_object.on_or_after_date(Date.today)
+      search_object = search_object.on_or_after_date(Date.today)
     else
       search_object = search_object.on_or_after_date(from_date) unless from_date.blank?
       search_object = search_object.on_or_before_date(to_date) unless to_date.blank?

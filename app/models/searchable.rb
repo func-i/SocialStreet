@@ -47,6 +47,33 @@ class Searchable < ActiveRecord::Base
     end
   }
 
+  scope :with_keywords_that_match_text_or_keywords, lambda { |text, searchable|
+    if !text.blank? || searchable.searchable_event_types.count > 0
+      chain = joins("INNER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
+      chain = chain.joins("INNER JOIN event_types AS et ON set.event_type_id = et.id")
+      query = []
+      args = {}
+
+      searchable.searchable_event_types.each_with_index{ |k,i|
+          query << "LOWER(set.name) LIKE :key#{i}
+            OR set.event_type_id = :key_b#{i}"
+
+        args["key#{i}".to_sym] = "%#{k.name.downcase}%"
+        args["key_b#{i}".to_sym] = "#{k.event_type_id}"
+      }
+
+      text_array = text.split(' ') #TODO - this doesn't work when the keywords are multiple words (ex: Ping Pong)
+      text_array.each_with_index { |k,i|
+        query << "LOWER(set.name) LIKE :key#{i}
+          OR LOWER(et.name) LIKE :key#{i}"
+
+        args["key#{i}".to_sym] = "%#{k.downcase}%"
+      }
+      
+      chain.where(query.join(" OR "), args)
+    end
+  }
+
   scope :on_or_after_date, lambda {|date|
     date = Time.zone.parse(date) if date.is_a? String
     includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at >= ?', date.beginning_of_day) if date
@@ -244,7 +271,10 @@ class Searchable < ActiveRecord::Base
       params[:keywords].each do |keyword|
         # if the event_type is already in the db, then link the near searchable_event_type record to it
         # otherwise, have it create a new one
-        event_type = EventType.find_by_name(keyword)
+        lower_keyword = keyword.downcase
+
+        event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
+
         attrs[:searchable_event_types_attributes] << { 
           :event_type_id => event_type.try(:id),
           :name => keyword
@@ -259,12 +289,26 @@ class Searchable < ActiveRecord::Base
     searchable_event_types.collect &:name
   end
 
+  def searchable_keywords
+    keywords = []
+
+    searchable_event_types.each do |set|
+      keywords << set.name
+      keywords << set.event_type.name if set.event_type
+    end
+
+    return keywords.uniq_by{|k| k.downcase}
+  end
+
   def keywords=(keywords_array)
     keywords_array.each do |keyword|
       unless keyword.blank?
         # if the event_type is already in the db, then link the near searchable_event_type record to it
         # otherwise, have it create a new one
-        event_type = EventType.find_by_name(keyword) # could be nil
+        lower_keyword = keyword.downcase
+
+        event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
+
         self.searchable_event_types.build({
             :event_type => event_type,
             :name => keyword
