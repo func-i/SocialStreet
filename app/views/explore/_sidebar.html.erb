@@ -1,83 +1,154 @@
 <% content_for :sidebar do %>
   <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
-
-
-    <div class="block notice">
-      <h4>Keywords</h4>
-
-      <%= text_field_tag 'q', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit", :placeholder => "Enter keywords here..." %>
-      <ul id="keywords">
-        <% (params[:keywords] || []).each do |keyword| %>
-          <li class="keyword-pill">
-            <input type="hidden" name="keywords[]" value="<%= keyword %>" />
-            <%= keyword %>
-            <%= link_to(image_tag('web-app-theme/icons/cross.png', :alt => "[X]"), '#', :class => "remove-parent", "data-parent-selector" => ".keyword-pill") %>
-          </li>
-        <% end %>
-      </ul>
-      <div class="clear"></div>
-    </div>
-
-    <div class="block notice" style="position:relative">
-      <div id="location-not-found">Not Found</div>
-      <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit", :placeholder => "Move map to ..." %>
-      <div id="location-map" style="width:100%;height:300px;"></div>
-      <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
-      <%= hidden_field_tag 'map_center', params[:map_center] %>
-      <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
-    </div>
-
-    <div class="block notice">
-      <h4>Date Filtering</h4>
-      <%= label_tag 'from_date', 'From', :class => "label" %>
-      <%= text_field_tag 'from_date', params[:from_date], :class => "text_field" %>
-
-      <%= label_tag 'to_date', 'To', :class => "label" %>
-      <%= text_field_tag 'to_date', params[:to_date], :class => "text_field" %>
-
-      <%= label_tag 'date_range_inclusive', 'Inclusive?', :class => "label" %>
-      <%= check_box_tag 'inclusive', params[:inclusive], params[:inclusive]%>
-
-      <%= label_tag 'days', 'Days of the Week', :class => "label" %>
-      <div style="margin-bottom:10px">
-        <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
-        <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
-        <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
-        <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
-        <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
-        <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
-        <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
+    <div class="box map">
+      <div class="heading">
+        <fieldset class="search-address">
+          <label for="where1">Where?</label>
+          <%= text_field_tag 'map_location', params[:map_location], :class => "text_field do-not-submit text", :placeholder => "Enter Address" %>
+        </fieldset>
       </div>
-
-
-      <div id="timerange" style="width:90%;margin: auto auto"></div>
-      <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
-
+      <div class="map-holder">
+        <div id="location-map" class="map-frame" style="width:297px;height:208px;"></div>
       </div>
-      <%= hidden_field_tag 'from_time', params[:from_time] %>
-      <%= hidden_field_tag 'to_time', params[:to_time] %>
-      <%= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
+    </div>
+    <div class="box box1">
+      <div class="heading">
+        <fieldset class="search-address">
+          <label for="keywords1">What?</label>
+          <%= text_field_tag 'q', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit text", :placeholder => "Add Keywords" %>
+        </fieldset>
+      </div>
+      <div class="box-content">
+        <ul id="keywords" class="keyword">
+          <% (params[:keywords] || []).each do |keyword| %>
+            <li class="keyword-pill">
+              <input type="hidden" name="keywords[]" value="<%= keyword %>" />
+              <%= keyword %>
+              <%= link_to('close', '#', :class => "remove-parent close", "data-parent-selector" => ".keyword-pill") %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
 
-    <button class="button">Go</button>
-    <button class="button save-button">Save</button>
-    <%= link_to 'Clear', explore_path %>
-    <div class="clear"></div>
+    <div class="box box1">
+      <div class="heading">
+        <h3>When?</h3>
+        <a href="#" class="btn">btn</a>
+      </div>
+      <div class="box-content">
+        <div class="jump-date">
+          <div class="col">
+            <span>Start date:</span>
+            <%= text_field_tag 'from_date', params[:from_date] || "Set", :class => "text_field", :style => "width: 80px; background: none; border: none;" %>
+          </div>
+          <div class="col" style="margin-left: 10px;">
+            <span>End date:</span>
+            <%= text_field_tag 'to_date', params[:to_date] || "Set", :class => "text_field", :style => "background: none; border: none;" %>
+          </div>
+        </div>
+        <div class="time-slot">
+          <div class="col1">
+            <div class="ttl">Availablity:</div>
+            <div class="row">Morning</div>
+            <div class="row">Afternoon</div>
+            <div class="row">Evening</div>
+          </div>
+          <div class="col2">
+            <div class="days-week">
+              <div>
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+            </div>
+            <table>
+              <tr>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span class="select"></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+              </tr>
+              <tr>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span class="select"></span></td>
+                <td><span class="select"></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+              </tr>
+              <tr>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+                <td><span></span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
-      <div class="block notice" style="margin-top:10px">
-        <h4>Similar Users</h4>
-        <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
-          <%if overlapping_subscriber.search_subscription.user != current_user%>
-            <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
-          <%end%>
+
+    <%= label_tag 'date_range_inclusive', 'Inclusive?', :class => "label" %>
+    <%= check_box_tag 'inclusive', params[:inclusive], params[:inclusive]%>
+
+    <%= label_tag 'days', 'Days of the Week', :class => "label" %>
+    <div style="margin-bottom:10px">
+      <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
+      <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
+      <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
+      <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
+      <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
+      <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
+      <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
+    </div>
+
+
+    <div id="timerange" style="width:90%;margin: auto auto"></div>
+    <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
+
+    </div>
+    <%= hidden_field_tag 'from_time', params[:from_time] %>
+    <%= hidden_field_tag 'to_time', params[:to_time] %>
+    <%= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
+
+    <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
+    <%= hidden_field_tag 'map_center', params[:map_center] %>
+    <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+  <%- end -%>
+
+
+  <button class="button">Go</button>
+  <button class="button save-button">Save</button>
+  <%= link_to 'Clear', explore_path %>
+  <div class="clear"></div>
+
+  <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
+    <div class="block notice" style="margin-top:10px">
+      <h4>Similar Users</h4>
+      <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
+        <%if overlapping_subscriber.search_subscription.user != current_user%>
+          <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
         <%end%>
-      </div>
-    <%end%>
+      <%end%>
+    </div>
+  <%end%>
 
-    <div class="clear"></div>
-  <% end %>
+  <div class="clear"></div>
 <% end %>
+
 
 <% content_for :end_of_body do %>
   <%= javascript_include_tag 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
@@ -118,9 +189,10 @@
       $('#ajax-spinner').show();
       return true;
     }).bind('ajax:success', function() {
-      if ($.active == 1) {
+      // TODO Krum put this in to listen to wait until all requests are done, but sometimes with pageless the list never unfades
+      //if ($.active == 1) {
         $('#action-list').fadeTo('fast', 1);
-      }
+      //}
     }).bind('ajax:complete', function() {
       $('#ajax-spinner').hide();
     });
@@ -195,11 +267,12 @@
     makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
   </script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <!-- This is already included in the header -->
+  <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
 
   <script>
     var markers = [];
-    var map;
+    var sideMap;
     var selectedMarker;
     var infoWindow;
     var geocoder;
@@ -215,7 +288,7 @@
     function placeMarker(location, title) {
 
       var marker = new google.maps.Marker({
-        map: map,
+        map: sideMap,
         position: location,
         title: title
       });
@@ -238,7 +311,7 @@
       }
 
       infoWindow.setContent(marker.title);
-      infoWindow.open(map, marker);
+      infoWindow.open(sideMap, marker);
     }
     
     $(function() {
@@ -259,7 +332,7 @@
           });
 
           if($(document).getUrlParam("map_center") != null)
-            map.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
+            sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
 
           $.getScript(location.href);
         });
@@ -272,7 +345,7 @@
           'address': loc
         }, function(results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
+            sideMap.setCenter(results[0].geometry.location);
             changeLocationParams();
             $('#location-not-found').hide();
           } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
@@ -300,51 +373,51 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
       };
-      map = new google.maps.Map(document.getElementById("location-map"), myOptions);
+      sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
       //markerCluster = new MarkerClusterer(map);
 
 
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-        map.fitBounds(new google.maps.LatLngBounds(
-        new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-        new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+      sideMap.fitBounds(new google.maps.LatLngBounds(
+      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
-      infoWindow = new google.maps.InfoWindow();
-      geocoder = new google.maps.Geocoder();
+    infoWindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
 
-      function changeLocationParams(event) {
-        setTimeout(function() {
-          var zoom = map.getZoom();
-          $('#map_zoom').val(zoom);
+    function changeLocationParams(event) {
+      setTimeout(function() {
+        var zoom = sideMap.getZoom();
+        $('#map_zoom').val(zoom);
 
-          bounds = map.getBounds();
-          ne = bounds.getNorthEast();
-          sw = bounds.getSouthWest();
-          c = bounds.getCenter();
+        bounds = map.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
 
-          $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-          $('#map_center').val(c.lat() + ',' + c.lng());
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
 
-          if(history && history.replaceState)
-            history.replaceState(null, null, getSearchParams());
-          refreshResults();
-        }, 15);
-      }
+        if(history && history.replaceState)
+          history.replaceState(null, null, getSearchParams());
+        refreshResults();
+      }, 15);
+    }
 
-      google.maps.event.addListener(map, 'zoom_changed', changeLocationParams);
-      google.maps.event.addListener(map, 'dragend', changeLocationParams);
-      google.maps.event.addListener(map, 'resize', changeLocationParams);
-      //$(window).resize(changeLocationParams);
+    google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
+    google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);
+    google.maps.event.addListener(sideMap, 'resize', changeLocationParams);
+    //$(window).resize(changeLocationParams);
 
   <% @searchables.each do |searchable| %>
     <% #if searchable.event && searchable.geo_located? %>
     <% if searchable.geo_located? %>
-          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>
 
-    });
+  });
   </script>
 <% end %>

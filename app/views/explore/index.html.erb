@@ -1,47 +1,28 @@
 <div class="post-message">
   <%= form_for @comment, :remote => true, :html => {"data-type" => "html",:class => "form comment-form form-post-message Post-Message" } do |form| %>
-
     <fieldset>
       <div class="text">
-        <input value="Post a Message" title="Post a Message"/>
+        <%= form.text_field :body, :title => "Post a Message" -%>
       </div>
       <div class="info">
-        <p>Your message will be posted to <span>X (address)</span> with the keywords <span>Y (keyword)</span>.</p>
-        <p>Others in this community will be able to see and reply to your post.</p>
       </div>
     </fieldset>
   <% end %>
-
 </div>
 
-<div class="block" id="block-lists">
-  <div class="content">
-
-    <div id="comment-box" style="float:right;height:30px;padding:10px;margin:15px 15px 0px 0px; background-color: #EEE; border: 1px solid #EEE; border-radius: 5px;">
-      <%= form_for @comment, :remote => true, :html => {"data-type" => "html",:class => "form comment-form" } do |form| %>
-        <%= form.text_area :body, :cols => "50", :rows => "2", :style => "float:left" %>
-        <button class="button comment-button" type="submit" style="margin-left:10px">Comment</button>
-        <div class="clear"></div>
-      <% end %>
-    </div>
-
-    <%= render 'shared/commenting' %>
-
-    <h2 class="title">Explore (<span id="num-results"><%= @total_count %></span> results)
-      <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
-    </h2>
-    <div id="comment_suggest" style="margin-left: 15px; margin-right: 15px; font-style: italic; font-size: 12px;">
-      <%= "Didn't find enough results? Leave a comment to spark interest!" if @total_count && @total_count < @comment_suggest_limit -%>
-    </div>
-    <div class="inner">
-      <ul class="list" id="action-list" style="margin-top:40px">        
-        <%= render 'results' %>
-      </ul>
-    </div>
-
-  </div>
+<h2 class="title">Explore (<span id="num-results"><%= @total_count %></span> results)
+  <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
+</h2>
+<div id="comment_suggest" style="margin-left: 15px; margin-right: 15px; font-style: italic; font-size: 12px;">
+  <%= "Didn't find enough results? Leave a comment to spark interest!" if @total_count && @total_count < @comment_suggest_limit -%>
 </div>
+
+<div id="action-list" class="post-holder Post-Holder">
+  <%= render 'results' %>
+</div>
+
 
 <%= render 'sidebar' %>
+<%= render 'shared/commenting' %>
 
 

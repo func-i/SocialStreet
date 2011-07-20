@@ -45,7 +45,7 @@ $(function() {
             u.val($(this).attr('action_id'))
         }
 
-        
+        console.log($(divId).find('.row-map').length);
         if($(divId).find('.row-map').length > 0)
             google.maps.event.trigger(map, 'resize');
 

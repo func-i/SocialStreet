@@ -1,9 +1,11 @@
-<% if searchable.event %>
-  <%= render 'event', :event => searchable.event %>
-<% elsif searchable.comment %>
-  <%= render 'shared/action', :action => searchable.comment.action %>
-<% else  %>
-  <% unless Rails.env.production? || Rails.env.staging?  %>
-    <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
+<div class="post">
+  <% if searchable.event %>
+    <%= render 'event', :event => searchable.event %>
+  <% elsif searchable.comment %>
+    <%= render 'shared/action', :action => searchable.comment.action %>
+  <% else  %>
+    <% unless Rails.env.production? || Rails.env.staging?  %>
+      <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
+    <% end %>
   <% end %>
-<% end %>
+</div>

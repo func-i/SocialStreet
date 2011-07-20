@@ -78,7 +78,8 @@
         return false;
       });
 
-      $('.textarea').keydown(function(e) {
+      $('.textarea').live('keydown', function(e) {
+        console.log(e.keyCode);
         if (e.keyCode == 13) {
           if(e.shiftKey != true){
             console.log('enter pressed');
