@@ -120,6 +120,7 @@ class ApplicationController < ActionController::Base
     if action == :create
       #Create the event
       @event = Event.new
+      @event_for_create = @event
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
     end
 

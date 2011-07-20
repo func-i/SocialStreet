@@ -79,65 +79,65 @@
   </div>
 </fieldset>
 
-<% content_for :end_of_body do %>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<%# content_for :end_of_body do %>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script>
+  var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
+  var keywordsParamKey  = "event[searchable_attributes][keywords][]";
+  var locationSearchURL = '<%= locations_path(:format => :json) %>';
+</script>
+<%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared', 'marker_clusterer' %>
+<% if @event_for_create.location.try(:geo_located?) %>
   <script>
-    var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
-    var keywordsParamKey  = "event[searchable_attributes][keywords][]";
-    var locationSearchURL = '<%= locations_path(:format => :json) %>';
+    $(function() {
+      placeMarker(new google.maps.LatLng(<%= @event_for_create.location.latitude %>, <%= @event_for_create.location.longitude %>), $('.location-name-field').val());
+    });
   </script>
-  <%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared', 'marker_clusterer' %>
-  <% if @event_for_create.location.try(:geo_located?) %>
-    <script>
-      $(function() {
-        placeMarker(new google.maps.LatLng(<%= @event_for_create.location.latitude %>, <%= @event_for_create.location.longitude %>), $('.location-name-field').val());
-      });
-    </script>
-  <%- elsif @event_for_create.new_record? -%>
-    <script>
+<%- elsif @event_for_create.new_record? -%>
+  <script>
 
-      var refreshTimer = null;
+    var refreshTimer = null;
 
-      function getSearchParams() {
+    function getSearchParams() {
 
-        var bounds = map.getBounds();
-        ne = bounds.getNorthEast();
-        sw = bounds.getSouthWest();
-        c = bounds.getCenter();
+      var bounds = map.getBounds();
+      ne = bounds.getNorthEast();
+      sw = bounds.getSouthWest();
+      c = bounds.getCenter();
 
-        var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-        if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-          return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-        else
-          return str;
+      var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+      else
+        return str;
          
+    }
+
+    function refreshResults() {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
       }
+      refreshTimer = setTimeout(function() {
+        $.getScript('/events/load_events' + getSearchParams());
+      }, 250);
+    }
 
-      function refreshResults() {
-        if (refreshTimer) {
-          clearInterval(refreshTimer);
-          delete refreshTimer;
-        }
-        refreshTimer = setTimeout(function() {
-          $.getScript('/events/load_events' + getSearchParams());
-        }, 250);
-      }
+    function createEventMarker(location, title) {
 
-      function createEventMarker(location, title) {
+      var marker = new google.maps.Marker({
+        position: location,
+        title: title
+      });
 
-        var marker = new google.maps.Marker({
-          position: location,
-          title: title
-        });
+      google.maps.event.addListener(marker, 'click', function() {
+        //selectMarker(marker, true); //Commented out until proper functionality is determined
+      });
+      markers.push(marker);
+    }
 
-        google.maps.event.addListener(marker, 'click', function() {
-          //selectMarker(marker, true); //Commented out until proper functionality is determined
-        });
-        markers.push(marker);
-      }
-
-    </script>
-  <% end %>
+  </script>
+  <%# end %>
 
 
 <% end %>

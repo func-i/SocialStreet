@@ -71,7 +71,7 @@ class InvitationsController < ApplicationController
 
     # => TODO: Add search user search functionality to endless pagination.
 
-    @per_page = 10
+    @per_page = 24
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     
     # => TODO: see if you can take that inline string notation out
@@ -89,7 +89,7 @@ class InvitationsController < ApplicationController
       limit(@per_page).
       offset(@offset)
        
-    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+    @num_pages_invitations = (@total_count.to_f / @per_page.to_f).ceil
     
   end
 

@@ -24,13 +24,12 @@ class EventsController < ApplicationController
 
     # => Administrator objects
     @rsvps = @event.rsvps.all
-
-    @connections = current_user.connections.most_relevant_first.all
-
     @administrator_rsvps = @rsvps.select &:administrator?
 
-    load_invitations_objects
-
+    if current_user
+      @connections = current_user.connections.most_relevant_first.all      
+      load_invitations_objects
+    end
 
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
@@ -39,18 +38,18 @@ class EventsController < ApplicationController
 
   #EVENT CREATE/EDIT PAGES
   def new
-    @event = Event.new
-    @event.searchable ||= Searchable.new
-    @event.searchable.location ||= Location.new
+    @event_for_create = Event.new
+    @event_for_create.searchable ||= Searchable.new
+    @event_for_create.searchable.location ||= Location.new
     # start/end datetimes are no longer defaulted in the model
-    @event.searchable.searchable_date_ranges.build({ 
+    @event_for_create.searchable.searchable_date_ranges.build({
         :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
         :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
       })
-    @event.action = @action # nil if no @action (which is desired)
+    @event_for_create.action = @action # nil if no @action (which is desired)
     if session[:stored_params]
-      @event.attributes = session[:stored_params] # event params
-      @event.valid?
+      @event_for_create.attributes = session[:stored_params] # event params
+      @event_for_create.valid?
       session[:stored_params] = nil
     end
     
@@ -58,9 +57,12 @@ class EventsController < ApplicationController
   end
 
   def create
-    if create_or_edit_event(params, :create)
+    if create_or_edit_event(params, :create)      
       #redirect_to [:new, @event, @event.rsvps.first, :invitation], :notice => "Your event is created. You can invite some of your friends below."
-      redirect_to [:new, @event, @event.rsvps.first, :invitation]
+      render :update do |page|
+        page.redirect_to event_path(@event_for_create, :invite => true)
+      end
+      
     else
       prepare_for_form
       render :new
@@ -190,8 +192,8 @@ class EventsController < ApplicationController
 
     # => TODO: Add search user search functionality to endless pagination.
 
-    @per_page = 24
-    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+    @per_page_invitations = 24
+    @offset_invitations = ((params[:page] || 1).to_i * @per_page_invitations) - @per_page_invitations
 
     # => TODO: see if you can take that inline string notation out
     @users = User.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
@@ -202,13 +204,13 @@ class EventsController < ApplicationController
       order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST")
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
-    @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
+    @total_count_invitations = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
 
     @users = @users.
-      limit(@per_page).
-      offset(@offset)
+      limit(@per_page_invitations).
+      offset(@offset_invitations)
 
-    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+    @num_pages_invitations = (@total_count_invitations.to_f / @per_page_invitations.to_f).ceil
 
   end
 
