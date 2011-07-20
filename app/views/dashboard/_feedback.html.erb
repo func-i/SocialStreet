@@ -1,7 +1,7 @@
 <% event = feedback.rsvp.event %>
 
-<div class="post-wrapper">
-  <% form_for feedback do |form| %>
+<div class="feedback-wrapper post-wrapper <%= "hidden-record" unless display_record %>">
+  <% form_for feedback, :remote => true do |form| %>
   <div class="post">
     <%= link_to(image_tag(url_for_event_image(event), :size => "50x50", :class => "avatar"), event) %>
     <div class="text">

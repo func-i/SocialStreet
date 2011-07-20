@@ -219,6 +219,12 @@
           </div>
         </div>
       </div>
+>>>>>>>>>>>>>>>>>>>> File 1
+>>>>>>>>>>>>>>>>>>>> File 2
+    </div>
+>>>>>>>>>>>>>>>>>>>> File 3
+    </div>
+<<<<<<<<<<<<<<<<<<<<
 
       <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "invite-form" do  %>
         <div class="day-detail friend">
@@ -272,6 +278,11 @@
       </div>
     </div>
   </div>
+>>>>>>>>>>>>>>>>>>>> File 1
+>>>>>>>>>>>>>>>>>>>> File 2
+>>>>>>>>>>>>>>>>>>>> File 3
+
+<<<<<<<<<<<<<<<<<<<<
   <div id="show-organizers" class="pop-up pop-up-modal" style="display:none; position: fixed;">
     <div class="pop-up1">
 
@@ -313,14 +324,26 @@
 
   <script>
     function makePageless(numPages, currentPage) {
+>>>>>>>>>>>>>>>>>>>> File 1
       $('#action-list').pageless({
         totalPages: numPages,
+>>>>>>>>>>>>>>>>>>>> File 2
+      $('#action-list').pageless({ totalPages: numPages,
+>>>>>>>>>>>>>>>>>>>> File 3
+      $('#action-list').pageless({ totalPages: numPages,
+<<<<<<<<<<<<<<<<<<<<
         url: '<%= @event %>',
         loaderMsg: 'Loading more results',
         currentPage: currentPage
       });
     }
 
+>>>>>>>>>>>>>>>>>>>> File 1
     //makePageless(<%#= @num_pages %>, <%#= params[:page] || 1 %>);
+>>>>>>>>>>>>>>>>>>>> File 2
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+>>>>>>>>>>>>>>>>>>>> File 3
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+<<<<<<<<<<<<<<<<<<<<
   </script>
 <% end %>

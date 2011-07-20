@@ -217,11 +217,11 @@ class Event < ActiveRecord::Base
   end
 
   def start_date
-    searchable.searchable_date_ranges.first.try :start_date
+    searchable.searchable_date_ranges.first.try(:starts_at).strftime("%B %d")
   end
 
   def end_date
-    searchable.searchable_date_ranges.first.try :end_date
+    searchable.searchable_date_ranges.first.try(:ends_at).strftime("%B %d")
   end
 
   def cancel

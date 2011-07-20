@@ -1,9 +1,9 @@
 <%- content_for :main_top do -%>
   <div class="secondary-navigation col1">
     <ul class="wat-cf tabset">
-      <li class="first active"><a href="#profile" data-tab="#profile">Profile</a></li>
-      <li><a href="#subscriptions" data-tab="#subscriptions">Subscriptions</a></li>
-      <li><a href="#events" data-tab="#events">My Events</a></li>
+      <li class="first active"><a href="#profile-general" data-tab="#profile-general">Profile</a></li>
+      <li><a href="#subscription" data-tab="#subscription">Subscriptions</a></li>
+      <li><a href="#events" data-tab="#events">My Activities</a></li>
     </ul>
   </div>
 <%- end -%>
@@ -18,9 +18,9 @@
   </div>
 <% end %>
 
+<%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
 
-<div class="profile-general">
-  <%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
+  <div id="profile-general" class="profile-general tab-content">
     <div class="row row-photo">
       <span>User Photo</span>
       <div class="col">
@@ -50,6 +50,115 @@
         </div>
       </div>
     </div>
-  <% end %>
+  </div>
+
+  <div id="subscription" class="subscription tab-content" style="display:none">
+
+    <div class="row">
+      <strong class="heading">Comments</strong>
+      <div class="content">
+        <span>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:immediate], :class => "radio", :id => "instant"%>
+          <label for="instant">Instant</label>
+        </span>
+        <span>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:daily], :class => "radio", :id => "daily"%>
+          <label for="daily">Daily</label>
+        </span>
+        <span>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:weekly], :class => "radio", :id => "weekly"%>
+          <label for="weekly">Weekly</label>
+        </span>
+        <span>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:none], :class => "radio", :id => "none"%>
+          <label for="none">None</label>
+        </span>
+      </div>
+    </div>
+
+    <% if @subscriptions && !@subscriptions.empty? %>
+      <% form.fields_for :search_subscriptions do |builder| %>
+        <div class="row">
+          <strong class="heading">
+            <%= link_to builder.object.name, explore_path(builder.object.url_params) %>
+          </strong>
+          <div class="content">
+            <span>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:immediate], :class => "radio", :id => "instant"%>
+              <label for="instant">Instant</label>
+            </span>
+            <span>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:daily], :class => "radio", :id => "daily"%>
+              <label for="daily">Daily</label>
+            </span>
+            <span>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:weekly], :class => "radio", :id => "weekly"%>
+              <label for="weekly">Weekly</label>
+            </span>
+            <span>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:none], :class => "radio", :id => "none"%>
+              <label for="none">None</label>
+            </span>
+          </div>
+          <% link_to builder.object, :method => :delete, :confirm => 'Are you sure?' do%>
+            <strong class="status">delete</strong>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<div id="events" class="events-holder events tab-content" style="display:none">
+  <table>
+    <tbody>
+      <% if @events_where_administrator && @events_where_administrator.empty? %>
+        <h4>You are not currently administrator of any events</h4>
+    <% else %>
+      <% @events_where_administrator.each do |event| %>
+        <tr>
+          <th>
+            <strong><%=  event.name %></strong>
+            <%= link_to "edit", [:edit, event]%>
+          </th>
+          <td>
+            <span>Start Day:</span>
+            <strong><%= event.starts_at.strftime("%B %d") %></strong>
+          </td>
+          <td>
+            <span>Start Time:</span>
+            <strong><%= event.starts_at.strftime("%l:%M %p") %></strong>
+          </td>
+          <% if event.end_date && event.end_date != event.start_date %>
+            <td>
+              <span>End Day:</span>
+              <strong><%= event.finishes_at.strftime("%B %d") %></strong>
+            </td>
+          <% end %>
+          <% if event.finishes_at %>
+            <td>
+              <span>End Time:</span>
+              <strong><%=  event.finishes_at.strftime("%l:%M %p") %></strong>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
 </div>
+
+<% content_for :end_of_body do %>
+  <script>
+    $(function() {
+      $('#main_top ul.wat-cf > li > a').click(function(e){
+        $('.tab-content').hide();
+        $('.secondary-navigation li').removeClass('active');
+        $(this).closest('li').addClass('active');
+        $($(this).data('tab')).show();
+        return false;
+      });
+    });
+  </script>
+<% end %>
 

@@ -1,29 +1,32 @@
-<%=puts "JOSH IS HERE"%>
 <div class="box box-list">
   <div class="heading">
     <a href="#" class="view">View in Calendar</a>
     <h3>Upcoming Activities</h3>
   </div>
   <div class="box-content">
-    <ul>
-      <% events.each do |event| %>
-        <li>
-          <h4><%= link_to event.name, event %></h4>
-          <p>
-            <% event.searchable_event_types.each do |set| %>
-              <strong><%= set.try(:name) %></strong>
-            <% end %>
-            <em class="date">
-              <%=event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} @ %l:%M %p")%>
-            </em>
-          </p>
-        </li>
+    <% if events.empty? %>
+      <strong style="color:#999">You do not have anything planned. Why not add your own activity?</strong>
+    <% else %>
+      <ul>
+        <% events.each do |event| %>
+          <li>
+            <h4><%= link_to event.name, event %></h4>
+            <p>
+              <% event.searchable_event_types.each do |set| %>
+                <strong><%= set.try(:name) %></strong>
+              <% end %>
+              <em class="date">
+                <%=event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} @ %l:%M %p")%>
+              </em>
+            </p>
+          </li>
+        <% end %>
+      </ul>
+      <% if number_unshown >  0 %>
+        <div class="more">
+          <%= link_to "And #{number_unshown} more", "#" %>
+        </div>
       <% end %>
-    </ul>
-    <% if number_unshown >  0 %>
-      <div class="more">
-        <%= link_to "And #{number_unshown} more", "#" %>
-      </div>
     <% end %>
   </div>
 </div>

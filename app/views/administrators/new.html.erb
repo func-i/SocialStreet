@@ -74,6 +74,8 @@
       var userId = $user.data('user-id');
       $user.remove();
       $userList.find('.user[data-user-id="'+userId+'"]').removeClass('selected');
+
+      $administratorCount.text(parseInt($administratorCount.text()) - 1)
       return false;
     });
 
