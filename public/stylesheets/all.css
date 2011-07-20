@@ -1090,6 +1090,12 @@ form, fieldset {
 	font: bold 11px/14px Arial, Helvetica, sans-serif;
 	color: #ccc;
 }
+.box .more span {
+	float: right;
+	font: bold 11px/14px Arial, Helvetica, sans-serif;
+	color: #ccc;
+}
+
 .box-list ul { padding: 14px 0 16px; }
 .box-list li {
 	border-bottom: 1px solid #eee;
@@ -1377,6 +1383,7 @@ form, fieldset {
 .calendar ul a { font: bold 10px/14px Arial, Helvetica, sans-serif; }
 .calendar .more { display: block; }
 .calendar .more a { color: #999; }
+.calendar .more span { color: #999; }
 .day-detail {
 	background: url("../images/bg-day-detail.png") repeat-x #909090;
 	float: left;

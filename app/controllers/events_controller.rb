@@ -179,7 +179,7 @@ class EventsController < ApplicationController
         end
       end unless @event.action.blank?
 
-      @invitations = @rsvp.invitations
+      @invitations = @rsvp.invitations if @rsvp
      
     else
       redirect_to import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @rsvp))

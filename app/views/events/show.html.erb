@@ -182,12 +182,14 @@
         <strong>Add Administrators</strong>
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
-      <div class="pop-up1-content">
-        <%= render :template => "administrators/new" -%>
+      <div class="content">
+        <div class="pop-up1-content">
+          <%= render :template => "administrators/new" -%>
+        </div>
       </div>
     </div>
-    <%= form_tag event_administrators_path(@event), :method => :post, :class => "admin-form" do  %>
-      <div class="day-detail friend">
+    <div class="day-detail friend">
+      <%= form_tag event_administrators_path(@event), :method => :post, :class => "admin-form" do  %>
         <div class="heading">
           <strong class="day"><span class="administrator-count"><%= @administrator_rsvps.count -%></span></strong>
           <span class="day-info">Administrators</span>
@@ -199,8 +201,8 @@
             <% end %>
           </ul>
         </div>
-      </div>
-    <%- end -%>
+      <%- end -%>
+    </div>
   </div>
 
   <div id="add-invitees" class="pop-up pop-up-modal" style="display:none; position: fixed;">
@@ -209,13 +211,16 @@
         <strong>Invite your friends</strong>
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
-      <div class="pop-up1-content">
-        <%= render :template => "invitations/new" -%>
+      <div class="content">
+        <div class="pop-up1-content">
+          <%= render :template => "invitations/new" -%>
+        </div>
       </div>
     </div>
 
-    <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "invite-form" do  %>
-      <div class="day-detail friend">
+
+    <div class="day-detail friend">
+      <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "invite-form" do  %>
         <div class="heading">
           <strong class="day"><span class="invitation-count"><%= @invitations.count -%></span></strong>
           <span class="day-info">Invitees</span>
@@ -227,8 +232,8 @@
             <% end %>
           </ul>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 
   <div id="show-attendees" class="pop-up pop-up-modal" style="display:none; position: fixed;">
@@ -239,31 +244,34 @@
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
 
-      <div class="pop-up1-content">
-        <div class="view-all-modal">
-          <ul>
+      <div class="content">
+        <div class="pop-up1-content">
+          <div class="view-all-modal">
+            <ul>
 
-            <% @rsvps.each do |rsvp| %>
+              <% @rsvps.each do |rsvp| %>
 
-              <li>
-                <%= avatar rsvp.user :size => "44x40" %>
-                <div class="text-holder">
-                  <% if rsvp.user.fb_uid? && current_user.can_friend?(rsvp.user) %>
-                    <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
-                      <span>Add to Facebook</span>
+                <li>
+                  <%= avatar rsvp.user :size => "44x40" %>
+                  <div class="text-holder">
+                    <% if rsvp.user.fb_uid? && current_user.can_friend?(rsvp.user) %>
+                      <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
+                        <span>Add to Facebook</span>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                  <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
-                </div>
-              </li>
+                    <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
+                  </div>
+                </li>
 
-            <% end %>
+              <% end %>
 
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
   <div id="show-organizers" class="pop-up pop-up-modal" style="display:none; position: fixed;">
     <div class="pop-up1">
 
@@ -272,27 +280,29 @@
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
 
-      <div class="pop-up1-content">
-        <div class="view-all-modal">
-          <ul>
+      <div class="content">
+        <div class="pop-up1-content">
+          <div class="view-all-modal">
+            <ul>
 
-            <% @administrator_rsvps.each do |rsvp| %>
+              <% @administrator_rsvps.each do |rsvp| %>
 
-              <li>
-                <%= avatar rsvp.user :size => "44x40" %>
-                <div class="text-holder">
-                  <% if rsvp.user.fb_uid? && current_user.can_friend?(rsvp.user) %>
-                    <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
-                      <span>Add to Facebook</span>
+                <li>
+                  <%= avatar rsvp.user :size => "44x40" %>
+                  <div class="text-holder">
+                    <% if rsvp.user.fb_uid? && current_user.can_friend?(rsvp.user) %>
+                      <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
+                        <span>Add to Facebook</span>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                  <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
-                </div>
-              </li>
+                    <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
+                  </div>
+                </li>
 
-            <% end %>
+              <% end %>
 
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

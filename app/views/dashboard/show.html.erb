@@ -62,15 +62,15 @@
 
   <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_unshown => @upcoming_events_remaining} %>
 
-  <% unless @invitations_by_event.blank? %>
+  <% unless @invited_events.blank? %>
     <div class="box box-list">
       <div class ="heading">
-        <a href="#" class="view">View all</a>
+        <%= link_to_popup_modal "View all", "show-invitations", :class => "view"%>
         <h3>Outstanding Invitations</h3>
       </div>
       <div class="box-content">
         <ul>
-          <% @invitations_by_event.each do |event, invitation_array| %>
+          <% @invited_events.each do |event| %>
             <li>
               <h4><%= link_to event.name, event %></h4>
               <p>
@@ -91,18 +91,49 @@
         <% end %>
       </div>
     </div>
-    <% end %>
-
-
-
-    <div class="block notice">
-      <h4>Invitations</h4>
-      <% @invitations_by_event.each do |event, invitation_array|  %>
-        <strong><%= link_to event.name, event %></strong><br/>
-        <% invitation_array.each do |invitation| %>
-          <%= render 'invitation', :invitation => invitation %>
-        <% end %>
-        <br/>
-      <% end %>
-    </div>
   <% end %>
+<% end %>
+
+<% content_for :popup_modals do -%>
+  <div id="show-invitations" class="pop-up pop-up-modal" style="display:none; position: fixed;">
+    <div class="pop-up1">
+
+      <div class="heading">
+        <strong>Invitations</strong>
+        <%= link_to "close", '#', :class => "btn-close" -%>
+      </div>
+
+      <div class="content">
+        <div class="pop-up1-content view-all-modal list-invitations">
+          <ul>
+
+            <% @invited_events.each do |event| %>
+              <li>
+                <%= link_to(image_tag(url_for_event_image(event), :size => "55x55"), event) %>
+                <div class="text-holder">
+                  <%=  link_to "#", :class => "btn-attend" do %>
+                    <span>Attend</span>
+                  <% end %>
+                  <strong class="ttl">
+                    <%= link_to event.name, "#" %>
+                  </strong>
+                  <span class="time">
+                    <%=address_for(event.location)%>
+                    <span>Yesterday-TODO</span>
+                    <em>@</em>
+                    <strong><%=event.starts_at.strftime("%l:%M %p")%></strong>
+                  </span>
+                  <% event.searchable_event_types.each do |set| %>
+                    <strong class="keyword"><%= set.try(:name) %></strong>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+              
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+<% end %>

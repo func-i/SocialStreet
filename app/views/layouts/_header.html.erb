@@ -14,7 +14,7 @@
 
       <% if user_signed_in? %>
         <li class="link-login">
-          <%= link_to current_user.try(:name), '#' %>
+          <%= link_to current_user.try(:name), profile_path(current_user) %>
           <ul>
             <li><%=link_to "Settings", edit_profile_path(current_user) %></li>
             <li><%=link_to "Dashboard", dashboard_path %></li>
@@ -57,8 +57,10 @@
         <strong>Add a new activity</strong>
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
-      <div class="pop-up1-content">
-        <%= render :template => "events/new" -%>
+      <div class="content1">
+        <div class="pop-up1-content">
+          <%= render :template => "events/new" -%>
+        </div>
       </div>
     </div>
   </div>
