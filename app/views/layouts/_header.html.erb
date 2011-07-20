@@ -7,7 +7,8 @@
         <span class="text"><input title="Basketball" value="Basketball" /></span>
       </fieldset>
     </form>
-    <%= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
+    <%#= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
+    <%= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path, nil, nil, :class => "btn-add"  %>
     <ul class="nav-serv">
 
       <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
@@ -63,4 +64,19 @@
       </div>
     </div>
   </div>
+
+  <div id="empty_modal_1" class="pop-up pop-up-modal_ajax" style="display:none">
+    <div class="pop-up1">
+      <div class="heading">
+        <strong><span id="modal-title">#</span></strong>
+        <%= link_to "close", '#', :class => "btn-close" -%>
+      </div>
+      <div class="content1">
+        <div class="pop-up1-content ajax_add_here">
+          <!--Ajax add content here-->
+        </div>
+      </div>
+    </div>
+  </div>
+
 <%- end -%>

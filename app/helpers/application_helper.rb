@@ -53,4 +53,17 @@ module ApplicationHelper
     link_to title, '#', options, html_options
   end
 
+  def link_to_popup_modal_ajax(link_text, modal_title, modal_div_id, request_url, request_callback, request_params = {}, options = {}, html_options = {})
+    klass = options.delete(:class)
+    options.merge!(
+      :class => "popup-modal-ajax #{klass}".strip,
+      "popup-div-id" => modal_div_id,
+      "request-url" => request_url,
+      "modal-title" => modal_title,
+      "request-callback" => request_callback)
+
+    link_to link_text, '#', options, html_options
+
+  end
+
 end

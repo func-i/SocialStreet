@@ -4,7 +4,7 @@
 class ProfilesController < ApplicationController
   before_filter :store_current_path, :only => [:show, :edit]
   before_filter :authenticate_user!
-  before_filter :require_user
+  before_filter :require_user, :except => [:index]
   before_filter :require_permission, :only => [:edit, :update]
 
 
@@ -49,6 +49,11 @@ class ProfilesController < ApplicationController
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
     end
+  end
+
+  def index
+    puts "JOSHY"
+    puts "THIS IS A TEST"
   end
   
   def edit

@@ -1,0 +1,3 @@
+<%= form_for @event_for_create, :remote => true, :html => {:class => "form", :multipart => true} do |form| %>
+  <%= render 'events/form', :form => form %>
+<% end %>

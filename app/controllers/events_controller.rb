@@ -54,6 +54,12 @@ class EventsController < ApplicationController
     end
     
     prepare_for_form
+
+    if request.xhr?
+      render :partial => 'new'
+      return
+    end
+    render :layout => false
   end
 
   def create
