@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -11,8 +11,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -524,7 +524,7 @@ form, fieldset {
 	padding: 0 29px 0 0;
 }
 #content .profile h2 {
-	margin: 0;	
+	margin: 0;
 }
 #content .profile h2 span {
 	color: #ccc;
@@ -1414,13 +1414,13 @@ form, fieldset {
 	float: none;
 	font: bold 46px/52px Arial, Helvetica, sans-serif;
 	text-shadow: none;
-	
+
 }
 * +html .day-detail .heading .day { font: bold 46px/52px Arial, Helvetica, sans-serif; }
 .day-detail .day-info {
 	display: block;
 	font: bold 17px/20px Arial, Helvetica, sans-serif;
-	padding: 0 7px;	
+	padding: 0 7px;
 }
 .day-detail .day-list-holder {
 	overflow: hidden;
@@ -2329,7 +2329,7 @@ form, fieldset {
 }
 .jump-date .col {
 	float: left;
-	width: 88px;	
+	width: 88px;
 }
 .jump-date .col span {
 	display: block;

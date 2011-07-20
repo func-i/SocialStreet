@@ -1,3 +1,19 @@
+<div class="post-message">
+  <%= form_for @comment, :remote => true, :html => {"data-type" => "html",:class => "form comment-form form-post-message Post-Message" } do |form| %>
+
+    <fieldset>
+      <div class="text">
+        <input value="Post a Message" title="Post a Message"/>
+      </div>
+      <div class="info">
+        <p>Your message will be posted to <span>X (address)</span> with the keywords <span>Y (keyword)</span>.</p>
+        <p>Others in this community will be able to see and reply to your post.</p>
+      </div>
+    </fieldset>
+  <% end %>
+
+</div>
+
 <div class="block" id="block-lists">
   <div class="content">
 
