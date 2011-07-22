@@ -10,9 +10,6 @@
   <% end %>
 </div>
 
-<h2 class="title">Explore (<span id="num-results"><%= @total_count %></span> results)
-  <%= image_tag 'spinner.gif', :id => "ajax-spinner", :style => "display:none", :size => "20x20" %>
-</h2>
 <div id="comment_suggest" style="margin-left: 15px; margin-right: 15px; font-style: italic; font-size: 12px;">
   <%= "Didn't find enough results? Leave a comment to spark interest!" if @total_count && @total_count < @comment_suggest_limit -%>
 </div>

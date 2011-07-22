@@ -7,7 +7,7 @@
     <label for="what">What?</label>
     <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :id=>"what", :type => "text", :title => "What?", :class => "q-textfield text_field do-not-submit text", :placeholder => "Enter keywords here..." %>
   </div>
-  <ul id="keywords" class="keyword">
+  <ul id="event-keywords" class="keyword">
     <% (@event_for_create.searchable.keywords || []).each do |keyword| %>
       <% unless keyword.blank? %>
         <li class="keyword-pill">
@@ -80,7 +80,7 @@
 </fieldset>
 
 <%# content_for :end_of_body do %>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
 <script>
   var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
   var keywordsParamKey  = "event[searchable_attributes][keywords][]";

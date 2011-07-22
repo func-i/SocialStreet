@@ -54,10 +54,6 @@ class EventsController < ApplicationController
     end
     
     prepare_for_form
-
-    if request.xhr?
-      puts "I AM HERE"
-    end
   end
 
   def create
