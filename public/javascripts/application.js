@@ -42,7 +42,9 @@ $(function() {
         {
             //this is for creating event from comment section
             var u = $(divId).find('#event_action_id')
-            if(u != null){u.val($(this).attr('action_id'))}
+            if(u != null){
+                u.val($(this).attr('action_id'))
+            }
         }
 
         console.log($(divId).find('.row-map').length);
@@ -71,18 +73,28 @@ $(function() {
         }
 
         //Send request to load data into the modal
+        //
+        //
         var requestURL = $(this).attr('request-url').valueOf();
-        var requestParams = $(this).attr('request-params');
-        if(requestParams == null)
-            $(divId).find('.ajax_add_here').load(requestURL);
-        else
-            $(divId).find('.ajax_add_here').load(requestURL, requestParams.valueOf());
 
-        //Call post load hook if exists
-        var callback = $(this).attr('request-callback')
-        if(callback != null){
-            eval(callback.valueOf()+'()')
-        }
+        var requestParams = $(this).attr('request-params');
+        
+        if(requestParams != null)
+            requestURL += "?=" + requestParams.valueOf();
+        
+        $.getScript(requestURL);
+
+    //        
+    //        if(requestParams == null)
+    //            $(divId).find('.ajax_add_here').load(requestURL);
+    //        else
+    //            $(divId).find('.ajax_add_here').load(requestURL, requestParams.valueOf());
+    //
+    //        //Call post load hook if exists
+    //        var callback = $(this).attr('request-callback')
+    //        if(callback != null){
+    //            eval(callback.valueOf()+'()')
+    //        }
     });
 
 

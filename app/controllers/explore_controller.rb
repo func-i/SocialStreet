@@ -38,7 +38,7 @@ class ExploreController < ApplicationController
   def find_searchables
     @searchables = Searchable.explorable
 
-    @searchables = apply_filter(@searchables)
+    @searchables = apply_filter(@searchables)    
 
     @per_page = 5
     
@@ -122,10 +122,6 @@ class ExploreController < ApplicationController
     end
     params[:map_center] = "43.66061599944655,-79.3938175316406" if params[:map_center].blank?
     params[:map_zoom] = 9 unless params[:map_zoom]
-
-    # => remove all previous longitude and latitude specifications from the AREL object so that they can be modified to expand the search
-    #search_object.where_values.delete_if { |where_value| (where_value.include?("locations.longitude") || where_value.include?("locations.latitude")) rescue false}
-    #search_object.where_values.delete_if { |where_value| (where_value.name == :latitude || where_value.name == :longitude) rescue false}
     
     bounds = map_bounds.split(",").collect { |point| point.to_f }
     search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")    
