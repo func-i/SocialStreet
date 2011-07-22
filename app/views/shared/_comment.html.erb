@@ -1,0 +1,30 @@
+<% show_image = (defined? image_size)%>
+<% image_size ||= "33x33" if show_image %>
+
+<% truncate_at ||= 200 %>
+<% total_body = (h("#{action.reference.body.strip}")) unless action.reference.body.blank? %>
+
+<% is_truncated = total_body.length > truncate_at %>
+
+<%= (avatar action.user, :size => image_size) if show_image%>
+<div class="text">
+  <% if is_truncated %>
+    <p class="truncated-comment-body">
+      <%= link_to(action.user.name, profile_path(action.user), :class => "author") if show_image%>
+      <%= truncate(total_body, :length => truncate_at) %>
+    </p>
+
+    <span class="more">
+      <%= link_to "Show more", '#', :class => 'show-total-comment'-%>
+    </span>
+  <% end %>
+
+  <p class="total-comment-body" <%= "style=display:none" if is_truncated %>>
+    <%= link_to(action.user.name, profile_path(action.user), :class => "author") if show_image%>
+    <%= total_body %>
+  </p>
+
+  <span class="time">
+    <%= time_ago_in_words action.occurred_at %> ago
+  </span>
+</div>

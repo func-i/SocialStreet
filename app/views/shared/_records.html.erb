@@ -1,0 +1,115 @@
+<% if record_type == "event" %>
+
+  <% event = record %>
+
+  <%= render "shared/general_record",
+    :left_image => link_to(image_tag(url_for_event_image(event), :size => "55x55"), event),
+    :title => link_to(event.name, event),
+    :event_record => event %>
+
+<% elsif record_type == "threaded_event" %>
+
+  <% event = record %>
+
+  <!--Event Image-->
+  <%= link_to(image_tag(url_for_event_image(event), :size => "33x33"), event) %>
+
+  <div class="text">
+    <!--Attend button-->
+    <%=  link_to "#", :class => "btn-attend" do %>
+      <span>Attend</span><!--TODO, make attending if so-->
+    <% end %>
+
+    <!--Record Title-->
+    <h3><%= link_to truncate(event.name, :length => 33), event %></h3>
+
+    <!--Event Info-->
+    <span class="time">
+      <%=address_for(event.location)%>
+      <span>Yesterday-TODO</span>
+      @
+      <em><%=event.starts_at.strftime("%l:%M %p")%></em>
+    </span>
+  </div>
+  
+<% elsif record_type == "created_event" %>
+ 
+  <% event = record %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(event.user, :size => "55x55"),
+    :title => (link_to(event.user.name, profile_path(event.user)) + " created " + link_to(event.name, event)),
+    :event_record => event,
+    :is_event_embedded => true %>
+
+<% elsif record_type == "attending_event" %>
+
+  <% event = record.event %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " is attending " + link_to(event.name, event)),
+    :event_record => event,
+    :is_event_embedded => true %>
+
+<% elsif record_type == "posted_message_to_event" %>
+
+  <% head_action = record.action || record %>
+  <% event = head_action.event %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " posted a message to " + link_to(event.name, event)),
+    :event_record => event,
+    :is_event_embedded => true,
+    :head_action => head_action %>
+
+<% elsif record_type == "replied_message_to_event" %>
+
+  <% head_action = record.action || record %>
+  <% event = head_action.event %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " replied to a message to " + link_to(event.name, event)),
+    :event_record => event,
+    :is_event_embedded => true,
+    :head_action => head_action,
+    :index_action => record %>
+
+<% elsif record_type == "posted_message_to_profile" %>
+
+  <% head_action = record.action || record %>
+
+  <% if head_action.to_user == current_user  %>
+    <% title = link_to(record.user.name, profile_path(record.user)) + " posted a message on " + link_to(" your profile", profile_path(head_action.to_user)) %>
+  <% else %>
+    <% title = link_to(record.user.name, profile_path(record.user)) + " posted a message on " + link_to(head_action.to_user.name + "'s", profile_path(head_action.to_user)) %>
+  <% end %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => title,
+    :head_action => head_action %>
+
+<% elsif record_type == "replied_message_to_profile" %>
+
+  <% head_action = record.action || record %>
+
+  <% if head_action.to_user == current_user  %>
+    <% title = link_to(record.user.name, profile_path(record.user)) + " replied to a message on " + link_to(" your profile", profile_path(head_action.to_user)) %>
+  <% else %>
+    <% title = link_to(record.user.name, profile_path(record.user)) + " replied to a message on " + link_to(head_action.to_user.name + "'s", profile_path(head_action.to_user)) %>
+  <% end %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => title,
+    :head_action => head_action,
+    :index_action => record %>
+
+
+<% elsif record_type == "posted_message_to_search" %>
+<% elsif record_type == "replied_message_to_search" %>
+<% elsif record_type == "search_message" %>
+<% end %>

@@ -8,7 +8,7 @@
       </fieldset>
     </form>
     <%#= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
-    <%= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path, nil, nil, :class => "btn-add"  %>
+    <%= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
     <ul class="nav-serv">
 
       <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>

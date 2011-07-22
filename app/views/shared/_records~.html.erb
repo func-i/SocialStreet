@@ -1,0 +1,317 @@
+<% if record_type == "event"  %>
+  <div class="post">
+    <% event = record %>
+
+    <!--Event Image-->
+    <%= link_to(image_tag(url_for_event_image(event), :size => "55x55"), event) %>
+
+    <div class="text">
+      <!--Attend button-->
+      <%=  link_to "#", :class => "btn-attend" do %>
+        <span>Attend</span>
+      <% end %>
+
+      <!--Record Title-->
+      <h3><%= link_to event.name, event %></h3>
+
+      <!--Event Info-->
+      <span class="time">
+        <%=address_for(event.location)%>
+        <span>Yesterday-TODO</span>
+        @
+        <em><%=event.starts_at.strftime("%l:%M %p")%></em>
+      </span>
+
+      <!--attendees list-->
+      <div class="attending">
+        <span class="info"><%=event.num_attending_or_maybe_attending%></span>
+        <ul>
+          <% event.attending_or_maybe_attendees_rsvps_list.each do |rsvp| %>
+            <li>
+              <% avatar rsvp.user, :size => "22x22" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <!--Keywords-->
+      <div class="keyword">
+        <% event.searchable_event_types.each do |set| %>
+          <span class="keyword"><%= set.try(:name) %></span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% elsif record_type == "threaded_event" %>
+  <% event = record %>
+
+  <!--Event Image-->
+  <%= link_to(image_tag(url_for_event_image(event), :size => "33x33"), event) %>
+
+  <div class="text">
+    <!--Attend button-->
+    <%=  link_to "#", :class => "btn-attend" do %>
+      <span>Attend</span><!--TODO, make attending if so-->
+    <% end %>
+
+    <!--Record Title-->
+    <h3><%= link_to truncate(event.name, :length => 33), event %></h3>
+
+    <!--Event Info-->
+    <span class="time">
+      <%=address_for(event.location)%>
+      <span>Yesterday-TODO</span>
+      @
+      <em><%=event.starts_at.strftime("%l:%M %p")%></em>
+    </span>
+  </div>
+<% elsif record_type == "small_event_partial" %>
+  <!-- Used as a partial when making records-->
+  <% event = record %>
+
+  <!--Event Image-->
+  <%= link_to(image_tag(url_for_event_image(event), :size => "41x41"), event) %>
+
+  <div class="text">
+    <!--Event Info-->
+    <span class="time">
+      <%=address_for(event.location)%>
+      <span>Yesterday-TODO</span>
+      @
+      <em><%=event.starts_at.strftime("%l:%M %p")%></em>
+    </span>
+
+    <!--attendees list-->
+    <div class="attending">
+      <span class="info"><%=event.num_attending_or_maybe_attending%></span>
+      <ul>
+        <% event.attending_or_maybe_attendees_rsvps_list.each do |rsvp| %>
+          <li>
+            <%= avatar rsvp.user, :size => "22x22" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% elsif record_type == "created_event" %>
+  <div class="post">
+    <% event = record %>
+
+    <!--User Image-->
+    <%= avatar event.user, :size => "55x55" %>
+
+    <div class="text">
+      <!--Attend button-->
+      <%=  link_to "#", :class => "btn-attend" do %>
+        <span>Attend</span>
+      <% end %>
+
+      <!--Record Title-->
+      <h3>
+        <%= link_to event.user.name, profile_path(event.user) %>
+        created
+        <%= link_to event.name, event %>
+      </h3>
+
+      <div class ="row">
+        <%= render "shared/records", :record_type => "small_event_partial", :record => event %>
+      </div>
+    </div>
+  </div>
+<% elsif record_type == "attending_event" %>
+  <div class="post">
+    <% event = record.event %>
+
+    <!--User Image-->
+    <%= avatar event.user, :size => "55x55" %>
+
+    <div class="text">
+      <!--Attend button-->
+      <%=  link_to "#", :class => "btn-attend" do %>
+        <span>Attend</span>
+      <% end %>
+
+      <!--Record Title-->
+      <h3>
+        <%= link_to event.user.name, profile_path(event.user) %>
+        is attending
+        <%= link_to event.name, event %>
+      </h3>
+
+      <!--Inline event record-->
+      <div class ="row">
+        <%= render "shared/records", :record_type => "small_event_partial", :record => event %>
+      </div>
+    </div>
+  </div>
+<% elsif record_type == "posted_message_to_event" %>
+  <div class="post">
+    <% action = record %>
+    <% event = action.event %>
+
+
+    <!--User Image-->
+    <%= avatar action.user, :size => "55x55" %>
+
+    <div class="text">
+      <!--Attend button-->
+      <%=  link_to "#", :class => "btn-attend" do %>
+        <span>Attend</span>
+      <% end %>
+
+      <!--Record Title-->
+      <h3>
+        <%= link_to action.user.name, profile_path(action.user) %>
+        posted a message to
+        <%= link_to event.name, event %>
+      </h3>
+
+      <!--Inline event record-->
+      <div class="row">
+        <%= render "shared/records", :record_type => "small_event_partial", :record => event %>
+      </div>
+
+      <!--Head Comment-->
+      <div class="row-text">
+        <%= render "shared/comment", :action => action, :truncate_at => 320 %>
+      </div>
+
+      <!--View all messages link-->
+      <% if action.actions.length > 3 %>
+        <span class="view-messages">
+          <%= link_to "View all #{action.actions.length + 1} messages", '#', :class => 'view-all-messages'-%>
+        </span>
+      <% end %>
+    </div>
+
+    <!--Thread-->
+    <%= render "shared/thread", :action => action, :display_index => action.actions.length %>
+  </div>
+<% elsif record_type == "posted_message_to_profile" %>
+  <div class="post">
+    <% action = record %>
+
+    <!--User Image-->
+    <%= avatar action.user, :size => "55x55" %>
+
+    <div class="text">
+      <!--Record Title-->
+      <h3>
+        <%= link_to action.user.name, profile_path(action.user) %>
+        posted a message on
+        <% if action.to_user == current_user %>
+          <%= link_to "your profile", profile_path(action.to_user) %>
+        <% else %>
+          <%= link_to action.to_user.name + "'s", profile_path(action.to_user) %> profile
+        <% end %>
+      </h3>
+
+      <!--Head Comment-->
+      <div class="row">
+        <%= render "shared/comment", :action => action, :truncate_at => 320 %>
+      </div>
+
+      <!--View all messages link-->
+      <% if action.actions.length > 3 %>
+        <span class="view-messages">
+          <%= link_to "View all #{action.actions.length + 1} messages", '#', :class => 'view-all-messages'-%>
+        </span>
+      <% end %>
+    </div>
+
+    <!--Thread-->
+    <%= render "shared/thread", :action => action, :display_index => action.actions.length %>
+  </div>
+<% elsif record_type == "replied_message_to_profile" %>
+  <div class="post">
+    <% action = record %>
+    <% head_action = action.action%>
+
+    <!--User Image-->
+    <%= avatar action.user, :size => "55x55" %>
+
+    <div class="text">
+      <!--Record Title-->
+      <h3>
+        <%= link_to action.user.name, profile_path(action.user) %>
+        replied to a message on
+        <% if head_action.to_user == current_user %>
+          <%= link_to "your profile", profile_path(head_action.to_user) %>
+        <% else %>
+          <%= link_to head_action.to_user.name + "'s", profile_path(head_action.to_user) %> profile
+        <% end %>
+      </h3>
+
+      <!--Head Comment-->
+      <div class="row">
+        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :image_size=>"41x41" %>
+      </div>
+
+      <!--View all messages link-->
+      <% if head_action.actions.length > 3 %>
+        <span class="view-messages">
+          <%= link_to "View all #{head_action.actions.length + 1} messages", '#', :class => 'view-all-messages'-%>
+        </span>
+      <% end %>
+    </div>
+
+    <!--Thread-->
+    <%= render "shared/thread", :action => head_action, :display_index => head_action.actions.index(action) %>
+  </div>
+<% elsif record_type == "replied_message_to_event" %>
+  <div class="post">
+    <% action = record %>
+    <% head_action = action.action%>
+    <% event = head_action.event %>
+
+
+    <!--User Image-->
+    <%= avatar action.user, :size => "55x55" %>
+
+    <div class="text">
+      <!--Attend button-->
+      <%=  link_to "#", :class => "btn-attend" do %>
+        <span>Attend</span>
+      <% end %>
+
+      <!--Record Title-->
+      <h3>
+        <%= link_to action.user.name, profile_path(action.user) %>
+        posted a message to
+        <%= link_to event.name, event %>
+      </h3>
+
+      <!--Inline event record-->
+      <div class="row">
+        <%= render "shared/records", :record_type => "small_event_partial", :record => event %>
+      </div>
+
+      <!--Head Comment-->
+      <div class="row-text">
+        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :image_size => "41x41"  %>
+      </div>
+
+      <!--View all messages link-->
+      <% if action.actions.length > 3 %>
+        <span class="view-messages">
+          <%= link_to "View all #{action.actions.length + 1} messages", '#', :class => 'view-all-messages'-%>
+        </span>
+      <% end %>
+    </div>
+
+    <!--Thread-->
+    <%= render "shared/thread", :action => head_action, :display_index => head_action.actions.index(action) %>
+  </div>
+<% elsif record_type == "posted_message_to_search" %>
+  <div class="post">
+    TODO
+  </div>
+<% elsif record_type == "replied_message_to_search" %>
+  <div class="post">
+    TODO
+  </div>
+<% elsif record_type == "search_message" %>
+  <div class="post">
+    TODO
+  </div>
+<% end %>

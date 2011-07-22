@@ -58,10 +58,6 @@
   </div>
 </div>
 
-<%= link_to_popup_modal_ajax  'Hi Josh', 'Hi Josh', 'empty_modal_1', profiles_path, "testAjax" %>
-
-
-
 <% content_for :sidebar do %>
 
   <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_unshown => @upcoming_events_remaining} %>

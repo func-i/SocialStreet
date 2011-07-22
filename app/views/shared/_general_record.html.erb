@@ -1,0 +1,103 @@
+<%#
+Required:
+left_image
+title
+
+Optional:
+event_record
+is_event_embedded
+head_action
+index_action
+%>
+
+<% is_event = defined?(event_record) %>
+<% is_thread = defined?(head_action) %>
+
+<!--Record Image-->
+<%= left_image %>
+
+<div class="text">
+
+  <% if is_event %>
+    <!--Attend button-->
+    <%= link_to "#", :class => "btn-attend" do %>
+      <span>Attend</span><!--Make work with already attending-->
+    <% end %>
+  <% end %>
+
+  <!--Record Title-->
+  <h3><%= title %></h3>
+
+  <!--IF Event record-->
+  <% if is_event %>
+    <!--Event info goes in the top and comment below-->
+
+    <div class="row">
+      <% if defined?(is_event_embedded) && is_event_embedded %>
+        <!--Event Image-->
+        <%= link_to(image_tag(url_for_event_image(event_record), :size => "41x41"), event_record) %>
+      <% end %>
+
+      <div class="text">
+        <!--Event Info-->
+        <span class="time">
+          <%=address_for(event_record.location)%>
+          <span>Yesterday-TODO</span>
+          @
+          <em><%=event_record.starts_at.strftime("%l:%M %p")%></em>
+        </span>
+
+        <!--attendees list-->
+        <div class="attending">
+          <span class="info"><%=event_record.num_attending_or_maybe_attending%></span>
+          <ul>
+            <% event_record.attending_or_maybe_attendees_rsvps_list.each do |rsvp| %>
+              <li>
+                <%= avatar rsvp.user, :size => "22x22" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <% if !defined?(is_event_embedded) || !is_event_embedded %>
+          <!--Keywords-->
+          <div class="keyword">
+            <% event_record.searchable_event_types.each do |set| %>
+              <span class="keyword"><%= set.try(:name) %></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if is_thread %>
+      <div class="row-text">
+        <%= render "shared/comment", :action => head_action, :truncate_at => 320 %>
+      </div>
+    <% end %>
+
+  <% elsif is_thread %>
+    <!--First comment goes in record area-->
+    <div class="row">
+      <% if defined?(index_action) %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :image_size=>"41x41" %>
+      <% else %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 320 %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if is_thread %>
+    <!--View all messages link-->
+    <% if head_action.actions.length > 3 %>
+      <span class="view-messages">
+        <%= link_to "View all #{head_action.actions.length + 1} messages", '#', :class => 'view-all-messages'-%>
+      </span>
+    <% end %>
+  <%end%>
+</div>
+
+<% if is_thread %>
+  <!--Thread-->
+  <%= render "shared/thread", :action => head_action, :display_index => (defined?(index_action) ? head_action.actions.index(index_action) : head_action.actions.length) %>
+<% end %>

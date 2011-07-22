@@ -56,10 +56,8 @@ class EventsController < ApplicationController
     prepare_for_form
 
     if request.xhr?
-      render :partial => 'new'
-      return
+      puts "I AM HERE"
     end
-    render :layout => false
   end
 
   def create

@@ -73,6 +73,29 @@
           e.preventDefault();
         });  
       })
+
+      $('.show-total-comment').click(function(){
+        $(this).parent().siblings('.truncated-comment-body').hide();
+        $(this).parent().siblings('.total-comment-body').show();
+        $(this).parent().hide();
+
+        return false;
+      });
+
+      $('.view-all-messages').click(function(){
+        $.each($(this).parent().parent().siblings('.post-holder').children('.post'), function(i,v){
+          $(v).show();
+        });
+
+        $.each($(this).parent().parent().siblings('.post-holder').children('.row-miss'), function(i,v){
+          $(v).hide();
+        });
+
+
+        $(this).parent().hide()
+
+        return false;
+      });
     </script>
     <%= yield :fb_scripts %>
 
