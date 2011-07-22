@@ -1,0 +1,11 @@
+<div class="post">
+  <% if @comment.action.action %>
+    <%#This is a reply on a thread%>
+    <%=render :partial => 'shared/comment', :locals => { :action => @comment.action, :truncate_at => 160, :image_size => "33x33" }%>
+  <% elsif @comment.action.action_type == Action.types[:search_comment] %>
+    <%#This is a search comment on the explore page%>
+  <% else %>
+    <%#This is an Event or Profile comment on an Event or Profile%>
+    <%=render :partial => 'shared/records', :locals => { :record => @comment.action, :record_type => RecordType.types[:plain_thread] }%>
+  <% end %>
+</div>

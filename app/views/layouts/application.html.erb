@@ -73,8 +73,9 @@
           e.preventDefault();
         });  
       })
-
-      $('.show-total-comment').click(function(){
+      
+  
+      $('.show-total-comment').live('click', function(){
         $(this).parent().siblings('.truncated-comment-body').hide();
         $(this).parent().siblings('.total-comment-body').show();
         $(this).parent().hide();
@@ -82,12 +83,12 @@
         return false;
       });
 
-      $('.view-all-messages').click(function(){
-        $.each($(this).parent().parent().siblings('.post-holder').children('.post'), function(i,v){
+      $('.view-all-messages').live('click', function(){
+        $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.post'), function(i,v){
           $(v).show();
         });
 
-        $.each($(this).parent().parent().siblings('.post-holder').children('.row-miss'), function(i,v){
+        $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.row-miss'), function(i,v){
           $(v).hide();
         });
 
@@ -96,6 +97,54 @@
 
         return false;
       });
+
+      $('.textarea').live('keydown', function(e) {
+        if (e.keyCode == 13) {
+          if(e.shiftKey != true){
+            $(this).closest('.form-comment').submit();
+            return false;
+          }
+        }
+      });
+
+
+      $('form.comment-form').live('ajax:beforeSend', function(e, xhr, settings)
+      {
+        $('.comment-box').fadeTo('fast', 0.3);
+        return true;
+
+      }).live('ajax:success', function(e, data, status, xhr)
+      {
+        $('.textarea').val('');
+
+        $('.comment-box').fadeTo('slow', 1);
+
+        var $list = $(this).parent().siblings('.post-list')
+        if($list.length)
+        {
+          $(data).hide();
+          $list.append($(data));
+          $(data).slideUp('fast');
+        }
+        else{
+          var $list = $('#action-list');
+          var $elem = $(data).hide();
+          $list.prepend($elem);
+          $elem.slideDown('fast');
+        }
+
+      }).live('ajax:error', function(e, xhr, status, error)
+      {
+        if (xhr.status == 401) {
+          window.location.href = '<%= new_user_session_path %>';
+        }
+        else {
+          alert('Error occurred:' + error);
+        }
+        
+        $('.comment-box').fadeTo('slow', 1);
+      });
+
     </script>
     <%= yield :fb_scripts %>
 

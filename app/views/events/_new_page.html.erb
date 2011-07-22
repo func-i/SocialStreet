@@ -1,3 +1,7 @@
 <script>
-    $('#action-list').append('<%= escape_javascript render(:partial => 'actions') %>');
+  $('#action-list').append(
+    '<div class="post">' +
+      '<%= escape_javascript render(:partial => 'shared/records', :locals => { :record => action, :record_type => RecordType.types[:plain_thread] } ) %>' +
+      '</div>'
+  );
 </script>

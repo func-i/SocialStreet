@@ -1,4 +1,4 @@
-<% if record_type == "event" %>
+<% if record_type == RecordType.types[:event] %>
 
   <% event = record %>
 
@@ -6,6 +6,8 @@
     :left_image => link_to(image_tag(url_for_event_image(event), :size => "55x55"), event),
     :title => link_to(event.name, event),
     :event_record => event %>
+
+<% elsif record_type == RecordType.types[:search_comment] %>
 
 <% elsif record_type == "threaded_event" %>
 
@@ -31,8 +33,8 @@
       <em><%=event.starts_at.strftime("%l:%M %p")%></em>
     </span>
   </div>
-  
-<% elsif record_type == "created_event" %>
+
+<% elsif record_type == RecordType.types[:created_event] || record_type == Action.types[:event_created] %>
  
   <% event = record %>
 
@@ -42,7 +44,7 @@
     :event_record => event,
     :is_event_embedded => true %>
 
-<% elsif record_type == "attending_event" %>
+<% elsif record_type == RecordType.types[:attending_event] || record_type == Action.types[:event_rsvp_attending] %>
 
   <% event = record.event %>
 
@@ -52,7 +54,14 @@
     :event_record => event,
     :is_event_embedded => true %>
 
-<% elsif record_type == "posted_message_to_event" %>
+<% elsif record_type == RecordType.types[:plain_thread] %> 
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => link_to(record.user.name, profile_path(record.user)) + ' wrote:',
+    :head_action => record %>
+
+<% elsif record_type == RecordType.types[:event_comment_posted] || (record_type == Action.types[:event_comment] && nil == record.action) %>
 
   <% head_action = record.action || record %>
   <% event = head_action.event %>
@@ -64,7 +73,7 @@
     :is_event_embedded => true,
     :head_action => head_action %>
 
-<% elsif record_type == "replied_message_to_event" %>
+<% elsif record_type == RecordType.types[:event_comment_replied] || (record_type == Action.types[:event_comment] && nil != record.action) %>
 
   <% head_action = record.action || record %>
   <% event = head_action.event %>
@@ -77,7 +86,7 @@
     :head_action => head_action,
     :index_action => record %>
 
-<% elsif record_type == "posted_message_to_profile" %>
+<% elsif record_type == RecordType.types[:profile_comment_posted] || (record_type == Action.types[:profile_comment] && nil == record.action) %>
 
   <% head_action = record.action || record %>
 
@@ -92,7 +101,7 @@
     :title => title,
     :head_action => head_action %>
 
-<% elsif record_type == "replied_message_to_profile" %>
+<% elsif record_type == RecordType.types[:profile_comment_replied] || (record_type == Action.types[:profile_comment] && nil != record.action) %>
 
   <% head_action = record.action || record %>
 
@@ -109,7 +118,6 @@
     :index_action => record %>
 
 
-<% elsif record_type == "posted_message_to_search" %>
-<% elsif record_type == "replied_message_to_search" %>
-<% elsif record_type == "search_message" %>
+<% elsif record_type == RecordType.types[:search_comment_posted] || (record_type == Action.types[:search_comment] && nil == record.action) %>
+<% elsif record_type == RecordType.types[:search_comment_replied] || (record_type == Action.types[:search_comment] && nil != record.action)%>
 <% end %>

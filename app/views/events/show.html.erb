@@ -98,20 +98,28 @@
   </div>
 </div>
 <div class="post-message">
-  <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "html",:class => "form-post-message Post-Message form comment-form" } do |form| %>
+  <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "html",:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
       <div class="text">
-        <%= form.text_field :body, :title => "Post a Message" -%>
+        <%= form.text_field :body, :title => "Post a Message", :class => "textarea" -%>
       </div>
       <div class="info">
       </div>
     </fieldset>
   <%- end -%>
-  <%= render 'shared/commenting' %>
+  <%#= render 'shared/commenting' %>
 </div>
 <div id="comment-box" class="post-holder Post-Holder" >
   <div id="action-list">
-    <%=  render :partial => 'actions' %>
+        <% @actions.each do |action| %>
+
+      <div class="post">
+        <%= render "shared/records", :record_type => RecordType.types[:plain_thread], :record => action %>
+      </div>
+
+    <% end %>
+
+    <%#=  render :partial => 'actions' %>
   </div>
 </div>
 

@@ -2,7 +2,12 @@
 <% image_size ||= "33x33" if show_image %>
 
 <% truncate_at ||= 200 %>
-<% total_body = (h("#{action.reference.body.strip}")) unless action.reference.body.blank? %>
+
+<% if defined?(include_quotes) && include_quotes %>
+  <% total_body = (h("\"#{action.reference.body.strip}\"")) unless action.reference.body.blank? %>
+<% else %>
+  <% total_body = (h("#{action.reference.body.strip}")) unless action.reference.body.blank? %>
+<% end %>
 
 <% is_truncated = total_body.length > truncate_at %>
 

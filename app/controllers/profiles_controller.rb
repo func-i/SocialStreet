@@ -33,7 +33,6 @@ class ProfilesController < ApplicationController
     @common_people_remaining = @common_people.count - 24
     @common_people = @common_people.limit(24)
 
-
     @comment = Comment.new
 
     #Action List

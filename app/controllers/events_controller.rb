@@ -13,7 +13,7 @@ class EventsController < ApplicationController
     @comment = @event.comments.build
 
     #action list - and pagination
-    @actions = @event.actions.newest_first
+    @actions = @event.actions.where(:action_type => Action.types[:event_comment]).newest_first
 
     @per_page = 5
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page

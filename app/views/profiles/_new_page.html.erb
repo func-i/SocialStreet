@@ -1,3 +1,15 @@
 <script>
-    $('#action-list').append('<%= escape_javascript render(:partial => 'actions') %>');
+<% @actions.each do |action| %>
+  <% if action.action_type == Action.types[:profile_comment] && action.to_user == @user %>
+    <% type = RecordType.types[:plain_thread] %>
+  <% else %>
+    <% type = action.action_type %>
+  <% end %>
+
+  $('#action-list').append(
+    '<div class="post">' +
+      '<%= escape_javascript render(:partial => 'shared/records', :locals => { :record => action, :record_type => type } ) %>' +
+      '</div>'
+  );
+<% end %>
 </script>

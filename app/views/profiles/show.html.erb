@@ -31,21 +31,34 @@
 
 
 <div class="post-message">
-  <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "html", :class => "form-post-message Post-Message form comment-form" } do |form| %>
+  <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "html", :class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
       <div class="text">
-        <%= form.text_field :body, :title => "Post a Message" -%>
+        <%= form.text_field :body, :title => "Post a Message", :class => "textarea" -%>
       </div>
       <div class="info">
       </div>
     </fieldset>
   <%- end -%>
-  <%= render 'shared/commenting' %>
+<%#= render 'shared/commenting' %>
 </div>
 
 <div id="comment-box" class="post-holder Post-Holder" >
   <div id="action-list">
-    <%=  render :partial => 'actions' %>
+    <% @actions.each do |action|%>
+
+      <% if action.action_type == Action.types[:profile_comment] && action.to_user == @user %>
+        <% type = RecordType.types[:plain_thread] %>
+      <% else %>
+        <% type = action.action_type %>
+      <% end %>
+
+      <div class="post">
+        <%= render "shared/records", :record_type => type, :record => action %>
+      </div>
+
+    <% end %>
+
   </div>
 </div>
 
