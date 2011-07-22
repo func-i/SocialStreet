@@ -189,17 +189,24 @@
       return false;
     });
 
-    $('button.comment-button').click(function(e) {
-      var f = $('form.search-params');
-      var s = f.serialize();
-      this.form.action = this.form.action + '?' + s;
+    $('.search-textarea').live('keydown', function(e) {
+      if (e.keyCode == 13) {
+        if(e.shiftKey != true){
+          var f = $('form.search-params');
+          var s = f.serialize();
+          this.form.action = this.form.action + '?' + s;
+
+          $(this).closest('.form-comment').submit();
+          return false;
+        }
+      }
     });
 
     $('.calendar-times').click(function() {
       if($(this).hasClass('select')){
         // The day is selected, remove class and remove search conditions
         $(this).removeClass('select');
-        $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();        
+        $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();
       }
       else {
         $(this).addClass('select');
@@ -373,44 +380,44 @@
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-      sideMap.fitBounds(new google.maps.LatLngBounds(
-      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+        sideMap.fitBounds(new google.maps.LatLngBounds(
+        new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+        new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
-    infoWindow = new google.maps.InfoWindow();
-    geocoder = new google.maps.Geocoder();
+      infoWindow = new google.maps.InfoWindow();
+      geocoder = new google.maps.Geocoder();
 
-    function changeLocationParams(event) {
-      setTimeout(function() {
-        var zoom = sideMap.getZoom();
-        $('#map_zoom').val(zoom);
+      function changeLocationParams(event) {
+        setTimeout(function() {
+          var zoom = sideMap.getZoom();
+          $('#map_zoom').val(zoom);
 
-        bounds = map.getBounds();
-        ne = bounds.getNorthEast();
-        sw = bounds.getSouthWest();
-        c = bounds.getCenter();
+          bounds = map.getBounds();
+          ne = bounds.getNorthEast();
+          sw = bounds.getSouthWest();
+          c = bounds.getCenter();
 
-        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-        $('#map_center').val(c.lat() + ',' + c.lng());
+          $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+          $('#map_center').val(c.lat() + ',' + c.lng());
 
-        if(history && history.replaceState)
-          history.replaceState(null, null, getSearchParams());
-        refreshResults();
-      }, 15);
-    }
+          if(history && history.replaceState)
+            history.replaceState(null, null, getSearchParams());
+          refreshResults();
+        }, 15);
+      }
 
-    google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
-    google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);
-    google.maps.event.addListener(sideMap, 'resize', changeLocationParams);
-    //$(window).resize(changeLocationParams);
+      google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
+      google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);
+      google.maps.event.addListener(sideMap, 'resize', changeLocationParams);
+      //$(window).resize(changeLocationParams);
 
   <% @searchables.each do |searchable| %>
     <% #if searchable.event && searchable.geo_located? %>
     <% if searchable.geo_located? %>
-        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>
 
-  });
+    });
   </script>
 <% end %>
