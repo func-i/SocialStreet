@@ -1,9 +1,9 @@
 <%- content_for :main_top do -%>
   <div class="secondary-navigation col1">
     <ul class="wat-cf tabset">
-      <li class="first active"><a href="#profile-general" data-tab="#profile-general">Profile</a></li>
-      <li><a href="#subscription" data-tab="#subscription">Subscriptions</a></li>
-      <li><a href="#events" data-tab="#events">My Activities</a></li>
+      <li class="first active"><a href="#profile-general" data-tab="#profile-general" class="Settings-tabs">Profile</a></li>
+      <li><a href="#subscription" data-tab="#subscription" class="Settings-tabs">Subscriptions</a></li>
+      <li><a href="#events" data-tab="#events" class="Settings-tabs">My Activities</a></li>
     </ul>
   </div>
 <%- end -%>
@@ -110,48 +110,51 @@
 <% end %>
 
 <div id="events" class="events-holder events tab-content" style="display:none">
-  <table>
-    <tbody>
-      <% if @events_where_administrator && @events_where_administrator.empty? %>
-        <h4>You are not currently administrator of any events</h4>
-    <% else %>
-      <% @events_where_administrator.each do |event| %>
-        <tr>
-          <th>
-            <strong><%=  event.name %></strong>
-            <%= link_to "edit", [:edit, event]%>
-          </th>
-          <td>
-            <span>Start Day:</span>
-            <strong><%= event.starts_at.strftime("%B %d") %></strong>
-          </td>
-          <td>
-            <span>Start Time:</span>
-            <strong><%= event.starts_at.strftime("%l:%M %p") %></strong>
-          </td>
-          <% if event.end_date && event.end_date != event.start_date %>
+  <% if @events_where_administrator && @events_where_administrator.empty? %>
+    <h4>You are not currently administrator of any events</h4>
+
+  <% else %>
+    <table>
+      <tbody>
+
+        <% @events_where_administrator.each do |event| %>
+          <tr>
+            <th>
+              <strong><%=  event.name %></strong>
+              <%= link_to "edit", [:edit, event]%>
+            </th>
             <td>
-              <span>End Day:</span>
-              <strong><%= event.finishes_at.strftime("%B %d") %></strong>
+              <span>Start Day:</span>
+              <strong><%= event.starts_at.strftime("%B %d") %></strong>
             </td>
+            <td>
+              <span>Start Time:</span>
+              <strong><%= event.starts_at.strftime("%l:%M %p") %></strong>
+            </td>
+            <% if event.end_date && event.end_date != event.start_date %>
+              <td>
+                <span>End Day:</span>
+                <strong><%= event.finishes_at.strftime("%B %d") %></strong>
+              </td>
+            <% end %>
+            <% if event.finishes_at %>
+              <td>
+                <span>End Time:</span>
+                <strong><%=  event.finishes_at.strftime("%l:%M %p") %></strong>
+              </td>
+            </tr>
           <% end %>
-          <% if event.finishes_at %>
-            <td>
-              <span>End Time:</span>
-              <strong><%=  event.finishes_at.strftime("%l:%M %p") %></strong>
-            </td>
-          </tr>
         <% end %>
-      <% end %>
-    <% end %>
-    </tbody>
-  </table>
+
+      </tbody>
+    </table>
+  <% end %>
 </div>
 
 <% content_for :end_of_body do %>
   <script>
     $(function() {
-      $('#main_top ul.wat-cf > li > a').click(function(e){
+      $('.Settings-tabs').click(function(e){
         $('.tab-content').hide();
         $('.secondary-navigation li').removeClass('active');
         $(this).closest('li').addClass('active');

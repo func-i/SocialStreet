@@ -1,13 +1,15 @@
 <div id="header">
   <div class="holder">
     <h1 class="logo"><%= link_to "Social Street", root_path -%></h1>
-    <form action="#" class="form-explore">
+    <%= form_tag "#", :method => :get, :remote => true, :class=>"form-explore" do %>
       <fieldset>
-        <input type="submit" value="Explore" title="Explore" class="submit" onclick="window.location='/explore'; return false;" />
-        <span class="text"><input title="Basketball" value="Basketball" /></span>
+        <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit", :onclick=>"window.location='/explore'; return false;" %>
+        <span class="text">
+          <%= text_field_tag 'q', params[:q], :id=>"q-textfield", :placeholder => "Do something today..." %>
+        </span>
       </fieldset>
-    </form>
-    <%#= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
+    <% end %>
+<%#= link_to_popup_modal "Add Activity", "create-event", :class => "btn-add" -%>
     <%= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
     <ul class="nav-serv">
 
@@ -31,7 +33,7 @@
     <div class="video-box" style="display:none">
       <div class="vb">
         <div class="video-holder">
-          <img width="520" height="240" src="images/img16.png" alt="image description"/>
+          <img width="520" height="240" src="/images/img16.png" alt="image description"/>
         </div>
         <div class="text">
           <strong class="ttl">How it works</strong>
@@ -59,7 +61,7 @@
       </div>
       <div class="content1">
         <div class="pop-up1-content">
-          <%#= render :template => "events/new" -%>
+  <%#= render :template => "events/new" -%>
         </div>
       </div>
     </div>
