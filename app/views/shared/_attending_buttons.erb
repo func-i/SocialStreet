@@ -1,0 +1,16 @@
+<%- if @rsvp && Rsvp.statuses[:attending] == @rsvp.status   -%>
+  <%= link_to [:edit, @event, @rsvp], :remote=>true, :class => "btn-attending" do %>
+    <span>Attending</span>
+  <% end %>
+
+  <p>or
+  <%#= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
+    <%= link_to_popup_modal "Invite People", "add-invitees" -%>
+  </p>
+<% else %>
+  <%= link_to [:new, @event, :rsvp], :remote => true, :class => "btn-attend" do %>
+    <span>Attend</span>
+  <% end %>
+
+  <%#Invites should be here too, but currently requires @rsvp%>
+<%end%>

@@ -108,10 +108,6 @@ class EventsController < ApplicationController
         @rsvp.save
       end
     end
-
-    flash[:notice] = "The event has been posted to your Facebook wall"
-
-    redirect_to @event
   end
 
   def load_events   

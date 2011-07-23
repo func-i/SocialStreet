@@ -102,15 +102,14 @@ class Jobs::ProcessNewAction
   def self.handle_subscriptions(redis, action)
     #Actions that are delivered in subscriptions are:
     # => Event Creation
-    # => Event Edit (not yet supported)
     # => Search Filter Comments
     feed = FeedItem.new
     
     if action.action_type == Action.types[:event_created]
-      event = action.event
-      subscriptions = SearchSubscription.matching_event(event)
+      subscriptions = SearchSubscription.matching_event(action.event)
+
       feed.feed_type = FeedItem.types[:event_created]
-      feed.event_id = action.event_id
+      feed.event_id = action.id
     elsif action.action_type == Action.types[:search_comment]
       #TODO action comments where reply to search comment)
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
@@ -118,7 +117,7 @@ class Jobs::ProcessNewAction
 
     return if subscriptions.blank?
 
-    # ADD TO DASHBOARD / NEWS STREAM (NO UNIQUENESS REQUIRED)
+    # ADD TO DASHBOARD / NEWS STREAM / EMAIL (NO UNIQUENESS REQUIRED)
     subscriptions.each do |subscription|
       if subscription.user_id != action.user_id
         #Add to the user subscription email

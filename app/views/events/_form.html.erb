@@ -97,35 +97,35 @@
 <%- elsif @event_for_create.new_record? -%>
   <script>
 
-  var refreshTimer = null;
+    var refreshTimer = null;
 
-  function getSearchParams() {
+    function getSearchParams() {
 
-    var bounds = map.getBounds();
-    ne = bounds.getNorthEast();
-    sw = bounds.getSouthWest();
-    c = bounds.getCenter();
+      var bounds = map.getBounds();
+      ne = bounds.getNorthEast();
+      sw = bounds.getSouthWest();
+      c = bounds.getCenter();
 
-    var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-    if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-      return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-    else
-      return str;
+      var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+      else
+        return str;
 
-  }
+    }
 
-  function createEventMarker(location, title) {
+    function createEventMarker(location, title) {
 
-    var marker = new google.maps.Marker({
-      position: location,
-      title: title
-    });
+      var marker = new google.maps.Marker({
+        position: location,
+        title: title
+      });
 
-    google.maps.event.addListener(marker, 'click', function() {
-      //selectMarker(marker, true); //Commented out until proper functionality is determined
-    });
-    markers.push(marker);
-  }
+      google.maps.event.addListener(marker, 'click', function() {
+        //selectMarker(marker, true); //Commented out until proper functionality is determined
+      });
+      markers.push(marker);
+    }
 
   </script>
   <%# end %>
