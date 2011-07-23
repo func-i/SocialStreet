@@ -15,7 +15,7 @@
   <div class="text">
 
     <%- if @user.fb_uid? -%>
-      <span class="link"><%= link_to "Profile ", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true, :class => "btn-fb-profile" -%></span>
+        <%= link_to "Goto", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true, :class => "btn-fb-profile"-%>
     <%- end -%>
 
 

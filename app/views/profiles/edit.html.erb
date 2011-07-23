@@ -11,10 +11,12 @@
 <%- content_for :sidebar do -%>
   <div class="box profile">
     <%= avatar @user, :size => "100x95" %>
-    <div class="text-content">
-      <span class="info">Facebook: /<a href="#">jSmith</a></span>
-      <h3><%= @user.name %><span class="city">Toronto, ON</span></h3>
+    <div class="text-content">     
+      <h3><%= @user.name %>
+
+        <span class="city">Toronto, ON</span></h3>
     </div>
+
   </div>
 <% end %>
 
