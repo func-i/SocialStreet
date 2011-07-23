@@ -134,6 +134,7 @@
 <% content_for :end_of_body do %>
   <%= javascript_include_tag 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
   <script>
+
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
     var refreshTimer = null;
     var keywordsParamKey = "keywords[]";
@@ -167,6 +168,19 @@
     }).bind('ajax:complete', function() {
       $('#ajax-spinner').hide();
     });
+
+    function refreshResults(caller) {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
+      }
+      refreshTimer = setTimeout(function() {
+        if(caller == "events")
+          $.getScript('/events/load_events' + getSearchParams());
+        else if(caller == "explore")
+          $('form.search-params').submit();
+      }, 250);
+    } 
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
@@ -257,8 +271,6 @@
     makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
   </script>
-  <!-- This is already included in the header -->
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
   <script>
     var markers = [];
@@ -382,7 +394,7 @@
           var zoom = sideMap.getZoom();
           $('#map_zoom').val(zoom);
 
-          bounds = map.getBounds();
+          bounds = sideMap.getBounds();
           ne = bounds.getNorthEast();
           sw = bounds.getSouthWest();
           c = bounds.getCenter();
@@ -395,19 +407,6 @@
           refreshResults("explore");
         }, 15);
       }
-
-      function refreshResults(caller) {
-        if (refreshTimer) {
-          clearInterval(refreshTimer);
-          delete refreshTimer;
-        }
-        refreshTimer = setTimeout(function() {
-          if(caller == "events")
-            $.getScript('/events/load_events' + getSearchParams());
-          else if(caller == "explore")
-            $('form.search-params').submit();
-        }, 250);
-      } 
 
       google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
       google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);
