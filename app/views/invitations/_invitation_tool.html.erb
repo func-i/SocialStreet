@@ -3,10 +3,10 @@
     background-color: #DDD;
   }
   .user-list {
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
   .selected-list {
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
 
   .selected-list-invitations .remove-btn {
@@ -30,7 +30,16 @@
       </ul>
     </div>
   </div>
-  <%= render 'shared/form_submit_button' %>
+  <div class="row-btn">
+    <div class="col-facebook">
+      <label for="facebook">Post to:
+        <input type="checkbox" title="facebook" id="facebook"/>
+      </label>
+    </div>    
+    <%= render 'shared/form_submit_button' %>
+
+  </div>
+
 </div>
 
 <script>

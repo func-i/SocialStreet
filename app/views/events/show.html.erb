@@ -56,8 +56,8 @@
                 <span>Attending</span>
               <% end %>
               <p>or
-                <%#= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
-                <%#= link_to_popup_modal "Invite People", "add-invitees" -%>
+    <%#= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
+                <%= link_to_popup_modal "Invite People", "add-invitees", :id => "add_invitees_button" -%>
               </p>
             <%- else -%>
               <%= link_to [:new, @event, :rsvp], :class => "btn-attend" do %>
@@ -108,11 +108,11 @@
       </div>
     </fieldset>
   <%- end -%>
-  <%#= render 'shared/commenting' %>
+<%#= render 'shared/commenting' %>
 </div>
 <div id="comment-box" class="post-holder Post-Holder" >
   <div id="action-list">
-        <% @actions.each do |action| %>
+    <% @actions.each do |action| %>
 
       <div class="post">
         <%= render "shared/records", :record_type => RecordType.types[:plain_thread], :record => action %>
@@ -120,7 +120,7 @@
 
     <% end %>
 
-    <%#=  render :partial => 'actions' %>
+<%#=  render :partial => 'actions' %>
   </div>
 </div>
 
@@ -183,7 +183,6 @@
 
 <% end %>
 
-
 <%= content_for :popup_modals do -%>
 
   <%- if user_signed_in? -%>
@@ -215,16 +214,15 @@
       <%- end -%>
     </div>
 
-    <div id="add-invitees" class="pop-up pop-up-modal" style="display:none;">
+    <div id="add-invitees" class="pop-up" style="display:none;">
       <div class="pop-up1 pop-up2">
         <div class="heading">
           <strong>Invite your friends</strong>
           <%= link_to "close", '#', :class => "btn-close" -%>
         </div>
-        <div class="pop-up1-content">
-          <%= render :template => "invitations/new" -%>
-          <div id="pageless-loader-invitations" style="display:none;text-align:center;width:100%;">
-            <div class="msg" style="color:#e9e9e9;font-size:2em">Loading more results</div>
+        <div class="content" style="height: 585px;">
+          <div class="pop-up1-content">
+            <%= render :template => "invitations/new" -%>
           </div>
         </div>
       </div>
@@ -313,8 +311,15 @@
     </div>
   </div>
 
-<%- end -%>
+  <% unless params[:invite].blank? %>
+    <script>
+      // TODO this should popup the modal by default
+      $('#add_invitees_button').trigger('click');
+    </script>
 
+  <% end %>
+
+<%- end -%>
 
 <% content_for :end_of_body do %>
 
