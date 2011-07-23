@@ -56,8 +56,8 @@
                 <span>Attending</span>
               <% end %>
               <p>or
-    <%#= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
-                <%= link_to_popup_modal "Invite People", "add-invitees", :id => "add_invitees_button" -%>
+                <%= link_to_popup_modal_ajax  'Invite People', 'Invite your friends', 'empty_modal_1', load_modal_event_rsvp_invitation_path(@event, @rsvp, :js), nil, nil, :id => "add_invitees_button"  %>
+                <%#= link_to_popup_modal "Invite People", "add-invitees", :id => "add_invitees_button" -%>
               </p>
             <%- else -%>
               <%= link_to [:new, @event, :rsvp], :class => "btn-attend" do %>
@@ -214,7 +214,7 @@
       <%- end -%>
     </div>
 
-    <div id="add-invitees" class="pop-up" style="display:none;">
+    <!-- <div id="add-invitees" class="pop-up" style="display:none;">
       <div class="pop-up1 pop-up2">
         <div class="heading">
           <strong>Invite your friends</strong>
@@ -225,23 +225,8 @@
             <%= render :template => "invitations/new" -%>
           </div>
         </div>
-      </div>
-      <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "invite-form" do  %>
-        <div class="day-detail friend">
-          <div class="heading">
-            <strong class="day"><span class="invitation-count"><%= @invitations.count -%></span></strong>
-            <span class="day-info">Invitees</span>
-          </div>
-          <div class="friends-list-holder">
-            <ul class="selected-list-invitations">
-              <% @invitations.each do |i| %>
-                <%= render 'invitations/invitation', :invitation => i %>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      <% end %>
-    </div>
+      </div>      
+    </div> -->
 
   <%- end -%>
 
