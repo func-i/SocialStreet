@@ -36,7 +36,7 @@
 
 <% elsif record_type == RecordType.types[:created_event] || record_type == Action.types[:event_created] %>
  
-  <% event = record %>
+  <% event = record.event %>
 
   <%= render "shared/general_record",
     :left_image => avatar(event.user, :size => "55x55"),

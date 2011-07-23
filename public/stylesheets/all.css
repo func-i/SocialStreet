@@ -523,6 +523,14 @@ form, fieldset {
 	margin: 12px 33px 0 0;
 	padding: 0 29px 0 0;
 }
+.btn-fb-profile {
+	background: url("../images/ico-share.png") no-repeat 100% 0;
+	color: #0981be;
+	float: right;
+	font: bold 12px/23px Arial, Helvetica, sans-serif;
+	margin: 12px 33px 0 0;
+	padding: 0 29px 0 0;
+}
 #content .profile h2 {
 	margin: 0;
 }
