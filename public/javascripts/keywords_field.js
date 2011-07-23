@@ -108,7 +108,7 @@ $(function() {
         select: function( event, ui ) {
             console.log('item selected');
             this.value = '';
-            keywordHandler(ui.item.value);
+            keywordHandler(ui.item.value, $(this).attr('keyword-content-selector'));
             return false;
         }
     });
