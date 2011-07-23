@@ -18,7 +18,7 @@
   </div>
 <% end %>
 
-<%= form_for @user, :url => profile_path, :html => {:class => "form", :multipart => true} do |form| %>
+<%= form_for @user, :url => profile_path, :remote => true, :html => {:class => "form", :multipart => true} do |form| %>
 
   <div id="profile-general" class="profile-general tab-content">
     <div class="row row-photo">
@@ -26,26 +26,26 @@
       <div class="col">
         <%= avatar @user, :size => "81x78" %>
         <strong class="link-download">
-          <a href="#">edit photo</a></strong> TODO
+          <a href="#" class="submit-on-change">edit photo</a></strong> TODO
       </div>
     </div>
     <div class="row">
       <label for="nickname1">Name</label>
-      <%= form.text_field :name, :class => "text", :id => "nickname1" %>
+      <%= form.text_field :name, :class => "text submit-on-change", :id => "nickname1" %>
     </div>
     <div class="row">
       <label for="email1">Email</label>
-      <%= form.text_field :email, :class => "text", :id => "email1" %>
+      <%= form.text_field :email, :class => "text submit-on-change", :id => "email1" %>
     </div>
     <div class="row">
       <span>Sex</span>
       <div class="col">
         <div class="row">
-          <input name="sex" id="male1" type="radio" class="radio" />
+          <%= form.radio_button :gender, "male", :class=>"radio submit-on-change", :id=>"male1" %>
           <label for="male1">Male</label>
         </div>
         <div class="row">
-          <input name="sex" id="female1" type="radio" class="radio" />
+          <%= form.radio_button :gender, "female", :class=>"radio submit-on-change", :id=>"female1" %>
           <label for="female1">Female</label>
         </div>
       </div>
@@ -58,19 +58,19 @@
       <strong class="heading">Comments</strong>
       <div class="content">
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:immediate], :class => "radio", :id => "instant"%>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:immediate], :class => "radio submit-on-change", :id => "instant"%>
           <label for="instant">Instant</label>
         </span>
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:daily], :class => "radio", :id => "daily"%>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:daily], :class => "radio submit-on-change", :id => "daily"%>
           <label for="daily">Daily</label>
         </span>
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:weekly], :class => "radio", :id => "weekly"%>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:weekly], :class => "radio submit-on-change", :id => "weekly"%>
           <label for="weekly">Weekly</label>
         </span>
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:none], :class => "radio", :id => "none"%>
+          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:none], :class => "radio submit-on-change", :id => "none"%>
           <label for="none">None</label>
         </span>
       </div>
@@ -84,19 +84,19 @@
           </strong>
           <div class="content">
             <span>
-              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:immediate], :class => "radio", :id => "instant"%>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:immediate], :class => "radio submit-on-change", :id => "instant"%>
               <label for="instant">Instant</label>
             </span>
             <span>
-              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:daily], :class => "radio", :id => "daily"%>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:daily], :class => "radio submit-on-change", :id => "daily"%>
               <label for="daily">Daily</label>
             </span>
             <span>
-              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:weekly], :class => "radio", :id => "weekly"%>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:weekly], :class => "radio submit-on-change", :id => "weekly"%>
               <label for="weekly">Weekly</label>
             </span>
             <span>
-              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:none], :class => "radio", :id => "none"%>
+              <%=builder.radio_button :frequency, SearchSubscription.frequencies[:none], :class => "radio submit-on-change", :id => "none"%>
               <label for="none">None</label>
             </span>
           </div>
@@ -161,7 +161,15 @@
         $($(this).data('tab')).show();
         return false;
       });
+
+
+      $('.submit-on-change').change(function(){
+        $('.form').submit();
+      });
+
+
     });
+
   </script>
 <% end %>
 

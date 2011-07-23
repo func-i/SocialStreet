@@ -27,8 +27,10 @@ class User < ActiveRecord::Base
   has_many :received_invitations, :class_name => "Invitation", :foreign_key => "to_user_id"
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :photo,
+  attr_accessible :username, :email, :gender, :name, :password, :password_confirmation, :remember_me, :photo,
     :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes, :fb_uid, :facebook_profile_picture_url
+
+  attr_accessor :name
 
   default_value_for :comment_notification_frequency do
     SearchSubscription.frequencies[:immediate]
@@ -56,6 +58,7 @@ class User < ActiveRecord::Base
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
     if omniauth['extra'] && user_info = omniauth['extra']['user_hash']
       self.username = user_info['screen_name'] if !user_info['screen_name'].blank? && self.username.blank?
+
       if !user_info['name'].blank?
         split = user_info['name'].split
         if self.first_name.blank?
@@ -65,7 +68,11 @@ class User < ActiveRecord::Base
           self.last_name = split.last if split.size == 2
         end
       end
+      
       self.email = user_info['email'] if !user_info['email'].blank? && self.email.blank?
+
+      self.gender = user_info['gender'] if !user_info['gender'].blank? && self.gender.blank?
+
     end
     if omniauth['provider'] == 'facebook' && omniauth['user_info']
       self.facebook_profile_picture_url = omniauth['user_info']['image'] if self.facebook_profile_picture_url.blank?
@@ -81,6 +88,18 @@ class User < ActiveRecord::Base
       username
     else
       "Sir/Madam" # for now, should have more conditions before this
+    end
+  end
+
+  def name=(n)
+    names = n.split( );
+
+    self.first_name = names[0]
+
+    if(names.length > 1)
+      self.last_name = names[1...names.length].join(' ')
+    else
+      self.last_name = ""
     end
   end
 
