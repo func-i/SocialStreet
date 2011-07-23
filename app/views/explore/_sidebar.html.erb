@@ -15,7 +15,7 @@
       <div class="heading">
         <fieldset class="search-address">
           <label for="keywords1">What?</label>
-          <%= text_field_tag 'q', params[:q], :id=>"q-textfield", :class => "text_field do-not-submit text", :placeholder => "Add Keywords" %>
+          <%= text_field_tag 'q', params[:q], :class => "q-textfield text_field do-not-submit text", :placeholder => "Add Keywords", "keyword-content-selector" => '#explore-keywords' %>
         </fieldset>
       </div>
       <div class="box-content">
@@ -146,16 +146,6 @@
         return str
     }
 
-    function refreshResults() {
-      if (refreshTimer) {
-        clearInterval(refreshTimer);
-        delete refreshTimer;
-      }
-      refreshTimer = setTimeout(function() {
-        $('form.search-params').submit();
-      }, 250);
-    }
-
     function makePageless(numPages, currentPage) {
       $('#action-list').pageless({ totalPages: numPages,
         url: '<%= explore_path %>',
@@ -180,7 +170,7 @@
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
-      change(refreshResults); // on change of the search form fields, refresh the results
+      change(refreshResults("explore")); // on change of the search form fields, refresh the results
 
     $('button.save-button').click(function(e) {
       var f = $('form.search-params');
@@ -227,7 +217,7 @@
       step: 15,
       values: [<%= params[:from_time] || DAY_FIRST_MINUTE %>, <%= params[:to_time] || DAY_LAST_MINUTE %>],
       slide: slideTime,
-      change: refreshResults
+      change: refreshResults("explore")
     });
 
     function initTimeLabel() {
@@ -402,9 +392,22 @@
 
           if(history && history.replaceState)
             history.replaceState(null, null, getSearchParams());
-          refreshResults();
+          refreshResults("explore");
         }, 15);
       }
+
+      function refreshResults(caller) {
+        if (refreshTimer) {
+          clearInterval(refreshTimer);
+          delete refreshTimer;
+        }
+        refreshTimer = setTimeout(function() {
+          if(caller == "events")
+            $.getScript('/events/load_events' + getSearchParams());
+          else if(caller == "explore")
+            $('form.search-params').submit();
+        }, 250);
+      } 
 
       google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
       google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);

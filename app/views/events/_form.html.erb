@@ -5,7 +5,7 @@
 
   <div class="row">
     <label for="what">What?</label>
-    <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :id=>"what", :type => "text", :title => "What?", :class => "q-textfield text_field do-not-submit text", :placeholder => "Enter keywords here..." %>
+    <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :type => "text", :title => "What?", :class => "q-textfield text_field do-not-submit text", :placeholder => "Enter keywords here...", "keyword-content-selector" => '#event-keywords' %>
   </div>
   <ul id="event-keywords" class="keyword">
     <% (@event_for_create.searchable.keywords || []).each do |keyword| %>
@@ -86,7 +86,8 @@
   var keywordsParamKey  = "event[searchable_attributes][keywords][]";
   var locationSearchURL = '<%= locations_path(:format => :json) %>';
 </script>
-<%= javascript_include_tag 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared', 'marker_clusterer' %>
+
+<%= javascript_include_tag 'marker_clusterer', 'events/form', 'events/organizer_map', 'keywords_field', 'gmaps/shared' %>
 <% if @event_for_create.location.try(:geo_located?) %>
   <script>
     $(function() {
@@ -96,45 +97,35 @@
 <%- elsif @event_for_create.new_record? -%>
   <script>
 
-    var refreshTimer = null;
+  var refreshTimer = null;
 
-    function getSearchParams() {
+  function getSearchParams() {
 
-      var bounds = map.getBounds();
-      ne = bounds.getNorthEast();
-      sw = bounds.getSouthWest();
-      c = bounds.getCenter();
+    var bounds = map.getBounds();
+    ne = bounds.getNorthEast();
+    sw = bounds.getSouthWest();
+    c = bounds.getCenter();
 
-      var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-      else
-        return str;
+    var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+    if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+      return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+    else
+      return str;
 
-    }
+  }
 
-    function refreshResults() {
-      if (refreshTimer) {
-        clearInterval(refreshTimer);
-        delete refreshTimer;
-      }
-      refreshTimer = setTimeout(function() {
-        $.getScript('/events/load_events' + getSearchParams());
-      }, 250);
-    }
+  function createEventMarker(location, title) {
 
-    function createEventMarker(location, title) {
+    var marker = new google.maps.Marker({
+      position: location,
+      title: title
+    });
 
-      var marker = new google.maps.Marker({
-        position: location,
-        title: title
-      });
-
-      google.maps.event.addListener(marker, 'click', function() {
-        //selectMarker(marker, true); //Commented out until proper functionality is determined
-      });
-      markers.push(marker);
-    }
+    google.maps.event.addListener(marker, 'click', function() {
+      //selectMarker(marker, true); //Commented out until proper functionality is determined
+    });
+    markers.push(marker);
+  }
 
   </script>
   <%# end %>

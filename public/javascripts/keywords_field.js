@@ -2,11 +2,11 @@ function addKeyword(keyword, selector) {
     
     if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0 || keyword == '') return false;
     $('<li class="keyword-pill">' +
-      keyword +
-      '<a href="#" class="close remove-parent" data-parent-selector = ".keyword-pill">close</a>' +
-      '<input type="hidden" name="event[searchable_attributes][keywords][]" value="' +keyword + '" />' +
-      '</li>'
-    ).hide().appendTo($(selector)).fadeIn('slow');
+        keyword +
+        '<a href="#" class="close remove-parent" data-parent-selector = ".keyword-pill">close</a>' +
+        '<input type="hidden" name="event[searchable_attributes][keywords][]" value="' +keyword + '" />' +
+        '</li>'
+        ).hide().appendTo($(selector)).fadeIn('slow');
     return true;
 }
 
@@ -48,12 +48,19 @@ function arraySubtract(ara1,ara2) {
 
 $(function() {
     
-    function keywordHandler(keyword) {
-        if(addKeyword(keyword, '#explore-keywords'))
+    function keywordHandler(keyword, keywordContentSelector) {
+        if(addKeyword(keyword, keywordContentSelector))
             if (typeof refreshResults == "function") {
                 if(history && history.pushState)
                     history.pushState(null, null, getSearchParams());
-                refreshResults();
+                var caller;
+                //  TODO: possibly look at cleaning this up later
+                if(keywordContentSelector == '#explore')
+                    caller = "explore";
+                else
+                    caller = "events";
+                
+                refreshResults(caller);
             }
     }
     
@@ -66,10 +73,10 @@ $(function() {
         }
     });
 
-    $('#q-textfield').keydown(function(e) {
+    $('.q-textfield').keydown(function(e) {
         if (e.keyCode == 13) {
             console.log('enter pressed');
-            keywordHandler(this.value);
+            keywordHandler(this.value, $(this).attr('keyword-content-selector'));
             this.value = '';
             e.stopPropagation();
             return false;
@@ -82,7 +89,7 @@ $(function() {
     // So if user types "ba" again it uses the local cache instead of doing another AJAX request - KV
     var cache = {},
     lastXhr;
-    $( "#q-textfield" ).autocomplete({
+    $( ".q-textfield" ).autocomplete({
         minLength: 2,
         source: function( request, response ) {
             var term = request.term;
