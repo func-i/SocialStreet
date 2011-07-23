@@ -25,6 +25,11 @@ class InvitationsController < ApplicationController
 
   end
 
+  def load_modal
+    load_connections
+    @invitations = @rsvp.invitations
+  end
+
   def change
     if current_user.fb_friends_imported?
       load_connections

@@ -67,6 +67,9 @@ SocialStreet::Application.routes.draw do
 
     resources :rsvps do 
       resources :invitations do
+        member do
+          match "load_modal"
+        end
         get :change, :on => :collection
       end
     end

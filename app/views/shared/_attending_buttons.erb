@@ -4,8 +4,7 @@
   <% end %>
 
   <p>or
-  <%#= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_1', new_event_path(:js), nil, nil, :class => "btn-add"  %>
-    <%= link_to_popup_modal "Invite People", "add-invitees" -%>
+    <%= link_to_popup_modal_ajax  'Invite People', 'Invite your friends', 'empty_modal_1', load_modal_event_rsvp_invitation_path(@event, @rsvp, :js), nil, nil, :id => "add_invitees_button"  %>
   </p>
 <% else %>
   <%= link_to [:new, @event, :rsvp], :remote => true, :class => "btn-attend" do %>

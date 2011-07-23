@@ -3,10 +3,10 @@
     background-color: #DDD;
   }
   .user-list {
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
   .selected-list {
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
 
   .selected-list-invitations .remove-btn {
@@ -24,13 +24,20 @@
 </div>
 <div class="users-holder">
   <div class="users-list">
-    <div id="inv-users-list" class="ul1 user-list">
+    <div id="inv-users-list" class="ul1 user-list" style="min-height: 400px;">
       <ul id="invitation-user-list">
         <%= render "invitations/user_results" -%>
       </ul>
     </div>
   </div>
-  <%= render 'shared/form_submit_button' %>
+  <div class="row-btn">
+    <div class="col-facebook">
+      <label for="facebook">Post to:
+        <input type="checkbox" title="facebook" id="facebook"/>
+      </label>
+    </div>    
+    <%= render 'shared/form_submit_button' %>
+  </div>
 </div>
 
 <script>
@@ -87,7 +94,6 @@
         $('form.search-params-invitations').submit();
       }, 250);
     }
-
     
     var $selectedListInvitations = $('.selected-list-invitations');
     var $invitationsCount = $('.invitation-count');

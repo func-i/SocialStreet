@@ -26,7 +26,7 @@ $(function() {
         return false;
     });
 
-    $('.popup-modal').live('click', function() {       
+    $('.popup-modal').live('click', function() {
         var divId = '#' + $(this).attr('popup-div-id');
         $(divId).show();
 
