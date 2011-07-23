@@ -11,10 +11,13 @@
 <%- content_for :sidebar do -%>
   <div class="box profile">
     <%= avatar @user, :size => "100x95" %>
-    <div class="text-content">     
+    <div class="text-content">
       <h3><%= @user.name %>
 
-        <span class="city">Toronto, ON</span></h3>
+        <% if @user.location %>
+          <span class="city"><%=@user.location%></span>
+        <% end %>
+      </h3>
     </div>
 
   </div>
@@ -39,6 +42,11 @@
       <label for="email1">Email</label>
       <%= form.text_field :email, :class => "text submit-on-change", :id => "email1" %>
     </div>
+    <div class="row">
+      <label for="location1">Location</label>
+      <%= form.text_field :location, :class => "text submit-on-change", :id => "location1" %>
+    </div>
+
     <div class="row">
       <span>Sex</span>
       <div class="col">

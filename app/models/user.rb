@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   has_many :received_invitations, :class_name => "Invitation", :foreign_key => "to_user_id"
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :gender, :name, :password, :password_confirmation, :remember_me, :photo,
+  attr_accessible :username, :email, :gender, :location, :name, :password, :password_confirmation, :remember_me, :photo,
     :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes, :fb_uid, :facebook_profile_picture_url
 
   attr_accessor :name
@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
 
       self.gender = user_info['gender'] if !user_info['gender'].blank? && self.gender.blank?
 
+      self.location = user_info['location']['name'] if !user_info['location'].blank? && !user_info['location']['name'].blank? && self.location.blank?
     end
     if omniauth['provider'] == 'facebook' && omniauth['user_info']
       self.facebook_profile_picture_url = omniauth['user_info']['image'] if self.facebook_profile_picture_url.blank?

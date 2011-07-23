@@ -23,7 +23,9 @@
       <h2>
         <%= @user.name %> <br />
 <%#- TODO get address and city from facebook where you allow that information in the permissions.  -%>
-        <span class="​​city">Toronto, ON</span>
+        <% if @user.location %>
+          <span class="city"><%=@user.location%></span>
+        <% end %>
       </h2>
     </div>
     <% if current_user && current_user.can_friend?(@user) %>
