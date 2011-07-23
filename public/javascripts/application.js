@@ -56,55 +56,12 @@ $(function() {
 
     $('.popup-modal-ajax').live('click', function() {
         var divId = '#' + $(this).attr('popup-div-id');
-
-        //Set the modal title
-        $(divId).find('#modal-title').text($(this).attr('modal-title'))
-
-        //Display the modal
-        $(divId).show();
-
-        //Display overlay
-        if(document.getElementById("TB_overlay") === null){
-            $("body").append("<div id='TB_overlay'></div>");
-            $("#TB_overlay").addClass("TB_overlayBG");
-            $("#TB_overlay").click(function(){
-                removeModal($(divId))
-            });
-        }
-
-        //Send request to load data into the modal
-        //
-        //
-        var requestURL = $(this).attr('request-url').valueOf();
-
+        var title = $(this).attr('modal-title')
+        var requestURL = $(this).attr('request-url');
         var requestParams = $(this).attr('request-params');
-        
-        if(requestParams != null)
-            requestURL += "?=" + requestParams.valueOf();
-        
-        $.getScript(requestURL);
 
-        //Call post load hook if exists
-        var callback = $(this).attr('request-callback')
-        if(callback != null){
-            eval(callback.valueOf()+'()')
-        }
-
-
-    //        
-    //        if(requestParams == null)
-    //            $(divId).find('.ajax_add_here').load(requestURL);
-    //        else
-    //            $(divId).find('.ajax_add_here').load(requestURL, requestParams.valueOf());
-    //
-    //        //Call post load hook if exists
-    //        var callback = $(this).attr('request-callback')
-    //        if(callback != null){
-    //            eval(callback.valueOf()+'()')
-    //        }
+        popup_modal_ajax(divId, title, requestURL, requestParams);
     });
-
-
 
     $('.btn-close').live('click', function() {
         removeModal(this);
@@ -114,6 +71,36 @@ $(function() {
         removeModal(this);
     });
 })
+
+function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
+    //Set the modal title
+    $(modal_divID).find('#modal-title').text(modal_title)
+
+    //Display the modal
+    $(modal_divID).show();
+
+    console.log($(modal_divID))
+
+    //Display overlay
+    if(document.getElementById("TB_overlay") === null){
+        $("body").append("<div id='TB_overlay'></div>");
+        $("#TB_overlay").addClass("TB_overlayBG");
+        $("#TB_overlay").click(function(){
+            removeModal($(modal_divID))
+        });
+    }
+
+    var request = requestURL.valueOf();
+
+    //Send request to load data into the modal
+    if(requestParams != null)
+        request += "?=" + requestParams.valueOf();
+
+     console.log(requestURL);
+     console.log(request);
+     
+    $.getScript(request);
+}
 
 function removeModal(element) {
     var ele;
