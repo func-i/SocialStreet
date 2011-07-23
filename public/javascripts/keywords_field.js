@@ -84,6 +84,13 @@ $(function() {
         return true;
     });
 
+    $('.q-textfield').change(function(e) {
+        keywordHandler(this.value, $(this).attr('keyword-content-selector'));
+        this.value = '';
+        e.stopPropagation();
+        return false;
+    });
+
 
     // local key/val cache so if it does ajax json for "ba", it caches the result the first time.
     // So if user types "ba" again it uses the local cache instead of doing another AJAX request - KV

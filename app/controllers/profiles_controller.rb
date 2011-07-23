@@ -9,7 +9,7 @@ class ProfilesController < ApplicationController
 
 
   def show
-#    @actions = @user.actions.newest_first.all
+    #    @actions = @user.actions.newest_first.all
 
     #@events = @user.rsvps.attending_or_maybe_attending.all.collect {|rsvp| rsvp.event if rsvp.event.upcoming? }.compact
     #    @events = @user.rsvp_events.
@@ -59,11 +59,16 @@ class ProfilesController < ApplicationController
   def update
     @user.attributes = params[:user]
     if @user.save
+      if request.xhr?
+        render :nothing => true
+      end
+
       #redirect_to edit_profile_path , :notice => "You have successfully updated your profile"
-      redirect_to edit_profile_path
+      #redirect_to edit_profile_path
     else
+      puts "What the F@!k"
       #redirect_to edit_profile_path, :notice => "Error updating your profile"
-      redirect_to edit_profile_path
+      #redirect_to edit_profile_path
     end
   end
 

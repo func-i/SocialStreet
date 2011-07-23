@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110626043825) do
+ActiveRecord::Schema.define(:version => 20110723160131) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -246,6 +246,8 @@ ActiveRecord::Schema.define(:version => 20110626043825) do
     t.string   "fb_uid"
     t.string   "photo"
     t.boolean  "fb_friends_imported",                           :default => false
+    t.string   "gender"
+    t.string   "location"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

@@ -13,15 +13,20 @@
 <div class="profile">
   <%= avatar @user, :size => "99x94" %>
   <div class="text">
+
+    <%- if @user.fb_uid? -%>
+        <%= link_to "Goto", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true, :class => "btn-fb-profile"-%>
+    <%- end -%>
+
+
     <div class="text-content">
       <h2>
         <%= @user.name %> <br />
 <%#- TODO get address and city from facebook where you allow that information in the permissions.  -%>
-        <span class="​​city">Toronto, ON</span>
+        <% if @user.location %>
+          <span class="city"><%=@user.location%></span>
+        <% end %>
       </h2>
-      <%- if @user.fb_uid? -%>
-        <span class="link">Facebook: <%= link_to "URL Link", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true -%></span>
-      <%- end -%>
     </div>
     <% if current_user && current_user.can_friend?(@user) %>
       <%= link_to 'Add to Facebook', '#', :class => "btn-add add-to-fb-button", "data-fb-uid" => @user.fb_uid %>
