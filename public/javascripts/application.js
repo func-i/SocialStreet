@@ -79,8 +79,6 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     //Display the modal
     $(modal_divID).show();
 
-    console.log($(modal_divID))
-
     //Display overlay
     if(document.getElementById("TB_overlay") === null){
         $("body").append("<div id='TB_overlay'></div>");
@@ -96,9 +94,6 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     if(requestParams != null)
         request += "?=" + requestParams.valueOf();
 
-     console.log(requestURL);
-     console.log(request);
-     
     $.getScript(request);
 }
 

@@ -289,7 +289,9 @@
   <% unless params[:invite].blank? %>
     <script>
       // TODO this should popup the modal by default
-      $('#add_invitees_button').trigger('click');
+      $(function(){
+        popup_modal_ajax('#empty_modal_1', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
+      });
     </script>
 
   <% end %>
