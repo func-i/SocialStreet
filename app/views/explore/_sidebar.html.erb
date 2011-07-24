@@ -70,7 +70,7 @@
               <%- 3.times do |tm| -%>
                 <tr>
                   <%- 7.times do |day| -%>
-                    <%= content_tag("td", :class => "calendar-times", "d-pos" => "#{tm},#{day}") do -%>
+                    <%= content_tag("td", :class => "calendar-times", "d-pos" => "#{day},#{tm}") do -%>
                     <span></span>
                   <%- end -%>
                 <%- end -%>
@@ -81,26 +81,26 @@
         </div>
       </div>
     </div>
-
+    <!--
     <%= label_tag 'date_range_inclusive', 'Inclusive?', :class => "label" %>
     <%= check_box_tag 'inclusive', params[:inclusive], params[:inclusive]%>
 
     <%= label_tag 'days', 'Days of the Week', :class => "label" %>
-    <div style="margin-bottom:10px">
-      <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
-      <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
-      <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
-      <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
-      <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
-      <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
-      <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
-    </div>
+       <div style="margin-bottom:10px">
+    <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
+    <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
+    <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
+    <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
+    <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
+    <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
+    <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
+       </div>
 
 
-    <div id="timerange" style="width:90%;margin: auto auto"></div>
-    <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
+       <div id="timerange" style="width:90%;margin: auto auto"></div>
+       <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
 
-    </div>
+       </div> -->
     <%= hidden_field_tag 'from_time', params[:from_time] %>
     <%= hidden_field_tag 'to_time', params[:to_time] %>
     <%= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
@@ -180,7 +180,7 @@
         else if(caller == "explore")
           $('form.search-params').submit();
       }, 250);
-    } 
+    }
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
@@ -225,50 +225,7 @@
     });
     $( "#to_date" ).datepicker({
       dateFormat: 'M. dd, yy'
-    });
-    $('#timerange').slider({
-      range: true,
-      min: <%= DAY_FIRST_MINUTE %>,
-      max: <%= DAY_LAST_MINUTE %>,
-      step: 15,
-      values: [<%= params[:from_time] || DAY_FIRST_MINUTE %>, <%= params[:to_time] || DAY_LAST_MINUTE %>],
-      slide: slideTime,
-      change: refreshResults("explore")
-    });
-
-    function initTimeLabel() {
-      slideTime(null, {
-        values: [
-          $("#timerange").slider("values", 0) ,
-          $("#timerange").slider("values", 1)
-        ]
-      }); // mimic slide event for time slider
-    }
-
-    function slideTime(event, ui) {
-      var minutes0 = parseInt(ui.values[0] % 60);
-      var hours0 = parseInt(ui.values[0] / 60 % 24);
-      var minutes1 = parseInt(ui.values[1] % 60);
-      var hours1 = parseInt(ui.values[1] / 60 % 24);
-      var startTime = getTime(hours0, minutes0);
-      var endTime = getTime(hours1, minutes1);
-      $("#timerange-label").text(startTime + ' - ' + endTime);
-      $('#from_time').val(ui.values[0]);
-      $('#to_time').val(ui.values[1]);
-    }
-
-    function getTime(hours, minutes) {
-      var time = null;
-      minutes = minutes + "";
-      if (hours < 12) {time = "AM";}
-      else {  time = "PM";}
-      if (hours == 0) {hours = 12;}
-      if (hours > 12) {hours = hours - 12; }
-      if (minutes.length == 1) {minutes = "0" + minutes;}
-      return hours + ":" + minutes + " " + time;
-    }
-
-    initTimeLabel();
+    });   
 
     makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
@@ -384,44 +341,44 @@
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-        sideMap.fitBounds(new google.maps.LatLngBounds(
-        new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-        new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+      sideMap.fitBounds(new google.maps.LatLngBounds(
+      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
-      infoWindow = new google.maps.InfoWindow();
-      geocoder = new google.maps.Geocoder();
+    infoWindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
 
-      function changeLocationParams(event) {
-        setTimeout(function() {
-          var zoom = sideMap.getZoom();
-          $('#map_zoom').val(zoom);
+    function changeLocationParams(event) {
+      setTimeout(function() {
+        var zoom = sideMap.getZoom();
+        $('#map_zoom').val(zoom);
 
-          bounds = sideMap.getBounds();
-          ne = bounds.getNorthEast();
-          sw = bounds.getSouthWest();
-          c = bounds.getCenter();
+        bounds = sideMap.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
 
-          $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-          $('#map_center').val(c.lat() + ',' + c.lng());
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
 
-          if(history && history.replaceState)
-            history.replaceState(null, null, getSearchParams());
-          refreshResults("explore");
-        }, 15);
-      }
+        if(history && history.replaceState)
+          history.replaceState(null, null, getSearchParams());
+        refreshResults("explore");
+      }, 15);
+    }
 
-      google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
-      google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);
-      google.maps.event.addListener(sideMap, 'resize', changeLocationParams);
-      //$(window).resize(changeLocationParams);
+    google.maps.event.addListener(sideMap, 'zoom_changed', changeLocationParams);
+    google.maps.event.addListener(sideMap, 'dragend', changeLocationParams);
+    google.maps.event.addListener(sideMap, 'resize', changeLocationParams);
+    //$(window).resize(changeLocationParams);
 
   <% @searchables.each do |searchable| %>
     <% #if searchable.event && searchable.geo_located? %>
     <% if searchable.geo_located? %>
-          placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>
 
-    });
+  });
   </script>
 <% end %>
