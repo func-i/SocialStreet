@@ -110,24 +110,35 @@
     <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
   <%- end -%>
 
-
-  <button class="button">Go</button>
-  <button class="button save-button">Save</button>
-  <%= link_to 'Clear', explore_path %>
-  <div class="clear"></div>
-
-  <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
-    <div class="block notice" style="margin-top:10px">
-      <h4>Similar Users</h4>
-      <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
-        <%if overlapping_subscriber.search_subscription.user != current_user%>
-          <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
-        <%end%>
-      <%end%>
+  <%= content_for :main_top  do -%>
+    <div class="col1">
+      <div class="social-bar">
+        <a href="#" class="search-next save-button"><span>Follow this search</span></a>
+        <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
+          <div class="search-result">
+            <strong><%= @overlapping_subscriptions.size -%></strong> people following:
+          </div>
+          <div class="community">
+            <div class="community-holder">
+              <ul>
+                <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
+                  <%if overlapping_subscriber.search_subscription.user != current_user%>
+                    <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
+                  <%end%>
+                <%end%>
+              </ul>
+            </div>
+          </div>
+        <%- end -%>
+      </div>
     </div>
-  <%end%>
-
-  <div class="clear"></div>
+    <div class="col2">
+      <ul class="tabset">
+        <li><a href="#">List </a></li>
+        <li class="active"><a href="#">Map</a></li>
+      </ul>
+    </div>
+  <%- end -%>
 <% end %>
 
 
@@ -186,7 +197,7 @@
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
       change(refreshResults("explore")); // on change of the search form fields, refresh the results
 
-    $('button.save-button').click(function(e) {
+    $('a.save-button').click(function(e) {
       var f = $('form.search-params');
       var s = f.serialize();
       window.location = '<%= new_search_subscription_url %>?' + s;
@@ -225,7 +236,7 @@
     });
     $( "#to_date" ).datepicker({
       dateFormat: 'M. dd, yy'
-    });   
+    });
 
     makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
