@@ -19,7 +19,7 @@ class FeedItem
     f = FeedItem.new
     f.feed_type = json_hash[:feed_type]
     f.action_id = json_hash[:action_id]
-    f.event_d = json_hash[:event_id]
+    f.event_id = json_hash[:event_id]
     f.inserted_because = json_hash[:inserted_because]
 
     return f

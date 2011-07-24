@@ -45,26 +45,16 @@
           </p>
         </div>
 
-        <%= link_to "Share", [:post_to_facebook, @event], :class => "btn-share" -%>
+        <%= link_to "Share", [:post_to_facebook, @event], :remote=>true, :id => 'fb-share', :class => "btn-share" -%>
 
       </div>
       <div class="info">
-        <div class="col">
+        <div id="attend-button" class="col">
+
           <%- if !@event.canceled? && @event.editable_time?%>
-            <%- if @rsvp && Rsvp.statuses[:attending] == @rsvp.status   -%>
-              <%= link_to [:edit, @event, @rsvp], :class => "btn-attending" do %>
-                <span>Attending</span>
-              <% end %>
-              <p>or
-                <%= link_to_popup_modal_ajax  'Invite People', 'Invite your friends', 'empty_modal_1', load_modal_event_rsvp_invitation_path(@event, @rsvp, :js), nil, nil, :id => "add_invitees_button"  %>
-                <%#= link_to_popup_modal "Invite People", "add-invitees", :id => "add_invitees_button" -%>
-              </p>
-            <%- else -%>
-              <%= link_to [:new, @event, :rsvp], :class => "btn-attend" do %>
-                <span>Attend</span>
-              <% end %>
-    <%#Invites should be here too, but currently requires @rsvp%>
-            <%- end %>
+          
+              <%= render :partial => "shared/attending_buttons" %>
+
           <%- end -%>
         </div>
         <div class="col-holder">

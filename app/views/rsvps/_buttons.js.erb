@@ -1,0 +1,5 @@
+$('#attend-button').html('<%=escape_javascript( render(:partial => "shared/attending_buttons"))%>');
+
+<% if @rsvp && @rsvp.status == Rsvp.statuses[:attending] %>
+  popup_modal_ajax('#empty_modal_1', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
+<% end %>

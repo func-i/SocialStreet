@@ -36,25 +36,14 @@
   </script>
 <% end %>
 
-<div class="block">
-  <div class="content">
-    <h2 class="title">Suggested / Featured Events</h2>
-    <div class="inner">
-
-    </div>
-  </div>
-</div>
-
-<div class="block">
-  <div class="content">
-    <h2 class="title">Word on the Street</h2>
-    <div class="inner">
-      <ul class="list" id="action-list" style="margin-top:40px">
-        <% @feed_items.each do |item| %>
-          <%= render 'feed_item', :feed_item => item%>
-        <% end %>
-      </ul>
-    </div>
+<div class="Post-Holder post-holder">
+  <div id="action-list">
+    <% @feed_items.each do |item| %>
+      <div class="post">
+        <%= item.inspect %>
+        <%#= render :partial => 'shared/records', :locals => {:record_type => , :record => }%>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -129,7 +118,7 @@
                 </div>
               </li>
             <% end %>
-              
+
           </ul>
         </div>
       </div>
