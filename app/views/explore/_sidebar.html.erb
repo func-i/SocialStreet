@@ -214,8 +214,10 @@
       }
       else {
         $(this).addClass('select');
-        $('form.search-params').append('<input type="hidden" name="date-search[]" value="' + $(this).attr('d-pos') + '" />');
+        $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
       }
+
+      refreshResults("explore");
     });
 
     $( "#from_date" ).datepicker({

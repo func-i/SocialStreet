@@ -53,6 +53,9 @@ module ApplicationHelper
     link_to title, '#', options, html_options
   end
 
+  # Will display a modal and the contents will load via an AJAX request
+  # first param is the text
+  #
   def link_to_popup_modal_ajax(link_text, modal_title, modal_div_id, request_url, request_callback, request_params = {}, options = {}, html_options = {})
     klass = options.delete(:class)
     options.merge!(

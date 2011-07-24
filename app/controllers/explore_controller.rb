@@ -99,6 +99,36 @@ class ExploreController < ApplicationController
     search_object = search_object.where(:ignored => false)
     search_object = search_object.with_keywords(keywords) unless keywords.blank?
 
+    unless(date_search = params[:date_search]).blank?
+
+      or_arr = []
+
+      date_search.group_by{|ds| ds.first}.each do |grp|
+        day = grp.first
+        hours = []
+        
+        grp.collect{|g| g.split(",").last}.each do |hr|
+          
+          case hr
+          when "0"
+            hours << (0..11).to_a
+          when "1"
+            hours << (12..18).to_a
+          when "2"
+            hours << (19..23).to_a
+          end
+        end
+
+        search_object = search_object.includes(:searchable_date_ranges).
+          where("searchable_date_ranges.dow IN (?) OR EXTRACT(DOW FROM searchable_date_ranges.starts_at#{interval}) IN (?) OR (searchable_date_ranges.starts_at BETWEEN ? AND ?)", days, days, from_date, to_date)
+        
+
+        raise hours.flatten.inspect       
+      
+      end
+      
+    end
+
     search_object = search_object.on_days_or_in_date_range(params[:days], params[:from_date], params[:to_date], params[:inclusive])
 
     # to_time and from_time are in integer (minute) format. 1439 = 11:59 PM (the day has 1440 minutes) - KV

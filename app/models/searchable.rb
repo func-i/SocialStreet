@@ -116,6 +116,10 @@ class Searchable < ActiveRecord::Base
     end
   }
 
+  scope :on_day_and_in_hours, lambda {|day, hours|
+    includes(:searchable_date_ranges).where("searchable_date_ranges.dow")
+  }
+
   # Expects type IDs, not EventType objects
   scope :with_event_types, lambda {|type_ids|
     includes(:searchable_event_types).where("searchable_event_types.event_type_id IN (?)", type_ids)
