@@ -4,7 +4,8 @@
       <% if @event.editable_by?(current_user) %>
         <div class="admin-view">
           <strong>
-            <%= link_to "Edit this event", [:edit, @event] %>
+            <%= link_to_popup_modal_ajax  'Edit this event', 'Edit this event', 'empty_modal_1', edit_event_path(@event), nil, nil%>
+            <% #link_to "Edit this event", [:edit, @event] %>
           </strong>
           <% if @event.user == current_user %>
             or

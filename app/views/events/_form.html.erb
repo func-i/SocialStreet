@@ -8,7 +8,7 @@
     <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :type => "text", :title => "What?", :class => "q-textfield text_field do-not-submit text", :placeholder => "Enter keywords here...", "keyword-content-selector" => '#event-keywords' %>
   </div>
   <ul id="event-keywords" class="keyword">
-    <% (@event_for_create.searchable.keywords || []).each do |keyword| %>
+    <% (event.searchable.keywords || []).each do |keyword| %>
       <% unless keyword.blank? %>
         <li class="keyword-pill">
           <%= keyword %><%= link_to("close", '#', :class => "close remove-parent", "data-parent-selector" => ".keyword-pill") %>
@@ -18,7 +18,7 @@
     <% end %>
   </ul>
 
-  <div class="row">
+  <div class="row"> 
     <label for="where">Where?</label>
 
     <%= form.fields_for :searchable do |searchable_fields| %>
@@ -68,7 +68,7 @@
 
     <div class="col">
       <label class="label">Image</label>
-      <%= image_tag(@event_for_create.photo.thumb.url) if @event_for_create.photo? %>
+      <%= image_tag(event.photo.thumb.url) if event.photo? %>
       <%= form.file_field :photo %>
     </div>
   </div>
@@ -88,13 +88,13 @@
 </script>
 
 <%= javascript_include_tag 'marker_clusterer', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field' %>
-<% if @event_for_create.location.try(:geo_located?) %>
+<% if event.location.try(:geo_located?) %>
   <script>
     $(function() {
-      placeMarker(new google.maps.LatLng(<%= @event_for_create.location.latitude %>, <%= @event_for_create.location.longitude %>), $('.location-name-field').val());
+      placeMarker(new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>), $('.location-name-field').val());
     });
   </script>
-<%- elsif @event_for_create.new_record? -%>
+<%- elsif event.new_record? -%>
   <script>
 
     var refreshTimer = null;

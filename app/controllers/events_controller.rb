@@ -70,6 +70,7 @@ class EventsController < ApplicationController
   end
 
   def edit
+    @event_for_edit = @event
     prepare_for_form
   end
 
