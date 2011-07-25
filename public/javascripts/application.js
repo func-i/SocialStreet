@@ -64,11 +64,11 @@ $(function() {
     });
 
     $('.btn-close').live('click', function() {
-        removeModal(this);
+        removeModal($(this).closest('.pop-up-modal'));
     });
 
     $('.link-close').live('click', function() {
-        removeModal(this);
+        removeModal($(this).closest('.pop-up-modal'));
     });
 })
 
@@ -98,27 +98,13 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
 }
 
 function removeModal(element) {
-    var ele;
-
-    if($(element).hasClass('.pop-up'))
-        ele = $(element);
-    else if($(element).hasClass('.pop-up-modal'))
-        ele = $(element);
-    else
-        ele = $(element).closest('.pop-up')
-
-    if(ele==null)
-        ele = $(element).closest('.pop-up-modal');
-
-    $(ele).fadeOut("fast", function() {
+    $(element).fadeOut("fast", function() {
         $('#TB_overlay').trigger("unload").unbind().remove();
     });
-    $('#empty_modal_1').removeClass('pop-up').addClass('pop-up-modal');
 
-    ele.html('#empty_modal_1').html('<div class="pop-up1 pop-up2"><div class="heading"><strong><span id="modal-title">#</span></strong><a href="#" class="btn-close">close</a></div><div class="content content1"><div class="pop-up1-content ajax-content"></div></div></div>');
-
-   
-
+    element.find('.ajax-content').html('');
+    element.find('.ajax-main-content').html('');
+    element.find('.ajax-sidebar-content').html('');
 }
 
 

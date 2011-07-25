@@ -1,15 +1,13 @@
 <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "invite-form" do  %>
-  <div class="day-detail friend">
-    <div class="heading">
-      <strong class="day"><span class="invitation-count"><%= @invitations.count -%></span></strong>
-      <span class="day-info">Invitees</span>
-    </div>
-    <div class="friends-list-holder">
-      <ul class="selected-list-invitations">
-        <% @invitations.each do |i| %>
-          <%= render 'invitations/invitation', :invitation => i %>
-        <% end %>
-      </ul>
-    </div>
+  <div class="heading">
+    <strong class="day"><span class="invitation-count"><%= @invitations.count -%></span></strong>
+    <span class="day-info">Invitees</span>
+  </div>
+  <div class="friends-list-holder">
+    <ul class="selected-list-invitations">
+      <% @invitations.each do |i| %>
+        <%= render 'invitations/invitation', :invitation => i %>
+      <% end %>
+    </ul>
   </div>
 <% end %>

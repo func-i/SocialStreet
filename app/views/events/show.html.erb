@@ -4,7 +4,7 @@
       <% if @event.editable_by?(current_user) %>
         <div class="admin-view">
           <strong>
-            <%= link_to_popup_modal_ajax  'Edit this event', 'Edit this event', 'empty_modal_1', edit_event_path(@event), nil, nil%>
+            <%= link_to_popup_modal_ajax  'Edit this event', 'Edit this event', 'empty_modal_base', edit_event_path(@event), nil, nil%>
             <% #link_to "Edit this event", [:edit, @event] %>
           </strong>
           <% if @event.user == current_user %>
@@ -205,20 +205,6 @@
       <%- end -%>
     </div>
 
-    <!-- <div id="add-invitees" class="pop-up" style="display:none;">
-      <div class="pop-up1 pop-up2">
-        <div class="heading">
-          <strong>Invite your friends</strong>
-          <%= link_to "close", '#', :class => "btn-close" -%>
-        </div>
-        <div class="content" style="height: 585px;">
-          <div class="pop-up1-content">
-            <%= render :template => "invitations/new" -%>
-          </div>
-        </div>
-      </div>      
-    </div> -->
-
   <%- end -%>
 
   <div id="show-attendees" class="pop-up pop-up-modal" style="display:none; position: fixed;">
@@ -291,7 +277,7 @@
     <script>
       // TODO this should popup the modal by default
       $(function(){
-        popup_modal_ajax('#empty_modal_1', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
+        popup_modal_ajax('#empty_modal_base', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
       });
     </script>
 
