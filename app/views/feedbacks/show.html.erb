@@ -11,6 +11,14 @@
   </div>
 </div>
 
+<div class="view-all-modal">
+  <ul>
+    <% @rsvps.each do |rsvp| %>
+      <%= render 'rsvp', :rsvp => rsvp %>
+    <% end %>
+  </ul>
+</div>
+
 <% content_for :end_of_body do %>
   <script>
     $(function() {

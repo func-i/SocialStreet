@@ -107,6 +107,10 @@ $(function() {
 
             lastXhr = $.getJSON( keywordsJsonURL, request, function( data, status, xhr ) {
                 cache[ term ] = data;
+
+                if(data.indexOf(term) < 0)
+                    data.unshift(term.toString());
+
                 if ( xhr === lastXhr ) {
                     response( data );
                 }

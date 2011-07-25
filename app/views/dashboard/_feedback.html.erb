@@ -1,11 +1,11 @@
 <% event = feedback.rsvp.event %>
 
-<div class="feedback-wrapper post-wrapper <%= "hidden-record" unless display_record %>">
+<div data-feedbackID="<%=feedback.id%>" class="feedback-wrapper post-wrapper <%= "hidden-record" unless display_record %>">
   <% form_for feedback, :remote => true do |form| %>
   <div class="post">
     <%= link_to(image_tag(url_for_event_image(event), :size => "50x50", :class => "avatar"), event) %>
     <div class="text">
-      <h3><%= link_to event.name, event %></a></h3>
+      <h3><%= link_to event.name, event %></h3>
       <span class="time"><%= address_for(event.location) %> <span>Yesterday - TODO</span></span>
       <a href="#" class="did-not-attend" value=""><span class="info-attend">Did not attend</span></a>
     </div>

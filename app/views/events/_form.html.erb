@@ -2,7 +2,6 @@
 
 <fieldset>
   <%= form.hidden_field :action_id %>
-
   <div class="row">
     <label for="what">What?</label>
     <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :type => "text", :title => "What?", :class => "q-textfield text_field do-not-submit text", :placeholder => "Enter keywords here...", "keyword-content-selector" => '#event-keywords' %>

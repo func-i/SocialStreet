@@ -8,21 +8,34 @@
 
   <script type="text/javascript">
     $('.star-click').click(function() {
+      var $ID = $(this).closest('.feedback-wrapper').data('feedbackID');
+
+      //Submit the form
       $(this).closest('.star-rating').siblings('.hidden-score').val($(this).html());
       $(this).closest('.star-rating').closest('.edit_feedback').submit();
 
+      //Display any next record
       showNextRecord($(this));
 
+      //Delete Record
       $(this).closest('.feedback-wrapper').remove();
+
+      //Display the feedback Modal
+      console.log($ID);
+      popup_modal_ajax('#empty_modal_base', 'Feedback', '/feedbacks/' + $ID + '.js', null);
+
 
       return false;
     });
 
     $('.did-not-attend').click(function() {
+      //Submit the form
       $(this).closest('.edit_feedback').submit();
 
+      //Display any next record
       showNextRecord($(this));
 
+      //Delete Record
       $(this).closest('.feedback-wrapper').remove();
     });
 
@@ -41,7 +54,7 @@
     <% @feed_items.each do |item| %>
       <div class="post">
         <%= item.inspect %>
-        <%#= render :partial => 'shared/records', :locals => {:record_type => , :record => }%>
+  <%#= render :partial => 'shared/records', :locals => {:record_type => , :record => }%>
       </div>
     <% end %>
   </div>
