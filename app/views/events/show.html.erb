@@ -51,8 +51,8 @@
         <div id="attend-button" class="col">
 
           <%- if !@event.canceled? && @event.editable_time?%>
-          
-              <%= render :partial => "shared/attending_buttons" %>
+
+            <%= render :partial => "shared/attending_buttons" %>
 
           <%- end -%>
         </div>
@@ -81,11 +81,17 @@
       </div>
     </div>
   </div>
+
   <div class="keyword">
     <%- @event.searchable_event_types.each do |set| -%>
       <span><%= set.name %></span>
     <%- end -%>
   </div>
+
+  <div class="description">
+  <%=@event.description if !@event.description.blank?%>
+  </div>
+
 </div>
 <div class="post-message">
   <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "html",:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
@@ -173,37 +179,6 @@
 <% end %>
 
 <%= content_for :popup_modals do -%>
-
-  <%- if user_signed_in? && false-%>
-    <div id="add-administrators" class="pop-up pop-up-modal" style="display:none;">
-      <div class="pop-up1 pop-up2">
-        <div class="heading">
-          <strong>Add Administrators</strong>
-          <%= link_to "close", '#', :class => "btn-close" -%>
-        </div>
-        <div class="pop-up1-content">
-          <%= render :template => "administrators/new" -%>
-        </div>
-      </div>
-      <%= form_tag event_administrators_path(@event), :method => :post, :class => "admin-form" do  %>
-        <div class="day-detail friend">
-          <div class="heading">
-            <strong class="day"><span class="administrator-count"><%= @administrator_rsvps.count -%></span></strong>
-            <span class="day-info">Administrators</span>
-          </div>
-          <div class="friends-list-holder">
-            <ul class="selected-list-administrators">
-              <% @administrator_rsvps.each do |administrator_rsvp| %>
-                <%= render 'administrators/administrator_rsvp', :rsvp => administrator_rsvp %>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      <%- end -%>
-    </div>
-
-  <%- end -%>
-
   <div id="show-attendees" class="pop-up pop-up-modal" style="display:none; position: fixed;">
     <div class="pop-up1">
 
@@ -216,7 +191,7 @@
         <div class="view-all-modal">
           <ul>
 
-            <% @rsvps.each do |rsvp| %>
+            <% @attendees_rsvps.each do |rsvp| %>
 
               <li>
                 <%= avatar rsvp.user :size => "44x40" %>
@@ -249,7 +224,7 @@
       <div class="pop-up1-content">
         <div class="view-all-modal">
           <ul>
-            <% @administrator_rsvps.each do |rsvp| %>
+            <% @administrators_rsvps.each do |rsvp| %>
               <li>
                 <%= avatar rsvp.user :size => "44x40" %>
                 <div class="text-holder">

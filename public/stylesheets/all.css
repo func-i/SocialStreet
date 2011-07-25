@@ -498,8 +498,12 @@ form, fieldset {
     color: #fff;
     float: left;
     font: bold 15px/27px Arial, Helvetica, sans-serif;
-    margin: 0 2px 0 0;
+    margin: 10px 2px 0 0;
     padding: 0 13px;
+}
+.profile .description {
+    padding: 18px 0 0px 3px;
+    /*font: bold 12px/23px Arial, Helvetica, sans-serif;*/
 }
 .profile img {
 	float: left;
