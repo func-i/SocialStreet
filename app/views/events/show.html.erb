@@ -52,7 +52,7 @@
 
           <%- if !@event.canceled? && @event.editable_time?%>
 
-            <%= render :partial => "shared/attending_buttons" %>
+            <%= render :partial => "shared/attending_buttons", :locals => {:rsvp => @rsvp, :event => @event} %>
 
           <%- end -%>
         </div>

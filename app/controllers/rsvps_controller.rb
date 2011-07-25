@@ -15,8 +15,13 @@ class RsvpsController < ApplicationController
     
     @rsvp.status = Rsvp.statuses[:attending]
     if(@rsvp.save)
-      render :partial => "buttons.js"
-      return
+
+      if request.xhr?
+        render :partial => "buttons.js"
+        return
+      else
+        redirect_to event_path(@event, :invite => true)
+      end
     else
       puts "FUCK ME"
     end

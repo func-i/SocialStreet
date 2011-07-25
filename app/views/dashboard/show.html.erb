@@ -62,7 +62,7 @@
 
 <% content_for :sidebar do %>
 
-  <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_unshown => @upcoming_events_remaining} %>
+  <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_to_show => 3} %>
 
   <% unless @invited_events.blank? %>
     <div class="box box-list">
@@ -72,7 +72,10 @@
       </div>
       <div class="box-content">
         <ul>
-          <% @invited_events.each do |event| %>
+          <% limited_invited_events = @invited_events[0,3] %>
+          <% invitations_remaining = @invited_events.count - 3 %>
+
+          <% limited_invited_events.each do |event| %>
             <li>
               <h4><%= link_to event.name, event %></h4>
               <p>
@@ -86,9 +89,9 @@
             </li>
           <% end %>
         </ul>
-        <% if @invitations_remaining >  0 %>
+        <% if invitations_remaining >  0 %>
           <div class="more">
-            <%= link_to "And #{@invitations_remaining} more", "#" %>
+            <%= link_to "And #{invitations_remaining} more", "#" %>
           </div>
         <% end %>
       </div>
@@ -111,20 +114,28 @@
 
             <% @invited_events.each do |event| %>
               <li>
+
                 <%= link_to(image_tag(url_for_event_image(event), :size => "55x55"), event) %>
+
                 <div class="text-holder">
-                  <%=  link_to "#", :class => "btn-attend" do %>
-                    <span>Attend</span>
+
+                  <%- if !event.canceled? && event.editable_time?%>
+                    <%= link_to [:new, event, :rsvp], :class => "btn-attend" do %>
+                      <span>Attend</span>
+                    <% end %>
                   <% end %>
+
                   <strong class="ttl">
                     <%= link_to event.name, event %>
                   </strong>
+
                   <span class="time">
                     <%=address_for(event.location)%>
                     <span>Yesterday-TODO</span>
                     <em>@</em>
                     <strong><%=event.starts_at.strftime("%l:%M %p")%></strong>
                   </span>
+
                   <% event.searchable_event_types.each do |set| %>
                     <strong class="keyword"><%= set.try(:name) %></strong>
                   <% end %>

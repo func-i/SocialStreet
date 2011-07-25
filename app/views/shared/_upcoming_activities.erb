@@ -1,14 +1,17 @@
+<% limited_events = events[0,number_to_show] %>
+<% events_unshown = events.count - number_to_show %>
+
 <div class="box box-list">
   <div class="heading">
     <a href="#" class="view">View in Calendar</a>
     <h3>Upcoming Activities</h3>
   </div>
   <div class="box-content">
-    <% if events.empty? %>
+    <% if limited_events.empty? %>
       <strong style="color:#999">You do not have anything planned. Why not add your own activity?</strong>
     <% else %>
       <ul>
-        <% events.each do |event| %>
+        <% limited_events.each do |event| %>
           <li>
             <h4><%= link_to event.name, event %></h4>
             <p>
@@ -22,9 +25,9 @@
           </li>
         <% end %>
       </ul>
-      <% if number_unshown >  0 %>
+      <% if events_unshown >  0 %>
         <div class="more">
-          <%= link_to "And #{number_unshown} more", "#" %>
+          <%= link_to "And #{events_unshown} more", "#" %>
         </div>
       <% end %>
     <% end %>

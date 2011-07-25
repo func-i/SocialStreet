@@ -2155,6 +2155,19 @@ form, fieldset {
 	float: left;
 	margin: 0 19px 0 0;
 }
+.view-all-modal .btn-attending
+{
+	background: #86d125;
+	border-radius: 4px;
+	color: #fff;
+	float: right;
+	font: bold 15px/36px Arial, Helvetica, sans-serif;
+	text-align: center;
+	width: 212px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	cursor: pointer;
+}
 .view-all-modal .add,
 .view-all-modal .btn-attend {
 	background: #0981be;
@@ -2168,13 +2181,16 @@ form, fieldset {
 	-moz-border-radius: 4px;
 	cursor: pointer;
 }
+.view-all-modal .btn-attending,
 .view-all-modal .btn-attend {
 	margin: 13px 0 0;
 	text-align: center;
 	width: 104px;
 }
+.view-all-modal .btn-attending:hover,
 .view-all-modal .add:hover,
 .view-all-modal .btn-attend:hover { text-decoration: none; }
+.view-all-modal .btn-attending:hover span,
 .view-all-modal .add:hover span,
 .view-all-modal .btn-attend:hover span { text-decoration: underline; }
 .view-all-modal .ttl {
