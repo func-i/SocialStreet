@@ -10,7 +10,7 @@
           <% if @event.user == current_user %>
             or
             <strong>
-              <%= link_to_popup_modal "+add administrators", "add-administrators" -%>
+              <%#= link_to_popup_modal "+add administrators", "add-administrators" -%>
         <%#= link_to "+add administrators", [:new, @event, :administrator] %>
             </strong>
           <% end %>
@@ -176,8 +176,7 @@
 
 <%= content_for :popup_modals do -%>
 
-  <%- if user_signed_in? -%>
-
+  <%- if user_signed_in? && false-%>
     <div id="add-administrators" class="pop-up pop-up-modal" style="display:none;">
       <div class="pop-up1 pop-up2">
         <div class="heading">
@@ -277,7 +276,7 @@
     <script>
       // TODO this should popup the modal by default
       $(function(){
-        popup_modal_ajax('#empty_modal_base', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
+        popup_modal_ajax('#empty_modal_sidebar', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
       });
     </script>
 

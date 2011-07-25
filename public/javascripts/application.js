@@ -102,9 +102,9 @@ function removeModal(element) {
         $('#TB_overlay').trigger("unload").unbind().remove();
     });
 
-    element.find('.ajax-content').html('');
-    element.find('.ajax-main-content').html('');
-    element.find('.ajax-sidebar-content').html('');
+    element.find('.ajax-content').empty();
+    element.find('.ajax-main-content').empty();
+    element.find('.ajax-sidebar-content').empty();
 }
 
 

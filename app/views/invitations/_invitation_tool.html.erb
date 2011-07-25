@@ -8,6 +8,9 @@
   .selected-list {
     /*overflow: scroll;*/
   }
+  .remove-btn {
+    display: none;
+  }
 
   .selected-list-invitations .remove-btn {
     display: block;
@@ -44,20 +47,22 @@
   var searchURL = '<%= connections_path %>';
   var timeout = null;
 
-  $(function() {
-    
+
+ $(function() {
     var $userList = $('.user-list');
     var lastQuery = '';
 
     //User clicks on a user profile in the user list.
     //If not selected: 1) Highlight 2) Add to selected user list 3) Update counter
     //...if selected, do opposite of this
-    $('.user-list .user-invitation').live('click', function(e) {
+    $('.user-list .user-invitation').die();
+    $('.user-list .user-invitation').live('click',  function(e){
       var $this = $(this);
       var userId = $this.data('user-id');
 
       // make sure it's removeable before removing the invite
-      if ($this.hasClass('selected') && !$this.hasClass('cannot-remove')) {
+      if ($this.hasClass('selected') && !$this.hasClass('cannot-remove'))
+      {
         $this.removeClass('selected');
         $selectedListInvitations.find('[data-user-id="'+userId+'"]').remove();
         $invitationsCount.text(parseInt($invitationsCount.text()) - 1)
@@ -65,20 +70,20 @@
         $this.addClass('selected');
         $selectedListInvitations.prepend($this.clone());
         $invitationsCount.text(parseInt($invitationsCount.text()) + 1)
-      }
-    });
+      }});
 
     //User click on the x in the selected user list.
     //1) Remove from list 2)Unhighlight from main user list 3) decrease counter
     // Need to use .live() b/c elements in selected-list are dynamically added
     // So they may not be there at DOM ready time
+    $('.selected-list-invitations .user-invitation .remove-btn').die();
     $('.selected-list-invitations .user-invitation .remove-btn').live('click', function(e) {
       var $user = $(this).closest('.user-invitation');
       var userId = $user.data('user-id');
 
       $user.remove();
       $userList.find('[data-user-id="'+userId+'"]').removeClass('selected');
-      $invitationsCount.text(parseInt($invitationsCount.text()) - 1)
+      $invitationsCount.text(parseInt($invitationsCount.text()) - 1);
       return false;
     });
 
@@ -133,8 +138,7 @@
     $('input.button').click(function() {
       $('form.invite-form').submit();
     });
-
-  });
+ });
 
   function isEmail(string) {
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
