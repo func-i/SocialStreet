@@ -19,7 +19,7 @@ class Searchable < ActiveRecord::Base
   accepts_nested_attributes_for :searchable_event_types, :reject_if => lambda{|set| set["name"].blank? }
 
   before_save :cache_lat_lng
-#  after_create :set_explorable
+  #  after_create :set_explorable
 
   # overriding the with_keywords scope that is normally specified in SuperSearchable mixin
   scope :with_keywords, lambda { |keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
@@ -55,7 +55,7 @@ class Searchable < ActiveRecord::Base
       args = {}
 
       searchable.searchable_event_types.each_with_index{ |k,i|
-          query << "LOWER(set.name) LIKE :key#{i}
+        query << "LOWER(set.name) LIKE :key#{i}
             OR set.event_type_id = :key_b#{i}"
 
         args["key#{i}".to_sym] = "%#{k.name.downcase}%"
@@ -116,24 +116,28 @@ class Searchable < ActiveRecord::Base
     end
   }
 
+  scope :on_day_and_in_hours, lambda {|day, hours|
+    
+  }
+
   # Expects type IDs, not EventType objects
   scope :with_event_types, lambda {|type_ids|
     includes(:searchable_event_types).where("searchable_event_types.event_type_id IN (?)", type_ids)
   }
 
-#  scope :excluding_nested_actions, where("searchables.id NOT IN (SELECT searchable_id FROM actions WHERE actions.searchable_id = searchables.id AND actions.action_id IS NOT NULL)")
+  #  scope :excluding_nested_actions, where("searchables.id NOT IN (SELECT searchable_id FROM actions WHERE actions.searchable_id = searchables.id AND actions.action_id IS NOT NULL)")
   # for some reason :excluding_comments scope causes a PG SQL ERROR and I don't know why, yet - KV
   #  scope :excluding_comments, where("searchables.id NOT IN (SELECT searchable_id FROM comments WHERE comments.searchable.id = searchables.id)")
-#  scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
-#  scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
-#  scope :only_search_comment_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
-#  scope :excluding_actions, includes(:action).where("actions.id IS NULL")
-#  scope :including_search_comments, where("searchables.id NOT IN (SELECT comments.searchable_id FROM comments
-#    INNER JOIN actions ON actions.reference_id = comments.id AND actions.reference_type = 'Comment'
-#    WHERE comments.searchable_id = searchables.id AND (actions.action_type <> 'Search Comment' OR actions.action_id IS NULL))#")
+  #  scope :excluding_comments, joins("LEFT OUTER JOIN comments ON comments.searchable_id = searchables.id").where("comments.id IS NULL")
+  #  scope :excluding_subscriptions, joins("LEFT OUTER JOIN search_subscriptions ON search_subscriptions.searchable_id = searchables.id").where("search_subscriptions.id IS NULL")
+  #  scope :only_search_comment_actions, joins("LEFT OUTER JOIN actions ON actions.searchable_id = searchables.id").where("actions.id IS NULL OR actions.action_type='Search Comment'") #TODO
+  #  scope :excluding_actions, includes(:action).where("actions.id IS NULL")
+  #  scope :including_search_comments, where("searchables.id NOT IN (SELECT comments.searchable_id FROM comments
+  #    INNER JOIN actions ON actions.reference_id = comments.id AND actions.reference_type = 'Comment'
+  #    WHERE comments.searchable_id = searchables.id AND (actions.action_type <> 'Search Comment' OR actions.action_id IS NULL))#")
   # called from the explore controller/action
   
-#  scope :with_excludes_for_explore, excluding_actions.excluding_subscriptions.excluding_actions.including_search_comments
+  #  scope :with_excludes_for_explore, excluding_actions.excluding_subscriptions.excluding_actions.including_search_comments
   scope :explorable, where(:explorable => true)
   
   scope :with_only_subscriptions, joins(:search_subscription)
@@ -355,10 +359,10 @@ class Searchable < ActiveRecord::Base
     return params
   end
 
-#  def set_explorable
-#    val = !!((global_comment? && top_level_comment?) || event)
-#    update_attributes :explorable => val unless explorable == val
-#  end
+  #  def set_explorable
+  #    val = !!((global_comment? && top_level_comment?) || event)
+  #    update_attributes :explorable => val unless explorable == val
+  #  end
 
   protected
 

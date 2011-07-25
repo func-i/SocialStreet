@@ -1,4 +1,7 @@
-if($('#empty_modal_1 .invite-form').size() == 0)
+//if($('#empty_modal_1 .invite-form').size() == 0)
+$('#empty_modal_1').removeClass('pop-up-modal').addClass('pop-up');
+$('.pop-up1').addClass('pop-up2');
+$('.content1').addClass('content');
 $('#empty_modal_1').append('<%= escape_javascript(render('invitations/invitees_sidebar')) %>');
 
 $('.ajax-content').html('<%= escape_javascript(render(:template => 'invitations/new.html')) %>');
