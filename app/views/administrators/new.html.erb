@@ -53,6 +53,7 @@
     var $userList = $('.user-list');
     var lastQuery = '';
     
+    $('.user-list .user').die();
     $('.user-list .user').live('click', function(e) {
       var $this = $(this);
       var userId = $this.data('user-id');
@@ -69,6 +70,7 @@
     });
     // Need to use .live() b/c elements in selected-list are dynamically added
     // So they may not be there at DOM ready time
+    $('.selected-list-administrators .user .remove-btn').die();
     $('.selected-list-administrators .user .remove-btn').live('click', function(e) {
       var $user = $(this).closest('.user');
       var userId = $user.data('user-id');

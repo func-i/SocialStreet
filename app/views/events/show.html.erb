@@ -5,13 +5,11 @@
         <div class="admin-view">
           <strong>
             <%= link_to_popup_modal_ajax  'Edit this event', 'Edit this event', 'empty_modal_base', edit_event_path(@event), nil, nil%>
-            <% #link_to "Edit this event", [:edit, @event] %>
           </strong>
           <% if @event.user == current_user %>
             or
             <strong>
-              <%#= link_to_popup_modal "+add administrators", "add-administrators" -%>
-        <%#= link_to "+add administrators", [:new, @event, :administrator] %>
+              <%= link_to_popup_modal_ajax  '+add administrators', 'Add Administrators', 'empty_modal_sidebar', new_event_administrator_path(@event, :js), nil, nil%>
             </strong>
           <% end %>
         </div>
