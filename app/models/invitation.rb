@@ -8,6 +8,8 @@ class Invitation < ActiveRecord::Base
   scope :to_user, lambda {|to_user| where(:to_user_id => to_user.id) }
   scope :for_event, lambda {|event| where(:event_id => event.id) }
 
+  scope :still_valid, lambda{ joins(:event).merge(Event.upcoming)} # TODO - doesn't work
+
   attr_accessor :facebook
 
   # => Because this is an accessor the checkbox on the forms will populate it with "0"

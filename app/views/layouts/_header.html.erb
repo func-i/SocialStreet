@@ -1,11 +1,11 @@
 <div id="header">
   <div class="holder">
     <h1 class="logo"><%= link_to "Social Street", root_path -%></h1>
-    <%= form_tag "#", :method => :get, :remote => true, :class=>"form-explore" do %>
+    <%= form_tag "#", :method => :get, :class=>"form-explore" do %>
       <fieldset>
-        <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit", :onclick=>"window.location='/explore'; return false;" %>
+        <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit"%>
         <span class="text">
-          <%= text_field_tag 'q', params[:q], :id=>"q-textfield", :placeholder => "Do something today..." %>
+          <%= text_field_tag 'keywords[]', params[:q], :id=>"q-textfield", :placeholder => "Do something today..." %>
         </span>
       </fieldset>
     <% end %>
