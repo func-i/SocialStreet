@@ -13,8 +13,10 @@ class ExploreController < ApplicationController
     # Use the query params to find events
     find_searchables
 
+    #raise params.inspect
+
     if request.xhr? && params[:page] # pagination request      
-      render :partial => 'new_page'
+      render :partial => 'new_page'    
     else
       find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
     end

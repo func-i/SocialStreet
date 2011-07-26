@@ -1,0 +1,50 @@
+<div class="box box1">
+  <div class="heading">
+    <h3>When?</h3>
+    <a href="#" class="btn">btn</a>
+  </div>
+  <div class="box-content">
+    <div class="jump-date">
+      <div class="col">
+        <span>Start date:</span>
+        <%= text_field_tag 'from_date', params[:from_date] || "Set", :class => "text_field", :style => "width: 80px; background: none; border: none;" %>
+      </div>
+      <div class="col" style="margin-left: 10px;">
+        <span>End date:</span>
+        <%= text_field_tag 'to_date', params[:to_date] || "Set", :class => "text_field", :style => "background: none; border: none;" %>
+      </div>
+    </div>
+    <div class="time-slot">
+      <div class="col1">
+        <div class="ttl">Availablity:</div>
+        <div class="row">Morning</div>
+        <div class="row">Afternoon</div>
+        <div class="row">Evening</div>
+      </div>
+      <div class="col2">
+        <div class="days-week">
+          <div>
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+          </div>
+        </div>
+        <table>
+          <%- 3.times do |tm| -%>
+            <tr>
+              <%- 7.times do |day| -%>
+                <%= content_tag("td", :class => "calendar-times", "d-pos" => "#{day},#{tm}") do -%>
+                <span></span>
+              <%- end -%>
+            <%- end -%>
+            </tr>
+          <%- end -%>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

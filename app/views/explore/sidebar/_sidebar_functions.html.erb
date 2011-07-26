@@ -1,0 +1,254 @@
+<% content_for :end_of_body do %>
+  <%= javascript_include_tag 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
+  <script>
+
+    var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
+    var refreshTimer = null;
+    var keywordsParamKey = "keywords[]";
+
+    function getSearchParams() {
+      var str = "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val();
+      if($('[name="keywords\\[\\]"]').length > 0)
+        return str + "&" + $('[name="keywords\\[\\]"]').serialize()
+      else
+        return str
+    }
+
+    function makePageless(numPages, currentPage) {
+      $('#action-list').pageless({ totalPages: numPages,
+        url: '<%= explore_path %>',
+        params: $('form.search-params').serializeObject(),
+        loaderMsg: 'Loading more results',
+        currentPage: currentPage
+      });
+    }
+
+    $('form.search-params').bind('ajax:beforeSend', function() {
+      $('#action-list').fadeTo('fast', 0.5);
+      $('#ajax-spinner').show();
+      return true;
+    }).bind('ajax:success', function() {
+      // TODO Krum put this in to listen to wait until all requests are done, but sometimes with pageless the list never unfades
+      //if ($.active == 1) {
+      $('#action-list').fadeTo('fast', 1);
+      //}
+    }).bind('ajax:complete', function() {
+      $('#ajax-spinner').hide();
+    });
+
+    function refreshResults(caller) {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
+      }
+      refreshTimer = setTimeout(function() {
+
+        console.log(caller);
+
+        if(caller == "events")
+          $.getScript('/events/load_events' + getSearchParams());
+        else if(caller == "explore")
+          $('form.search-params').submit();
+      }, 250);
+    }
+
+    $("form.search-params ").
+      find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
+      change(refreshResults("explore")); // on change of the search form fields, refresh the results
+
+    $('a.save-button').click(function(e) {
+      var f = $('form.search-params');
+      var s = f.serialize();
+      window.location = '<%= new_search_subscription_url %>?' + s;
+      return false;
+    });
+
+    $('.search-textarea').live('keydown', function(e) {
+      if (e.keyCode == 13) {
+        if(e.shiftKey != true){
+          var f = $('form.search-params');
+          var s = f.serialize();
+          this.form.action = this.form.action + '?' + s;
+
+          $(this).closest('.form-comment').submit();
+          return false;
+        }
+      }
+    });
+
+    $('.calendar-times').click(function() {
+      if($(this).hasClass('select')){
+        // The day is selected, remove class and remove search conditions
+        $(this).removeClass('select');
+        $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();
+      }
+      else {
+        $(this).addClass('select');
+        $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
+      }
+
+      refreshResults("explore");
+    });
+
+    $( "#from_date" ).datepicker({
+      dateFormat: 'M. dd, yy'
+    });
+    $( "#to_date" ).datepicker({
+      dateFormat: 'M. dd, yy'
+    });
+
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+
+  </script>
+
+  <script>
+    var markers = [];
+    var sideMap;
+    var selectedMarker;
+    var infoWindow;
+    var geocoder;
+    var markerCluster;
+
+    function clearMarkers() {
+      $.each(markers, function(index, marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+    }
+
+    function placeMarker(location, title) {
+
+      var marker = new google.maps.Marker({
+        map: sideMap,
+        position: location,
+        title: title
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        //selectMarker(marker, true); //Commented out until proper functionality is determined
+      });
+      markers.push(marker);
+      //markerCluster.addMarkers(markers);
+    }
+
+    function selectMarker(marker) {
+      selectedMarker = marker;
+
+      if (marker.getAnimation() == null) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+          if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+        }, 740);
+      }
+
+      infoWindow.setContent(marker.title);
+      infoWindow.open(sideMap, marker);
+    }
+
+    $(function() {
+      if(history && history.pushState) {
+        //if(!$.browser.webit==true){
+        $(window).bind("popstate", function(){
+
+          var keywordParams = $(document).getUrlParam("keywords[]");
+          if(typeof keywordParams == "string" || keywordParams == null)
+            keywordParams = new Array(keywordParams);
+
+          $.each(keywordParams, function(keywordIndex, keywordParam) {
+            addKeyword(keywordParam, '#explore-keywords');
+          });
+
+          $.each(arraySubtract(existingKeywords('#explore-keywords'), keywordParams), function(mk, missingKeyword){
+            removeKeyword(missingKeyword);
+          });
+
+          if($(document).getUrlParam("map_center") != null)
+            sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
+
+          $.getScript(location.href);
+        });
+        //}
+      }
+
+      function moveExploreMap(e) {
+        var loc = e.target.value;
+        geocoder.geocode( {
+          'address': loc
+        }, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            sideMap.setCenter(results[0].geometry.location);
+            changeExploreLocationParams();
+            $('#location-not-found').hide();
+          } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+            $('#location-not-found').show();
+          }
+        });
+      }
+
+      $('#map_location').keydown(function(e) {
+        if (e.keyCode == 13) {
+          e.stopPropagation();
+          moveExploreMap(e);
+          return false;
+        }
+        return true;
+      });
+
+      /* geolocation and map stuff */
+      var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
+
+      var myOptions = {
+        zoom: <%= params[:map_zoom] %>,
+        center: loc,
+        mapTypeControl: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false
+      };
+      sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
+      //markerCluster = new MarkerClusterer(map);
+
+
+  <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
+    <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
+    <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
+      sideMap.fitBounds(new google.maps.LatLngBounds(
+      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+  <% end %>
+    infoWindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
+
+    function changeExploreLocationParams(event) {
+      setTimeout(function() {
+        var zoom = sideMap.getZoom();
+        $('#map_zoom').val(zoom);
+
+        bounds = sideMap.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
+
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
+
+        if(history && history.replaceState)
+          history.replaceState(null, null, getSearchParams());
+        refreshResults("explore");
+      }, 15);
+    }
+
+    google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
+    google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
+    google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
+    //$(window).resize(changeLocationParams);
+
+  <% @searchables.each do |searchable| %>
+    <% #if searchable.event && searchable.geo_located? %>
+    <% if searchable.geo_located? %>
+        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+    <% end %>
+  <% end %>
+
+  });
+  </script>
+<% end %>

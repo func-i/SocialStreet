@@ -1,0 +1,27 @@
+<div class="post-message">
+  <%= form_for @comment, :remote => true, :html => {"data-type" => "html",:class => "form comment-form form-comment form-post-message Post-Message" } do |form| %>
+    <fieldset>
+      <div class="text">
+        <%= form.text_field :body, :title => "Post a Message", :class => "search-textarea" -%>
+      </div>
+      <div class="info">
+      </div>
+    </fieldset>
+  <% end %>
+</div>
+
+<div id="comment_suggest" style="margin-left: 15px; margin-right: 15px; font-style: italic; font-size: 12px;">
+  <%= "Didn't find enough results? Leave a comment to spark interest!" if @total_count && @total_count < @comment_suggest_limit -%>
+</div>
+
+<div id="action-list" class="post-holder Post-Holder">
+  <%= render 'results' %>
+</div>
+
+
+<%= render 'explore/sidebar/sidebar' %>
+<%= render "main_top" -%>
+
+<%#= render 'shared/commenting' %>
+
+
