@@ -7,18 +7,7 @@
       </div>
     </div>
     <div class="box box1">
-      <%= render "explore/sidebar/sidebar_what" -%>
-      <div class="box-content">
-        <ul id="explore-keywords" class="keyword">
-          <% (params[:keywords] || []).each do |keyword| %>
-            <li class="keyword-pill">
-              <input type="hidden" name="keywords[]" value="<%= keyword %>" />
-              <%= keyword %>
-              <%= link_to('close', '#', :class => "remove-parent close", "data-parent-selector" => ".keyword-pill") %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
+      <%= render "explore/sidebar/sidebar_what" -%>      
     </div>
 
     <%= render "explore/sidebar/sidebar_when" -%>

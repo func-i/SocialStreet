@@ -8,8 +8,11 @@
 
     function getSearchParams() {
       var str = "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val();
-      if($('[name="keywords\\[\\]"]').length > 0)
-        return str + "&" + $('[name="keywords\\[\\]"]').serialize()
+
+      // TODO make this work with the top explore
+      
+      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize()
       else
         return str
     }
