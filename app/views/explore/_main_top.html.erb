@@ -29,8 +29,17 @@
 
   <div class="col2">
     <ul class="tabset">
-      <li class="<%= tab_class.eql?("list") ? "" : "active" -%>" data-param="list"><%= link_to "List", url_for(:view => "list") -%></li>
-      <li class="<%= tab_class.eql?("map") ? "" : "active" -%>" data-param="map"><%= link_to "Map", url_for(:view => "map") -%></li>
+      <li class="<%= tab_class.eql?("list") ? "" : "active" -%>" data-param="list"><%= link_to "List", '#' -%></li>
+      <li class="<%= tab_class.eql?("map") ? "" : "active" -%>" data-param="map"><%= link_to "Map", '#' -%></li>
     </ul>
   </div>
 <%- end -%>
+
+
+<script>
+  $(function(){
+    $('.col2 .tabset li').live('click', function() {
+      window.location = getSearchParams() + '&view=' + $(this).attr('data-param');
+    });
+  });
+</script>
