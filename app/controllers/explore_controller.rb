@@ -116,7 +116,7 @@ class ExploreController < ApplicationController
         grp.last.collect{|g| g.split(",").last}.each do |hr|          
           case hr
           when "0"
-            hours << (0..13).to_a
+            hours << (0..12).to_a
           when "1"
             hours << (11..18).to_a
           when "2"

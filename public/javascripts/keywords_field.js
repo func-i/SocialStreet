@@ -3,7 +3,7 @@ function addKeyword(keyword, selector) {
     $('<li class="keyword-pill" container-selector = "' + selector + '">' +
         keyword +
         '<a href="#" class="close remove-parent" data-parent-selector = ".keyword-pill">close</a>' +
-        '<input type="hidden" name="event[searchable_attributes][keywords][]" value="' +keyword + '" />' +
+        '<input type="hidden" name="keywords[]" value="' +keyword + '" />' +
         '</li>'
         ).hide().appendTo($(selector)).fadeIn('slow');
     return true;
