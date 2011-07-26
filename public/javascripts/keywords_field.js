@@ -1,7 +1,6 @@
 function addKeyword(keyword, selector) {
-    
     if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0 || keyword == '') return false;
-    $('<li class="keyword-pill">' +
+    $('<li class="keyword-pill" container-selector = "' + selector + '">' +
         keyword +
         '<a href="#" class="close remove-parent" data-parent-selector = ".keyword-pill">close</a>' +
         '<input type="hidden" name="event[searchable_attributes][keywords][]" value="' +keyword + '" />' +
@@ -55,7 +54,7 @@ $(function() {
                     history.pushState(null, null, getSearchParams());
                 var caller;
                 //  TODO: possibly look at cleaning this up later
-                if(keywordContentSelector == '#explore')
+                if(keywordContentSelector == '#explore-keywords')
                     caller = "explore";
                 else
                     caller = "events";
@@ -69,7 +68,15 @@ $(function() {
         if (typeof refreshResults == "function") {
             if(history && history.pushState)
                 history.pushState(null, null, getSearchParams());
-            refreshResults();
+
+            var caller;     
+
+            if($(this).attr("container-selector") == '#explore-keywords')
+                caller = "explore";
+            else
+                caller = "events";
+
+            refreshResults(caller);
         }
     });
 

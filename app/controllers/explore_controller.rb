@@ -39,8 +39,8 @@ class ExploreController < ApplicationController
   def find_searchables
     @searchables = Searchable.explorable
 
-    @searchables = apply_filter(@searchables)    
-
+    @searchables = apply_filter(@searchables) 
+    
     @per_page = 5
     
     # => The threshold for showing the comment suggest
