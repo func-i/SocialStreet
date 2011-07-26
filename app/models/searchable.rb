@@ -48,18 +48,21 @@ class Searchable < ActiveRecord::Base
   }
 
   scope :with_keywords_that_match_text_or_keywords, lambda { |text, searchable|
-    if !text.blank? || searchable.searchable_event_types.count > 0
+    puts searchable.searchable_event_types.inspect
+    if !text.blank? && searchable.searchable_event_types.count > 0
       chain = joins("INNER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
       chain = chain.joins("INNER JOIN event_types AS et ON set.event_type_id = et.id")
       query = []
       args = {}
 
       searchable.searchable_event_types.each_with_index{ |k,i|
-        query << "LOWER(set.name) LIKE :key#{i}
-            OR set.event_type_id = :key_b#{i}"
-
+        query << "LOWER(set.name) LIKE :key#{i}"
         args["key#{i}".to_sym] = "%#{k.name.downcase}%"
-        args["key_b#{i}".to_sym] = "#{k.event_type_id}"
+
+        if k.event_type_id
+          query << "OR set.event_type_id = :key_b#{i}"
+          args["key_b#{i}".to_sym] = "#{k.event_type_id}"
+        end
       }
 
       text_array = text.split(' ') #TODO - this doesn't work when the keywords are multiple words (ex: Ping Pong)

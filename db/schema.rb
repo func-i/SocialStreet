@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110723160131) do
+ActiveRecord::Schema.define(:version => 20110726162023) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -106,6 +106,13 @@ ActiveRecord::Schema.define(:version => 20110723160131) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "score"
+  end
+
+  create_table "feeds", :force => true do |t|
+    t.integer "user_id"
+    t.integer "head_action_id"
+    t.integer "index_action_id"
+    t.string  "reason"
   end
 
   create_table "invitations", :force => true do |t|
@@ -212,20 +219,10 @@ ActiveRecord::Schema.define(:version => 20110723160131) do
 
   add_index "searchables", ["location_id"], :name => "index_searchables_on_location_id"
 
-  create_table "tmp_feed_items", :force => true do |t|
-    t.integer  "action_id"
-    t.integer  "event_id"
-    t.integer  "user_id"
-    t.string   "feed_type"
-    t.string   "inserted_because"
-    t.datetime "last_touched"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "users", :force => true do |t|
     t.string   "email",                                         :default => "",    :null => false
     t.string   "encrypted_password",             :limit => 128, :default => "",    :null => false
+    t.string   "password_salt",                                 :default => "",    :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -241,8 +238,8 @@ ActiveRecord::Schema.define(:version => 20110723160131) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "fb_uid"
     t.string   "comment_notification_frequency"
+    t.string   "fb_uid"
     t.string   "photo"
     t.boolean  "fb_friends_imported",                           :default => false
     t.string   "gender"

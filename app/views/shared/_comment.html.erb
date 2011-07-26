@@ -3,6 +3,7 @@
 
 <% truncate_at ||= 200 %>
 
+<% total_body = "" %>
 <% if defined?(include_quotes) && include_quotes %>
   <% total_body = (h("\"#{action.reference.body.strip}\"")) unless action.reference.body.blank? %>
 <% else %>

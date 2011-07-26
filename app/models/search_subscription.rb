@@ -53,13 +53,13 @@ class SearchSubscription < ActiveRecord::Base
     matching_searchable(comment.searchable, comment.body)
   end
 
-  def self.matching_searchable(searchable, text_to_match_keywords = null)
+  def self.matching_searchable(searchable, text_to_match_keywords = nil)
     bounds = searchable.lat_lng_bounds
 
     searchables = Searchable.with_only_subscriptions.
-      with_keywords_that_match_text_or_keywords(text_to_match_keywords, searchable).
-      intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).
-      all.select { |s| s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all)}
+        with_keywords_that_match_text_or_keywords(text_to_match_keywords, searchable).
+        intersecting_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).
+        all.select { |s| s.search_subscription.matches_date_ranges?(searchable.searchable_date_ranges.all)}
 
     searchables.collect &:search_subscription
   end

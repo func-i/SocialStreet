@@ -19,14 +19,15 @@ class Jobs::ProcessNewAction
     end
     redis = Redis.new
     
-    #Add action to any user who has subscribed to it
-    handle_subscriptions(redis, action)
-
     #Add to any user who was part of the action chain
     handle_action_chain(redis, action)
 
     #Add to any user who is connected to the actor
     handle_connections(redis, action)
+
+    #Add action to any user who has subscribed to it
+    handle_subscriptions(redis, action)
+
 
     redis.quit
   end
@@ -36,37 +37,23 @@ class Jobs::ProcessNewAction
     # => Event Creation
     # => RSVP
     # => Comments (event, action/replies, profile and search filter)
-    feed = FeedItem.new
-    feed.inserted_because = FeedItem.reasons[:connection]
-    
-    if action.action_type == Action.types[:event_created]
-      #Event Create - set event id
-      feed.feed_type = FeedItem.types[:event_created]
-      feed.event_id = action.event_id
-
+    unless action.action_type == Action.types[:event_rsvp_attending] && action.user == action.event.user # if its the owner of the event, no need to log it
       connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_EVENT_CREATE)
-
-    elsif action.action_type == Action.types[:event_rsvp_attending]
-      unless action.user == action.event.user # if its the owner of the event, no need to log it
-        #RSVP - set event id
-        feed.feed_type = FeedItem.types[:event_rsvp]
-        feed.event_id = action.event_id
-
-        connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_EVENT_CREATE)
-      end
-    elsif action.action_type == Action.types[:event_comment] ||
-        action.action_type == Action.types[:profile_comment] ||
-        action.action_type == Action.types[:search_comment]
-      #Comments - set base action_id
-      feed.feed_type = FeedItem.types[:comment]
-      feed.action_id = action.action.try(:id) || action.id # use parent action if one exists incase its a reply
-
-      connections = Connection.to_user(action.user).ranked_less_or_eq(CONNECTION_RANK_LIMIT_COMMENT)
     end
 
     connections.all.each do |connection|
-      #add to dashboard
-      Feed.push(redis, connection.user, feed)
+      #ADD TO DASHBOARD. CREATE RECORD IF NOT ALREADY THERE. ELSE UPDATE WITH NEW INDEX ACTION
+      feed_item = Feed.where(:user_id => connection.user, :head_action_id => action.action || action).first
+
+      if(nil == feed_item)
+        feed_item = Feed.new(:user => connection.user, :head_action => action.action || action, :index_action => action, :reason => Feed.reasons[:connection])
+      else
+        feed_item.index_action = action;
+        feed_item.reason = Feed.reasons[:connection]
+      end
+      feed_item.save
+
+      Feed.push(redis, connection.user, feed_item)
     end unless connections.blank?
 
   end
@@ -88,7 +75,7 @@ class Jobs::ProcessNewAction
       #add to dashboard
       if a.user.id != action.user.id
         # add to dashboard / news feed
-        Feed.push(redis, a.user, feed) 
+        Feed.push(redis, a.user, feed)
         # email notice to user
         # TODO: here we should perhaps check their profile settings to see if they want to be notified? - KV
         unless @users_emailed[a.user_id.to_s]
@@ -103,39 +90,48 @@ class Jobs::ProcessNewAction
     #Actions that are delivered in subscriptions are:
     # => Event Creation
     # => Search Filter Comments
-    feed = FeedItem.new
-    
+
+    # GET SUBSCRIPTIONS TO THIS ACTION
     if action.action_type == Action.types[:event_created]
       subscriptions = SearchSubscription.matching_event(action.event)
 
-      feed.feed_type = FeedItem.types[:event_created]
-      feed.event_id = action.id
-    elsif action.action_type == Action.types[:search_comment]
-      #TODO action comments where reply to search comment)
+    elsif action.action_type == Action.types[:search_comment] ||
+        (action.action_type == Action.types[:action_comment] && action.action.action_type == Action.types[:search_comment])
+
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
     end
 
     return if subscriptions.blank?
 
-    # ADD TO DASHBOARD / NEWS STREAM / EMAIL (NO UNIQUENESS REQUIRED)
+    # ADD TO NEWS STREAM / EMAIL (NO UNIQUENESS REQUIRED) FOR EACH SUBSCRIPTION
     subscriptions.each do |subscription|
       if subscription.user_id != action.user_id
-        #Add to the user subscription email
-        user_id = subscription.user_id.to_s
 
+        #SEND SUBSCRIBERS EMAIL
         if subscription.immediate?
+          user_id = subscription.user_id.to_s
+
           unless @users_emailed[user_id]
             Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
             @users_emailed[user_id] = true
           end
+
         elsif subscription.not_immediate?
+
           action_id = action.action.try(:id) || action.id
           redis.zadd "digest_actions:#{subscription.id}", "#{Time.now.to_i}", action_id.to_s
+
         end
 
-        #Add to the users dashboard
-        Feed.push(redis, subscription.user, feed)
+        #ADD TO DASHBOARD. CREATE RECORD IF NOT ALREADY THERE FROM A CONNECTION
+        feed_item = Feed.where(:user_id => subscription.user, :head_action_id => action.action || action).first
+        if(nil == feed_item)
+          feed_item = Feed.new(:user => subscription.user, :head_action => action.action || action, :reason => Feed.reasons[:subscription])
+          feed_item.save
+        end
+        Feed.push(redis, subscription.user, feed_item)
+
       end
-    end     
+    end
   end
 end
