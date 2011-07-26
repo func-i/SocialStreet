@@ -89,8 +89,8 @@ $(function() {
             console.log('enter pressed');
             keywordHandler(this.value, $(this).attr('keyword-content-selector'));
             this.value = '';
-            this.autocomplete('close');
-            e.stopPropagation();
+            $(this).autocomplete('close');
+            //e.stopPropagation();
             return false;
         }
         return true;
@@ -99,7 +99,7 @@ $(function() {
     $('.q-textfield').bind("autocompletechange", function(e) {
         keywordHandler(this.value, $(this).attr('keyword-content-selector'));
         this.value = '';
-        e.stopPropagation();
+        //e.stopPropagation();
         return false;
     });
 
