@@ -23,7 +23,7 @@
       <input type="text" class="search-field text text1" placeholder="Friends or email" />
     </form>
   </div>
-  <p><strong>Check as many friends or enter one email at a time</strong></p>
+  <p><strong>Check as many friends</strong></p>
 </div>
 <div class="users-holder">
   <div class="users-list">
@@ -38,7 +38,7 @@
       </ul>
     </div>
   </div>
-  <%= render 'shared/form_submit_button' %>
+  <%#= render 'shared/form_submit_button' %>
 </div>
 
 <script>
@@ -79,12 +79,6 @@
 
       $administratorCount.text(parseInt($administratorCount.text()) - 1)
       return false;
-    });
-
-    
-
-    $('input.button').click(function() {
-      $('form.admin-form').submit();
     });
   });
 

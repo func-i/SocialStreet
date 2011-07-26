@@ -1,3 +1,5 @@
 $('#empty_modal_sidebar').find('.ajax-sidebar-content').html('<%= escape_javascript(render('administrators/admins_sidebar')) %>');
 
 $('#empty_modal_sidebar').find('.ajax-main-content').html('<%= escape_javascript(render(:template => 'administrators/new.html')) %>');
+
+$('#empty_modal_sidebar').find('.save-button-at-bottom').show();

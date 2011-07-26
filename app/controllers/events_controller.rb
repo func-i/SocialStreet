@@ -25,8 +25,8 @@ class EventsController < ApplicationController
     @administrators_rsvps = @event.rsvps.administrators.all
 
     #if current_user
-      #@connections = current_user.connections.most_relevant_first.all
-     # load_invitations_objects
+    #@connections = current_user.connections.most_relevant_first.all
+    # load_invitations_objects
     #end
 
     if request.xhr? && params[:page] # pagination request
@@ -77,7 +77,10 @@ class EventsController < ApplicationController
     @event.searchable.searchable_event_types.destroy_all
 
     if create_or_edit_event(params, :edit)
-      redirect_to @event
+      render :update do |page|
+        page.redirect_to event_path(@event)
+      end
+      #redirect_to @event
     else
       prepare_for_form
       render :edit
