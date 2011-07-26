@@ -72,7 +72,22 @@ $(function() {
     });
 
     $('.save-modal-button').click('click', function(){
-       $(this).parent('.save-button-at-bottom').parent().parent().find('.modal-submit-form').submit();
+        //set facebook value in form if found
+        var $modal_header = $(this).closest('.pop-up-modal');
+        if($modal_header.find('.facebok-checkbox-in-header').css('display') != 'none'){
+            var $FB_value = $($modal_header).find('.facebook-checkbox').val();
+
+            if( $FB_value == 'on'){
+                $($modal_header).find('#post-to-facebook').val(1);
+            }
+            else{
+                $($modal_header).find('#post-to-facebook').val(0);
+            }
+
+        }
+
+
+        $(this).parent('.save-button-at-bottom').parent().parent().find('.modal-submit-form').submit();
     });
 
     $('.btn-close').live('click', function() {

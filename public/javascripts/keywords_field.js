@@ -48,6 +48,7 @@ function arraySubtract(ara1,ara2) {
 $(function() {
     
     function keywordHandler(keyword, keywordContentSelector) {
+        console.log(keyword)
         if(addKeyword(keyword, keywordContentSelector))
             if (typeof refreshResults == "function") {
                 if(history && history.pushState)
@@ -85,13 +86,14 @@ $(function() {
             console.log('enter pressed');
             keywordHandler(this.value, $(this).attr('keyword-content-selector'));
             this.value = '';
+            this.autocomplete('close');
             e.stopPropagation();
             return false;
         }
         return true;
     });
 
-    $('.q-textfield').change(function(e) {
+    $('.q-textfield').bind("autocompletechange", function(e) {
         keywordHandler(this.value, $(this).attr('keyword-content-selector'));
         this.value = '';
         e.stopPropagation();
@@ -113,10 +115,10 @@ $(function() {
             }
 
             lastXhr = $.getJSON( keywordsJsonURL, request, function( data, status, xhr ) {
-                cache[ term ] = data;
-
                 if(data.indexOf(term) < 0)
                     data.unshift(term.toString());
+
+                cache[ term ] = data;
 
                 if ( xhr === lastXhr ) {
                     response( data );
@@ -125,8 +127,8 @@ $(function() {
         },
         select: function( event, ui ) {
             console.log('item selected');
-            this.value = '';
             keywordHandler(ui.item.value, $(this).attr('keyword-content-selector'));
+            this.value = '';
             return false;
         }
     });

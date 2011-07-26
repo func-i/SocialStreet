@@ -56,7 +56,6 @@ class EventsController < ApplicationController
 
   def create
     if create_or_edit_event(params, :create)      
-      #redirect_to [:new, @event, @event.rsvps.first, :invitation], :notice => "Your event is created. You can invite some of your friends below."
       render :update do |page|
         page.redirect_to event_path(@event_for_create, :invite => true)
       end
