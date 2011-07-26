@@ -1,4 +1,4 @@
-  <% if record_type == RecordType.types[:event] %>
+<% if record_type == RecordType.types[:event] %>
 
   <% event = record %>
 
@@ -18,9 +18,7 @@
 
   <div class="text">
     <!--Attend button-->
-    <%=  link_to "#", :class => "btn-attend" do %>
-      <span>Attend</span><!--TODO, make attending if so-->
-    <% end %>
+    <%= render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
 
     <!--Record Title-->
     <h3><%= link_to truncate(event.name, :length => 33), event %></h3>
@@ -35,7 +33,7 @@
   </div>
 
 <% elsif record_type == RecordType.types[:created_event] || record_type == Action.types[:event_created] %>
- 
+
   <% event = record.event %>
 
   <%= render "shared/general_record",

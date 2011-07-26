@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_filter :store_current_path, :only => [:show, :new, :edit]
+  before_filter :store_current_path, :only => [:show, :edit]
   before_filter :store_event_create, :only => [:create, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
   before_filter :require_editable_event, :only => [:edit, :update, :destroy]
@@ -39,12 +39,13 @@ class EventsController < ApplicationController
     @event_for_create = Event.new
     @event_for_create.searchable ||= Searchable.new
     @event_for_create.searchable.location ||= Location.new
-    # start/end datetimes are no longer defaulted in the model
+     #start/end datetimes are no longer defaulted in the model
     @event_for_create.searchable.searchable_date_ranges.build({
         :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
         :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
       })
     @event_for_create.action = @action # nil if no @action (which is desired)
+
     if session[:stored_params]
       @event_for_create.attributes = session[:stored_params] # event params
       @event_for_create.valid?

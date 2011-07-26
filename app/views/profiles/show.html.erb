@@ -36,7 +36,7 @@
 
 
 <div class="post-message">
-  <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "html", :class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
+  <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "script", :class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
       <div class="text">
         <%= form.text_field :body, :title => "Post a Message", :class => "textarea" -%>
@@ -68,7 +68,7 @@
 </div>
 
 <% content_for :sidebar do %>
-  <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_unshown => @upcoming_events_remaining} %>
+  <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_to_show => 3} %>
 
   <% if !(@common_people.empty? && @connected_rsvps.empty? && @connected_actions.empty?) %>
     <div class="connections">

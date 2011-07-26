@@ -48,7 +48,6 @@ class Searchable < ActiveRecord::Base
   }
 
   scope :with_keywords_that_match_text_or_keywords, lambda { |text, searchable|
-    puts searchable.searchable_event_types.inspect
     if !text.blank? && searchable.searchable_event_types.count > 0
       chain = joins("INNER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
       chain = chain.joins("INNER JOIN event_types AS et ON set.event_type_id = et.id")

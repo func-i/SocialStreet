@@ -24,7 +24,7 @@
           </ul>
         </li>
       <% else %>
-  <!--<li><%= link_to 'Sign in', [:new, :user_session] %></li>-->
+  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -118,6 +118,15 @@
       </div>
     </div>
   </div>
+
+  <% unless params[:create_event].blank? %>
+    <script>
+      $(function(){
+        popup_modal_ajax('#empty_modal_base', 'Add a new Activity', '<%=new_event_path(:js)%>', null);
+      });
+    </script>
+
+  <% end %>
 
 <%- end -%>
 

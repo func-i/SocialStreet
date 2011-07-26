@@ -20,9 +20,7 @@ index_action
 
   <% if is_event %>
     <!--Attend button-->
-    <%= link_to "#", :class => "btn-attend" do %>
-      <span>Attend</span><!--Make work with already attending-->
-    <% end %>
+    <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event_record, :rsvp => (current_user ? event_record.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
   <% end %>
 
   <!--Record Title-->

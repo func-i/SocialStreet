@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :nav_state
   before_filter :restricted
-  before_filter :prepare_create_event_event
+  #before_filter :prepare_create_event_event
 
   #  def authenticate_user_and_redirect!
   #    #User will be forced to sign-in when:
@@ -39,44 +39,67 @@ class ApplicationController < ActionController::Base
     if session[:stored_redirect][:params] && session[:stored_redirect][:params][:event]
       session[:stored_redirect][:params][:event] = session[:stored_redirect][:params][:event].except(:photo)
     end
-
-    #puts "STORING REDIRECT"
-    #puts options.inspect
-    #puts session[:stored_redirect].inspect
   end
 
   def clear_redirect
-    #puts "CLEARING REDIRECT"
     session[:stored_redirect] = nil
   end
 
   #Override to change the path taken after sign_in
   def after_sign_in_path_for(resource_or_scope)
     if session[:stored_redirect]
+
       #User has stored a redirect path for use after authentication
+
       if session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'
+
+        #User was trying to create an event. Create it
+
         if create_or_edit_event(session[:stored_redirect][:params], :create)
+
+          #Create was a success
+
           if current_user.fb_friends_imported?
-            return_path = [:new, @event, @event.rsvps.first, :invitation] # step2 - invite friends to new event - KV
+            return_path = event_path(@event, :invite => true)
           else
-            return_path = import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @event.rsvps.first))
+            #TODO - What should this be?
+            return_path = event_path(@event, :invite => true)
+            #return_path = import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @event.rsvps.first))
           end
+
         else
+
+          #Create failed
           session[:stored_params] = session[:stored_redirect][:params][:event]
+
           if current_user.fb_friends_imported?
-            return_path = new_event_path
+            #TODO - What should this be. Currently, doesn't load modal on error
+            return_path = stored_path + "?&create_event=1"
+            #return_path = new_event_path
           else
-            return_path = import_facebook_friends_connections_path(:return => new_event_path)
+            #TODO - What should this be. Currently, doesn't load modal on error
+            return_path = stored_path + "?&create_event=1"
+            #return_path = import_facebook_friends_connections_path(:return => new_event_path)
           end
         end
+
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
+
+        #User was trying to create a comment
+
         if create_comment(session[:stored_redirect][:params])
+
           return_path = session[:stored_current_path]
+
         else
+          
           raise 'shit, what happened'
+
         end
       else
+        
         return_path = session[:stored_current_path]
+
       end
 
       clear_redirect
@@ -98,20 +121,20 @@ class ApplicationController < ActionController::Base
   end
 
   def prepare_create_event_event
-    @event_for_create = Event.new
-    @event_for_create.searchable ||= Searchable.new
-    @event_for_create.searchable.location ||= Location.new
-    @event_for_create.searchable.searchable_date_ranges.build({
-        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
-        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
-      })
-    #@event.action = @action - TODO - need to do this in javascript
-
-    if session[:stored_params]
-      @event.attributes = session[:stored_params] # event params
-      @event.valid?
-      session[:stored_params] = nil
-    end
+#    @event_for_create = Event.new
+#    @event_for_create.searchable ||= Searchable.new
+#    @event_for_create.searchable.location ||= Location.new
+#    @event_for_create.searchable.searchable_date_ranges.build({
+#        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
+#        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
+#      })
+#    #@event.action = @action - TODO - need to do this in javascript
+#
+#    if session[:stored_params]
+#      @event_for_create.attributes = session[:stored_params] # event params
+#      @event_for_create.valid?
+#      session[:stored_params] = nil
+#    end
 
     #@event_types_for_create ||= EventType.order('name').all
   end

@@ -6,9 +6,6 @@ class CommentsController < ApplicationController
 
   def create
     @success = create_comment(session[:stored_redirect][:params])
-
-    puts @comment.inspect
-    puts params.inspect
     
     if request.xhr?
         render :partial => 'create'

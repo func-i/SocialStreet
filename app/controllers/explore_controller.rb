@@ -102,8 +102,6 @@ class ExploreController < ApplicationController
     search_object = search_object.where(:ignored => false)
     search_object = search_object.with_keywords(keywords) unless keywords.blank?
 
-    puts keywords
-
     unless(date_search = params[:date_search]).blank?
 
       query = []
