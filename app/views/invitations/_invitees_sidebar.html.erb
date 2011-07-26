@@ -1,4 +1,4 @@
-<%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "invite-form" do  %>
+<%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :class => "modal-submit-form invite-form" do  %>
   <div class="heading">
     <strong class="day"><span class="invitation-count"><%= @invitations.count -%></span></strong>
     <span class="day-info">Invitees</span>

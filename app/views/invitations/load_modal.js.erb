@@ -1,3 +1,8 @@
 $('#empty_modal_sidebar').find('.ajax-sidebar-content').html('<%= escape_javascript(render('invitations/invitees_sidebar')) %>');
 
 $('#empty_modal_sidebar').find('.ajax-main-content').html('<%= escape_javascript(render(:template => 'invitations/_invitation_tool.html')) %>');
+
+$('#empty_modal_sidebar').find('.facebok-checkbox-in-header').show();
+
+$('#empty_modal_sidebar').find('.save-button-at-bottom').show();
+

@@ -1280,7 +1280,7 @@ form, fieldset {
 }
 * +html .pop-up .heading { padding: 0 16px 9px 7px; }
 .pop-up .content {
-	max-height: 600px;
+	max-height: 600px; /*Change this to alter modal height*/
 	overflow: auto;
 	background: #fff;
 	border-radius: 4px;
@@ -1400,7 +1400,7 @@ form, fieldset {
 .day-detail {
 	background: url("../images/bg-day-detail.png") repeat-x #909090;
 	float: left;
-	height: 546px;
+	height: 546px; /*Change this to alter modal height*/
 	margin: 19px 0 0 -9px;
 	padding: 54px 11px 31px 10px;
 	position: relative;
