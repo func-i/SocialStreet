@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/
+/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -11,8 +11,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -36,12 +36,16 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-html,body { height:100%;min-width: 1001px; }
+html,body { height:100%;min-width: 1003px; }
 body {
 	margin: 0;
 	color: #999;
 	font: 14px Arial, Helvetica, sans-serif;
 	background: #fff url(../images/bg-body.png) repeat-y 50% 0;
+}
+.page-map {
+	overflow: hidden;
+	position: relative;
 }
 img{border-style:none;}
 a{text-decoration:none; color:#0981be;}
@@ -57,10 +61,10 @@ form, fieldset {
 	border-style: none;
 }
 #wrapper {
-    width:100%;
-    height:100%;
-    display:table;
-    margin:0 auto;
+	width: 100%;
+	height: 100%;
+	display: table;
+	margin: 0 auto;
 }
 .w1 {
 	width: 100%;
@@ -72,6 +76,12 @@ form, fieldset {
 	width: 100%;
 	z-index: 3;
 }
+.page-map #header,
+.page-explore #header {
+	left: 0;
+	position: fixed;
+	top: 0;
+}
 #header:after {
 	clear: both;
 	content: "";
@@ -80,7 +90,7 @@ form, fieldset {
 #header.open { padding: 0; }
 #header .holder {
 	margin: 0 auto;
-	padding: 18px 0 17px;
+	padding: 18px 0;
 	width: 983px;
 }
 #header .holder:after {
@@ -286,8 +296,9 @@ form, fieldset {
 	width: 100%;
 	z-index: 1;
 }
-.page-map #main {
-	padding: 0 0 48px;
+.page-map #main,
+.page-explore #main {
+    padding: 68px 0 48px;
 }
 .tabset {
 	list-style: none;
@@ -300,6 +311,7 @@ form, fieldset {
 	float: left;
 	overflow: hidden;
 	padding: 0 2px 0 7px;
+	height: 42px;
 }
 #main .col2 .tabset li {
     float: right;
@@ -401,6 +413,12 @@ form, fieldset {
 	width: 980px;
 	margin: 0 auto;
 }
+.page-explore #main .holder {
+	padding: 61px 0 0;
+	position: relative;
+	z-index: 1;
+}
+.page-map #main .holder { height: 3000px; }
 #main .holder:after {
 	clear: both;
 	content: "";
@@ -410,15 +428,34 @@ form, fieldset {
 	background: url("../images/bg-main.png") repeat-y 50% 0 #d2e9f3;
 	overflow: hidden;
 }
+.page-map .main-top,
+.page-explore .main-top {
+	height: 61px;
+	left: 0;
+	position: fixed;
+	top: 71px;
+	width: 100%;
+	z-index: 3;
+}
 #main .main-top .holder {
 	min-height: 27px;
 	overflow: hidden;
+	padding: 0;
 	background: url("../images/bg-feedback1.png") no-repeat 1px 100%;
+}
+.page-map #main .main-top .holder {
+	background-position: 1px 56px;
 }
 #content {
 	float: left;
 	padding: 9px 0 10px 11px;
 	width: 640px;
+}
+.page-map #content {
+	left: 50%;
+	margin: 0 0 0 -490px;
+	position: fixed;
+	z-index: 1;
 }
 #content h2 {
 	margin: 0 0 10px;
@@ -477,7 +514,7 @@ form, fieldset {
 	color: #000;
 	display: block;
 	float: none;
-	font: bold 20px/38px Arial, Helvetica, sans-serif;
+	font: bold 20px/25px Arial, Helvetica, sans-serif;
 	margin: 0 20px 0 0;
 	width: 112px;
 }
@@ -490,21 +527,20 @@ form, fieldset {
 	padding: 8px 0 0 3px;
 	width: 640px;
 }
-.profile .keyword span {
-    background: #ccc;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    color: #fff;
-    float: left;
-    font: bold 15px/27px Arial, Helvetica, sans-serif;
-    margin: 10px 2px 0 0;
-    padding: 0 13px;
+.profile .keyword a {
+	background: #ccc;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	color: #fff;
+	float: left;
+	font: bold 15px/27px Arial, Helvetica, sans-serif;
+	margin: 0 2px 0 0;
+	padding: 0 13px;
+	cursor: pointer;
 }
-.profile .description {
-    padding: 18px 0 0px 3px;
-    /*font: bold 12px/23px Arial, Helvetica, sans-serif;*/
-}
+.profile .keyword a:hover { text-decoration: none; }
+.profile .keyword a:hover span { text-decoration: underline; }
 .profile img {
 	float: left;
 	margin: 0 12px 0 0;
@@ -527,17 +563,8 @@ form, fieldset {
 	margin: 12px 33px 0 0;
 	padding: 0 29px 0 0;
 }
-.btn-fb-profile {
-	background: url("../images/ico-share.png") no-repeat 100% 0;
-	color: #0981be;
-	float: right;
-	font: bold 12px/23px Arial, Helvetica, sans-serif;
-	margin: 12px 33px 0 0;
-	padding: 0 29px 0 0;
-}
-
 #content .profile h2 {
-	margin: 0;
+	margin: 0;	
 }
 #content .profile h2 span {
 	color: #ccc;
@@ -654,7 +681,7 @@ form, fieldset {
 .post {
 	border-bottom: 1px solid #f3f3f3;
 	overflow: hidden;
-	padding: 5px 123px 13px 0;
+	padding: 5px 123px 14px 0;
 	position: relative;
 }
 .post img {
@@ -670,7 +697,7 @@ form, fieldset {
 }
 .post .text .row,
 #sidebar .open .post .text .row {
-	padding: 2px 0 0;
+	padding: 0;
 }
 .post .post .text {
 	width: auto;
@@ -708,30 +735,31 @@ form, fieldset {
 .post .text img { margin: 0 9px 0 0; }
 .post-holder .post h3 {
 	font: 15px/19px Arial, Helvetica, sans-serif;
-	margin: 0 0 1px;
+	margin: 0;
 	word-wrap: break-word;
 }
 .post-holder .post h3 a {
 	font-weight: bold;
 	word-wrap: break-word;
 }
-.post .time {
+.post .post-time {
 	display: block;
 	color: #999;
 	font-size: 12px;
 	line-height: 14px;
 }
+.post .text .time { font-size: 11px }
 .post .row-text .time,
 .post .post-holder .post .time { font-size: 11px; }
-.post .time em {
+.post .post-time em {
 	font-size: 10px;
 	font-style: normal;
 }
-#sidebar .post .time,
-#sidebar .post .time em { font-size: 11px; }
-#sidebar .open .post .time { font-size: 12px; }
-#sidebar .open .post .time em { font-size: 10px; }
-.post .time span { color: #000; }
+#sidebar .post .post-time,
+#sidebar .post .post-time em { font-size: 11px; }
+#sidebar .open .post .post-time { font-size: 12px; }
+#sidebar .open .post .post-time em { font-size: 10px; }
+.post .post-time span { color: #000; }
 .post .more {
 	display: block;
 	overflow: hidden;
@@ -825,14 +853,17 @@ form, fieldset {
 .btn-attending:hover span {
 	text-decoration: underline;
 }
-#content .btn-attend span { display: block; }
+#content .btn-attend span {
+	display: block;
+	padding: 7px 5px;
+}
 #content .post .btn-attend,
 #content .post .btn-attending {
 	box-shadow: none;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	font-size: 13px;
-	line-height: 29px;
+	line-height: 17px;
 	margin: 8px 0 0;
 	position: absolute;
 	right: 5px;
@@ -841,19 +872,23 @@ form, fieldset {
 #content .post .post .btn-attend {
 	font-size: 11px;
 	left: auto;
-	line-height: 22px;
+	line-height: 12px;
 	margin: 5px 17px 0 0;
 	position: static;
 	top: auto;
 	width: 75px;
+}
+#content .post .post .btn-attend span {
+	padding: 5px;
 }
 #content .post .btn-attending {
 	background: #9c3;
 	font-size: 13px;
 }
 #content .post .btn-attending span {
-	background: url("../images/separator1.png") no-repeat 5px 10px;
+	background: url("../images/separator1.png") no-repeat 7px 50%;
 	display: block;
+	padding: 6px 5px 6px 10px;
 }
 #content .profile .btn-attending {
 	background: #86d125;
@@ -899,11 +934,6 @@ form, fieldset {
 	margin: 0;
 	font: bold 19px/24px Arial, Helvetica, sans-serif;
 }
-.post-holder .post-holder {
-    clear: both;
-    margin: 0 0 -5px;
-    padding: 0 0 0 64px;
-}
 .post .post {
 	background: #f7f7f7;
 	border: medium none;
@@ -925,10 +955,6 @@ form, fieldset {
 	overflow: hidden;
 	position: relative;
 }
-.feedback .hidden-record {
-	display: none;
-}
-
 .feedback .post {
 	border-bottom: 1px solid #d2e9f3;
 	padding: 5px 95px 13px 0;
@@ -1023,6 +1049,7 @@ form, fieldset {
 	height: 20px;
 	font-size: 0;
 	line-height: 0;
+	text-indent: -9999px;
 	background: url("../images/btn-add-activity1.png") no-repeat;
 }
 .form-comment .textarea {
@@ -1039,6 +1066,22 @@ form, fieldset {
 	float: right;
 	padding: 0 0 0 10px;
 	width: 308px;
+	z-index: 2;
+	position: relative;
+}
+.page-explore #sidebar {
+	left: 50%;
+	margin: 0 0 0 172px;
+	position: fixed;
+	top: 132px;
+	z-index: 2;
+}
+.page-map #sidebar {
+	left: 50%;
+	margin: 0 0 0 172px;
+	position: fixed;
+	top: 129px;
+	z-index: 2;
 }
 #sidebar .heading {
 	background: #f7f7f7;
@@ -1077,11 +1120,28 @@ form, fieldset {
 	margin: 3px 0 0;
 	font: bold 12px/15px Arial, Helvetica, sans-serif;
 }
-.box {
-	overflow: hidden;
-	margin: 11px 0 0;
+.wrapper-box {
+	background: #ededed;
+	left: 50%;
+	margin: 0 0 0 172px;
+	padding: 6px 0 0 10px;
+	position: fixed;
+	top: 132px;
+	width: 308px;
+	z-index: 2;
 }
-.box1 { margin: 10px 3px 0 -12px; }
+*+html .wrapper-box {
+	top: 137px;
+}
+.box {
+	margin: 11px 0 0;
+	overflow: hidden;
+	width: 307px;
+}
+.box1 {
+	margin: 10px 3px 0 -12px;
+	width: 317px;
+}
 .box-content {
 	overflow: hidden;
 	background: #fff;
@@ -1103,12 +1163,6 @@ form, fieldset {
 	font: bold 11px/14px Arial, Helvetica, sans-serif;
 	color: #ccc;
 }
-.box .more span {
-	float: right;
-	font: bold 11px/14px Arial, Helvetica, sans-serif;
-	color: #ccc;
-}
-
 .box-list ul { padding: 14px 0 16px; }
 .box-list li {
 	border-bottom: 1px solid #eee;
@@ -1195,7 +1249,8 @@ form, fieldset {
 	line-height: 15px;
 	background: url("../images/bg-footer.png") repeat-x #fff;
 }
-.page-map #footer {
+.page-map #footer,
+.page-explore #footer {
 	bottom: 0;
 	display: block;
 	height: 69px;
@@ -1210,7 +1265,8 @@ form, fieldset {
 	background: url("../images/bg-footer-holder.png") no-repeat 50% 0;
 	display: table-row;
 }
-.page-map .footer-holder {
+.page-map .footer-holder,
+.page-explore .footer-holder  {
 	display: block;
 	height: auto;
 	width: 100%;
@@ -1218,7 +1274,8 @@ form, fieldset {
 	background: none;
 }
 .footer-frame { display: table-cell; }
-.page-map .footer-frame {
+.page-map .footer-frame,
+.page-explore .footer-frame  {
 	background: url("../images/bg-page-map-footer.png") repeat-x;
 	display: block;
 	padding: 9px 0 0;
@@ -1261,12 +1318,12 @@ form, fieldset {
 	position: absolute;
 	top: 78px;
 	width: 1001px;
-	z-index: 102;
+	z-index: 10;
 }
 .pop-up-calendar {
 	float: left;
 	position: relative;
-	z-index: 102;
+	z-index: 2;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -1280,12 +1337,13 @@ form, fieldset {
 }
 * +html .pop-up .heading { padding: 0 16px 9px 7px; }
 .pop-up .content {
-	max-height: 600px; /*Change this to alter modal height*/
+	max-height: 585px;
 	overflow: auto;
 	background: #fff;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
+	position: relative;
 }
 .pop-up .content1 {
 	overflow: auto;
@@ -1396,11 +1454,10 @@ form, fieldset {
 .calendar ul a { font: bold 10px/14px Arial, Helvetica, sans-serif; }
 .calendar .more { display: block; }
 .calendar .more a { color: #999; }
-.calendar .more span { color: #999; }
 .day-detail {
 	background: url("../images/bg-day-detail.png") repeat-x #909090;
 	float: left;
-	height: 546px; /*Change this to alter modal height*/
+	height: 546px;
 	margin: 19px 0 0 -9px;
 	padding: 54px 11px 31px 10px;
 	position: relative;
@@ -1427,13 +1484,13 @@ form, fieldset {
 	float: none;
 	font: bold 46px/52px Arial, Helvetica, sans-serif;
 	text-shadow: none;
-
+	
 }
 * +html .day-detail .heading .day { font: bold 46px/52px Arial, Helvetica, sans-serif; }
 .day-detail .day-info {
 	display: block;
 	font: bold 17px/20px Arial, Helvetica, sans-serif;
-	padding: 0 7px;
+	padding: 0 7px;	
 }
 .day-detail .day-list-holder {
 	overflow: hidden;
@@ -1505,7 +1562,7 @@ form, fieldset {
 	margin: 0 0 0 -342px;
 	top: 76px;
 	position: absolute;
-	z-index: 102;
+	z-index: 2;
 	width: auto;
 }
 .pop-up1 {
@@ -1521,13 +1578,9 @@ form, fieldset {
 	padding: 0 15px 11px 6px;
 }
 .pop-up1 .pop-up1-content {
-    background: #fff;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    overflow: hidden;
-    padding: 24px 18px 0;
-    position: relative;
+	overflow: hidden;
+	padding: 24px 18px 0;
+	position: relative;
 }
 .pop-up1 .row {
 	overflow: hidden;
@@ -1821,7 +1874,7 @@ form, fieldset {
 .pop-up .keyword {
 	list-style: none;
 	margin: -23px 0 0;
-	/*min-height: 68px;*/
+	min-height: 68px;
 	overflow: hidden;
 	padding: 0 0 10px 109px;
 	width: 519px;
@@ -1973,8 +2026,8 @@ form, fieldset {
 	height: 55px;
 	margin: 0;
 	padding: 9px 0 3px 9px;
-	width: 503px !important;
-	border: none;
+	width: 486px !important;
+	border: medium none;
 }
 .pop-up .edit-photo { padding: 0 0 3px; }
 .pop-up .photo-col { overflow: hidden; }
@@ -2128,7 +2181,10 @@ form, fieldset {
 	float: left;
 	margin: 0 10px 0 0;
 }
-.pop-up .friends-list-holder .text-holder { overflow: hidden; }
+.pop-up .friends-list-holder .text-holder {
+	overflow: hidden;
+	padding: 0 23px 0 0;
+}
 .pop-up .friends-list-holder .ttl {
 	color: #0981be;
 	font: bold 13px/19px Arial, Helvetica, sans-serif;
@@ -2155,19 +2211,6 @@ form, fieldset {
 	float: left;
 	margin: 0 19px 0 0;
 }
-.view-all-modal .btn-attending
-{
-	background: #86d125;
-	border-radius: 4px;
-	color: #fff;
-	float: right;
-	font: bold 15px/36px Arial, Helvetica, sans-serif;
-	text-align: center;
-	width: 212px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	cursor: pointer;
-}
 .view-all-modal .add,
 .view-all-modal .btn-attend {
 	background: #0981be;
@@ -2181,16 +2224,13 @@ form, fieldset {
 	-moz-border-radius: 4px;
 	cursor: pointer;
 }
-.view-all-modal .btn-attending,
 .view-all-modal .btn-attend {
 	margin: 13px 0 0;
 	text-align: center;
 	width: 104px;
 }
-.view-all-modal .btn-attending:hover,
 .view-all-modal .add:hover,
 .view-all-modal .btn-attend:hover { text-decoration: none; }
-.view-all-modal .btn-attending:hover span,
 .view-all-modal .add:hover span,
 .view-all-modal .btn-attend:hover span { text-decoration: underline; }
 .view-all-modal .ttl {
@@ -2212,34 +2252,35 @@ form, fieldset {
 	line-height: 21px;
 	margin: 0;
 }
-.list-invitations .time {
+.list-invitations .post-time {
 	font: 12px/15px Arial, Helvetica, sans-serif;
 	color: #999;
 	display: block;
 }
-.list-invitations .time span { color: #000; }
-.list-invitations .time strong {
+.list-invitations .post-time span { color: #000; }
+.list-invitations .post-time strong {
 	color: #000;
 	font-weight: bold;
 	font-size: 13px;
 }
-.list-invitations .time em {
+.list-invitations .post-time em {
 	font-style: normal;
 	font-size: 13px;
 }
 .pop-up .list-invitations strong.keyword {
-    color: #000000;
-    display: block;
-    font: bold 13px/16px Arial,Helvetica,sans-serif;
-    margin: 0;
-    min-height: 10px;
-    padding: 0;
-    width: auto;
+	color: #000;
+	display: block;
+	font: bold 13px/16px Arial, Helvetica, sans-serif;
+	margin: 0;
+	min-height: 10px;
+	padding: 0;
+	width: auto;
 }
 .search-address {
 	margin: -2px 0;
 	overflow: hidden;
 	position: relative;
+	width: 296px;
 }
 .search-address label {
 	color: #333;
@@ -2256,7 +2297,10 @@ form, fieldset {
 	color: #999;
 	border-color: #999 #e2e2e2 #e2e2e2 #e2e2e2;
 }
-#sidebar .map { margin: 10px 3px 0 -12px; }
+#sidebar .map {
+	margin: 10px 3px 0 -12px;
+	width: 317px;
+}
 #sidebar .map .heading {
 	-webkit-border-radius: 0 4px 4px 0;
 	-moz-border-radius: 0 4px 4px 0;
@@ -2329,7 +2373,7 @@ form, fieldset {
 	width: 299px;
 }
 #sidebar .keyword li {
-	background: #ccc;
+	background: #999;
 	border-radius: 2px;
 	color: #eee;
 	float: left;
@@ -2353,12 +2397,12 @@ form, fieldset {
 	margin: 0 0 0 2px;
 }
 .jump-date {
-	overflow: hidden;
-	padding: 12px 0 15px;
+    overflow: hidden;
+    padding: 12px 0 5px;
 }
 .jump-date .col {
 	float: left;
-	width: 88px;
+	width: 88px;	
 }
 .jump-date .col span {
 	display: block;
@@ -2378,8 +2422,9 @@ form, fieldset {
 }
 .time-slot {
 	border-top: 2px solid #ededed;
+	margin: 4px 0 0;
 	overflow: hidden;
-	padding: 13px 1px 0;
+	padding: 13px 1px 2px;
 }
 .slot-open .time-slot { display: none; }
 .time-slot .col1 {
@@ -2435,17 +2480,22 @@ form, fieldset {
 .time-slot .select { background: #999; }
 .short-box {
 	background: #fff;
-	margin: 10px 0 0 -10px;
+	margin: 12px 0 0 -10px;
 	position: relative;
 	width: 315px;
+	z-index: 1;
+}
+.short-box.open {
+	padding: 0;
+	background: none;
 }
 .short-box .address {
-	overflow: hidden;
-	padding: 11px 0 14px;
-	text-align: center;
-	color: #010000;
 	background: #d9eaf2;
+	color: #010000;
 	font: bold 14px/17px Arial, Helvetica, sans-serif;
+	text-align: center;
+	width: 295px;
+	padding: 11px 10px 14px;
 }
 #sidebar .post-box {
 	height: 482px;
@@ -2461,6 +2511,7 @@ form, fieldset {
 	width: 315px;
 }
 #sidebar .open .post-holder { width: 655px; }
+* +html #sidebar .open .post-holder { right: 3px; }
 #sidebar .post-holder .post-holder {
 	float: none;
 	padding: 0;
@@ -2527,7 +2578,7 @@ form, fieldset {
 	font-style: normal;
 	font-size: 11px;
 }
-#sidebar .open .post .row .text .time { font-size: 12px; }
+#sidebar .open .post .row .text .time { font-size: 11px; }
 #sidebar .post .row .text p span {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
@@ -2586,11 +2637,16 @@ form, fieldset {
 	color: #fff;
 	cursor: pointer;
 	float: right;
-	font: bold 13px/29px Arial, Helvetica, sans-serif;
+	font: bold 13px/17px Arial, Helvetica, sans-serif;
 	overflow: hidden;
 	text-align: center;
 	width: 100px;
-	margin: 8px 0 0 0;
+	margin: 0;
+}
+#sidebar .post .btn-attend span,
+#sidebar .post .btn-attending span {
+	display: block;
+	padding: 6px 0;
 }
 #sidebar .open .post .btn-attend,
 #sidebar .open .post .btn-attending {
@@ -2599,8 +2655,13 @@ form, fieldset {
 	right: 3px;
 	top: 16px;
 }
-#sidebar .post-box .btn-close,
-#sidebar .post-box .btn-open {
+#sidebar .open .post .btn-attend span,
+#sidebar .open .post .btn-attending span {
+	display: block;
+	padding: 5px;
+}
+#sidebar .short-box .btn-close,
+#sidebar .short-box .btn-open {
 	-webkit-border-radius: 4px 0 0 4px;
 	-moz-border-radius: 4px 0 0 4px;
 	background: url("../images/btn-open.png") no-repeat 12px 14px #fff;
@@ -2609,10 +2670,10 @@ form, fieldset {
 	-webkit-box-shadow: -3px 3px 4px #bbb;
 	-moz-box-shadow: -3px 3px 4px #bbb;
 	height: 49px;
-	left: 12px;
+	 left: -43px;
 	position: absolute;
 	text-indent: -9999px;
-	top: 126px;
+	top: 2px;
 	width: 37px;
 	z-index: 2;
 	display: none;
@@ -2620,17 +2681,21 @@ form, fieldset {
 	opacity: 0.8;
 	overflow: hidden;
 }
-#sidebar .post-box.open .btn-close { display: block; }
-#sidebar .post-box .btn-open {
+#sidebar .short-box.open .btn-close {
+	display: block;
+	left: 11px;
+}
+#sidebar .short-box .btn-open {
 	background-position: -321px 14px;
 	display: block;
+	left: 0;
 }
-#sidebar .post-box.open .btn-open { display: none; }
+#sidebar .short-box.open .btn-open { display: none; }
 #sidebar .post-box img { display: none; }
-#sidebar .post-box.open img { display: block; }
+#sidebar .short-box.open img { display: block; }
 #sidebar .open .post .post,
 #sidebar .post-box .comment-row {
-	background: none repeat scroll 0 0 #f7f7f7;
+	background: #f7f7f7;
 	display: block;
 	width: auto;
 	padding: 7px;
@@ -2649,53 +2714,13 @@ form, fieldset {
 	padding: 3px 0 0;
 }
 #sidebar .post-box .attending ul { display: none; }
-#sidebar .post-box.open .attending {
+#sidebar .short-box.open .attending {
 	clear: none;
 	float: none;
 	padding: 7px 0 0;
 }
-#sidebar .post-box.open .attending ul { display: block; }
-#sidebar .post-box.open .keyword { float: none; }
-
-.post-box .btn-move {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 5;
-    cursor: pointer;
-    text-indent: -9999px;
-}
-
-.post-box .btn-move em {
-    display: block;
-    width: 100%;
-    height: 30px;
-    opacity: 0.8;
-    position: relative;
-    z-index: 1;
-    background: #d5eef9;
-}
-
-.post-box .btn-move span {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 30px;
-}
-
-.post-box .btn-move span span {
-    background: url("../images/bg-arrow.png") no-repeat;
-    height: 13px;
-    left: 50%;
-    margin: 12px 0 0 -6px;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    width: 13px;
-    z-index: 2;
-}
-
+#sidebar .short-box.open .attending ul { display: block; }
+#sidebar .short-box.open .keyword { float: none; }
 .btn-move {
 	bottom: 0;
 	cursor: pointer;
@@ -2734,7 +2759,6 @@ form, fieldset {
 	width: 13px;
 	z-index: 2;
 }
-
 .subscription {
 	margin: 0 0 0 -10px;
 	overflow: hidden;
@@ -2749,17 +2773,13 @@ form, fieldset {
 	border-bottom: 1px solid #f4f4f4;
 }
 .subscription .heading {
-        color: #333;
+	color: #0981be;
 	float: left;
 	font: bold 15px/19px Arial, Helvetica, sans-serif;
 	padding: 0 6px 0 0;
 	width: 230px;
 	word-wrap: break-word;
 }
-.subscription .heading a{
-	color: #0981be;
-}
-
 .subscription .content {
 	float: left;
 	padding: 5px 5px 0 0;
@@ -2773,10 +2793,11 @@ form, fieldset {
 	color: #d96a50;
 	display: block;
 	font-weight: bold;
-	margin: 5px 0 0;
+	padding: 5px 0 0;
 	overflow: hidden;
 	text-align: center;
 }
+.subscription .status a { color: #d96a50; }
 .subscription .radio {
 	float: left;
 	height: 15px;
@@ -2788,70 +2809,55 @@ form, fieldset {
 	float: left;
 	color: #666;
 }
-
-#TB_overlay {
-    position: fixed;
-    z-index:100;
-    top: 0px;
-    left: 0px;
-    height:100%;
-    width:100%;
-}
-
-.TB_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}
-.TB_overlayBG {
-    background-color:#000;
-    filter:alpha(opacity=75);
-    -moz-opacity: 0.75;
-    opacity: 0.75;
-}
-
 .events-holder {
 	margin: 0 0 0 -10px;
 	overflow: hidden;
-	padding: 15px 0 0;
+	padding: 18px 0 0;
 	position: relative;
 	width: 650px;
+	word-wrap: break-word;
 }
-.events-holder table {
-	border-collapse: collapse;
-	width: 100%;
-}
-.events-holder th,
-.events-holder td {
+.events-holder .row {
 	border-bottom: 1px solid #f4f4f4;
-	padding: 20px 0 18px 22px;
-	text-align: left;
-	vertical-align: top;
+	overflow: hidden;
+	padding: 19px 0;
 }
-.events-holder td {
-	padding: 20px 10px 18px;
+.events-holder .col-holder { overflow: hidden; }
+.events-holder .col,
+.events-holder .col {
+	float: left;
+	padding: 0 10px 0 22px;
+	width: 198px;
+}
+.events-holder .col-holder .col {
+	padding: 0 5px 0 10px;
 	width: 85px;
 }
-.events-holder th strong {
+.events-holder .col strong {
 	display: block;
 	font: bold 17px/19px Arial,Helvetica,sans-serif;
 	color: #333;
-	word-wrap: break-word;
 }
-.events-holder th a {
+.events-holder .col a {
 	font: bold 12px/15px Arial, Helvetica, sans-serif;
 	color: #0981be;
 }
-.events-holder td strong {
+.events-holder .col-holder .col strong {
 	display: block;
-	font: 15px/21px Arial, Helvetica, sans-serif;
+	font-size: 15px;
 	color: #000;
 }
-.events-holder td span {
+.events-holder .col-holder .col span {
 	font: 12px/15px Arial, Helvetica, sans-serif;
 	color: #999;
 	display: block;
 }
-
-.flash {
-    font-size: 16px;
-    overflow: hidden;
-    padding: 16px 0 23px;
-    text-align: center;
+.sidebar-holder {
+	margin: 0 -16px 0 -10px;
+	padding: 0 0 0 10px;
+	position: relative;
+	width: 326px;
+}
+.scrolling{
+	width:100%;
 }
