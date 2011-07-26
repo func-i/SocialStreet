@@ -55,14 +55,33 @@
   <div id="empty_modal_sidebar" class="pop-up pop-up-modal pop-up-modal_ajax" style="display:none;">
     <div class="pop-up1 pop-up2">
       <div class="heading">
-        <strong><span id="modal-title">#</span></strong>
+
+        <strong>
+          <span id="modal-title">#</span>
+        </strong>
+
         <%= link_to "close", '#', :class => "btn-close" -%>
+
+        <div class="col-facebook facebok-checkbox-in-header" style="float:right;display:none">
+          <label for="facebook" style="height:16px;margin:0 100px 0 0">
+            <input type="checkbox" title="facebook" checked style="padding: 0 100px 0 0;"/>
+          </label>
+        </div>
+
       </div>
+
       <div class="content">
         <div class="pop-up1-content ajax-main-content">
+          <%=image_tag("load.gif", :style => "margin-left:auto;margin-right: auto;display: block;")%>
           <!--Add Ajax Main Content here-->
         </div>
       </div>
+
+      <div class="row-btn save-button-at-bottom" style="display:none;width:auto;margin:0;border-top-style:solid;border-top-width:1px">
+        <%= submit_tag "Continue", :class => "btn save-modal-button" -%>
+        or <a href="#" class="link-close">cancel</a>
+      </div>
+
     </div>
     <div class="day-detail friend ajax-sidebar-content">
       <!--Add Ajax Sidebar Content here-->
@@ -72,13 +91,30 @@
   <div id="empty_modal_base" class="pop-up pop-up-modal pop-up-modal_ajax" style="display:none">
     <div class="pop-up1">
       <div class="heading">
-        <strong><span id="modal-title">#</span></strong>
+
+        <strong>
+          <span id="modal-title">#</span>
+        </strong>
+
         <%= link_to "close", '#', :class => "btn-close" -%>
+
+        <div class="col-facebook facebok-checkbox-in-header" style="float:right;display:none">
+          <label for="facebook" style="height:16px;margin:0 100px 0 0">
+            <input type="checkbox" title="facebook" checked style="padding: 0 100px 0 0;"/>
+          </label>
+        </div>
+
       </div>
+
       <div class="content">
         <div class="pop-up1-content ajax-content">
           <!--Ajax add content here-->
         </div>
+      </div>
+
+      <div class="row-btn save-button-at-bottom" style="display:none;margin:0;border-top-style:solid;border-top-width:1px">
+        <%= submit_tag "Continue", :class => "btn save-modal-button" -%>
+        or <a href="#" class="link-close">cancel</a>
       </div>
     </div>
   </div>

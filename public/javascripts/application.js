@@ -27,6 +27,13 @@ $(function() {
         return false;
     });
 
+
+    //Resize modal windows to match screen resolution
+    $(window).resize(function(){
+        resizeModals();
+    });
+    resizeModals();
+
     $('.popup-modal').live('click', function() {
         var divId = '#' + $(this).attr('popup-div-id');
         $(divId).show();
@@ -64,6 +71,10 @@ $(function() {
         popup_modal_ajax(divId, title, requestURL, requestParams);
     });
 
+    $('.save-modal-button').click('click', function(){
+       $(this).parent('.save-button-at-bottom').parent().parent().find('.modal-submit-form').submit();
+    });
+
     $('.btn-close').live('click', function() {
         removeModal($(this).closest('.pop-up-modal'));
     });
@@ -72,6 +83,30 @@ $(function() {
         removeModal($(this).closest('.pop-up-modal'));
     });
 })
+
+function resizeModals(){
+    var $mainWindowHeight = ($(window).height() > 450 ? $(window).height() : 450);
+    $mainWindowHeight = ($mainWindowHeight < 750 ? $mainWindowHeight : 750);
+
+    var $saveButtonHeight = 0;
+    $('.save-button-at-bottom').each(function(index, elem){
+        if($(elem).css('display') != "none"){
+            $saveButtonHeight = 77; //Save button height
+        }
+    });
+
+    $mainWindowHeight = $mainWindowHeight - 150; //76 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 150
+    $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
+    $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight);
+
+    var $sideWindowHeight = $mainWindowHeight - 39; //54+31=85 for sidebar padding, -19 for sidebar margin, -27 for modal padding == 39
+    $('.day-detail').css('height', $sideWindowHeight);
+    $('.day-detail').css('min-height', $sideWindowHeight);
+    
+    var $sideListHeight = $sideWindowHeight - 83; //76 for header, 13+13=26 for header padding, -19 for sidebar margin == 83
+    $('.pop-up .friends-list-holder').css('height', $sideListHeight);//This one is annoying, but seems needed
+    $('.pop-up .friends-list-holder').css('min-height', $sideListHeight);//This one is annoying, but seems needed
+}
 
 function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     //Set the modal title
@@ -95,7 +130,9 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     if(requestParams != null)
         request += "?=" + requestParams.valueOf();
 
-    $.getScript(request);
+    $.getScript(request, function(data, textStatus){
+        resizeModals();
+    });
 }
 
 function removeModal(element) {
@@ -106,6 +143,9 @@ function removeModal(element) {
     element.find('.ajax-content').empty();
     element.find('.ajax-main-content').empty();
     element.find('.ajax-sidebar-content').empty();
+
+    element.find('.facebok-checkbox-in-header').hide();
+    element.find('.save-button-at-bottom').hide();
 }
 
 

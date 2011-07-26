@@ -89,7 +89,7 @@
   </div>
 
   <div class="description">
-  <%=@event.description if !@event.description.blank?%>
+    <%=@event.description if !@event.description.blank?%>
   </div>
 
 </div>
@@ -187,7 +187,7 @@
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
 
-      <div class="pop-up1-content">
+      <div class="pop-up1-content content">
         <div class="view-all-modal">
           <ul>
 
@@ -221,25 +221,27 @@
         <%= link_to "close", '#', :class => "btn-close" -%>
       </div>
 
-      <div class="pop-up1-content">
-        <div class="view-all-modal">
-          <ul>
-            <% @administrators_rsvps.each do |rsvp| %>
-              <li>
-                <%= avatar rsvp.user :size => "44x40" %>
-                <div class="text-holder">
-                  <% if rsvp.user.fb_uid? && user_signed_in? && current_user.can_friend?(rsvp.user) %>
-                    <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
-                      <span>Add to Facebook</span>
+      <div class="content">
+        <div class="pop-up1-content">
+          <div class="view-all-modal">
+            <ul>
+              <% @administrators_rsvps.each do |rsvp| %>
+                <li>
+                  <%= avatar rsvp.user :size => "44x40" %>
+                  <div class="text-holder">
+                    <% if rsvp.user.fb_uid? && user_signed_in? && current_user.can_friend?(rsvp.user) %>
+                      <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
+                        <span>Add to Facebook</span>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                  <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
-                </div>
-              </li>
+                    <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
+                  </div>
+                </li>
 
-            <% end %>
+              <% end %>
 
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
