@@ -36,7 +36,7 @@ $(function() {
 
             if(history && history.replaceState)
                 history.replaceState(null, null, getSearchParams());
-            refreshResults();
+            refreshResults("events");
         }, 15);
     }
 

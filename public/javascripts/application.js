@@ -22,6 +22,7 @@ $(function() {
         if (parentSelector) {
             $this.closest(parentSelector).remove();
         }
+
         $this.trigger('ss:removed');
         return false;
     });
