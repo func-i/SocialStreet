@@ -1,10 +1,9 @@
 class DashboardController < ApplicationController
   def show
     if current_user
-      #redis = Redis.new
-      @feed_items = []
-      #@feed_items = Feed.for_user(redis, current_user, 20)
-      #redis.quit
+      redis = Redis.new
+      @feed_items = Feed.for_user(redis, current_user, 20)
+      redis.quit
 
       #Upcoming Events
       @upcoming_events = Event.attended_by_user(current_user).upcoming.order("starts_at")

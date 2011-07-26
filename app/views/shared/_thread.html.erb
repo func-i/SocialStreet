@@ -10,7 +10,7 @@
       <span class="row-miss">...</span>
     <% end %>
 
-    <% action.actions.each_with_index do |sub_action, index| %>
+    <% action.actions.oldest_first.each_with_index do |sub_action, index| %>
       <div class="post" <%= "style=display:none" if (display_index - index).abs > 1 %> >
 
         <% if sub_action.action_type == Action.types[:event_created] %>
@@ -23,17 +23,17 @@
 
       </div>
     <% end %>
-  </div>
 
-  <% if action.actions.length - display_index > 2 %>
-    <span class="row-miss">...</span>
-  <% end %>
+    <% if action.actions.length - display_index > 2 %>
+      <span class="row-miss">...</span>
+    <% end %>
+  </div>
 
   <div class="post">
     <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "html", :class => "form action-subcomment-form form-comment comment-form"} do |form| %>
       <fieldset>
         <%= link_to_popup_modal_ajax  '', 'Add a new Activity', 'empty_modal_base', new_event_path(:action_id => action.id), nil, nil, :class => "submit"  %>
-        <%#= link_to_popup_modal '', "create-event", :action_id => action.id, :class => "submit" -%>
+  <%#= link_to_popup_modal '', "create-event", :action_id => action.id, :class => "submit" -%>
         <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
       </fieldset>
     <% end %>

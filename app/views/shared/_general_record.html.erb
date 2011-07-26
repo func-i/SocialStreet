@@ -100,5 +100,5 @@ index_action
 
 <% if is_thread %>
   <!--Thread-->
-  <%= render "shared/thread", :action => head_action, :display_index => (defined?(index_action) ? head_action.actions.index(index_action) : head_action.actions.length) %>
+  <%= render "shared/thread", :action => head_action, :display_index => (defined?(index_action) ? head_action.actions.oldest_first.index(index_action) : head_action.actions.length) %>
 <% end %>
