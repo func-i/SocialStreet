@@ -6,6 +6,7 @@
     <% type = action.action_type %>
   <% end %>
 
+  <% puts "JOSHY1" %>
   $('#action-list').append(
     '<div class="post">' +
       '<%= escape_javascript render(:partial => 'shared/records', :locals => { :record => action, :record_type => type } ) %>' +

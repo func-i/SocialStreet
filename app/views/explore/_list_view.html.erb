@@ -15,7 +15,39 @@
 </div>
 
 <div id="action-list" class="post-holder Post-Holder">
-  <%= render "results" %>
+  <%= render "results", :searchable_results => @searchables %>
+</div>
+
+<div class="message-holder">
+  <div id="end-of-results-message" class="message" <%= 'style=display:none' if (@offset + @per_page < @searchable_total_count) %> >
+    <span id="searchable-count">
+      <% if @searchable_total_count == 0 %>
+        <p>Unfortunately, no results were found. Why don't you:</p>
+      <% elsif @searchable_total_count == 1 %>
+        <p>Unfortunately, only 1 result was found. Why don't you:</p>
+      <% else %>
+        <p>Unfortunately, only <strong><%=@searchable_total_count%></strong> results were found. Why don't you:</p>
+      <% end %>
+    </span>
+    <ul>
+      <li>
+        <a href="#">Follow This Neighbourhood</a> to get notified when new content matching this search is created,
+      </li>
+      <li>
+        <a href="#">Post a Message</a> to let other's know about your interest, or
+      </li>
+      <li>
+        <a href="#">Add an Activity</a> and other in the neighbourhood will be invited to join you
+      </li>
+    </ul>
+  </div>
+  <div id ="more-results-message" class="more-results" <%= 'style=display:none' if @similar_results.blank?() %> >
+    <p>More results were found with the following search: <a href="#">XXX</a></p>
+  </div>
+</div>
+
+<div id="similar-results-list" class="post-holder Post-Holder">
+  <%= render "results", :searchable_results => (@similar_results || [])%>
 </div>
 
 

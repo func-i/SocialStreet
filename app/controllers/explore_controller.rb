@@ -16,14 +16,8 @@ class ExploreController < ApplicationController
     #raise params.inspect
 
     if request.xhr? && params[:page] # pagination request
-      puts "JOSHY1"
-      puts request.inspect
-
       render :partial => 'new_page'    
     else
-      puts "JOSHY2"
-      puts request.inspect
-
       find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
     end
   end
@@ -55,11 +49,11 @@ class ExploreController < ApplicationController
     @comment_suggest_limit = 5
 
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    @total_count = @searchables.count
+    @searchable_total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)
     
     # => Expand Search here to find similar results
-    if @total_count < @comment_suggest_limit
+    if @searchable_total_count < @comment_suggest_limit
       3.times do |i|
         case i
         when 0
@@ -89,12 +83,11 @@ class ExploreController < ApplicationController
       end      
 
       @total_count = @similar_results.count
-      @similar_results = @similar_results.limit(@per_page).offset(@offset)     
-      
+      @similar_results = @similar_results.limit(@per_page).offset(@offset)          
 
     end
     
-    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
+    @num_pages = (@searchable_total_count.to_f / @per_page.to_f).ceil
   end
 
   def apply_filter(search_object, args = {})
