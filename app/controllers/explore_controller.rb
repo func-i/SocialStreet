@@ -15,9 +15,15 @@ class ExploreController < ApplicationController
 
     #raise params.inspect
 
-    if request.xhr? && params[:page] # pagination request      
+    if request.xhr? && params[:page] # pagination request
+      puts "JOSHY1"
+      puts request.inspect
+
       render :partial => 'new_page'    
     else
+      puts "JOSHY2"
+      puts request.inspect
+
       find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
     end
   end

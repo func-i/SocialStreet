@@ -1,12 +1,20 @@
-<% @searchables.each do |searchable| %>
-  <%= render 'searchable', :searchable => searchable %>
-<% end %>
+<% @searchables.each do |searchable|%>
 
-<%- unless @similar_results.blank? -%>
-  <%- if params[:page].blank? -%>
-    <h2 class="title" style="margin-left: 0px;">Similar Results</h2>
-  <%- end -%>
-  <% @similar_results.each do |similar_searchable| %>
-    <%= render 'searchable', :searchable => similar_searchable %>
+  <% if searchable.event %>
+    <% type = RecordType.types[:event] %>
+    <% record = searchable.event %>
+  <% elsif searchable.comment %>
+    <% type = RecordType.types[:search_comment] %>
+    <% record = searchable.comment %>
+  <% else %>
+    <% unless Rails.env.production? || Rails.env.staging?  %>
+      <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
+    <% end %>
+
   <% end %>
-<%- end -%>
+
+  <div class="post">
+    <%= render "shared/records", :record_type => type, :record => record %>
+  </div>
+
+<% end %>

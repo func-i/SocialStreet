@@ -39,7 +39,7 @@ class EventsController < ApplicationController
     @event_for_create = Event.new
     @event_for_create.searchable ||= Searchable.new
     @event_for_create.searchable.location ||= Location.new
-     #start/end datetimes are no longer defaulted in the model
+    #start/end datetimes are no longer defaulted in the model
     @event_for_create.searchable.searchable_date_ranges.build({
         :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
         :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)

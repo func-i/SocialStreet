@@ -46,8 +46,6 @@
       }
       refreshTimer = setTimeout(function() {
 
-        console.log(caller);
-
         if(caller == "events")
           $.getScript('/events/load_events' + getSearchParams());
         else if(caller == "explore")
@@ -57,7 +55,7 @@
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
-      change(refreshResults("explore")); // on change of the search form fields, refresh the results
+      change( function(){refreshResults("explore")}); // on change of the search form fields, refresh the results      
 
     $('a.save-button').click(function(e) {
       var f = $('form.search-params');
@@ -236,6 +234,7 @@
 
         if(history && history.replaceState)
           history.replaceState(null, null, getSearchParams());
+
         refreshResults("explore");
       }, 15);
     }
