@@ -1,9 +1,13 @@
 $('#action-list').html('<%= escape_javascript(render('results')) %>');
 
-clearMarkers();
+clearSidebarMarkers();
+
+clearSidebarClusterMarkers();
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
     placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
   <% end %>
 <% end %>
+
+placeSidebarClusterMarkers();
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
