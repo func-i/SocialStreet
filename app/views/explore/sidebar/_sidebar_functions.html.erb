@@ -7,12 +7,12 @@
     var keywordsParamKey = "keywords[]";
 
     function getSearchParams() {
-      var str = "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val();
+      var str = "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val() + "&from_date=" + $('#from_date').val();
 
       // TODO make this work with the top explore
       
-      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize()
+      if($('[name="keywords\\[\\]"]').length > 0)
+        return str + "&" + $('[name="keywords\\[\\]"]').serialize()
       else
         return str
     }
@@ -96,6 +96,10 @@
     });
     $( "#to_date" ).datepicker({
       dateFormat: 'M. dd, yy'
+    });
+
+    $("#from_date").live("change", function(){
+      refreshResults("explore");
     });
 
     makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
