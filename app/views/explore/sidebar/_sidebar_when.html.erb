@@ -1,18 +1,18 @@
 <div class="box box1">
   <div class="heading">
     <h3>When?</h3>
-    <a href="#" class="btn">btn</a>
+    <a id="when_btn" href="#" class="btn">close</a>
   </div>
   <div class="box-content">
     <div class="jump-date">
       <div class="col">
         <span>Start date:</span>
-        <%= text_field_tag 'from_date', params[:from_date] || "Set", :class => "text_field", :style => "width: 80px; background: none; border: none;" %>
+        <%= text_field_tag 'from_date', params[:from_date] || Date.today, :class => "text_field", :style => "width: 80px; background: none; border: none;" %>
       </div>
-      <div class="col" style="margin-left: 10px;">
+      <!--<div class="col" style="margin-left: 10px;">
         <span>End date:</span>
-        <%= text_field_tag 'to_date', params[:to_date] || "Set", :class => "text_field", :style => "background: none; border: none;" %>
-      </div>
+      <%= text_field_tag 'to_date', params[:to_date] || "Set", :class => "text_field", :style => "background: none; border: none;" %>
+      </div>-->
     </div>
     <div class="time-slot">
       <div class="col1">
@@ -48,3 +48,15 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('#when_btn').click(function(){
+    $('.time-slot').slideToggle('fast', function() {
+      if($('#when_btn').css("background-position") == "0px 0px")
+        $('#when_btn').css("background-position", "-16px 0");
+      else
+        $('#when_btn').css("background-position", "0px 0px");
+    });
+  return false;
+});
+</script>

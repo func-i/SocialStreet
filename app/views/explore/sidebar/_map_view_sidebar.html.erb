@@ -4,7 +4,7 @@
       <%= render "explore/sidebar/sidebar_where" -%>
     </div>
     <div class="box box1">
-      <%= render "explore/sidebar/sidebar_what" -%>      
+      <%= render "explore/sidebar/sidebar_what" -%>
     </div>
 
     <%= render "explore/sidebar/sidebar_when" -%>
@@ -30,7 +30,7 @@
        </div> -->
     <%= hidden_field_tag 'from_time', params[:from_time] %>
     <%= hidden_field_tag 'to_time', params[:to_time] %>
-    <%= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
+    <%#= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
 
     <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
     <%= hidden_field_tag 'map_center', params[:map_center] %>
@@ -42,18 +42,38 @@
       105 George St, Toronto, ON
     </div>
     <div class="post-box">
-      <div class="post-holder">
-        <div class="post-frame">
-          <div id="action-list" class="post-content">
-            <%= render 'results' %>
+      <div class="post-wrapper">
+        <div class="post-holder">
+          <div class="post-frame">
+            <div id="action-list" class="post-content">
+              <%= render 'results' %>
+            </div>
           </div>
+          <a href="#" class="btn-open">open</a>
+          <a href="#" class="btn-close">close</a>
         </div>
-        <a href="#" class="btn-open">open</a>
-        <a href="#" class="btn-close">close</a>
       </div>
     </div>
-  </div>  
+  </div>
 <% end %>
+
+<script>
+  $(function(){
+    $('.btn-open').click(function(){      
+      $('.short-box').addClass('open', 500);
+      $('.btn-open').hide();
+      $('.btn-close').show();
+      return false;
+    });
+
+    $('.btn-close').click(function(){
+      $('.short-box').removeClass('open', 500);
+      $('.btn-close').hide();
+      $('.btn-open').show();
+      return false;
+    });
+  })
+</script>
 
 
 <%= render "explore/sidebar/sidebar_functions" -%>

@@ -7,6 +7,7 @@ $('#num-results').text('<%= @searchables.size %>');
 <%- end -%>
 
 $('#action-list').html('<%= escape_javascript(render('results')) %>');
+
 clearMarkers();
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
