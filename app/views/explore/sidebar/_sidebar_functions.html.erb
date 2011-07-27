@@ -1,5 +1,5 @@
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
+  <%= javascript_include_tag 'marker_clusterer', 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
   <script>
 
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
@@ -55,7 +55,7 @@
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
-      change( function(){refreshResults("explore")}); // on change of the search form fields, refresh the results      
+      change( function(){refreshResults("explore")}); // on change of the search form fields, refresh the results
 
     $('a.save-button').click(function(e) {
       var f = $('form.search-params');
@@ -107,18 +107,28 @@
   </script>
 
   <script>
-    var markers = [];
+    var sideBarMarkers = [];
     var sideMap;
     var selectedMarker;
     var infoWindow;
     var geocoder;
     var markerCluster;
 
-    function clearMarkers() {
-      $.each(markers, function(index, marker) {
+    function clearSidebarMarkers() {
+      $.each(sideBarMarkers, function(index, marker) {
         marker.setMap(null);
       });
-      markers = [];
+      sideBarMarkers = [];
+    }
+
+    function clearSidebarClusterMarkers() {
+      markerCluster.clearMarkers();
+      sideBarMarkers = [];
+    }
+    
+    function placeSidebarClusterMarkers(){
+      if(sideBarMarkers.length > 0)
+        markerCluster.addMarkers(sideBarMarkers);
     }
 
     function placeMarker(location, title) {
@@ -132,7 +142,7 @@
       google.maps.event.addListener(marker, 'click', function() {
         //selectMarker(marker, true); //Commented out until proper functionality is determined
       });
-      markers.push(marker);
+      sideBarMarkers.push(marker);
       //markerCluster.addMarkers(markers);
     }
 
@@ -209,8 +219,16 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
       };
+
+      var mcSidebarOptions = {
+        gridSize: 50,
+        maxZoom: 12,
+        zoomOnClick: false
+      };
+
+
       sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
-      //markerCluster = new MarkerClusterer(map);
+      markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
 
 
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>

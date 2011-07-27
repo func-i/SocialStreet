@@ -58,18 +58,26 @@
 <% end %>
 
 <script>
+
   $(function(){
+
     $('.btn-open').click(function(){      
-      $('.short-box').addClass('open', 500);
-      $('.btn-open').hide();
-      $('.btn-close').show();
+      $('.short-box').addClass('open', 1, function(){
+      //  $('.short-box').hide().show('slide', {direction: 'right'}, 1000);
+        $('.btn-open').hide();
+        $('.btn-close').show();
+      });
+
+      //$('.short-box').hide().addClass('open').show('slide', {direction: 'right'}, 1000);
+      
       return false;
     });
 
     $('.btn-close').click(function(){
-      $('.short-box').removeClass('open', 500);
-      $('.btn-close').hide();
-      $('.btn-open').show();
+      $('.short-box').removeClass('open', 1, function(){
+        $('.btn-close').hide();
+        $('.btn-open').show();
+      });      
       return false;
     });
   })

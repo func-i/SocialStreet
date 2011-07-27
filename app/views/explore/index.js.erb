@@ -25,7 +25,8 @@ $('#action-list').html('<%= escape_javascript(render(:partial => "results", :loc
   $('#similar-results-list').html('');
 <% end %>
 
-clearMarkers();
+clearSidebarMarkers();
+clearSidebarClusterMarkers();
 
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
@@ -40,5 +41,7 @@ clearMarkers();
     <% end %>
   <% end %>
 <% end %>
+
+placeSidebarClusterMarkers();
 
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
