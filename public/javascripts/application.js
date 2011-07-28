@@ -27,7 +27,6 @@ $(function() {
         return false;
     });
 
-
     //Resize modal windows to match screen resolution
     $(window).resize(function(){
         resizeModals();

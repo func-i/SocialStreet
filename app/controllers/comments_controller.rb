@@ -5,6 +5,8 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!, :only => [:create]#, :if => Proc.new { |c| !c.request.xhr? } 
 
   def create
+    puts session[:stored_redirect][:params].inspect
+    
     @success = create_comment(session[:stored_redirect][:params])
     
     if request.xhr?

@@ -121,20 +121,20 @@ class ApplicationController < ActionController::Base
   end
 
   def prepare_create_event_event
-#    @event_for_create = Event.new
-#    @event_for_create.searchable ||= Searchable.new
-#    @event_for_create.searchable.location ||= Location.new
-#    @event_for_create.searchable.searchable_date_ranges.build({
-#        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
-#        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
-#      })
-#    #@event.action = @action - TODO - need to do this in javascript
-#
-#    if session[:stored_params]
-#      @event_for_create.attributes = session[:stored_params] # event params
-#      @event_for_create.valid?
-#      session[:stored_params] = nil
-#    end
+    #    @event_for_create = Event.new
+    #    @event_for_create.searchable ||= Searchable.new
+    #    @event_for_create.searchable.location ||= Location.new
+    #    @event_for_create.searchable.searchable_date_ranges.build({
+    #        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
+    #        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
+    #      })
+    #    #@event.action = @action - TODO - need to do this in javascript
+    #
+    #    if session[:stored_params]
+    #      @event_for_create.attributes = session[:stored_params] # event params
+    #      @event_for_create.valid?
+    #      session[:stored_params] = nil
+    #    end
 
     #@event_types_for_create ||= EventType.order('name').all
   end
@@ -169,6 +169,10 @@ class ApplicationController < ActionController::Base
 
     if search_filters_present?(params)
       # Build the Searchable object for the Comment
+      params[:keywords] = params[:comment_keywords]
+      params[:map_center] = params[:comment_map_center]
+      params[:map_location] = params[:comment_map_location]
+
       @comment.searchable = Searchable.new_from_params(params)
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     end
@@ -176,6 +180,7 @@ class ApplicationController < ActionController::Base
     if @comment.save
       @comment.reload
       #flash[:notice] = "Thank you for your generous comment." unless request.xhr?
+
       Connection.connect_with_users_in_action_thread(@comment.user, @comment.action)
       return true
     end
@@ -184,7 +189,7 @@ class ApplicationController < ActionController::Base
   end
 
   def search_filters_present?(params)
-    params[:from_date] || params[:location] || params[:from_time]
+    params[:comment_keywords] || params[:comment_map_center]
   end
   
 end

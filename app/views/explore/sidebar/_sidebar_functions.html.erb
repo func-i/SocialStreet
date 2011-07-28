@@ -64,19 +64,6 @@
       return false;
     });
 
-    $('.search-textarea').live('keydown', function(e) {
-      if (e.keyCode == 13) {
-        if(e.shiftKey != true){
-          var f = $('form.search-params');
-          var s = f.serialize();
-          this.form.action = this.form.action + '?' + s;
-
-          $(this).closest('.form-comment').submit();
-          return false;
-        }
-      }
-    });
-
     $('.calendar-times').click(function() {
       if($(this).hasClass('select')){
         // The day is selected, remove class and remove search conditions
@@ -253,6 +240,8 @@
 
         $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
         $('#map_center').val(c.lat() + ',' + c.lng());
+
+        updateCommentBox();
 
         if(history && history.replaceState)
           history.replaceState(null, null, getSearchParams());

@@ -41,9 +41,9 @@ class ExploreController < ApplicationController
   def find_searchables
     @searchables = Searchable.explorable
 
-    @searchables = apply_filter(@searchables) 
+    @searchables = apply_filter(@searchables)
     
-    @per_page = 5
+    @per_page = 10
     
     # => The threshold for showing the comment suggest
     @comment_suggest_limit = 5
@@ -91,7 +91,6 @@ class ExploreController < ApplicationController
   end
 
   def apply_filter(search_object, args = {})
-
     # => Add these variables so that the params can be bypassed to expand the search
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
     from_date = args.key?(:from_date) ? args[:from_date] : params[:from_date]
@@ -128,12 +127,12 @@ class ExploreController < ApplicationController
       end
 
       query = query.join(" OR ")
-      search_object = search_object.includes(:searchable_date_ranges).where(query, args)      
+      search_object = search_object.includes(:searchable_date_ranges).where(query, args)
     end
 
     # => By default only show events today and in the future unless a date search is specified.
     if from_date.blank? #&& to_date.blank?
-      search_object = search_object.on_or_after_date(Date.today)
+      #search_object = search_object.on_or_after_date(Date.today)
     else
       search_object = search_object.on_or_after_date(from_date) unless from_date.blank?
       search_object = search_object.on_or_before_date(to_date) unless to_date.blank?

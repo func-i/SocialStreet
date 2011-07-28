@@ -29,7 +29,8 @@ class Searchable < ActiveRecord::Base
       args = {}
       
       keywords.each_with_index do |k, i|
-        query << "UPPER(comments.body) LIKE :key#{i}
+        unless(k.blank?)
+          query << "UPPER(comments.body) LIKE :key#{i}
           OR UPPER(events.name) LIKE :key#{i}
           OR UPPER(events.description) LIKE :key#{i}
           OR searchables.id IN ( 
@@ -41,7 +42,8 @@ class Searchable < ActiveRecord::Base
                 OR UPPER(event_types.name) LIKE :key#{i}
               )
           )"
-        args["key#{i}".to_sym] = "%#{k.upcase}%"
+          args["key#{i}".to_sym] = "%#{k.upcase}%"
+        end
       end
       chain.where(query.join(" OR "), args)
     end
@@ -271,7 +273,7 @@ class Searchable < ActiveRecord::Base
         attrs[:searchable_date_ranges_attributes] << date_range_attrs
       end
     end
-    
+
     unless params[:keywords].blank?
       attrs[:searchable_event_types_attributes] = []
       params[:keywords].each do |keyword|
@@ -287,7 +289,7 @@ class Searchable < ActiveRecord::Base
         }
       end
     end
-    
+
     new(attrs)
   end
 
