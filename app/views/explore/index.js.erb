@@ -32,14 +32,14 @@ clearSidebarClusterMarkers();
 
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
-    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= @title -%>');
+    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, <%=  searchable.id == params[:selected_searchable].to_i -%>);
   <% end %>
 <% end %>
 
 <% unless @similar_results.blank?() %>
   <% @similar_results.each do |searchable| %>
     <% if searchable.geo_located? %>
-      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,  <%= searchable.id == params[:selected_searchable].to_i -%>);
     <% end %>
   <% end %>
 <% end %>
@@ -47,3 +47,13 @@ clearSidebarClusterMarkers();
 placeSidebarClusterMarkers();
 
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+
+<%- unless params[:selected_searchable].blank? -%>
+  geocoder = new google.maps.Geocoder();
+  geocoder.geocode({latLng: new google.maps.LatLng(<%= params[:map_center] -%>)}, function(results, status) {
+  if (status == google.maps.GeocoderStatus.OK)
+  $('.address').html(results[0]["formatted_address"]);
+  else
+  $('.address').html('');
+  });
+<%- end -%>

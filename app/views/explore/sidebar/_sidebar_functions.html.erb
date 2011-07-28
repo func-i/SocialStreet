@@ -7,7 +7,7 @@
     var keywordsParamKey = "keywords[]";
 
     function getSearchParams() {
-      var str = "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val() + "&from_date=" + $('#from_date').val();
+      var str = "?map_bounds=" + $('#map_bounds').val() + "&map_center=" + $('#map_center').val() + "&map_zoom=" + $('#map_zoom').val() + "&from_date=" + $('#from_date').val() + "&selected_searchable=" + $('#selected_searchable').val();
 
       // TODO make this work with the top explore
       
@@ -123,15 +123,27 @@
         markerCluster.addMarkers(sideBarMarkers);
     }
 
-    function placeExploreMarker(location, searchableID) {
-    
+    function placeExploreMarker(location, searchableID, selected) {
+
+      var icoImage = "/images/ico-pin.png";
+      var moImage = "/images/ico-pin.png";
+
+      if(selected == null) {
+        if(searchableID == <%= params[:selected_searchable].to_i -%>)
+        selected = true;
+      }
+
+      if(selected == true) {
+        icoImage = moImage = '/images/ico-pin-selected.png';
+      }
+
       var marker = new google.maps.Marker({
         map: sideMap,
         position: location,
-        icon: "/images/ico-pin.png"
+        icon: icoImage
       });
 
-      marker.searchableID = searchableID
+      marker.searchableID = searchableID;
 
       google.maps.event.addListener(marker, 'click', function() {
         marker.setIcon("/images/ico-pin-selected.png");
@@ -145,7 +157,7 @@
 
       google.maps.event.addListener(marker, "mouseout", function(){
         if(selectedMarker != marker)
-          marker.setIcon("/images/ico-pin.png");
+          marker.setIcon(moImage);
       });
       
       sideBarMarkers.push(marker);
@@ -164,9 +176,57 @@
           if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
         }, 740);
       }
+    
+      $('#selected_searchable').val(marker.searchableID);
+      moveExploreMap(marker, marker.position);
+    
 
       //infoWindow.setContent(marker.title);
       //infoWindow.open(sideMap, marker);
+    }
+
+    function moveExploreMap(e, latLng) {
+      if(latLng == null)
+        var loc = e.target.value;
+
+      gOptions = {}
+
+      if(loc != null)
+        gOptions['address'] = loc
+
+      if(latLng != null)
+        gOptions['latLng'] = latLng
+
+      geocoder.geocode(gOptions, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          sideMap.setCenter(results[0].geometry.location);
+          changeExploreLocationParams();
+          $('#location-not-found').hide();
+        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+          $('#location-not-found').show();
+        }
+      });
+    }
+
+    function changeExploreLocationParams(event) {
+
+      setTimeout(function() {
+        var zoom = sideMap.getZoom();
+        $('#map_zoom').val(zoom);
+
+        bounds = sideMap.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
+
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
+
+        if(history && history.replaceState)
+          history.replaceState(null, null, getSearchParams());
+
+        refreshResults("explore");
+      }, 15);
     }
 
     $(function() {
@@ -192,21 +252,6 @@
           $.getScript(location.href);
         });
         //}
-      }
-
-      function moveExploreMap(e) {
-        var loc = e.target.value;
-        geocoder.geocode( {
-          'address': loc
-        }, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            sideMap.setCenter(results[0].geometry.location);
-            changeExploreLocationParams();
-            $('#location-not-found').hide();
-          } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-            $('#location-not-found').show();
-          }
-        });
       }
 
       $('#map_location').keydown(function(e) {
@@ -251,27 +296,6 @@
     infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
 
-    function changeExploreLocationParams(event) {
-     
-      setTimeout(function() {
-        var zoom = sideMap.getZoom();
-        $('#map_zoom').val(zoom);
-
-        bounds = sideMap.getBounds();
-        ne = bounds.getNorthEast();
-        sw = bounds.getSouthWest();
-        c = bounds.getCenter();
-
-        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-        $('#map_center').val(c.lat() + ',' + c.lng());
-
-        if(history && history.replaceState)
-          history.replaceState(null, null, getSearchParams());
-
-        refreshResults("explore");
-      }, 15);
-    }
-
     google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
     google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
     google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
@@ -280,7 +304,7 @@
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
       <% if searchable.geo_located? %>
-          placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+          placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>);
       <% end %>
     <% end %>
   <% end %>

@@ -35,12 +35,11 @@
     <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
     <%= hidden_field_tag 'map_center', params[:map_center] %>
     <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+    <%= hidden_field_tag "selected_searchable", params[:selected_searchable] -%>
   <%- end -%>
 
   <div class="short-box" style="overflow-y: scroll;">
-    <div class="address">
-      105 George St, Toronto, ON
-    </div>
+    <div class="address"></div>
     <div class="post-box">
       <div class="post-wrapper">
         <div class="post-holder">
