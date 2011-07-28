@@ -152,6 +152,22 @@
       infoWindow.open(sideMap, marker);
     }
 
+    function setMapLocation(resultType){
+      var latlng = sideMap.getCenter();
+      geocoder.geocode( {
+        'latLng': latlng
+      }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK)
+          $.each(results, function(index, result){
+            $.each(result.types, function(index_2, type){
+              if(type == resultType)
+                $('#map_location').val(result.formatted_address);
+                  updateCommentBox();
+            });
+        });
+      });
+    }
+
     $(function() {
       if(history && history.pushState) {
         //if(!$.browser.webit==true){
@@ -247,6 +263,8 @@
         $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
         $('#map_center').val(c.lat() + ',' + c.lng());
 
+        setMapLocation("street_address");
+
         if(history && history.replaceState)
           history.replaceState(null, null, getSearchParams());
 
@@ -254,6 +272,8 @@
       }, 15);
     }
 
+    setMapLocation("street_address");
+    
     google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
     google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
     google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);

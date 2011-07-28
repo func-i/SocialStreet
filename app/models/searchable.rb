@@ -196,8 +196,59 @@ class Searchable < ActiveRecord::Base
   }
 =end
 
-  def create_title
-    
+  def title_for_searchable
+    title = ''
+
+    if keywords
+      #title += keywords.to_sentence(:connector => '&', :skip_last_comma => true)
+      title += keywords.to_sentence
+    else
+      title += 'Anything'
+    end
+
+    if location.text && !location.text.blank?
+      title += ' near ' + location.text
+    end
+
+    if searchable_date_ranges && !searchable_date_ranges.blank?
+      # TODO - Include date in title
+      title += ' on '
+
+      dow_hash = {}
+      searchable_date_ranges.each { |dr|
+        if !dow_hash[dr.dow]
+          dow_hash[dr.dow] = []
+        end
+
+        if dr.start_time < 13.hours
+          dow_hash[dr.dow] << "Morning"
+          if dr.end_time > 13.hours
+            dow_hash[dr.dow] << "Afternoon"
+            if dr.end_time > 19.hours
+              dow_hash[dr.dow] << "Evening"
+            end
+          end
+        elsif dr.start_time < 19.hours
+          dow_hash[dr.dow] << "Afternoon"
+          if dr.end_time > 19.hours
+            dow_hash[dr.dow] << "Evening"
+          end
+        else
+          dow_hash[dr.dow] << "Evening"
+        end
+      }
+
+      dow_array = []
+      dow_hash.each do |dow, time|
+        #dow_array << @@dow[dow] + ' ' + time.to_sentence(:connector => '&', :skip_last_comma => true)
+        dow_array << SearchableDateRange.dow_string(dow) + ' ' + time.to_sentence
+      end
+
+      #title += dow_array.to_sentence(:connector => 'and', :skip_last_comma => true)
+      title += dow_array.to_sentence
+    end
+
+    return title
   end
 
   def location_address
@@ -370,17 +421,17 @@ class Searchable < ActiveRecord::Base
     end
 
     unless searchable_date_ranges.blank?
-#      #Days of the week
-#      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
-#
-#      #Date Ranges
-#      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
-#      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
-#      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
-#
-#      #Time Ranges
-#      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
-#      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
+      #      #Days of the week
+      #      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
+      #
+      #      #Date Ranges
+      #      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
+      #      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
+      #      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
+      #
+      #      #Time Ranges
+      #      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
+      #      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
     end
 
     return params

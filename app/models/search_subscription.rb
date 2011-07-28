@@ -72,7 +72,7 @@ class SearchSubscription < ActiveRecord::Base
 
   def self.new_from_params(params)
     searchable = Searchable.new_from_params(params)
-    SearchSubscription.new(:searchable => searchable)
+    SearchSubscription.new(:searchable => searchable, :name => searchable.title_for_searchable)
   end
 
   def url_params
