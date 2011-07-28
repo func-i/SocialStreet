@@ -12,11 +12,11 @@ class SearchSubscriptionsController < ApplicationController
   def create
     if create_search_subscription(params)
       render :update do |page|
-        page.redirect_to :back, :notice => "You will be notified when new content is created"
+        page.redirect_to :back
       end
     else
       render :update do |page|
-        page.redirect_to :back, :notice => "You need to specify a name"
+        page.redirect_to :back
       end
     end
     
