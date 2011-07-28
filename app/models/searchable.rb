@@ -196,6 +196,10 @@ class Searchable < ActiveRecord::Base
   }
 =end
 
+  def create_title
+    
+  end
+
   def location_address
     location.geocodable_address if location
   end

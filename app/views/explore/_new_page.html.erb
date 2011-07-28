@@ -1,8 +1,7 @@
 <script>
   $('#action-list').append(
   '<%= escape_javascript render("results", :searchable_results => @searchables)%>'
- );
-
+);
 
 <% if @offset + @per_page >= @searchable_total_count %>
     $('#end-of-results-message').show();
@@ -26,6 +25,5 @@
     <% end %>
   <% end %>
 <% end %>
-
 
 </script>

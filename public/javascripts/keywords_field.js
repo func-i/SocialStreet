@@ -22,7 +22,7 @@ function addKeyword(keyword, selector) {
 
     if(selector == "#explore-keywords"){
         //Update comment-box text
-        updateCommentBox();
+        //updateCommentBox();
     }
 
     return true;
@@ -41,7 +41,7 @@ function removeKeyword(keyword) {
 
         if(parentSelector == "#explore-keywords"){
             //Update comment-box text
-            updateCommentBox();
+            //updateCommentBox();
         }
 
 
@@ -72,7 +72,7 @@ function arraySubtract(ara1,ara2) {
 }
 
 $(function() {
-    updateCommentBox();
+    //updateCommentBox();
 
     function keywordHandler(keyword, keywordContentSelector) {
         console.log(keyword)
@@ -102,7 +102,7 @@ $(function() {
             if($(this).attr("container-selector") == '#explore-keywords'){
                 caller = "explore";
 
-                updateCommentBox();
+                //updateCommentBox();
             }
             else
                 caller = "events";

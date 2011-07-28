@@ -1,5 +1,7 @@
 $('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables} )) %>');
 
+$('#community-bar').html('<%= escape_javascript render('community_bar')%>');
+
 <% if @searchable_total_count == 0 %>
   $('#searchable-count').html("<p>Unfortunately, no results were found. Why don't you:</p>");
 <% elsif @searchable_total_count == 1 %>

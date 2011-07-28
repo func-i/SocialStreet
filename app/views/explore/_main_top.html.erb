@@ -1,33 +1,21 @@
 <%= content_for :main_top  do -%>
   <div class="col1">
     <div class="social-bar">
-<!--      <span class="search-next">
-        <%#= link_to_popup_modal_ajax  'Follow this Search', 'Follow this Search', 'empty_modal_base', new_search_subscription_path(:js), nil, nil, :class => "search-next"%>
-      </span>-->
+      <!--      <span class="search-next">
+  <%#= link_to_popup_modal_ajax  'Follow this Search', 'Follow this Search', 'empty_modal_base', new_search_subscription_path(:js), nil, nil, :class => "search-next"%>
+            </span>-->
       <a href="#" class="search-next save-button"><span>Follow this search</span></a>
-      <%if @overlapping_subscriptions && (@overlapping_subscriptions.size > 1 || (@overlapping_subscriptions.size == 1 && @overlapping_subscriptions.first.search_subscription.user != current_user))%>
-        <div class="search-result">
-          <strong><%= @overlapping_subscriptions.size -%></strong> <%=@overlapping_subscriptions.size == 1 ? 'person is' : 'people are'%> following:
-        </div>
-        <div class="community">
-          <div class="community-holder">
-            <ul>
-              <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
-                <%if overlapping_subscriber.search_subscription.user != current_user%>
-                  <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
-                <%end%>
-              <%end%>
-            </ul>
-          </div>
-        </div>
-      <%- end -%>
+
+      <div id="community-bar">
+        <%= render "community_bar" %>
+      </div>
     </div>
   </div>
 
   <%- tab_class = "list" -%>
 
   <%- if !params[:view].blank? && params[:view].eql?("map") -%>
-    <%- tab_class = "map" -%>  
+    <%- tab_class = "map" -%>
   <%- end -%>
 
   <div class="col2">
@@ -45,4 +33,5 @@
       window.location = getSearchParams() + '&view=' + $(this).attr('data-param');
     });
   });
+
 </script>

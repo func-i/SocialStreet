@@ -1,0 +1,19 @@
+<%if @overlapping_subscriptions_count > 0%>
+  <div class="search-result">
+    <strong><%= @overlapping_subscriptions_count -%></strong> <%=@overlapping_subscriptions_count == 1 ? 'person is' : 'people are'%> following:
+  </div>
+  <div class="community">
+    <div class="community-holder">
+      <ul>
+        <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
+          <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
+        <%end%>
+      </ul>
+    </div>
+  </div>
+<% else %>
+  <center>
+    <p>Be the first to join this Community!</p>
+    <p>Get notified when new content matches this search</p>
+  </center>
+<%- end -%>

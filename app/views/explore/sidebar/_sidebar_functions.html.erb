@@ -48,8 +48,12 @@
 
         if(caller == "events")
           $.getScript('/events/load_events' + getSearchParams());
-        else if(caller == "explore")
+        else if(caller == "explore"){
+
+          updateCommentBox();
+
           $('form.search-params').submit();
+        }
       }, 250);
     }
 
@@ -241,8 +245,6 @@
 
         $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
         $('#map_center').val(c.lat() + ',' + c.lng());
-
-        updateCommentBox();
 
         if(history && history.replaceState)
           history.replaceState(null, null, getSearchParams());
