@@ -2615,7 +2615,7 @@ form, fieldset {
 }
 #sidebar .post-content {
     background: #fff;
-    height: 9999px;
+    /*height: 9999px;*/
     overflow: hidden;
     padding: 4px 0 13px 6px;
     position: relative;

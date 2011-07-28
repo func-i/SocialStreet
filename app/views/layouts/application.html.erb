@@ -15,7 +15,7 @@
   <body>
     <div id="wrapper">
       <div class="w1">
-        <div class="w2 <%= "page-explore" if current_page?(root_path) -%>">
+        <div class="w2 <%= current_page?(root_path) ? (params[:view]=="map" ? "page-map" : "page-explore") : ""  -%>">
           <%= render 'layouts/header' %>
           <%= yield :popup_modals -%>
           <div id="wrapper" class="wat-cf">
