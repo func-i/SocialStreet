@@ -16,7 +16,9 @@ $('#action-list').html('<%= escape_javascript(render(:partial => "results", :loc
 <% end %>
 
 <% if !@similar_results.blank?() %>
-  $('#more-results-message').show();
+  <% if !params[:view].eql?("map") || @searchable_total_count < @@more_results_limit %>
+    $('#more-results-message').show();
+  <% end %>
   $('#similar-results-list').html('<%= escape_javascript(render("results", :searchable_results => @similar_results)) %>');
 <% else %>
   $('#more-results-message').hide();

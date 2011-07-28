@@ -96,10 +96,19 @@ class ApplicationController < ActionController::Base
           raise 'shit, what happened'
 
         end
-      else
-        
-        return_path = session[:stored_current_path]
+      elsif session[:stored_redirect][:controller] == 'search_subscriptions' && session[:stored_redirect][:action] == 'create'
 
+        if create_search_subscription(session[:stored_redirect][:params])
+          return_path = :back
+              puts "HI THERE"
+        else
+          #TODO - what should this be?
+          return_path = session[:stored_current_path]
+          puts "GOODBYE"
+        end
+
+      else
+        puts "WHAT THE FUCK! HOW DID I END UP HERE"
       end
 
       clear_redirect
@@ -137,6 +146,16 @@ class ApplicationController < ActionController::Base
     #    end
 
     #@event_types_for_create ||= EventType.order('name').all
+  end
+
+  def create_search_subscription(params)
+    puts "HERE JOSHY HERE BOY"
+
+    @search_subscription = SearchSubscription.new_from_params(params[:q])
+    @search_subscription.user = current_user
+    @search_subscription.attributes = params[:search_subscription]
+
+    return @search_subscription.save
   end
 
   def create_or_edit_event(params, action)

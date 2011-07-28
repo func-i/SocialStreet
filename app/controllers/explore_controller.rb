@@ -4,6 +4,8 @@ class ExploreController < ApplicationController
   before_filter :load_event_types
   before_filter :store_current_path
 
+  @@more_results_limit = 10;
+
   def index
     #    params[:keywords] = ['Baseball', 'Hockey']
     @comment = Comment.new
@@ -51,7 +53,7 @@ class ExploreController < ApplicationController
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     @searchable_total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)
-    
+
     # => Expand Search here to find similar results
     if @searchable_total_count < @comment_suggest_limit
       3.times do |i|
@@ -134,8 +136,8 @@ class ExploreController < ApplicationController
     if from_date.blank? #&& to_date.blank?
       #search_object = search_object.on_or_after_date(Date.today)
     else
-      search_object = search_object.on_or_after_date(from_date) unless from_date.blank?
-      search_object = search_object.on_or_before_date(to_date) unless to_date.blank?
+      #search_object = search_object.on_or_after_date(from_date) unless from_date.blank?
+      #search_object = search_object.on_or_before_date(to_date) unless to_date.blank?
     end
 
     # GEO LOCATION SEARCHING

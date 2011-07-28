@@ -1,5 +1,4 @@
 <% searchable_results.each do |searchable|%>
-  <% puts searchable.inspect %>
   <% if searchable.event %>
     <% type = RecordType.types[:event] %>
     <% record = searchable.event %>

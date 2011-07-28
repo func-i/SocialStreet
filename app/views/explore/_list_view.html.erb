@@ -1,14 +1,13 @@
 <%= render "comment_box" %>
 
-<div id="comment_suggest" style="margin-left: 15px; margin-right: 15px; font-style: italic; font-size: 12px;">
-  <%= "Didn't find enough results? Leave a comment to spark interest!" if @total_count && @total_count < @comment_suggest_limit -%>
-</div>
-
 <div id="action-list" class="post-holder Post-Holder">
   <%= render "results", :searchable_results => @searchables %>
 </div>
 
+<div class="post-holder Post-Holder">
 <%= render "similar_results_box" %>
+</div>
+
 
 <div id="similar-results-list" class="post-holder Post-Holder">
   <%= render "results", :searchable_results => (@similar_results || [])%>

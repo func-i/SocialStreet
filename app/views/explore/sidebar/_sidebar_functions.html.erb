@@ -60,7 +60,8 @@
     $('a.save-button').click(function(e) {
       var f = $('form.search-params');
       var s = f.serialize();
-      window.location = '<%= new_search_subscription_url %>?' + s;
+      popup_modal_ajax('#empty_modal_base', 'Follow this Search', '<%=new_search_subscription_path(:js)%>?' + s, null)
+      //window.location = '<%= new_search_subscription_url %>?' + s;
       return false;
     });
 
