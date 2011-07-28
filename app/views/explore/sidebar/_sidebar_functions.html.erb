@@ -123,22 +123,39 @@
         markerCluster.addMarkers(sideBarMarkers);
     }
 
-    function placeMarker(location, title) {
-
+    function placeExploreMarker(location, searchableID) {
+    
       var marker = new google.maps.Marker({
         map: sideMap,
-        position: location,
-        title: title
+        position: location,        
+        icon: "/images/ico-pin.png"
       });
 
+      marker.searchableID = searchableID
+
       google.maps.event.addListener(marker, 'click', function() {
-        //selectMarker(marker, true); //Commented out until proper functionality is determined
+        marker.setIcon("/images/ico-pin-selected.png");
+        selectMarker(marker, true); //Commented out until proper functionality is determined
       });
+
+      google.maps.event.addListener(marker, "mouseover", function(){
+        if(selectedMarker != marker)
+          marker.setIcon("/images/ico-pin-hover.png");
+      });
+
+      google.maps.event.addListener(marker, "mouseout", function(){
+        if(selectedMarker != marker)
+          marker.setIcon("/images/ico-pin.png");
+      });
+      
       sideBarMarkers.push(marker);
       //markerCluster.addMarkers(markers);
     }
 
     function selectMarker(marker) {
+      if(selectedMarker != null)
+        selectedMarker.setIcon("/images/ico-pin.png");
+
       selectedMarker = marker;
 
       if (marker.getAnimation() == null) {
@@ -148,8 +165,8 @@
         }, 740);
       }
 
-      infoWindow.setContent(marker.title);
-      infoWindow.open(sideMap, marker);
+      //infoWindow.setContent(marker.title);
+      //infoWindow.open(sideMap, marker);
     }
 
     $(function() {
@@ -230,6 +247,7 @@
       new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
       new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
+    
     infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
 
@@ -260,9 +278,10 @@
     //$(window).resize(changeLocationParams);
 
   <% @searchables.each do |searchable| %>
-    <% #if searchable.event && searchable.geo_located? %>
-    <% if searchable.geo_located? %>
-        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+    <% if searchable.event && searchable.geo_located? %>
+      <% if searchable.geo_located? %>
+          placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+      <% end %>
     <% end %>
   <% end %>
 

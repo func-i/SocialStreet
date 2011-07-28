@@ -17,7 +17,7 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
   $('#end-of-results-message').hide();
 <% end %>
 
-<% if !@similar_results.blank?() %>
+<% unless @similar_results.blank?() %>
   <% if !params[:view].eql?("map") || @searchable_total_count < @@more_results_limit %>
     $('#more-results-message').show();
   <% end %>
@@ -32,14 +32,14 @@ clearSidebarClusterMarkers();
 
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
-    placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= @title -%>');
   <% end %>
 <% end %>
 
 <% unless @similar_results.blank?() %>
   <% @similar_results.each do |searchable| %>
     <% if searchable.geo_located? %>
-      placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>
 <% end %>
