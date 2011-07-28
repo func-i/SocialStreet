@@ -6,17 +6,18 @@ class SearchSubscriptionsController < ApplicationController
 
 
   def new
-    puts "JOSHY NEW"
     @search_subscription = SearchSubscription.new_from_params(params)
   end
 
   def create
-    puts "JOSHY CREATE"
-
     if create_search_subscription(params)
-      redirect_to :back
+      render :update do |page|
+        page.redirect_to :back, :notice => "You will be notified when new content is created"
+      end
     else
-      render :new
+      render :update do |page|
+        page.redirect_to :back, :notice => "You need to specify a name"
+      end
     end
     
     #
