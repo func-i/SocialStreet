@@ -8,6 +8,18 @@
     :event_record => event %>
 
 <% elsif record_type == RecordType.types[:search_comment] %>
+  <% searchable = record.searchable %>
+
+  <% keywords = searchable.keywords %>
+  <% title = 'A message was posted to ' %>
+  <% title += link_to( (keywords.empty? ? 'a search' : searchable.keywords.join(', ')) + (searchable.location.text.blank? ? '' : 'near' + searchable.location.text), explore_path(searchable.url_params)) %>
+
+  <%= render "shared/general_record",
+    :left_image => image_tag("img15.png", :size => "55x55"),
+    :title => raw(title),
+    :head_action => record,
+    :index_action => record
+    %>
 
 <% elsif record_type == "threaded_event" %>
 
@@ -117,5 +129,7 @@
 
 
 <% elsif record_type == RecordType.types[:search_comment_posted] || (record_type == Action.types[:search_comment] && nil == record.action) %>
+  <%=record.inspect%>
 <% elsif record_type == RecordType.types[:search_comment_replied] || (record_type == Action.types[:search_comment] && nil != record.action)%>
+  <%=record.inspect%>
 <% end %>

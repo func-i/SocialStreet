@@ -29,7 +29,8 @@ class Searchable < ActiveRecord::Base
       args = {}
       
       keywords.each_with_index do |k, i|
-        query << "UPPER(comments.body) LIKE :key#{i}
+        unless(k.blank?)
+          query << "UPPER(comments.body) LIKE :key#{i}
           OR UPPER(events.name) LIKE :key#{i}
           OR UPPER(events.description) LIKE :key#{i}
           OR searchables.id IN ( 
@@ -41,7 +42,8 @@ class Searchable < ActiveRecord::Base
                 OR UPPER(event_types.name) LIKE :key#{i}
               )
           )"
-        args["key#{i}".to_sym] = "%#{k.upcase}%"
+          args["key#{i}".to_sym] = "%#{k.upcase}%"
+        end
       end
       chain.where(query.join(" OR "), args)
     end
@@ -59,7 +61,7 @@ class Searchable < ActiveRecord::Base
         args["key#{i}".to_sym] = "%#{k.name.downcase}%"
 
         if k.event_type_id
-          query << "OR set.event_type_id = :key_b#{i}"
+          query << "set.event_type_id = :key_b#{i}"
           args["key_b#{i}".to_sym] = "#{k.event_type_id}"
         end
       }
@@ -246,32 +248,51 @@ class Searchable < ActiveRecord::Base
     
     attrs[:searchable_date_ranges_attributes] = []
 
-    # Apply the time range from the time slider (if it's been used by the user) to each date range record
-    if !params[:from_date].blank? || !params[:to_date].blank?
-      date_range_attrs = {
-        :starts_at => params[:from_date].blank? ? nil : Date.parse(params[:from_date]).beginning_of_day,
-        :ends_at => params[:to_date].blank? ? nil : Date.parse(params[:to_date]).end_of_day,
-        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false),
-      }
-      if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
-        date_range_attrs[:start_time] = params[:from_time].to_i
-        date_range_attrs[:end_time] = params[:to_time].to_i
+    unless(date_search = params[:date_search]).blank?
+      
+      date_search.group_by{|ds| ds.first}.each do |grp|
+        day = grp.first
+        hours = []
+
+        grp.last.collect{|g| g.split(",").last}.each do |hr|
+          case hr
+          when "0"
+            attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 0.hour, :end_time => 12.hour}
+          when "1"
+            attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 11.hour, :end_time => 18.hour}
+          when "2"
+            attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 17.hour, :end_time => 24.hour}
+          end
+        end
       end
-      attrs[:searchable_date_ranges_attributes] << date_range_attrs
     end
 
-    # Apply the time range from the time slider (if it's been used by the user) to each day-of-week (dow) record
-    unless params[:days].blank?
-      params[:days].each do |day|
-        date_range_attrs = { :dow => day }
-        if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
-          date_range_attrs[:start_time] = params[:from_time].to_i
-          date_range_attrs[:end_time] = params[:to_time].to_i
-        end
-        attrs[:searchable_date_ranges_attributes] << date_range_attrs
-      end
-    end
-    
+    # Apply the time range from the time slider (if it's been used by the user) to each date range record
+    #    if !params[:from_date].blank? || !params[:to_date].blank?
+    #      date_range_attrs = {
+    #        :starts_at => params[:from_date].blank? ? nil : Date.parse(params[:from_date]).beginning_of_day,
+    #        :ends_at => params[:to_date].blank? ? nil : Date.parse(params[:to_date]).end_of_day,
+    #        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false),
+    #      }
+    #      if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+    #        date_range_attrs[:start_time] = params[:from_time].to_i
+    #        date_range_attrs[:end_time] = params[:to_time].to_i
+    #      end
+    #      attrs[:searchable_date_ranges_attributes] << date_range_attrs
+    #    end
+    #
+    #    # Apply the time range from the time slider (if it's been used by the user) to each day-of-week (dow) record
+    #    unless params[:days].blank?
+    #      params[:days].each do |day|
+    #        date_range_attrs = { :dow => day }
+    #        if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+    #          date_range_attrs[:start_time] = params[:from_time].to_i
+    #          date_range_attrs[:end_time] = params[:to_time].to_i
+    #        end
+    #        attrs[:searchable_date_ranges_attributes] << date_range_attrs
+    #      end
+    #    end
+
     unless params[:keywords].blank?
       attrs[:searchable_event_types_attributes] = []
       params[:keywords].each do |keyword|
@@ -281,13 +302,13 @@ class Searchable < ActiveRecord::Base
 
         event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
 
-        attrs[:searchable_event_types_attributes] << { 
+        attrs[:searchable_event_types_attributes] << {
           :event_type_id => event_type.try(:id),
           :name => keyword
         }
       end
     end
-    
+
     new(attrs)
   end
 
@@ -345,17 +366,17 @@ class Searchable < ActiveRecord::Base
     end
 
     unless searchable_date_ranges.blank?
-      #Days of the week
-      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
-
-      #Date Ranges
-      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
-      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
-      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
-
-      #Time Ranges
-      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
-      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
+#      #Days of the week
+#      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
+#
+#      #Date Ranges
+#      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
+#      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
+#      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
+#
+#      #Time Ranges
+#      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
+#      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
     end
 
     return params

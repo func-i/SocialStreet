@@ -7,7 +7,7 @@
 <div class="box-content">  
   <ul id="explore-keywords" class="keyword">
     <% (params[:keywords] || []).reject{|k| k.blank?}.each do |keyword| %>
-      <li class="keyword-pill">
+      <li class="keyword-pill" container-selector="#explore-keywords">
         <%= hidden_field_tag 'keywords[]', keyword %>
         <%= keyword %>
         <%= link_to('close', '#', :class => "remove-parent close", "data-parent-selector" => ".keyword-pill") %>

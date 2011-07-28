@@ -27,7 +27,6 @@ $(function() {
         return false;
     });
 
-
     //Resize modal windows to match screen resolution
     $(window).resize(function(){
         resizeModals();
@@ -154,6 +153,9 @@ function removeModal(element) {
     $(element).fadeOut("fast", function() {
         $('#TB_overlay').trigger("unload").unbind().remove();
     });
+
+    //Hack to make save this search work
+    element.removeClass('follow-modal');
 
     element.find('.ajax-content').empty();
     element.find('.ajax-main-content').empty();

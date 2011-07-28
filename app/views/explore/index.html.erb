@@ -1,9 +1,5 @@
-<%- if params[:view].blank? -%>
+<%- if params[:view].blank? || params[:view].eql?("list") -%>
   <%= render "list_view" -%>
 <%- else -%>
-  <%- if params[:view].eql?("list") -%>
-    <%= render "list_view" -%>
-  <%- else -%>
-    <%= render "map_view" -%>
-  <%- end -%>
+  <%= render "map_view" -%>
 <%- end -%>

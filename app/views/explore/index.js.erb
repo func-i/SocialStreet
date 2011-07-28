@@ -1,13 +1,47 @@
-$('#action-list').html('<%= escape_javascript(render('results')) %>');
+$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables} )) %>');
+
+<% if @searchable_total_count == 0 %>
+  $('#searchable-count').html("<p>Unfortunately, no results were found. Why don't you:</p>");
+<% elsif @searchable_total_count == 1 %>
+  $('#searchable-count').html("<p>Unfortunately, only 1 result was found. Why don't you:</p>");
+<% else %>
+  $('#searchable-count').html("<p>Unfortunately, only <strong><%=@searchable_total_count%></strong> results were found. Why don't you:</p>");
+<% end %>
+
+
+<% if @offset + @per_page >= @searchable_total_count %>
+  $('#end-of-results-message').show();
+<% else %>
+  $('#end-of-results-message').hide();
+<% end %>
+
+<% if !@similar_results.blank?() %>
+  <% if !params[:view].eql?("map") || @searchable_total_count < @@more_results_limit %>
+    $('#more-results-message').show();
+  <% end %>
+  $('#similar-results-list').html('<%= escape_javascript(render("results", :searchable_results => @similar_results)) %>');
+<% else %>
+  $('#more-results-message').hide();
+  $('#similar-results-list').html('');
+<% end %>
 
 clearSidebarMarkers();
-
 clearSidebarClusterMarkers();
+
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
     placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
   <% end %>
 <% end %>
 
+<% unless @similar_results.blank?() %>
+  <% @similar_results.each do |searchable| %>
+    <% if searchable.geo_located? %>
+      placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+    <% end %>
+  <% end %>
+<% end %>
+
 placeSidebarClusterMarkers();
+
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);

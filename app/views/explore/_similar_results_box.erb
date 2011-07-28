@@ -1,0 +1,34 @@
+<div class="message-holder">
+  <div id="end-of-results-message" class="message" <%= 'style=display:none' if (@offset + @per_page < @searchable_total_count) %> >
+    <span id="searchable-count">
+      <% if @searchable_total_count == 0 %>
+        <p>Unfortunately, no results were found. Why don't you:</p>
+      <% elsif @searchable_total_count == 1 %>
+        <p>Unfortunately, only 1 result was found. Why don't you:</p>
+      <% else %>
+        <p>Unfortunately, only <strong><%=@searchable_total_count%></strong> results were found. Why don't you:</p>
+      <% end %>
+    </span>
+    <ul>
+      <li>
+        <a href="#" class="save-button">Follow this Search</a> to get notified when new content matching this search is created
+      </li>
+      <li>
+        <a id="Post-a-Message-Link" href="#">Post a Message</a> to let the Community know about your interest, or
+      </li>
+      <li>
+        <%= link_to_popup_modal_ajax  'Add an Activity', 'Add a new Activity', 'empty_modal_base', new_event_path(:js), nil, nil%> and invite your Neighbours
+      </li>
+    </ul>
+  </div>
+  <div id ="more-results-message" class="more-results" <%= 'style=display:none' if @similar_results.blank?() %> >
+    <p>More results were found by loosening the search conditions</p>
+  </div>
+</div>
+
+<script>
+  $('#Post-a-Message-Link').click(function(){
+    $('#explore-post-message-form').click();
+    $('#explore-textarea').focus();
+  })
+</script>

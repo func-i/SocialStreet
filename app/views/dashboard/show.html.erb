@@ -58,7 +58,7 @@
           <% if(action.action_type == Action.types[:event_created]) %>
             <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } %>
           <% else %>
-            <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action.reference} %>
+            <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
           <% end %>
         <% else %>
           <% action = item.index_action %>

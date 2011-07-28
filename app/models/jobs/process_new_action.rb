@@ -94,7 +94,7 @@ class Jobs::ProcessNewAction
     # GET SUBSCRIPTIONS TO THIS ACTION
     if action.action_type == Action.types[:event_created]
       subscriptions = SearchSubscription.matching_event(action.event)
-
+      
     elsif action.action_type == Action.types[:search_comment] ||
         (action.action_type == Action.types[:action_comment] && action.action.action_type == Action.types[:search_comment])
 

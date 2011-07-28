@@ -1,0 +1,80 @@
+<div class="post-message" id="explore-post-message-form">
+  <%= form_for @comment, :remote => true, :html => {"data-type" => "html", :class => "form comment-form form-comment form-post-message Post-Message" } do |form| %>
+    <fieldset>
+      <div class="text">
+        <%= form.text_field :body, :id => "explore-textarea", :title => "Post a Message", :class => "search-textarea" -%>
+      </div>
+      <div id="post-message-info" class="info">
+        <p><span style="font-size:18px">Leave a message to let your Community know about you and your interests!</span></p>
+        <p>Your message will be posted to the center of the map (<span id="post-message-address">#</span>)</p>
+        <p>
+          <% keywords = (params[:keywords] || []).reject{|k| k.blank?} %>
+          <span id="post-message-keywords" style="color:#999;<%="display:none" if keywords.blank?%>">
+          </span>
+        </p>
+        <input type="hidden" id="comment-center" name="comment_map_center"/>
+        <input type="hidden" id="comment-location" name="comment_map_location"/>
+      </div>
+      <% if params[:view].eql?("map") %>
+        <%= render "similar_results_box" %>
+      <% end %>
+    </fieldset>
+  <% end %>
+</div>
+
+<script>
+  $(function(){
+    $('#explore-post-message-form').click(function(){
+      $('.form-post-message').addClass("send");
+      return false;
+    });
+
+    $(document).bind("click", function() { $('.form-post-message').removeClass('send');});
+
+    $('.remove-comment-keyword').live('click', function(){
+      console.log("HERE"); //TODO - WHY ISN'T THIS CALLED?
+    });
+
+
+    $('.search-textarea').live('keydown', function(e) {
+      if (e.keyCode == 13) {
+        if(e.shiftKey != true){
+          var f = $('form.form-comment');
+          $(this).closest('.form-comment').submit();
+          this.value = '';
+          return false;
+        }
+      }
+    });
+  })
+
+  function updateCommentBox(){
+    //UPDATE KEYWORDS
+    var $keywords = $('.keyword-pill').find('input[type=hidden]');
+
+    if($keywords.length == 0){
+      $('#post-message-keywords').hide();
+    }
+    else {
+      var $keywordString = '<span class="keyword-small">';
+      $keywords.each(function(index, elem){
+        $keywordString += '<span class="keyword">' +
+          '' + elem.value +
+          '<a href="#" class="close remove-comment-keyword" data-parent-selector = ".keyword-small">close</a>' +
+          '<input type="hidden" name="comment_keywords[]" value="' + elem.value + '" />' +
+          '</span>'
+      })
+      $keywordString += "</span>"
+
+      $('#post-message-keywords').html("and tagged with " + $keywordString);
+
+      $('#post-message-keywords').show();
+    }
+
+    //UPDATE ADDRESS AND LOCATION
+    $('#comment-center').val($('input[name="map_center"]').val());
+    $('#comment-location').val($('input[name="map_location"]').val());
+    $('#post-message-address').html($('input[name="map_location"]').val());
+  }
+
+</script>

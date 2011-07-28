@@ -1,11 +1,10 @@
-<% @searchables.each do |searchable|%>
-
+<% searchable_results.each do |searchable|%>
   <% if searchable.event %>
     <% type = RecordType.types[:event] %>
     <% record = searchable.event %>
   <% elsif searchable.comment %>
     <% type = RecordType.types[:search_comment] %>
-    <% record = searchable.comment %>
+    <% record = searchable.comment.action %>
   <% else %>
     <% unless Rails.env.production? || Rails.env.staging?  %>
       <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>

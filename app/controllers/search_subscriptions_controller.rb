@@ -1,23 +1,34 @@
 class SearchSubscriptionsController < ApplicationController
 
-  before_filter :store_current_path, :only => [:new]
+  before_filter :store_subscription_request, :only => [:create]
+  #before_filter :store_current_path, :only => [:new]
   before_filter :authenticate_user!, :only => [:create]
 
+
   def new
+    puts "JOSHY NEW"
     @search_subscription = SearchSubscription.new_from_params(params)
   end
 
   def create
-    @search_subscription = SearchSubscription.new_from_params(params[:q])
-    @search_subscription.user = current_user
-    @search_subscription.attributes = params[:search_subscription]
+    puts "JOSHY CREATE"
 
-    if @search_subscription.save
-      #flash[:notice] = "You have subscripted to this search. You will be notified when there are new events for your criteria"
-      redirect_to explore_path(params[:q])
+    if create_search_subscription(params)
+      redirect_to :back
     else
       render :new
     end
+    
+    #
+    #    @search_subscription = SearchSubscription.new_from_params(params[:q])
+    #    @search_subscription.user = current_user
+    #    @search_subscription.attributes = params[:search_subscription]
+    #
+    #    if @search_subscription.save
+    #      redirect_to :back
+    #    else
+    #      render :new
+    #    end
   end
 
   def destroy
@@ -28,6 +39,13 @@ class SearchSubscriptionsController < ApplicationController
       raise "WHAT THE F***"
     end
   end
+
+  protected
+
+  def store_subscription_request
+    store_redirect(:controller => 'search_subscriptions', :action => 'create', :params => params)
+  end
+
 
 
 end

@@ -1,7 +1,17 @@
 function addKeyword(keyword, selector) {
     if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0 || keyword == '') return false;
 
-    var $inputName = (selector == "#event-keywords" ? "event[searchable_attributes][keywords][]" : "keywords[]")
+    var $inputName;
+    if(selector == "#event-keywords")
+    {
+        //On the event create modal
+        $inputName = "event[searchable_attributes][keywords][]";
+    }
+    else{
+        //On the explore page
+        $inputName = "keywords[]";
+    }
+
 
     $('<li class="keyword-pill" container-selector = "' + selector + '">' +
         keyword +
@@ -9,6 +19,12 @@ function addKeyword(keyword, selector) {
         '<input type="hidden" name="' + $inputName  + '" value="' +keyword + '" />' +
         '</li>'
         ).hide().appendTo($(selector)).fadeIn('slow');
+
+    if(selector == "#explore-keywords"){
+        //Update comment-box text
+        updateCommentBox();
+    }
+
     return true;
 }
 
@@ -22,6 +38,13 @@ function removeKeyword(keyword) {
         if (parentSelector) {
             $this.closest(parentSelector).remove();
         }
+
+        if(parentSelector == "#explore-keywords"){
+            //Update comment-box text
+            updateCommentBox();
+        }
+
+
     }
 }
 
@@ -49,7 +72,8 @@ function arraySubtract(ara1,ara2) {
 }
 
 $(function() {
-    
+    updateCommentBox();
+
     function keywordHandler(keyword, keywordContentSelector) {
         console.log(keyword)
         if(addKeyword(keyword, keywordContentSelector))
@@ -75,8 +99,11 @@ $(function() {
 
             var caller;     
 
-            if($(this).attr("container-selector") == '#explore-keywords')
+            if($(this).attr("container-selector") == '#explore-keywords'){
                 caller = "explore";
+
+                updateCommentBox();
+            }
             else
                 caller = "events";
 
