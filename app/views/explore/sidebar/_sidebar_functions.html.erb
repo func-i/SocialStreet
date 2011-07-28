@@ -127,7 +127,7 @@
     
       var marker = new google.maps.Marker({
         map: sideMap,
-        position: location,        
+        position: location,
         icon: "/images/ico-pin.png"
       });
 
@@ -284,6 +284,8 @@
       <% end %>
     <% end %>
   <% end %>
+
+    placeSidebarClusterMarkers();
 
   });
   </script>
