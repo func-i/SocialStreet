@@ -2474,7 +2474,9 @@ form, fieldset {
 }
 .jump-date .col {
     float: left;
-    width: 88px;
+    /*width: 88px;*/
+    margin-right: 10px;
+    min-width: 135px;
 }
 .jump-date .col span {
     display: block;
@@ -2493,7 +2495,7 @@ form, fieldset {
     margin: 5px 0 0;
 }
 .time-slot {
-    border-top: 2px solid #ededed;
+    /*border-top: 2px solid #ededed;*/
     margin: 4px 0 0;
     overflow: hidden;
     padding: 13px 1px 2px;
