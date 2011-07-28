@@ -2,7 +2,7 @@
   <%= form_for @comment, :remote => true, :html => {"data-type" => "html", :class => "form comment-form form-comment form-post-message Post-Message" } do |form| %>
     <fieldset>
       <div class="text">
-        <%= form.text_field :body, :id => "explore-textarea", :title => "Post a Message", :class => "search-textarea" -%>
+        <%= form.text_field :body, :id => "explore-textarea", :placeholder => "Post a Message", :class => "search-textarea" -%>
       </div>
       <div id="post-message-info" class="info">
         <p><span style="font-size:18px">Leave a message to let your Community know about you and your interests!</span></p>
