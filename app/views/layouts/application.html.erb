@@ -39,21 +39,24 @@
         </div>
 
       </div>
-      <div id="footer">
-        <div class="footer-holder">
-          <div class="footer-frame">
-            <div class="footer-content">
-              <ul class="add-nav">
-                <li><%= link_to "About", '#' -%></li>
-                <li><%= link_to "Jobs", '#' -%></li>
-                <li><%= link_to "Terms & Conditions", '#' -%></li>
-                <li><%= link_to "Media", '#' -%></li>
-              </ul>
-              <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
+
+      <%- unless current_page?(root_path) -%>
+        <div id="footer">
+          <div class="footer-holder">
+            <div class="footer-frame">
+              <div class="footer-content">
+                <ul class="add-nav">
+                  <li><%= link_to "About", '#' -%></li>
+                  <li><%= link_to "Jobs", '#' -%></li>
+                  <li><%= link_to "Terms & Conditions", '#' -%></li>
+                  <li><%= link_to "Media", '#' -%></li>
+                </ul>
+                <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <%- end -%>
     </div>
 
     <%= yield :end_of_body  %>
