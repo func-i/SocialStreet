@@ -34,9 +34,11 @@ class ExploreController < ApplicationController
     @overlapping_subscriptions = Searchable.with_only_subscriptions
 
     @overlapping_subscriptions = apply_filter(@overlapping_subscriptions)
-    
+    @overlapping_subscriptions = @overlapping_subscriptions.where("search_subscriptions.user_id != #{current_user.id}");
+    @overlapping_subscriptions_count = @overlapping_subscriptions.count;
+
     # this executes a full search, which is bad, we want to paginate (eventually)
-    @overlapping_subscriptions = @overlapping_subscriptions.all.uniq_by {|s| s.search_subscription.user_id } 
+    @overlapping_subscriptions = @overlapping_subscriptions.limit(10).uniq_by {|s| s.search_subscription.user_id }
     
   end
 
@@ -151,7 +153,9 @@ class ExploreController < ApplicationController
     params[:map_zoom] = 9 unless params[:map_zoom]
     
     bounds = map_bounds.split(",").collect { |point| point.to_f }
-    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")    
+    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
+
+    #search_object = search_object.order("searchables.created_at DESC")
     
     return search_object
   end

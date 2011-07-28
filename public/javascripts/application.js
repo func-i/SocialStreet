@@ -111,15 +111,15 @@ function resizeModals(){
 
     $mainWindowHeight = $mainWindowHeight - 150; //76 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 150
     $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
-    $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight);
+    $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight - 200);
 
     var $sideWindowHeight = $mainWindowHeight - 39; //54+31=85 for sidebar padding, -19 for sidebar margin, -27 for modal padding == 39
     $('.day-detail').css('height', $sideWindowHeight);
-    $('.day-detail').css('min-height', $sideWindowHeight);
+    $('.day-detail').css('min-height', $sideWindowHeight - 200);
     
     var $sideListHeight = $sideWindowHeight - 83; //76 for header, 13+13=26 for header padding, -19 for sidebar margin == 83
     $('.pop-up .friends-list-holder').css('height', $sideListHeight);//This one is annoying, but seems needed
-    $('.pop-up .friends-list-holder').css('min-height', $sideListHeight);//This one is annoying, but seems needed
+    $('.pop-up .friends-list-holder').css('min-height', $sideListHeight - 200);//This one is annoying, but seems needed
 }
 
 function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
@@ -154,7 +154,7 @@ function removeModal(element) {
         $('#TB_overlay').trigger("unload").unbind().remove();
     });
 
-    //Hack to make save this search work
+    //Hack to make save this search modal work
     element.removeClass('follow-modal');
 
     element.find('.ajax-content').empty();
