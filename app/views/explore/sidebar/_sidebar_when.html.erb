@@ -3,7 +3,7 @@
     <h3>When?</h3>
     <div class="jump-date" style="display:inline; width: none;">
       <div class="col" style="height:0;float:right;">
-        <span style="font-size: 9px; display: inline;">Jump To:</span><%= text_field_tag 'from_date', params[:from_date] || Date.today, :class => "text_field", :style => "width: 80px; background: none; border: none;font-size:12px; text-align: center;" %>
+        <span style="font-size: 9px;">Jump To:</span><%= text_field_tag 'from_date', params[:from_date] || Date.today, :class => "text_field", :style => "width: 80px; background: none; border: none;font-size:12px; text-align: center;" %>
       </div>
     </div>
     <a id="when_btn" href="#" class="btn">close</a>
@@ -11,7 +11,7 @@
   <div id="sidebar_when_box_content" class="box-content">
     <div class="time-slot">
       <div class="col1">
-        <div class="ttl">Availablity:</div>
+        <div class="ttl">Availability:</div>
         <div class="row">Morning</div>
         <div class="row">Afternoon</div>
         <div class="row">Evening</div>
