@@ -617,7 +617,7 @@ form, fieldset {
 }
 .send,
 .open {
-    padding: 9px 10px 19px;
+    padding: 9px 10px 35px;
     background: #fffad2 url("../images/bg-post-message-send.png") no-repeat 0 100%;
 }
 .form-post-message .text {
