@@ -154,6 +154,9 @@ function removeModal(element) {
         $('#TB_overlay').trigger("unload").unbind().remove();
     });
 
+    //Hack to make save this search work
+    element.removeClass('follow-modal');
+
     element.find('.ajax-content').empty();
     element.find('.ajax-main-content').empty();
     element.find('.ajax-sidebar-content').empty();
