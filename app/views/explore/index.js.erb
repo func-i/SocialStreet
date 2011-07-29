@@ -16,8 +16,8 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 <% else %>
   $('#end-of-results-message').hide();
 <% end %>
-
-<% unless @similar_results.blank?() %>
+  
+<% unless @similar_results.blank? %>
   <% if !params[:view].eql?("map") || @searchable_total_count < @@more_results_limit %>
     $('#more-results-message').show();
   <% end %>
@@ -48,7 +48,7 @@ placeSidebarClusterMarkers();
 
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
-<%- unless params[:selected_searchable].blank? -%>
+<%- if !params[:selected_searchable].blank? && params[:view] == "view" -%>
   geocoder = new google.maps.Geocoder();
   geocoder.geocode({latLng: new google.maps.LatLng(<%= params[:map_center] -%>)}, function(results, status) {
   if (status == google.maps.GeocoderStatus.OK)

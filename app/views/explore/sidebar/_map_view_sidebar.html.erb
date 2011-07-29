@@ -47,6 +47,9 @@
             <div id="action-list" class="post-content">
               <%= render 'results', :searchable_results=> @searchables %>
             </div>
+            <div id="similar-results-list" class="post-content">
+              <%= render "results", :searchable_results => (@similar_results || [])%>
+            </div>
           </div>
           <a href="#" class="btn-open">open</a>
           <a href="#" class="btn-close">close</a>
@@ -62,7 +65,7 @@
 
     $('.btn-open').click(function(){      
       $('.short-box').addClass('open', 1, function(){
-      //  $('.short-box').hide().show('slide', {direction: 'right'}, 1000);
+        //  $('.short-box').hide().show('slide', {direction: 'right'}, 1000);
         $('.btn-open').hide();
         $('.btn-close').show();
       });

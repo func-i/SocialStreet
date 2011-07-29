@@ -29,7 +29,10 @@
       return false;
     });
 
-    $(document).bind("click", function() { $('.form-post-message').removeClass('send');});
+    $(document).bind("click", function() {
+      $('.form-post-message').removeClass('send');
+      $('#content').css("top", "");
+    });
 
     $('.remove-comment-keyword').live('click', function(){
       console.log("HERE"); //TODO - WHY ISN'T THIS CALLED?
@@ -39,7 +42,9 @@
     $('.search-textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
         if(e.shiftKey != true){
+          $('.form-post-message').removeClass('send');
           var f = $('form.form-comment');
+          $('#content').css("top", "");
           $(this).closest('.form-comment').submit();
           this.value = '';
           return false;

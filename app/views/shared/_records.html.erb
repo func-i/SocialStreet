@@ -12,7 +12,7 @@
 
   <% keywords = searchable.keywords %>
   <% title = 'A message was posted to ' %>
-  <% title += link_to( (keywords.empty? ? 'a search' : searchable.keywords.join(', ')) + (searchable.location.text.blank? ? '' : 'near' + searchable.location.text), explore_path(searchable.url_params)) %>
+  <% title += link_to( (keywords.empty? ? 'a search' : searchable.keywords.join(', ')) + (searchable.location.nil? || (searchable.location && searchable.location.text.blank?) ? '' : 'near' + searchable.location.text), explore_path(searchable.url_params)) %>
 
   <%= render "shared/general_record",
     :left_image => image_tag("img15.png", :size => "55x55"),
