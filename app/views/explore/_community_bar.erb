@@ -6,7 +6,9 @@
     <div class="community-holder">
       <ul>
         <%@overlapping_subscriptions.each do |overlapping_subscriber| %>
-          <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
+          <li>
+            <%= render 'shared/user_list_element', :user => overlapping_subscriber.search_subscription.user%>
+          </li>
         <%end%>
       </ul>
     </div>

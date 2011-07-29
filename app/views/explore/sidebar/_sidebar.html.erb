@@ -1,47 +1,47 @@
 <% content_for :sidebar do %>
-  <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
-    <div class="box map">
-      <%= render "explore/sidebar/sidebar_where" -%>
-      <div class="map-holder">
-        <div id="location-map" class="map-frame" style="width:297px;height:208px;"></div>
+  <div class="sidebar-holder">
+    <%= form_tag '#', :method => :get, :remote => true, :class => "form search-params", "data-save-action" => search_subscriptions_path do %>
+      <div class="box map">
+        <%= render "explore/sidebar/sidebar_where" -%>
+        <div class="map-holder">
+          <div id="location-map" class="map-frame" style="width:297px;height:208px;"></div>
+        </div>
       </div>
-    </div>
-    <div class="box box1">
-      <%= render "explore/sidebar/sidebar_what" -%>      
-    </div>
+      <div class="box box1">
+        <%= render "explore/sidebar/sidebar_what" -%>
+      </div>
 
-    <%= render "explore/sidebar/sidebar_when" -%>
-    <!--
-    <%= label_tag 'date_range_inclusive', 'Inclusive?', :class => "label" %>
-    <%= check_box_tag 'inclusive', params[:inclusive], params[:inclusive]%>
+      <%= render "explore/sidebar/sidebar_when" -%>
+      <!--
+      <%= label_tag 'date_range_inclusive', 'Inclusive?', :class => "label" %>
+      <%= check_box_tag 'inclusive', params[:inclusive], params[:inclusive]%>
 
-    <%= label_tag 'days', 'Days of the Week', :class => "label" %>
-       <div style="margin-bottom:10px">
-    <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
-    <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
-    <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
-    <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
-    <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
-    <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
-    <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
-       </div>
+      <%= label_tag 'days', 'Days of the Week', :class => "label" %>
+         <div style="margin-bottom:10px">
+      <%= check_box_tag 'days[]', '1', (params[:days] || []).include?('1') %> M
+      <%= check_box_tag 'days[]', '2', (params[:days] || []).include?('2') %> T
+      <%= check_box_tag 'days[]', '3', (params[:days] || []).include?('3') %> W
+      <%= check_box_tag 'days[]', '4', (params[:days] || []).include?('4') %> TH
+      <%= check_box_tag 'days[]', '5', (params[:days] || []).include?('5') %> F
+      <%= check_box_tag 'days[]', '6', (params[:days] || []).include?('6') %> S
+      <%= check_box_tag 'days[]', '0', (params[:days] || []).include?('0') %> SU
+         </div>
 
 
-       <div id="timerange" style="width:90%;margin: auto auto"></div>
-       <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
+         <div id="timerange" style="width:90%;margin: auto auto"></div>
+         <div id="timerange-label" style="width:100%;text-align:center;margin-top:5px;margin-bottom:10px">
 
-       </div> -->
-    <%= hidden_field_tag 'from_time', params[:from_time] %>
-    <%= hidden_field_tag 'to_time', params[:to_time] %>
+         </div> -->
+      <%= hidden_field_tag 'from_time', params[:from_time] %>
+      <%= hidden_field_tag 'to_time', params[:to_time] %>
     <%#= select_tag('my_tz', time_zone_options_for_select(params[:my_tz] || Time.zone.name)) %>
 
-    <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
-    <%= hidden_field_tag 'map_center', params[:map_center] %>
-    <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
-    <%= hidden_field_tag "selected_searchable", params[:selected_searchable] -%>
-  <%- end -%>
-
+      <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
+      <%= hidden_field_tag 'map_center', params[:map_center] %>
+      <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+      <%= hidden_field_tag "selected_searchable", params[:selected_searchable] -%>
+    <%- end -%>
+  </div>
 <% end %>
-
 
 <%= render "explore/sidebar/sidebar_functions" -%>

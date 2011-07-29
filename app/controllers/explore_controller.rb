@@ -49,7 +49,7 @@ class ExploreController < ApplicationController
     @overlapping_subscriptions_count = @overlapping_subscriptions.count;
 
     # this executes a full search, which is bad, we want to paginate (eventually)
-    @overlapping_subscriptions = @overlapping_subscriptions.limit(10).uniq_by {|s| s.search_subscription.user_id }
+    @overlapping_subscriptions = @overlapping_subscriptions.limit(8).uniq_by {|s| s.search_subscription.user_id }
     
   end
 
