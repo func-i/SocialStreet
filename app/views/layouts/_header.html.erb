@@ -1,7 +1,7 @@
 <div id="header">
   <div class="holder">
     <h1 class="logo"><%= link_to "Social Street", root_path -%></h1>
-    <%= form_tag "/explore", :method => :get, :class=>"form-explore" do %>
+    <%= form_tag "/explore", :method => :get, :class=>"form-explore", :id => "top_explore_form" do %>
       <fieldset>
         <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit"%>
         <span class="text">
@@ -12,7 +12,7 @@
     <%= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
     <ul class="nav-serv">
 
-      <li class="<%= 'active' if @on_how_it_works %>"><%= link_to 'How it works', how_path %></li>
+      <li><%= link_to 'How it works', how_path, :id=>"how_it_works" %></li>
 
       <% if user_signed_in? %>
         <li class="link-login">
@@ -23,8 +23,9 @@
             <li><%=link_to "Sign Out", destroy_user_session_path, :class => "logout"%></li>
           </ul>
         </li>
+
       <% else %>
-  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -38,15 +39,17 @@
           <strong class="ttl">How it works</strong>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed rhoncus orci. Quisque posuere elit sed erat vulputate sed mollis odio lobortis. Sed dui elit, cursus eu dignissim vestibulum, porttitor id lectus. Mauris suscipit nisi at urna eleifend luctus. </p>
         </div>
-        <a href="#" class="btn-close">close</a>
+        <a href="#" id="how_btn_close" class="btn-close">close</a>
       </div>
       <strong class="note">Do something</strong>
-      <form action="#" class="form-explore">
+      <%= form_tag "/explore", :method => :get, :class=>"form-explore" do %>
         <fieldset>
-          <input type="submit" value="Explore" title="Explore" class="submit" />
-          <span class="text"><input title="Basketball" value="Basketball" /></span>
+          <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit"%>
+          <span class="text">
+            <%= text_field_tag 'keywords[]', params[:q], :id=>"q-textfield", :placeholder => "Do something today..." %>
+          </span>
         </fieldset>
-      </form>
+      <% end %>
     </div>
   </div>
 </div>
@@ -125,8 +128,13 @@
         popup_modal_ajax('#empty_modal_base', 'Add a new Activity', '<%=new_event_path(:js)%>', null);
       });
     </script>
-
   <% end %>
+
+  <%- if @current_user && @current_user.sign_in_count < 6 && !current_page?(root_path) -%>
+    <script>
+      expandHowItWorks();
+    </script>
+  <%- end -%>
 
 <%- end -%>
 

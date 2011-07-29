@@ -5,7 +5,7 @@ class SiteController < ApplicationController
   end
 
   def how
-    @on_how_it_works = true
+    
   end
 
 end
