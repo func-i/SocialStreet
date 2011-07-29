@@ -115,7 +115,7 @@
         markerCluster.addMarkers(sideBarMarkers);
     }
 
-    function placeExploreMarker(location, searchableID, selected) {
+    function placeExploreMarker(location, searchableID, selected, geocodableAddress) {
 
       var icoImage = "/images/ico-pin.png";
       var moImage = "/images/ico-pin.png";
@@ -127,6 +127,7 @@
 
       if(selected == true) {
         icoImage = moImage = '/images/ico-pin-selected.png';
+        $('#result_for_searchable_' + searchableID).show();
       }
 
       var marker = new google.maps.Marker({
@@ -135,7 +136,11 @@
         icon: icoImage
       });
 
+      if(selected == true)
+        selectedMarker = marker;
+
       marker.searchableID = searchableID;
+      marker.geocodableAddress = geocodableAddress;
 
       google.maps.event.addListener(marker, 'click', function() {
         marker.setIcon("/images/ico-pin-selected.png");
@@ -157,20 +162,31 @@
     }
 
     function selectMarker(marker) {
-      if(selectedMarker != null)
+      if(selectedMarker != null && selectedMarker != marker) {
         selectedMarker.setIcon("/images/ico-pin.png");
+        $.each($('.result-list-item'), function(index, rLI) {
+          $(rLI).hide();
+        });
+      }
 
       selectedMarker = marker;
 
-      if (marker.getAnimation() == null) {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() {
-          if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-        }, 740);
-      }
+  <%#*if (marker.getAnimation() == null) {%>
+  <%#*marker.setAnimation(google.maps.Animation.BOUNCE);%>
+  <%#*setTimeout(function() {%>
+  <%#*if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);%>
+  <%#*}, 200);%>
+  <%#*}%>
     
       $('#selected_searchable').val(marker.searchableID);
-      moveExploreMap(marker, marker.position);
+      $('#result_for_searchable_' + marker.searchableID).show();
+
+      if(marker.geocodableAddress != null)
+        $('.address').html(marker.geocodableAddress);
+      else
+        $('.address').html('');
+
+      //moveExploreMap(marker, marker.position);
     
 
       //infoWindow.setContent(marker.title);
@@ -273,6 +289,26 @@
 
       sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
       markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
+      google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+        cMarkers = cluster.getMarkers();
+        $.each(cMarkers, function(index, mkr) {
+          if(index == 0) {
+            if(selectedMarker != null && selectedMarker != mkr) {
+              selectedMarker.setIcon("/images/ico-pin.png");
+              $('#result_for_searchable_' + selectedMarker.searchableID).hide();
+              if(mkr.geocodableAddress != null)
+                $('.address').html(mkr.geocodableAddress);
+              else
+                $('.address').html('');
+
+            }
+            selectedMarker = mkr;
+            $('#selected_searchable').val(mkr.searchableID);
+          }
+
+          $('#result_for_searchable_' + mkr.searchableID).show();
+        });
+      });
 
 
   <% if params[:view] == "list" && !params[:map_bounds].blank? %>
@@ -294,7 +330,7 @@
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
       <% if searchable.geo_located? %>
-            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>);
+            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address -%>');
       <% end %>
     <% end %>
   <% end %>

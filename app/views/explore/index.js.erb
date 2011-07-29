@@ -1,5 +1,5 @@
-$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables} )) %>');
 
+$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables, :hidden => params[:view].eql?("map")} )) %>');
 $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 
 <% if @searchable_total_count == 0 %>
@@ -16,12 +16,12 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 <% else %>
   $('#end-of-results-message').hide();
 <% end %>
-  
+
 <% unless @similar_results.blank? %>
   <% if !params[:view].eql?("map") || @searchable_total_count < @@more_results_limit %>
     $('#more-results-message').show();
   <% end %>
-  $('#similar-results-list').html('<%= escape_javascript(render("results", :searchable_results => @similar_results)) %>');
+  $('#similar-results-list').html('<%= escape_javascript(render("results", :searchable_results => @similar_results, :hidden => params[:view].eql?("map"))) %>');
 <% else %>
   $('#more-results-message').hide();
   $('#similar-results-list').html('');
@@ -32,14 +32,14 @@ clearSidebarClusterMarkers();
 
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
-    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, <%=  searchable.id == params[:selected_searchable].to_i -%>);
+    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, <%=  searchable.id == params[:selected_searchable].to_i -%>, '<%= searchable.location_address -%>');
   <% end %>
 <% end %>
 
 <% unless @similar_results.blank?() %>
   <% @similar_results.each do |searchable| %>
     <% if searchable.geo_located? %>
-      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,  <%= searchable.id == params[:selected_searchable].to_i -%>);
+      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,  <%= searchable.id == params[:selected_searchable].to_i -%>, '<%= searchable.location_address -%>');
     <% end %>
   <% end %>
 <% end %>
@@ -47,13 +47,3 @@ clearSidebarClusterMarkers();
 placeSidebarClusterMarkers();
 
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
-
-<%- if !params[:selected_searchable].blank? && params[:view] == "map" -%>
-  geocoder = new google.maps.Geocoder();
-  geocoder.geocode({latLng: new google.maps.LatLng(<%= params[:map_center] -%>)}, function(results, status) {
-  if (status == google.maps.GeocoderStatus.OK)
-  $('.address').html(results[0]["formatted_address"]);
-  else
-  $('.address').html('');
-  });
-<%- end -%>

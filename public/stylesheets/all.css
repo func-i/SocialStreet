@@ -3020,3 +3020,7 @@ form, fieldset {
 .scrolling{
     width:100%;
 }
+
+.hidden {
+    display: none;
+}

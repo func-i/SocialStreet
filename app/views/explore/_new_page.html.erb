@@ -12,18 +12,23 @@
     $('#similar-results-list').append('<%= escape_javascript(render('results', :searchable_results => @similar_results)) %>');
 <% end %>
 
+  clearSidebarMarkers();
+  clearSidebarClusterMarkers();
+
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
-      placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
   <% end %>
 <% end %>
 
 <% unless @similar_results.blank?() %>
   <% @similar_results.each do |searchable| %>
     <% if searchable.geo_located? %>
-        placeMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
     <% end %>
   <% end %>
 <% end %>
+
+  placeSidebarClusterMarkers();  
 
 </script>
