@@ -15,7 +15,10 @@
         str += "&" + $('[name="keywords\\[\\]"]').serialize();
 
       if($('[name="date_search\\[\\]"]').length > 0)
-        str += "&" + $('[name="date_search\\[\\]"]').serialize();  
+        str += "&" + $('[name="date_search\\[\\]"]').serialize();
+
+      if($('#view').val() != "")
+        str += "&view=" + $('#view').val();
 
       return str;
     }
