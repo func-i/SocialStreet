@@ -162,7 +162,7 @@
             $.each(result.types, function(index_2, type){
               if(type == resultType)
                 $('#map_location').val(result.formatted_address);
-                  updateCommentBox();
+              updateCommentBox();
             });
         });
       });
@@ -218,25 +218,44 @@
       });
 
       /* geolocation and map stuff */
+      function onGeoLocationSuccess(){
+        console.log("HERE SUNNY");
+      }
+
+      function onGeoLocationFail(){
+        console.log("THERE SUN");
+      }
+
+  <% if params[:map_center] %>
       var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
+  <% else %>
+      if(navigator.geolocation){
+        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail);
+        console.log("JOSHY");
+        console.log(pos);
+      }
+      else{
+        
+      }
+  <% end %>
 
-      var myOptions = {
-        zoom: <%= params[:map_zoom] %>,
-        center: loc,
-        mapTypeControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        streetViewControl: false
-      };
+    var myOptions = {
+      zoom: <%= params[:map_zoom] || 9 %>,
+      center: loc,
+      mapTypeControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      streetViewControl: false
+    };
 
-      var mcSidebarOptions = {
-        gridSize: 50,
-        maxZoom: 12,
-        zoomOnClick: false
-      };
+    var mcSidebarOptions = {
+      gridSize: 50,
+      maxZoom: 12,
+      zoomOnClick: false
+    };
 
 
-      sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
-      markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
+    sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
+    markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
 
 
   <% if params[:map_fit_bounds] == "1" && !params[:map_bounds].blank? %>
