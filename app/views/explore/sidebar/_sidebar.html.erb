@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="box box1">
-      <%= render "explore/sidebar/sidebar_what" -%>      
+      <%= render "explore/sidebar/sidebar_what" -%>
     </div>
 
     <%= render "explore/sidebar/sidebar_when" -%>
@@ -39,6 +39,7 @@
     <%= hidden_field_tag 'map_center', params[:map_center] %>
     <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
     <%= hidden_field_tag "selected_searchable", params[:selected_searchable] -%>
+    <%= hidden_field_tag "view", params[:view] -%>
   <%- end -%>
 
 <% end %>
