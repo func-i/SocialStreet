@@ -10,12 +10,10 @@
       <% unless Rails.env.production? || Rails.env.staging?  %>
         <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
       <% end %>
-
     <% end %>
 
     <div class="post">
       <%= render "shared/records", :record_type => type, :record => record %>
     </div>
-
-  <% end %>
+  <% end %> 
 <% end %>

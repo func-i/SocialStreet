@@ -12,7 +12,7 @@ class ExploreController < ApplicationController
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
-    if false || params[:map_bounds]
+    if true || params[:map_bounds]
       # Use the query params to find events
       find_searchables
 
@@ -66,7 +66,7 @@ class ExploreController < ApplicationController
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     @searchable_total_count = @searchables.count
     @searchables = @searchables.limit(@per_page).offset(@offset)
-
+    
     # => Expand Search here to find similar results
     if @searchable_total_count < @comment_suggest_limit
       3.times do |i|
@@ -74,20 +74,19 @@ class ExploreController < ApplicationController
         when 0
           # => Relax date range
           @similar_results = Searchable.explorable
-          @similar_results = apply_filter(@similar_results, :from_date => nil, :to_date => nil)
+          @similar_results = apply_filter(@similar_results, :from_date => nil)
         when 1
           # => Relax map radius to 100km/62miles from center
           @similar_results = Searchable.explorable
           
           expanded_bounds = Geocoder::Calculations.bounding_box(params[:map_center].split(",").map{|i| i.to_f}, 100, :units=>:km)          
-          @similar_results = apply_filter(@similar_results, :from_date => nil, :to_date => nil, :map_bounds => [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(","))
+          @similar_results = apply_filter(@similar_results, :from_date => nil, :map_bounds => [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(","))
         when 2
           # => Relax keywords
           @similar_results = Searchable.explorable
           expanded_bounds = Geocoder::Calculations.bounding_box(params[:map_center].split(",").map{|i| i.to_f}, 100, :units=>:km)
           @similar_results = apply_filter(@similar_results,
             :from_date => nil,
-            :to_date => nil,
             :map_bounds => [expanded_bounds[2], expanded_bounds[3], expanded_bounds[0], expanded_bounds[1]].join(","),
             :keywords => nil)
         end
@@ -109,13 +108,14 @@ class ExploreController < ApplicationController
     # => Add these variables so that the params can be bypassed to expand the search
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
     from_date = args.key?(:from_date) ? args[:from_date] : params[:from_date]
+    prm_date_search = from_date.nil? ? nil : params[:date_search]
     to_date = args.key?(:to_date) ? args[:to_date] : params[:to_date]
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
 
     search_object = search_object.where(:ignored => false)
     search_object = search_object.with_keywords(keywords) unless keywords.blank?
 
-    unless(date_search = params[:date_search]).blank?
+    unless(date_search = prm_date_search).blank?
 
       query = []
       args = {}

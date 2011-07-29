@@ -1,5 +1,5 @@
 <div class="post-message" id="explore-post-message-form">
-  <%= form_for @comment, :remote => true, :html => {"data-type" => "html", :class => "form comment-form form-comment form-post-message Post-Message", :style => "min-height: 55px;"} do |form| %>
+  <%= form_for @comment, :remote => true, :html => {"data-type" => "html", :class => "form comment-form form-comment form-post-message Post-Message", :style => "min-height: 55px; "} do |form| %>
     <fieldset>
       <div class="text">
         <%= form.text_field :body, :id => "explore-textarea", :placeholder => "Post a Message", :class => "search-textarea" -%>
@@ -30,12 +30,16 @@
       return false;
     });
 
+
     $('#change-location').click(function(){
       $('#map_location').val = '';//TODO - why doesn't this work?
       $('#map_location').focus();
     });
 
-    $(document).bind("click", function() { $('.form-post-message').removeClass('send');});
+    $(document).bind("click", function() {
+      $('.form-post-message').removeClass('send');
+      $('#content').css("top", "");
+    });
 
     $('.remove-comment-keyword').live('click', function(){
       console.log("HERE"); //TODO - WHY ISN'T THIS CALLED?
@@ -45,7 +49,9 @@
     $('.search-textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
         if(e.shiftKey != true){
+          $('.form-post-message').removeClass('send');
           var f = $('form.form-comment');
+          $('#content').css("top", "");
           $(this).closest('.form-comment').submit();
           this.value = '';
           return false;

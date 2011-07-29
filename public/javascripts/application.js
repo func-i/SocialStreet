@@ -15,6 +15,23 @@ $.fn.serializeObject = function()
         return o;
     };
 
+function expandHowItWorks() {
+    $('#how_it_works').closest('li').addClass('active');
+    $('#top_explore_form').hide('fast', function() {
+        $('#header').addClass('open');
+        $('.video-box').slideDown('fast');
+    });
+}
+
+function retractHowItWorks() {
+    $('.video-box').slideUp('fast', function() {
+        $('#header').removeClass('open');
+        $('#top_explore_form').show();
+        $('#how_it_works').closest('li').removeClass('active');
+    });
+}
+
+
 $(function() {
     $('.remove-parent').live('click', function(event) {
         var $this = $(this);
@@ -27,6 +44,16 @@ $(function() {
         return false;
     });
 
+    $('#how_it_works').click(function() {
+        expandHowItWorks()        
+        return false;
+    });
+
+    $('#how_btn_close').click(function() {
+        retractHowItWorks();
+        return false;
+    });
+    
     //Resize modal windows to match screen resolution
     $(window).resize(function(){
         resizeModals();
