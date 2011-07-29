@@ -33,6 +33,15 @@
             <tr>
               <%- 7.times do |day| -%>
                 <%= content_tag("td", :class => "calendar-times", "d-pos" => "#{day},#{tm}") do -%>
+                  <%- unless params[:date_search].blank? -%>
+                    <%- if params[:date_search].include?("#{day},#{tm}") -%>
+                    <script>
+                      $('td[d-pos="<%= "#{day},#{tm}" -%>"]').addClass('select')
+                      $('form.search-params').append('<input type="hidden" name="date_search[]" value="<%= "#{day},#{tm}" -%>" />');
+                    </script>
+                  <%- end -%>
+                <%- end -%>
+
                 <span></span>
               <%- end -%>
             <%- end -%>
@@ -53,5 +62,19 @@
         $('#when_btn').css("background-position", "0px 0px");
     });
     return false;
+  });
+
+  $('.calendar-times').click(function() {
+    if($(this).hasClass('select')){
+      // The day is selected, remove class and remove search conditions
+      $(this).removeClass('select');
+      $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();
+    }
+    else {
+      $(this).addClass('select');
+      $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
+    }
+
+    refreshResults("explore");
   });
 </script>

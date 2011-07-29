@@ -12,9 +12,12 @@
       // TODO make this work with the top explore
       
       if($('[name="keywords\\[\\]"]').length > 0)
-        return str + "&" + $('[name="keywords\\[\\]"]').serialize()
-      else
-        return str
+        str += "&" + $('[name="keywords\\[\\]"]').serialize();
+
+      if($('[name="date_search\\[\\]"]').length > 0)
+        str += "&" + $('[name="date_search\\[\\]"]').serialize();
+
+      return str;
     }
 
     function makePageless(numPages, currentPage) {
@@ -67,21 +70,7 @@
       popup_modal_ajax('#empty_modal_base', 'Follow this Search', '<%=new_search_subscription_path(:js)%>?' + s, null)
       //window.location = '<%= new_search_subscription_url %>?' + s;
       return false;
-    });
-
-    $('.calendar-times').click(function() {
-      if($(this).hasClass('select')){
-        // The day is selected, remove class and remove search conditions
-        $(this).removeClass('select');
-        $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();
-      }
-      else {
-        $(this).addClass('select');
-        $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
-      }
-
-      refreshResults("explore");
-    });
+    });    
 
     $( "#from_date" ).datepicker({
       dateFormat: 'M. dd, yy'
