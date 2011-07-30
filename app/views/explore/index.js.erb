@@ -46,10 +46,6 @@ clearSidebarClusterMarkers();
 <% end %>
 
 placeSidebarClusterMarkers();
-
-<<<<<<< HEAD
-makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
-=======
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
 <%- if !params[:selected_searchable].blank? && params[:view] == "map" -%>
@@ -61,4 +57,4 @@ makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
   $('.address').html('');
   });
 <%- end -%>
->>>>>>> 6a5ed6aa5e7fbbd978135245f7e2e1d57cf11644
+

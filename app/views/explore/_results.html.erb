@@ -12,16 +12,9 @@
       <% end %>
     <% end %>
 
-<<<<<<< HEAD
-  <% end %>
 
-  <div id="result_for_searchable_<%= searchable.id -%>" class="post <%= "result-list-item hidden" if defined?(hidden) -%>">
-    <%= render "shared/records", :record_type => type, :record => record %>
-  </div> 
-=======
-    <div class="post">
+    <div id="result_for_searchable_<%= searchable.id -%>" class="post <%= "result-list-item hidden" if defined?(hidden) -%>">
       <%= render "shared/records", :record_type => type, :record => record %>
     </div>
-  <% end %> 
->>>>>>> 6a5ed6aa5e7fbbd978135245f7e2e1d57cf11644
-<% end %>
+  <% end %>
+<% end %> 
