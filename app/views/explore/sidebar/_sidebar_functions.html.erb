@@ -43,25 +43,7 @@
       //}
     }).bind('ajax:complete', function() {
       $('#ajax-spinner').hide();
-    });
-
-    function refreshResults(caller) {
-      if (refreshTimer) {
-        clearInterval(refreshTimer);
-        delete refreshTimer;
-      }
-      refreshTimer = setTimeout(function() {
-
-        if(caller == "events")
-          $.getScript('/events/load_events' + getSearchParams());
-        else if(caller == "explore"){
-
-          updateCommentBox();
-
-          $('form.search-params').submit();
-        }
-      }, 250);
-    }
+    });    
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
@@ -322,7 +304,7 @@
         }
   <% end %>
 
-      var myOptions = {
+      var sidebarMapOptions = {
         zoom: <%= params[:map_zoom] || 9 %>,
         center: loc,
         mapTypeControl: false,
@@ -336,8 +318,7 @@
         zoomOnClick: false
       };
 
-
-      sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
+      sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
       markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
       
       google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
@@ -356,8 +337,7 @@
                 $('.address').html(mkr.geocodableAddress);
               else
                 $('.address').html('');
-
-              $('#result_for_searchable_' + mkr.searchableID).show();
+             
   <%- else -%>
 
               $.each($('.result-list-item'), function(index, rLI) {
@@ -369,9 +349,11 @@
             $('#selected_searchable').val(mkr.searchableID);
           }
 
-  <%- unless params[:view].eql?("map") -%>
-            $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
-  <%- end -%>
+            <%- unless params[:view].eql?("map") -%>
+              $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
+            <% else %>
+               $('#result_for_searchable_' + mkr.searchableID).show();
+            <%- end -%>
           
         });
       });

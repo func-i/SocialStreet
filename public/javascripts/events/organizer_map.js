@@ -60,7 +60,8 @@ function placeMarker(location, title, contents) {
         position: location,
         title: title,
         draggable:true,
-        animation: google.maps.Animation.DROP
+        animation: google.maps.Animation.DROP,
+        icon: 'images/ico-pin-selected.png'
     });
     
     google.maps.event.addListener(marker, 'click', function() {
@@ -127,7 +128,7 @@ function DropPinControl(controlDiv, map) {
     controlText.style.fontSize = '12px';
     controlText.style.paddingLeft = '4px';
     controlText.style.paddingRight = '4px';
-    controlText.innerHTML = 'Drop Pin';
+    controlText.innerHTML = 'Drag Pin';
     controlUI.appendChild(controlText);
 
     // Setup the click event listeners: simply set the map to Chicago

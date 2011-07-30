@@ -15,6 +15,24 @@ $.fn.serializeObject = function()
         return o;
     };
 
+function refreshResults(caller) {
+    if (refreshTimer) {
+        clearInterval(refreshTimer);
+        delete refreshTimer;
+    }
+    refreshTimer = setTimeout(function() {
+
+        if(caller == "events")
+            $.getScript('/events/load_events' + getSearchParams());
+        else if(caller == "explore"){
+
+            updateCommentBox();
+
+            $('form.search-params').submit();
+        }
+    }, 250);
+}
+
 function expandHowItWorks() {
     var classToAdd = '';
     if($('.w2').hasClass('page-explore'))
