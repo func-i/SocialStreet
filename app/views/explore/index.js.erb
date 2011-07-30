@@ -11,7 +11,8 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 <% end %>
 
 
-<% if @offset + @per_page >= @searchable_total_count %>
+  <% if @offset + @per_page >= @searchable_total_count && (!params[:view].eql?("map") || @searchable_total_count < @@more_results_limit) %>
+  console.log("JOSHY 1");
   $('#end-of-results-message').show();
 <% else %>
   $('#end-of-results-message').hide();
@@ -46,4 +47,18 @@ clearSidebarClusterMarkers();
 
 placeSidebarClusterMarkers();
 
+<<<<<<< HEAD
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+=======
+makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+
+<%- if !params[:selected_searchable].blank? && params[:view] == "map" -%>
+  geocoder = new google.maps.Geocoder();
+  geocoder.geocode({latLng: new google.maps.LatLng(<%= params[:map_center] -%>)}, function(results, status) {
+  if (status == google.maps.GeocoderStatus.OK)
+  $('.address').html(results[0]["formatted_address"]);
+  else
+  $('.address').html('');
+  });
+<%- end -%>
+>>>>>>> 6a5ed6aa5e7fbbd978135245f7e2e1d57cf11644

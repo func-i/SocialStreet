@@ -1,18 +1,27 @@
-<% searchable_results.each do |searchable|%>
-  <% if searchable.event %>
-    <% type = RecordType.types[:event] %>
-    <% record = searchable.event %>
-  <% elsif searchable.comment %>
-    <% type = RecordType.types[:search_comment] %>
-    <% record = searchable.comment.action %>
-  <% else %>
-    <% unless Rails.env.production? || Rails.env.staging?  %>
-      <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
+<% if searchable_results %>
+  <% searchable_results.each do |searchable|%>
+    <% if searchable.event %>
+      <% type = RecordType.types[:event] %>
+      <% record = searchable.event %>
+    <% elsif searchable.comment %>
+      <% type = RecordType.types[:search_comment] %>
+      <% record = searchable.comment.action %>
+    <% else %>
+      <% unless Rails.env.production? || Rails.env.staging?  %>
+        <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
+      <% end %>
     <% end %>
 
+<<<<<<< HEAD
   <% end %>
 
   <div id="result_for_searchable_<%= searchable.id -%>" class="post <%= "result-list-item hidden" if defined?(hidden) -%>">
     <%= render "shared/records", :record_type => type, :record => record %>
   </div> 
+=======
+    <div class="post">
+      <%= render "shared/records", :record_type => type, :record => record %>
+    </div>
+  <% end %> 
+>>>>>>> 6a5ed6aa5e7fbbd978135245f7e2e1d57cf11644
 <% end %>

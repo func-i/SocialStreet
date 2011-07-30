@@ -235,6 +235,22 @@
       }, 15);
     }
 
+    function setMapLocation(resultType){
+      var latlng = sideMap.getCenter();
+      geocoder.geocode( {
+        'latLng': latlng
+      }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK)
+          $.each(results, function(index, result){
+            $.each(result.types, function(index_2, type){
+              if(type == resultType)
+                $('#map_location').val(result.formatted_address);
+              updateCommentBox();
+            });
+        });
+      });
+    }
+
     $(function() {
       if(history && history.pushState) {
         //if(!$.browser.webit==true){
@@ -270,23 +286,43 @@
       });
 
       /* geolocation and map stuff */
+      function onGeoLocationSuccess(){
+        console.log("HERE SUNNY");
+      }
+
+      function onGeoLocationFail(){
+        console.log("THERE SUN");
+      }
+
+  <% if params[:map_center] %>
       var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
+  <% else %>
+      if(navigator.geolocation){
+        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail);
+        console.log("JOSHY");
+        console.log(pos);
+      }
+      else{
+        
+      }
+  <% end %>
 
-      var myOptions = {
-        zoom: <%= params[:map_zoom] %>,
-        center: loc,
-        mapTypeControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        streetViewControl: false
-      };
+    var myOptions = {
+      zoom: <%= params[:map_zoom] || 9 %>,
+      center: loc,
+      mapTypeControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      streetViewControl: false
+    };
 
-      var mcSidebarOptions = {
-        gridSize: 50,
-        maxZoom: 12,
-        zoomOnClick: false
-      };
+    var mcSidebarOptions = {
+      gridSize: 50,
+      maxZoom: 12,
+      zoomOnClick: false
+    };
 
 
+<<<<<<< HEAD
       sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
       markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
       google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
@@ -309,6 +345,10 @@
           $('#result_for_searchable_' + mkr.searchableID).show();
         });
       });
+=======
+    sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
+    markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
+>>>>>>> 6a5ed6aa5e7fbbd978135245f7e2e1d57cf11644
 
 
   <% if params[:view] == "list" && !params[:map_bounds].blank? %>
@@ -318,15 +358,38 @@
         new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
         new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
+    infoWindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
+
+    function changeExploreLocationParams(event) {
+     
+      setTimeout(function() {
+        var zoom = sideMap.getZoom();
+        $('#map_zoom').val(zoom);
+
+        bounds = sideMap.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
+
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
+
+        setMapLocation("street_address");
+
+        if(history && history.replaceState)
+          history.replaceState(null, null, getSearchParams());
+
+        refreshResults("explore");
+      }, 15);
+    }
+
+    setMapLocation("street_address");
     
-      infoWindow = new google.maps.InfoWindow();
-      geocoder = new google.maps.Geocoder();
-
-      google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
-      google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
-      google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
-      //$(window).resize(changeLocationParams);
-
+    google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
+    google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
+    google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
+    //$(window).resize(changeLocationParams);
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
       <% if searchable.geo_located? %>

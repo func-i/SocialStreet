@@ -6,7 +6,8 @@
       </div>
       <div id="post-message-info" class="info">
         <p><span style="font-size:18px">Leave a message to let your Community know about you and your interests!</span></p>
-        <p>Your message will be posted to the center of the map (<span id="post-message-address">#</span>)</p>
+        <p>Your message will be posted to the center of the map</p>
+        <p>approximately @ <span id="post-message-address" style="color:#000">#</span> <a href="#" id="change-location" style="font-size:10px">...change</a></p>
         <p>
           <% keywords = (params[:keywords] || []).reject{|k| k.blank?} %>
           <span id="post-message-keywords" style="color:#999;<%="display:none" if keywords.blank?%>">
@@ -27,6 +28,12 @@
     $('#explore-post-message-form').click(function(){
       $('.form-post-message').addClass("send");
       return false;
+    });
+
+
+    $('#change-location').click(function(){
+      $('#map_location').val = '';//TODO - why doesn't this work?
+      $('#map_location').focus();
     });
 
     $(document).bind("click", function() {

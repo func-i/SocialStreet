@@ -12,15 +12,26 @@ class ExploreController < ApplicationController
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?
 
-    # Use the query params to find events
-    find_searchables
+    if true || params[:map_bounds]
+      # Use the query params to find events
+      find_searchables
 
-    #raise params.inspect
+      #raise params.inspect
 
-    if request.xhr? && params[:page] # pagination request
-      render :partial => 'new_page'    
+      if request.xhr? && params[:page] # pagination request
+        render :partial => 'new_page'
+      else
+        find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
+      end
     else
-      find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
+      @overlapping_subscriptions = []
+      @overlapping_subscriptions_count = 0
+      @searchables = []
+      @similar_results = []
+      @searchable_total_count = 0
+      @offset = 0
+      @per_page = 0
+      @num_pages = 0
     end
   end
 
@@ -38,7 +49,7 @@ class ExploreController < ApplicationController
     @overlapping_subscriptions_count = @overlapping_subscriptions.count;
 
     # this executes a full search, which is bad, we want to paginate (eventually)
-    @overlapping_subscriptions = @overlapping_subscriptions.limit(10).uniq_by {|s| s.search_subscription.user_id }
+    @overlapping_subscriptions = @overlapping_subscriptions.limit(8).uniq_by {|s| s.search_subscription.user_id }
     
   end
 

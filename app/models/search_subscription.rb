@@ -12,7 +12,7 @@ class SearchSubscription < ActiveRecord::Base
 
   validates :name, :presence => true
 
-  default_value_for :frequency, @@frequencies[:daily]
+  default_value_for :frequency, @@frequencies[:immediate]
 
   scope :with_event_types_or_null, lambda{ |event_type_ids|
     joins("LEFT OUTER JOIN searchable_event_types
@@ -72,7 +72,7 @@ class SearchSubscription < ActiveRecord::Base
 
   def self.new_from_params(params)
     searchable = Searchable.new_from_params(params)
-    SearchSubscription.new(:searchable => searchable)
+    SearchSubscription.new(:searchable => searchable, :name => searchable.title_for_searchable)
   end
 
   def url_params
