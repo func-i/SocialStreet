@@ -48,13 +48,3 @@ clearSidebarClusterMarkers();
 placeSidebarClusterMarkers();
 makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
-<%- if !params[:selected_searchable].blank? && params[:view] == "map" -%>
-  geocoder = new google.maps.Geocoder();
-  geocoder.geocode({latLng: new google.maps.LatLng(<%= params[:map_center] -%>)}, function(results, status) {
-  if (status == google.maps.GeocoderStatus.OK)
-  $('.address').html(results[0]["formatted_address"]);
-  else
-  $('.address').html('');
-  });
-<%- end -%>
-

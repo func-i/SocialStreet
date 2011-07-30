@@ -20,14 +20,14 @@
 
 <% @searchables.each do |searchable| %>
   <% if searchable.geo_located? %>
-      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>);
   <% end %>
 <% end %>
 
 <% unless @similar_results.blank?() %>
   <% @similar_results.each do |searchable| %>
     <% if searchable.geo_located? %>
-        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>);
     <% end %>
   <% end %>
 <% end %>

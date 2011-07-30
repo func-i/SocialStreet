@@ -127,7 +127,11 @@
 
       if(selected == true) {
         icoImage = moImage = '/images/ico-pin-selected.png';
-        $('#result_for_searchable_' + searchableID).show();
+        <%- if params[:view].eql?("map") %>
+          $('#result_for_searchable_' + searchableID).show();
+        <% else %>
+          $('#result_for_searchable_' + searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
+        <%- end -%>
       }
 
       var marker = new google.maps.Marker({
@@ -162,12 +166,8 @@
     }
 
     function selectMarker(marker) {
-      if(selectedMarker != null && selectedMarker != marker) {
-        selectedMarker.setIcon("/images/ico-pin.png");
-        $.each($('.result-list-item'), function(index, rLI) {
-          $(rLI).hide();
-        });
-      }
+      if(selectedMarker != null && selectedMarker != marker) 
+        selectedMarker.setIcon("/images/ico-pin.png");     
 
       selectedMarker = marker;
 
@@ -179,13 +179,28 @@
   <%#*}%>
     
       $('#selected_searchable').val(marker.searchableID);
-      $('#result_for_searchable_' + marker.searchableID).show();
+
+      <%- if params[:view].eql?("map") -%>
+        $.each($('.result-list-item'), function(index, rLI) {
+          $(rLI).hide();
+        });
+
+        $('#result_for_searchable_' + marker.searchableID).show();
 
       if(marker.geocodableAddress != null)
         $('.address').html(marker.geocodableAddress);
       else
         $('.address').html('');
 
+      <% else %>
+        $.each($('.result-list-item'), function(index, rLI) {
+          $(rLI).css('background-color', '#FFFFFF');
+        });
+
+      $('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
+        
+      <% end %>
+      
       //moveExploreMap(marker, marker.position);
     
 
@@ -323,25 +338,41 @@
 
 
       sideMap = new google.maps.Map(document.getElementById("location-map"), myOptions);
-      markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions)
+      markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
+      
       google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
         cMarkers = cluster.getMarkers();
         $.each(cMarkers, function(index, mkr) {
           if(index == 0) {
-            if(selectedMarker != null && selectedMarker != mkr) {
+            if(selectedMarker != null && selectedMarker != mkr)
               selectedMarker.setIcon("/images/ico-pin.png");
-              $('#result_for_searchable_' + selectedMarker.searchableID).hide();
+
+  <%- if params[:view].eql?("map") -%>
+              $.each($('.result-list-item'), function(index, rLI) {
+                $(rLI).hide();
+              });
+
               if(mkr.geocodableAddress != null)
                 $('.address').html(mkr.geocodableAddress);
               else
                 $('.address').html('');
 
-            }
+              $('#result_for_searchable_' + mkr.searchableID).show();
+  <%- else -%>
+
+              $.each($('.result-list-item'), function(index, rLI) {
+                $(rLI).css("background-color", '#FFFFFF');
+              });
+  <%- end -%>
+
             selectedMarker = mkr;
             $('#selected_searchable').val(mkr.searchableID);
           }
 
-          $('#result_for_searchable_' + mkr.searchableID).show();
+  <%- unless params[:view].eql?("map") -%>
+            $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
+  <%- end -%>
+          
         });
       });
 
@@ -350,9 +381,9 @@
   <% if params[:view] == "list" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-        sideMap.fitBounds(new google.maps.LatLngBounds(
-        new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-        new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+        //sideMap.fitBounds(new google.maps.LatLngBounds(
+        //new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+        //new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
       infoWindow = new google.maps.InfoWindow();
       geocoder = new google.maps.Geocoder();
