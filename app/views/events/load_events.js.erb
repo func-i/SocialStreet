@@ -1,5 +1,4 @@
 clearMarkers();
-
 <%#-
 # => Find locations that are within 1 km each other
 # => That have any matching keywords
@@ -20,7 +19,7 @@ clearClusterMarkers();
 
 <%- @searchables.each do |searchable| -%>
   <% if searchable.geo_located? %>    
-    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '#');
+    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>));
   <%- end -%>
 <%- end -%>
 

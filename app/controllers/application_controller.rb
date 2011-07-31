@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
 
         if create_search_subscription(session[:stored_redirect][:params])
           return_path = :back
-              puts "HI THERE"
+          puts "HI THERE"
         else
           #TODO - what should this be?
           return_path = session[:stored_current_path]
@@ -165,8 +165,8 @@ class ApplicationController < ActionController::Base
       @event_for_create = @event
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
     end
-    
-    @event.attributes = params[:event]
+ 
+    @event.attributes = params[:event]       
     @event.location.user = current_user if @event.location
     
     if @event.save      

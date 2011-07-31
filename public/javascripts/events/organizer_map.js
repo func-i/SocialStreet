@@ -28,7 +28,11 @@ $(function() {
         maxZoom: 12,
         zoomOnClick: false
     };
-    //mc = new MarkerClusterer(map, markers, mcOptions)
+    mc = new MarkerClusterer(map, markers, mcOptions)
+    google.maps.event.addListener(mc, 'clusterclick', function(cluster) {
+        mkr = cluster.getMarkers()[0];
+        selectMarker(mkr);
+    });
 
     // Create the DIV to hold the control and call the DropPinControl() constructor
     // passing in this DIV.
@@ -199,14 +203,19 @@ function updateMarkerTitle() {
 }
 
 function selectMarker(marker, changeInputField) {
-    selectedMarker = marker;
 
-    if (marker.getAnimation() == null) {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() {
-            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-        }, 740);
-    }
+    if(selectedMarker != null && selectedMarker != marker)
+        selectedMarker.setIcon("/images/ico-pin.png");
+
+    selectedMarker = marker;
+    marker.setIcon("/images/ico-pin-selected.png");
+
+    //    if (marker.getAnimation() == null) {
+    //        marker.setAnimation(google.maps.Animation.BOUNCE);
+    //        setTimeout(function() {
+    //            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+    //        }, 740);
+    //    }
 
     var latlng = marker.getPosition();
     $('#location-lat-field').val(latlng.lat());

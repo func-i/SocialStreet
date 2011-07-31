@@ -75,7 +75,6 @@ $(function() {
     //updateCommentBox();
 
     function keywordHandler(keyword, keywordContentSelector) {
-        console.log(keyword)
         if(addKeyword(keyword, keywordContentSelector))
             if (typeof refreshResults == "function") {
                 if(history && history.pushState)
@@ -113,7 +112,6 @@ $(function() {
 
     $('.q-textfield').keydown(function(e) {
         if (e.keyCode == 13) {
-            console.log('enter pressed');
             keywordHandler(this.value, $(this).attr('keyword-content-selector'));
             this.value = '';
             $(this).autocomplete('close');
