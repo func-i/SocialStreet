@@ -2,7 +2,7 @@
 <% are_invited ||= false  %>
 
 
-<li class="user-invitation <%= 'selected cannot-remove' if invited?(user) %>" data-user-id="<%= user.id %>">
+<li class="user-invitation <%= 'selected cannot-remove' if invited?(user) %>" data-user-id="<%= user.id %>" style="height: 30px; overflow: hidden;">
   <%= avatar(user, :exclude_link => true) %>
   <div class="text-holder">
     <strong class="ttl"><%= user.name %></strong>
