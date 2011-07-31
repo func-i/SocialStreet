@@ -28,7 +28,7 @@ $(function() {
         maxZoom: 12,
         zoomOnClick: false
     };
-    mc = new MarkerClusterer(map, markers, mcOptions)
+    //mc = new MarkerClusterer(map, markers, mcOptions)
 
     // Create the DIV to hold the control and call the DropPinControl() constructor
     // passing in this DIV.
@@ -52,9 +52,6 @@ function disableDropPinState() {
 }
 
 function placeMarker(location, title, contents) {
-
-    console.log(contents);
-
     var marker = new google.maps.Marker({
         map: map,
         position: location,
