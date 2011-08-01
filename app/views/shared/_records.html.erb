@@ -71,7 +71,7 @@
     :title => link_to(record.user.name, profile_path(record.user)) + ' wrote:',
     :head_action => record %>
 
-<% elsif record_type == RecordType.types[:event_comment_posted] || (record_type == Action.types[:event_comment] && nil == record.action) %>
+<% elsif record_type == RecordType.types[:event_comment_posted] || (record_type == Action.types[:event_comment] && record.action.nil?) %>
 
   <% head_action = record.action || record %>
   <% event = head_action.event %>
@@ -83,7 +83,7 @@
     :is_event_embedded => true,
     :head_action => head_action %>
 
-<% elsif record_type == RecordType.types[:event_comment_replied] || (record_type == Action.types[:event_comment] && nil != record.action) %>
+<% elsif record_type == RecordType.types[:event_comment_replied] || (record_type == Action.types[:event_comment] && !record.action.nil?) %>
 
   <% head_action = record.action || record %>
   <% event = head_action.event %>
@@ -96,7 +96,7 @@
     :head_action => head_action,
     :index_action => record %>
 
-<% elsif record_type == RecordType.types[:profile_comment_posted] || (record_type == Action.types[:profile_comment] && nil == record.action) %>
+<% elsif record_type == RecordType.types[:profile_comment_posted] || (record_type == Action.types[:profile_comment] && record.action.nil?) %>
 
   <% head_action = record.action || record %>
 
@@ -128,8 +128,21 @@
     :index_action => record %>
 
 
-<% elsif record_type == RecordType.types[:search_comment_posted] || (record_type == Action.types[:search_comment] && nil == record.action) %>
-  <%=record.inspect%>
-<% elsif record_type == RecordType.types[:search_comment_replied] || (record_type == Action.types[:search_comment] && nil != record.action)%>
-  <%=record.inspect%>
+<% elsif record_type == RecordType.types[:search_comment_posted] || (record_type == Action.types[:search_comment] && record.action.nil?) %>
+  <% head_action = record.action || record %>   
+  <% title = link_to(record.user.name, profile_path(record.user)) + " posted a message to a " + link_to("Search Filter",  explore_path(record.searchable.url_params)) %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => title,
+    :head_action => head_action %>
+<% elsif record_type == RecordType.types[:search_comment_replied] || (record_type == Action.types[:search_comment] && !record.action.nil?)%>
+   <% head_action = record.action || record %>
+  <% title = link_to(record.user.name, profile_path(record.user)) + " replied to a message on a " + link_to("Search Filter",  explore_path(record.searchable.url_params)) %>
+
+  <%= render "shared/general_record",
+    :left_image => avatar(record.user, :size => "55x55"),
+    :title => title,
+    :head_action => head_action %>
+
 <% end %>
