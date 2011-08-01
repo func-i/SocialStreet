@@ -75,7 +75,8 @@ class EventsController < ApplicationController
   def update
 
     @event.searchable.searchable_event_types.destroy_all
-
+    @event_for_edit = @event
+    
     if create_or_edit_event(params, :edit)
       render :update do |page|
         page.redirect_to event_path(@event)

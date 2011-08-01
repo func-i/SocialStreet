@@ -131,7 +131,8 @@
           <tr>
             <th>
               <strong><%=  event.name %></strong>
-              <%= link_to "edit", [:edit, event]%>
+              <%= link_to_popup_modal_ajax  'Edit', 'Edit event', 'empty_modal_base', edit_event_path(event), nil, nil%>
+              <%#= link_to_ "edit", [:edit, event]%>
             </th>
             <td>
               <span>Start Day:</span>

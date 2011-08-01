@@ -11,7 +11,7 @@
 <%#*</div>%>
 
 <div class="profile">
-  <%= avatar @user, :size => "99x94" %>
+  <%= avatar @user, :size => "99x94", :exclude_link => true %>
   <div class="text">
 
     <%- if @user.fb_uid? -%>

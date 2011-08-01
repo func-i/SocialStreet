@@ -192,7 +192,8 @@ form, fieldset {
     padding: 35px 0 10px 8px;
     position: absolute;
     top: -7px;
-    width: 91px;
+    /*width: 91px;*/
+    width: 100%;
     z-index: 2;
     background: #d2e9f3;
     -webkit-border-radius: 4px;
@@ -3023,4 +3024,40 @@ form, fieldset {
 
 .hidden {
     display: none;
+}
+
+.fieldWithErrors {
+    padding: 2px;
+    background-color: red;
+    display: table;
+}
+
+#error_explanation {
+    width: 400px;
+    border: 2px solid #red;
+    padding: 7px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+}
+
+#error_explanation h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    background-color: #666;
+    color: #fff;
+}
+
+#error_explanation p {
+    color: #333;
+    margin-bottom: 0;
+    padding: 15px;
+}
+
+#error_explanation ul li {
+    font-size: 12px;
+    list-style: none;
 }
