@@ -43,7 +43,7 @@
       //}
     }).bind('ajax:complete', function() {
       $('#ajax-spinner').hide();
-    });    
+    });
 
     $("form.search-params ").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
@@ -109,11 +109,11 @@
 
       if(selected == true) {
         icoImage = moImage = '/images/ico-pin-selected.png';
-        <%- if params[:view].eql?("map") %>
+  <%- if params[:view].eql?("map") %>
           $('#result_for_searchable_' + searchableID).show();
-        <% else %>
+  <% else %>
           $('#result_for_searchable_' + searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
-        <%- end -%>
+  <%- end -%>
       }
 
       var marker = new google.maps.Marker({
@@ -148,8 +148,8 @@
     }
 
     function selectMarker(marker) {
-      if(selectedMarker != null && selectedMarker != marker) 
-        selectedMarker.setIcon("/images/ico-pin.png");     
+      if(selectedMarker != null && selectedMarker != marker)
+        selectedMarker.setIcon("/images/ico-pin.png");
 
       selectedMarker = marker;
 
@@ -162,26 +162,26 @@
     
       $('#selected_searchable').val(marker.searchableID);
 
-      <%- if params[:view].eql?("map") -%>
+  <%- if params[:view].eql?("map") -%>
         $.each($('.result-list-item'), function(index, rLI) {
           $(rLI).hide();
         });
 
         $('#result_for_searchable_' + marker.searchableID).show();
 
-      if(marker.geocodableAddress != null)
-        $('.address').html(marker.geocodableAddress);
-      else
-        $('.address').html('');
+        if(marker.geocodableAddress != null)
+          $('.address').html(marker.geocodableAddress);
+        else
+          $('.address').html('');
 
-      <% else %>
+  <% else %>
         $.each($('.result-list-item'), function(index, rLI) {
           $(rLI).css('background-color', '#FFFFFF');
         });
 
-      $('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
-        
-      <% end %>
+        $('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
+
+  <% end %>
       
       //moveExploreMap(marker, marker.position);
     
@@ -268,6 +268,35 @@
           if($(document).getUrlParam("map_center") != null)
             sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
 
+
+          var dtOptions = $(document).getUrlParam("date_search[]");
+
+          if(dtOptions != undefined) {
+
+            var uScapedDtOptions = new Array;
+
+            if(dtOptions instanceof Array) {
+              $.each(dtOptions, function(i, e) {
+                uScapedDtOptions.push(unescape(e));
+              });
+            }
+            else
+              uScapedDtOptions.push(unescape(dtOptions));
+
+            $.each($('.calendar-times'), function(index, ele) {
+              if($.inArray($(ele).attr("d-pos"), uScapedDtOptions) > -1)
+                $(ele).addClass('select');
+              else
+                $(ele).removeClass('select');
+            });
+          }
+          else {
+            $.each($('.calendar-times'), function(index, ele) {
+                $(ele).removeClass('select');
+            });
+          }
+
+
           $.getScript(location.href);
         });
         //}
@@ -337,7 +366,7 @@
                 $('.address').html(mkr.geocodableAddress);
               else
                 $('.address').html('');
-             
+
   <%- else -%>
 
               $.each($('.result-list-item'), function(index, rLI) {
@@ -349,11 +378,11 @@
             $('#selected_searchable').val(mkr.searchableID);
           }
 
-            <%- unless params[:view].eql?("map") -%>
-              $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
-            <% else %>
-               $('#result_for_searchable_' + mkr.searchableID).show();
-            <%- end -%>
+  <%- unless params[:view].eql?("map") -%>
+            $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
+  <% else %>
+            $('#result_for_searchable_' + mkr.searchableID).show();
+  <%- end -%>
           
         });
       });

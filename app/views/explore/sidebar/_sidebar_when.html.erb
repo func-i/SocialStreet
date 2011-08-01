@@ -75,6 +75,8 @@
       $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
     }
 
+    if(history && history.pushState)
+      history.pushState(null, null, getSearchParams());
     refreshResults("explore");
   });
 </script>
