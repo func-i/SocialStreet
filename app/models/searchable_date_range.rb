@@ -3,6 +3,7 @@ class SearchableDateRange < ActiveRecord::Base
   belongs_to :searchable
 
   @@dows = %w{Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
+  
 
   default_value_for :starts_at do
 #    Time.zone.now.advance(:hours => 3).floor(15.minutes)
