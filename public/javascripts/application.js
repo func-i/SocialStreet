@@ -99,9 +99,9 @@ $(function() {
         $(divId).show();
 
         if(document.getElementById("TB_overlay") === null){
-            $("body").append("<div id='TB_overlay'></div>");
-            $("#TB_overlay").addClass("TB_overlayBG");
-            $("#TB_overlay").click(function(){
+            $("body").append("<div id='ss_modal_overlay'></div>");
+            $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
+            $("#ss_modal_overlay").click(function(){
                 removeModal($(divId))
             });
         }
@@ -187,14 +187,17 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     //Set the modal title
     $(modal_divID).find('#modal-title').text(modal_title)
 
+    //Disable scrolling for the body
+    $("body").css("overflow", "hidden");
+
     //Display the modal
     $(modal_divID).show();
 
     //Display overlay
-    if(document.getElementById("TB_overlay") === null){
-        $("body").append("<div id='TB_overlay'></div>");
-        $("#TB_overlay").addClass("TB_overlayBG");
-        $("#TB_overlay").click(function(){
+    if(document.getElementById("ss_modal_overlay") === null){
+        $("body").append("<div id='ss_modal_overlay'></div>");
+        $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
+        $("#ss_modal_overlay").click(function(){
             removeModal($(modal_divID))
         });
     }
@@ -212,7 +215,8 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
 
 function removeModal(element) {
     $(element).fadeOut("fast", function() {
-        $('#TB_overlay').trigger("unload").unbind().remove();
+        $('#ss_modal_overlay').trigger("unload").unbind().remove();
+        $("body").css("overflow", "auto");
     });
 
     //Hack to make save this search modal work

@@ -1588,7 +1588,7 @@ form, fieldset {
     top: 76px;
     position: absolute;
     z-index: 102;
-    width: auto;
+    width: 1000px;
 }
 .pop-up1 {
     background: url("../images/bg-pop-up-calendar.png") repeat-x #a1a1a1;
@@ -2930,7 +2930,7 @@ form, fieldset {
     color: #666;
 }
 
-#TB_overlay {
+#ss_modal_overlay {
     position: fixed;
     z-index:100;
     top: 0px;
@@ -2940,7 +2940,7 @@ form, fieldset {
 }
 
 .TB_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}
-.TB_overlayBG {
+.ss_modal_overlayBG {
     background-color:#000;
     filter:alpha(opacity=75);
     -moz-opacity: 0.75;
