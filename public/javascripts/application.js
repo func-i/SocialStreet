@@ -114,8 +114,7 @@ $(function() {
                 u.val($(this).attr('action_id'))
             }
         }
-
-        console.log($(divId).find('.row-map').length);
+        
         if($(divId).find('.row-map').length > 0)
             google.maps.event.trigger(map, 'resize');
 
@@ -185,7 +184,10 @@ function resizeModals(){
 
 function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     //Set the modal title
-    $(modal_divID).find('#modal-title').text(modal_title)
+    $(modal_divID).find('#modal-title').text(modal_title);
+
+    // Scroll to the top of the document
+    window.scrollTo(0,0);
 
     //Disable scrolling for the body
     $("body").css("overflow", "hidden");
@@ -198,7 +200,7 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
         $("body").append("<div id='ss_modal_overlay'></div>");
         $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
         $("#ss_modal_overlay").click(function(){
-            removeModal($(modal_divID))
+            removeModal($(modal_divID));
         });
     }
 

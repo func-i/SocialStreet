@@ -19,8 +19,10 @@ index_action
 <div class="text">
 
   <% if is_event %>
-    <!--Attend button-->
-    <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event_record, :rsvp => (current_user ? event_record.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
+    <div class="event_attend_button_<%= event_record.id -%>">
+      <!--Attend button-->
+      <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event_record, :rsvp => (current_user ? event_record.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
+    </div>
   <% end %>
 
   <!--Record Title-->
