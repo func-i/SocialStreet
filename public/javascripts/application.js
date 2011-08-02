@@ -34,31 +34,36 @@ function refreshResults(caller) {
 }
 
 function expandHowItWorks() {
-    var classToAdd = '';
-    if($('.w2').hasClass('page-explore'))
-        classToAdd = 'page-explore';
-    else if($('.w2').hasClass('page-map'))
-        classToAdd = 'page-map';
-    if(classToAdd != '') {
-        $('.w2').removeClass(classToAdd);
-        $('.w2').data('classToAdd', classToAdd);
-    }
-
+    //    var classToAdd = '';
+    //    if($('.w2').hasClass('page-explore'))
+    //        classToAdd = 'page-explore';
+    //    else if($('.w2').hasClass('page-map'))
+    //        classToAdd = 'page-map';
+    //    if(classToAdd != '') {
+    //        $('.w2').removeClass(classToAdd);
+    //        $('.w2').data('classToAdd', classToAdd);
+    //    }    
+    
     $('#how_it_works').closest('li').addClass('active');
-    $('#top_explore_form').hide('fast', function() {
+    $('#top_explore_form').hide(1, function() {
         $('#header').addClass('open');
-        $('.video-box').slideDown('fast');
+        $('.video-box').show();
+        $('.w2').addClass('header-open');
     });
 }
 
 function retractHowItWorks(classToAdd) {
-    if($('.w2').data('classToAdd') != '')
-        $('.w2').addClass($('.w2').data('classToAdd'));
+    //    if($('.w2').data('classToAdd') != '')
+    //        $('.w2').addClass($('.w2').data('classToAdd'));
+    //
+
     
-    $('.video-box').slideUp('fast', function() {
+    
+    $('.video-box').hide(1, function() {
         $('#header').removeClass('open');
         $('#top_explore_form').show();
         $('#how_it_works').closest('li').removeClass('active');
+        $('.w2').removeClass('header-open');
     });
 }
 

@@ -94,6 +94,10 @@
                 <em class="date">
                   <%=event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} @ %l:%M %p")%>
                 </em>
+              <div class="sidebar-attending event_attend_button_<%= event.id -%>">
+                <!--Attend button-->
+                <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
+              </div>
               </p>
             </li>
           <% end %>
@@ -129,9 +133,10 @@
                 <div class="text-holder">
 
                   <%- if !event.canceled? && event.editable_time?%>
-                    <%= link_to [:new, event, :rsvp], :class => "btn-attend" do %>
-                      <span>Attend</span>
-                    <% end %>
+                    <div class="event_attend_button_<%= event.id -%>">
+                      <!--Attend button-->
+                      <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
+                    </div>
                   <% end %>
 
                   <strong class="ttl">
@@ -140,7 +145,7 @@
 
                   <span class="time">
                     <%=address_for(event.location)%>
-                    <span>Yesterday-TODO</span>
+                    <span><%= time_ago_in_words event.starts_at -%> ago</span>
                     <em>@</em>
                     <strong><%=event.starts_at.strftime("%l:%M %p")%></strong>
                   </span>

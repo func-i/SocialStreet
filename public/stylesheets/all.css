@@ -82,6 +82,7 @@ form, fieldset {
     position: fixed;
     top: 0;
 }
+
 #header:after {
     clear: both;
     content: "";
@@ -98,6 +99,7 @@ form, fieldset {
     content: "";
     display: block;
 }
+
 .logo {
     background: url("../images/logo.png") no-repeat;
     float: left;
@@ -438,6 +440,7 @@ form, fieldset {
     width: 100%;
     z-index: 3;
 }
+
 #main .main-top .holder {
     min-height: 27px;
     overflow: hidden;
@@ -842,6 +845,8 @@ form, fieldset {
     margin: 5px 0 0;
     width: 420px;
 }
+#sidebar .btn-attend,
+#sidebar .btn-attending,
 #content .btn-attend,
 #content .btn-attending {
     background: #69b2d7;
@@ -859,6 +864,17 @@ form, fieldset {
     text-align: center;
     position: relative;
 }
+
+#sidebar .btn-attend,
+#sidebar .btn-attending {
+    float: left;
+}
+
+.sidebar-attending p {
+    clear: both;
+    padding-top: 5px;
+}
+
 .btn-attend:hover,
 .btn-attending:hover {
     text-decoration: none;
@@ -867,10 +883,18 @@ form, fieldset {
 .btn-attending:hover span {
     text-decoration: underline;
 }
+#sidebar .btn-attend span,
 #content .btn-attend span {
     display: block;
     padding: 7px 5px;
 }
+
+#sidebar .btn-attending {
+    background: #9c3;
+    font-size: 13px;
+    padding: 7px 5px;
+}
+
 #content .post .btn-attend,
 #content .post .btn-attending {
     box-shadow: none;
@@ -1101,6 +1125,19 @@ form, fieldset {
     top: 129px;
     z-index: 2;
 }
+
+.header-open #main {
+    padding-top: 400px;
+}
+
+.header-open #sidebar {
+    top: 460px;
+}
+
+.header-open .main-top {
+    top: 400px;
+}
+
 #sidebar .heading {
     background: #f7f7f7;
     overflow: hidden;
