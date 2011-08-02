@@ -38,7 +38,7 @@
     <!--Event Info-->
     <span class="time">
       <%=address_for(event.location)%>
-      <span>Yesterday-TODO</span>
+      <span><%= time_ago_in_words(event.starts_at) -%></span>
       @
       <em><%=event.starts_at.strftime("%l:%M %p")%></em>
     </span>
