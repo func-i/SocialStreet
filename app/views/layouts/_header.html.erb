@@ -130,7 +130,7 @@
     </script>
   <% end %>
 
-  <%- if @current_user && @current_user.sign_in_count < 5 -%>
+  <%- if @current_user && @current_user.sign_in_count < 5 || !@current_user -%>
     <script>
       expandHowItWorks();
     </script>
