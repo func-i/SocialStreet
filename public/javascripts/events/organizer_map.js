@@ -43,7 +43,6 @@ $(function() {
     // passing in this DIV.
     var homeControlImg = document.createElement('IMG');
     homeControlImg.src = '/images/ico-pin.png';
-    console.log(homeControlImg);
 
     var homeControl = new DropPinControl(homeControlImg, map);
 
@@ -118,19 +117,19 @@ function DropPinControl(controlImg, map) {
     // Set CSS styles for the DIV containing the control
     // Setting padding to 5 px will offset the control
     // from the edge of the map
-    //controlDiv.style.padding = '5px';
+    controlImg.style.padding = '5px';
     $(controlImg).draggable({
         helper: 'clone',
         drag: function(event, ui){
             dropPinState = true;
-            //$('#current_map_pos_lat').val(this.getPoint().lat.toFixed(6));
-            var proj = new ProjectionHelperOverlay(map);
-            var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(event.layerX, event.layerY));
-            $('#current_map_pos_lat').val(pos.lat());
-            $('#current_map_pos_long').val(pos.lng());
         },
-        stop: function(e, ui){            
-            placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));            
+        stop: function(event, ui){
+            //The additions to ui.position are to correct for the padding and image size (so we drop it at the point and not top left corner
+            var proj = new ProjectionHelperOverlay(map);
+            var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(ui.position.left+23, ui.position.top+48));
+
+            placeMarker(new google.maps.LatLng(pos.lat(), pos.lng()));
+
             dropPinState = false;            
         }
     });
