@@ -14,7 +14,8 @@ class DashboardController < ApplicationController
       invitations = Invitation.to_user(current_user).all#TODO - Should only display invitations where the user does not have an rsvp and still_valid
       invitations_by_event = {}
       invitations.each do |invitation|
-        (invitations_by_event[invitation.event] ||= []) << invitation unless Rsvp.for_event(invitation.event).by_user(current_user).first
+        rsvp = Rsvp.for_event(invitation.event).by_user(current_user).first
+        (invitations_by_event[invitation.event] ||= []) << invitation if (!rsvp && invitation.event.upcoming)
       end
       #@invitations_remaining = invitations_by_event.count - 3
       #@invited_events = invitations_by_event.keys()[0,3]

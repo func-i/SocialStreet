@@ -194,11 +194,12 @@ class ApplicationController < ActionController::Base
 
       @comment.searchable = Searchable.new_from_params(params)
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
+    elsif @commentable.searchable
+      @comment.searchable = @commentable.searchable
     end
 
     if @comment.save
       @comment.reload
-      #flash[:notice] = "Thank you for your generous comment." unless request.xhr?
 
       Connection.connect_with_users_in_action_thread(@comment.user, @comment.action)
       return true

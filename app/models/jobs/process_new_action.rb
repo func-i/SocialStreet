@@ -63,11 +63,6 @@ class Jobs::ProcessNewAction
     # => comments on actions (the base action can appear twice in some peoples dashboards, fixme)
     # => events to action treads (will appear twice in some peoples dashboards, fixme)
     return false if action.action.blank?
-
-    feed = FeedItem.new
-    feed.inserted_because = FeedItem.reasons[:participated]
-    feed.feed_type = FeedItem.types[:comment]
-    feed.action_id = action.action.id
     
     action_list = Action.threaded_with(action)
 
@@ -75,7 +70,18 @@ class Jobs::ProcessNewAction
       #add to dashboard
       if a.user.id != action.user.id
         # add to dashboard / news feed
-        Feed.push(redis, a.user, feed)
+        feed_item = Feed.where(:user_id => a.user, :head_action_id => action.action || action).first
+
+        if(nil == feed_item)
+          feed_item = Feed.new(:user => a.user, :head_action => action.action || action, :index_action => action, :reason => Feed.reasons[:action_chain])
+        else
+          feed_item.index_action = action;
+          feed_item.reason = Feed.reasons[:action_chain]
+        end
+        feed_item.save
+
+        Feed.push(redis, a.user, feed_item)
+
         # email notice to user
         # TODO: here we should perhaps check their profile settings to see if they want to be notified? - KV
         unless @users_emailed[a.user_id.to_s]

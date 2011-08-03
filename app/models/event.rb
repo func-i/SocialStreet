@@ -11,6 +11,8 @@ class Event < ActiveRecord::Base
   has_many :rsvps, :dependent => :destroy
   has_many :rsvp_users, :through => :rsvps, :source => :user
 
+  has_many :invitations
+
   has_many :actions, :dependent => :destroy
   has_many :comments, :as => :commentable, :dependent => :destroy
   
@@ -77,6 +79,17 @@ class Event < ActiveRecord::Base
   #      #TODO - Why doesn't this work?
   #    end
   #  end
+
+  def upcoming
+    bool = false
+    searchable.searchable_date_ranges.each do |dr|
+      if dr.starts_at && dr.starts_at > Time.zone.now
+        bool = true
+      end
+    end
+
+    bool && !self.canceled
+  end
 
   def location_address
     location.geocodable_address if location

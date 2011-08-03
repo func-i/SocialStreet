@@ -214,238 +214,240 @@ class Searchable < ActiveRecord::Base
       # TODO - Include date in title
       title += ' on '
       
-      searchable_date_ranges.group_by(&:dow).each do |dr_grp|        
-        title += SearchableDateRange.dow_string(dr_grp.first)
-        days = []
-        dr_grp.last.each do |dr|
-           case dr.start_time / 3600
-           when 0
-             days << "Morning"
-           when 11
-             days << "Afternoon"
-           when 17
-             days << "Evening"
-           end
+      searchable_date_ranges.group_by(&:dow).each do |dr_grp|
+        if !dr_grp.first.nil?
+          title += SearchableDateRange.dow_string(dr_grp.first)
+          days = []
+          dr_grp.last.each do |dr|
+            case dr.start_time / 3600
+            when 0
+              days << "Morning"
+            when 11
+              days << "Afternoon"
+            when 17
+              days << "Evening"
+            end
+          end
+
+          title += " (#{days.join(", ")}) " unless days.blank?
+
         end
-
-        title += " (#{days.join(", ")}) " unless days.blank?
-
       end
+    end
+
+    return (title.size > 254 ? (title.first(251) + "...") : title)
   end
 
-  return (title.size > 254 ? (title.first(251) + "...") : title)
-end
+  def location_address
+    location.geocodable_address if location
+  end
 
-def location_address
-  location.geocodable_address if location
-end
+  def geo_located?
+    location && location.geo_located?
+  end
 
-def geo_located?
-  location && location.geo_located?
-end
+  def global_comment?
+    comment && comment.global?
+  end
 
-def global_comment?
-  comment && comment.global?
-end
+  def top_level_comment?
+    comment && !comment.nested?
+  end
 
-def top_level_comment?
-  comment && !comment.nested?
-end
+  def event_type_ids
+    searchable_event_types.all.collect &:event_type_id
+  end
 
-def event_type_ids
-  searchable_event_types.all.collect &:event_type_id
-end
+  def lat_lng_bounds
+    location.bounds
+  end
 
-def lat_lng_bounds
-  location.bounds
-end
-
-# search filter params from the form
-def self.new_from_params(params)
-  attrs = {}
+  # search filter params from the form
+  def self.new_from_params(params)
+    attrs = {}
     
-  # assume map_center is set if map_bounds is set - KV
-  if !params[:map_bounds].blank?
-    # lat/lng order: ne_lat, ne_lng, sw_lat, sw_lng
-    bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
-    attrs[:location_attributes] = {
-      :text => params[:map_location],
+    # assume map_center is set if map_bounds is set - KV
+    if !params[:map_bounds].blank?
+      # lat/lng order: ne_lat, ne_lng, sw_lat, sw_lng
+      bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
+      attrs[:location_attributes] = {
+        :text => params[:map_location],
         :ne_lat => bounds[0],
         :ne_lng => bounds[1],
         :sw_lat => bounds[2],
         :sw_lng => bounds[3],
         :latitude => params[:map_center].split(",").first.to_f,
         :longitude => params[:map_center].split(",").last.to_f
-    }
-  elsif !params[:map_center].blank?
-    lat,lng = params[:map_center].split(",")
-    attrs[:location_attributes] = {
-      :text => params[:map_location],
+      }
+    elsif !params[:map_center].blank?
+      lat,lng = params[:map_center].split(",")
+      attrs[:location_attributes] = {
+        :text => params[:map_location],
         :latitude => lat.to_f,
         :longitude => lng.to_f
-    }
-  end
+      }
+    end
     
-  attrs[:searchable_date_ranges_attributes] = []
+    attrs[:searchable_date_ranges_attributes] = []
 
-  unless(date_search = params[:date_search]).blank?
+    unless(date_search = params[:date_search]).blank?
       
-    date_search.group_by{|ds| ds.first}.each do |grp|
-      day = grp.first
-      hours = []
+      date_search.group_by{|ds| ds.first}.each do |grp|
+        day = grp.first
+        hours = []
 
-      grp.last.collect{|g| g.split(",").last}.each do |hr|
-        case hr
-        when "0"
-          attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 0.hour, :end_time => 12.hour}
-        when "1"
-          attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 11.hour, :end_time => 18.hour}
-        when "2"
-          attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 17.hour, :end_time => 24.hour}
+        grp.last.collect{|g| g.split(",").last}.each do |hr|
+          case hr
+          when "0"
+            attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 0.hour, :end_time => 12.hour}
+          when "1"
+            attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 11.hour, :end_time => 18.hour}
+          when "2"
+            attrs[:searchable_date_ranges_attributes] << {:dow => day, :start_time => 17.hour, :end_time => 24.hour}
+          end
         end
       end
     end
-  end
 
-  # Apply the time range from the time slider (if it's been used by the user) to each date range record
-  #    if !params[:from_date].blank? || !params[:to_date].blank?
-  #      date_range_attrs = {
-  #        :starts_at => params[:from_date].blank? ? nil : Date.parse(params[:from_date]).beginning_of_day,
-  #        :ends_at => params[:to_date].blank? ? nil : Date.parse(params[:to_date]).end_of_day,
-  #        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false),
-  #      }
-  #      if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
-  #        date_range_attrs[:start_time] = params[:from_time].to_i
-  #        date_range_attrs[:end_time] = params[:to_time].to_i
-  #      end
-  #      attrs[:searchable_date_ranges_attributes] << date_range_attrs
-  #    end
-  #
-  #    # Apply the time range from the time slider (if it's been used by the user) to each day-of-week (dow) record
-  #    unless params[:days].blank?
-  #      params[:days].each do |day|
-  #        date_range_attrs = { :dow => day }
-  #        if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
-  #          date_range_attrs[:start_time] = params[:from_time].to_i
-  #          date_range_attrs[:end_time] = params[:to_time].to_i
-  #        end
-  #        attrs[:searchable_date_ranges_attributes] << date_range_attrs
-  #      end
-  #    end
+    # Apply the time range from the time slider (if it's been used by the user) to each date range record
+    #    if !params[:from_date].blank? || !params[:to_date].blank?
+    #      date_range_attrs = {
+    #        :starts_at => params[:from_date].blank? ? nil : Date.parse(params[:from_date]).beginning_of_day,
+    #        :ends_at => params[:to_date].blank? ? nil : Date.parse(params[:to_date]).end_of_day,
+    #        :inclusive => params[:inclusive].blank? ? false : (params[:inclusive]=="on" ? true : false),
+    #      }
+    #      if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+    #        date_range_attrs[:start_time] = params[:from_time].to_i
+    #        date_range_attrs[:end_time] = params[:to_time].to_i
+    #      end
+    #      attrs[:searchable_date_ranges_attributes] << date_range_attrs
+    #    end
+    #
+    #    # Apply the time range from the time slider (if it's been used by the user) to each day-of-week (dow) record
+    #    unless params[:days].blank?
+    #      params[:days].each do |day|
+    #        date_range_attrs = { :dow => day }
+    #        if params[:from_time].to_i > DAY_FIRST_MINUTE || params[:to_time].to_i < DAY_LAST_MINUTE
+    #          date_range_attrs[:start_time] = params[:from_time].to_i
+    #          date_range_attrs[:end_time] = params[:to_time].to_i
+    #        end
+    #        attrs[:searchable_date_ranges_attributes] << date_range_attrs
+    #      end
+    #    end
 
-  unless params[:keywords].blank?
-    attrs[:searchable_event_types_attributes] = []
-    params[:keywords].each do |keyword|
-      # if the event_type is already in the db, then link the near searchable_event_type record to it
-      # otherwise, have it create a new one
-      lower_keyword = keyword.downcase
+    unless params[:keywords].blank?
+      attrs[:searchable_event_types_attributes] = []
+      params[:keywords].each do |keyword|
+        # if the event_type is already in the db, then link the near searchable_event_type record to it
+        # otherwise, have it create a new one
+        lower_keyword = keyword.downcase
 
-      event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
+        event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
 
-      attrs[:searchable_event_types_attributes] << {
-        :event_type_id => event_type.try(:id),
+        attrs[:searchable_event_types_attributes] << {
+          :event_type_id => event_type.try(:id),
           :name => keyword
-      }
+        }
+      end
     end
+
+    new(attrs)
   end
 
-  new(attrs)
-end
-
-def keywords
-  searchable_event_types.collect &:name
-end
-
-def searchable_keywords
-  keywords = []
-
-  searchable_event_types.each do |set|
-    keywords << set.name
-    keywords << set.event_type.name if set.event_type
+  def keywords
+    searchable_event_types.collect &:name
   end
 
-  return keywords.uniq_by{|k| k.downcase}
-end
+  def searchable_keywords
+    keywords = []
 
-def keywords=(keywords_array)
-  keywords_array.each do |keyword|
-    unless keyword.blank?
-      # if the event_type is already in the db, then link the near searchable_event_type record to it
-      # otherwise, have it create a new one
-      lower_keyword = keyword.downcase
-
-      event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
-
-      self.searchable_event_types.build({
-          :event_type => event_type,
-          :name => keyword
-        })
+    searchable_event_types.each do |set|
+      keywords << set.name
+      keywords << set.event_type.name if set.event_type
     end
+
+    return keywords.uniq_by{|k| k.downcase}
   end
+
+  def keywords=(keywords_array)
+    keywords_array.each do |keyword|
+      unless keyword.blank?
+        # if the event_type is already in the db, then link the near searchable_event_type record to it
+        # otherwise, have it create a new one
+        lower_keyword = keyword.downcase
+
+        event_type = EventType.where("lower(name) = ?", lower_keyword).first # could be nil
+
+        self.searchable_event_types.build({
+            :event_type => event_type,
+            :name => keyword
+          })
+      end
+    end
     
-end
+  end
 
-def url_params
-  params = {}
+  def url_params
+    params = {}
 
-  #Event Types
-  params[:keywords] = searchable_event_types.collect { |searchable_event_type|
-    searchable_event_type.name ||  searchable_event_type.event_type.try(:name)
-  } unless searchable_event_types.blank?
+    #Event Types
+    params[:keywords] = searchable_event_types.collect { |searchable_event_type|
+      searchable_event_type.name ||  searchable_event_type.event_type.try(:name)
+    } unless searchable_event_types.blank?
 
-  #Location
-  if location
-    params[:map_location] = location.text
-    params[:map_center] = "#{location.latitude},#{location.longitude}"
-    # assume all 4 points set if 1 set for bounds - KV
-    # order: ne_lat, ne_lng, sw_lat, sw_lng
-    if location.sw_lat?
-      params[:map_bounds] = "#{location.ne_lat},#{location.ne_lng},#{location.sw_lat},#{location.sw_lng}"
-      params[:map_fit_bounds] = "1"
+    #Location
+    if location
+      params[:map_location] = location.text
+      params[:map_center] = "#{location.latitude},#{location.longitude}"
+      # assume all 4 points set if 1 set for bounds - KV
+      # order: ne_lat, ne_lng, sw_lat, sw_lng
+      if location.sw_lat?
+        params[:map_bounds] = "#{location.ne_lat},#{location.ne_lng},#{location.sw_lat},#{location.sw_lng}"
+        params[:map_fit_bounds] = "1"
+      end
     end
+
+    unless searchable_date_ranges.blank?
+      #      #Days of the week
+      #      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
+      #
+      #      #Date Ranges
+      #      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
+      #      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
+      #      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
+      #
+      #      #Time Ranges
+      #      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
+      #      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
+    end
+
+    return params
   end
 
-  unless searchable_date_ranges.blank?
-    #      #Days of the week
-    #      params[:days] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.dow}.compact
-    #
-    #      #Date Ranges
-    #      params[:from_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_time}.compact.first
-    #      params[:to_time] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_time}.compact.first
-    #      params[:inclusive] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.inclusive}.compact.first
-    #
-    #      #Time Ranges
-    #      params[:from_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.start_date}.compact.first
-    #      params[:to_date] = searchable_date_ranges.collect{|searchable_date_range| searchable_date_range.end_date}.compact.first
+  #  def set_explorable
+  #    val = !!((global_comment? && top_level_comment?) || event)
+  #    update_attributes :explorable => val unless explorable == val
+  #  end
+
+  protected
+
+  def cache_lat_lng
+    if location && !location.new_record?
+      self.latitude = location.latitude
+      self.longitude = location.longitude
+    end
+
+    # => before_save callbacks need to return true otherwise they won't save
+    return true
   end
 
-  return params
-end
-
-#  def set_explorable
-#    val = !!((global_comment? && top_level_comment?) || event)
-#    update_attributes :explorable => val unless explorable == val
-#  end
-
-protected
-
-def cache_lat_lng
-  if location && !location.new_record?
-    self.latitude = location.latitude
-    self.longitude = location.longitude
+  def self.day_selected?(params, day)
+    params[:days] && params[:days].include?(day.to_s)
   end
 
-  # => before_save callbacks need to return true otherwise they won't save
-  return true
-end
-
-def self.day_selected?(params, day)
-  params[:days] && params[:days].include?(day.to_s)
-end
-
-# both fields and keywords are arrays
-def self.keyword_conditions_for(fields, keywords)
-  fields.collect {|f| "#{f} LIKE '%#{keywords.first}%'"  }.join(" OR ")
-end
+  # both fields and keywords are arrays
+  def self.keyword_conditions_for(fields, keywords)
+    fields.collect {|f| "#{f} LIKE '%#{keywords.first}%'"  }.join(" OR ")
+  end
 
 end

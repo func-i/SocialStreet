@@ -1,22 +1,14 @@
 class Feed < ActiveRecord::Base
   @@reasons = {
     :connection => "Connection",
-    :subscription => "Subscription"
+    :subscription => "Subscription",
+    :action_chain => "Action Chain"
   }.freeze
   cattr_accessor :reasons
   
   belongs_to :user
   belongs_to :head_action, :class_name => "Action"
   belongs_to :index_action, :class_name => "Action"
-
-
-  def self.encode(feed)
-    feed.to_json
-  end
-  
-  def self.decode(feed)
-    FeedItem.create_from_json(JSON.parse(feed))
-  end
 
   def self.for_user(redis, user, count)
     results=redis.zrevrange "feed:#{user.id}", 0, count

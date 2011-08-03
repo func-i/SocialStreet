@@ -50,6 +50,8 @@ class SearchSubscription < ActiveRecord::Base
   end
 
   def self.matching_search_comment(comment)
+    puts "JOSHY"
+    puts comment.inspect
     matching_searchable(comment.searchable, comment.body)
   end
 
