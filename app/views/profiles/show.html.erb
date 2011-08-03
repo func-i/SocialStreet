@@ -131,7 +131,7 @@
               <ul class="comments-list">
                 <% @connected_actions.each do |action| %>
                   <% action = action.action || action %>
-                  <% common_comments = action.comments_belonging_to_users([current_user, @user]) %>
+                  <% common_comments = action.comments_belonging_to_users([current_user, @user])[0,3] %>
                   <% if action.of_type?(:event_comment) %>
                     <li>
                       <h4><%= link_to action.event.name, action.event %></h4>
@@ -147,7 +147,7 @@
                     </li>
                   <% elsif action.of_type?(:search_comment) %>
                     <li>
-                      <h4>A <%= link_to "Search Filter", '#' %></h4>
+                      <h4>A <%= link_to action.searchable.title_for_searchable, explore_path(action.searchable.url_params) %></h4>
                       <ul>
                         <% common_comments.each do |comment| %>
                           <li>
