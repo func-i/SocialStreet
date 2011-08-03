@@ -124,20 +124,7 @@
   <div class="box map">
     <div class="heading">
       <h3>
-        <% if l = @event.location %>
-          <% if l.text %>
-            <strong><%= l.text %></strong><br/>
-          <% end %>
-          <% if l.street? %>
-            <%= l.street %><br/>
-          <% end %>
-          <% if l.city? || l.state? %>
-            <%= l.city %> <%= l.state %><br/>
-          <% end %>
-          <% if l.country? %>
-            <%= l.country %><br/>
-          <% end %>
-        <% end %>
+        <%=address_for(@event.location)%>
       </h3>
     </div>
     <div class="map-holder">

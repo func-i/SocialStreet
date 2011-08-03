@@ -194,7 +194,8 @@ function clearMarkers() {
 function searchLocations(e) {
     var loc = e.target.value;
     geocoder.geocode( {
-        'address': loc
+        'address': loc,
+        'bounds' : map.getBounds()
     }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             clearMarkers()

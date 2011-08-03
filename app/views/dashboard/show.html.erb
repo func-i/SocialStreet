@@ -132,12 +132,10 @@
 
                 <div class="text-holder">
 
-                  <%- if !event.canceled? && event.editable_time?%>
-                    <div class="event_attend_button_<%= event.id -%>">
-                      <!--Attend button-->
-                      <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
-                    </div>
-                  <% end %>
+                  <div class="event_attend_button_<%= event.id -%>">
+                    <!--Attend button-->
+                    <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
+                  </div>
 
                   <strong class="ttl">
                     <%= link_to event.name, event %>

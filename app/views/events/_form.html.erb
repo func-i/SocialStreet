@@ -18,23 +18,6 @@
     <% end %>
   </ul>
 
-  <div class="row"> 
-    <label for="where">Where?</label>
-
-    <%= form.fields_for :searchable do |searchable_fields| %>
-      <%= searchable_fields.fields_for :location do |location_fields| %>
-        <%= location_fields.text_field :text , :class => "text text_field location-name-field", :type => "text", :id=>"where", :title=> "Where?" %>
-        <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
-        <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
-      <% end %>
-    <% end %>
-  </div>
-  <div id="event-location-map" class="row-map" style="height:300px">
-    <!--img width="497" height="229" src="images/img-map.png" alt="image description"/-->
-  </div>
-  <%= hidden_field_tag "current_map_pos_lat" %>
-  <%= hidden_field_tag "current_map_pos_long" %>
-  
   <div class="row-when">
     <span>When?</span>
 
@@ -52,13 +35,32 @@
           <%= select_time event.searchable.searchable_date_ranges.first.ends_at, {:minute_step => 15, :ignore_date => true}, :class => 'ends_at_time' -%>
           <%= date_range_fields.hidden_field :ends_at, :class => "ends_at_value" -%>
         </div>
-        <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle(); $('#exclude_end_date').val(0)" %>
+        <div id="Add-end-date-title">
+          <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle();$('#Add-end-date-title').toggle();$('#exclude_end_date').val(0)" %>
+        </div>
       <%  end %>
     <%- end -%>
   </div>
 
+  <div class="row"> 
+    <label for="where">Where?</label>
+
+    <%= form.fields_for :searchable do |searchable_fields| %>
+      <%= searchable_fields.fields_for :location do |location_fields| %>
+        <%= location_fields.text_field :text , :class => "text text_field location-name-field", :type => "text", :id=>"where", :title=> "Where?" %>
+        <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
+        <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
+      <% end %>
+    <% end %>
+  </div>
+  <div id="event-location-map" class="row-map" style="height:300px">
+    <!--img width="497" height="229" src="images/img-map.png" alt="image description"/-->
+  </div>
+  <%= hidden_field_tag "current_map_pos_lat" %>
+  <%= hidden_field_tag "current_map_pos_long" %>
+
   <div class="title-row">
-    <p><%= link_to_function "+ Title, Description, Event Icon", "$('#row-title').toggle()" -%></p>
+    <p><%= link_to_function "+ Title, Description, Event Icon", "$('#row-title').toggle();$('.title-row').toggle();" -%></p>
   </div>
 
   <div id="row-title" style="display:none;">

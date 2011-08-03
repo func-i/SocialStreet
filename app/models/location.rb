@@ -5,6 +5,20 @@ class Location < ActiveRecord::Base
   geocoded_by :geocodable_address
   after_validation :geocode, :if => :should_geocode?
 
+  reverse_geocoded_by :latitude, :longitude do |obj,results|
+    puts "BOOYA"
+    if geo = results.first
+      puts geo.inspect
+      obj.city    = geo.city
+      obj.postal = geo.postal_code
+      obj.country = geo.country_code
+      obj.state = geo.state
+      obj.street = geo.address.split(',')[0]
+      puts obj.inspect
+    end
+  end
+  after_validation :reverse_geocode, :if => :should_reverse_geocode?
+
   has_many :searchables
   belongs_to :user
 
@@ -101,10 +115,20 @@ class Location < ActiveRecord::Base
 
   def should_geocode?
     # only if lat/lng not provided by user/form
+    puts self.inspect
     if new_record? && !geo_located?
       return true
     else
       return geocodable_address_changed? && !latitude_changed? && !longitude_changed?
+    end
+  end
+
+  def should_reverse_geocode?
+    if new_record? && !has_geocodable_address?
+      puts "TRUE"
+      return true
+    else
+      return latitude_changed? || longitude_changed?
     end
   end
 
