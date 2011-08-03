@@ -19,7 +19,7 @@ clearClusterMarkers();
 
 <%- @searchables.each do |searchable| -%>
   <% if searchable.geo_located? %>    
-    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>));
+    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= searchable.location_address %>');
   <%- end -%>
 <%- end -%>
 

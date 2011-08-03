@@ -6,6 +6,7 @@ var dropPinState = false; // true if button to drop pins is selected
 var selectedMarker = null;
 var controlUI = null;
 var mc;
+var overlay;
 
 // for testing only;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
@@ -21,6 +22,15 @@ $(function() {
         streetViewControl: false
     };
     map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
+    google.maps.event.addListener(map, 'mousemove', function(event) {
+        $('#current_map_pos_lat').val(event.latLng.lat());
+         $('#current_map_pos_long').val(event.latLng.lng());
+   });
+   
+    overlay = new google.maps.OverlayView();
+    overlay.draw = function() {};
+    overlay.setMap(map);
+
 
     // Set the MarkerClusterer here
     var mcOptions = {
@@ -36,18 +46,20 @@ $(function() {
 
     // Create the DIV to hold the control and call the DropPinControl() constructor
     // passing in this DIV.
-    var homeControlDiv = document.createElement('DIV');
-    var homeControl = new DropPinControl(homeControlDiv, map);
+    var homeControlImg = document.createElement('IMG');
+    homeControlImg.src = '/images/ico-pin.png';
+    console.log(homeControlImg);
 
-    homeControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+    var homeControl = new DropPinControl(homeControlImg, map);
 
-    google.maps.event.addListener(map, 'click', function(event) {
-        if (dropPinState) {
-            disableDropPinState();
-            placeMarker(event.latLng, $('.location-name-field').val());
-        }
-    });
+    homeControlImg.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlImg);
+
+//    google.maps.event.addListener(map, 'click', function(event) {
+//            //disableDropPinState();
+//            placeMarker(event.latLng, $('.location-name-field').val());
+//        }
+//    });
 });
 
 function disableDropPinState() {
@@ -91,7 +103,7 @@ function placeMarker(location, title, contents) {
         }
 
         infoWindow.setContent(html);
-        selectMarker(marker, true);
+        selectEventMarker(marker, true);
         infoWindow.open(map, marker);
         
 
@@ -106,42 +118,53 @@ function setTitle() {
     $('#marker-name-field').val($('.location-name-field').val());
 }
 
-function DropPinControl(controlDiv, map) {
+function DropPinControl(controlImg, map) {
 
     // Set CSS styles for the DIV containing the control
     // Setting padding to 5 px will offset the control
     // from the edge of the map
-    controlDiv.style.padding = '5px';
+    //controlDiv.style.padding = '5px';
+    $(controlImg).draggable({
+        helper: 'clone',
+        drag: function(event, ui){
+            dropPinState = true;
+            google.maps.events.trigger(map, 'mousemove');
+        },
+        stop: function(e, ui){            
+            placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));
+            dropPinState = false;            
+        }
+    });
 
     // Set CSS for the control border
-    controlUI = document.createElement('DIV');
-    controlUI.style.backgroundColor = 'white';
-    controlUI.style.borderStyle = 'solid';
-    controlUI.style.borderWidth = '2px';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to specify the location manually';
-    controlDiv.appendChild(controlUI);
+    //    controlUI = document.createElement('DIV');
+    //    controlUI.style.backgroundColor = 'white';
+    //    controlUI.style.borderStyle = 'solid';
+    //    controlUI.style.borderWidth = '2px';
+    //    controlUI.style.cursor = 'pointer';
+    //    controlUI.style.textAlign = 'center';
+    //    controlUI.title = 'Click to specify the location manually';
+    //    controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior
-    var controlText = document.createElement('DIV');
-    controlText.style.fontFamily = 'Arial,sans-serif';
-    controlText.style.fontSize = '12px';
-    controlText.style.paddingLeft = '4px';
-    controlText.style.paddingRight = '4px';
-    controlText.innerHTML = 'Drag Pin';
-    controlUI.appendChild(controlText);
+    //    var controlText = document.createElement('DIV');
+    //    controlText.style.fontFamily = 'Arial,sans-serif';
+    //    controlText.style.fontSize = '12px';
+    //    controlText.style.paddingLeft = '4px';
+    //    controlText.style.paddingRight = '4px';
+    //    controlText.innerHTML = 'Drag Pin';
+    //    controlUI.appendChild(controlText);
 
     // Setup the click event listeners: simply set the map to Chicago
-    google.maps.event.addDomListener(controlUI, 'click', function() {
-        if (dropPinState) {
-            disableDropPinState();
-        } else {
-            dropPinState = true;
-            controlUI.style.backgroundColor = '#9999DD';
-        }
-
-    });
+//    google.maps.event.addDomListener(controlImg, 'mousedown', function() {
+//        if (dropPinState) {
+//            disableDropPinState();
+//        } else {
+//            dropPinState = true;
+//        //controlUI.style.backgroundColor = '#9999DD';
+//        }
+//
+//    });
 }
 
 function clearMarkers() {
@@ -202,7 +225,7 @@ function updateMarkerTitle() {
 
 }
 
-function selectMarker(marker, changeInputField) {
+function selectEventMarker(marker, changeInputField) {
 
     if(selectedMarker != null && selectedMarker != marker)
         selectedMarker.setIcon("/images/ico-pin.png");

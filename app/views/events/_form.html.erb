@@ -32,7 +32,9 @@
   <div id="event-location-map" class="row-map" style="height:300px">
     <!--img width="497" height="229" src="images/img-map.png" alt="image description"/-->
   </div>
-
+  <%= hidden_field_tag "current_map_pos_lat" %>
+  <%= hidden_field_tag "current_map_pos_long" %>
+  
   <div class="row-when">
     <span>When?</span>
 
@@ -128,7 +130,7 @@
       });
 
       google.maps.event.addListener(marker, 'click', function() {
-        selectMarker(marker, true);
+        selectEventMarker(marker, true);
       });
       markers.push(marker);
     }
