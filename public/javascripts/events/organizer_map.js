@@ -22,15 +22,10 @@ $(function() {
         streetViewControl: false
     };
     map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
-    google.maps.event.addListener(map, 'mousemove', function(event) {
-        $('#current_map_pos_lat').val(event.latLng.lat());
-         $('#current_map_pos_long').val(event.latLng.lng());
-   });
    
     overlay = new google.maps.OverlayView();
     overlay.draw = function() {};
     overlay.setMap(map);
-
 
     // Set the MarkerClusterer here
     var mcOptions = {
@@ -128,34 +123,38 @@ function DropPinControl(controlImg, map) {
         helper: 'clone',
         drag: function(event, ui){
             dropPinState = true;
-            google.maps.events.trigger(map, 'mousemove');
+            //$('#current_map_pos_lat').val(this.getPoint().lat.toFixed(6));
+            var proj = new ProjectionHelperOverlay(map);
+            var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(event.layerX, event.layerY));
+            $('#current_map_pos_lat').val(pos.lat());
+            $('#current_map_pos_long').val(pos.lng());
         },
         stop: function(e, ui){            
-            placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));
+            placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));            
             dropPinState = false;            
         }
     });
 
-    // Set CSS for the control border
-    //    controlUI = document.createElement('DIV');
-    //    controlUI.style.backgroundColor = 'white';
-    //    controlUI.style.borderStyle = 'solid';
-    //    controlUI.style.borderWidth = '2px';
-    //    controlUI.style.cursor = 'pointer';
-    //    controlUI.style.textAlign = 'center';
-    //    controlUI.title = 'Click to specify the location manually';
-    //    controlDiv.appendChild(controlUI);
+// Set CSS for the control border
+//    controlUI = document.createElement('DIV');
+//    controlUI.style.backgroundColor = 'white';
+//    controlUI.style.borderStyle = 'solid';
+//    controlUI.style.borderWidth = '2px';
+//    controlUI.style.cursor = 'pointer';
+//    controlUI.style.textAlign = 'center';
+//    controlUI.title = 'Click to specify the location manually';
+//    controlDiv.appendChild(controlUI);
 
-    // Set CSS for the control interior
-    //    var controlText = document.createElement('DIV');
-    //    controlText.style.fontFamily = 'Arial,sans-serif';
-    //    controlText.style.fontSize = '12px';
-    //    controlText.style.paddingLeft = '4px';
-    //    controlText.style.paddingRight = '4px';
-    //    controlText.innerHTML = 'Drag Pin';
-    //    controlUI.appendChild(controlText);
+// Set CSS for the control interior
+//    var controlText = document.createElement('DIV');
+//    controlText.style.fontFamily = 'Arial,sans-serif';
+//    controlText.style.fontSize = '12px';
+//    controlText.style.paddingLeft = '4px';
+//    controlText.style.paddingRight = '4px';
+//    controlText.innerHTML = 'Drag Pin';
+//    controlUI.appendChild(controlText);
 
-    // Setup the click event listeners: simply set the map to Chicago
+// Setup the click event listeners: simply set the map to Chicago
 //    google.maps.event.addDomListener(controlImg, 'mousedown', function() {
 //        if (dropPinState) {
 //            disableDropPinState();
@@ -166,6 +165,24 @@ function DropPinControl(controlImg, map) {
 //
 //    });
 }
+
+/**@private
+   * In V3 it is quite hard to gain access to Projection and Panes.
+   * This is a helper class
+   * @param {google.maps.Map} map
+   */
+function ProjectionHelperOverlay(map) {
+    google.maps.OverlayView.call(this);
+    this.setMap(map);
+}
+
+ProjectionHelperOverlay.prototype = new google.maps.OverlayView();
+ProjectionHelperOverlay.prototype.draw = function () {
+    if (!this.ready) {
+        this.ready = true;
+        google.maps.event.trigger(this, 'ready');
+    }
+}; 
 
 function clearMarkers() {
     $.each(markers, function(index, marker) {
