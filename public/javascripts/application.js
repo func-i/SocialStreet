@@ -238,13 +238,20 @@ function removeModal(element) {
 }
 
 $(function() {
-    if(navigator.geolocation){
-        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail, {maximumAge: 60000});
-        console.log("JOSHY");
-        console.log(pos);
+    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
+    {
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, {maximumAge: 60000});
+        }
     }
 })
 
+function onGeoLocationSuccess(e){
+    $.getScript('/locations/update_users_location?latitude=' + e.coords.latitude + '&longitude=' + e.coords.longitude, function(data, textStatus){
+        //TODO - should update the explore page results somehow....
+    });
+
+}
 
 $.extend({
     getUrlVars: function(){

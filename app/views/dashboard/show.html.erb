@@ -86,7 +86,7 @@
 
           <% limited_invited_events.each do |event| %>
             <li>
-              <h4><%= link_to event.name, event %></h4>
+              <h4><%= link_to event.title, event %></h4>
               <p>
                 <% event.searchable_event_types.each do |set| %>
                   <strong><%= set.try(:name) %></strong>
@@ -138,7 +138,7 @@
                   </div>
 
                   <strong class="ttl">
-                    <%= link_to event.name, event %>
+                    <%= link_to event.title, event %>
                   </strong>
 
                   <span class="time">

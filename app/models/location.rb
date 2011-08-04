@@ -6,15 +6,21 @@ class Location < ActiveRecord::Base
   after_validation :geocode, :if => :should_geocode?
 
   reverse_geocoded_by :latitude, :longitude do |obj,results|
-    puts "BOOYA"
     if geo = results.first
-      puts geo.inspect
       obj.city    = geo.city
       obj.postal = geo.postal_code
       obj.country = geo.country_code
       obj.state = geo.state
       obj.street = geo.address.split(',')[0]
-      puts obj.inspect
+
+      if geo.is_a?(Geocoder::Result::Google)
+        if entity = geo.address_components_of_type(:neighborhood).first
+          obj.neighborhood = entity['long_name']
+        end
+        if entity = geo.address_components_of_type(:route).first
+          obj.route= entity['long_name']
+        end
+      end
     end
   end
   after_validation :reverse_geocode, :if => :should_reverse_geocode?
@@ -115,7 +121,6 @@ class Location < ActiveRecord::Base
 
   def should_geocode?
     # only if lat/lng not provided by user/form
-    puts self.inspect
     if new_record? && !geo_located?
       return true
     else
@@ -125,7 +130,6 @@ class Location < ActiveRecord::Base
 
   def should_reverse_geocode?
     if new_record? && !has_geocodable_address?
-      puts "TRUE"
       return true
     else
       return latitude_changed? || longitude_changed?

@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
     @facebook = (val.eql?("0") ? false : val)
   end
 
-  before_validation :set_default_title, :if => Proc.new{|e| e.name.blank?}
+  #before_validation :set_default_title, :if => Proc.new{|e| e.name.blank?}
   before_create :build_initial_rsvp
   
   #before_destroy :validate_destroy  
@@ -38,9 +38,9 @@ class Event < ActiveRecord::Base
       :message => "SocialStreet Event Created: #{record.name}"
     ) if record.facebook }
 
-  after_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
+  #after_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
 
-  validates :name, :presence => true, :length => { :maximum => 60 }
+  #validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
   validates :cost, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
   validates :minimum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
@@ -79,6 +79,31 @@ class Event < ActiveRecord::Base
   #      #TODO - Why doesn't this work?
   #    end
   #  end
+
+  def title
+    return self.name unless self.name.blank?
+        
+    title = (self.searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
+
+    if self.location.text.blank?
+      if self.location.neighborhood.blank?
+        if self.location.route.blank?
+          title << " @ #{self.location.street}"
+        else
+          title << " on #{self.location.route}"
+        end
+      else
+          title << " in #{self.location.neighborhood}"
+      end
+    else
+          title << " @ #{self.location.text}"
+    end
+
+    title << (" - " + (self.starts_at ? self.starts_at.to_s(:date_with_time) : "Sometime"))
+
+
+    return title
+  end
 
   def upcoming
     bool = false

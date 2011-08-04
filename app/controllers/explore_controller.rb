@@ -159,11 +159,26 @@ class ExploreController < ApplicationController
     # order: ne_lat, ne_lng, sw_lat, sw_lng
     # TODO: Temporary default handling for user's initial location, need to read user's location and use that LatLng here
     if map_bounds.blank?
-      map_bounds = params[:map_bounds] = "43.958661074786455,-78.99006997304684,43.362570924106635,-79.79756509023434"
+      if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
+        if current_user
+          latitude = current_user.last_known_latitude
+          longitude = current_user.last_known_longitude
+        else
+          #TODO - unlogged in user coming to our site for first time...setting to toronto for now...
+          latitude = 43.66061599944655
+          longitude = -79.3938175316406
+        end
+      else
+        latitude = cookies[:current_location_latitude].to_f
+        longitude = cookies[:current_location_longitude].to_f
+      end
+
+      params[:map_center] = "#{latitude},#{longitude}"
+      map_bounds = params[:map_bounds] = "#{latitude + 0.3},#{longitude + 0.4},#{latitude - 0.3},#{longitude - 0.4}"
     end
-    params[:map_center] = "43.66061599944655,-79.3938175316406" if params[:map_center].blank?
+
     params[:map_zoom] = 9 unless params[:map_zoom]
-    
+
     bounds = map_bounds.split(",").collect { |point| point.to_f }
     search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
 

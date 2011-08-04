@@ -3,7 +3,7 @@
   <%= @invitation.user.name %> has invited you to an event.
 </p>
 <p>
-  Name: <%= link_to @event.name, event_url(@event) %><br/>
+  Name: <%= link_to @event.title, event_url(@event) %><br/>
   Location: <%= @event.location.geocodable_address || "Unknown" %><br/>
   Start Date: <%= @event.starts_at.to_s(:date_with_time) %><br/>
   ...

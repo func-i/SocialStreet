@@ -120,7 +120,7 @@
     <table class="table">
       <%@events_where_administrator.each do |event|%>
         <tr>
-          <td><%= link_to event.name, event%></td>
+          <td><%= link_to event.title, event%></td>
           <td><%= link_to "Edit Event", [:edit, event], :class => "button" %></td>
         </tr>
       <%end%>

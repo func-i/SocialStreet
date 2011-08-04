@@ -106,7 +106,7 @@ class Rsvp < ActiveRecord::Base
   def post_to_facebook
     if self.facebook && !self.posted_to_facebook?
       self.user.post_to_facebook_wall(
-        :message => "Changed RSVP status for SocialStreet Event #{self.event.name} to #{self.status}"
+        :message => "Changed RSVP status for SocialStreet Event #{self.event.title} to #{self.status}"
       )
 
       update_attribute("posted_to_facebook", true)

@@ -13,7 +13,7 @@
       <ul>
         <% limited_events.each do |event| %>
           <li>
-            <h4><%= link_to event.name, event %></h4>
+            <h4><%= link_to event.title, event %></h4>
             <p>
               <% event.searchable_event_types.each do |set| %>
                 <strong><%= set.try(:name) %></strong>

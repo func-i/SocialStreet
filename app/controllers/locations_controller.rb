@@ -14,4 +14,19 @@ class LocationsController < ApplicationController
     }
   end
 
+  def update_users_location
+    #store in session for quick access
+    cookies[:current_location_latitude] = params[:latitude]
+    cookies[:current_location_longitude] = params[:longitude]
+
+    #store in users model if current user exists
+    current_user.update_users_location(params[:latitude], params[:longitude]) if current_user
+
+    #TODO - update
+
+
+    render :nothing => true
+  end
+
+
 end

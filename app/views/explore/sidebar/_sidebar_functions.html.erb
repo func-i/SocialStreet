@@ -321,25 +321,7 @@
 
 
     /* geolocation and map stuff */
-    function onGeoLocationSuccess(){
-      console.log("HERE SUNNY");
-    }
-    function onGeoLocationFail(){
-      console.log("THERE SUN");
-    }
-    if($(document).getUrlParam("map_center") != null){
-      var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
-    }
-    else{
-      if(navigator.geolocation){
-        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail, {maximumAge: 60000});
-        console.log("JOSHY");
-        console.log(pos);
-      }
-      else{
-        
-      }
-    }
+    var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
 
     //Create sidemap
     var sidebarMapOptions = {
@@ -355,7 +337,9 @@
       zoomOnClick: false
     };
     sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
+
     markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
+
     google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
       cMarkers = cluster.getMarkers();
       $.each(cMarkers, function(index, mkr) {

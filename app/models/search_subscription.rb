@@ -67,7 +67,7 @@ class SearchSubscription < ActiveRecord::Base
   end
 
   def self.matching_event(event)
-    text = event.description + " " + event.name
+    text = event.description + " " + event.title
 
     matching_searchable(event.searchable, text)
   end

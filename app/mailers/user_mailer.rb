@@ -35,7 +35,7 @@ class UserMailer < ActionMailer::Base
     @user = invitation.to_user
     @invitation = invitation
     @event = invitation.event
-    mail(:to => @user.email, :subject => "#{invitation.user.name} invited you to '#{invitation.event.name}' on SocialStreet")
+    mail(:to => @user.email, :subject => "#{invitation.user.name} invited you to '#{invitation.event.title}' on SocialStreet")
   end
 
   def daily_subscription_digest(subscription, actions, start_time, end_time)

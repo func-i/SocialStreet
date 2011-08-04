@@ -7,7 +7,7 @@
 
       <%-
       title = action.user.try(:name) ? "#{link_to(action.user.try(:name), profile_path(action.user))}" : "The owner"
-      title += " created #{link_to action.event.name, event_path(action.event)}"
+      title += " created #{link_to action.event.title, event_path(action.event)}"
       -%>
 
       <%= render 'shared/general_action.html',
@@ -21,7 +21,7 @@
 
     <%-
     title = action.user.try(:name) ? "#{link_to(action.user.try(:name), profile_path(action.user))}" : "The owner"
-    title += " is attending #{link_to action.event.name, event_path(action.event)}"
+    title += " is attending #{link_to action.event.title, event_path(action.event)}"
     -%>
 
     <%= render 'shared/general_action.html',

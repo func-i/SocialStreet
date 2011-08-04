@@ -130,7 +130,7 @@
         <% @events_where_administrator.each do |event| %>
           <tr>
             <th>
-              <strong><%=  event.name %></strong>
+              <strong><%=  event.title %></strong>
               <%= link_to_popup_modal_ajax  'Edit', 'Edit event', 'empty_modal_base', edit_event_path(event), nil, nil%>
               <%#= link_to_ "edit", [:edit, event]%>
             </th>

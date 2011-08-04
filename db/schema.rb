@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110726162023) do
+ActiveRecord::Schema.define(:version => 20110804175945) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(:version => 20110726162023) do
     t.float    "sw_lng"
     t.float    "ne_lat"
     t.float    "ne_lng"
+    t.string   "neighborhood"
+    t.string   "route"
   end
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"
@@ -222,6 +224,7 @@ ActiveRecord::Schema.define(:version => 20110726162023) do
   create_table "users", :force => true do |t|
     t.string   "email",                                         :default => "",    :null => false
     t.string   "encrypted_password",             :limit => 128, :default => "",    :null => false
+    t.string   "password_salt",                                 :default => "",    :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -237,12 +240,15 @@ ActiveRecord::Schema.define(:version => 20110726162023) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "fb_uid"
     t.string   "comment_notification_frequency"
+    t.string   "fb_uid"
     t.string   "photo"
     t.boolean  "fb_friends_imported",                           :default => false
     t.string   "gender"
     t.string   "location"
+    t.float    "last_known_longitude"
+    t.float    "last_known_latitude"
+    t.datetime "last_known_location_datetime"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

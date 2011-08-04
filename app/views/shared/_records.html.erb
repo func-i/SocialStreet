@@ -4,7 +4,7 @@
 
   <%= render "shared/general_record",
     :left_image => link_to(image_tag(url_for_event_image(event), :size => "55x55"), event),
-    :title => link_to(event.name, event),
+    :title => link_to(event.title, event),
     :event_record => event %>
 
 <% elsif record_type == RecordType.types[:search_comment] %>
@@ -31,7 +31,7 @@
     <%= render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
 
     <!--Record Title-->
-    <h3><%= link_to truncate(event.name, :length => 33), event %></h3>
+    <h3><%= link_to truncate(event.title, :length => 33), event %></h3>
 
     <!--Event Info-->
     <span class="time">
@@ -48,7 +48,7 @@
 
   <%= render "shared/general_record",
     :left_image => avatar(event.user, :size => "55x55"),
-    :title => (link_to(event.user.name, profile_path(event.user)) + " created " + link_to(event.name, event)),
+    :title => (link_to(event.user.name, profile_path(event.user)) + " created " + link_to(event.title, event)),
     :event_record => event,
     :is_event_embedded => true %>
 
@@ -58,7 +58,7 @@
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
-    :title => (link_to(record.user.name, profile_path(record.user)) + " is attending " + link_to(event.name, event)),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " is attending " + link_to(event.title, event)),
     :event_record => event,
     :is_event_embedded => true %>
 
@@ -76,7 +76,7 @@
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
-    :title => (link_to(record.user.name, profile_path(record.user)) + " posted a message to " + link_to(event.name, event)),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " posted a message to " + link_to(event.title, event)),
     :event_record => event,
     :is_event_embedded => true,
     :head_action => head_action %>
@@ -88,7 +88,7 @@
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
-    :title => (link_to(record.user.name, profile_path(record.user)) + " replied to a message to " + link_to(event.name, event)),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " replied to a message to " + link_to(event.title, event)),
     :event_record => event,
     :is_event_embedded => true,
     :head_action => head_action,

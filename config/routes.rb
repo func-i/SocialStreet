@@ -104,6 +104,8 @@ SocialStreet::Application.routes.draw do
 
   resources :search_subscriptions
 
+  match '/locations/update_users_location' => 'locations#update_users_location'
+
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
 
   match '/auth/:provider/callback' => 'authentications#create'

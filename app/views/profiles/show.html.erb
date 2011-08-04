@@ -108,7 +108,7 @@
               <ul>
                 <% @connected_rsvps.each do |rsvp| %>
                   <li>
-                    <h4><%= link_to rsvp.event.name, rsvp.event %></h4>
+                    <h4><%= link_to rsvp.event.title, rsvp.event %></h4>
                     <p><strong><%= rsvp.event.searchable_event_types.first.name unless rsvp.event.searchable_event_types.empty? -%></strong><em class="date"><%= rsvp.event.starts_at.strftime("%b #{rsvp.event.starts_at.day.ordinalize} %Y") -%></em></p>
                   </li>
                 <% end %>
@@ -134,7 +134,7 @@
                   <% common_comments = action.comments_belonging_to_users([current_user, @user])[0,3] %>
                   <% if action.of_type?(:event_comment) %>
                     <li>
-                      <h4><%= link_to action.event.name, action.event %></h4>
+                      <h4><%= link_to action.event.title, action.event %></h4>
                       <ul>
                         <% common_comments.each do |comment| %>
                           <li>
