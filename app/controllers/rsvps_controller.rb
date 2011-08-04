@@ -17,7 +17,10 @@ class RsvpsController < ApplicationController
     if(@rsvp.save)
 
       if request.xhr?
-        render :partial => "buttons.js"
+        #render :partial => "buttons.js"
+        render :update do |page|
+          page.redirect_to event_path(@event, :invite => true)
+        end
         return
       else
         redirect_to event_path(@event, :invite => true)

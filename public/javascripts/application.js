@@ -230,6 +230,7 @@ function removeModal(element) {
     element.removeClass('follow-modal');
 
     element.find('.ajax-content').empty();
+    element.find('#modal-title').empty();
     element.find('.ajax-main-content').empty();
     element.find('.ajax-sidebar-content').empty();
 
@@ -241,7 +242,9 @@ $(function() {
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, {maximumAge: 60000});
+            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, {
+                maximumAge: 60000
+            });
         }
     }
 })
@@ -249,7 +252,7 @@ $(function() {
 function onGeoLocationSuccess(e){
     $.getScript('/locations/update_users_location?latitude=' + e.coords.latitude + '&longitude=' + e.coords.longitude, function(data, textStatus){
         //TODO - should update the explore page results somehow....
-    });
+        });
 
 }
 
