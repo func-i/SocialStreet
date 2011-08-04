@@ -122,13 +122,20 @@ function DropPinControl(controlImg, controlText, map) {
 
     controlImg.style.paddingTop = '5px';
     controlImg.style.marginRight = '48px';
+    controlImg.style.cursor = 'pointer';
+    controlImg.onmouseover = function() {
+     this.src='/images/ico-pin-hover.png';
+    }
+
+    controlImg.onmouseout = function() {
+        this.src='/images/ico-pin.png';
+    }
     
 
     controlText.style.marginRight = '10px';
     controlText.style.padding = '5px';
     controlText.style.backgroundColor = 'white';
-    controlText.style.color = '#0981BE';
-    controlText.style.cursor = 'pointer';
+    controlText.style.color = '#0981BE';    
     controlText.style.fontFamily = 'Arial,sans-serif';
     controlText.style.fontSize = '14px';
     controlText.innerHTML = 'Drag & Drop Pin';
