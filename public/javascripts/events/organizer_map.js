@@ -352,7 +352,8 @@ function selectEventMarker(marker, changeInputField) {
 
     if(selectedMarker != null && selectedMarker != marker) {
         selectedMarker.setIcon("/images/map_pin.png");
-        selectedMarker.label.setMap(null);
+        if(selectedMarker.label != undefined)
+            selectedMarker.label.setMap(null);
     }
 
     selectedMarker = marker;
