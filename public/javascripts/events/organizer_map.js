@@ -12,7 +12,7 @@ var overlay;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 
 $(function() {
-    infoWindow = new google.maps.InfoWindow();
+    //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
     var myOptions = {
         zoom: 12,
@@ -96,9 +96,9 @@ function placeMarker(location, title, contents) {
                 html += contents.postal_code + "<br />"
         }
 
-        infoWindow.setContent(html);
+        //infoWindow.setContent(html);
         selectEventMarker(marker, true);
-        infoWindow.open(map, marker);
+        //infoWindow.open(map, marker);
         
 
     });
@@ -130,6 +130,7 @@ function DropPinControl(controlImg, map) {
 
             placeMarker(new google.maps.LatLng(pos.lat(), pos.lng()));
 
+            //placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));
             dropPinState = false;            
         }
     });

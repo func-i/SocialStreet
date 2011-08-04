@@ -237,6 +237,14 @@ function removeModal(element) {
     element.find('.save-button-at-bottom').hide();
 }
 
+$(function() {
+    if(navigator.geolocation){
+        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail, {maximumAge: 60000});
+        console.log("JOSHY");
+        console.log(pos);
+    }
+})
+
 
 $.extend({
     getUrlVars: function(){

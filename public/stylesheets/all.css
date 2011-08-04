@@ -845,8 +845,6 @@ form, fieldset {
     margin: 5px 0 0;
     width: 420px;
 }
-#sidebar .btn-attend,
-#sidebar .btn-attending,
 #content .btn-attend,
 #content .btn-attending {
     background: #69b2d7;
@@ -2476,9 +2474,9 @@ form, fieldset {
 }
 .keyword-small {
     list-style: none;
-    margin: 0 -2px;
+    margin: 0 0px;
     overflow: hidden;
-    padding: 6px 0 3px;
+    padding: 0px 0 0px;
     display: inline-block;
 }
 .keyword-small span {
@@ -2486,8 +2484,8 @@ form, fieldset {
     border-radius: 2px;
     color: #eee;
     float: left;
-    font: bold 13px/28px Arial, Helvetica, sans-serif;
-    margin: 5px 3px 0 0;
+    font: bold 13px/14px Arial, Helvetica, sans-serif;
+    margin: 0px 3px 0 0;
     padding: 0 27px 0 7px;
     position: relative;
     display: inline;
@@ -2499,7 +2497,7 @@ form, fieldset {
     position: absolute;
     right: 8px;
     text-indent: -9999px;
-    top: 9px;
+    top: 4px;
     width: 10px;
 }
 #sidebar .box1 .box-content {
@@ -2743,9 +2741,15 @@ form, fieldset {
     top: auto;
     width: auto;
 }
+
+#sidebar .post .btn-attend{
+    background: #69b2d7;
+}
+#sidebar .post .btn-attending {
+    background: #86d125;
+}
 #sidebar .post .btn-attend,
 #sidebar .post .btn-attending {
-    background: #69b2d7;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;

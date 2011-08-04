@@ -4,10 +4,11 @@ class ExploreController < ApplicationController
   before_filter :load_event_types
   before_filter :store_current_path
 
-  @@more_results_limit = 10;
-
+  MORE_RESULTS_LIMIT = 10
+  
   def index
     #    params[:keywords] = ['Baseball', 'Hockey']
+    
     @comment = Comment.new
     # For testing only:
     Time.zone = params[:my_tz] unless params[:my_tz].blank?

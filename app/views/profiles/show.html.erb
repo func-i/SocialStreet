@@ -39,7 +39,7 @@
   <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "script", :class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
       <div class="text">
-        <%= form.text_field :body, :title => "Post a Message", :class => "textarea" -%>
+        <%= form.text_field :body, :title => "Post a Message", :class => "textarea", :placeholder => "Leave a message"-%>
       </div>
       <div class="info">
       </div>
