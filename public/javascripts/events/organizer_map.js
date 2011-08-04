@@ -356,40 +356,42 @@ function selectEventMarker(marker, changeInputField) {
             selectedMarker.label.setMap(null);
     }
 
-    selectedMarker = marker;
+    if(selectedMarker == null || (selectedMarker != null && selectedMarker != marker)) {
+        selectedMarker = marker;
     
-    var label = new Label({
-        map: map
-    });
+        var label = new Label({
+            map: map
+        });
 
-    label.bindTo('position', marker);
+        label.bindTo('position', marker);
 
-    var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; z-index: 100;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
-    marker.htmlTitle = linkText;
-    label.bindTo('text', marker, 'htmlTitle');
+        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
+        marker.htmlTitle = linkText;
+        label.bindTo('text', marker, 'htmlTitle');
 
-    label.bindTo('visible', marker);
-    label.bindTo('clickable', marker);
-    label.bindTo('zIndex', marker);
+        label.bindTo('visible', marker);
+        label.bindTo('clickable', marker);
+        label.bindTo('zIndex', marker);
 
-    marker.label = label;
+        marker.label = label;
     
-    marker.setIcon("/images/ico-pin-selected.png");
+        marker.setIcon("/images/ico-pin-selected.png");
    
-    //    if (marker.getAnimation() == null) {
-    //        marker.setAnimation(google.maps.Animation.BOUNCE);
-    //        setTimeout(function() {
-    //            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-    //        }, 740);
-    //    }
+        //    if (marker.getAnimation() == null) {
+        //        marker.setAnimation(google.maps.Animation.BOUNCE);
+        //        setTimeout(function() {
+        //            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
+        //        }, 740);
+        //    }
 
-    var latlng = marker.getPosition();
-    $('#location-lat-field').val(latlng.lat());
-    $('#location-lng-field').val(latlng.lng());
-    if (changeInputField) $('.location-name-field').val(marker.title);
-    setTimeout(function() {
-        //$('#marker-name-field').focus();
-        }, 100);
+        var latlng = marker.getPosition();
+        $('#location-lat-field').val(latlng.lat());
+        $('#location-lng-field').val(latlng.lng());
+        if (changeInputField) $('.location-name-field').val(marker.title);
+        setTimeout(function() {
+            //$('#marker-name-field').focus();
+            }, 100);
+    }
 }
 
 // don't allow enter to submit form
