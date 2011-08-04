@@ -38,7 +38,7 @@ class Event < ActiveRecord::Base
       :message => "SocialStreet Event Created: #{record.name}"
     ) if record.facebook }
 
-  before_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
+  after_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
 
   validates :name, :presence => true, :length => { :maximum => 60 }
   validates :starts_at, :presence => true
@@ -255,7 +255,7 @@ class Event < ActiveRecord::Base
 
   def set_default_title
     self.name = (searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
-    self.name << (" @ " + (location_address ? location_address.to_s.split(",").first.strip : "Somewhere"))
+    self.name << (" @ " + (location.text ? location.text : "#{location.street} #{location.city}, #{location.state}"))
     self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
   end
 

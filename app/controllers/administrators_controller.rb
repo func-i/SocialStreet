@@ -7,6 +7,7 @@ class AdministratorsController < ApplicationController
   before_filter :require_permission, :only => [:edit, :update]
 
   def new
+    load_connections()
     @rsvps = @event.rsvps.all
     @connections = current_user.connections.most_relevant_first.all
     @administrator_rsvps = @rsvps.select &:administrator?
@@ -43,6 +44,34 @@ class AdministratorsController < ApplicationController
   end
   
   protected
+
+  def load_connections
+
+    # => TODO: Add search user search functionality to endless pagination.
+
+    @per_page = 24
+    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+
+    # => TODO: see if you can take that inline string notation out
+    @users = User.select("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, rsvps.administrator").
+      joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
+      joins("LEFT OUTER JOIN rsvps ON rsvps.user_id = users.id AND rsvps.event_id = #{@event.id}").
+      where("users.id <> ?", current_user.id).
+      where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
+      group("users.id, users.first_name, users.last_name, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at, rsvps.administrator").
+      order("connections.strength DESC NULLS LAST, connections.created_at ASC NULLS LAST")
+
+    @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
+    @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
+
+    @users = @users.
+      limit(@per_page).
+      offset(@offset)
+
+    @num_pages_administrators = (@total_count.to_f / @per_page.to_f).ceil
+
+  end
+
 
   def require_event
     @event = Event.find params[:event_id].to_i

@@ -63,6 +63,9 @@
 <script>
 
   $(function(){
+    $.each($('.result-list-item'), function(index, rLI) {
+      $(rLI).hide();
+    });
 
     $('.btn-open').click(function(){      
       $('.short-box').addClass('open', 1, function(){

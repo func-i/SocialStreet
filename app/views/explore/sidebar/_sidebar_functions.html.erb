@@ -172,6 +172,7 @@
       if(marker.geocodableAddress != null)
         $('.address').html(marker.geocodableAddress);
       else
+        console.log(marker)
         $('.address').html('');
 
   <% else %>
@@ -331,7 +332,7 @@
     }
     else{
       if(navigator.geolocation){
-        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail);
+        var pos = navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationFail, {maximumAge: 60000});
         console.log("JOSHY");
         console.log(pos);
       }
@@ -401,7 +402,7 @@
       //new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
       //new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
   <% end %>
-    infoWindow = new google.maps.InfoWindow();
+    //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
 
     function changeExploreLocationParams(event) {
