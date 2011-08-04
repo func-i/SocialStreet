@@ -167,16 +167,16 @@ class ExploreController < ApplicationController
         if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
           if current_user
             latitude = current_user.last_known_latitude
-            longitude = current_user.last_known_longitude
-          else
-            #TODO - unlogged in user coming to our site for first time...setting to toronto for now...
-            latitude = 43.66061599944655
-            longitude = -79.3938175316406
+            longitude = current_user.last_known_longitude          
           end
         else
           latitude = cookies[:current_location_latitude].to_f
           longitude = cookies[:current_location_longitude].to_f
         end
+
+        #TODO - unlogged in user coming to our site for first time...setting to toronto for now...
+        latitude ||= 43.66061599944655
+        longitude ||= -79.3938175316406
 
         params[:map_center] = "#{latitude},#{longitude}"
       end

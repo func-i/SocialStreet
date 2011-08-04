@@ -99,8 +99,8 @@
 
     function placeExploreMarker(location, searchableID, selected, geocodableAddress) {
 
-      var icoImage = "/images/ico-pin.png";
-      var moImage = "/images/ico-pin.png";
+      var icoImage = "/images/map_pin.png";
+      //var moImage = "/images/ico-pin.png";
 
       if(selected == null) {
         if(searchableID == <%= params[:selected_searchable].to_i -%>)
@@ -133,23 +133,13 @@
       selectMarker(marker, true); //Commented out until proper functionality is determined
     });
 
-    google.maps.event.addListener(marker, "mouseover", function(){
-      if(selectedMarker != marker)
-        marker.setIcon("/images/ico-pin-hover.png");
-    });
-
-    google.maps.event.addListener(marker, "mouseout", function(){
-      if(selectedMarker != marker)
-        marker.setIcon(moImage);
-    });
-      
     sideBarMarkers.push(marker);
     //markerCluster.addMarkers(markers);
   }
 
   function selectMarker(marker) {
     if(selectedMarker != null && selectedMarker != marker)
-      selectedMarker.setIcon("/images/ico-pin.png");
+      selectedMarker.setIcon("/images/map_pin.png");
 
     selectedMarker = marker;
 
@@ -173,7 +163,7 @@
         $('.address').html(marker.geocodableAddress);
       else
         console.log(marker)
-        $('.address').html('');
+      $('.address').html('');
 
   <% else %>
       $.each($('.result-list-item'), function(index, rLI) {
@@ -345,9 +335,9 @@
       $.each(cMarkers, function(index, mkr) {
         if(index == 0) {
           if(selectedMarker != null && selectedMarker != mkr)
-            selectedMarker.setIcon("/images/ico-pin.png");
+            selectedMarker.setIcon("/images/map_pin.png");
 
-          <%- if params[:view].eql?("map") -%>
+  <%- if params[:view].eql?("map") -%>
             $.each($('.result-list-item'), function(index, rLI) {
               $(rLI).hide();
             });
@@ -357,22 +347,22 @@
             else
               $('.address').html('');
 
-          <%- else -%>
+  <%- else -%>
 
             $.each($('.result-list-item'), function(index, rLI) {
               $(rLI).css("background-color", '#FFFFFF');
             });
-          <%- end -%>
+  <%- end -%>
 
           selectedMarker = mkr;
           $('#selected_searchable').val(mkr.searchableID);
         }
 
-        <%- unless params[:view].eql?("map") -%>
+  <%- unless params[:view].eql?("map") -%>
           $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
-        <% else %>
+  <% else %>
           $('#result_for_searchable_' + mkr.searchableID).show();
-        <%- end -%>
+  <%- end -%>
           
       });
     });
