@@ -100,7 +100,6 @@ $(function() {
 
             if($(this).attr("container-selector") == '#explore-keywords'){
                 caller = "explore";
-
                 //updateCommentBox();
             }
             else

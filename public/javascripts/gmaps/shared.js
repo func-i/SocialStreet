@@ -1,5 +1,7 @@
 function clearMarkers() {
-    $.each(markers, function(index, marker) {
+    var markersToClear = arraySubtract(markers, preservedMarkers);
+    
+    $.each(markersToClear, function(index, marker) {
         marker.setMap(null);
     });
     markers = [];
@@ -35,8 +37,8 @@ $(function() {
             $('#map_center').val(c.lat() + ',' + c.lng());
 
             if(history && history.replaceState)
-                history.replaceState(null, null, getSearchParams());
-            refreshResults("events");
+                //history.replaceState(null, null, getSearchParams());
+                refreshResults("events");
         }, 15);
     }
 

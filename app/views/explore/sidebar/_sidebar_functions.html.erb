@@ -99,8 +99,8 @@
 
     function placeExploreMarker(location, searchableID, selected, geocodableAddress) {
 
-      var icoImage = "/images/ico-pin.png";
-      var moImage = "/images/ico-pin.png";
+      var icoImage = "/images/map_pin.png";
+      //var moImage = "/images/ico-pin.png";
 
       if(selected == null) {
         if(searchableID == <%= params[:selected_searchable].to_i -%>)
@@ -108,7 +108,7 @@
       }
 
       if(selected == true) {
-        icoImage = moImage = '/images/ico-pin-selected.png';
+        icoImage = '/images/ico-pin-selected.png';
   <%- if params[:view].eql?("map") %>
           $('#result_for_searchable_' + searchableID).show();
   <% else %>
@@ -133,23 +133,14 @@
         selectMarker(marker, true); //Commented out until proper functionality is determined
       });
 
-      google.maps.event.addListener(marker, "mouseover", function(){
-        if(selectedMarker != marker)
-          marker.setIcon("/images/ico-pin-hover.png");
-      });
 
-      google.maps.event.addListener(marker, "mouseout", function(){
-        if(selectedMarker != marker)
-          marker.setIcon(moImage);
-      });
-      
       sideBarMarkers.push(marker);
       //markerCluster.addMarkers(markers);
     }
 
     function selectMarker(marker) {
       if(selectedMarker != null && selectedMarker != marker)
-        selectedMarker.setIcon("/images/ico-pin.png");
+        selectedMarker.setIcon("/images/map_pin.png");
 
       selectedMarker = marker;
 
@@ -169,11 +160,12 @@
 
         $('#result_for_searchable_' + marker.searchableID).show();
 
-        if(marker.geocodableAddress != null)
+        if(marker.geocodableAddress != null){
           $('.address').html(marker.geocodableAddress);
-        else
-          console.log(marker)
-        $('.address').html('');
+        }
+        else{
+          $('.address').html('');
+        }
 
   <% else %>
         $.each($('.result-list-item'), function(index, rLI) {
@@ -345,7 +337,7 @@
         $.each(cMarkers, function(index, mkr) {
           if(index == 0) {
             if(selectedMarker != null && selectedMarker != mkr)
-              selectedMarker.setIcon("/images/ico-pin.png");
+              selectedMarker.setIcon("/images/map-pin.png");
 
   <%- if params[:view].eql?("map") -%>
               $.each($('.result-list-item'), function(index, rLI) {

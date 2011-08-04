@@ -7,6 +7,7 @@ var selectedMarker = null;
 var controlUI = null;
 var mc;
 var overlay;
+var preservedMarkers = [];
 
 // for testing only;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
@@ -67,7 +68,7 @@ function disableDropPinState() {
     controlUI.style.backgroundColor = 'white';
 }
 
-function placeMarker(location, title, contents) {
+function placeMarker(location, title, dragged) {
     var marker = new google.maps.Marker({
         map: map,
         position: location,
@@ -97,6 +98,9 @@ function placeMarker(location, title, contents) {
 
     });
     markers.push(marker);
+    if(dragged == true)
+        preservedMarkers.push(marker);
+    
     google.maps.event.trigger(marker, 'click');
 
     map.setCenter(location);
@@ -117,8 +121,7 @@ function DropPinControl(controlImg, controlText, map) {
 
     controlImg.onmouseout = function() {
         this.src='/images/ico-pin.png';
-    }
-    
+    }    
 
     controlText.style.marginRight = '10px';
     controlText.style.padding = '5px';
@@ -126,9 +129,7 @@ function DropPinControl(controlImg, controlText, map) {
     controlText.style.color = '#0981BE';    
     controlText.style.fontFamily = 'Arial,sans-serif';
     controlText.style.fontSize = '14px';
-    controlText.innerHTML = 'Drag & Drop Pin';
-
-    
+    controlText.innerHTML = 'Drag & Drop Pin';    
 
     // Set CSS styles for the DIV containing the control
     // Setting padding to 5 px will offset the control
@@ -143,8 +144,7 @@ function DropPinControl(controlImg, controlText, map) {
             //The additions to ui.position are to correct for the padding and image size (so we drop it at the point and not top left corner
             var proj = new ProjectionHelperOverlay(map);
             var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(ui.position.left+20, ui.position.top+48));
-            console.log(ui);
-            placeMarker(new google.maps.LatLng(pos.lat(), pos.lng()));
+            placeMarker(new google.maps.LatLng(pos.lat(), pos.lng()), '', true);
 
             //placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));
             dropPinState = false;            
@@ -198,7 +198,6 @@ ProjectionHelperOverlay.prototype.draw = function () {
     }
 };
 
-
 // Define the overlay, derived from google.maps.OverlayView
 function Label(opt_options) {
     // Initialization
@@ -211,14 +210,12 @@ function Label(opt_options) {
     'white-space: nowrap; ' +
     'padding: 5px; background-color: white';
 
-
     var div = this.div_ = document.createElement('div');
     div.appendChild(span);
     div.style.cssText = 'position: absolute; display: none';
 }
 
 Label.prototype = new google.maps.OverlayView;
-
 
 // Implement onAdd
 Label.prototype.onAdd = function() {
@@ -290,7 +287,7 @@ Label.prototype.draw = function() {
 };
 
 function clearMarkers() {
-    $.each(markers, function(index, marker) {
+    $.each(arraySubtract(markers, preservedMarkers), function(index, marker) {
         marker.setMap(null);
     });
     markers = [];
@@ -351,12 +348,18 @@ function selectEventMarker(marker, changeInputField) {
 
     if(selectedMarker != null && selectedMarker != marker) {
         selectedMarker.setIcon("/images/map_pin.png");
+        $.each(preservedMarkers, function(index, ele) {
+            if(ele == selectedMarker)
+                preservedMarkers.splice(index, 1);
+        });
+
         if(selectedMarker.label != undefined)
             selectedMarker.label.setMap(null);
     }
 
     if(selectedMarker == null || (selectedMarker != null && selectedMarker != marker)) {
         selectedMarker = marker;
+        preservedMarkers.push(marker);
     
         var label = new Label({
             map: map
