@@ -3,10 +3,7 @@
   '<%= escape_javascript render("results", :searchable_results => @searchables)%>'
 );
 
-<% if @offset + @per_page >= @searchable_total_count && (!params[:view].eql?("map") || @searchable_total_count < @@more_results_limit)%>
-    console.log("JOSHY 2");
-    console.log(<%=@searchable_total_count%>);
-    console.log(<%=@@more_results_limit%>);
+<% if @offset + @per_page >= @searchable_total_count && (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)%>
     $('#end-of-results-message').show();
 <% end %>
 

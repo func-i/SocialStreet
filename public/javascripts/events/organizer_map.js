@@ -99,7 +99,7 @@ function placeMarker(location, title, contents) {
     markers.push(marker);
     google.maps.event.trigger(marker, 'click');
 
-//map.setCenter(location);
+    map.setCenter(location);
 }
 
 function setTitle() {
@@ -316,7 +316,6 @@ function searchLocations(e) {
             });
             selectMarker(markers[0], false);
         } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-      
             var sw = map.getBounds().getSouthWest();
             var ne = map.getBounds().getNorthEast();
             var sw_lat = sw.lat(), sw_lng = sw.lng();

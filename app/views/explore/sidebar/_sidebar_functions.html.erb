@@ -110,48 +110,48 @@
       if(selected == true) {
         icoImage = moImage = '/images/ico-pin-selected.png';
   <%- if params[:view].eql?("map") %>
-        $('#result_for_searchable_' + searchableID).show();
+          $('#result_for_searchable_' + searchableID).show();
   <% else %>
-        $('#result_for_searchable_' + searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
+          $('#result_for_searchable_' + searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
   <%- end -%>
+      }
+
+      var marker = new google.maps.Marker({
+        map: sideMap,
+        position: location,
+        icon: icoImage
+      });
+
+      if(selected == true)
+        selectedMarker = marker;
+
+      marker.searchableID = searchableID;
+      marker.geocodableAddress = geocodableAddress;
+
+      google.maps.event.addListener(marker, 'click', function() {
+        marker.setIcon("/images/ico-pin-selected.png");
+        selectMarker(marker, true); //Commented out until proper functionality is determined
+      });
+
+      google.maps.event.addListener(marker, "mouseover", function(){
+        if(selectedMarker != marker)
+          marker.setIcon("/images/ico-pin-hover.png");
+      });
+
+      google.maps.event.addListener(marker, "mouseout", function(){
+        if(selectedMarker != marker)
+          marker.setIcon(moImage);
+      });
+      
+      sideBarMarkers.push(marker);
+      //markerCluster.addMarkers(markers);
     }
 
-    var marker = new google.maps.Marker({
-      map: sideMap,
-      position: location,
-      icon: icoImage
-    });
+    function selectMarker(marker) {
+      if(selectedMarker != null && selectedMarker != marker)
+        selectedMarker.setIcon("/images/ico-pin.png");
 
-    if(selected == true)
       selectedMarker = marker;
-
-    marker.searchableID = searchableID;
-    marker.geocodableAddress = geocodableAddress;
-
-    google.maps.event.addListener(marker, 'click', function() {
-      marker.setIcon("/images/ico-pin-selected.png");
-      selectMarker(marker, true); //Commented out until proper functionality is determined
-    });
-
-    google.maps.event.addListener(marker, "mouseover", function(){
-      if(selectedMarker != marker)
-        marker.setIcon("/images/ico-pin-hover.png");
-    });
-
-    google.maps.event.addListener(marker, "mouseout", function(){
-      if(selectedMarker != marker)
-        marker.setIcon(moImage);
-    });
-      
-    sideBarMarkers.push(marker);
-    //markerCluster.addMarkers(markers);
-  }
-
-  function selectMarker(marker) {
-    if(selectedMarker != null && selectedMarker != marker)
-      selectedMarker.setIcon("/images/ico-pin.png");
-
-    selectedMarker = marker;
 
   <%#*if (marker.getAnimation() == null) {%>
   <%#*marker.setAnimation(google.maps.Animation.BOUNCE);%>
@@ -160,237 +160,60 @@
   <%#*}, 200);%>
   <%#*}%>
     
-    $('#selected_searchable').val(marker.searchableID);
+      $('#selected_searchable').val(marker.searchableID);
 
   <%- if params[:view].eql?("map") -%>
-      $.each($('.result-list-item'), function(index, rLI) {
-        $(rLI).hide();
-      });
+        $.each($('.result-list-item'), function(index, rLI) {
+          $(rLI).hide();
+        });
 
-      $('#result_for_searchable_' + marker.searchableID).show();
+        $('#result_for_searchable_' + marker.searchableID).show();
 
-      if(marker.geocodableAddress != null)
-        $('.address').html(marker.geocodableAddress);
-      else
-        console.log(marker)
+        if(marker.geocodableAddress != null)
+          $('.address').html(marker.geocodableAddress);
+        else
+          console.log(marker)
         $('.address').html('');
 
   <% else %>
-      $.each($('.result-list-item'), function(index, rLI) {
-        $(rLI).css('background-color', '#FFFFFF');
-      });
+        $.each($('.result-list-item'), function(index, rLI) {
+          $(rLI).css('background-color', '#FFFFFF');
+        });
 
-      $('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
+        $('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
 
   <% end %>
       
-    //moveExploreMap(marker, marker.position);
+      //moveExploreMap(marker, marker.position);
     
 
-    //infoWindow.setContent(marker.title);
-    //infoWindow.open(sideMap, marker);
-  }
-
-  function moveExploreMap(e, latLng) {
-
-    if(latLng == null) {
-      var loc = e.target.value;
-      geocoder.geocode({address: loc}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          sideMap.setCenter(results[0].geometry.location);
-          changeExploreLocationParams();
-          $('#location-not-found').hide();
-        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-          $('#location-not-found').show();
-        }
-      });
+      //infoWindow.setContent(marker.title);
+      //infoWindow.open(sideMap, marker);
     }
-    else if(latLng != null) {
-      sideMap.setCenter(latLng);
-      changeExploreLocationParams();
-      $('#location-not-found').hide();
-    }
-  }
 
-  function changeExploreLocationParams(event) {
+    function moveExploreMap(e, latLng) {
 
-    setTimeout(function() {
-      var zoom = sideMap.getZoom();
-      $('#map_zoom').val(zoom);
-
-      bounds = sideMap.getBounds();
-      ne = bounds.getNorthEast();
-      sw = bounds.getSouthWest();
-      c = bounds.getCenter();
-
-      $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-      $('#map_center').val(c.lat() + ',' + c.lng());
-
-      if(history && history.replaceState)
-        history.replaceState(null, null, getSearchParams());
-
-      refreshResults("explore");
-    }, 15);
-  }
-
-  function setMapLocation(resultType){
-    var latlng = sideMap.getCenter();
-    geocoder.geocode( {
-      'latLng': latlng
-    }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK)
-        $.each(results, function(index, result){
-          $.each(result.types, function(index_2, type){
-            if(type == resultType){
-              $('#map_location').val(result.formatted_address);
-              updateCommentBox();
-            }
-          });
-      });
-    });
-  }
-
-  $(function() {
-
-    //Update comment box address and keywords
-    updateCommentBox();
-
-    //History for ajax calls
-    if(history && history.pushState) {
-      //if(!$.browser.webit==true){
-      $(window).bind("popstate", function(){
-
-        var keywordParams = $(document).getUrlParam("keywords[]");
-        if(typeof keywordParams == "string" || keywordParams == null)
-          keywordParams = new Array(keywordParams);
-
-        $.each(keywordParams, function(keywordIndex, keywordParam) {
-          addKeyword(keywordParam, '#explore-keywords');
-        });
-
-        $.each(arraySubtract(existingKeywords('#explore-keywords'), keywordParams), function(mk, missingKeyword){
-          removeKeyword(missingKeyword);
-        });
-
-        if($(document).getUrlParam("map_center") != null)
-          sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
-
-
-        var dtOptions = $(document).getUrlParam("date_search[]");
-
-        if(dtOptions != undefined) {
-
-          var uScapedDtOptions = new Array;
-
-          if(dtOptions instanceof Array) {
-            $.each(dtOptions, function(i, e) {
-              uScapedDtOptions.push(unescape(e));
-            });
+      if(latLng == null) {
+        var loc = e.target.value;
+        geocoder.geocode({address: loc}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            sideMap.setCenter(results[0].geometry.location);
+            changeExploreLocationParams();
+            $('#location-not-found').hide();
+          } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+            $('#location-not-found').show();
           }
-          else
-            uScapedDtOptions.push(unescape(dtOptions));
-
-          $.each($('.calendar-times'), function(index, ele) {
-            if($.inArray($(ele).attr("d-pos"), uScapedDtOptions) > -1)
-              $(ele).addClass('select');
-            else
-              $(ele).removeClass('select');
-          });
-        }
-        else {
-          $.each($('.calendar-times'), function(index, ele) {
-            $(ele).removeClass('select');
-          });
-        }
-
-
-        $.getScript(location.href);
-      });
-      //}
-    }
-
-    //Bind for address text box
-    $('#map_location').keydown(function(e) {
-      if (e.keyCode == 13) {
-        e.stopPropagation();
-        moveExploreMap(e);
-        return false;
+        });
       }
-      return true;
-    });
-
-
-    /* geolocation and map stuff */
-    var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
-
-    //Create sidemap
-    var sidebarMapOptions = {
-      zoom: <%= params[:map_zoom] || 9 %>,
-      center: loc,
-      mapTypeControl: false,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      streetViewControl: false
-    };
-    var mcSidebarOptions = {
-      gridSize: 50,
-      maxZoom: 12,
-      zoomOnClick: false
-    };
-    sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
-
-    markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
-
-    google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
-      cMarkers = cluster.getMarkers();
-      $.each(cMarkers, function(index, mkr) {
-        if(index == 0) {
-          if(selectedMarker != null && selectedMarker != mkr)
-            selectedMarker.setIcon("/images/ico-pin.png");
-
-          <%- if params[:view].eql?("map") -%>
-            $.each($('.result-list-item'), function(index, rLI) {
-              $(rLI).hide();
-            });
-
-            if(mkr.geocodableAddress != null)
-              $('.address').html(mkr.geocodableAddress);
-            else
-              $('.address').html('');
-
-          <%- else -%>
-
-            $.each($('.result-list-item'), function(index, rLI) {
-              $(rLI).css("background-color", '#FFFFFF');
-            });
-          <%- end -%>
-
-          selectedMarker = mkr;
-          $('#selected_searchable').val(mkr.searchableID);
-        }
-
-        <%- unless params[:view].eql?("map") -%>
-          $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
-        <% else %>
-          $('#result_for_searchable_' + mkr.searchableID).show();
-        <%- end -%>
-          
-      });
-    });
-
-
-
-  <% if params[:view] == "list" && !params[:map_bounds].blank? %>
-    <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
-    <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-      //sideMap.fitBounds(new google.maps.LatLngBounds(
-      //new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-      //new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
-  <% end %>
-    //infoWindow = new google.maps.InfoWindow();
-    geocoder = new google.maps.Geocoder();
+      else if(latLng != null) {
+        sideMap.setCenter(latLng);
+        changeExploreLocationParams();
+        $('#location-not-found').hide();
+      }
+    }
 
     function changeExploreLocationParams(event) {
-     
+
       setTimeout(function() {
         var zoom = sideMap.getZoom();
         $('#map_zoom').val(zoom);
@@ -403,8 +226,6 @@
         $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
         $('#map_center').val(c.lat() + ',' + c.lng());
 
-        setMapLocation("street_address");
-
         if(history && history.replaceState)
           history.replaceState(null, null, getSearchParams());
 
@@ -412,22 +233,201 @@
       }, 15);
     }
 
-    setMapLocation("street_address");
+    function setMapLocation(resultType){
+      var latlng = sideMap.getCenter();
+      geocoder.geocode( {
+        'latLng': latlng
+      }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK)
+          $.each(results, function(index, result){
+            $.each(result.types, function(index_2, type){
+              if(type == resultType){
+                $('#map_location').val(result.formatted_address);
+                updateCommentBox();
+              }
+            });
+        });
+      });
+    }
+
+    $(function() {
+
+      //Update comment box address and keywords
+      updateCommentBox();
+
+      //History for ajax calls
+      if(history && history.pushState) {
+        //if(!$.browser.webit==true){
+        $(window).bind("popstate", function(){
+
+          var keywordParams = $(document).getUrlParam("keywords[]");
+          if(typeof keywordParams == "string" || keywordParams == null)
+            keywordParams = new Array(keywordParams);
+
+          $.each(keywordParams, function(keywordIndex, keywordParam) {
+            addKeyword(keywordParam, '#explore-keywords');
+          });
+
+          $.each(arraySubtract(existingKeywords('#explore-keywords'), keywordParams), function(mk, missingKeyword){
+            removeKeyword(missingKeyword);
+          });
+
+          if($(document).getUrlParam("map_center") != null)
+            sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
+
+
+          var dtOptions = $(document).getUrlParam("date_search[]");
+
+          if(dtOptions != undefined) {
+
+            var uScapedDtOptions = new Array;
+
+            if(dtOptions instanceof Array) {
+              $.each(dtOptions, function(i, e) {
+                uScapedDtOptions.push(unescape(e));
+              });
+            }
+            else
+              uScapedDtOptions.push(unescape(dtOptions));
+
+            $.each($('.calendar-times'), function(index, ele) {
+              if($.inArray($(ele).attr("d-pos"), uScapedDtOptions) > -1)
+                $(ele).addClass('select');
+              else
+                $(ele).removeClass('select');
+            });
+          }
+          else {
+            $.each($('.calendar-times'), function(index, ele) {
+              $(ele).removeClass('select');
+            });
+          }
+
+
+          $.getScript(location.href);
+        });
+        //}
+      }
+
+      //Bind for address text box
+      $('#map_location').keydown(function(e) {
+        if (e.keyCode == 13) {
+          e.stopPropagation();
+          moveExploreMap(e);
+          return false;
+        }
+        return true;
+      });
+
+
+      /* geolocation and map stuff */
+      var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
+
+      //Create sidemap
+      var sidebarMapOptions = {
+        zoom: <%= params[:map_zoom] || 9 %>,
+        center: loc,
+        mapTypeControl: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false
+      };
+      var mcSidebarOptions = {
+        gridSize: 50,
+        maxZoom: 12,
+        zoomOnClick: false
+      };
+      sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
+
+      markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
+
+      google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+        cMarkers = cluster.getMarkers();
+        $.each(cMarkers, function(index, mkr) {
+          if(index == 0) {
+            if(selectedMarker != null && selectedMarker != mkr)
+              selectedMarker.setIcon("/images/ico-pin.png");
+
+  <%- if params[:view].eql?("map") -%>
+              $.each($('.result-list-item'), function(index, rLI) {
+                $(rLI).hide();
+              });
+
+              if(mkr.geocodableAddress != null)
+                $('.address').html(mkr.geocodableAddress);
+              else
+                $('.address').html('');
+
+  <%- else -%>
+
+              $.each($('.result-list-item'), function(index, rLI) {
+                $(rLI).css("background-color", '#FFFFFF');
+              });
+  <%- end -%>
+
+            selectedMarker = mkr;
+            $('#selected_searchable').val(mkr.searchableID);
+          }
+
+  <%- unless params[:view].eql?("map") -%>
+            $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
+  <% else %>
+            $('#result_for_searchable_' + mkr.searchableID).show();
+  <%- end -%>
+          
+        });
+      });
+
+
+
+  <% if params[:view] == "list" && !params[:map_bounds].blank? %>
+    <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
+    <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
+        //sideMap.fitBounds(new google.maps.LatLngBounds(
+        //new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+        //new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+  <% end %>
+      //infoWindow = new google.maps.InfoWindow();
+      geocoder = new google.maps.Geocoder();
+
+      function changeExploreLocationParams(event) {
+     
+        setTimeout(function() {
+          var zoom = sideMap.getZoom();
+          $('#map_zoom').val(zoom);
+
+          bounds = sideMap.getBounds();
+          ne = bounds.getNorthEast();
+          sw = bounds.getSouthWest();
+          c = bounds.getCenter();
+
+          $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+          $('#map_center').val(c.lat() + ',' + c.lng());
+
+          setMapLocation("street_address");
+
+          if(history && history.replaceState)
+            history.replaceState(null, null, getSearchParams());
+
+          refreshResults("explore");
+        }, 15);
+      }
+
+      setMapLocation("street_address");
     
-    google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
-    google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
-    google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
-    //$(window).resize(changeLocationParams);
+      google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
+      google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
+      google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
+      //$(window).resize(changeLocationParams);
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
       <% if searchable.geo_located? %>
-          placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address -%>');
+            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address -%>');
       <% end %>
     <% end %>
   <% end %>
 
-    placeSidebarClusterMarkers();
+      placeSidebarClusterMarkers();
 
-  });
+    });
   </script>
 <% end %>
