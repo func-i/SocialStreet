@@ -53,7 +53,7 @@ $(function() {
     //homeControlDiv.index = 1;
 
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlImg);
-        map.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlText);
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlText);
 
 //    google.maps.event.addListener(map, 'click', function(event) {
 //            //disableDropPinState();
@@ -72,39 +72,27 @@ function placeMarker(location, title, contents) {
         map: map,
         position: location,
         title: title,
-        draggable:true,
         animation: google.maps.Animation.DROP,
         icon: 'images/ico-pin-selected.png'
     });
+
+    var label = new Label({
+        map: map
+    });
+
+    label.bindTo('position', marker);
+    label.bindTo('text', marker, 'title');
+    label.bindTo('visible', marker, 'labelVisible');
+    label.bindTo('clickable', marker);
+    label.bindTo('zIndex', marker);
+
+    marker.label = label;
+    marker.invisibleLabel = false;
     
-    google.maps.event.addListener(marker, 'click', function() {
-
-        var html = "";
-        var linkText = " <a href=\"#\" onclick=\"$('#marker-name').html($('#set-title').html()); setTitle(); $(this).hide(); return false;\">Set</a>"
-        html +=  "<div id='hidden-link' style='display:none'> " + linkText + "</div>"
-        html += "Name: <div id='marker-name'>" + marker.title + linkText + "</div><br />";
-        html += "<div id='set-title' style='display:none'><input id='marker-name-field' type='text' value='" + marker.title + "'/></div>"
-        
-        if(contents != undefined) {            
-            if(contents.street_address != undefined)
-                html += contents.street_address + "<br />"
-
-            if(contents.locality != undefined)
-                html += contents.locality + "<br />"
-
-            if(contents.administrative_area_level_1 != undefined)
-                html += contents.administrative_area_level_1 + "<br />"
-            
-            if(contents.country != undefined)
-                html += contents.country + "<br />"
-
-            if(contents.postal_code != undefined)
-                html += contents.postal_code + "<br />"
-        }
-
+    google.maps.event.addListener(marker, 'click', function() {       
         //infoWindow.setContent(html);
         selectEventMarker(marker, true);
-        //infoWindow.open(map, marker);
+    //infoWindow.open(map, marker);
         
 
     });
@@ -124,7 +112,7 @@ function DropPinControl(controlImg, controlText, map) {
     controlImg.style.marginRight = '48px';
     controlImg.style.cursor = 'pointer';
     controlImg.onmouseover = function() {
-     this.src='/images/ico-pin-hover.png';
+        this.src='/images/ico-pin-hover.png';
     }
 
     controlImg.onmouseout = function() {
@@ -208,7 +196,98 @@ ProjectionHelperOverlay.prototype.draw = function () {
         this.ready = true;
         google.maps.event.trigger(this, 'ready');
     }
-}; 
+};
+
+
+// Define the overlay, derived from google.maps.OverlayView
+function Label(opt_options) {
+    // Initialization
+    this.setValues(opt_options);
+
+
+    // Label specific
+    var span = this.span_ = document.createElement('span');
+    span.style.cssText = 'position: relative; left: -50%; top: -8px; ' +
+    'white-space: nowrap; ' +
+    'padding: 5px; background-color: white';
+
+
+    var div = this.div_ = document.createElement('div');
+    div.appendChild(span);
+    div.style.cssText = 'position: absolute; display: none';
+}
+
+Label.prototype = new google.maps.OverlayView;
+
+
+// Implement onAdd
+Label.prototype.onAdd = function() {
+    var pane = this.getPanes().overlayImage;
+    pane.appendChild(this.div_);
+
+
+    // Ensures the label is redrawn if the text or position is changed.
+    var me = this;
+    this.listeners_ = [
+    google.maps.event.addListener(this, 'position_changed', function() {
+        me.draw();
+    }),
+    google.maps.event.addListener(this, 'visible_changed', function() {
+        me.draw();
+    }),
+    google.maps.event.addListener(this, 'clickable_changed', function() {
+        me.draw();
+    }),
+    google.maps.event.addListener(this, 'text_changed', function() {
+        me.draw();
+    }),
+    google.maps.event.addListener(this, 'zindex_changed', function() {
+        me.draw();
+    }),
+    google.maps.event.addDomListener(this.div_, 'click', function() {
+        if (me.get('clickable')) {
+            google.maps.event.trigger(me, 'click');
+        }
+    })
+    ];
+};
+
+
+// Implement onRemove
+Label.prototype.onRemove = function() {
+    this.div_.parentNode.removeChild(this.div_);
+
+
+    // Label is removed from the map, stop updating its position/text.
+    for (var i = 0, I = this.listeners_.length; i < I; ++i) {
+        google.maps.event.removeListener(this.listeners_[i]);
+    }
+};
+
+
+// Implement draw
+Label.prototype.draw = function() {
+    var projection = this.getProjection();
+    var position = projection.fromLatLngToDivPixel(this.get('position'));
+
+    var div = this.div_;
+    div.style.left = position.x + 'px';
+    div.style.top = position.y + 15 + 'px';
+
+    var visible = this.get('visible');
+    div.style.display = visible ? 'block' : 'none';
+
+
+    var clickable = this.get('clickable');
+    this.span_.style.cursor = clickable ? 'pointer' : '';
+
+
+    var zIndex = this.get('zIndex');
+    div.style.zIndex = zIndex;
+
+
+    this.span_.innerHTML = this.get('text').toString();
+};
 
 function clearMarkers() {
     $.each(markers, function(index, marker) {
@@ -271,12 +350,31 @@ function updateMarkerTitle() {
 
 function selectEventMarker(marker, changeInputField) {
 
-    if(selectedMarker != null && selectedMarker != marker)
-        selectedMarker.setIcon("/images/ico-pin.png");
+    if(selectedMarker != null && selectedMarker != marker) {
+        selectedMarker.setIcon("/images/map_pin.png");
+        selectedMarker.label.setMap(null);
+    }
 
     selectedMarker = marker;
-    marker.setIcon("/images/ico-pin-selected.png");
+    
+    var label = new Label({
+        map: map
+    });
 
+    label.bindTo('position', marker);
+
+    var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; z-index: 100;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
+    marker.htmlTitle = linkText;
+    label.bindTo('text', marker, 'htmlTitle');
+
+    label.bindTo('visible', marker);
+    label.bindTo('clickable', marker);
+    label.bindTo('zIndex', marker);
+
+    marker.label = label;
+    
+    marker.setIcon("/images/ico-pin-selected.png");
+   
     //    if (marker.getAnimation() == null) {
     //        marker.setAnimation(google.maps.Animation.BOUNCE);
     //        setTimeout(function() {
@@ -289,8 +387,8 @@ function selectEventMarker(marker, changeInputField) {
     $('#location-lng-field').val(latlng.lng());
     if (changeInputField) $('.location-name-field').val(marker.title);
     setTimeout(function() {
-        $('#marker-name-field').focus();
-    }, 100);
+        //$('#marker-name-field').focus();
+        }, 100);
 }
 
 // don't allow enter to submit form
@@ -304,6 +402,9 @@ $('.location-name-field').keydown(function(e) {
     return true;
 });
 
+$('#marker-name-field').live('click', function() {
+    $(this).focus();
+});
 
 $('#marker-name-field').live('keyup', function(e) {
     $('.location-name-field').val(this.value);
@@ -312,8 +413,10 @@ $('#marker-name-field').live('keyup', function(e) {
 }).live('keydown', function(e) {
     if (e.keyCode == 13) {
         e.stopPropagation();        
-        $('#marker-name').html(this.value + $('#hidden-link').html());
-        $('#set-title').children('input')[0].value = this.value;
+        //$('#marker-name').html(this.value + $('#hidden-link').html());
+        //$('#set-title').children('input')[0].value = this.value;
+        $(this).siblings('a').show();
+        $(this).hide();
         return false;
     }
 });
@@ -323,7 +426,13 @@ function clearClusterMarkers() {
     mc.clearMarkers();
     markers = [];
 }
+
 function placeClusterMarkers(){
     if(markers.length > 0)
         mc.addMarkers(markers);
+}
+
+function labelClicked(lnk) {  
+    $(lnk).siblings('input').show();
+    $(lnk).hide();
 }
