@@ -41,13 +41,19 @@ $(function() {
 
     // Create the DIV to hold the control and call the DropPinControl() constructor
     // passing in this DIV.
-    var homeControlImg = document.createElement('IMG');
-    homeControlImg.src = '/images/ico-pin.png';
+   
 
-    var homeControl = new DropPinControl(homeControlImg, map);
+    //var homeControlDiv = document.createElement('SPAN');
+    var controlImg = document.createElement('IMG');
+    controlImg.src = '/images/ico-pin.png';
+    
+    var controlText = document.createElement('DIV'); 
+    var homeControl = new DropPinControl(controlImg, controlText, map);
 
-    homeControlImg.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlImg);
+    //homeControlDiv.index = 1;
+
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlImg);
+        map.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlText);
 
 //    google.maps.event.addListener(map, 'click', function(event) {
 //            //disableDropPinState();
@@ -112,12 +118,34 @@ function setTitle() {
     $('#marker-name-field').val($('.location-name-field').val());
 }
 
-function DropPinControl(controlImg, map) {
+function DropPinControl(controlImg, controlText, map) {
+
+    controlImg.style.paddingTop = '5px';
+    controlImg.style.marginRight = '48px';
+    controlImg.style.cursor = 'pointer';
+    controlImg.onmouseover = function() {
+     this.src='/images/ico-pin-hover.png';
+    }
+
+    controlImg.onmouseout = function() {
+        this.src='/images/ico-pin.png';
+    }
+    
+
+    controlText.style.marginRight = '10px';
+    controlText.style.padding = '5px';
+    controlText.style.backgroundColor = 'white';
+    controlText.style.color = '#0981BE';    
+    controlText.style.fontFamily = 'Arial,sans-serif';
+    controlText.style.fontSize = '14px';
+    controlText.innerHTML = 'Drag & Drop Pin';
+
+    
 
     // Set CSS styles for the DIV containing the control
     // Setting padding to 5 px will offset the control
     // from the edge of the map
-    controlImg.style.padding = '5px';
+    
     $(controlImg).draggable({
         helper: 'clone',
         drag: function(event, ui){
@@ -126,14 +154,17 @@ function DropPinControl(controlImg, map) {
         stop: function(event, ui){
             //The additions to ui.position are to correct for the padding and image size (so we drop it at the point and not top left corner
             var proj = new ProjectionHelperOverlay(map);
-            var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(ui.position.left+23, ui.position.top+48));
-
+            var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(ui.position.left+20, ui.position.top+48));
+            console.log(ui);
             placeMarker(new google.maps.LatLng(pos.lat(), pos.lng()));
 
             //placeMarker(new google.maps.LatLng($('#current_map_pos_lat').val(), $('#current_map_pos_long').val()));
             dropPinState = false;            
         }
     });
+
+//controlDiv.appendChild(controlImg);
+    
 
 // Set CSS for the control border
 //    controlUI = document.createElement('DIV');
@@ -147,12 +178,7 @@ function DropPinControl(controlImg, map) {
 
 // Set CSS for the control interior
 //    var controlText = document.createElement('DIV');
-//    controlText.style.fontFamily = 'Arial,sans-serif';
-//    controlText.style.fontSize = '12px';
-//    controlText.style.paddingLeft = '4px';
-//    controlText.style.paddingRight = '4px';
-//    controlText.innerHTML = 'Drag Pin';
-//    controlUI.appendChild(controlText);
+
 
 // Setup the click event listeners: simply set the map to Chicago
 //    google.maps.event.addDomListener(controlImg, 'mousedown', function() {
