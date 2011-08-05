@@ -630,7 +630,7 @@ form, fieldset {
     height: 49px;
     background: url("../images/bg-form-post-message.png") no-repeat
 }
-.form-post-message .text input {
+.form-post-message .text textarea {
     float: left;
     color: #91c5d9;
     font: bold 19px/24px Arial, Helvetica, sans-serif;
