@@ -149,8 +149,6 @@ class ApplicationController < ActionController::Base
   end
 
   def create_search_subscription(params)
-    puts "HERE JOSHY HERE BOY"
-
     @search_subscription = SearchSubscription.new_from_params(params[:q])
     @search_subscription.user = current_user
     @search_subscription.attributes = params[:search_subscription]
@@ -192,12 +190,14 @@ class ApplicationController < ActionController::Base
       params[:map_center] = params[:comment_map_center]
       params[:map_location] = params[:comment_map_location]
 
+      puts "CREATING A NEW SEARCHABLE"
       @comment.searchable = Searchable.new_from_params(params)
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     elsif @commentable.searchable
       @comment.searchable = @commentable.searchable
     end
 
+    puts "SAVING COMMENT"
     if @comment.save
       @comment.reload
 

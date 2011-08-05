@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110804175945) do
+ActiveRecord::Schema.define(:version => 20110805143136) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -248,6 +248,7 @@ ActiveRecord::Schema.define(:version => 20110804175945) do
     t.float    "last_known_longitude"
     t.float    "last_known_latitude"
     t.datetime "last_known_location_datetime"
+    t.string   "password_salt"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

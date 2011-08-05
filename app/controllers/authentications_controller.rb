@@ -7,6 +7,8 @@ class AuthenticationsController < ApplicationController
   end
 
   def create
+    puts "AUTHENTICATE#CREATE"
+
     auth = request.env['omniauth.auth']
     authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
     

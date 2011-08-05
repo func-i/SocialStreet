@@ -206,7 +206,7 @@ class Searchable < ActiveRecord::Base
       title += 'Anything'
     end
 
-    if location.text && !location.text.blank?
+    if location && location.text && !location.text.blank?
       title += ' near ' + location.text
     end
 

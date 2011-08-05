@@ -25,6 +25,10 @@
 
 <script>
   $(function(){
+    $('.remove-comment-keyword').live('click', function(){
+      console.log("HERE"); //TODO - WHY ISN'T THIS CALLED?
+    });
+
     $('#explore-post-message-form').click(function(){
       $('.form-post-message').addClass("send");
       return false;
@@ -39,10 +43,6 @@
     $(document).bind("click", function() {
       $('.form-post-message').removeClass('send');
       $('#content').css("top", "");
-    });
-
-    $('.remove-comment-keyword').live('click', function(){
-      console.log("HERE"); //TODO - WHY ISN'T THIS CALLED?
     });
 
 

@@ -85,18 +85,20 @@ class Event < ActiveRecord::Base
         
     title = (self.searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
 
-    if self.location.text.blank?
-      if self.location.neighborhood.blank?
-        if self.location.route.blank?
-          title << " @ #{self.location.street}"
+    if self.location
+      if self.location.text.blank?
+        if self.location.neighborhood.blank?
+          if self.location.route.blank?
+            title << " @ #{self.location.street}"
+          else
+            title << " on #{self.location.route}"
+          end
         else
-          title << " on #{self.location.route}"
+          title << " in #{self.location.neighborhood}"
         end
       else
-          title << " in #{self.location.neighborhood}"
+        title << " @ #{self.location.text}"
       end
-    else
-          title << " @ #{self.location.text}"
     end
 
     title << (" - " + (self.starts_at ? self.starts_at.to_s(:date_with_time) : "Sometime"))
