@@ -38,26 +38,3 @@
     <% end %>
   </div>
 </div>
-
-<script>
-  $('[name=\'comment[body]\']').autoResize({
-    onResize : function() {
-      var txtDiv = $(this.form).children('fieldset').children('.text');
-      if(txtDiv.length > 0) {
-        txtDiv.css('overflow', 'visible');
-      }
-    },// After resize:
-    animateCallback : function() {
-      var txtDiv = $(this.form).children('fieldset').children('.text');
-      //if(parseInt($(this).css('height').replace('px', '')) > 100){
-        //txtDiv.css('background', 'none');
-      //}
-      //else {
-        txtDiv.css('height', (parseInt($(this).css('height').replace('px', '')) + 70) + 'px');
-        //txtDiv.css('background', 'url("/images/bg-form-post-message.png") no-repeat');
-        txtDiv.css('background-size', '640px ' + (parseInt($(this).css('height').replace('px', '')) + 40) + 'px');
-      //}
-    },
-    extraSpace: 0
-});
-</script>

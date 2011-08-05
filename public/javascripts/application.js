@@ -242,7 +242,7 @@ $(function() {
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, onGeoLocationError, {maximumAge: 600000});
+            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, function(){}, {maximumAge: 600000});
         }
     }
 })
@@ -252,8 +252,6 @@ function onGeoLocationSuccess(e){
         //TODO - should update the explore page results somehow....
         });
 }
-
-function onGeoLocationError(){}
 
 $.extend({
     getUrlVars: function(){

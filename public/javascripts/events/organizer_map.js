@@ -15,14 +15,14 @@ var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 
 $(function() {
     var loc;
-    if($('#users-current-location').length > 0)
-    {
-        var loc_arr = $('#users-current-location').val().split(',');
-        loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
-    }
-    else{
+    //if($('#users-current-location').length > 0)
+    //{
+    //    var loc_arr = $('#users-current-location').val().split(',');
+    //    loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
+    //}
+    //else{
         loc = toronto;
-    }
+    //}
     
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();

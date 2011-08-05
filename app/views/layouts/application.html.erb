@@ -13,7 +13,7 @@
     <%= yield :head %>
   </head>
   <body>
-    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
+    <input type="hidden" id="users-current-location" name="users-current-location" value="<%#=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
         <div class="w2 <%= current_page?(explore_path) ? (params[:view]=="map" ? "page-map" : "page-explore") : ""  -%>">
@@ -76,9 +76,10 @@
           window.open(this.href);
           e.preventDefault();
         });
+       
       })
-      
-  
+
+
       $('.show-total-comment').live('click', function(){
         $(this).parent().siblings('.truncated-comment-body').hide();
         $(this).parent().siblings('.total-comment-body').show();
@@ -109,6 +110,30 @@
             return false;
           }
         }
+      });
+
+      $('[name=\'comment[body]\']').live('focus', function() {
+        $(this).autoResize({
+        onResize : function() {
+          var txtDiv = $(this.form).children('fieldset').children('.text');
+          if(txtDiv.length > 0) {
+            //txtDiv.css('overflow', 'visible');
+          }
+        },// After resize:
+        animateCallback : function() {
+          var txtDiv = $(this.form).children('fieldset').children('.text');
+          //if(parseInt($(this).css('height').replace('px', '')) > 100){
+          //txtDiv.css('background', 'none');
+          //}
+          //else {
+          //txtDiv.css('height', (parseInt($(this).css('height').replace('px', '')) + 70) + 'px');
+          //txtDiv.css('background', 'url("/images/bg-form-post-message.png") no-repeat');
+          //txtDiv.css('background-size', '640px ' + (parseInt($(this).css('height').replace('px', '')) + 40) + 'px');
+          //txtDiv.css('background-size', 'cover');
+          //}
+        },
+        extraSpace: 0})
+
       });
 
 
@@ -145,7 +170,7 @@
         else {
           alert('Error occurred:' + error);
         }
-        
+
         $('.comment-box').fadeTo('slow', 1);
       });
 

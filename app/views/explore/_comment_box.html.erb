@@ -2,7 +2,7 @@
   <%= form_for @comment, :remote => true, :html => {"data-type" => "html", :class => "form comment-form form-comment form-post-message Post-Message", :style => "min-height: 55px; "} do |form| %>
     <fieldset>
       <div class="text">
-        <%= form.text_field :body, :id => "explore-textarea", :placeholder => "Post a Message", :class => "search-textarea" -%>
+        <%= form.text_area :body, :id => "explore-textarea", :placeholder => "Post a Message", :class => "search-textarea", :rows => 1 -%>
       </div>
       <div id="post-message-info" class="info">
         <p><span style="font-size:18px">Leave a message to let your Community know about you and your interests!</span></p>
@@ -19,7 +19,7 @@
       <% if params[:view].eql?("map") %>
         <%= render "similar_results_box" %>
       <% end %>
-    </fieldset> 
+    </fieldset>
   <% end %>
 </div>
 
@@ -44,7 +44,6 @@
       $('.form-post-message').removeClass('send');
       $('#content').css("top", "");
     });
-
 
     $('.search-textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
