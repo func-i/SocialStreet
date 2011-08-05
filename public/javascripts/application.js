@@ -238,16 +238,16 @@ function removeModal(element) {
     element.find('.save-button-at-bottom').hide();
 }
 
-$(function() {
-    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
-    {
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, {
-                maximumAge: 60000
-            });
-        }
-    }
-})
+//$(function() {
+//    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
+//    {
+//        if(navigator.geolocation){
+//            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, {
+//                maximumAge: 60000
+//            });
+//        }
+//    }
+//})
 
 function onGeoLocationSuccess(e){
     $.getScript('/locations/update_users_location?latitude=' + e.coords.latitude + '&longitude=' + e.coords.longitude, function(data, textStatus){
