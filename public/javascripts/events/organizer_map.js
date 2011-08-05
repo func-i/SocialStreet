@@ -290,7 +290,9 @@ function clearMarkers() {
     $.each(arraySubtract(markers, preservedMarkers), function(index, marker) {
         marker.setMap(null);
     });
-    markers = [];
+
+    //markers = preservedMarkers.slice(0);
+    marker = [];
 }
 
 function searchLocations(e) {
@@ -309,7 +311,7 @@ function searchLocations(e) {
                 $.each(result.address_components, function(ci, component) {
                     infoContents[component.types["0"]] = component.short_name;
                 });
-                placeMarker(result.geometry.location, e.target.value, infoContents);
+            //placeMarker(result.geometry.location, e.target.value, infoContents);
             });
             selectMarker(markers[0], false);
         } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
@@ -327,8 +329,8 @@ function searchLocations(e) {
             }, function(data, textStatus, jqHXR) {
                 if (data.length > 0) {
                     $.each(data, function(index, result) {
-                        placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
-                    });
+                        //placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
+                        });
                 } else {
                     alert("No results found, please drop a pin to tell us where this is");
                 }
@@ -345,12 +347,15 @@ function updateMarkerTitle() {
 }
 
 function selectEventMarker(marker, changeInputField) {
-
     if(selectedMarker != null && selectedMarker != marker) {
         selectedMarker.setIcon("/images/map_pin.png");
         $.each(preservedMarkers, function(index, ele) {
             if(ele == selectedMarker)
+            {
                 preservedMarkers.splice(index, 1);
+                markers.push(ele);
+            }
+
         });
 
         if(selectedMarker.label != undefined)
@@ -428,8 +433,19 @@ $('#marker-name-field').live('keyup', function(e) {
 $('.location-name-field').change(searchLocations);
 
 function clearClusterMarkers() {
-    mc.clearMarkers();
+    //console.log(mc.getMarkers());
+    var markersToClear = arraySubtract(markers, preservedMarkers);
+    //console.log(markersToClear);
+
+    mc.removeMarkers(markersToClear);
+
+    //console.log(mc.getMarkers());
+
     markers = [];
+
+//console.log(mc.getMarkers());
+
+//console.log("END")
 }
 
 function placeClusterMarkers(){

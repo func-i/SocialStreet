@@ -4,6 +4,7 @@ function clearMarkers() {
     $.each(markersToClear, function(index, marker) {
         marker.setMap(null);
     });
+    //markers = preservedMarkers.slice(0);;
     markers = [];
 }
 

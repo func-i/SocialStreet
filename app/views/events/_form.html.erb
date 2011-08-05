@@ -133,16 +133,27 @@
     }
 
     function createEventMarker(location, title) {
+      var stop = false;
+      $.each(preservedMarkers, function(index, elem){
+        if(elem.position.Na == location.Na && elem.position.Oa == location.Oa){
+          stop = true;
+          return;
+        }
+      });
+
+      if(stop)
+        return
 
       var marker = new google.maps.Marker({
         position: location,
         title: title,
         icon: '/images/map_pin.png'
-      });      
+      });
 
       google.maps.event.addListener(marker, 'click', function() {
         selectEventMarker(marker, true);
       });
+
       markers.push(marker);
     }
 
