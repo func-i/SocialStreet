@@ -12,12 +12,23 @@ var preservedMarkers = [];
 // for testing only;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 
+
 $(function() {
+    var loc;
+    if($('#users-current-location').length > 0)
+    {
+        var loc_arr = $('#users-current-location').val().split(',');
+        loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
+    }
+    else{
+        loc = toronto;
+    }
+    
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
     var myOptions = {
         zoom: 12,
-        center: toronto,
+        center: loc,
         mapTypeControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
@@ -91,12 +102,9 @@ function placeMarker(location, title, dragged) {
     marker.invisibleLabel = false;
     
     google.maps.event.addListener(marker, 'click', function() {       
-        //infoWindow.setContent(html);
         selectEventMarker(marker, true);
-    //infoWindow.open(map, marker);
-        
-
     });
+    
     markers.push(marker);
     if(dragged == true)
         preservedMarkers.push(marker);
@@ -302,7 +310,7 @@ function searchLocations(e) {
         'bounds' : map.getBounds()
     }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-            clearMarkers()
+            clearMarkers();
             $.each(results, function(index, result) {
 
                 var infoContents = {};
@@ -433,19 +441,11 @@ $('#marker-name-field').live('keyup', function(e) {
 $('.location-name-field').change(searchLocations);
 
 function clearClusterMarkers() {
-    //console.log(mc.getMarkers());
     var markersToClear = arraySubtract(markers, preservedMarkers);
-    //console.log(markersToClear);
 
     mc.removeMarkers(markersToClear);
 
-    //console.log(mc.getMarkers());
-
     markers = [];
-
-//console.log(mc.getMarkers());
-
-//console.log("END")
 }
 
 function placeClusterMarkers(){
