@@ -58,7 +58,7 @@
   </div>
 
   <div class="title-row">
-    <p><%= link_to_function "+ Title, Description, Event Icon", "$('#row-title').toggle();$('.title-row').toggle();" -%></p>
+    <p><%= link_to '+ Title, Description, Event Icon', '#', :id => "expand-extra-section" -%></p>
   </div>
 
   <div id="row-title" style="display:none;">
@@ -77,6 +77,7 @@
       <%= image_tag(event.photo.thumb.url) if event.photo? %>
       <%= form.file_field :photo %>
     </div>
+    <div id="bottom"></div>
   </div>
 
   <!--    <div class="row-btn">
@@ -106,6 +107,16 @@
 
     var refreshTimer = null;
 
+    $(function(){
+      $('#expand-extra-section').click(function(){
+        $('#row-title').toggle();
+        
+        $('.title-row').toggle();
+
+        //TODO - scroll to bottom of modal
+      });
+    })
+
     function getSearchParams() {
 
       var bounds = map.getBounds();
@@ -122,16 +133,27 @@
     }
 
     function createEventMarker(location, title) {
+      var stop = false;
+      $.each(preservedMarkers, function(index, elem){
+        if(elem.position.Na == location.Na && elem.position.Oa == location.Oa){
+          stop = true;
+          return;
+        }
+      });
+
+      if(stop)
+        return
 
       var marker = new google.maps.Marker({
         position: location,
         title: title,
         icon: '/images/map_pin.png'
-      });      
+      });
 
       google.maps.event.addListener(marker, 'click', function() {
         selectEventMarker(marker, true);
       });
+
       markers.push(marker);
     }
 

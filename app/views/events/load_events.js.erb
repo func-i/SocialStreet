@@ -1,4 +1,3 @@
-//clearMarkers();
 <%#-
 # => Find locations that are within 1 km each other
 # => That have any matching keywords
@@ -16,6 +15,7 @@ end
 -%>
 
 clearClusterMarkers();
+clearMarkers();
 
 <%- @searchables.each do |searchable| -%>
   <% if searchable.geo_located? %>    

@@ -12,6 +12,23 @@ module ApplicationHelper
     end
   end
 
+  def users_current_location_string
+    if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
+      if current_user
+        latitude = current_user.last_known_latitude
+        longitude = current_user.last_known_longitude
+      end
+    else
+      latitude = cookies[:current_location_latitude].to_f
+      longitude = cookies[:current_location_longitude].to_f
+    end
+
+    latitude ||= 43.66061599944655
+    longitude ||= -79.3938175316406
+
+    return "#{latitude},#{longitude}"
+  end
+
   def display_date_time(time)
     time.to_s(:date_with_day) + " at " + time.to_s(:time12h) + " #{Time.zone.now.zone}"
   end
