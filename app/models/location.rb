@@ -69,6 +69,14 @@ class Location < ActiveRecord::Base
     end # otherwise return nil
   end
 
+  def humanized_address
+    if has_geocodable_address?
+      "#{street}, #{city}"
+    elsif has_geocodable_address_text?
+      text
+    end # otherwise return nil
+  end
+
   def needs_text?
     !has_geocodable_address? && !geo_located?
   end

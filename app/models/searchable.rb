@@ -242,6 +242,10 @@ class Searchable < ActiveRecord::Base
     location.geocodable_address if location
   end
 
+  def location_address_for_explore
+    location.humanized_address if location
+  end
+
   def geo_located?
     location && location.geo_located?
   end

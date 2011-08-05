@@ -97,14 +97,16 @@
         markerCluster.addMarkers(sideBarMarkers);
     }
 
-    function placeExploreMarker(location, searchableID, selected, geocodableAddress) {
-
+    function placeExploreMarker(location, searchableID, geocodableAddress) {
       var icoImage = "/images/map_pin.png";
       //var moImage = "/images/ico-pin.png";
 
+      var selected = null;
       if(selected == null) {
         if(searchableID == <%= params[:selected_searchable].to_i -%>)
-        selected = true;
+        {
+          selected = true;
+        }
       }
 
       if(selected == true) {
@@ -122,11 +124,13 @@
         icon: icoImage
       });
 
-      if(selected == true)
-        selectedMarker = marker;
-
       marker.searchableID = searchableID;
       marker.geocodableAddress = geocodableAddress;
+
+      if(selected == true){
+        selectedMarker = marker;
+        selectMarker(marker)
+      }
 
       google.maps.event.addListener(marker, 'click', function() {
         marker.setIcon("/images/ico-pin-selected.png");
@@ -413,7 +417,7 @@
   <% @searchables.each do |searchable| %>
     <% if searchable.event && searchable.geo_located? %>
       <% if searchable.geo_located? %>
-            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address -%>');
+            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
       <% end %>
     <% end %>
   <% end %>
