@@ -13,6 +13,7 @@
     <%= yield :head %>
   </head>
   <body>
+    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
         <div class="w2 <%= current_page?(explore_path) ? (params[:view]=="map" ? "page-map" : "page-explore") : ""  -%>">
