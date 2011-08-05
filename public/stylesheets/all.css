@@ -625,10 +625,10 @@ form, fieldset {
     background: #fffad2 url("../images/bg-post-message-send.png") no-repeat 0 100%;
 }
 .form-post-message .text {
-    /*overflow: hidden;*/
+    overflow: hidden;
     width: 640px;
-    /*height: 49px;
-    background: url("../images/bg-form-post-message.png") no-repeat*/
+    height: 49px;
+    background: url("../images/bg-form-post-message.png") no-repeat;
 }
 .form-post-message .text textarea {
     float: left;
