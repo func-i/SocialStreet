@@ -83,14 +83,62 @@
 <div class="post-message">
   <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "script",:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
-      <div class="text">
-        <%= form.text_field :body, :title => "Post a Message", :class => "textarea", :placeholder => "Leave a message" -%>
+
+      <div class="box text">
+        <div class="topleft">
+          <div class="topright">
+            <div>
+              <%= form.text_area :body, :title => "Post a Message", :class => "textarea", :placeholder => "Leave a message", :rows => 1 -%>
+              <div style="clear:both">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottomleft">
+          <div class="bottomright">
+          </div>
+        </div>
       </div>
       <div class="info">
       </div>
     </fieldset>
   <%- end -%>
 <%#= render 'shared/commenting' %>
+
+  <style>
+    .box div {
+      /*margin: 0.5em 0 0 -2.5em;*/
+    }
+
+
+    .box div.topleft {
+      display: block;
+      background: url("/images/bg-form-post-message.png") top left no-repeat white;
+      padding: 2.0em 0em 0em 0em;
+    }
+
+    .box div.topright {
+      display: block;
+      background: url("/images/bg-form-post-message.png") top right no-repeat white;
+      /*padding: 2.0em;*/
+      margin: -2.0em 0 0 0;
+    }
+
+    .box div.bottomleft {
+      display: block;
+      height: 30px;
+      margin-top: -3.0em;
+      background: url("/images/bg-form-post-message.png") bottom left no-repeat white;
+    }
+
+    .box div.bottomright {
+      display: block;
+      background: url("/images/bg-form-post-message.png") bottom right no-repeat white;
+      height: 30px;
+      margin-left: 3.0em;
+    }
+  </style>
+
 </div>
 <div id="comment-box" class="post-holder Post-Holder" >
   <div id="action-list">
