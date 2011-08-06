@@ -146,6 +146,10 @@ class Searchable < ActiveRecord::Base
   
   scope :with_only_subscriptions, joins(:search_subscription)
 
+  scope :with_only_messages, joins(:comment)
+
+  scope :with_only_events, joins(:event)
+
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     includes(:location) & Location.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng)
   }

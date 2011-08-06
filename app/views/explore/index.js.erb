@@ -45,5 +45,5 @@ clearSidebarMarkers();
 <% end %>
 
 placeSidebarClusterMarkers();
-makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
 

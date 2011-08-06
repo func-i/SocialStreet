@@ -23,13 +23,34 @@
       return str;
     }
 
-    function makePageless(numPages, currentPage) {
-      $('#action-list').pageless({ totalPages: numPages,
+    function makePageless(numPages, currentPage){
+      makePageless(numPages, currentPage, null, null)
+    }
+    function makePageless(numPages, currentPage, events_offset, messages_offset) {
+      $('#action-list').pageless({totalPages: numPages,
         url: '<%= explore_path %>',
-        params: $('form.search-params').serializeObject(),
         loaderMsg: 'Loading more results',
-        currentPage: currentPage
+        params: $('form.search-params').serializeObject(),
+        currentPage: currentPage,
+        paramUpdate: updatePagelessParams
       });
+    }
+
+    function updatePagelessParams(old_params){
+      my_params = {};
+      //my_params = $('form.search-params').serializeObject();
+
+      var events_offset = $('#events-offset');
+      if(events_offset.length > 0){
+        my_params['events_offset'] = events_offset.val();
+      }
+
+      var messages_offset = $('#messages-offset');
+      if(messages_offset.length > 0){
+        my_params['messages_offset'] = messages_offset.val();
+      }
+
+      return my_params
     }
 
     $('form.search-params').bind('ajax:beforeSend', function() {
@@ -68,7 +89,7 @@
       refreshResults("explore");
     });
 
-    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
 
   </script>
 

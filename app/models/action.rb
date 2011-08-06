@@ -119,6 +119,7 @@ class Action < ActiveRecord::Base
     unless self.searchable
       s = (action || event || reference)
       s = s.searchable if s && s.respond_to?(:searchable)
+      #self.searchable = s
       self.searchable = s.clone(:include => [:searchable_date_ranges, :searchable_event_types], :except => :explorable) if s
     end
   end

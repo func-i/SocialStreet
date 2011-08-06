@@ -11,11 +11,7 @@ class ExploreController < ApplicationController
 
     # Use the query params to find events
     find_searchables
-    
-    #message_searchables = find_messages
-    #event_searchables = find_events
-    #merge_events_and_messages(event_searchables, message_searchables)
-    
+    #@searchables = get_searchables
 
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
@@ -95,75 +91,137 @@ class ExploreController < ApplicationController
 
   ##TODO
   #-> Write searchables only_messages and only_events functions
-  #-> Write score functions
+  #-> Write score functions (message score on update_time, events should be relative to from_date param)
   #-> Figure out paging
+  #-> Figure out similar_results
+  MESSAGES_PER_PAGE_REQUEST = 10
+  EVENTS_PER_PAGE_REQUEST = 10
+  RECORDS_PER_PAGE = 10
+  def get_searchables
+    messages = find_messages()
+    events = find_events()
+    
+    merged_array = merge_events_and_messages(events, messages)
+
+    records_length = RECORDS_PER_PAGE > merged_array.length ? merged_array.length : RECORDS_PER_PAGE
+
+    return_array = []
+
+    records_length.times { |i|
+      return_array << merged_array[i]
+
+      if merged_array[i].event
+        puts "EVENT"
+        @events_offset += 1
+      else
+        puts "MESSAGE"
+        @messages_offset += 1
+      end
+    }
+
+    puts "JOSHY54"
+    puts params[:events_offset]
+    puts @events_offset
+    puts params[:messages_offset]
+    puts @messages_offset
+
+
+
+    #TODO - Cleanup
+    @searchable_total_count = @messages_total_count + @events_total_count
+    @per_page = 10
+    @offset = 5
+    @num_pages = (@searchable_total_count.to_f / @per_page.to_f).ceil
+    
+    return return_array
+  end
+
 
   def find_messages
-    messages = Searchable.explorable.where(:ignored => false)
-    messages = messages.only_messages
+    message_searchables = Searchable.explorable.where(:ignored => false)
+    message_searchables = message_searchables.with_only_messages
 
-    messages = apply_message_filter(messages)
+    message_searchables = apply_message_filter(message_searchables)
 
-    @messages_per_page = 5
-    @messages_offset = ((params[:page] || 1).to_i * @messages_per_page) - @messages_per_page
-    @messages_total_count = messages.count
+    @messages_offset = params[:messages_offset].to_i || 0
+    @messages_total_count = message_searchables.count
 
-    messages = messages.limit(@messages_per_page).offset(@messages_offset)
-
+    message_searchables = message_searchables.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
   end
 
   def find_events
-    events = Searchable.explorable.where(:ignored => false)
-    events = events.only_events
+    event_searchables = Searchable.explorable.where(:ignored => false)
+    event_searchables = event_searchables.with_only_events
 
-    events = apply_event_filter(events)
+    event_searchables = apply_event_filter(event_searchables)
 
-    @events_per_page = 5
-    @events_offset = ((params[:page] || 1).to_i * @events_per_page) - @events_per_page
-    @events_total_count = events.count
-
-    events = events.limit(@events_per_page).offset(@events_offset)
+    @events_offset = params[:events_offset].to_i || 0
+    @events_total_count = event_searchables.count
+    
+    event_searchables = event_searchables.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset)
   end
 
   def merge_events_and_messages(events, messages)
     events_with_scores = score_events(events)
     messages_with_scores = score_messages(messages);
 
-    merged_array = event_with_scores + messages_with_scores
+    merged_array = events_with_scores + messages_with_scores
 
-    sorted_array = merged_array.sort_by(&:score);
+    sorted_array = merged_array.sort_by{ |a| a[0]};
+
+    return sorted_array.collect!{|s| s[1]}
   end
 
-  def score_events(events)
+  def score_events(event_searchables)
+    scored_events = []
 
+    event_searchables.each do |event_searchable|
+      score = event_searchable.event.starts_at - Time.zone.now
+      scored_events << [score, event_searchable]
+    end
+
+    return scored_events
   end
 
-  def apply_message_filter(messages, args = {})
+  def score_messages(message_searchables)
+    scored_messages = []
+
+    message_searchables.each do |message_searchable|
+      #TODO score = message.update_ - Time.zone.now
+      score = 1;#TODO - base score on update_time
+      scored_messages << [score, message_searchable]
+    end
+
+    return scored_messages
+  end
+
+  def apply_message_filter(message_searchables, args = {})
     #MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    apply_keywords(messages, keywords)
+    apply_keywords(message_searchables, keywords)
 
     #MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
-    apply_map_bounds(messages, map_bounds)
+    apply_map_bounds(message_searchables, map_bounds)
   end
 
-  def apply_event_filter(events, args = {})
+  def apply_event_filter(event_searchables, args = {})
     #MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    apply_keywords(events, keywords)
+    apply_keywords(event_searchables, keywords)
 
     #MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
-    apply_map_bounds(events, map_bounds)
+    apply_map_bounds(event_searchables, map_bounds)
 
     #MATCH DOW
     dow_obj = args.key?(:dow) ? args[:dow] : params[:date_search]
-    apply_dow(events, dow_obj)
+    apply_dow(event_searchables, dow_obj)
 
     #MATCH FROM DATE
     from_date = args.key?(:from_date) ? args[:from_date] : params[:from_date]
-    apply_from_date(events, from_date)
+    from_date ||= Date.today
+    apply_from_date(event_searchables, from_date)
   end
 
   def apply_keywords(searchable, keywords)

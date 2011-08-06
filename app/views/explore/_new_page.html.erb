@@ -31,4 +31,8 @@
 
   placeSidebarClusterMarkers();  
 
+  $('#events-offset').val(<%=@events_offset%>)
+  $('#messages-offset').val(<%=@messages_offset%>)
+
+  //makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
 </script>
