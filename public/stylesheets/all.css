@@ -294,7 +294,7 @@ form, fieldset {
     -moz-box-shadow: none;
 }
 #main {
-    overflow: hidden;
+    /*overflow: hidden;*/
     position: relative;
     width: 100%;
     z-index: 1;
@@ -625,10 +625,10 @@ form, fieldset {
     background: #fffad2 url("../images/bg-post-message-send.png") no-repeat 0 100%;
 }
 .form-post-message .text {
-    overflow: hidden;
+    /*overflow: hidden;*/
     width: 640px;
-    height: 49px;
-    background: url("../images/bg-form-post-message.png") no-repeat;
+    /*height: 49px;
+    background: url("../images/bg-form-post-message_large.png") no-repeat;*/
 }
 .form-post-message .text textarea {
     float: left;
@@ -1124,11 +1124,19 @@ form, fieldset {
     z-index: 2;
 }
 
-.header-open #main {
+.page-explore.header-open #main {
     padding-top: 400px;
 }
 
-.header-open #sidebar {
+.page-map.header-open #main {
+    padding-top: 400px;
+}
+
+.page-explore.header-open #sidebar {
+    top: 460px;
+}
+
+.page-map.header-open #sidebar {
     top: 460px;
 }
 
@@ -3101,4 +3109,36 @@ form, fieldset {
 #error_explanation ul li {
     font-size: 12px;
     list-style: none;
+}
+
+.box div.topleft {
+    display: block;
+    background: url("/images/bg-form-post-message-large.png") top left no-repeat;
+    padding: 2.0em 0em 0em 0em;
+}
+
+.box div.topright {
+    display: block;
+    background: url("/images/bg-form-post-message-large.png") top right no-repeat;
+    /*padding: 2.0em;*/
+    margin: -2.0em 0 0 0;
+}
+
+.box div.bottomleft {
+    display: block;
+    height: 27px;
+    margin-top: -3.0em;
+    background: url("/images/bg-form-post-message-large.png") bottom left no-repeat;
+}
+
+.box div.bottomright {
+    display: block;
+    background: url("/images/bg-form-post-message-large.png") bottom right no-repeat;
+    height: 27px;
+    margin-left: 3.0em;
+}
+
+.ui-datepicker-trigger {
+    vertical-align: middle;
+    margin-left: 2px;
 }

@@ -1,10 +1,16 @@
 $(function() {
     $( "#starts_at_calendar" ).datepicker({
-        dateFormat: 'M. dd, yy'
+        dateFormat: 'M. dd, yy',
+        showOn: "both",
+        buttonImage: '/images/calendar_grey.png',
+        buttonImageOnly: true
     });
 
     $( "#ends_at_calendar" ).datepicker({
-        dateFormat: 'M. dd, yy'
+        dateFormat: 'M. dd, yy',
+        showOn: "both",
+        buttonImage: '/images/calendar_grey.png',
+        buttonImageOnly: true
     });
 
     $('.starts_at_time').change(function() {

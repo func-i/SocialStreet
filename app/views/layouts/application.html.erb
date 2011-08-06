@@ -16,7 +16,7 @@
     <input type="hidden" id="users-current-location" name="users-current-location" value="<%#=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
-        <div class="w2 <%= current_page?(explore_path) ? (params[:view]=="map" ? "page-map" : "page-explore") : ""  -%>">
+        <div class="w2">
           <%= render 'layouts/header' %>
           <%= yield :popup_modals -%>
           <div id="wrapper" class="wat-cf">
@@ -79,100 +79,92 @@
        
       })
 
+<%- if current_page?(explore_path) -%>
+    $(window).scroll(function() {
+      retractHowItWorks(function() {
+        $('.w2').removeClass('header-open');
+  <%- if params[:view].eql?("map") %>
+          $('.w2').addClass('page-map');
+  <%- else %>
+          $('.w2').addClass('page-explore');
+  <%- end %>
+      }); // End retractHowItWorks
+    }); // End window.scroll
+<%- end -%>
 
-      $('.show-total-comment').live('click', function(){
-        $(this).parent().siblings('.truncated-comment-body').hide();
-        $(this).parent().siblings('.total-comment-body').show();
-        $(this).parent().hide();
+$('.show-total-comment').live('click', function(){
+  $(this).parent().siblings('.truncated-comment-body').hide();
+  $(this).parent().siblings('.total-comment-body').show();
+  $(this).parent().hide();
 
-        return false;
-      });
+  return false;
+});
 
-      $('.view-all-messages').live('click', function(){
-        $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.post'), function(i,v){
-          $(v).show();
-        });
+$('.view-all-messages').live('click', function(){
+  $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.post'), function(i,v){
+    $(v).show();
+  });
 
-        $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.row-miss'), function(i,v){
-          $(v).hide();
-        });
-
-
-        $(this).parent().hide()
-
-        return false;
-      });
-
-      $('.textarea').live('keydown', function(e) {
-        if (e.keyCode == 13) {
-          if(e.shiftKey != true){
-            $(this).closest('.form-comment').submit();
-            return false;
-          }
-        }
-      });
-
-      $('[name=\'comment[body]\']').live('focus', function() {
-        $(this).autoResize({
-        onResize : function() {
-          var txtDiv = $(this.form).children('fieldset').children('.text');
-          if(txtDiv.length > 0) {
-            //txtDiv.css('overflow', 'visible');
-          }
-        },// After resize:
-        animateCallback : function() {
-          var txtDiv = $(this.form).children('fieldset').children('.text');
-          //if(parseInt($(this).css('height').replace('px', '')) > 100){
-          //txtDiv.css('background', 'none');
-          //}
-          //else {
-          //txtDiv.css('height', (parseInt($(this).css('height').replace('px', '')) + 70) + 'px');
-          //txtDiv.css('background', 'url("/images/bg-form-post-message.png") no-repeat');
-          //txtDiv.css('background-size', '640px ' + (parseInt($(this).css('height').replace('px', '')) + 40) + 'px');
-          //txtDiv.css('background-size', 'cover');
-          //}
-        },
-        extraSpace: 0})
-
-      });
+  $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.row-miss'), function(i,v){
+    $(v).hide();
+  });
 
 
-      $('form.comment-form').live('ajax:beforeSend', function(e, xhr, settings)
-      {
-        $('.comment-box').fadeTo('fast', 0.3);
-        return true;
+  $(this).parent().hide()
 
-      }).live('ajax:success', function(e, data, status, xhr)
-      {
-        $('.textarea').val('');
+  return false;
+});
 
-        $('.comment-box').fadeTo('slow', 1);
+$('.textarea').live('keydown', function(e) {
+  if (e.keyCode == 13) {
+    if(e.shiftKey != true){
+      $(this).closest('.form-comment').submit();
+      return false;
+    }
+  }
+});
 
-        var $list = $(this).parent().siblings('.post-list')
-        if($list.length)
-        {
-          $(data).hide();
-          $list.append($(data));
-          $(data).slideUp('fast');
-        }
-        else{
-          var $list = $('#action-list');
-          var $elem = $(data).hide();
-          $list.prepend($elem);
-          $elem.slideDown('fast');
-        }
+$('[name=\'comment[body]\']').live('focus', function() {
+  $(this).autoResize({extraSpace: 0})
+});
 
-      }).live('ajax:error', function(e, xhr, status, error)
-      {
-        if (xhr.status == 401) {
-          window.location.href = '<%= new_user_session_path %>';
-        }
-        else {
-          alert('Error occurred:' + error);
-        }
 
-        $('.comment-box').fadeTo('slow', 1);
-      });
+$('form.comment-form').live('ajax:beforeSend', function(e, xhr, settings)
+{
+  $('.comment-box').fadeTo('fast', 0.3);
+  return true;
+
+}).live('ajax:success', function(e, data, status, xhr)
+{
+  $('.textarea').val('');
+
+  $('.comment-box').fadeTo('slow', 1);
+
+  var $list = $(this).parent().siblings('.post-list')
+  if($list.length)
+  {
+    $(data).hide();
+    $list.append($(data));
+    $(data).slideUp('fast');
+  }
+  else{
+    var $list = $('#action-list');
+    var $elem = $(data).hide();
+    $list.prepend($elem);
+    $elem.slideDown('fast');
+  }
+
+}).live('ajax:error', function(e, xhr, status, error)
+{
+  if (xhr.status == 401) {
+    window.location.href = '<%= new_user_session_path %>';
+  }
+  else {
+    alert('Error occurred:' + error);
+  }
+
+  $('.comment-box').fadeTo('slow', 1);
+});
 
     </script>
     <%= yield :fb_scripts %>
