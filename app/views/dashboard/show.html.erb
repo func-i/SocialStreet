@@ -52,19 +52,21 @@
 <div class="Post-Holder post-holder">
   <div id="action-list">
     <% @feed_items.each do |item| %>
-      <div class="post">
-        <% if item.reason == Feed.reasons[:subscription] %>
-          <% action = item.head_action %>
-          <% if(action.action_type == Action.types[:event_created]) %>
-            <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } %>
+      <% if item %>
+        <div class="post">
+          <% if item.reason == Feed.reasons[:subscription] %>
+            <% action = item.head_action %>
+            <% if(action.action_type == Action.types[:event_created]) %>
+              <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } %>
+            <% else %>
+              <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
+            <% end %>
           <% else %>
-            <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
+            <% action = item.index_action %>
+            <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
           <% end %>
-        <% else %>
-          <% action = item.index_action %>
-          <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

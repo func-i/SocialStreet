@@ -15,19 +15,21 @@ var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 
 $(function() {
     var loc;
-    //if($('#users-current-location').length > 0)
-    //{
-    //    var loc_arr = $('#users-current-location').val().split(',');
-    //    loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
-    //}
-    //else{
+    var stored_loc = $('#users-current-location');
+    if(stored_loc.length > 0 && stored_loc.val())
+    {
+        var loc_arr = $('#users-current-location').val().split(',');
+        loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
+        console.log(loc)
+    }
+    else{
         loc = toronto;
-    //}
+    }
     
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
     var myOptions = {
-        zoom: 12,
+        zoom: 10,
         center: loc,
         mapTypeControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,

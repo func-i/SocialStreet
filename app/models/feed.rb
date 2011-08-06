@@ -14,7 +14,7 @@ class Feed < ActiveRecord::Base
     results=redis.zrevrange "feed:#{user.id}", 0, count
     if results.size > 0
       results.collect {|r|
-        Feed.find(r)
+        f = Feed.find_by_id(r)
       }
     else
       results

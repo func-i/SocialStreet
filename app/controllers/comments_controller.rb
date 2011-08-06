@@ -5,14 +5,11 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!, :only => [:create]#, :if => Proc.new { |c| !c.request.xhr? } 
 
   def create
-    puts "SARAJOSHY"
     @success = create_comment(session[:stored_redirect][:params])
     
     if request.xhr?
-      puts "HELLO JOSHY"
         render :partial => 'create'
     else
-      puts "HELLO SARA"
       redirect_to stored_path
       #redirect_to stored_path, :notice => "Thank you for your generous comment"
     end    

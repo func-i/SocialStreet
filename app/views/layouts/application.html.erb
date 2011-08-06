@@ -13,7 +13,7 @@
     <%= yield :head %>
   </head>
   <body>
-    <input type="hidden" id="users-current-location" name="users-current-location" value="<%#=users_current_location_string()%>"/>
+    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
         <div class="w2">
@@ -81,6 +81,10 @@
 
 <%- if current_page?(explore_path) -%>
     $(window).scroll(function() {
+      if($(this).scrollTop() < 30){
+        return;
+      }
+
       retractHowItWorks(function() {
         $('.w2').removeClass('header-open');
   <%- if params[:view].eql?("map") %>

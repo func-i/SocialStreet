@@ -47,7 +47,7 @@ function expandHowItWorks() {
 
 function retractHowItWorks(f) {
     
-    $('.video-box').slideUp('fast', function() {
+    $('.video-box').slideUp('slow', function() {
         $('#header').removeClass('open');
         $('#top_explore_form').show();
         $('#how_it_works').closest('li').removeClass('active');

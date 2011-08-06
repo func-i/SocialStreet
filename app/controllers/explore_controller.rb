@@ -93,6 +93,11 @@ class ExploreController < ApplicationController
     @num_pages = (@searchable_total_count.to_f / @per_page.to_f).ceil
   end
 
+  ##TODO
+  #-> Write searchables only_messages and only_events functions
+  #-> Write score functions
+  #-> Figure out paging
+
   def find_messages
     messages = Searchable.explorable.where(:ignored => false)
     messages = messages.only_messages
@@ -121,6 +126,15 @@ class ExploreController < ApplicationController
   end
 
   def merge_events_and_messages(events, messages)
+    events_with_scores = score_events(events)
+    messages_with_scores = score_messages(messages);
+
+    merged_array = event_with_scores + messages_with_scores
+
+    sorted_array = merged_array.sort_by(&:score);
+  end
+
+  def score_events(events)
 
   end
 
