@@ -3137,3 +3137,8 @@ form, fieldset {
     height: 27px;
     margin-left: 3.0em;
 }
+
+.ui-datepicker-trigger {
+    vertical-align: middle;
+    margin-left: 2px;
+}

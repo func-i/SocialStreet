@@ -23,7 +23,7 @@
 
     <%= form.fields_for :searchable do |searchable_fields| %>
       <%= searchable_fields.fields_for :searchable_date_ranges do |date_range_fields| %>
-        <div class="col">
+        <div class="col" style="vertical-align: baseline;">
           <span><label for="date">Start Date:</label></span>
           <%= text_field_tag 'starts_at_calendar', params[:from_date] || Date.today, :class => "text_field starts_at_time", :style => "width: 80px;" %>
           <%= select_time event.searchable.searchable_date_ranges.first.starts_at, {:minute_step => 15, :ignore_date => true}, :class => 'starts_at_time' -%>

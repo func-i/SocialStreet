@@ -15,7 +15,7 @@
   <div class="text">
 
     <%- if @user.fb_uid? -%>
-        <%= link_to "Goto", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true, :class => "btn-fb-profile"-%>
+      <%= link_to "Goto", "http://www.facebook.com/profile.php?id=#{@user.fb_uid}", "data-popup" => true, :class => "btn-fb-profile"-%>
     <%- end -%>
 
 
@@ -38,9 +38,23 @@
 <div class="post-message">
   <%= form_for [@user, @comment], :url => profile_comments_path(@user), :remote => true, :html => {"data-type" => "script", :class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
-      <div class="text">
-        <%= form.text_field :body, :title => "Post a Message", :class => "textarea", :placeholder => "Leave a message"-%>
+      <div class="box text">
+        <div class="topleft">
+          <div class="topright">
+            <div>
+              <%= form.text_area :body, :title => "Post a Message", :class => "textarea", :placeholder => "Leave a message", :rows => 1 -%>
+              <div style="clear:both">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottomleft">
+          <div class="bottomright">
+          </div>
+        </div>
       </div>
+      <div style="width: 100%; background-image: url('/images/bg-form-post-message-large_bottom.png'); height: 11px; margin-top: -2px;"></div>
+
       <div class="info">
       </div>
     </fieldset>
