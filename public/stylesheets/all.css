@@ -1132,11 +1132,11 @@ form, fieldset {
     padding-top: 400px;
 }
 
-page-explore.header-open #sidebar {
+.page-explore.header-open #sidebar {
     top: 460px;
 }
 
-page-map.header-open #sidebar {
+.page-map.header-open #sidebar {
     top: 460px;
 }
 
