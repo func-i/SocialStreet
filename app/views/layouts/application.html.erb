@@ -71,103 +71,107 @@
         xfbml  : true  // parse XFBML
       });
 
-      $(function() {
-        $('a[data-popup]').live('click', function(e) {          
-          window.open(this.href);
-          e.preventDefault();
-        });
+    $(function() {
+      $('a[data-popup]').live('click', function(e) {
+        window.open(this.href);
+        e.preventDefault();
+      });
        
-      })
+    })
 
 <%- if current_page?(explore_path) -%>
-    $(window).scroll(function() {
-      if($(this).scrollTop() < 30){
-        return;
-      }
+  $(window).scroll(function() {
+  if($(this).scrollTop() < 30){
+    return;
+  }
 
-      retractHowItWorks(function() {
-        $('.w2').removeClass('header-open');
+  retractHowItWorks(function() {
+    $('.w2').removeClass('header-open');
   <%- if params[:view].eql?("map") %>
-          $('.w2').addClass('page-map');
+      $('.w2').addClass('page-map');
   <%- else %>
-          $('.w2').addClass('page-explore');
+      $('.w2').addClass('page-explore');
   <%- end %>
-      }); // End retractHowItWorks
-    }); // End window.scroll
+  }); // End retractHowItWorks
+  }); // End window.scroll
 <%- end -%>
 
 $('.show-total-comment').live('click', function(){
-  $(this).parent().siblings('.truncated-comment-body').hide();
-  $(this).parent().siblings('.total-comment-body').show();
-  $(this).parent().hide();
+$(this).parent().siblings('.truncated-comment-body').hide();
+$(this).parent().siblings('.total-comment-body').show();
+$(this).parent().hide();
 
-  return false;
+return false;
 });
 
 $('.view-all-messages').live('click', function(){
-  $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.post'), function(i,v){
-    $(v).show();
-  });
+$.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.post'), function(i,v){
+  $(v).show();
+});
 
-  $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.row-miss'), function(i,v){
-    $(v).hide();
-  });
+$.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.row-miss'), function(i,v){
+  $(v).hide();
+});
 
 
-  $(this).parent().hide()
+$(this).parent().hide()
 
-  return false;
+return false;
 });
 
 $('.textarea').live('keydown', function(e) {
-  if (e.keyCode == 13) {
-    if(e.shiftKey != true){
-      $(this).closest('.form-comment').submit();
-      return false;
-    }
+if (e.keyCode == 13) {
+  if(e.shiftKey != true){
+    $(this).closest('.form-comment').submit();
+    if($(this).attr('title') != '')
+      $(this).height(24);
+    else
+      $(this).height(16);
+    return false;
   }
+}
 });
 
 $('[name=\'comment[body]\']').live('focus', function() {
-  $(this).autoResize({extraSpace: 0})
+$(this).autoResize({extraSpace: 0})
 });
 
 
 $('form.comment-form').live('ajax:beforeSend', function(e, xhr, settings)
 {
-  $('.comment-box').fadeTo('fast', 0.3);
-  return true;
+$('.comment-box').fadeTo('fast', 0.3);
+return true;
 
 }).live('ajax:success', function(e, data, status, xhr)
 {
-  $('.textarea').val('');
+$('.textarea').val('');
 
-  $('.comment-box').fadeTo('slow', 1);
+$('.comment-box').fadeTo('slow', 1);
 
-  var $list = $(this).parent().siblings('.post-list')
-  if($list.length)
-  {
-    $(data).hide();
-    $list.append($(data));
-    $(data).slideUp('fast');
-  }
-  else{
-    var $list = $('#action-list');
-    var $elem = $(data).hide();
-    $list.prepend($elem);
-    $elem.slideDown('fast');
-  }
+var $list = $(this).parent().siblings('.post-list')
+if($list.length)
+{
+  $(data).hide();
+  $list.append($(data));
+  $(data).slideUp('fast');
+}
+else{
+  var $list = $('#action-list');
+  var $elem = $(data).hide();
+  $list.prepend($elem);
+  $elem.slideDown('fast');
+}
 
 }).live('ajax:error', function(e, xhr, status, error)
 {
-  if (xhr.status == 401) {
-    window.location.href = '<%= new_user_session_path %>';
-  }
-  else {
-    alert('Error occurred:' + error);
-  }
+if (xhr.status == 401) {
+  window.location.href = '<%= new_user_session_path %>';
+}
+else {
+  alert('Error occurred:' + error);
+}
 
-  $('.comment-box').fadeTo('slow', 1);
+$('.comment-box').fadeTo('slow', 1);
 });
 
     </script>
