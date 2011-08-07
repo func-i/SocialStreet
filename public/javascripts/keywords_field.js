@@ -140,6 +140,7 @@ $(function() {
              //   response( cache[ term ] );
             //    return;
             //}
+            // TODO: Re-enable the code above!!
             lastXhr = $.getJSON( keywordsJsonURL, request, function( data, status, xhr ) {
                 if(data.indexOf(term) < 0)
                     data.unshift(term.toString());
