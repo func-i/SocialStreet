@@ -136,11 +136,10 @@ $(function() {
         minLength: 2,
         source: function( request, response ) {
             var term = request.term;
-            if ( term in cache ) {
-                response( cache[ term ] );
-                return;
-            }
-
+            //if ( term in cache ) {
+             //   response( cache[ term ] );
+            //    return;
+            //}
             lastXhr = $.getJSON( keywordsJsonURL, request, function( data, status, xhr ) {
                 if(data.indexOf(term) < 0)
                     data.unshift(term.toString());
@@ -148,15 +147,16 @@ $(function() {
                 cache[ term ] = data;
 
                 if ( xhr === lastXhr ) {
+                    console.log(data);
                     response( data );
                 }
             });
         },
         select: function( event, ui ) {
-            console.log('item selected');
             keywordHandler(ui.item.value, $(this).attr('keyword-content-selector'));
             this.value = '';
             return false;
-        }
+        },
+        html: true
     });
 });
