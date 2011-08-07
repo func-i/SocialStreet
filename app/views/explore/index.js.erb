@@ -1,5 +1,5 @@
 
-$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables, :hidden => params[:view].eql?("map")} )) %>');
+$('#action-list').html('<%#= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables, :hidden => params[:view].eql?("map")} )) %>');
 $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 
 <% if @searchable_total_count == 0 %>
@@ -39,11 +39,16 @@ clearSidebarMarkers();
 <% unless @similar_results.blank?() %>
   <% @similar_results.each do |searchable| %>
     <% if searchable.geo_located? %>
-            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
+      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 <% end %>
 
 placeSidebarClusterMarkers();
-makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
+
+<%- if @events_offset && @messages_offset %>
+  makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
+<%- else %>
+  makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+<%- end -%>
 

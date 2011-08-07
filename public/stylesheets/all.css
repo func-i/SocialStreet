@@ -3106,9 +3106,14 @@ form, fieldset {
     padding: 15px;
 }
 
+#error_explanation ul {
+    margin-left: 15px;
+    list-style: disc;
+}
 #error_explanation ul li {
-    font-size: 12px;
-    list-style: none;
+    margin-top: 4px;
+    font-size: 14px;
+    color: red;
 }
 
 .box div.topleft {
