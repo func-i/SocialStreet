@@ -23,9 +23,9 @@
       return str;
     }
 
-    function makePageless(numPages, currentPage){
-      makePageless(numPages, currentPage, null, null)
-    }
+    //function makePageless(numPages, currentPage){
+    //  makePageless(numPages, currentPage, null, null)
+    //}
     function makePageless(numPages, currentPage, events_offset, messages_offset) {
       $('#action-list').pageless({totalPages: numPages,
         url: '<%= explore_path %>',
@@ -89,7 +89,11 @@
       refreshResults("explore");
     });
 
-    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
+  <%- if @events_offset && @messages_offset %>
+      makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
+  <% else %>
+      makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+  <% end %>
 
   </script>
 
