@@ -29,7 +29,7 @@ class Location < ActiveRecord::Base
   belongs_to :user
 
   validates :text,    :length => { :maximum => 200 }
-  validates :text,    :presence => true, :if => :needs_text?
+  validates :text,    :presence => {:message => "^ Where? can't be blank"}, :if => :needs_text?
   validates :street,  :length => { :maximum => 100 }
   validates :city,    :length => { :maximum => 30 }
   validates :state,   :length => { :maximum => 30 }

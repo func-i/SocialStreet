@@ -35,7 +35,7 @@ class SearchableDateRange < ActiveRecord::Base
   end
 
   def valid_dates
-    errors.add :ends_at, 'must be after the event starts' if ends_at && ends_at <= starts_at
+    errors.add :ends_at, '^ When? end date must be after the event starts' if ends_at && ends_at <= starts_at
   end
 
   def matches?(date_ranges)

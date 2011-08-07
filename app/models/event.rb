@@ -41,7 +41,7 @@ class Event < ActiveRecord::Base
   #after_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
 
   #validates :name, :presence => true, :length => { :maximum => 60 }
-  validates :starts_at, :presence => true
+  validates :starts_at, :presence => {:message => "^ When? can't be blank?"}
   validates :cost, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
   validates :minimum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_blank => true }
   validates :maximum_attendees, :numericality => {:only_integer => true, :greater_than_or_equal_to => 1, :allow_blank => true }
