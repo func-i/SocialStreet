@@ -95,7 +95,7 @@
   var locationSearchURL = '<%= locations_path(:format => :json) %>';
 </script>
 
-<%= javascript_include_tag 'marker_clusterer', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field' %>
+<%= javascript_include_tag 'marker_clusterer', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format' %>
 <% if event.location.try(:geo_located?) %>
   <script>
     $(function() {
