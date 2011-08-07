@@ -10,8 +10,8 @@ class ExploreController < ApplicationController
     @comment = Comment.new
 
     # Use the query params to find events
-    find_searchables
-    #@searchables = get_searchables
+    #find_searchables
+    @searchables = get_searchables
 
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
@@ -89,43 +89,42 @@ class ExploreController < ApplicationController
     @num_pages = (@searchable_total_count.to_f / @per_page.to_f).ceil
   end
 
-  ##TODO
-  #-> Write searchables only_messages and only_events functions
-  #-> Write score functions (message score on update_time, events should be relative to from_date param)
-  #-> Figure out paging
-  #-> Figure out similar_results
   MESSAGES_PER_PAGE_REQUEST = 10
   EVENTS_PER_PAGE_REQUEST = 10
   RECORDS_PER_PAGE = 10
+  SIMILAR_RESULTS_LIMIT = 20
   def get_searchables
-    messages = find_messages()
     events = find_events()
+    messages = find_messages()
     
     merged_array = merge_events_and_messages(events, messages)
 
     records_length = RECORDS_PER_PAGE > merged_array.length ? merged_array.length : RECORDS_PER_PAGE
 
-    return_array = []
+    @searchables = []
 
     records_length.times { |i|
-      return_array << merged_array[i]
+      @searchables << merged_array[i]
 
       if merged_array[i].event
-        puts "EVENT"
         @events_offset += 1
       else
-        puts "MESSAGE"
         @messages_offset += 1
       end
     }
 
-    puts "JOSHY54"
-    puts params[:events_offset]
-    puts @events_offset
-    puts params[:messages_offset]
-    puts @messages_offset
+    if(SIMILAR_RESULTS_LIMIT > @messages_total_count + @events_total_count &&
+          @messages_offset >= @messages_total_count &&
+          @events_offset >= @events_total_count
+      )
+      #not enough results were found (similar_results_limit) and all the messages and events have been shown. Display the similar results
 
+      #Number of records to get in this request
+      similar_result_length = records_length - RECORDS_PER_PAGE
 
+      #TODO
+
+    end
 
     #TODO - Cleanup
     @searchable_total_count = @messages_total_count + @events_total_count
@@ -133,15 +132,17 @@ class ExploreController < ApplicationController
     @offset = 5
     @num_pages = (@searchable_total_count.to_f / @per_page.to_f).ceil
     
-    return return_array
+    return @searchables
   end
 
 
-  def find_messages
+  def find_messages(filter_overrides = {})
     message_searchables = Searchable.explorable.where(:ignored => false)
     message_searchables = message_searchables.with_only_messages
 
-    message_searchables = apply_message_filter(message_searchables)
+    message_searchables = apply_message_filter(message_searchables, filter_overrides)
+
+    message_searchables = message_searchables.order("searchables.created_at DESC")
 
     @messages_offset = params[:messages_offset].to_i || 0
     @messages_total_count = message_searchables.count
@@ -149,11 +150,13 @@ class ExploreController < ApplicationController
     message_searchables = message_searchables.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
   end
 
-  def find_events
+  def find_events(filter_overrides = {})
     event_searchables = Searchable.explorable.where(:ignored => false)
     event_searchables = event_searchables.with_only_events
 
-    event_searchables = apply_event_filter(event_searchables)
+    event_searchables = apply_event_filter(event_searchables, filter_overrides)
+
+    event_searchables = event_searchables.order("searchable_date_ranges.starts_at ASC")
 
     @events_offset = params[:events_offset].to_i || 0
     @events_total_count = event_searchables.count
@@ -175,8 +178,11 @@ class ExploreController < ApplicationController
   def score_events(event_searchables)
     scored_events = []
 
+    from_date = params[:from_date] ? params[:from_date] : Time.zone.now
+    from_date = Time.zone.parse(from_date) if from_date.is_a? String
+    
     event_searchables.each do |event_searchable|
-      score = event_searchable.event.starts_at - Time.zone.now
+      score = event_searchable.event.starts_at - from_date
       scored_events << [score, event_searchable]
     end
 
@@ -187,8 +193,9 @@ class ExploreController < ApplicationController
     scored_messages = []
 
     message_searchables.each do |message_searchable|
-      #TODO score = message.update_ - Time.zone.now
-      score = 1;#TODO - base score on update_time
+      message_action = message_searchable.comment.action
+      last_action = message_action.actions.last || message_action
+      score = Time.zone.now - last_action.occurred_at;
       scored_messages << [score, message_searchable]
     end
 
@@ -198,30 +205,30 @@ class ExploreController < ApplicationController
   def apply_message_filter(message_searchables, args = {})
     #MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    apply_keywords(message_searchables, keywords)
+    message_searchables = apply_keywords(message_searchables, keywords)
 
     #MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
-    apply_map_bounds(message_searchables, map_bounds)
+    message_searchables = apply_map_bounds(message_searchables, map_bounds)
   end
 
   def apply_event_filter(event_searchables, args = {})
     #MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    apply_keywords(event_searchables, keywords)
+    event_searchables = apply_keywords(event_searchables, keywords)
 
     #MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
-    apply_map_bounds(event_searchables, map_bounds)
+    event_searchables = apply_map_bounds(event_searchables, map_bounds)
 
     #MATCH DOW
     dow_obj = args.key?(:dow) ? args[:dow] : params[:date_search]
-    apply_dow(event_searchables, dow_obj)
+    event_searchables =apply_dow(event_searchables, dow_obj)
 
     #MATCH FROM DATE
     from_date = args.key?(:from_date) ? args[:from_date] : params[:from_date]
-    from_date ||= Date.today
-    apply_from_date(event_searchables, from_date)
+    from_date ||= Time.zone.now
+    event_searchables = apply_from_date(event_searchables, from_date)
   end
 
   def apply_keywords(searchable, keywords)
