@@ -110,10 +110,10 @@
     $(function(){
       $('#expand-extra-section').click(function(){
         $('#row-title').toggle();
-        
         $('.title-row').toggle();
 
-        //TODO - scroll to bottom of modal
+        $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
+        return false;
       });
 
 
