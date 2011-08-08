@@ -190,9 +190,9 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     $("body").css("overflow", "hidden");
 
     //Display the modal
-    $(modal_divID).show();
+    $(modal_divID).show();    
 
-    //Display overlay
+    // Display overlay
     if(document.getElementById("ss_modal_overlay") === null){
         $("body").append("<div id='ss_modal_overlay'></div>");
         $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
@@ -209,12 +209,36 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
 
     $.getScript(request, function(data, textStatus){
         resizeModals();
+        removeTabIndex(modal_divID);
+    //$(modal_divID).find('input').first().focus();
     });
 }
+
+function removeTabIndex(modalDivID){
+    // an array of selectors to loop through to disable elements inside the body
+    $.each(['body a', 'body img', 'body input', 'body select'], function(index, selector) {
+        $(selector).attr('tabIndex', -1)
+    });
+
+    // enable the same elements inside the modal
+    $.each([modalDivID + ' a', modalDivID + ' img', modalDivID + ' input', modalDivID + ' select'], function(index, selector) {
+        $(selector).attr('tabIndex', 1)
+    });
+}
+
+function addTabIndex() {
+    // re-enable all the body elements
+    $.each(['body a', 'body img', 'body input', 'body select'], function(index, selector) {
+        $(selector).attr('tabIndex', 1)
+    });
+
+}
+
 
 function removeModal(element) {
     $(element).fadeOut("fast", function() {
         $('#ss_modal_overlay').trigger("unload").unbind().remove();
+        //$.unblockUI();
         $("body").css("overflow", "auto");
     });
 
@@ -228,13 +252,17 @@ function removeModal(element) {
 
     element.find('.facebok-checkbox-in-header').hide();
     element.find('.save-button-at-bottom').hide();
+
+    addTabIndex();
 }
 
 $(function() {
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, function(){}, {maximumAge: 600000});
+            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, function(){}, {
+                maximumAge: 600000
+            });
         }
     }
 })
