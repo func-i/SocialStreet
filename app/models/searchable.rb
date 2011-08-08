@@ -146,7 +146,7 @@ class Searchable < ActiveRecord::Base
   
   scope :with_only_subscriptions, joins(:search_subscription)
 
-  scope :with_only_messages, joins(:comment)
+  scope :with_only_messages, joins(:comment).where("comments.commentable_id IS NULL")
 
   scope :with_only_events, joins(:event)
 
