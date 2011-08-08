@@ -92,7 +92,7 @@
 <script>
   //var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
   var keywordsParamKey  = "event[searchable_attributes][keywords][]";
-  var locationSearchURL = '<%= locations_path(:format => :json) %>';
+  SearchURL = '<%= locations_path(:format => :json) %>';
 </script>
 
 <%= javascript_include_tag 'marker_clusterer', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format' %>

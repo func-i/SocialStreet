@@ -26,7 +26,7 @@ $(function() {
         loc = toronto;
     }
     
-    //infoWindow = new google.maps.InfoWindow();
+    infoWindow = new InfoBubble();
     geocoder = new google.maps.Geocoder();
     var myOptions = {
         zoom: 10,
@@ -90,19 +90,6 @@ function placeMarker(location, title, dragged) {
         icon: 'images/ico-pin-selected.png'
     });
 
-    var label = new Label({
-        map: map
-    });
-
-    label.bindTo('position', marker);
-    label.bindTo('text', marker, 'title');
-    label.bindTo('visible', marker, 'labelVisible');
-    label.bindTo('clickable', marker);
-    label.bindTo('zIndex', marker);
-
-    marker.label = label;
-    marker.invisibleLabel = false;
-    
     google.maps.event.addListener(marker, 'click', function() {       
         selectEventMarker(marker, true);
     });
@@ -208,94 +195,6 @@ ProjectionHelperOverlay.prototype.draw = function () {
     }
 };
 
-// Define the overlay, derived from google.maps.OverlayView
-function Label(opt_options) {
-    // Initialization
-    this.setValues(opt_options);
-
-
-    // Label specific
-    var span = this.span_ = document.createElement('span');
-    span.style.cssText = 'position: relative; left: -50%; top: -8px; ' +
-    'white-space: nowrap; ' +
-    'padding: 5px; background-color: white';
-
-    var div = this.div_ = document.createElement('div');
-    div.appendChild(span);
-    div.style.cssText = 'position: absolute; display: none';
-}
-
-Label.prototype = new google.maps.OverlayView;
-
-// Implement onAdd
-Label.prototype.onAdd = function() {
-    var pane = this.getPanes().overlayImage;
-    pane.appendChild(this.div_);
-
-
-    // Ensures the label is redrawn if the text or position is changed.
-    var me = this;
-    this.listeners_ = [
-    google.maps.event.addListener(this, 'position_changed', function() {
-        me.draw();
-    }),
-    google.maps.event.addListener(this, 'visible_changed', function() {
-        me.draw();
-    }),
-    google.maps.event.addListener(this, 'clickable_changed', function() {
-        me.draw();
-    }),
-    google.maps.event.addListener(this, 'text_changed', function() {
-        me.draw();
-    }),
-    google.maps.event.addListener(this, 'zindex_changed', function() {
-        me.draw();
-    }),
-    google.maps.event.addDomListener(this.div_, 'click', function() {
-        if (me.get('clickable')) {
-            google.maps.event.trigger(me, 'click');
-        }
-    })
-    ];
-};
-
-
-// Implement onRemove
-Label.prototype.onRemove = function() {
-    this.div_.parentNode.removeChild(this.div_);
-
-
-    // Label is removed from the map, stop updating its position/text.
-    for (var i = 0, I = this.listeners_.length; i < I; ++i) {
-        google.maps.event.removeListener(this.listeners_[i]);
-    }
-};
-
-
-// Implement draw
-Label.prototype.draw = function() {
-    var projection = this.getProjection();
-    var position = projection.fromLatLngToDivPixel(this.get('position'));
-
-    var div = this.div_;
-    div.style.left = position.x + 'px';
-    div.style.top = position.y + 15 + 'px';
-
-    var visible = this.get('visible');
-    div.style.display = visible ? 'block' : 'none';
-
-
-    var clickable = this.get('clickable');
-    this.span_.style.cursor = clickable ? 'pointer' : '';
-
-
-    var zIndex = this.get('zIndex');
-    div.style.zIndex = zIndex;
-
-
-    this.span_.innerHTML = this.get('text').toString();
-};
-
 function clearMarkers() {
     $.each(arraySubtract(markers, preservedMarkers), function(index, marker) {
         marker.setMap(null);
@@ -375,24 +274,15 @@ function selectEventMarker(marker, changeInputField) {
     if(selectedMarker == null || (selectedMarker != null && selectedMarker != marker)) {
         selectedMarker = marker;
         preservedMarkers.push(marker);
-    
-        var label = new Label({
-            map: map
-        });
-
-        label.bindTo('position', marker);
-
-        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
-        marker.htmlTitle = linkText;
-        label.bindTo('text', marker, 'htmlTitle');
-
-        label.bindTo('visible', marker);
-        label.bindTo('clickable', marker);
-        label.bindTo('zIndex', marker);
-
-        marker.label = label;
-    
+   
+        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 300px;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
+        marker.htmlTitle = linkText;           
         marker.setIcon("/images/ico-pin-selected.png");
+
+        infoWindow.setContent(linkText);
+        infoWindow.setMinHeight(20);
+        infoWindow.setMinWidth(100);
+        infoWindow.open(map, marker);
    
         //    if (marker.getAnimation() == null) {
         //        marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -437,6 +327,9 @@ $('#marker-name-field').live('keyup', function(e) {
         //$('#set-title').children('input')[0].value = this.value;
         $(this).siblings('a').show();
         $(this).hide();
+        infoWindow.setMinHeight(20);
+        infoWindow.setMinWidth(100);
+        
         return false;
     }
 });
@@ -457,5 +350,7 @@ function placeClusterMarkers(){
 
 function labelClicked(lnk) {  
     $(lnk).siblings('input').show();
+    infoWindow.setMinHeight(50);
+    infoWindow.setMinWidth(300);
     $(lnk).hide();
 }
