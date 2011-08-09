@@ -1,5 +1,5 @@
 
-$('#action-list').html('<%#= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables, :hidden => params[:view].eql?("map")} )) %>');
+$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables, :hidden => params[:view].eql?("map")} )) %>');
 $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 
 <% if @searchable_total_count == 0 %>

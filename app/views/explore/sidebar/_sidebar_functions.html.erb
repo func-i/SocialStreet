@@ -201,7 +201,7 @@
           $(rLI).css('background-color', '#FFFFFF');
         });
 
-        $('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
+        //$('#result_for_searchable_' + marker.searchableID).remove().prependTo('#action-list').css('background-color', '#F7F7F7');
 
   <% end %>
       
@@ -390,7 +390,7 @@
           }
 
   <%- unless params[:view].eql?("map") -%>
-            $('#result_for_searchable_' + mkr.searchableID).remove().prependTo('#action-list').css("background-color", '#F7F7F7')
+            $('#result_for_searchable_' + mkr.searchableID).css("background-color", '#F7F7F7')
   <% else %>
             $('#result_for_searchable_' + mkr.searchableID).show();
   <%- end -%>

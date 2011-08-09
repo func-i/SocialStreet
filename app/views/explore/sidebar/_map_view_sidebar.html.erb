@@ -41,10 +41,10 @@
 
   <div class="short-box">
     <div class="address"></div>
-    <div class="post-box">
+    <div class="post-box" style="overflow-x: visible;">
       <div class="post-wrapper">
         <div class="post-holder">
-          <div class="post-frame">
+          <div class="post-frame" style="height: 450px;">
             <div id="action-list" class="post-content">
               <%= render 'results', :searchable_results=> @searchables %>
             </div>
@@ -60,9 +60,22 @@
   </div>
 <% end %>
 
+<% content_for :end_of_body do %>
+  <%= javascript_include_tag "jquery.mousewheel" -%>
+<%- end -%>
+
 <script>
 
   $(function(){
+
+    $(".post-frame").bind("mousewheel",function(ev, delta) {
+      var scrollTop = $(this).scrollTop();
+      console.log(scrollTop);
+      console.log(delta);
+      $(this).scrollTop(scrollTop-Math.round(delta * 30));
+    });
+
+
     $.each($('.result-list-item'), function(index, rLI) {
       $(rLI).hide();
     });
