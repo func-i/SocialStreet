@@ -2631,7 +2631,7 @@ form, fieldset {
     right: 0;
     width: 315px;
 }
-#sidebar .open .post-holder { width: 655px; }
+#sidebar .open .post-holder { width: 655px;}
 * +html #sidebar .open .post-holder { right: 3px; }
 #sidebar .post-holder .post-holder {
     float: none;
@@ -2651,6 +2651,7 @@ form, fieldset {
 .post-frame {
     overflow: hidden;
     position: relative;
+    background-color: white;
 }
 #sidebar .open .post-frame {
     box-shadow: -3px 0 4px #bbb;
