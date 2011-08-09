@@ -165,13 +165,11 @@
         cache[ term ] = data;
 
         if ( xhr === lastXhr ) {
-          console.log(data);
           response( data );
         }
       });
     },
     select: function( event, ui ) {
-      console.log(ui.item.value);
       $('.top-explore-field').val(ui.item.value);
       $('#top_explore_form').submit();
       return false;

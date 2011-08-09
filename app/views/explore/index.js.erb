@@ -1,5 +1,9 @@
+$('#events-offset').val('<%=@events_offset%>');
+$('#messages-offset').val('<%=@messages_offset%>');
+$('#filter-level').val('<%=@filter_level%>');
+$('#explore-id').val('<%=@explore_id%>');
 
-$('#action-list').html('<%#= escape_javascript(render(:partial => "results", :locals => {:searchable_results => @searchables, :hidden => params[:view].eql?("map")} )) %>');
+$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => (@searchables || []), :hidden => params[:view].eql?("map")} )) %>');
 $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 
 <% if @searchable_total_count == 0 %>
@@ -11,14 +15,14 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 <% end %>
 
 
-<% if @offset + @per_page >= @searchable_total_count && (!params[:view].eql?("map") || @searchable_total_count < MORE_RESULTS_LIMIT) %>
+<% if @filter_level && @filter_level >= 0 && (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT) %>
   $('#end-of-results-message').show();
 <% else %>
   $('#end-of-results-message').hide();
 <% end %>
 
 <% unless @similar_results.blank? %>
-  <% if !params[:view].eql?("map") || @searchable_total_count < MORE_RESULTS_LIMIT %>
+  <% if !params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT %>
     $('#more-results-message').show();
   <% end %>
   $('#similar-results-list').html('<%= escape_javascript(render("results", :searchable_results => @similar_results, :hidden => params[:view].eql?("map"))) %>');
@@ -30,25 +34,19 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 clearSidebarClusterMarkers();
 clearSidebarMarkers();
 
-<% @searchables.each do |searchable| %>
+<% (@searchables || []).each do |searchable| %>
   <% if searchable.geo_located? %>
     placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
   <% end %>
 <% end %>
 
-<% unless @similar_results.blank?() %>
-  <% @similar_results.each do |searchable| %>
-    <% if searchable.geo_located? %>
-      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
-    <% end %>
+<% (@similar_results || []).each do |searchable| %>
+  <% if searchable.geo_located? %>
+    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
   <% end %>
 <% end %>
 
 placeSidebarClusterMarkers();
 
-<%- if @events_offset && @messages_offset %>
-  makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
-<%- else %>
-  makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
-<%- end -%>
+makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 

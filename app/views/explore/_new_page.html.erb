@@ -1,38 +1,49 @@
 <script>
-  $('#action-list').append(
-  '<%= escape_javascript render("results", :searchable_results => @searchables)%>'
-);
+  if(($('#explore-id').length <= 0 || !$('#explore-id').val() || $('#explore-id').val() == <%=@explore_id%>) )
+  {
+    console.log($('#explore-id'));
+    console.log(<%=@explore_id%>);
+    console.log('NEW PAGE: ' + <%=@events_offset%> + ', ' + <%=@messages_offset%> + ', ' + <%=@filter_level%>)
+    //console.log(<%=@searchables.inspect%>)
 
-<% if @offset + @per_page >= @searchable_total_count && (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)%>
-    $('#end-of-results-message').show();
+    $('#events-offset').val('<%=@events_offset%>')
+    $('#messages-offset').val('<%=@messages_offset%>')
+    $('#filter-level').val('<%=@filter_level%>')
+
+    $('#action-list').append(
+    '<%= escape_javascript render("results", :searchable_results => (@searchables || []))%>'
+  );
+
+<% if @filter_level && (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)%>
+      $('#end-of-results-message').show();
 <% end %>
 
 <% if !@similar_results.blank?() %>
-    $('#more-results-message').show();
-    $('#similar-results-list').append('<%= escape_javascript(render('results', :searchable_results => @similar_results)) %>');
+      $('#more-results-message').show();
+      $('#similar-results-list').append('<%= escape_javascript(render('results', :searchable_results => @similar_results)) %>');
 <% end %>
 
-  clearSidebarClusterMarkers();
-  clearSidebarMarkers();
+    //clearSidebarClusterMarkers();
+    //clearSidebarMarkers();
 
-<% @searchables.each do |searchable| %>
+<% (@searchables || []).each do |searchable| %>
   <% if searchable.geo_located? %>
-      placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
-  <% end %>
-<% end %>
-
-<% unless @similar_results.blank?() %>
-  <% @similar_results.each do |searchable| %>
-    <% if searchable.geo_located? %>
         placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
-    <% end %>
   <% end %>
 <% end %>
 
-  placeSidebarClusterMarkers();  
+<% (@similar_results || []).each do |searchable| %>
+  <% if searchable.geo_located? %>
+        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
+  <% end %>
+<% end %>
 
-  $('#events-offset').val(<%=@events_offset%>)
-  $('#messages-offset').val(<%=@messages_offset%>)
+    placeSidebarClusterMarkers();
 
-  //makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
+<% if @searchables && @similar_results %>
+      //This is the handover from searchables to similar
+      makePageless(<%=@num_pages%>, 1);
+<% end %>
+  }
+
 </script>

@@ -23,17 +23,17 @@
       return str;
     }
 
-    //function makePageless(numPages, currentPage){
-    //  makePageless(numPages, currentPage, null, null)
-    //}
-    function makePageless(numPages, currentPage, events_offset, messages_offset) {
-      $('#action-list').pageless({totalPages: numPages,
-        url: '<%= explore_path %>',
-        loaderMsg: 'Loading more results',
-        params: $('form.search-params').serializeObject(),
-        currentPage: currentPage,
-        paramUpdate: updatePagelessParams
-      });
+    function makePageless(numPages, currentPage) {
+      console.log("MAKE PAGELESS: " + numPages + ', ' + currentPage)
+      if(numPages > currentPage){
+        $('#pageless-container').pageless({totalPages: numPages,
+          url: '<%= explore_path %>',
+          loaderMsg: 'Loading more results',
+          params: $('form.search-params').serializeObject(),
+          currentPage: currentPage,
+          paramUpdate: updatePagelessParams
+        });
+      }
     }
 
     function updatePagelessParams(old_params){
@@ -48,6 +48,16 @@
       var messages_offset = $('#messages-offset');
       if(messages_offset.length > 0){
         my_params['messages_offset'] = messages_offset.val();
+      }
+
+      var filter_level = $('#filter-level');
+      if(filter_level.length > 0){
+        my_params['filter_level'] = filter_level.val();
+      }
+
+      var explore_id = $('#explore-id');
+      if(explore_id.length > 0){
+        my_params['explore_id'] = explore_id.val();
       }
 
       return my_params
@@ -66,7 +76,7 @@
       $('#ajax-spinner').hide();
     });
 
-    $("form.search-params ").
+    $("form.search-params").
       find('input[type="text"],input[type="text"],select,input[type="checkbox"]').not('.do-not-submit').
       change( function(){refreshResults("explore")}); // on change of the search form fields, refresh the results
 
@@ -74,7 +84,7 @@
       var f = $('form.search-params');
       var s = f.serialize();
       popup_modal_ajax('#empty_modal_base', 'Follow this Search', '<%=new_search_subscription_path(:js)%>?' + s, null)
-      //window.location = '<%= new_search_subscription_url %>?' + s;
+      //window.location = '<%#= new_search_subscription_url %>?' + s;
       return false;
     });
 
@@ -89,11 +99,7 @@
       refreshResults("explore");
     });
 
-  <%- if @events_offset && @messages_offset %>
-      makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>, <%=@events_offset%>, <%=@messages_offset%>);
-  <% else %>
-      makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
-  <% end %>
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
 
   </script>
 
@@ -439,11 +445,9 @@
       google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
       google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
       //$(window).resize(changeLocationParams);
-  <% @searchables.each do |searchable| %>
-    <% if searchable.event && searchable.geo_located? %>
-      <% if searchable.geo_located? %>
-            placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
-      <% end %>
+  <% (@searchables || []).each do |searchable| %>
+    <% if searchable.geo_located? %>
+          placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 

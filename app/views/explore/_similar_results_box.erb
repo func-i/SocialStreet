@@ -1,5 +1,5 @@
 <div class="message-holder">
-  <div id="end-of-results-message" class="message" <%= 'style=display:none' if (@offset + @per_page < @searchable_total_count) %> >
+  <div id="end-of-results-message" class="message" <%= 'style=display:none' if (!@filter_level) %> >
     <span id="searchable-count">
       <% if @searchable_total_count == 0 %>
         <p>Unfortunately, no results were found. Why don't you:</p>

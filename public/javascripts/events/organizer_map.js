@@ -275,13 +275,16 @@ function selectEventMarker(marker, changeInputField) {
         selectedMarker = marker;
         preservedMarkers.push(marker);
    
-        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 300px;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
+        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 100px;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
         marker.htmlTitle = linkText;           
         marker.setIcon("/images/ico-pin-selected.png");
 
         infoWindow.setContent(linkText);
-        infoWindow.setMinHeight(20);
+        infoWindow.setMaxHeight(20);
+        infoWindow.setMinHeight(10);
         infoWindow.setMinWidth(100);
+//        infoWindow.setMaxWidth(300);
+        infoWindow.hideCloseButton;
         infoWindow.open(map, marker);
    
         //    if (marker.getAnimation() == null) {
@@ -328,7 +331,7 @@ $('#marker-name-field').live('keyup', function(e) {
         $(this).siblings('a').show();
         $(this).hide();
         infoWindow.setMinHeight(20);
-        infoWindow.setMinWidth(100);
+        infoWindow.setMinWidth(300);
         
         return false;
     }
@@ -351,6 +354,6 @@ function placeClusterMarkers(){
 function labelClicked(lnk) {  
     $(lnk).siblings('input').show();
     infoWindow.setMinHeight(50);
-    infoWindow.setMinWidth(300);
+    //infoWindow.setMinWidth(300);
     $(lnk).hide();
 }
