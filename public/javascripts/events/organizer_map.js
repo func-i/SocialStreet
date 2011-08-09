@@ -20,13 +20,14 @@ $(function() {
     {
         var loc_arr = $('#users-current-location').val().split(',');
         loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
-        console.log(loc)
     }
     else{
         loc = toronto;
     }
     
     infoWindow = new InfoBubble();
+    infoWindow.hideCloseButton();
+    
     geocoder = new google.maps.Geocoder();
     var myOptions = {
         zoom: 10,
@@ -97,14 +98,14 @@ function placeMarker(location, title, dragged) {
     markers.push(marker);
     if(dragged == true)
         preservedMarkers.push(marker);
-    
+
     google.maps.event.trigger(marker, 'click');
 
     map.setCenter(location);
 }
 
-function setTitle() {
-    $('#marker-name-field').val($('.location-name-field').val());
+function setTitle(title) {
+    $('#marker-name-field').val(title);
 }
 
 function DropPinControl(controlImg, controlText, map) {
@@ -220,7 +221,7 @@ function searchLocations(e) {
                 $.each(result.address_components, function(ci, component) {
                     infoContents[component.types["0"]] = component.short_name;
                 });
-            //placeMarker(result.geometry.location, e.target.value, infoContents);
+                placeMarker(result.geometry.location, e.target.value, infoContents);
             });
             selectMarker(markers[0], false);
         } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
@@ -238,8 +239,8 @@ function searchLocations(e) {
             }, function(data, textStatus, jqHXR) {
                 if (data.length > 0) {
                     $.each(data, function(index, result) {
-                        //placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
-                        });
+                        placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
+                    });
                 } else {
                     alert("No results found, please drop a pin to tell us where this is");
                 }
@@ -274,30 +275,28 @@ function selectEventMarker(marker, changeInputField) {
     if(selectedMarker == null || (selectedMarker != null && selectedMarker != marker)) {
         selectedMarker = marker;
         preservedMarkers.push(marker);
-   
-        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 100px;'/><a href=\"#\" onClick=\"labelClicked(this); return false;\">Add place name</a>";
+
+        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
+            "<a href=\"#\" onClick=\"labelClicked(this); return false;\">" +
+            ($('#location-name-field').val() == marker.title ?  marker.title : 'Add place name') +
+            "</a>";
         marker.htmlTitle = linkText;           
         marker.setIcon("/images/ico-pin-selected.png");
 
         infoWindow.setContent(linkText);
+
         infoWindow.setMaxHeight(20);
         infoWindow.setMinHeight(10);
-        infoWindow.setMinWidth(100);
-//        infoWindow.setMaxWidth(300);
-        infoWindow.hideCloseButton;
-        infoWindow.open(map, marker);
-   
-        //    if (marker.getAnimation() == null) {
-        //        marker.setAnimation(google.maps.Animation.BOUNCE);
-        //        setTimeout(function() {
-        //            if (marker.getAnimation() == google.maps.Animation.BOUNCE) marker.setAnimation(null);
-        //        }, 740);
-        //    }
 
+        infoWindow.setBorderWidth(5);
+        infoWindow.setPadding(5);
+
+        infoWindow.open(map, marker); 
+  
         var latlng = marker.getPosition();
         $('#location-lat-field').val(latlng.lat());
         $('#location-lng-field').val(latlng.lng());
-        if (changeInputField) $('.location-name-field').val(marker.title);
+        if (changeInputField) $('#location-name-field').val(marker.title);
         setTimeout(function() {
             //$('#marker-name-field').focus();
             }, 100);
@@ -306,9 +305,12 @@ function selectEventMarker(marker, changeInputField) {
 
 // don't allow enter to submit form
 
-$('.location-name-field').keydown(function(e) {
+$('.location-address-field').keydown(function(e) {
     if (e.keyCode == 13) {
         e.stopPropagation();
+
+        $('#location-name-field').val("");
+        
         searchLocations(e);
         return false;
     }
@@ -320,23 +322,33 @@ $('#marker-name-field').live('click', function() {
 });
 
 $('#marker-name-field').live('keyup', function(e) {
-    $('.location-name-field').val(this.value);
+    $('#location-name-field').val(this.value);
     selectedMarker.setTitle(this.value);
+
     return true;
 }).live('keydown', function(e) {
     if (e.keyCode == 13) {
-        e.stopPropagation();        
-        //$('#marker-name').html(this.value + $('#hidden-link').html());
-        //$('#set-title').children('input')[0].value = this.value;
+        e.stopPropagation();
+
+        $(this).siblings('a').html(this.value);
+
+        //infoWindow.setMaxWidth(400);
+        infoWindow.setMinWidth(this.value.length*6.5);//TODO - Horrible hack
+
+        infoWindow.setMinHeight('auto');
+
+        infoWindow.setPadding(5);
+        infoWindow.setBorderWidth(5);
+
         $(this).siblings('a').show();
         $(this).hide();
-        infoWindow.setMinHeight(20);
-        infoWindow.setMinWidth(300);
         
         return false;
     }
 });
-$('.location-name-field').change(searchLocations);
+$('.location-address-field').change(function(){
+    searchLocations
+});
 
 function clearClusterMarkers() {
     var markersToClear = arraySubtract(markers, preservedMarkers);
@@ -352,8 +364,12 @@ function placeClusterMarkers(){
 }
 
 function labelClicked(lnk) {  
-    $(lnk).siblings('input').show();
-    infoWindow.setMinHeight(50);
-    //infoWindow.setMinWidth(300);
+    $(lnk).siblings('input').show().focus();
+
+    infoWindow.setMinHeight(20);
+    infoWindow.setMinWidth(200);
+
+    infoWindow.setPadding(0);
+    infoWindow.setBorderWidth(5);
     $(lnk).hide();
 }

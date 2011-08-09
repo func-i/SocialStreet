@@ -153,14 +153,10 @@
     // * bind a scroll event
     // * trigger is once in case of reload
     var startListener = function() {
-        console.log("HANDLERS")
-        console.log($container.data('events'))
         stopListener();
-        console.log($container.data('events'))
         
         $container.bind(SCROLL+' '+RESIZE, watch)
         .trigger(SCROLL);
-        console.log($container.data('events'))
     };
 
     var watch = function() {
@@ -203,6 +199,7 @@
                     loading(FALSE);
                     // if there is a complete callback we call it
                     if (settings.complete) settings.complete.call();
+                    //stopListener();
                 });
         }
     };

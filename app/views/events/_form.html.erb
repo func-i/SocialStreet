@@ -47,7 +47,8 @@
 
     <%= form.fields_for :searchable do |searchable_fields| %>
       <%= searchable_fields.fields_for :location do |location_fields| %>
-        <%= location_fields.text_field :text , :class => "text text_field location-name-field", :type => "text", :id=>"where", :title=> "Where?" %>
+        <%= text_field_tag 'location_address', "", :class => "text text_field location-address-field", :type => "text", :id=>"where", :title=> "Where?" %>
+        <%= location_fields.hidden_field :text, :id => "location-name-field" %>
         <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
         <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
       <% end %>
@@ -99,7 +100,7 @@
 <% if event.location.try(:geo_located?) %>
   <script>
     $(function() {
-      placeMarker(new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>), $('.location-name-field').val());
+      placeMarker(new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>), $('#location-name-field').val());
     });
   </script>
 <%- elsif event.new_record? -%>
