@@ -142,17 +142,10 @@ class ExploreController < ApplicationController
     @events_offset = params[:events_offset].to_i || 0
     similar_events_total_count = similar_events.count
     similar_events = similar_events.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset)
-    puts "JOSH: HELLO"
-    puts similar_events_total_count
-    puts @events_offset
 
     @messages_offset = params[:messages_offset].to_i || 0
     similar_messages_total_count = similar_messages.count
     similar_messages = similar_messages.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
-
-    puts similar_messages_total_count
-    puts @messages_offset
-
 
     merged_array = merge_events_and_messages(similar_events, similar_messages)
 
