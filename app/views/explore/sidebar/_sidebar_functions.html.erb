@@ -347,6 +347,8 @@
         streetViewControl: false
       };
 
+      sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
+
       var styles = [{
           url: '../images/map_pin.png',
           height: 43,
@@ -370,8 +372,6 @@
         zoomOnClick: false,
         styles: styles
       };
-      sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
-
       markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
 
       google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {

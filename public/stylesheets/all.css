@@ -1779,8 +1779,8 @@ form, fieldset {
 }
 .pop-up1 .row-map img {
     display: block;
-    position: relative;
-    z-index: 1;
+    /*position: relative;
+    z-index: 1;*/
 }
 .pop-up1 .title-row {
     border-bottom: 1px solid #e6e6e6;

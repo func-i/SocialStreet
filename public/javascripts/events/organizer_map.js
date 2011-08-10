@@ -30,7 +30,7 @@ $(function() {
     
     geocoder = new google.maps.Geocoder();
     var myOptions = {
-        zoom: 10,
+        zoom: 13,
         center: loc,
         mapTypeControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,

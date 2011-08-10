@@ -7,7 +7,8 @@ class ExploreController < ApplicationController
   MORE_RESULTS_LIMIT = 10
   MESSAGES_PER_PAGE_REQUEST = 10
   EVENTS_PER_PAGE_REQUEST = 10
-  RECORDS_PER_PAGE = 10
+  RECORDS_PER_LIST_PAGE = 10
+  RECORDS_PER_MAP_PAGE = 100
   SIMILAR_RESULTS_LIMIT = 20
   SIMILAR_RESULTS_STOP_THRESHOLD = 30
 
@@ -59,11 +60,14 @@ class ExploreController < ApplicationController
       if params[:view] != "map"
         events = events.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset)
         messages = messages.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
+        records_per_page = RECORDS_PER_LIST_PAGE
+      else
+        records_per_page = RECORDS_PER_MAP_PAGE
       end
     
       merged_array = merge_events_and_messages(events, messages)
 
-      records_length = (params[:view] == "map" || RECORDS_PER_PAGE > merged_array.length) ? merged_array.length : RECORDS_PER_PAGE
+      records_length =  records_per_page > merged_array.length ? merged_array.length : records_per_page
 
       @searchables = []
 
@@ -78,7 +82,7 @@ class ExploreController < ApplicationController
       }
 
       @searchable_total_count = @messages_total_count + @events_total_count
-      @num_pages = (@searchable_total_count.to_f / RECORDS_PER_PAGE).ceil
+      @num_pages = (@searchable_total_count.to_f / records_per_page).ceil
       
       if(SIMILAR_RESULTS_LIMIT > @messages_total_count + @events_total_count &&
             @messages_offset >= @messages_total_count &&
