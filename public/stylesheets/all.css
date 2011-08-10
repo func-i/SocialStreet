@@ -2712,7 +2712,8 @@ form, fieldset {
 }
 #sidebar .post .text .row {
     overflow: hidden;
-    padding: 0 0 3px 0;
+    padding: 3px 0 3px 0;
+    clear: both;
 }
 #sidebar .open .post .text .row { padding: 0 0 3px; }
 #sidebar .post .text .row p { margin: 0 0 4px; }
