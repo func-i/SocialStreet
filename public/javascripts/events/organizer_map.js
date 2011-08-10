@@ -43,12 +43,23 @@ $(function() {
     overlay.setMap(map);
 
     // Set the MarkerClusterer here
+    var styles = [{
+        url: '../images/map_pin.png',
+        height: 43,
+        width: 36,
+        anchor: [10, 13 ],
+        textSize: 11,
+        textColor: 'red'
+    }];
     var mcOptions = {
         gridSize: 50,
         maxZoom: 12,
-        zoomOnClick: false
+        averageCenter: false,
+        zoomOnClick: false,
+        styles: styles
     };
     mc = new MarkerClusterer(map, markers, mcOptions)
+
     google.maps.event.addListener(mc, 'clusterclick', function(cluster) {
         mkr = cluster.getMarkers()[0];
         selectMarker(mkr);
@@ -276,10 +287,10 @@ function selectEventMarker(marker, changeInputField) {
         selectedMarker = marker;
         preservedMarkers.push(marker);
 
-        var linkText = "<input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
-            "<a href=\"#\" onClick=\"labelClicked(this); return false;\">" +
-            ($('#location-name-field').val() == marker.title ?  marker.title : 'Add place name') +
-            "</a>";
+        var linkText = "<div style='text-align:center;'><input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
+        "<a href=\"#\" onClick=\"labelClicked(this); return false;\">" +
+        ((marker.title != "" && $('#location-name-field').val() == marker.title) ?  marker.title : 'Add place name') +
+        "</a></div>";
         marker.htmlTitle = linkText;           
         marker.setIcon("/images/ico-pin-selected.png");
 
@@ -330,10 +341,17 @@ $('#marker-name-field').live('keyup', function(e) {
     if (e.keyCode == 13) {
         e.stopPropagation();
 
-        $(this).siblings('a').html(this.value);
+        if(this.value.length > 0)
+        {
+            $(this).siblings('a').html(this.value);
+        }
+        else{
+            $(this).siblings('a').html("Add place name");
+        }
 
-        //infoWindow.setMaxWidth(400);
-        infoWindow.setMinWidth(this.value.length*6.5);//TODO - Horrible hack
+
+        infoWindow.setMinWidth($(this).siblings('a').html().length*6.5);//TODO - Horrible hack
+
 
         infoWindow.setMinHeight('auto');
 
