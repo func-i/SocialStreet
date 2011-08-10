@@ -44,7 +44,7 @@
     <div class="post-box" style="overflow-x: visible;">
       <div class="post-wrapper">
         <div class="post-holder">
-          <div class="post-frame" style="height: 300px;">
+          <div class="post-frame">
             <div id="action-list" class="post-content">
               <%= render 'results', :searchable_results=> (@searchables || []) %>
             </div>
@@ -80,9 +80,21 @@
 
     resizeMapResults();
 
-    $(".post-frame").bind("mousewheel",function(ev, delta) {
-      var scrollTop = $(this).scrollTop();      
-      $(this).scrollTop(scrollTop-Math.round(delta * 30));
+    //$(".post-frame").bind("mousewheel",function(ev, delta) {
+    //  var scrollTop = $(this).scrollTop();
+    //  $(this).scrollTop(scrollTop-Math.round(delta * 20));
+    //});
+
+    $('.short-box *').mouseenter(function() {
+      var postFrame = $('.post-frame');
+      postFrame.css("overflow", "auto");
+      var sTop = postFrame.scrollTop();
+      postFrame.scrollTop(0);
+      postFrame.scrollTop(sTop);
+    });
+
+    $('*').not('.short-box *').mouseenter(function(){
+      $('.post-frame').css("overflow", "hidden");
     });
 
 
