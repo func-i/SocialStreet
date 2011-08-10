@@ -63,6 +63,9 @@ class ExploreController < ApplicationController
 
       @searchables = []
 
+      puts "JOSH LOVES SARA"
+      puts merged_array.inspect
+
       records_length.times { |i|
         @searchables << merged_array[i]
 
@@ -80,6 +83,8 @@ class ExploreController < ApplicationController
             @messages_offset >= @messages_total_count &&
             @events_offset >= @events_total_count
         )
+
+        puts "HELLO JOSH"
         #not enough results were found (similar_results_limit) and all the messages and events have been shown. Display the similar results
         get_similar_results()
       end

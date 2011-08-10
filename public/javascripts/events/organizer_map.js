@@ -52,7 +52,7 @@ $(function() {
         textColor: 'red'
     }];
     var mcOptions = {
-        gridSize: 50,
+        gridSize: 20,
         maxZoom: 12,
         averageCenter: false,
         zoomOnClick: false,

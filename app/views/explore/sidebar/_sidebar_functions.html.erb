@@ -344,10 +344,29 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
       };
+
+      var styles = [{
+          url: '../images/map_pin.png',
+          height: 43,
+          width: 36,
+          anchor: [12, 14],
+          textSize: 8,
+          textColor: 'red'
+        },
+        {
+          url: '../images/map_pin.png',
+          height: 43,
+          width: 36,
+          anchor: [12, 12.5],
+          textSize: 8,
+          textColor: 'red'
+        }];
       var mcSidebarOptions = {
-        gridSize: 50,
+        gridSize: 20,
         maxZoom: 12,
-        zoomOnClick: false
+        averageCenter: false,
+        zoomOnClick: false,
+        styles: styles
       };
       sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
 

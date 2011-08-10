@@ -1,10 +1,7 @@
 <script>
   if(($('#explore-id').length <= 0 || !$('#explore-id').val() || $('#explore-id').val() == <%=@explore_id%>) )
   {
-    console.log($('#explore-id'));
-    console.log(<%=@explore_id%>);
-    console.log('NEW PAGE: ' + <%=@events_offset%> + ', ' + <%=@messages_offset%> + ', ' + <%=@filter_level%>)
-    //console.log(<%=@searchables.inspect%>)
+    //console.log("NEW PAGE:  + <%=@events_offset%>, <%=@messages_offset%>, <%=@filter_level%>");
 
     $('#events-offset').val('<%=@events_offset%>')
     $('#messages-offset').val('<%=@messages_offset%>')
