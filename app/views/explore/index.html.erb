@@ -4,5 +4,7 @@
   <%= render "map_view" -%>
 <%- end -%>
 
+<input type="hidden" id="explore-id" name="explore-id" value="<%=@explore_id%>"/>
+<input type="hidden" id="filter-level" name="filter-level" value="<%=@filter_level%>"/>
 <input type="hidden" id="events-offset" name="events-offset" value="<%=@events_offset%>"/>
 <input type="hidden" id="messages-offset" name="messages-offset" value="<%=@messages_offset%>"/>

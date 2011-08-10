@@ -83,7 +83,7 @@
         return settings.loaderHtml || '\
 <div id="pageless-loader" style="display:none;text-align:center;width:100%;">\
   <div class="msg" style="color:#e9e9e9;font-size:2em"></div>\
-  <img src="' + settings.loaderImage + '" alt="loading more results" style="margin:10px auto" />\
+  <img src="' + settings.loaderImage + '" alt="loading more results' + settings.totalPages + '" style="margin:10px auto" />\
 </div>';
     };
 
@@ -117,7 +117,10 @@
             loader = $loader;
         } else {
             loader = $(loaderHtml());
-            $el.append(loader);
+            var oldLoader = $el.find('#pageless-loader')
+            if(oldLoader.length <= 0){
+                $el.append(loader);
+            }
             // if we use the default loader, set the message
             if (!opts.loaderHtml) {
                 $('#pageless-loader .msg').html(opts.loaderMsg);
@@ -150,6 +153,8 @@
     // * bind a scroll event
     // * trigger is once in case of reload
     var startListener = function() {
+        stopListener();
+        
         $container.bind(SCROLL+' '+RESIZE, watch)
         .trigger(SCROLL);
     };
@@ -194,6 +199,7 @@
                     loading(FALSE);
                     // if there is a complete callback we call it
                     if (settings.complete) settings.complete.call();
+                    //stopListener();
                 });
         }
     };

@@ -1091,7 +1091,8 @@ ClusterIcon.prototype.onAdd = function() {
 ClusterIcon.prototype.getPosFromLatLng_ = function(latlng) {
   var pos = this.getProjection().fromLatLngToDivPixel(latlng);
   pos.x -= parseInt(this.width_ / 2, 10);
-  pos.y -= parseInt(this.height_ / 2, 10);
+//  pos.y -= parseInt(this.height_ / 2, 10);
+  pos.y -= parseInt(this.height_, 10);//JOSH's CHANGE'
   return pos;
 };
 
@@ -1212,6 +1213,8 @@ ClusterIcon.prototype.createCss = function(pos) {
   var backgroundPosition = this.backgroundPosition_ ? this.backgroundPosition_ : '0 0';
   style.push('background-position:' + backgroundPosition + ';');
 
+  console.log("JOSH");
+  console.log(this.anchor_);
   if (typeof this.anchor_ === 'object') {
     if (typeof this.anchor_[0] === 'number' && this.anchor_[0] > 0 &&
         this.anchor_[0] < this.height_) {

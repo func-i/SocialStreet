@@ -125,9 +125,18 @@
 
   <div class="box map">
     <div class="heading">
-      <h3>
-        <%=address_for(@event.location)%>
-      </h3>
+      <% if @event.location.text %>
+        <h3>
+          <%=@event.location.text %>
+        </h3>
+        <h4 style="display:block; float:left;">
+          <%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
+        </h4>
+      <% else %>
+        <h3>
+          <%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
+        </h3>
+      <% end %>
     </div>
     <div class="map-holder">
       <% if @event.geo_located? %>
