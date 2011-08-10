@@ -44,7 +44,7 @@
     <div class="post-box" style="overflow-x: visible;">
       <div class="post-wrapper">
         <div class="post-holder">
-          <div class="post-frame" style="height: 450px;">
+          <div class="post-frame" style="height: 300px;">
             <div id="action-list" class="post-content">
               <%= render 'results', :searchable_results=> @searchables %>
             </div>
@@ -66,12 +66,22 @@
 
 <script>
 
+  function resizeMapResults() {
+    var winHeight = $(window).height();
+    var resultsPosT = $(".post-frame").offset().top;
+
+    $(".post-frame").height(winHeight - resultsPosT + 10);
+    $('.post-frame').scrollTop(0);
+
+  }
+
+
   $(function(){
 
+    resizeMapResults();
+
     $(".post-frame").bind("mousewheel",function(ev, delta) {
-      var scrollTop = $(this).scrollTop();
-      console.log(scrollTop);
-      console.log(delta);
+      var scrollTop = $(this).scrollTop();      
       $(this).scrollTop(scrollTop-Math.round(delta * 30));
     });
 

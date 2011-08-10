@@ -36,6 +36,7 @@ function refreshResults(caller) {
 function expandHowItWorks() {
     $('.w2').removeClass('page-explore');
     $('.w2').removeClass('page-map');
+    $('body').css('overflow', 'auto');
  
     $('#how_it_works').closest('li').addClass('active');
     $('#top_explore_form').hide(1, function() {

@@ -89,6 +89,7 @@
         $('.w2').removeClass('header-open');
   <%- if params[:view].eql?("map") %>
           $('.w2').addClass('page-map');
+          $('body').css('overflow', 'hidden');
   <%- else %>
           $('.w2').addClass('page-explore');
   <%- end %>
