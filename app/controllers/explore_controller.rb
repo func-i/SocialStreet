@@ -224,6 +224,7 @@ class ExploreController < ApplicationController
 
     from_date = params[:from_date] ? params[:from_date] : Time.zone.now
     from_date = Time.zone.parse(from_date) if from_date.is_a? String
+    from_date = Time.zone.now if from_date == Date.today
     
     event_searchables.each do |event_searchable|
       score = event_searchable.event.starts_at - from_date
@@ -233,13 +234,14 @@ class ExploreController < ApplicationController
     return scored_events
   end
 
+  PENALTY = 1.day
   def score_messages(message_searchables)
     scored_messages = []
 
     message_searchables.each do |message_searchable|
       message_action = message_searchable.comment.action
       last_action = message_action.actions.last || message_action
-      score = Time.zone.now - last_action.occurred_at;
+      score = Time.zone.now - last_action.occurred_at + PENALTY;
       scored_messages << [score, message_searchable]
     end
 
@@ -271,6 +273,7 @@ class ExploreController < ApplicationController
 
     #MATCH FROM DATE
     from_date = args.key?(:from_date) ? args[:from_date] : (params[:from_date] ? params[:from_date] : Time.zone.now)
+    from_date = Time.zone.now if from_date == Date.today
     event_searchables = apply_from_date(event_searchables, from_date)
   end
 

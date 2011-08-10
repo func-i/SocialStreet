@@ -210,8 +210,12 @@ class Searchable < ActiveRecord::Base
       title += 'Anything'
     end
 
-    if location && location.text && !location.text.blank?
-      title += ' near ' + location.text
+    if location
+      if location.text && !location.text.blank?
+        title += ' near ' + location.text
+      else
+        title += ' near ' + "#{location.street} #{location.city}, #{location.state}"
+      end
     end
 
     if searchable_date_ranges && !searchable_date_ranges.blank?

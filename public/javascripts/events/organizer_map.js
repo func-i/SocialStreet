@@ -43,26 +43,75 @@ $(function() {
     overlay.setMap(map);
 
     // Set the MarkerClusterer here
-    var styles = [{
+    var styles = [
+    {
         url: '../images/map_pin.png',
-        height: 43,
-        width: 36,
-        anchor: [10, 13 ],
-        textSize: 11,
+        height: 41,
+        width: 33,
+        anchor: [12, 14],
+        textSize: 8,
         textColor: 'red'
-    }];
+    },
+    {
+        url: '../images/map_pin.png',
+        height: 41,
+        width: 33,
+        anchor: [12, 12.5],
+        textSize: 8,
+        textColor: 'red'
+    },
+    {
+        url: '../images/ico-pin-selected.png',
+        height: 45,
+        width: 37,
+        anchor: [14.5, 16.5],
+        textSize: 8,
+        textColor: 'black'
+    },
+    {
+        url: '../images/ico-pin-selected.png',
+        height: 45,
+        width: 37,
+        anchor: [14, 14.5],
+        textSize: 8,
+        textColor: 'black'
+    }
+    ];
     var mcOptions = {
         gridSize: 20,
-        maxZoom: 12,
+        maxZoom: 20,
         averageCenter: false,
         zoomOnClick: false,
         styles: styles
     };
     mc = new MarkerClusterer(map, markers, mcOptions)
 
+    mc.setCalculator(function(markers, numStyles, isSelected)
+    {
+        var index = 0;
+        var count = markers.length;
+        var dv = count;
+        while (dv !== 0) {
+            dv = parseInt(dv / 10, 10);
+            index++;
+        }
+
+        index = Math.min(index, numStyles/2); //divide by two for selected state at end
+        if(isSelected){
+            index = index + numStyles/2
+        }
+        return {
+            text: count,
+            index: index
+        };
+    });
+
+
     google.maps.event.addListener(mc, 'clusterclick', function(cluster) {
-        mkr = cluster.getMarkers()[0];
-        selectMarker(mkr);
+        cluster.isSelected(true);
+        cluster.updateIcon();
+
+        selectEventMarker(cluster);
     });
 
     // Create the DIV to hold the control and call the DropPinControl() constructor
@@ -103,7 +152,7 @@ function placeMarker(location, title, dragged) {
     });
 
     google.maps.event.addListener(marker, 'click', function() {       
-        selectEventMarker(marker, true);
+        selectEventMarker(marker);
     });
     
     markers.push(marker);
@@ -116,7 +165,8 @@ function placeMarker(location, title, dragged) {
 }
 
 function setTitle(title) {
-    $('#marker-name-field').val(title);
+    console.log("SET TITLE")
+//    $('#marker-name-field').val(title);
 }
 
 function DropPinControl(controlImg, controlText, map) {
@@ -159,34 +209,6 @@ function DropPinControl(controlImg, controlText, map) {
             dropPinState = false;            
         }
     });
-
-//controlDiv.appendChild(controlImg);
-    
-
-// Set CSS for the control border
-//    controlUI = document.createElement('DIV');
-//    controlUI.style.backgroundColor = 'white';
-//    controlUI.style.borderStyle = 'solid';
-//    controlUI.style.borderWidth = '2px';
-//    controlUI.style.cursor = 'pointer';
-//    controlUI.style.textAlign = 'center';
-//    controlUI.title = 'Click to specify the location manually';
-//    controlDiv.appendChild(controlUI);
-
-// Set CSS for the control interior
-//    var controlText = document.createElement('DIV');
-
-
-// Setup the click event listeners: simply set the map to Chicago
-//    google.maps.event.addDomListener(controlImg, 'mousedown', function() {
-//        if (dropPinState) {
-//            disableDropPinState();
-//        } else {
-//            dropPinState = true;
-//        //controlUI.style.backgroundColor = '#9999DD';
-//        }
-//
-//    });
 }
 
 /**@private
@@ -212,8 +234,8 @@ function clearMarkers() {
         marker.setMap(null);
     });
 
-    //markers = preservedMarkers.slice(0);
-    marker = [];
+//markers = preservedMarkers.slice(0);
+//marker = [];
 }
 
 function searchLocations(e) {
@@ -268,49 +290,113 @@ function updateMarkerTitle() {
 }
 
 function selectEventMarker(marker, changeInputField) {
-    if(selectedMarker != null && selectedMarker != marker) {
-        selectedMarker.setIcon("/images/map_pin.png");
-        $.each(preservedMarkers, function(index, ele) {
-            if(ele == selectedMarker)
-            {
-                preservedMarkers.splice(index, 1);
-                markers.push(ele);
+    if(selectedMarker != null && selectedMarker != marker) 
+    {
+        if(selectedMarker instanceof Cluster){
+            if(selectedMarker.isDeleted_){
+                console.log("WAS DELETED..", selectedMarker);
             }
+            else{
+            //Set old selection back to normal pin
+            selectedMarker.isSelected(false);
+            selectedMarker.updateIcon();
+            }
+        }
+        else{
+            //Set old selection back to normal pin
+            selectedMarker.setIcon("/images/map_pin.png");
+            
+            //Remove pins from preserved list
+            $.each(preservedMarkers, function(index, ele)
+            {
+                if(ele == selectedMarker)
+                {
+                    preservedMarkers.splice(index, 1);
+                    markers.push(ele);
+                }
 
-        });
+            });
 
-        if(selectedMarker.label != undefined)
-            selectedMarker.label.setMap(null);
+            //Remove label
+            if(selectedMarker.label != undefined)
+                selectedMarker.label.setMap(null);
+        }
     }
 
-    if(selectedMarker == null || (selectedMarker != null && selectedMarker != marker)) {
+    //New pin
+    if(selectedMarker != marker) {
+        //Set Marker
         selectedMarker = marker;
-        preservedMarkers.push(marker);
 
-        var linkText = "<div style='text-align:center;'><input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
-        "<a href=\"#\" onClick=\"labelClicked(this); return false;\">" +
-        ((marker.title != "" && $('#location-name-field').val() == marker.title) ?  marker.title : 'Add place name') +
-        "</a></div>";
-        marker.htmlTitle = linkText;           
-        marker.setIcon("/images/ico-pin-selected.png");
+        if(marker instanceof Cluster)
+        {
+            //Set icon
+            marker.isSelected(true);
+            marker.updateIcon();
 
-        infoWindow.setContent(linkText);
+            var cMarkers = marker.getMarkers();
+            $.each(cMarkers, function(index, mkr)
+            {
+                //Add markers to preserved list
+                preservedMarkers.push(mkr);
 
-        infoWindow.setMaxHeight(20);
-        infoWindow.setMinHeight(10);
+                if(cMarkers.length-1 == index){
+                    //Set Infobox
+                    var myTitle = marker.title_;
+                    var linkText = "<div style='text-align:center;'><input id=\"marker-name-field\" type=\"text\" value=\"" + myTitle + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
+                    "<a href=\"#\" onClick=\"labelClicked(this); return false;\">" +
+                    ((myTitle != "" && $('#location-name-field').val() == myTitle) ?  myTitle : 'Add place name') +
+                    "</a></div>";
+                    //marker.htmlTitle = linkText;
+                    infoWindow.setContent(linkText);
 
-        infoWindow.setBorderWidth(5);
-        infoWindow.setPadding(5);
+                    infoWindow.setMaxHeight(20);
+                    infoWindow.setMinHeight(10);
+                    infoWindow.setBorderWidth(5);
+                    infoWindow.setPadding(5);
+                    
+                    //infoWindow.open(map, mkr);
+                    //console.log(marker.getCenter());
+                    var p = marker.clusterIcon_.getPosFromLatLng_(marker.clusterIcon_.center_);
+                    var q = marker.clusterIcon_.getProjection().fromDivPixelToLatLng(p);
+                    //console.log(p);
+                    //console.log(q);
+                    //infoWindow.setPosition(q);
+                    infoWindow.open(map);
+                    infoWindow.open(map, mkr);
 
-        infoWindow.open(map, marker); 
-  
-        var latlng = marker.getPosition();
-        $('#location-lat-field').val(latlng.lat());
-        $('#location-lng-field').val(latlng.lng());
-        if (changeInputField) $('#location-name-field').val(marker.title);
-        setTimeout(function() {
-            //$('#marker-name-field').focus();
-            }, 100);
+                    var latlng = mkr.getPosition();
+                    $('#location-lat-field').val(latlng.lat());
+                    $('#location-lng-field').val(latlng.lng());
+                }
+            });
+        }
+        else{
+            //Add marker to preserved list
+            preservedMarkers.push(marker);
+
+            //Set icon
+            marker.setIcon("../images/ico-pin-selected.png");
+
+            //Set Infobox
+            linkTitle = (marker.title != "" && $('#location-name-field').val() == marker.title) ?  marker.title : 'Add place name';
+            var linkText = "<div style='text-align:center;'><input id=\"marker-name-field\" type=\"text\" value=\"" + marker.title + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
+            "<a href=\"#\" onClick=\"labelClicked(this); return false;\">" + linkTitle +
+            "</a></div>";
+
+            infoWindow.setContent(linkText);
+
+            infoWindow.setMaxHeight(20);
+            infoWindow.setMinHeight(10);
+            infoWindow.setMinWidth(linkTitle.length*6.5);
+            infoWindow.setBorderWidth(5);
+            infoWindow.setPadding(5);
+            infoWindow.open(map, marker);
+
+            var latlng = marker.getPosition();
+            $('#location-lat-field').val(latlng.lat());
+            $('#location-lng-field').val(latlng.lng());
+        }  
     }
 }
 
@@ -352,7 +438,6 @@ $('#marker-name-field').live('keyup', function(e) {
 
         infoWindow.setMinWidth($(this).siblings('a').html().length*6.5);//TODO - Horrible hack
 
-
         infoWindow.setMinHeight('auto');
 
         infoWindow.setPadding(5);
@@ -370,6 +455,9 @@ $('.location-address-field').change(function(){
 
 function clearClusterMarkers() {
     var markersToClear = arraySubtract(markers, preservedMarkers);
+//        console.log("Clear Cluster Markers");
+  //    console.log('preservedMarkers: ', preservedMarkers);
+    // console.log('markersToClear: ', markersToClear);
 
     mc.removeMarkers(markersToClear);
 
@@ -377,8 +465,11 @@ function clearClusterMarkers() {
 }
 
 function placeClusterMarkers(){
+    //console.log("Place Cluster Markers");
+    //console.log("Markers: ", markers);
     if(markers.length > 0)
         mc.addMarkers(markers);
+//    console.log("DONE: ", mc.getMarkers());
 }
 
 function labelClicked(lnk) {  

@@ -58,8 +58,10 @@
             <% action = item.head_action %>
             <% if(action.action_type == Action.types[:event_created]) %>
               <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } %>
-            <% else %>
+            <% elsif(action.action_type == Action.types[:search_comment]) %>
               <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
+            <% else %>
+              <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
             <% end %>
           <% else %>
             <% action = item.index_action %>
@@ -162,4 +164,23 @@
       </div>
     </div>
   </div>
+<% end %>
+
+<% content_for :end_of_body do %>
+
+  <%= javascript_include_tag 'jquery.pageless' %>
+
+  <script>
+    function makePageless(numPages, currentPage) {
+
+      $('#action-list').pageless({ totalPages: numPages,
+        url: '<%= dashboard_path %>',
+        loaderMsg: 'Loading more results',
+        currentPage: currentPage
+      });
+    }
+
+    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+
+  </script>
 <% end %>

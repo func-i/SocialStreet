@@ -46,7 +46,6 @@ class User < ActiveRecord::Base
   scope :attending_event, lambda {|event|
     includes(:rsvps).where("rsvps.event_id = ?", event.id)
   }
-
   scope :has_signed_in, where("sign_in_count > 0")
 
   # RSVP: event.rsvps.attending.connected_with(me).includes(:user)

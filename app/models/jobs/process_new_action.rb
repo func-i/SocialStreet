@@ -28,6 +28,9 @@ class Jobs::ProcessNewAction
     #Add action to any user who has subscribed to it
     handle_subscriptions(redis, action)
 
+    #Add to default dashboard
+    handle_default_dashboard(redis, action)
+
 
     redis.quit
   end
@@ -90,6 +93,29 @@ class Jobs::ProcessNewAction
         end
       end
     end
+  end
+
+  def self.handle_default_dashboard(redis, action)
+    if !(
+        action.action_type == Action.types[:event_created] ||
+        action.action_type == Action.types[:search_comment] ||
+        (action.action_type == Action.types[:action_comment] && action.action.action_type == Action.types[:search_comment])
+    )
+      return
+    end
+
+    defaultUser = User.where(:username => "default_socialstreet_user").first;
+    if !defaultUser
+      defaultUser = User.new(:username => "default_socialstreet_user");
+    end
+
+    feed_item = Feed.where(:user_id => defaultUser, :head_action_id => action.action || action).first
+    if(nil == feed_item)
+      feed_item = Feed.new(:user => defaultUser, :head_action => action.action || action, :reason => Feed.reasons[:subscription])
+      feed_item.save
+    end
+    Feed.push(redis, defaultUser, feed_item)
+
   end
 
   def self.handle_subscriptions(redis, action)

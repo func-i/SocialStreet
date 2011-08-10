@@ -10,8 +10,8 @@ class Feed < ActiveRecord::Base
   belongs_to :head_action, :class_name => "Action"
   belongs_to :index_action, :class_name => "Action"
 
-  def self.for_user(redis, user, count)
-    results=redis.zrevrange "feed:#{user.id}", 0, count
+  def self.for_user(redis, user, start_index, count)
+    results=redis.zrevrange "feed:#{user.id}", start_index, start_index + count - 1
     if results.size > 0
       results.collect {|r|
         f = Feed.find_by_id(r)
@@ -19,6 +19,10 @@ class Feed < ActiveRecord::Base
     else
       results
     end
+  end
+
+  def self.count(redis, user)
+    count = redis.zcard "feed:#{user.id}"
   end
 
   # push status to a specific feed
