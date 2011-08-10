@@ -11,7 +11,7 @@
     '<%= escape_javascript render("results", :searchable_results => (@searchables || []))%>'
   );
 
-<% if @filter_level && (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)%>
+<% if @filter_level && (!params[:view].eql?("map") || (false && @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT))%>
       $('#end-of-results-message').show();
 <% end %>
 

@@ -5,6 +5,12 @@ class ExploreController < ApplicationController
   before_filter :store_current_path
 
   MORE_RESULTS_LIMIT = 10
+  MESSAGES_PER_PAGE_REQUEST = 10
+  EVENTS_PER_PAGE_REQUEST = 10
+  RECORDS_PER_PAGE = 10
+  SIMILAR_RESULTS_LIMIT = 20
+  SIMILAR_RESULTS_STOP_THRESHOLD = 30
+
   
   def index    
     @comment = Comment.new
@@ -38,11 +44,6 @@ class ExploreController < ApplicationController
     
   end
 
-  MESSAGES_PER_PAGE_REQUEST = 10
-  EVENTS_PER_PAGE_REQUEST = 10
-  RECORDS_PER_PAGE = 10
-  SIMILAR_RESULTS_LIMIT = 20
-  SIMILAR_RESULTS_STOP_THRESHOLD = 30
   def get_searchables
     @searchable_total_count = 0
 
@@ -50,21 +51,21 @@ class ExploreController < ApplicationController
       events = find_events()
       @events_offset = params[:events_offset].to_i || 0
       @events_total_count = events.count
-      events = events.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset)
 
       messages = find_messages()
       @messages_offset = params[:messages_offset].to_i || 0
       @messages_total_count = messages.count
-      messages = messages.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
+
+      if params[:view] != "map"
+        events = events.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset)
+        messages = messages.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
+      end
     
       merged_array = merge_events_and_messages(events, messages)
 
-      records_length = RECORDS_PER_PAGE > merged_array.length ? merged_array.length : RECORDS_PER_PAGE
+      records_length = (params[:view] == "map" || RECORDS_PER_PAGE > merged_array.length) ? merged_array.length : RECORDS_PER_PAGE
 
       @searchables = []
-
-      puts "JOSH LOVES SARA"
-      puts merged_array.inspect
 
       records_length.times { |i|
         @searchables << merged_array[i]
@@ -84,7 +85,6 @@ class ExploreController < ApplicationController
             @events_offset >= @events_total_count
         )
 
-        puts "HELLO JOSH"
         #not enough results were found (similar_results_limit) and all the messages and events have been shown. Display the similar results
         get_similar_results()
       end
@@ -95,6 +95,11 @@ class ExploreController < ApplicationController
 
 
   def get_similar_results
+    if @searchable_total_count < MORE_RESULTS_LIMIT
+      @filter_level = 1 #HACK
+    end
+    return nil if params[:view] == "map"
+
     all_message_ids = find_messages().select("searchables.id")
     all_event_ids = find_events().select("searchables.id")
 
