@@ -156,7 +156,7 @@ class ExploreController < ApplicationController
 
     merged_array = merge_events_and_messages(similar_events, similar_messages)
 
-    records_length = RECORDS_PER_PAGE > merged_array.length ? merged_array.length : RECORDS_PER_PAGE
+    records_length = RECORDS_PER_LIST_PAGE > merged_array.length ? merged_array.length : RECORDS_PER_LIST_PAGE
 
     @similar_results = []
 
@@ -170,7 +170,7 @@ class ExploreController < ApplicationController
       end
     }
 
-    @num_pages = ((similar_events_total_count + similar_messages_total_count.to_f) / RECORDS_PER_PAGE).ceil
+    @num_pages = ((similar_events_total_count + similar_messages_total_count.to_f) / RECORDS_PER_LIST_PAGE).ceil
   end
 
   def get_filter_from_level(level)
