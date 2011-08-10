@@ -2673,7 +2673,7 @@ form, fieldset {
 }
 #sidebar .open .form-comment .textarea {
     margin: 0 -2px 0 0;
-    width: 313px !important;
+    width: 300px !important;
 }
 #sidebar .post { padding: 6px 5px 6px 9px; }
 #sidebar .post .post {
@@ -2687,6 +2687,10 @@ form, fieldset {
     width: auto;
     float: none;
     overflow: hidden;
+}
+
+#sidebar .post .text  {
+    width: 280px;
 }
 #sidebar .post .row .text { font:italic 12px/14px Georgia, sans-serif; }
 #sidebar .open .post .row .text {
@@ -2713,14 +2717,16 @@ form, fieldset {
 #sidebar .open .post .text .row { padding: 0 0 3px; }
 #sidebar .post .text .row p { margin: 0 0 4px; }
 #sidebar .post .text .keyword {
-    float: left;
-    margin: 0 0 -3px;
+    /*float: left;
+    margin: 0 0 -3px;*/
     padding: 7px 0 0 7px;
-    width: auto;
+    width: 225px;
 }
+
 #sidebar .open .post .text .keyword {
     margin: 0;
     padding: 8px 0 0;
+    width: auto;
 }
 #sidebar .post .post .author { font-weight: bold; }
 #sidebar .post-holder .post h3 {
