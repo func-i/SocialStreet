@@ -693,7 +693,7 @@ MarkerClusterer.prototype.resetViewport = function(opt_hide) {
         }
     }
 
-    console.log("Removing clusters: ", this.clusters_, selectedClusterArr);
+    //console.log("Removing clusters: ", this.clusters_, selectedClusterArr);
     this.clusters_ = [];
     for (var i = 0, cluster; cluster = selectedClusterArr[i]; i++) {
         this.clusters_.push(cluster);
@@ -778,9 +778,9 @@ MarkerClusterer.prototype.addToClosestCluster_ = function(marker) {
         clusterToAddTo.addMarker(marker);
         //        if(clusterToAddTo.isSelected_)
         //          clusterToAddTo.calculateBounds_();
-        console.log("Adding to cluster: ", marker, clusterToAddTo, this.clusters_);
+        //console.log("Adding to cluster: ", marker, clusterToAddTo, this.clusters_);
     } else {
-        console.log("Creating new cluster: ", marker, this.clusters_);
+        //console.log("Creating new cluster: ", marker, this.clusters_);
         var cluster = new Cluster(this);
         cluster.addMarker(marker);
         this.clusters_.push(cluster);

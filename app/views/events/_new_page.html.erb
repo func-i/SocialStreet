@@ -1,5 +1,5 @@
 <script>
-<%@action.each do |action|%>
+<%@actions.each do |action|%>
     $('#action-list').append(
     '<div class="post">' +
       '<%= escape_javascript render(:partial => 'shared/records', :locals => { :record => action, :record_type => RecordType.types[:plain_thread] } ) %>' +

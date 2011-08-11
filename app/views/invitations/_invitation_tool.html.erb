@@ -33,14 +33,14 @@
       </ul>
     </div>
   </div>
-<!-- <div class="row-btn">
-    <div class="col-facebook">
-      <label for="facebook">Post to:
-        <input type="checkbox" title="facebook" id="facebook"/>
-      </label>
-    </div>    
-    <%# render 'shared/form_submit_button' %>
-  </div>-->
+  <!-- <div class="row-btn">
+      <div class="col-facebook">
+        <label for="facebook">Post to:
+          <input type="checkbox" title="facebook" id="facebook"/>
+        </label>
+      </div>
+<%# render 'shared/form_submit_button' %>
+    </div>-->
 </div>
 
 <script>
@@ -48,7 +48,16 @@
   var timeout = null;
 
 
- $(function() {
+  $(function() {
+    $('#empty_modal_sidebar').find('.content').pageless({
+      totalPages: <%= @num_pages_invitations -%>,
+      url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
+      loaderMsg: 'Loading more results',
+      params: $('form.search-params-invitations').serializeObject(),
+      currentPage: <%= params[:page] || 1 %>
+    });
+
+
     var $userList = $('.user-list');
     var lastQuery = '';
 
@@ -140,7 +149,7 @@
     $('input.button').click(function() {
       $('form.invite-form').submit();
     });
- });
+  });
 
   function isEmail(string) {
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;

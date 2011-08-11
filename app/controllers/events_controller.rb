@@ -14,20 +14,15 @@ class EventsController < ApplicationController
 
     # => Action list and pagination
     @actions = @event.actions.where(:action_type => Action.types[:event_comment]).newest_first
-    @per_page = 5
-    @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    @total_count = @actions.count
-    @num_pages = (@total_count.to_f / @per_page.to_f).ceil
-    @actions = @actions.limit(@per_page).offset(@offset)
+    @per_page = 10
+    offset = ((params[:page] || 1).to_i * @per_page) - @per_page
+    total_count = @actions.count
+    @num_pages = (total_count.to_f / @per_page.to_f).ceil
+    @actions = @actions.limit(@per_page).offset(offset)
 
     # => Attendees && Administrator objects
     @attendees_rsvps = @event.rsvps.attending_or_maybe_attending.all
     @administrators_rsvps = @event.rsvps.administrators.all
-
-    #if current_user
-    #@connections = current_user.connections.most_relevant_first.all
-    # load_invitations_objects
-    #end
 
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
