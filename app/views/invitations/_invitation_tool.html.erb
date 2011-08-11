@@ -46,21 +46,29 @@
 <script>
   var searchURL = '<%= connections_path %>';
   var timeout = null;
+  var invitationPageless = null;
 
-
-  $(function() {
-    var myPageless = new Pageless({
+  function makeInvitationsPageless(){
+    invitationPageless = new Pageless({
       container: '#empty_modal_sidebar .content',
       totalPages: <%= @num_pages_invitations -%>,
       currentPage: <%= params[:page] || 1 %>,
       url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
-      parameterFunction: paramFunction()
-    })
-    myPageless.start();
+      parameterFunction: paramFunction
+    });
+    invitationPageless.start();
 
     function paramFunction(){
-      console.log("HERE");
+      return $('form.search-params-invitations').serializeObject();
     }
+  }
+
+  function getInvitationPageless(){
+    return invitationPageless;
+  }
+
+  $(function() {
+     makeInvitationsPageless();
 
     /*    $('#empty_modal_sidebar').find('.content').pageless({
       container: '#empty_modal_sidebar .content',

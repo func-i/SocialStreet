@@ -1,9 +1,6 @@
+console.log("NEW");
 $('#invitation-user-list').html('<%= escape_javascript render(:partial => 'invitations/user_results') %>');
-$('#empty_modal_sidebar').find('.content').pageless({
-container: '#empty_modal_sidebar .content',
-totalPages: <%= @num_pages_invitations -%>,
-url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
-loaderMsg: 'Loading more results',
-params: $('form.search-params-invitations').serializeObject(),
-currentPage: <%= params[:page] || 1 %>
+getInvitationPageless().reset({
+  currentPage: 1,
+  totalPages: <%= @num_pages_invitations -%>
 });

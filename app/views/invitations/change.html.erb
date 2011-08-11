@@ -4,14 +4,14 @@
   <%= javascript_include_tag 'jquery.pageless' -%>
   <script>
     $(function() {
-      $('#invitation-user-list').pageless({
+/*      $('#invitation-user-list').pageless({
         container: '#invitation-user-list',
         totalPages: <%= @num_pages -%>,
         url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
         loaderMsg: 'Loading more results',
         params: $('form.search-params').serializeObject(),
         currentPage: <%= params[:page] || 1 %>
-      });
+      });*/
     });
   </script>
 <%- end -%>

@@ -1,32 +1,42 @@
 function Pageless(opt_options)
 {
+    this.init(opt_options);
+}
+
+Pageless.prototype.init = function(opt_options)
+{
     var options = opt_options || {};
 
     if (options['container'] == undefined) {
-        options['container'] = window;
+        options['container'] = this.container_ || window;
     }
     if (options['currentPage'] == undefined) {
-        options['currentPage'] = 1;
+        options['currentPage'] = this.current_page_ || 1;
     }
     if (options['totalPages'] == undefined) {
-        options['totalPages'] = 1;
+        options['totalPages'] = this.totalPages_ || 1;
     }
     if (options['distance'] == undefined) {
-        options['distance'] = 100;
+        options['distance'] = this.distance_ || 100;
     }
     if (options['loaderContainer'] == undefined){
-        options['loaderContainer'] = options['container']
+        options['loaderContainer'] = this.loaderContainer_ || options['container']
     }
     if(options['loaderHtml'] == undefined){
-        options['loaderHtml'] = '\
+        options['loaderHtml'] = this.loaderHtml_ || '\
             <div id="pageless-loader" style="display:none;text-align:center;width:100%;">\
             <div class="msg" style="color:#e9e9e9;font-size:2em">Loading...</div>\
-            <!--<img src="' + this.loaderImage_ + '" alt="loading more results' + this.totalPages_ + '" style="margin:10px auto" />-->\
+            <img src="' + '/images/load.gif' + '" alt="loading more results" style="margin:10px auto" />\
             </div>';
+    }
+    if (options['url'] == undefined) {
+        options['url'] = this.url_ || "";//TODO
+    }
+    if (options['parameterFunction'] == undefined) {
+        options['parameterFunction'] = this.parameterFunction_ || "";//TODO
     }
 
     this.setValues(options);
-
 
     this.loader_ = $(this.loaderHtml_);
     var $loaderContainer = $(this.loaderContainer_);
@@ -35,7 +45,7 @@ function Pageless(opt_options)
     if(oldLoader.length <= 0){
         $loaderContainer.append(this.loader_);
     }
-}
+};
 
 Pageless.prototype.setValues = function(options){
     this.container_ = options['container'];
@@ -46,7 +56,7 @@ Pageless.prototype.setValues = function(options){
     this.parameterFunction_ = options['parameterFunction'];
     this.distance_ = options['distance'];
     this.loaderHtml_ = options['loaderHtml'];
-    this.loaderContainer = options['loaderContainer'];
+    this.loaderContainer_ = options['loaderContainer'];
 
     this.isLoading_ = false;
 };
@@ -67,40 +77,46 @@ Pageless.prototype.distanceToBottom = function () {
     - this.container_dom_.height();
 };
 
-Pageless.prototype.watch = function(){
-    if(this.totalPages_ <= this.currentPage_){
-        stop();
+Pageless.prototype.watch = function(that){
+    if(that.totalPages_ <= that.currentPage_){
+        that.stop();
         return;
     }
-    else if(!this.isLoading_ && (this.distanceToBottom() < this.distance_)) {
-        this.loading(true);
+    else if(!that.isLoading_ && (that.distanceToBottom() < that.distance_)) {
+        that.loading(true);
 
         // move to next page
-        this.currentPage_++;
+        that.currentPage_++;
 
         params = {}
 
-        if($.isFunction(this.parameterFunction_)){
-            params = this.parameterFunction_();
+        if($.isFunction(that.parameterFunction_)){
+            params = that.parameterFunction_();
         }
 
         $.extend(params, {
-            page: this.currentPage_
+            page: that.currentPage_
         });
 
-        var that = this;
         $.get( that.url_, params, function (data) {
-            that.loader_ ? that.loader_.before(data) : element.append(data);//TODO
+            that.loader_ ? that.loader_.before(data) : "";//TODO somewhere.append(data);
             that.loading(false);
         });
     }
 };
 
+Pageless.prototype.reset = function(opt_options){
+    this.init(opt_options);
+    this.start();
+};
+
 Pageless.prototype.start = function(){
     var that = this;
-    this.container_dom_.bind('scroll.ss_pageless', this.watch(that));
+    this.container_dom_.bind('scroll.ss_pageless', function(){
+        that.watch(that);
+    });
     this.container_dom_.bind('resize.ss_pageless', function(){
-        this.watch;
+        that.watch(that);
     });
 };
 

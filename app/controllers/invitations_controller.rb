@@ -18,8 +18,6 @@ class InvitationsController < ApplicationController
     
       @invitations = @rsvp.invitations
 
-      puts "HELLO NEW"
-      puts request.inspect
       render :partial => 'new_page' if request.xhr? && params[:page] # pagination request
     else
       redirect_to import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @rsvp))
