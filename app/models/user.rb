@@ -69,9 +69,7 @@ class User < ActiveRecord::Base
       end
       
       self.email = user_info['email'] if !user_info['email'].blank? && self.email.blank?
-
       self.gender = user_info['gender'] if !user_info['gender'].blank? && self.gender.blank?
-
       self.location = user_info['location']['name'] if !user_info['location'].blank? && !user_info['location']['name'].blank? && self.location.blank?
     end
 
@@ -119,7 +117,7 @@ class User < ActiveRecord::Base
 
   def avatar_url
     # TODO: check for custom avatar image first, once it is implemented
-    photo? ? photo.thumb.url : facebook_profile_picture_url || twitter_profile_picture_url
+    photo? ? photo.thumb.url : facebook_profile_picture_url.gsub("type=square", "type=large") || twitter_profile_picture_url
   end
 
   def fb_auth_token
