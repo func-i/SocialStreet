@@ -25,7 +25,7 @@
         </li>
 
       <% else %>
-                          <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                            <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -135,8 +135,8 @@
     expandHowItWorks();
   <% else %>
     <%- if params[:view].eql?("map") %>
-      $('.w2').addClass('page-map');
-      $('body').css('overflow', 'hidden');
+        $('.w2').addClass('page-map');
+        $('body').css('overflow', 'hidden');
     <%- elsif params[:view].eql?("map") %>
       $('.w2').addClass('page-explore');
     <%- end -%>

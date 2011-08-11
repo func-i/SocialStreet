@@ -66,6 +66,7 @@ function retractHowItWorks(f) {
 
 
 $(function() {
+
     $('.remove-parent').live('click', function(event) {
         var $this = $(this);
         var parentSelector = $this.data('parent-selector');
