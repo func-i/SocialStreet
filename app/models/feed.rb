@@ -11,13 +11,17 @@ class Feed < ActiveRecord::Base
   belongs_to :index_action, :class_name => "Action"
 
   def self.for_user(redis, user, start_index, count)
-    results=redis.zrevrange "feed:#{user.id}", start_index, start_index + count - 1
-    if results.size > 0
-      results.collect {|r|
-        f = Feed.find_by_id(r)
-      }
+    if user
+      results=redis.zrevrange "feed:#{user.id}", start_index, start_index + count - 1
+      if results.size > 0
+        results.collect {|r|
+          f = Feed.find_by_id(r)
+        }
+      else
+        results
+      end
     else
-      results
+      []
     end
   end
 

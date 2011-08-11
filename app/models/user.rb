@@ -74,6 +74,7 @@ class User < ActiveRecord::Base
 
       self.location = user_info['location']['name'] if !user_info['location'].blank? && !user_info['location']['name'].blank? && self.location.blank?
     end
+
     if omniauth['provider'] == 'facebook' && omniauth['user_info']
       self.facebook_profile_picture_url = omniauth['user_info']['image'] if self.facebook_profile_picture_url.blank?
     elsif omniauth['provider'] == 'twitter' && omniauth['user_info']
