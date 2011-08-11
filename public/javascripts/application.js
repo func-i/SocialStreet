@@ -97,7 +97,7 @@ $(function() {
         var divId = '#' + $(this).attr('popup-div-id');
         $(divId).show();
 
-        if(document.getElementById("TB_overlay") === null){
+        if(document.getElementById("ss_modal_overlay") === null) {
             $("body").append("<div id='ss_modal_overlay'></div>");
             $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
             $("#ss_modal_overlay").click(function(){

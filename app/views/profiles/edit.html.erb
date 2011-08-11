@@ -31,7 +31,11 @@
       <div class="col">
         <%= avatar @user, :size => "81x78" %>
         <strong class="link-download">
-          <a href="#" class="submit-on-change">edit photo</a></strong> TODO
+          <%= link_to "Edit", '#', :id => "edit_link" %>
+        </strong>
+        <div id="user_photo" style="display:none;">
+          <%= form.file_field :photo, :class => "submit-on-change", :onChange => "$('.form').submit();" %>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -132,7 +136,7 @@
             <th>
               <strong><%=  event.title %></strong>
               <%= link_to_popup_modal_ajax  'Edit', 'Edit event', 'empty_modal_base', edit_event_path(event), nil, nil%>
-              <%#= link_to_ "edit", [:edit, event]%>
+    <%#= link_to_ "edit", [:edit, event]%>
             </th>
             <td>
               <span>Start Day:</span>
@@ -175,9 +179,13 @@
 
 
       $('.submit-on-change').change(function(){
+        console.log('submitted');
         $('.form').submit();
       });
 
+      $('#edit_link').click(function() {
+        $('.link-download').html($('#user_photo').html());
+      });
 
     });
 
