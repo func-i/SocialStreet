@@ -49,13 +49,27 @@
 
 
   $(function() {
-    $('#empty_modal_sidebar').find('.content').pageless({
+    var myPageless = new Pageless({
+      container: '#empty_modal_sidebar .content',
+      totalPages: <%= @num_pages_invitations -%>,
+      currentPage: <%= params[:page] || 1 %>,
+      url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
+      parameterFunction: paramFunction()
+    })
+    myPageless.start();
+
+    function paramFunction(){
+      console.log("HERE");
+    }
+
+    /*    $('#empty_modal_sidebar').find('.content').pageless({
+      container: '#empty_modal_sidebar .content',
       totalPages: <%= @num_pages_invitations -%>,
       url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
       loaderMsg: 'Loading more results',
       params: $('form.search-params-invitations').serializeObject(),
       currentPage: <%= params[:page] || 1 %>
-    });
+    });*/
 
 
     var $userList = $('.user-list');

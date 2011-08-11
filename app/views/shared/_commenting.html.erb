@@ -9,7 +9,8 @@
         $('#comment_body').val('');
         $('button.comment-button').attr('disabled', null);
         $('#comment-box').fadeTo('slow', 1);
-        var $elem = $(data).hide();
+        var $elem = $(data);
+        $elem.hide();
         var $list = $('#action-list');
         $list.prepend($elem);
         $elem.slideDown('fast');
@@ -35,7 +36,8 @@
         return true;
       }).live('ajax:success', function(e, data, status, xhr) {
         var $form = $(e.target);
-        var $elem = $(data).hide();
+        var $elem = $(data);
+        $elem.hide();
         var $container = $form.closest('.action-comment-container');
         $form.find('button').attr('disabled', null);
         $form.find('textarea').val('');

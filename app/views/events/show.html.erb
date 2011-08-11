@@ -257,12 +257,13 @@
 
 <% content_for :end_of_body do %>
 
-  <%= javascript_include_tag 'jquery.pageless' %>
+  <%= javascript_include_tag 'jquery.pageless', 'ss_pageless' %>
 
   <script>
     function makePageless(numPages, currentPage) {
 
-      $('#action-list').pageless({ totalPages: numPages,
+      $('#action-list').pageless({ 
+        totalPages: numPages,
         url: '<%= @event %>',
         loaderMsg: 'Loading more results',
         currentPage: currentPage
