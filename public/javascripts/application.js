@@ -48,17 +48,18 @@ function expandHowItWorks() {
 }
 
 function retractHowItWorks(f) {
-    
-    $('.video-box').slideUp('slow', function() {
-        $('#header').removeClass('open');
-        $('#top_explore_form').show();
-        $('#how_it_works').closest('li').removeClass('active');
-        $('.w2').removeClass('header-open');
-    });
+    if($('#header').hasClass('open')) {
+        $('.video-box').slideUp('slow', function() {
+            $('#header').removeClass('open');
+            $('#top_explore_form').show();
+            $('#how_it_works').closest('li').removeClass('active');
+            $('.w2').removeClass('header-open');
+            $(window).scrollTop(0);
+        });        
+    }
 
     if(typeof f == "function")
         f();
-
 }
 
 
