@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
 
   def avatar_url
     # TODO: check for custom avatar image first, once it is implemented
-    photo? ? photo.thumb.url : facebook_profile_picture_url.gsub("type=square", "type=large") || twitter_profile_picture_url
+    photo? ? photo.thumb.url : facebook_profile_picture_url.gsub(facebook_profile_picture_url[facebook_profile_picture_url.rindex('/')+1..facebook_profile_picture_url.length], "picture?type=large") || twitter_profile_picture_url
   end
 
   def fb_auth_token
