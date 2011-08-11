@@ -4,8 +4,7 @@
   <%= javascript_include_tag 'jquery.pageless' -%>
   <script>
     $(function() {
-      $('#invitation-user-list').pageless({
-        container: '#invitation-user-list',
+    $('#empty_modal_sidebar').find('.content').pageless({
         totalPages: <%= @num_pages_invitations -%>,
         url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
         loaderMsg: 'Loading more results',

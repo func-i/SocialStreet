@@ -17,8 +17,10 @@ class InvitationsController < ApplicationController
       end unless @event.action.blank?
     
       @invitations = @rsvp.invitations
-    
-      render :partial => 'user_results' if request.xhr? && params[:page] # pagination request
+
+      puts "HELLO NEW"
+      puts request.inspect
+      render :partial => 'new_page' if request.xhr? && params[:page] # pagination request
     else
       redirect_to import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @rsvp))
     end
@@ -95,7 +97,6 @@ class InvitationsController < ApplicationController
       offset(@offset)
        
     @num_pages_invitations = (@total_count.to_f / @per_page.to_f).ceil
-    
   end
 
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
