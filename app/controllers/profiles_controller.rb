@@ -63,6 +63,8 @@ class ProfilesController < ApplicationController
         render :nothing => true
       end
 
+      redirect_to :action => :edit
+
       #redirect_to edit_profile_path , :notice => "You have successfully updated your profile"
       #redirect_to edit_profile_path
     else
