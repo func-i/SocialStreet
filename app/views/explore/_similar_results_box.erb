@@ -1,7 +1,7 @@
 <div class="message-holder">
   <div id="end-of-results-message" class="message" <%= 'style=display:none' if (!@filter_level) %> >
+    <span style="float: right;"><%= image_tag "btn-close3.png", :id => "end_results_close" %></span>
     <span id="searchable-count">
-      <span style="float: right;"><%= image_tag "btn-close3.png", :id => "end_results_close" %></span>
       <% if @searchable_total_count == 0 %>
         <p>Unfortunately, no results were found. Why don't you:</p>
       <% elsif @searchable_total_count == 1 %>
