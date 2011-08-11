@@ -54,11 +54,11 @@
       totalPages: <%= @num_pages_invitations -%>,
       currentPage: <%= params[:page] || 1 %>,
       url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
-      parameterFunction: paramFunction
+      parameterFunction: invitationParamFunction
     });
     invitationPageless.start();
 
-    function paramFunction(){
+    function invitationParamFunction(){
       return $('form.search-params-invitations').serializeObject();
     }
   }

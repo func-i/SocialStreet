@@ -260,17 +260,25 @@
   <%= javascript_include_tag 'jquery.pageless', 'ss_pageless' %>
 
   <script>
-    function makePageless(numPages, currentPage) {
+    var showEventPageless = null;
 
-      $('#action-list').pageless({ 
-        totalPages: numPages,
-        url: '<%= @event %>',
-        loaderMsg: 'Loading more results',
-        currentPage: currentPage
+    function makeShowEventPageless(){
+      showEventPageless = new Pageless({
+        loaderContainer: '#action-list',
+        totalPages: <%= @num_pages -%>,
+        currentPage: <%= params[:page] || 1 %>,
+        url: '<%= @event %>'
       });
+      showEventPageless.start();
     }
 
-    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+    function getShowEventPageless(){
+      return showEventPageless;
+    }
+
+    $(function() {
+      makeShowEventPageless();
+    });
 
   </script>
 <% end %>
