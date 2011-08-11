@@ -3,13 +3,17 @@ class SessionsController < Devise::SessionsController
   layout 'sign'
 
   def new
-    if request.xhr?
-      render :update do |page|
-        page.redirect_to '/auth/facebook'
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.redirect_to '/auth/facebook'
+        end
       end
-    else
-      redirect_to '/auth/facebook', :status => 401
+      format.html do
+        redirect_to '/auth/facebook'
+      end
     end
+    
     
   end
 end
