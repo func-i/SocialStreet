@@ -86,6 +86,9 @@
       }
 
       retractHowItWorks(function() {
+        if(typeof isScrolledIntoView == 'function' && !isScrolledIntoView('.short-box')) {
+          return false;
+        }
         $('.w2').removeClass('header-open');
   <%- if params[:view].eql?("map") %>
           $('.w2').addClass('page-map');

@@ -3,6 +3,9 @@
   <div id="location-map" class="map-frame" style="width:649px;"></div>
 </div>
 
+<%= render "explore/sidebar/map_view_sidebar" -%>
+<%= render "main_top" -%>
+
 <script>
   function resizeMap() {
     var winHeight = $(window).height();
@@ -10,7 +13,14 @@
     $("#location-map").height(winHeight - resultsPosT);
   }
   resizeMap();
-</script>
 
-<%= render "explore/sidebar/map_view_sidebar" -%>
-<%= render "main_top" -%>
+  $(function() {
+    if(!isScrolledIntoView('.short-box')){
+      $('.w2').removeClass('page-map');
+      $('body').css('overflow', 'auto');
+    }
+  });
+
+ 
+
+</script>
