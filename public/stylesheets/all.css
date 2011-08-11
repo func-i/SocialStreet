@@ -460,6 +460,7 @@ form, fieldset {
     margin: 0 0 0 -490px;
     position: fixed;
     z-index: 1;
+    top: 130px;
 }
 #content h2 {
     margin: 0 0 10px;

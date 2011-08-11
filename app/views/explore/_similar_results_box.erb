@@ -1,6 +1,7 @@
 <div class="message-holder">
   <div id="end-of-results-message" class="message" <%= 'style=display:none' if (!@filter_level) %> >
     <span id="searchable-count">
+      <span style="float: right;"><%= image_tag "btn-close3.png", :id => "end_results_close" %></span>
       <% if @searchable_total_count == 0 %>
         <p>Unfortunately, no results were found. Why don't you:</p>
       <% elsif @searchable_total_count == 1 %>
@@ -8,7 +9,9 @@
       <% else %>
         <p>Unfortunately, only <strong><%=@searchable_total_count%></strong> results were found. Why don't you:</p>
       <% end %>
+
     </span>
+
     <ul>
       <li>
         <a href="#" class="save-button">Follow this Search</a> to get notified when new content matching this search is created
@@ -28,8 +31,15 @@
 
 <script>
   $('#Post-a-Message-Link').click(function(){
-    $('#content').css("top", "130px");
+    //$('#content').css("top", "130px");
     $('#explore-post-message-form').click();
     $('#explore-textarea').focus();
   })
+
+  $('#end_results_close').click(function() {
+    $('#end-of-results-message').hide();
+    resizeMap();
+    $('.top-explore-field').focus();
+    return false;
+  });
 </script>

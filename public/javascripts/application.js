@@ -55,11 +55,13 @@ function retractHowItWorks(f) {
             $('#how_it_works').closest('li').removeClass('active');
             $('.w2').removeClass('header-open');
             $(window).scrollTop(0);
-        });        
+        });
+
+        if(typeof f == "function")
+            f();
     }
 
-    if(typeof f == "function")
-        f();
+    
 }
 
 

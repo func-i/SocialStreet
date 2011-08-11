@@ -57,7 +57,7 @@
 
     $(document).bind("click", function() {
       $('.form-post-message').removeClass('send');
-      $('#content').css("top", "");
+      //$('#content').css("top", "");
     });
 
     $('.search-textarea').live('keydown', function(e) {
@@ -65,7 +65,7 @@
         if(e.shiftKey != true){
           $('.form-post-message').removeClass('send');
           var f = $('form.form-comment');
-          $('#content').css("top", "");
+          //$('#content').css("top", "");
           $(this).closest('.form-comment').submit();
           this.value = '';
           return false;

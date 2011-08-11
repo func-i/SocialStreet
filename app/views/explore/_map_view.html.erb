@@ -1,7 +1,16 @@
 <%= render "comment_box" %>
 <div class="map-holder">
-  <div id="location-map" class="map-frame" style="width:649px;height:738px;"></div>
+  <div id="location-map" class="map-frame" style="width:649px;"></div>
 </div>
+
+<script>
+  function resizeMap() {
+    var winHeight = $(window).height();
+    var resultsPosT = $("#location-map").offset().top;
+    $("#location-map").height(winHeight - resultsPosT);
+  }
+  resizeMap();
+</script>
 
 <%= render "explore/sidebar/map_view_sidebar" -%>
 <%= render "main_top" -%>
