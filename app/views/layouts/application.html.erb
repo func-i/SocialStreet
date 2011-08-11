@@ -151,14 +151,14 @@
 
     var $list = $(this).parent().siblings('.post-list')
     if($list.length)
-    {
+    {     
       $(data).hide();
       $list.append($(data));
       $(data).slideUp('fast');
     }
     else{
       var $list = $('#action-list');
-      var $elem = $(data).hide();
+      var $elem = $(data).hide();     
       $list.prepend($elem);
       $elem.slideDown('fast');
     }

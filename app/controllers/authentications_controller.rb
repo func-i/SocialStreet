@@ -9,7 +9,7 @@ class AuthenticationsController < ApplicationController
   def create
     auth = request.env['omniauth.auth']
     authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
-    
+      
     if authentication
       #flash[:notice] = "Welcome back #{authentication.user.name}"
       sign_in_and_redirect(:user, authentication.user)
