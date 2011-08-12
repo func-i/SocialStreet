@@ -86,4 +86,9 @@ module ApplicationHelper
 
   end
 
+  def ss_time_ago_in_words(check_time)
+    compare_time = check_time.is_a?(Date) ? Date.today : Time.now
+    time_ago_in_words(check_time) + (check_time < compare_time ? " ago" : " from now")
+  end
+
 end
