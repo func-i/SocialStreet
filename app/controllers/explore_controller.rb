@@ -456,11 +456,17 @@ class ExploreController < ApplicationController
   end
 
   def store_current_path
+    puts "SARA JUN"
     url = request.fullpath
-    url.gsub!('events_offset=[0-9]*&', "")
-    url.gsub!('messages_offset=[0-9]*&', "")
-    url.gsub!('filter_level=[0-9]*&', "")
-    url.gsub!('explore_id=[0-9]*&', "")
+    puts url
+    url.gsub!(/events_offset=[0-9]*&/, "")
+    puts url
+    url.gsub!(/messages_offset=[0-9]*&/, "")
+    puts url
+    url.gsub!(/filter_level=[0-9]*&/, "")
+    puts url
+    url.gsub!(/explore_id=[0-9]*&/, "")
+    puts url
     session[:stored_current_path] = url
   end
 
