@@ -73,7 +73,7 @@
     //  $(this).scrollTop(scrollTop-Math.round(delta * 20));
     //});
 
-    $('.short-box *').mouseenter(function() {
+    $('.short-box').mouseover(function() {
       console.log("in short-box");
       var postFrame = $('.post-frame');
       postFrame.css("overflow", "auto");
@@ -82,7 +82,7 @@
       postFrame.scrollTop(sTop);
     });
 
-    $('*').not('.short-box *').mouseenter(function(){
+    $('.short-box').mouseout(function(){
       $('.post-frame').css("overflow", "hidden");
     });
 
