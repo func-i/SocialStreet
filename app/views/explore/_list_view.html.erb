@@ -21,4 +21,15 @@
 
 <%#= render 'shared/commenting' %>
 
+<script>
+  function checkMapPageSize() {
+    if(!isScrolledIntoView('#sidebar_hidden_div', 100)){
+      $('.w2').removeClass('page-explore');
+    }
+    else {
+      $('.w2').addClass('page-explore');
+    }
+  }
+</script>
+
 
