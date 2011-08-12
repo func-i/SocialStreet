@@ -3,6 +3,8 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.9'
 gem 'rake', '0.9.2'
 
+gem 'truncate_html'
+
 gem 'pg'
 gem 'silent-postgres'
 gem 'jquery-rails', '>= 0.2.6'
