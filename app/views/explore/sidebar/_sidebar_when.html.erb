@@ -6,9 +6,9 @@
         <span style="font-size: 9px;">Jump To:</span><%= text_field_tag 'from_date', params[:from_date] || Date.today, :class => "text_field", :style => "width: 80px; background: none; border: none;font-size:12px; margin-top: -7px;" %>
       </div>
     </div>
-    <a id="when_btn" href="#" class="btn">close</a>
+    <a id="when_btn" href="#" class="btn" style="background-position:-16px 0;">close</a>
   </div>
-  <div id="sidebar_when_box_content" class="box-content">
+  <div id="sidebar_when_box_content" class="box-content" <%= 'style=display:none;' if params[:view] != "list"%>>
     <div class="time-slot">
       <div class="col1">
         <div class="ttl">Availability:</div>
@@ -37,7 +37,7 @@
                     <%- if params[:date_search].include?("#{day},#{tm}") -%>
                     <script>
                       $('td[d-pos="<%= "#{day},#{tm}" -%>"]').addClass('select')
-                    $('form.search-params').append('<input type="hidden" name="date_search[]" value="<%= "#{day},#{tm}" -%>" />');
+                      $('form.search-params').append('<input type="hidden" name="date_search[]" value="<%= "#{day},#{tm}" -%>" />');
                     </script>
                   <%- end -%>
                 <%- end -%>
@@ -54,33 +54,45 @@
 </div>
 
 <script>
-$('#when_btn').click(function(){
-  $('#sidebar_when_box_content').slideToggle('fast', function() {
+  $('#when_btn').click(function(){
+    $('#sidebar_when_box_content').slideToggle('fast', function() {
+      if($('#when_btn').css("background-position") == "0px 0px")
+        $('#when_btn').css("background-position", "-16px 0");
+      else
+        $('#when_btn').css("background-position", "0px 0px");
+   
+      if(typeof checkMapPageSize == 'function')
+        checkMapPageSize();
+    
+    });
+    return false;
+  });
+
+  function closeWhenBox(){
+    $('#sidebar_when_box_content').hide();
+
     if($('#when_btn').css("background-position") == "0px 0px")
       $('#when_btn').css("background-position", "-16px 0");
     else
       $('#when_btn').css("background-position", "0px 0px");
-   
+
     if(typeof checkMapPageSize == 'function')
       checkMapPageSize();
-    
+  }
+
+  $('.calendar-times').click(function() {
+    if($(this).hasClass('select')){
+      // The day is selected, remove class and remove search conditions
+      $(this).removeClass('select');
+      $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();
+    }
+    else {
+      $(this).addClass('select');
+      $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
+    }
+
+    if(history && history.pushState)
+      history.pushState(null, null, getSearchParams());
+    refreshResults("explore");
   });
-  return false;
-});
-
-$('.calendar-times').click(function() {
-if($(this).hasClass('select')){
-  // The day is selected, remove class and remove search conditions
-  $(this).removeClass('select');
-  $('form.search-params input[type="hidden"][value="'+ $(this).attr('d-pos') +'"]').remove();
-}
-else {
-  $(this).addClass('select');
-  $('form.search-params').append('<input type="hidden" name="date_search[]" value="' + $(this).attr('d-pos') + '" />');
-}
-
-if(history && history.pushState)
-  history.pushState(null, null, getSearchParams());
-refreshResults("explore");
-});
 </script>

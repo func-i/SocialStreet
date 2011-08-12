@@ -93,6 +93,7 @@
     $('.btn-open').click(function(){      
       $('.short-box').addClass('open', 1, function(){
         //  $('.short-box').hide().show('slide', {direction: 'right'}, 1000);
+        closeWhenBox();
         $('.btn-open').hide();
         $('.btn-close').show();
       });
