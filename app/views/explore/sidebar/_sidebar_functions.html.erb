@@ -29,7 +29,7 @@
       explorePageless = new Pageless({
         loaderContainer: '#pageless-container',
         totalPages: <%= @num_pages -%>,
-        currentPage: <%= params[:page] || 1 %>,
+        currentPage: 1,
         url: '<%= explore_path %>',
         parameterFunction: exploreParamFunction
       });

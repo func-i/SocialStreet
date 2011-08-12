@@ -20,15 +20,14 @@
 <div class="form-holder">
   <div class="row">
     <form action="" method="GET">
-      <input type="text" class="search-field text text1" placeholder="Friends or email" />
+      <input type="text" class="search-field text text1" placeholder="Enter a friend's name" />
     </form>
   </div>
-  <p><strong>Check as many friends</strong></p>
 </div>
 <div class="users-holder">
   <div class="users-list">
     <div class="ul1 user-list">
-      <ul>
+      <ul id="administrator-user-list">
         <% @users.each do |user| %>
           <%= render 'administrators/user', :user => user, :pre_existing => user.administrator? %>
         <% end %>
@@ -40,8 +39,30 @@
 <script>
   var searchURL = '<%= connections_path %>';
   var timeout = null;
-  
+
+  var administratorPageless = null;
+
+  function makeAdministratorPageless(){
+    administratorPageless = new Pageless({
+      container: '#empty_modal_sidebar .content',
+      totalPages: <%= @num_pages_administrators -%>,
+      currentPage: 1,
+      url: '<%= new_event_administrator_path(@event) %>',
+      parameterFunction: administratorParamFunction
+    });
+    administratorPageless.start();
+
+    function administratorParamFunction(){
+      return $('form.search-params-administrators').serializeObject();
+    }
+  }
+
+  function getAdministratorPageless(){
+    return administratorPageless;
+  }
+
   $(function() {
+    makeAdministratorPageless();
     
     var $selectedList = $('.selected-list-administrators');
     var $administratorCount = $('.administrator-count');
