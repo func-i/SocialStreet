@@ -51,8 +51,11 @@ placeSidebarClusterMarkers();
 <% if !params[:view].eql?("map") %>
   getExplorePageless().reset(
   {
-    totalPages: <%=@num_pages%>,
-    currentPage: 1
+  totalPages: <%=@num_pages%>,
+  currentPage: 1
   });
 <% end %>
+
+if(typeof checkMapPageSize == 'function')
+checkMapPageSize();
 
