@@ -266,9 +266,9 @@ $(function() {
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(onGeoLocationSuccess, function(){}, {
-                maximumAge: 600000
-            });
+            navigator.geolocation.getCurrentPosition(function(e){onGeoLocationSuccess(e)}, function(e){
+            },
+            {maximumAge: 600000});
         }
     }
 })
