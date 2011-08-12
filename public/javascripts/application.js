@@ -25,7 +25,7 @@ function refreshResults(caller) {
         if(caller == "events")
             $.getScript('/events/load_events' + getSearchParams());
         else if(caller == "explore"){
-            $('#pageless-container').unbind('.pageless');
+            //$('#pageless-container').unbind('.pageless');
 
             updateCommentBox();
 

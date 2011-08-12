@@ -205,20 +205,27 @@
 <% end %>
 
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'jquery.pageless' %>
+  <%= javascript_include_tag 'ss_pageless' %>
   <script>
-    function makePageless(numPages, currentPage) {
-      $('#action-list').pageless({ totalPages: numPages,
-        url: '<%= profile_path %>',
-        loaderMsg: 'Loading more results',
-        currentPage: currentPage
+    var showProfilePageless = null;
+
+    function makeShowProfilePageless(){
+      showProfilePageless = new Pageless({
+        loaderContainer: '#action-list',
+        totalPages: <%= @num_pages -%>,
+        currentPage: <%= params[:page] || 1 %>,
+        url: '<%= profile_path %>'
       });
+      showProfilePageless.start();
     }
 
-    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
-
+    function getShowProfilePageless(){
+      return showProfilePageless;
+    }
 
     $(function() {
+      makeShowProfilePageless();
+
       $('.add-to-fb-button').click(function(e) {
         e.stopPropagation();
         var $btn = $(this);

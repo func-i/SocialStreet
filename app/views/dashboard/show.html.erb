@@ -168,19 +168,27 @@
 
 <% content_for :end_of_body do %>
 
-  <%= javascript_include_tag 'jquery.pageless' %>
+  <%= javascript_include_tag 'pageless_ss' %>
 
   <script>
-    function makePageless(numPages, currentPage) {
+    var dashboardPageless = null;
 
-      $('#action-list').pageless({ totalPages: numPages,
-        url: '<%= dashboard_path %>',
-        loaderMsg: 'Loading more results',
-        currentPage: currentPage
+    function makeDashboardPageless(){
+      dashboardPageless = new Pageless({
+        loaderContainer: '#action-list',
+        totalPages: <%= @num_pages -%>,
+        currentPage: <%= params[:page] || 1 %>,
+        url: '<%= dashboard_path %>'
       });
+      dashboardPageless.start();
     }
 
-    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+    function getDashboardPageless(){
+      return dashboardPageless;
+    }
 
+    $(function() {
+      makeDashboardPageless();
+    });
   </script>
 <% end %>

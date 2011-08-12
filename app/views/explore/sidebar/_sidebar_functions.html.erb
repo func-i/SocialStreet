@@ -1,5 +1,5 @@
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'marker_clusterer', 'jquery.pageless', 'keywords_field', 'jquery.getUrlParam' %>
+  <%= javascript_include_tag 'marker_clusterer', 'ss_pageless', 'keywords_field', 'jquery.getUrlParam' %>
   <script>
 
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
@@ -23,44 +23,49 @@
       return str;
     }
 
-    function makePageless(numPages, currentPage) {
-      console.log("MAKE PAGELESS: " + numPages + ', ' + currentPage)
-      if(numPages > currentPage){
-        $('#pageless-container').pageless({totalPages: numPages,
-          url: '<%= explore_path %>',
-          loaderMsg: 'Loading more results',
-          params: $('form.search-params').serializeObject(),
-          currentPage: currentPage,
-          paramUpdate: updatePagelessParams
-        });
+    var explorePageless = null;
+
+    function makeExplorePageless(){
+      explorePageless = new Pageless({
+        loaderContainer: '#pageless-container',
+        totalPages: <%= @num_pages -%>,
+        currentPage: <%= params[:page] || 1 %>,
+        url: '<%= explore_path %>',
+        parameterFunction: exploreParamFunction
+      });
+      explorePageless.start();
+
+      function exploreParamFunction(){
+        my_params = {};
+
+        var events_offset = $('#events-offset');
+        if(events_offset.length > 0){
+          my_params['events_offset'] = events_offset.val();
+        }
+
+        var messages_offset = $('#messages-offset');
+        if(messages_offset.length > 0){
+          my_params['messages_offset'] = messages_offset.val();
+        }
+
+        var filter_level = $('#filter-level');
+        if(filter_level.length > 0){
+          my_params['filter_level'] = filter_level.val();
+        }
+
+        var explore_id = $('#explore-id');
+        if(explore_id.length > 0){
+          my_params['explore_id'] = explore_id.val();
+        }
+
+        $.extend(my_params, $('form.search-params').serializeObject());
+
+        return my_params;
       }
     }
 
-    function updatePagelessParams(old_params){
-      my_params = {};
-      //my_params = $('form.search-params').serializeObject();
-
-      var events_offset = $('#events-offset');
-      if(events_offset.length > 0){
-        my_params['events_offset'] = events_offset.val();
-      }
-
-      var messages_offset = $('#messages-offset');
-      if(messages_offset.length > 0){
-        my_params['messages_offset'] = messages_offset.val();
-      }
-
-      var filter_level = $('#filter-level');
-      if(filter_level.length > 0){
-        my_params['filter_level'] = filter_level.val();
-      }
-
-      var explore_id = $('#explore-id');
-      if(explore_id.length > 0){
-        my_params['explore_id'] = explore_id.val();
-      }
-
-      return my_params
+    function getExplorePageless(){
+      return explorePageless;
     }
 
     $('form.search-params').bind('ajax:beforeSend', function() {
@@ -100,7 +105,7 @@
     });
 
   <% if !params[:view].eql?("map") %>
-    makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+    makeExplorePageless();
   <% end %>
 
   </script>

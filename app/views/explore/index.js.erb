@@ -49,6 +49,10 @@ clearSidebarMarkers();
 placeSidebarClusterMarkers();
 
 <% if !params[:view].eql?("map") %>
-  makePageless(<%= @num_pages %>, <%= params[:page] || 1 %>);
+  getExplorePageless().reset(
+  {
+    totalPage: <%=@num_pages%>,
+    currentPage: 1
+  });
 <% end %>
 

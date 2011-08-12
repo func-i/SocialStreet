@@ -39,7 +39,11 @@
 
 <% if @searchables && @similar_results %>
       //This is the handover from searchables to similar
-      makePageless(<%=@num_pages%>, 1);
+      getExplorePageless().reset(
+      {
+        totalPage: <%=@num_pages%>,
+        currentPage: 1
+      });
 <% end %>
   }
 

@@ -35,12 +35,6 @@ class DashboardController < ApplicationController
       total_count = Feed.count(redis, current_user)
       @num_pages = (total_count.to_f / @per_page.to_f).ceil
 
-      puts "JOSHY"
-      puts @num_pages
-      puts total_count
-      puts offset
-      puts @feed_items.length
-
       if request.xhr? && params[:page] # pagination request
         render :partial => 'new_page'
       end
