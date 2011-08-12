@@ -52,7 +52,7 @@
     invitationPageless = new Pageless({
       container: '#empty_modal_sidebar .content',
       totalPages: <%= @num_pages_invitations -%>,
-      currentPage: <%= params[:page] || 1 %>,
+      currentPage: 1,
       url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
       parameterFunction: invitationParamFunction
     });

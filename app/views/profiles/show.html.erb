@@ -213,7 +213,7 @@
       showProfilePageless = new Pageless({
         loaderContainer: '#action-list',
         totalPages: <%= @num_pages -%>,
-        currentPage: <%= params[:page] || 1 %>,
+        currentPage: 1,
         url: '<%= profile_path %>'
       });
       showProfilePageless.start();

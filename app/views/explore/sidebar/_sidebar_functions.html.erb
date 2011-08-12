@@ -29,7 +29,7 @@
       explorePageless = new Pageless({
         loaderContainer: '#pageless-container',
         totalPages: <%= @num_pages -%>,
-        currentPage: <%= params[:page] || 1 %>,
+        currentPage: 1,
         url: '<%= explore_path %>',
         parameterFunction: exploreParamFunction
       });
@@ -499,29 +499,6 @@
   <% end %>
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
-
-    function changeExploreLocationParams(event) {
-     
-      setTimeout(function() {
-        var zoom = sideMap.getZoom();
-        $('#map_zoom').val(zoom);
-
-        bounds = sideMap.getBounds();
-        ne = bounds.getNorthEast();
-        sw = bounds.getSouthWest();
-        c = bounds.getCenter();
-
-        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-        $('#map_center').val(c.lat() + ',' + c.lng());
-
-        setMapLocation("street_address");
-
-        if(history && history.replaceState)
-          history.replaceState(null, null, getSearchParams());
-
-        refreshResults("explore");
-      }, 15);
-    }
 
     setMapLocation("street_address");
     

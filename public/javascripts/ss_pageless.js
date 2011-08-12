@@ -1,5 +1,6 @@
 function Pageless(opt_options)
 {
+    this.stop();
     this.init(opt_options);
 }
 
@@ -83,6 +84,7 @@ Pageless.prototype.distanceToBottom = function () {
 Pageless.prototype.watch = function(that){
     if(that.totalPages_ <= that.currentPage_){
         that.stop();
+        that.loading(false);
         return;
     }
     else if(!that.isLoading_ && (that.distanceToBottom() < that.distance_)) {
@@ -116,6 +118,7 @@ Pageless.prototype.watch = function(that){
 Pageless.prototype.reset = function(opt_options){
     this.init(opt_options);
     this.stop();
+    this.loading(false);
     this.start();
 };
 
@@ -130,9 +133,10 @@ Pageless.prototype.start = function(){
 };
 
 Pageless.prototype.stop= function(){
-    this.loading(false);
-    this.container_dom_.unbind('scroll.ss_pageless');
-    this.container_dom_.unbind('resize.ss_pageless');
+    if(this.container_dom_){
+        this.container_dom_.unbind('scroll.ss_pageless');
+        this.container_dom_.unbind('resize.ss_pageless');
+    }
 };
 
 

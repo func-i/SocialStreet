@@ -7,7 +7,21 @@ class AdministratorsController < ApplicationController
   before_filter :require_permission, :only => [:edit, :update]
 
   def new
-    load_connections()
+    if current_user.fb_friends_imported?
+      load_connections()
+      @rsvps = @event.rsvps.all
+      #@connections = current_user.connections.most_relevant_first.all
+      @administrator_rsvps = @rsvps.select &:administrator?
+    
+      render :partial => 'new_page' if request.xhr? && params[:page] # pagination request
+    else
+      redirect_to import_facebook_friends_connections_path(:return => new_event_administrator_path(@event))
+    end
+
+  end
+
+  def load_modal
+    load_connections
     @rsvps = @event.rsvps.all
     @connections = current_user.connections.most_relevant_first.all
     @administrator_rsvps = @rsvps.select &:administrator?

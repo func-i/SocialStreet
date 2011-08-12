@@ -125,12 +125,12 @@
 
   <div class="box map">
     <div class="heading">
-      <% if @event.location.text %>
+      <% if false && @event.location.text %>
         <h3>
           <%=@event.location.text %>
         </h3>
         <h4 style="display:block; float:left;">
-          <%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
+          <br/><%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
         </h4>
       <% else %>
         <h3>
@@ -266,7 +266,7 @@
       showEventPageless = new Pageless({
         loaderContainer: '#action-list',
         totalPages: <%= @num_pages -%>,
-        currentPage: <%= params[:page] || 1 %>,
+        currentPage: 1,
         url: '<%= @event %>'
       });
       showEventPageless.start();
