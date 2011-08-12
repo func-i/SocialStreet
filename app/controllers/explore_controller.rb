@@ -16,7 +16,11 @@ class ExploreController < ApplicationController
   def index    
     @comment = Comment.new
 
-    @explore_id = params[:explore_id] ? params[:explore_id] : rand(999999999)
+    if params[:explore_id]
+      @explore_id = params[:explore_id]
+    else
+      @explore_id = rand(999999999)
+    end
 
     get_searchables
 

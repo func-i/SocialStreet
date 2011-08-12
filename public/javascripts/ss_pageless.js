@@ -38,12 +38,15 @@ Pageless.prototype.init = function(opt_options)
 
     this.setValues(options);
 
-    this.loader_ = $(this.loaderHtml_);
     var $loaderContainer = $(this.loaderContainer_);
 
     var oldLoader = $loaderContainer.find('#pageless-loader')
     if(oldLoader.length <= 0){
+        this.loader_ = $(this.loaderHtml_);
         $loaderContainer.append(this.loader_);
+    }
+    else{
+        this.loader_ = oldLoader;
     }
 };
 
@@ -58,7 +61,7 @@ Pageless.prototype.setValues = function(options){
     this.loaderHtml_ = options['loaderHtml'];
     this.loaderContainer_ = options['loaderContainer'];
 
-    this.isLoading_ = this.isLoading ||     false;
+    this.isLoading_ = this.isLoading || false;
 };
 
 Pageless.prototype.loading = function (bool) {
@@ -99,8 +102,13 @@ Pageless.prototype.watch = function(that){
         });
 
         $.get( that.url_, params, function (data) {
-            that.loader_ ? that.loader_.before(data) : "";//TODO somewhere.append(data);
-            that.loading(false);
+            if(that.loader_){
+                that.loader_.before(data)
+                that.loading(false);
+            }
+            else{
+                console.log("TODO - ERROR IN PAGELESS. No Loader defined");
+            }
         });
     }
 };

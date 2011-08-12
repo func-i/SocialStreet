@@ -1,8 +1,6 @@
 <script>
   if(($('#explore-id').length <= 0 || !$('#explore-id').val() || $('#explore-id').val() == <%=@explore_id%>) )
   {
-    //console.log("NEW PAGE:  + <%=@events_offset%>, <%=@messages_offset%>, <%=@filter_level%>");
-
     $('#events-offset').val('<%=@events_offset%>')
     $('#messages-offset').val('<%=@messages_offset%>')
     $('#filter-level').val('<%=@filter_level%>')
@@ -45,6 +43,9 @@
         currentPage: 1
       });
 <% end %>
+  }
+  else{
+    console.log('EXPLORE ID failure:  + <%=@explore_id.to_s %>');
   }
 
 </script>
