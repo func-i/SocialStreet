@@ -455,4 +455,13 @@ class ExploreController < ApplicationController
     @on_explore = true
   end
 
+  def store_current_path
+    url = request.fullpath
+    url.gsub!('events_offset=[0-9]*&', "")
+    url.gsub!('messages_offset=[0-9]*&', "")
+    url.gsub!('filter_level=[0-9]*&', "")
+    url.gsub!('explore_id=[0-9]*&', "")
+    session[:stored_current_path] = url
+  end
+
 end
