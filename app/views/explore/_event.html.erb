@@ -4,7 +4,7 @@
     <span>Attend</span>
   <%- end -%>
   <h3><%= link_to event.title, event %></h3>
-  <span class="time"><%= time_ago_in_words event.starts_at %> ago</span>  
+  <span class="time"><%= ss_time_ago_in_words event.starts_at %></span>
   <div class="attending">
     <span class="info"><%=event.num_attending_or_maybe_attending%><%if event.maximum_attendees%>/<%=event.maximum_attendees%><%end%></span>
     <ul>
