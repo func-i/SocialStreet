@@ -21,9 +21,12 @@ function addKeyword(keyword, selector) {
         ).hide().appendTo($(selector)).fadeIn('slow');
 
     if(selector == "#explore-keywords"){
-        //Update comment-box text
-        //updateCommentBox();
+    //Update comment-box text
+    //updateCommentBox();
     }
+
+    if(typeof checkMapPageSize == 'function')
+        checkMapPageSize();
 
     return true;
 }
@@ -40,11 +43,9 @@ function removeKeyword(keyword) {
         }
 
         if(parentSelector == "#explore-keywords"){
-            //Update comment-box text
-            //updateCommentBox();
-        }
-
-
+    //Update comment-box text
+    //updateCommentBox();
+    }
     }
 }
 
@@ -100,13 +101,17 @@ $(function() {
 
             if($(this).attr("container-selector") == '#explore-keywords'){
                 caller = "explore";
-                //updateCommentBox();
+            //updateCommentBox();
             }
             else
                 caller = "events";
 
             refreshResults(caller);
         }
+
+        if(typeof checkMapPageSize == 'function')
+            checkMapPageSize();
+
     });
 
     $('.q-textfield').keydown(function(e) {
@@ -137,7 +142,7 @@ $(function() {
         source: function( request, response ) {
             var term = request.term;
             //if ( term in cache ) {
-             //   response( cache[ term ] );
+            //   response( cache[ term ] );
             //    return;
             //}
             // TODO: Re-enable the code above!!
