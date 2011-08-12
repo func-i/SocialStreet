@@ -28,18 +28,18 @@
           <% new_event_starts_at = event.searchable.searchable_date_ranges.first.starts_at %>
           <%= text_field_tag 'starts_at_calendar', params[:from_date] || Date.today, :class => "text_field starts-at-time", :style => "width: 80px;" %>
           <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%I")), :class => "starts-at-time" %>
-          <%= select_tag :starts_at_minute, options_for_select(0.step(60, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%M")), :class => "starts-at-time" %>
+          <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%M")), :class => "starts-at-time" %>
           <%= select_tag :starts_at_meridian, options_for_select([["am"], ["pm"]], new_event_starts_at.strftime("%P")), :class => "starts-at-time" %>
 
     <%#= select_time new_event_starts_at, {:minute_step => 15, :ignore_date => true}, :class => 'starts_at_time' -%>
           <%= date_range_fields.hidden_field :starts_at, :class => "starts-at-value" -%>
         </div>
-        <div class="col" id="EndDateTime" style="display:none">
+        <div class="col" id="EndDateTime" style="display:none; clear: both; margin-left: 108px;">
           <span><label for="date">End Date:</label></span>
           <% new_event_ends_at = event.searchable.searchable_date_ranges.first.ends_at %>
           <%= text_field_tag 'ends_at_calendar', params[:from_date] || Date.today, :class => "text_field ends-at-time", :style => "width: 80px;" %>
           <%= select_tag :ends_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%I")), :class => "ends-at-time" %>
-          <%= select_tag :ends_at_minute, options_for_select(0.step(60, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%M")), :class => "ends-at-time" %>
+          <%= select_tag :ends_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%M")), :class => "ends-at-time" %>
           <%= select_tag :ends_at_meridian, options_for_select([["am"], ["pm"]], new_event_ends_at.strftime("%P")), :class => "ends-at-time" %>
 
     <%#= select_time event.searchable.searchable_date_ranges.first.ends_at, {:minute_step => 15, :ignore_date => true}, :class => 'ends_at_time' -%>
