@@ -7,8 +7,8 @@
     var elemTop = $(elem).offset().top;
     var elemBottom = elemTop + $(elem).height();
 
-    //return ((docViewTop < elemTop) && (docViewBottom > elemBottom));
-    return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom));
+    return ((docViewTop < elemTop) && (docViewBottom > elemBottom));
+    //return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom));
   }
 </script>
 
