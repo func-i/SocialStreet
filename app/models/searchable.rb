@@ -82,6 +82,10 @@ class Searchable < ActiveRecord::Base
     date = Time.zone.parse(date) if date.is_a? String
     includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at >= ?', date.beginning_of_day) if date
   }
+  scope :on_or_after_datetime, lambda {|datetime|
+    datetime = Time.zone.parse(datetime) if datetime.is_a? String
+    includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at >= ?', datetime) if datetime
+  }
   scope :on_or_before_date, lambda {|date|
     date = Time.zone.parse(date)
     includes(:searchable_date_ranges).where('searchable_date_ranges.starts_at <= ?', date.end_of_day) if date

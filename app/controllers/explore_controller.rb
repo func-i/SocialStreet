@@ -281,6 +281,7 @@ class ExploreController < ApplicationController
     #MATCH FROM DATE
     from_date = args.key?(:from_date) ? args[:from_date] : (params[:from_date] ? params[:from_date] : Time.zone.now)
     from_date = Time.zone.now if from_date == Date.today
+
     event_searchables = apply_from_date(event_searchables, from_date)
   end
 
@@ -358,7 +359,7 @@ class ExploreController < ApplicationController
   def apply_from_date(searchable, from_date)
     return searchable unless from_date
   
-    searchable = searchable.on_or_after_date(from_date)
+    searchable = searchable.on_or_after_datetime(from_date)
   end
   
   def apply_filter(search_object, args = {})

@@ -274,7 +274,6 @@
   }
 
   function moveExploreMap(e, latLng) {
-
     if(latLng == null) {
       var loc = e.target.value;
       geocoder.geocode({address: loc}, function(results, status) {
@@ -295,7 +294,6 @@
   }
 
   function changeExploreLocationParams(event) {
-
     setTimeout(function() {
       var zoom = sideMap.getZoom();
       $('#map_zoom').val(zoom);
@@ -493,10 +491,10 @@
   <% if params[:view] == "list" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-      sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
-      sideMap.fitBounds(new google.maps.LatLngBounds(
-      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+//      sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
+//      sideMap.fitBounds(new google.maps.LatLngBounds(
+//      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+//      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
       
   <% end %>
     //infoWindow = new google.maps.InfoWindow();
