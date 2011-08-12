@@ -13,14 +13,20 @@ $(function() {
         buttonImageOnly: true
     });
 
-    $('.starts_at_time').change(function() {
-        $('.starts_at_value').val($('#starts_at_calendar').val() + ' ' + $($('.starts_at_time')[1]).val() + ':' + $($('.starts_at_time')[2]).val());
+    $('.starts-at-time').change(function() {
+
+        var stHour = $($('.starts-at-time')[1]).val();
+        var stMeridian = $($('.starts-at-time')[3]).val();
+        if(stMeridian == 'pm')
+            stHour = parseInt(stHour) + 12;
+
+        $('.starts-at-value').val($('#starts_at_calendar').val() + ' ' + stHour + ':' + $($('.starts-at-time')[2]).val());
 
         var stTime = $('#starts_at_calendar').datepicker('getDate');
-        stTime.setHours($($('.starts_at_time')[1]).val());
-        stTime.setMinutes($($('.starts_at_time')[2]).val());
+        stTime.setHours(stHour);
+        stTime.setMinutes($($('.starts-at-time')[2]).val());
 
-        var diff = $('.ends_at_time').data("diff_milli")
+        var diff = $('.ends-at-time').data("diff_milli")
         if(!diff)
             diff = 10800000 //3 hours
 
@@ -28,24 +34,35 @@ $(function() {
         endTime.setMilliseconds(stTime.getMilliseconds() + diff);
         
         $('#ends_at_calendar').val(endTime.format('yyyy-mm-dd'));
-        $($('.ends_at_time')[1]).val(endTime.format('HH'));
-        $($('.ends_at_time')[2]).val(endTime.format('MM'));
-        $('.ends_at_time').trigger('change');
+        $($('.ends-at-time')[1]).val(endTime.format('hh'));
+        $($('.ends-at-time')[2]).val(endTime.format('MM'));
+        $($('.ends-at-time')[3]).val(endTime.format('tt'));
+        $('.ends-at-time').trigger('change');
     });
 
-    $('.ends_at_time').change(function() {
-        $('.ends_at_value').val($('#ends_at_calendar').val() + ' ' + $($('.ends_at_time')[1]).val() + ':' + $($('.ends_at_time')[2]).val());
+    $('.ends-at-time').change(function() {
+        var endHour = $($('.ends-at-time')[1]).val();
+        var endMeridian = $($('.ends-at-time')[3]).val();
+        if(endMeridian == 'pm')
+            endHour = parseInt(endHour) + 12;
+
+        $('.ends_at_value').val($('#ends_at_calendar').val() + ' ' + endHour + ':' + $($('.ends-at-time')[2]).val());
+
+        var stHour = $($('.starts-at-time')[1]).val();
+        var stMeridian = $($('.starts-at-time')[3]).val();
+        if(stMeridian == 'pm')
+            stHour = parseInt(stHour) + 12;
 
         var stTime = $('#starts_at_calendar').datepicker('getDate');
-        stTime.setHours($($('.starts_at_time')[1]).val());
-        stTime.setMinutes($($('.starts_at_time')[2]).val());
+        stTime.setHours(stHour);
+        stTime.setMinutes($($('.starts-at-time')[2]).val());
 
         var endTime = $('#ends_at_calendar').datepicker('getDate');
-        endTime.setHours($($('.ends_at_time')[1]).val());
-        endTime.setMinutes($($('.ends_at_time')[2]).val());
-
+        endTime.setHours(endHour);
+        endTime.setMinutes($($('.ends-at-time')[2]).val());
+        
         var diff = endTime - stTime;
 
-        $('.ends_at_time').data("diff_milli", diff);
+        $('.ends-at-time').data("diff_milli", diff);
     });
 });
