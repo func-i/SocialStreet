@@ -133,7 +133,7 @@ $(function() {
         popup_modal_ajax(divId, title, requestURL, requestParams);
     });
 
-    $('.save-modal-button').click('click', function(){
+    $('.save-modal-button').click('click', function() {
         //set facebook value in form if found
         var $modal_header = $(this).closest('.pop-up-modal');
         if($modal_header.find('.facebok-checkbox-in-header').css('display') != 'none'){
@@ -167,7 +167,7 @@ function resizeModals(){
 
     var $saveButtonHeight = 0;
     $('.save-button-at-bottom').each(function(index, elem){
-        if($(elem).css('display') != "none"){
+        if($(elem).css('display') != "none") {
             $saveButtonHeight = 77; //Save button height
         }
     });
@@ -237,9 +237,7 @@ function addTabIndex() {
     $.each(['body a', 'body img', 'body input', 'body select'], function(index, selector) {
         $(selector).attr('tabIndex', 1)
     });
-
 }
-
 
 function removeModal(element) {
     $(element).fadeOut("fast", function() {
