@@ -58,7 +58,7 @@ Pageless.prototype.setValues = function(options){
     this.loaderHtml_ = options['loaderHtml'];
     this.loaderContainer_ = options['loaderContainer'];
 
-    this.isLoading_ = false;
+    this.isLoading_ = this.isLoading ||     false;
 };
 
 Pageless.prototype.loading = function (bool) {
@@ -107,6 +107,7 @@ Pageless.prototype.watch = function(that){
 
 Pageless.prototype.reset = function(opt_options){
     this.init(opt_options);
+    this.stop();
     this.start();
 };
 
@@ -121,6 +122,7 @@ Pageless.prototype.start = function(){
 };
 
 Pageless.prototype.stop= function(){
+    this.loading(false);
     this.container_dom_.unbind('scroll.ss_pageless');
     this.container_dom_.unbind('resize.ss_pageless');
 };
