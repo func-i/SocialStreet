@@ -93,12 +93,15 @@ class ExploreController < ApplicationController
             @events_offset >= @events_total_count
         )
 
+   
         #not enough results were found (similar_results_limit) and all the messages and events have been shown. Display the similar results
         get_similar_results()
       end
     else
       get_similar_results()
     end
+
+
   end
 
 
