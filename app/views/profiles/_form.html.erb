@@ -123,12 +123,12 @@
       <%@events_where_administrator.each do |event|%>
         <tr>
           <td><%= link_to event.title, event%></td>
-          <td><%= link_to "Edit Event", [:edit, event], :class => "button" %></td>
+          <td><%= link_to "Edit StreetMeet", [:edit, event], :class => "button" %></td>
         </tr>
       <%end%>
     </table>
   <%else%>
-    <H4>You are not currently administrator of any events</H4>
+    <H4>You are not currently administrator of any StreetMeets</H4>
   <%end%>
 </div>
 

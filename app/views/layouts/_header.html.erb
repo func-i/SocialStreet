@@ -9,7 +9,7 @@
         </span>
       </fieldset>
     <% end %>
-    <%= link_to_popup_modal_ajax  'Add Activity', 'Add a new Activity', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
+    <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
     <ul class="nav-serv">
 
       <li><%= link_to 'How it works', how_path, :id=>"how_it_works" %></li>
@@ -111,6 +111,7 @@
 
       <div class="content content1">
         <div class="pop-up1-content ajax-content">
+          <%=image_tag("load.gif", :style => "margin-left:auto;margin-right: auto;display: block;")%>
           <!--Ajax add content here-->
         </div>
       </div>
@@ -127,7 +128,7 @@
   <script>
   <% unless params[:create_event].blank? %>
     $(function(){
-    popup_modal_ajax('#empty_modal_base', 'Add a new Activity', '<%=new_event_path(:js)%>', null);
+    popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
     });
   <% end %>
 

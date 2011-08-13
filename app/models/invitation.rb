@@ -30,7 +30,7 @@ class Invitation < ActiveRecord::Base
     if to_user.sign_in_count.zero?
       fb_friend = user.facebook_user.friends.select{|f| f.identifier.eql?(to_user.fb_uid)}.first if user.facebook_user
       fb_friend.feed!(
-        :message => "You have been invited to a SocialStreet Event: #{event.title}"
+        :message => "You have been invited to a SocialStreet StreetMeet! #{event.title}"
       ) if fb_friend && self.facebook
     end
   end

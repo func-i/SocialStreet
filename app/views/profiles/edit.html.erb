@@ -3,7 +3,7 @@
     <ul class="wat-cf tabset">
       <li class="first active"><a href="#profile-general" data-tab="#profile-general" class="Settings-tabs">Profile</a></li>
       <li><a href="#subscription" data-tab="#subscription" class="Settings-tabs">Subscriptions</a></li>
-      <li><a href="#events" data-tab="#events" class="Settings-tabs">My Activities</a></li>
+      <li><a href="#events" data-tab="#events" class="Settings-tabs">My StreetMeets</a></li>
     </ul>
   </div>
 <%- end -%>
@@ -135,7 +135,7 @@
           <tr>
             <th>
               <strong><%=  event.title %></strong>
-              <%= link_to_popup_modal_ajax  'Edit', 'Edit event', 'empty_modal_base', edit_event_path(event), nil, nil%>
+              <%= link_to_popup_modal_ajax  'Edit', 'Edit StreetMeet', 'empty_modal_base', edit_event_path(event), nil, nil%>
     <%#= link_to_ "edit", [:edit, event]%>
             </th>
             <td>

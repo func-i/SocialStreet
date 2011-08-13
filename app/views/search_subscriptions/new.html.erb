@@ -1,7 +1,7 @@
 <%= form_for @search_subscription, :remote => true, :url => search_subscriptions_url(:q => params.except(:controller, :action, :utf8, :authenticity_token)), :html => {:class => "modal-submit-form form"} do |form| %>
   <fieldset>
     <div class="text-info">
-      <p>You will be notified whenever new events or messages match this search criteria</p>
+      <p>You will be notified whenever new StreetMeets or messages match this search criteria</p>
     </div>
     <div class="row">
       <label for="name">Search Name</label>

@@ -9,7 +9,7 @@
 
 <% elsif record_type == RecordType.types[:search_comment] %>
   <% searchable = record.searchable %>
-  <% title = 'A message was posted to ' %>
+  <% title = 'Posted to ' %>
   <% title += link_to(searchable.title_for_searchable, explore_path(searchable.url_params)) %>
 
   <%= render "shared/general_record",
@@ -76,7 +76,7 @@
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
-    :title => (link_to(record.user.name, profile_path(record.user)) + " posted a message to " + link_to(event.title, event)),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " posted to the StreetMeet - " + link_to(event.title, event)),
     :event_record => event,
     :is_event_embedded => true,
     :head_action => head_action %>
@@ -88,7 +88,7 @@
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
-    :title => (link_to(record.user.name, profile_path(record.user)) + " replied to a message to " + link_to(event.title, event)),
+    :title => (link_to(record.user.name, profile_path(record.user)) + " replied to the StreetMeet - " + link_to(event.title, event)),
     :event_record => event,
     :is_event_embedded => true,
     :head_action => head_action,
@@ -99,9 +99,9 @@
   <% head_action = record.action || record %>
 
   <% if head_action.to_user == current_user  %>
-    <% title = link_to(record.user.name, profile_path(record.user)) + " posted a message on " + link_to(" your profile", profile_path(head_action.to_user)) %>
+    <% title = link_to(record.user.name, profile_path(record.user)) + " posted on " + link_to(" your profile", profile_path(head_action.to_user)) %>
   <% else %>
-    <% title = link_to(record.user.name, profile_path(record.user)) + " posted a message on " + link_to(head_action.to_user.name + "'s", profile_path(head_action.to_user)) %>
+    <% title = link_to(record.user.name, profile_path(record.user)) + " posted on " + link_to(head_action.to_user.name + "'s", profile_path(head_action.to_user)) %>
   <% end %>
 
   <%= render "shared/general_record",
@@ -128,7 +128,7 @@
 
 <% elsif record_type == RecordType.types[:search_comment_posted] || (record_type == Action.types[:search_comment] && record.action.nil?) %>
   <% head_action = record.action || record %>   
-  <% title = link_to(record.user.name, profile_path(record.user)) + " posted a message to " + link_to(record.searchable.title_for_searchable,  explore_path(record.searchable.url_params)) %>
+  <% title = link_to(record.user.name, profile_path(record.user)) + " posted to " + link_to(record.searchable.title_for_searchable,  explore_path(record.searchable.url_params)) %>
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
@@ -136,7 +136,7 @@
     :head_action => head_action %>
 <% elsif record_type == RecordType.types[:search_comment_replied] || (record_type == Action.types[:search_comment] && !record.action.nil?)%>
    <% head_action = record.action || record %>
-  <% title = link_to(record.user.name, profile_path(record.user)) + " replied to a message on " + link_to(record.searchable.title_for_searchable,  explore_path(record.searchable.url_params)) %>
+  <% title = link_to(record.user.name, profile_path(record.user)) + " replied to " + link_to(record.searchable.title_for_searchable,  explore_path(record.searchable.url_params)) %>
 
   <%= render "shared/general_record",
     :left_image => avatar(record.user, :size => "55x55"),
