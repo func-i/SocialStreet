@@ -493,11 +493,13 @@
   <% if params[:view] == "list" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-      sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
+    <%- unless params[:map_zoom].blank? %>
+        sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
+    <% end %>
       sideMap.fitBounds(new google.maps.LatLngBounds(
       new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
       new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
-      
+
   <% end %>
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
