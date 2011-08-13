@@ -60,8 +60,6 @@ function retractHowItWorks(f) {
         if(typeof f == "function")
             f();
     }
-
-    
 }
 
 
