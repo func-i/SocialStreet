@@ -61,22 +61,29 @@
     });
 
     $('.search-textarea').live('change', function(e){
-      $('.form-post-message').removeClass('send');
-      var f = $('form.form-comment');
-      //$('#content').css("top", "");
-      $(this).closest('.form-comment').submit();
-      this.value = '';
-      return false;
+      if($('.search-textarea').val().length > 0)
+      {
+        $('.form-post-message').removeClass('send');
+        var f = $('form.form-comment');
+        //$('#content').css("top", "");
+        $(this).closest('.form-comment').submit();
+        this.value = '';
+        return false;
+      }
     });
     $('.search-textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
         if(e.shiftKey != true){
-          $('.form-post-message').removeClass('send');
-          var f = $('form.form-comment');
-          //$('#content').css("top", "");
-          $(this).closest('.form-comment').submit();
-          this.value = '';
-          return false;
+          if($('.search-textarea').val().length > 0)
+          {
+
+            $('.form-post-message').removeClass('send');
+            var f = $('form.form-comment');
+            //$('#content').css("top", "");
+            $(this).closest('.form-comment').submit();
+            this.value = '';
+            return false;
+          }
         }
       }
     });

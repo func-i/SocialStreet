@@ -42,7 +42,7 @@ function expandHowItWorks() {
     $('#how_it_works').closest('li').addClass('active');
     $('#top_explore_form').hide(1, function() {
         $('#header').addClass('open');
-        $('.video-box').show();
+        $('.video-box').show(500);
         $('.w2').addClass('header-open');
     });
 }
