@@ -63,7 +63,7 @@
     <%= yield :end_of_body  %>
     <div id="fb-root"></div>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <script>
+    <script type='text/javascript'>
       FB.init({
         appId  : '<%= FACEBOOK_APP_ID %>',
         status : true, // check login status
