@@ -6,9 +6,9 @@
         <span style="font-size: 9px;">Jump To:</span><%= text_field_tag 'from_date', params[:from_date] || Date.today, :class => "text_field", :style => "width: 80px; background: none; border: none;font-size:12px; margin-top: -7px;" %>
       </div>
     </div>
-    <a id="when_btn" href="#" class="btn" <%='style=background-position:-16px 0;' if params[:view] != "list"%>>close</a>
+    <a id="when_btn" href="#" class="btn" <%='style=background-position:-16px 0;' if params[:view] == "map"%>>close</a>
   </div>
-  <div id="sidebar_when_box_content" class="box-content" <%= 'style=display:none;' if params[:view] != "list"%>>
+  <div id="sidebar_when_box_content" class="box-content" <%= 'style=display:none;' if params[:view] == "map"%>>
     <div class="time-slot">
       <div class="col1">
         <div class="ttl">Availability:</div>

@@ -4,7 +4,7 @@
       <% if @event.editable_by?(current_user) %>
         <div class="admin-view">
           <strong>
-            <%= link_to_popup_modal_ajax  'Edit this event', 'Edit this event', 'empty_modal_base', edit_event_path(@event), nil, nil%>
+            <%= link_to_popup_modal_ajax  'Edit this StreetMeet', 'Edit this StreetMeet', 'empty_modal_base', edit_event_path(@event), nil, nil%>
           </strong>
           <% if @event.user == current_user %>
             or

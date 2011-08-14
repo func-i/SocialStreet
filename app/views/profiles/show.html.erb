@@ -84,7 +84,7 @@
 <% content_for :sidebar do %>
   <%= render :partial => 'shared/upcoming_activities', :locals => {:events => @upcoming_events, :number_to_show => 3} %>
 
-  <% if !(@common_people.empty? && @connected_rsvps.empty? && @connected_actions.empty?) %>
+  <% if @user != current_user && !(@common_people.empty? && @connected_rsvps.empty? && @connected_actions.empty?) %>
     <div class="connections">
       <div class="ttl">
         <!--<a href="#" class="close">close</a>-->

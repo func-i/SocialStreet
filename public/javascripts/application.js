@@ -252,8 +252,10 @@ function removeModal(element) {
     element.removeClass('follow-modal');
 
     element.find('.ajax-content').empty();
+    element.find('.ajax-content').html('<img alt="Load" src="/images/load.gif?1305574304" style="margin-left:auto;margin-right: auto;display: block;">');
     element.find('#modal-title').empty();
     element.find('.ajax-main-content').empty();
+    element.find('.ajax-main-content').html('<img alt="Load" src="/images/load.gif?1305574304" style="margin-left:auto;margin-right: auto;display: block;">');
     element.find('.ajax-sidebar-content').empty();
 
     element.find('.facebok-checkbox-in-header').hide();

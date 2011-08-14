@@ -18,6 +18,9 @@ class Searchable < ActiveRecord::Base
   accepts_nested_attributes_for :searchable_date_ranges
   accepts_nested_attributes_for :searchable_event_types, :reject_if => lambda{|set| set["name"].blank? }
 
+  #validates :searchable_event_types, :presence => {:message => "^ What? can't be blank"}, :if => Proc.new{|a| true}
+  #TODO - this validation should only run when creating an event...how do you do that?
+
   before_save :cache_lat_lng
   #  after_create :set_explorable
 
@@ -207,18 +210,18 @@ class Searchable < ActiveRecord::Base
   def title_for_searchable
     title = ''
 
-    if keywords
+    if keywords.blank? || keywords.empty?
       #title += keywords.to_sentence(:connector => '&', :skip_last_comma => true)
-      title += keywords.to_sentence
-    else
       title += 'Anything'
+    else
+      title += keywords.to_sentence
     end
 
     if location
       if location.text && !location.text.blank?
         title += ' near ' + location.text
       else
-        title += ' near ' + "#{location.street} #{location.city}, #{location.state}"
+        title += ' near ' + "#{location.street} #{location.city}"
       end
     end
 

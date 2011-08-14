@@ -14,7 +14,7 @@ class UserMailer < ActionMailer::Base
   def event_creation_notice(user, event)
     @user = user
     @event = event
-    mail(:to => user.email, :subject => "New activity of interest to you on SocialStreet")
+    mail(:to => user.email, :subject => "New StreetMeet of interest to you on SocialStreet")
   end
 
   # Top-level search /explore comments

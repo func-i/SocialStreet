@@ -13,7 +13,7 @@
       ActionID: <%= action.id %><br/>
       ActionType: <%= action.action_type %><br/>
       User: <%= action.user.name %> (<%= action.user.id %>)<br/>
-      Event: <%= action.event.try(:title) %><br/>
+      StreetMeet: <%= action.event.try(:title) %><br/>
       ReferenceID: <%= action.reference_id %> (<%= action.reference_type %>)<br/>
       Occurred At: <%= action.occurred_at %>
     </li>
