@@ -504,7 +504,7 @@
     
     google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
     google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
-    google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
+    //google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
     //$(window).resize(changeLocationParams);
   <% (@searchables || []).each do |searchable| %>
     <% if searchable.geo_located? %>

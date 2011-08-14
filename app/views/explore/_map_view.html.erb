@@ -12,26 +12,28 @@
   });
 
   function checkMapPageSize() {
-    if(!isScrolledIntoView('.short-box')){
-      $('.w2').removeClass('page-map');
-      $('body').css('overflow', 'auto');
-      $('#location-map').height(670);
-      try {
-        google.maps.event.trigger(sideMap, "resize");
+    if(!$('#header').hasClass("open")) {
+      if(!isScrolledIntoView('.short-box')){
+        $('.w2').removeClass('page-map');
+        $('body').css('overflow', 'auto');
+        $('#location-map').height(670);
+        try {
+          google.maps.event.trigger(sideMap, "resize");
+        }
+        catch(err) {
+          // Do nothing with this error, the map doesn't exist on the page
+        }
+
       }
-      catch(err) {
-        // Do nothing with this error, the map doesn't exist on the page
+      else {
+        $('.w2').addClass('page-map');
+        $('body').css('overflow', 'hidden');
       }
 
-    }
-    else {
-      $('.w2').addClass('page-map');
-      $('body').css('overflow', 'hidden');      
-    }
-
-    if($('.w2').hasClass('page-map')) {
-      resizeMap();
-      resizeMapResults();
+      if($('.w2').hasClass('page-map')) {
+        resizeMap();
+        resizeMapResults();
+      }
     }
   }
 
