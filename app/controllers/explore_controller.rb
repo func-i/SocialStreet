@@ -12,7 +12,6 @@ class ExploreController < ApplicationController
   SIMILAR_RESULTS_LIMIT = 20
   SIMILAR_RESULTS_STOP_THRESHOLD = 30
 
-  
   def index    
     @comment = Comment.new
 

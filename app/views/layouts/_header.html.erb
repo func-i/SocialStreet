@@ -25,7 +25,7 @@
         </li>
 
       <% else %>
-                              <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -128,7 +128,7 @@
   <script type='text/javascript'>
   <% unless params[:create_event].blank? %>
     $(function(){
-    popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
+      popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
     });
   <% end %>
 
@@ -157,31 +157,33 @@
   // So if user types "ba" again it uses the local cache instead of doing another AJAX request - KV
   var cache = {},
   lastXhr;
-  $( ".top-explore-field" ).autocomplete({
-    minLength: 2,
-    source: function( request, response ) {
-      var term = request.term;
-      //if ( term in cache ) {
-      //   response( cache[ term ] );
-      //    return;
-      //}
-      // TODO: Re-enable the code above!!
-      lastXhr = $.getJSON( keywordsJsonURL, request, function( data, status, xhr ) {
-        if(data.indexOf(term) < 0)
-          data.unshift(term.toString());
+  $(function() {
+    $( ".top-explore-field" ).autocomplete({
+      minLength: 2,
+      source: function( request, response ) {
+        var term = request.term;
+        //if ( term in cache ) {
+        //   response( cache[ term ] );
+        //    return;
+        //}
+        // TODO: Re-enable the code above!!
+        lastXhr = $.getJSON( keywordsJsonURL, request, function( data, status, xhr ) {
+          if(data.indexOf(term) < 0)
+            data.unshift(term.toString());
 
-        cache[ term ] = data;
+          cache[ term ] = data;
 
-        if ( xhr === lastXhr ) {
-          response( data );
-        }
-      });
-    },
-    select: function( event, ui ) {
-      $('.top-explore-field').val(ui.item.value);
-      $('#top_explore_form').submit();
-      return false;
-    },
-    html: true
+          if ( xhr === lastXhr ) {
+            response( data );
+          }
+        });
+      },
+      select: function( event, ui ) {
+        $('.top-explore-field').val(ui.item.value);
+        $('#top_explore_form').submit();
+        return false;
+      },
+      html: true
+    });
   });
 </script>
