@@ -2495,7 +2495,7 @@ form, fieldset {
     float: left;
     font: bold 13px/14px Arial, Helvetica, sans-serif;
     margin: 0px 3px 0 0;
-    padding: 0 27px 0 7px;
+    padding: 5px 27px 5px 7px;
     position: relative;
     display: inline;
 }
@@ -2506,7 +2506,7 @@ form, fieldset {
     position: absolute;
     right: 8px;
     text-indent: -9999px;
-    top: 4px;
+    top: 9px;
     width: 10px;
 }
 #sidebar .box1 .box-content {
