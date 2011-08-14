@@ -81,7 +81,7 @@
 
 </div>
 <div class="post-message">
-  <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "script",:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
+  <%= form_for [@event, @comment], :remote => true, :html => {:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
 
       <div class="box text">

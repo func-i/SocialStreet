@@ -49,6 +49,14 @@ class Event < ActiveRecord::Base
   #validate :valid_dates
   validate :valid_maximum_attendees
 
+  validate :validate_event_types, :message => "^ What? can't be blank", :on => [:create, :update]
+
+  def validate_event_types
+    if searchable.keywords.empty?
+      errors.add :searchable, "^ What? can't be blank"
+    end
+  end
+
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
   default_value_for :facebook, true
