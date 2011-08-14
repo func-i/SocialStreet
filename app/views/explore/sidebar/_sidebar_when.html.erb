@@ -35,7 +35,7 @@
                 <%= content_tag("td", :class => "calendar-times", "d-pos" => "#{day},#{tm}") do -%>
                   <%- unless params[:date_search].blank? -%>
                     <%- if params[:date_search].include?("#{day},#{tm}") -%>
-                    <script>
+                    <script type='text/javascript'>
                       $('td[d-pos="<%= "#{day},#{tm}" -%>"]').addClass('select')
                       $('form.search-params').append('<input type="hidden" name="date_search[]" value="<%= "#{day},#{tm}" -%>" />');
                     </script>
@@ -53,7 +53,7 @@
   </div>
 </div>
 
-<script>
+<script type='text/javascript'>
   $('#when_btn').click(function(){
     $('#sidebar_when_box_content').slideToggle('fast', function() {
       if($('#when_btn').css("background-position") == "0px 0px")

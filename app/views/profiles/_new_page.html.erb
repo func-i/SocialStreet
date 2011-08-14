@@ -1,4 +1,4 @@
-<script>
+<script type='text/javascript'>
 <% @actions.each do |action| %>
   <% if action.action_type == Action.types[:profile_comment] && action.to_user == @user %>
     <% type = RecordType.types[:plain_thread] %>

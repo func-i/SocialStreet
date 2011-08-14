@@ -1,4 +1,4 @@
-<script>
+<script type='text/javascript'>
   <% @users.each do |user| %>
     $('#administrator-user-list').append('<%= escape_javascript render('administrators/user', :user => user, :pre_existing => user.administrator?) %>');
   <% end %>

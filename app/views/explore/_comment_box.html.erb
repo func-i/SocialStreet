@@ -38,24 +38,26 @@
   <% end %>
 </div>
 
-<script>
-  $(function(){
-    $('.remove-comment-keyword').live('click', function(){
-      console.log("HERE"); //TODO - WHY ISN'T THIS CALLED?
+<script type='text/javascript'>
+  $(function(){   
+
+    $('#explore-post-message-form').live('click', function(e){
+      setTimeout(function() {
+        $('.form-post-message').addClass("send");
+      })
     });
 
-    $('#explore-post-message-form').click(function(){
-      $('.form-post-message').addClass("send");
+    $('.remove-comment-keyword').live('click', function(e) {
+      $(this).closest('.keyword').remove();
       return false;
     });
 
-
     $('#change-location').click(function(){
-      $('#map_location').val = '';//TODO - why doesn't this work?
+      $('#map_location').val();//TODO - why doesn't this work?
       $('#map_location').focus();
     });
 
-    $(document).bind("click", function() {
+    $(document).not('.remove-comment-keyword').bind("click", function() {
       $('.form-post-message').removeClass('send');
       //$('#content').css("top", "");
     });

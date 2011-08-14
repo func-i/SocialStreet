@@ -5,7 +5,7 @@
 <%#= stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/default/style", "web-app-theme/override",
 '/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css' %>
 
-    <%= stylesheet_link_tag "/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css", "all", "new" -%>
+    <%= stylesheet_link_tag "/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css", "all" -%>
     <!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
 
     <%= javascript_include_tag :defaults, '/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js', 'autoresize.jquery.min', 'jquery.ui.autocomplete.html', 'infobubble' %>
@@ -63,7 +63,7 @@
     <%= yield :end_of_body  %>
     <div id="fb-root"></div>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <script>
+    <script type='text/javascript'>
       FB.init({
         appId  : '<%= FACEBOOK_APP_ID %>',
         status : true, // check login status

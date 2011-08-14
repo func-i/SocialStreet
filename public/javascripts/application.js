@@ -55,6 +55,10 @@ function retractHowItWorks(f) {
             $('#how_it_works').closest('li').removeClass('active');
             $('.w2').removeClass('header-open');
             $(window).scrollTop(0);
+
+            if(typeof checkMapPageSize == 'function')
+                checkMapPageSize();
+
         });
 
         if(typeof f == "function")
@@ -264,9 +268,13 @@ $(function() {
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(function(e){onGeoLocationSuccess(e)}, function(e){
-            },
-            {maximumAge: 600000});
+            navigator.geolocation.getCurrentPosition(function(e){
+                onGeoLocationSuccess(e)
+                }, function(e){
+                },
+                {
+                    maximumAge: 600000
+                });
         }
     }
 })

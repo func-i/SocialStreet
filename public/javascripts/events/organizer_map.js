@@ -340,7 +340,7 @@ function selectEventMarker(marker, changeInputField) {
                 //Add markers to preserved list
                 preservedMarkers.push(mkr);
 
-                if(cMarkers.length-1 == index){
+                if(index == 0){
                     //Set Infobox
                     var myTitle = marker.title_;
                     var linkText = "<div style='text-align:center;'><input id=\"marker-name-field\" type=\"text\" value=\"" + myTitle + "\" style='display:none; width: 200px; border:0; margin:0;'/>" +
@@ -357,13 +357,13 @@ function selectEventMarker(marker, changeInputField) {
                     
                     //infoWindow.open(map, mkr);
                     //console.log(marker.getCenter());
+                    console.log(marker);
                     var p = marker.clusterIcon_.getPosFromLatLng_(marker.clusterIcon_.center_);
                     var q = marker.clusterIcon_.getProjection().fromDivPixelToLatLng(p);
                     //console.log(p);
-                    //console.log(q);
-                    //infoWindow.setPosition(q);
-                    infoWindow.open(map);
+                    //console.log(q);                    
                     infoWindow.open(map, mkr);
+                    infoWindow.setPosition(q);
 
                     var latlng = mkr.getPosition();
                     $('#location-lat-field').val(latlng.lat());

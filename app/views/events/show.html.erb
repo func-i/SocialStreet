@@ -244,7 +244,7 @@
   </div>
 
   <% unless params[:invite].blank? %>
-    <script>
+    <script type='text/javascript'>
       // TODO this should popup the modal by default
       $(function(){
         popup_modal_ajax('#empty_modal_sidebar', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
@@ -259,7 +259,7 @@
 
   <%= javascript_include_tag 'ss_pageless' %>
 
-  <script>
+  <script type='text/javascript'>
     var showEventPageless = null;
 
     function makeShowEventPageless(){

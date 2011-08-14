@@ -1,5 +1,5 @@
 <% content_for :end_of_body do %>
-  <script>
+  <script type='text/javascript'>
     $(function() {
       $('form.comment-form').bind('ajax:beforeSend', function(e, xhr, settings) {
         $('button.comment-button').attr('disabled', 'disable');
