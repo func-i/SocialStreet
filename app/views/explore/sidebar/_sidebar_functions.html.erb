@@ -309,15 +309,19 @@
       if(history && history.replaceState)
         history.replaceState(null, null, getSearchParams());
 
+      setMapLocation("street_address");
+      
       refreshResults("explore");
     }, 15);
   }
 
   function setMapLocation(resultType){
+    console.log(resultType);
     var latlng = sideMap.getCenter();
     geocoder.geocode( {
       'latLng': latlng
     }, function(results, status) {
+      console.log(results);
       if (status == google.maps.GeocoderStatus.OK)
         $.each(results, function(index, result){
           $.each(result.types, function(index_2, type){
