@@ -140,13 +140,25 @@
 
       //If pin is selected from url bar
       var selected = false;
-      if(searchableID == <%= params[:selected_searchable].to_i -%>)
+      var selected_searchableIDs = '<%= params[:selected_searchable] ? params[:selected_searchable] : 0-%>';
+      selected_searchableIDs = selected_searchableIDs.split(',')
+
+      $.each(selected_searchableIDs, function(index, id){
+        if(searchableID == id){
+          selected = true;
+
+          icoImage = '/images/ico-pin-selected.png';
+          $('#result_for_searchable_' + searchableID).show();
+        }
+      });
+
+/*      if(searchableID == <%= params[:selected_searchable].to_i -%>)
       {
         selected = true;
 
         icoImage = '/images/ico-pin-selected.png';
         $('#result_for_searchable_' + searchableID).show();
-      }
+      }*/
 
       //Create pin
       var marker = new google.maps.Marker({
@@ -237,13 +249,15 @@
     if(marker instanceof Cluster){
       var isAddressSet = false;
       var cMarkers = marker.getMarkers();
+      searchable_ids = [];
       $.each(cMarkers, function(index, mkr){
         //Show the elements with this id
         $('#result_for_searchable_' + mkr.searchableID).show();
+        searchable_ids.push(mkr.searchableID);
 
         if(0 == index){
           //Set form param to marker id for url reload
-          $('#selected_searchable').val(mkr.searchableID);
+          //$('#selected_searchable').val(mkr.searchableID);
         }
         if(!isAddressSet){
           if(mkr.geocodableAddress != null){
@@ -255,6 +269,8 @@
           }
         }
       });
+
+      $('#selected_searchable').val(searchable_ids);
     }
     else{
       //Show the elements with this id
