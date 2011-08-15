@@ -1,19 +1,31 @@
-$.fn.serializeObject = function()
-    {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function() {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
+if(!Array.indexOf) {
+    Array.prototype.indexOf = function(obj){
+        for(var i=0; i<this.length; i++){
+            if(this[i]==obj){
+                return i;
             }
-        });
-        return o;
-    };
+        }
+        return -1;
+    }
+}
+
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 
 function refreshResults(caller) {
     if (refreshTimer) {
@@ -270,7 +282,7 @@ $(function() {
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(function(e){
                 onGeoLocationSuccess(e)
-                }, function(e){
+            }, function(e){
                 },
                 {
                     maximumAge: 600000
