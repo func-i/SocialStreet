@@ -36,10 +36,13 @@ class Searchable < ActiveRecord::Base
           OR searchables.id IN ( 
             SELECT searchable_event_types.searchable_id FROM searchable_event_types, event_types
               WHERE searchable_event_types.searchable_id = searchables.id
-              AND event_types.id = searchable_event_types.event_type_id
               AND (
-                UPPER(searchable_event_types.name) LIKE :key#{i}
-                OR UPPER(event_types.name) LIKE :key#{i}
+                  UPPER(searchable_event_types.name) LIKE :key#{i}
+                  OR (
+                    searchable_event_types.event_type_id IS NOT NULL
+                    AND event_types.id = searchable_event_types.event_type_id
+                    AND UPPER(event_types.name) LIKE :key#{i}
+                  )
               )
           )"
           args["key#{i}".to_sym] = "%#{k.upcase}%"
