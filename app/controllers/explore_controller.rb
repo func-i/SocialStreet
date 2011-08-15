@@ -319,7 +319,7 @@ class ExploreController < ApplicationController
     bounds = map_bounds.split(",").collect { |point| point.to_f }
 
     params[:map_center] = "#{(bounds[0].to_f + bounds[2].to_f)/2},#{(bounds[1].to_f + bounds[3].to_f)/2}" unless params[:map_center]
-    params[:map_zoom] = 9 unless params[:map_zoom]
+    params[:map_zoom] = 12 unless params[:map_zoom]
 
     searchable = searchable.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
   end

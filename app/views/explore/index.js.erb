@@ -16,7 +16,9 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 
 
 <% if @filter_level && @filter_level >= 0 && (true || (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)) %>
-  $('#end-of-results-message').show();
+  if($('#end-of-results-message').data('closed') != true){
+    $('#end-of-results-message').show();
+  }
 <% else %>
   $('#end-of-results-message').hide();
 <% end %>

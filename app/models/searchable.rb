@@ -218,7 +218,7 @@ class Searchable < ActiveRecord::Base
       if location.text && !location.text.blank?
         title += ' near ' + location.text
       else
-        title += ' near ' + "#{location.street} #{location.city}"
+        title += ' near ' + "#{location.street}, #{location.city}"
       end
     end
 
