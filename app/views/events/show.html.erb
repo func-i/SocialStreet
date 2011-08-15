@@ -278,7 +278,11 @@
 
     $(function() {
       makeShowEventPageless();
-    });
+
+  <% if params[:post_to_facebook] %>
+      $('#flash-messages').html('<div class="flash"><strong>The StreetMeet has been posted to your Facebook wall</strong></div>');
+  <% end %>
+  });
 
   </script>
 <% end %>
