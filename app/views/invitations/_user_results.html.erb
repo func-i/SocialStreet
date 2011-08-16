@@ -1,4 +1,3 @@
 <% @users.each do |u| %>
-  <% puts u.inspect %>
   <%= render 'invitations/user', :user => u, :are_invited => false %>
 <% end %>

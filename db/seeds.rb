@@ -59,7 +59,6 @@ types[:volleyball] = EventType.create!(:name => 'Volleyball', :image_path => "/i
 types[:walk] = EventType.create!(:name => 'Walk', :image_path => "/images/event_types/walk.png")
 types[:waterballon_toss] = EventType.create!(:name => 'Waterballon Toss', :image_path => "/images/event_types/waterballon.png")
 types[:weights] = EventType.create!(:name => 'Weights', :image_path => "/images/event_types/weights.png")
-
 types[:futball] = EventType.create!(:name => 'Futball', :synonym => types[:soccer] )
 types[:ping_pong] = EventType.create!(:name => 'Ping Pong', :synonym => types[:table_tennis] )
 

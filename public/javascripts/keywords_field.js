@@ -138,7 +138,7 @@ $(function() {
     var cache = {},
     lastXhr;
     $( ".q-textfield" ).autocomplete({
-        minLength: 2,
+        minLength: 1,
         source: function( request, response ) {
             var term = request.term;
             //if ( term in cache ) {
@@ -153,7 +153,6 @@ $(function() {
                 cache[ term ] = data;
 
                 if ( xhr === lastXhr ) {
-                    console.log(data);
                     response( data );
                 }
             });

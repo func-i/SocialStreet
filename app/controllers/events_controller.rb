@@ -8,9 +8,6 @@ class EventsController < ApplicationController
 
   # EVENT DETAIL PAGE
   def show
-    puts "JOSHY2"
-    puts params
-
     @event = Event.find params[:id]
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
     @comment = @event.comments.build
@@ -43,6 +40,10 @@ class EventsController < ApplicationController
         :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
       })
     @event_for_create.action = @action # nil if no @action (which is desired)
+
+    if @action && @action.searchable && @action.searchable.location
+      @event_for_create.searchable.location = @action.searchable.location
+    end
 
     if session[:stored_params]
       @event_for_create.attributes = session[:stored_params] # event params
