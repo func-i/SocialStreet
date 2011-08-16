@@ -31,7 +31,7 @@ module Mixins
         words.each_with_index do |word, i|
           key = "word#{i}"
           query << build_query_string_for_key(key)
-          params[key.to_sym] = "#{word}%"
+          params[key.to_sym] = "%#{word}%"
         end
         query = query.join(" AND ")
         [query, params]

@@ -37,6 +37,20 @@ $(function() {
         streetViewControl: false
     };
     map = new google.maps.Map(document.getElementById("event-location-map"), myOptions);
+
+
+    var crosshairShape = {
+        coords:[0,0,0,0],
+        type:'rect'
+    };
+    var crosshair_marker = new google.maps.Marker({
+        map: map,
+        icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
+        shape: crosshairShape
+    });
+    crosshair_marker.bindTo('position', map, 'center');
+
+
    
     overlay = new google.maps.OverlayView();
     overlay.draw = function() {};
@@ -297,9 +311,9 @@ function selectEventMarker(marker, changeInputField) {
                 console.log("WAS DELETED..", selectedMarker);
             }
             else{
-            //Set old selection back to normal pin
-            selectedMarker.isSelected(false);
-            selectedMarker.updateIcon();
+                //Set old selection back to normal pin
+                selectedMarker.isSelected(false);
+                selectedMarker.updateIcon();
             }
         }
         else{
@@ -455,8 +469,8 @@ $('.location-address-field').change(function(){
 
 function clearClusterMarkers() {
     var markersToClear = arraySubtract(markers, preservedMarkers);
-//        console.log("Clear Cluster Markers");
-  //    console.log('preservedMarkers: ', preservedMarkers);
+    //        console.log("Clear Cluster Markers");
+    //    console.log('preservedMarkers: ', preservedMarkers);
     // console.log('markersToClear: ', markersToClear);
 
     mc.removeMarkers(markersToClear);

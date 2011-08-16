@@ -12,20 +12,21 @@
     <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
     <ul class="nav-serv">
 
-      <li><%= link_to 'How it works', how_path, :id=>"how_it_works" %></li>
+      <li><%= link_to 'How this works', how_path, :id=>"how_it_works" %></li>
 
       <% if user_signed_in? %>
         <li class="link-login">
           <%= link_to current_user.try(:name), profile_path(current_user) %>
           <ul>
+            <li><%=link_to "Home", dashboard_path %></li>
+            <li><%=link_to "Explore", explore_path %></li>
             <li><%=link_to "Settings", edit_profile_path(current_user) %></li>
-            <li><%=link_to "Dashboard", dashboard_path %></li>
             <li><%=link_to "Sign Out", destroy_user_session_path, :class => "logout"%></li>
           </ul>
         </li>
 
       <% else %>
-                                  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                      <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -36,7 +37,7 @@
           <img width="520" height="240" src="/images/img16.png" alt="image description"/>
         </div>
         <div class="text">
-          <strong class="ttl">How it works</strong>
+          <strong class="ttl">What is SocialStreet?</strong>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed rhoncus orci. Quisque posuere elit sed erat vulputate sed mollis odio lobortis. Sed dui elit, cursus eu dignissim vestibulum, porttitor id lectus. Mauris suscipit nisi at urna eleifend luctus. </p>
         </div>
         <a href="#" id="how_btn_close" class="btn-close">close</a>
@@ -159,7 +160,8 @@
   lastXhr;
   $(function() {
     $( ".top-explore-field" ).autocomplete({
-      minLength: 2,
+      minLength: 1,
+      autofill: true,
       source: function( request, response ) {
         var term = request.term;
         //if ( term in cache ) {

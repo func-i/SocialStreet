@@ -48,7 +48,6 @@ class ApplicationController < ActionController::Base
   #Override to change the path taken after sign_in
   def after_sign_in_path_for(resource_or_scope)
     if session[:stored_redirect]
-
       #User has stored a redirect path for use after authentication
 
       if session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'
@@ -100,11 +99,9 @@ class ApplicationController < ActionController::Base
 
         if create_search_subscription(session[:stored_redirect][:params])
           return_path = :back
-          puts "HI THERE"
         else
           #TODO - what should this be?
           return_path = session[:stored_current_path]
-          puts "GOODBYE"
         end
 
       else
@@ -172,16 +169,13 @@ class ApplicationController < ActionController::Base
       params[:map_center] = params[:comment_map_center]
       params[:map_location] = params[:comment_map_location]
 
-      puts "CREATING A NEW SEARCHABLE"
       @comment.searchable = Searchable.new_from_params(params)
-      puts @comment.inspect
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     elsif @commentable.respond_to?(:searchable) && @commentable.searchable
     #elsif @commentable.searchable
       @comment.searchable = @commentable.searchable
     end
 
-    puts "SAVING COMMENT"
     if @comment.save
       @comment.reload
 

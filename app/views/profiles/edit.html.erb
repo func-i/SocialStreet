@@ -2,7 +2,7 @@
   <div class="secondary-navigation col1">
     <ul class="wat-cf tabset">
       <li class="first active"><a href="#profile-general" data-tab="#profile-general" class="Settings-tabs">Profile</a></li>
-      <li><a href="#subscription" data-tab="#subscription" class="Settings-tabs">Subscriptions</a></li>
+      <li><a href="#subscription" data-tab="#subscription" class="Settings-tabs">Notification</a></li>
       <li><a href="#events" data-tab="#events" class="Settings-tabs">My StreetMeets</a></li>
     </ul>
   </div>
@@ -125,7 +125,7 @@
 
 <div id="events" class="events-holder events tab-content" style="display:none">
   <% if @events_where_administrator && @events_where_administrator.empty? %>
-    <h4>You are not currently administrator of any events</h4>
+    <h4>You are not currently administrator of any StreetMeets</h4>
 
   <% else %>
     <table>

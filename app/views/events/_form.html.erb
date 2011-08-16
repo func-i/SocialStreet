@@ -29,8 +29,6 @@
           <%= text_field_tag 'starts_at_calendar', new_event_starts_at.strftime('%Y-%m-%d'), :class => "text_field starts-at-time", :style => "width: 80px;" %>
           <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%I")), :class => "starts-at-time" %>
           <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%M")), :class => "starts-at-time" %>
-          <% puts "JOSHY" %>
-          <% puts new_event_starts_at %>
           <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], new_event_starts_at.strftime("%p")), :class => "starts-at-time" %>
 
     <%#= select_time new_event_starts_at, {:minute_step => 15, :ignore_date => true}, :class => 'starts_at_time' -%>
@@ -40,9 +38,6 @@
           <span><label for="date">End Date:</label></span>
           <% new_event_ends_at = event.searchable.searchable_date_ranges.first.ends_at %>
           <%= text_field_tag 'ends_at_calendar', new_event_ends_at.strftime('%Y-%m-%d'), :class => "text_field ends-at-time", :style => "width: 80px;" %>
-                    <% puts "SARA" %>
-          <% puts new_event_ends_at %>
-
           <%= select_tag :ends_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%I")), :class => "ends-at-time" %>
           <%= select_tag :ends_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%M")), :class => "ends-at-time" %>
           <%= select_tag :ends_at_meridian, options_for_select([["AM"], ["PM"]], new_event_ends_at.strftime("%p")), :class => "ends-at-time" %>

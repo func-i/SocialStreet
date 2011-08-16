@@ -152,7 +152,7 @@
         }
       });
 
-/*      if(searchableID == <%= params[:selected_searchable].to_i -%>)
+      /*      if(searchableID == <%= params[:selected_searchable].to_i -%>)
       {
         selected = true;
 
@@ -454,6 +454,15 @@
     };
 
     sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
+
+    var crosshairShape = {coords:[0,0,0,0],type:'rect'};
+    var crosshair_marker = new google.maps.Marker({
+      map: sideMap,
+      icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
+      shape: crosshairShape
+    });
+    crosshair_marker.bindTo('position', sideMap, 'center');
+
 
     var styles = [
       {
