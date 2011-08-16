@@ -2068,6 +2068,11 @@ form, fieldset {
     width: 15px;
     top: 4px;
 }
+
+.facebook-checkbox {
+    padding-right: 100px;
+}
+
 .pop-up .text1 {
     border: 1px solid;
     border-color: #0981be #d2e9f3 #d2e9f3;

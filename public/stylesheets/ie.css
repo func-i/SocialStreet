@@ -11,3 +11,7 @@
 	filter:progid:DXImageTransform.Microsoft.Blur (pixelradius=1, enabled='true')
 	progid:DXImageTransform.Microsoft.Shadow (color=#000000, direction=150, Strength=2);
 }
+
+.facebook-checkbox {
+    padding-right: 0px;
+}
