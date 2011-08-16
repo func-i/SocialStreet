@@ -15,3 +15,7 @@
 .facebook-checkbox {
     padding-right: 0px;
 }
+
+textarea {
+    overflow: hidden;
+}

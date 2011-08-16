@@ -19,7 +19,7 @@ clearMarkers();
 
 <%- @searchables.each do |searchable| -%>
   <% if searchable.geo_located? %>    
-    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= searchable.location_address.for_explore %>');
+    createEventMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), '<%= searchable.location_address_for_explore %>');
   <%- end -%>
 <%- end -%>
 
