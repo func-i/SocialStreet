@@ -53,6 +53,7 @@ SocialStreet::Application.routes.draw do
 
   get 'how-it-works' => 'site#how', :as => 'how'
   get 'explore' => 'explore#index', :as => 'explore'
+  get 'explore/simple_page' => 'explore#simple_page'
 
   resources :comments, :only => [:create]
   resources :event_types, :only => [:index] # for autocomplete

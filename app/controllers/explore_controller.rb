@@ -12,6 +12,10 @@ class ExploreController < ApplicationController
   SIMILAR_RESULTS_LIMIT = 20
   SIMILAR_RESULTS_STOP_THRESHOLD = 30
 
+  def simple_page
+    
+  end
+
   def index    
     @comment = Comment.new
 

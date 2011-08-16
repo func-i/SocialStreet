@@ -1,10 +1,11 @@
 .w1 { min-height:100%; }
-.w1 .w2 {padding-bottom:expression(document.getElementById("footer").offsetHeight + "px");}
-#footer{
+.w1 .w2 {padding-bottom: expression(document.getElementById("footer").offsetHeight + "px");} 
+#footer {
 	position:relative;
 	margin-top:expression(- this.offsetHeight + "px");
 }
-.pop-up .heading strong {
+.w1 {height: expression(document.documentElement.offsetHeight + "px");}*/
+ .pop-up .heading strong {
 	line-height: 25px;
 	zoom: 1;
 	display: block;
@@ -19,3 +20,5 @@
 textarea {
     overflow: hidden;
 }
+
+

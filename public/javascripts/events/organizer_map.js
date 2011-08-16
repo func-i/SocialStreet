@@ -425,6 +425,7 @@ $('#marker-name-field').live('keyup', function(e) {
     return true;
 }).live('keydown', function(e) {
     if (e.keyCode == 13) {
+        alert('enter pressed');
         e.stopPropagation();
 
         if(this.value.length > 0)

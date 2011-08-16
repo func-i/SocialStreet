@@ -49,7 +49,7 @@ function refreshResults(caller) {
 function expandHowItWorks() {
     $('.w2').removeClass('page-explore');
     $('.w2').removeClass('page-map');
-    $('body').css('overflow', 'auto');
+    $('html').css('overflow', 'auto');
  
     $('#how_it_works').closest('li').addClass('active');
     $('#top_explore_form').hide(1, function() {
@@ -257,7 +257,7 @@ function removeModal(element) {
     $(element).fadeOut("fast", function() {
         $('#ss_modal_overlay').trigger("unload").unbind().remove();
         //$.unblockUI();
-        $("body").css("overflow", "auto");
+        $("html").css("overflow", "auto");
     });
 
     //Hack to make save this search modal work
