@@ -50,6 +50,7 @@ class Event < ActiveRecord::Base
   validate :valid_maximum_attendees
 
   validate :validate_event_types, :message => "^ What? can't be blank", :on => :create
+  validate :validate_event_types, :message => "^ What? can't be blank", :on => :update
 
   def validate_event_types
     if searchable.keywords.empty?
