@@ -123,22 +123,26 @@
     });
 
     $('.textarea').live('change', function(e){
-      $(this).closest('.form-comment').submit();
-      if($(this).attr('title') != '')
-        $(this).height(24);
-      else
-        $(this).height(16);
-      return false;
+      if(this.value.length > 0){
+        $(this).closest('.form-comment').submit();
+        if($(this).attr('title') != '')
+          $(this).height(24);
+        else
+          $(this).height(16);
+        return false;
+      }
     });
     $('.textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
         if(e.shiftKey != true){
-          $(this).closest('.form-comment').submit();
-          if($(this).attr('title') != '')
-            $(this).height(24);
-          else
-            $(this).height(16);
-          return false;
+          if(this.value.length > 0){
+            $(this).closest('.form-comment').submit();
+            if($(this).attr('title') != '')
+              $(this).height(24);
+            else
+              $(this).height(16);
+            return false;
+          }
         }
       }
     });

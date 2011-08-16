@@ -39,7 +39,8 @@ module ApplicationHelper
     elsif !event.event_types.blank? && et = event.event_types.detect {|et| et.image_path? }
       et.image_path
     else
-      'web-app-theme/avatar.png'
+      'event_types/unknown' + (rand(8) + 1).to_s + '.png'
+      #'web-app-theme/avatar.png'
     end
   end
 

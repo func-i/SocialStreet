@@ -71,7 +71,7 @@ class Location < ActiveRecord::Base
 
   def humanized_address
     if has_geocodable_address?
-      "#{street}, #{city}"
+      "#{street},  #{city}"
     elsif has_geocodable_address_text?
       text
     end # otherwise return nil

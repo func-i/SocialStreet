@@ -10,7 +10,9 @@
   );
 
 <% if @filter_level && (!params[:view].eql?("map") || (false && @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT))%>
+    if($('#end-of-results-message').data('closed') != true){
       $('#end-of-results-message').show();
+    }
 <% end %>
 
 <% if !@similar_results.blank?() %>

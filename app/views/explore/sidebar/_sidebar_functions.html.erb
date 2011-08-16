@@ -140,13 +140,25 @@
 
       //If pin is selected from url bar
       var selected = false;
-      if(searchableID == <%= params[:selected_searchable].to_i -%>)
+      var selected_searchableIDs = '<%= params[:selected_searchable] ? params[:selected_searchable] : 0-%>';
+      selected_searchableIDs = selected_searchableIDs.split(',')
+
+      $.each(selected_searchableIDs, function(index, id){
+        if(searchableID == id){
+          selected = true;
+
+          icoImage = '/images/ico-pin-selected.png';
+          $('#result_for_searchable_' + searchableID).show();
+        }
+      });
+
+/*      if(searchableID == <%= params[:selected_searchable].to_i -%>)
       {
         selected = true;
 
         icoImage = '/images/ico-pin-selected.png';
         $('#result_for_searchable_' + searchableID).show();
-      }
+      }*/
 
       //Create pin
       var marker = new google.maps.Marker({
@@ -237,13 +249,15 @@
     if(marker instanceof Cluster){
       var isAddressSet = false;
       var cMarkers = marker.getMarkers();
+      searchable_ids = [];
       $.each(cMarkers, function(index, mkr){
         //Show the elements with this id
         $('#result_for_searchable_' + mkr.searchableID).show();
+        searchable_ids.push(mkr.searchableID);
 
         if(0 == index){
           //Set form param to marker id for url reload
-          $('#selected_searchable').val(mkr.searchableID);
+          //$('#selected_searchable').val(mkr.searchableID);
         }
         if(!isAddressSet){
           if(mkr.geocodableAddress != null){
@@ -255,6 +269,8 @@
           }
         }
       });
+
+      $('#selected_searchable').val(searchable_ids);
     }
     else{
       //Show the elements with this id
@@ -309,6 +325,8 @@
       if(history && history.replaceState)
         history.replaceState(null, null, getSearchParams());
 
+      setMapLocation("street_address");
+      
       refreshResults("explore");
     }, 15);
   }
@@ -318,15 +336,38 @@
     geocoder.geocode( {
       'latLng': latlng
     }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK)
+      if (status == google.maps.GeocoderStatus.OK){
+        var resultText = "";
         $.each(results, function(index, result){
           $.each(result.types, function(index_2, type){
             if(type == resultType){
-              $('#map_location').val(result.formatted_address);
-              updateCommentBox();
+              if(resultType == 'street_address'){
+                var streetNum = "";
+                var streetName = "";
+                var city = "";
+                $.each(result.address_components, function(index_3, component){
+                  $.each(component.types, function(index_3, component_type){
+                    if(component_type == "street_number")
+                      streetNum = component.long_name;
+                    else if(component_type == "route")
+                      streetName = component.long_name;
+                    else if(component_type == "locality")
+                      city = component.long_name;
+                  });
+                });
+
+                resultText = streetNum + ' ' + streetName + ', ' + city;
+              }
+              else{
+                resultText = result.formatted_address;
+              }
             }
           });
-      });
+        });
+
+        $('#map_location').val(resultText);
+        updateCommentBox();
+      }
     });
   }
 
@@ -491,11 +532,11 @@
   <% if params[:view] == "list" && !params[:map_bounds].blank? %>
     <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
     <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-//      sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
-//      sideMap.fitBounds(new google.maps.LatLngBounds(
-//      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-//      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
-      
+      //      sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
+      //      sideMap.fitBounds(new google.maps.LatLngBounds(
+      //      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
+      //      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
+
   <% end %>
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
@@ -511,6 +552,13 @@
         placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
+
+  <% (@similar_results || []).each do |searchable| %>
+    <% if searchable.geo_located? %>
+        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+    <% end %>
+  <% end %>
+
 
     placeSidebarClusterMarkers();
 

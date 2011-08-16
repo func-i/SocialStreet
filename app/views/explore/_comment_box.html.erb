@@ -1,5 +1,5 @@
 <div class="post-message" id="explore-post-message-form">
-  <%= form_for @comment, :remote => true, :html => {"data-type" => "script", :class => "form comment-form form-comment form-post-message Post-Message", :style => "min-height: 55px; "} do |form| %>
+  <%= form_for @comment, :remote => true, :html => {:class => "form comment-form form-comment form-post-message Post-Message", :style => "min-height: 55px; "} do |form| %>
     <fieldset>
       <div class="box text">
         <div class="topleft">
@@ -48,7 +48,12 @@
     });
 
     $('.remove-comment-keyword').live('click', function(e) {
+      console.log("REMOVE");
       $(this).closest('.keyword').remove();
+
+      if($('#post-message-keywords').find('input[type=hidden]').length <= 0){
+        $('#post-message-keywords').hide();
+      }
       return false;
     });
 
@@ -63,22 +68,28 @@
     });
 
     $('.search-textarea').live('change', function(e){
-      $('.form-post-message').removeClass('send');
-      var f = $('form.form-comment');
-      //$('#content').css("top", "");
-      $(this).closest('.form-comment').submit();
-      this.value = '';
-      return false;
+      if(this.value.length > 0)
+      {
+        $('.form-post-message').removeClass('send');
+        var f = $('form.form-comment');
+        //$('#content').css("top", "");
+        $(this).closest('.form-comment').submit();
+        this.value = '';
+        return false;
+      }
     });
     $('.search-textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
         if(e.shiftKey != true){
-          $('.form-post-message').removeClass('send');
-          var f = $('form.form-comment');
-          //$('#content').css("top", "");
-          $(this).closest('.form-comment').submit();
-          this.value = '';
-          return false;
+          if(this.value.length > 0)
+          {
+            $('.form-post-message').removeClass('send');
+            var f = $('form.form-comment');
+            //$('#content').css("top", "");
+            $(this).closest('.form-comment').submit();
+            this.value = '';
+            return false;
+          }
         }
       }
     });

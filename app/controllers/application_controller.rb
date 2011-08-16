@@ -129,24 +129,6 @@ class ApplicationController < ActionController::Base
     # overwritten by controllers
   end
 
-  def prepare_create_event_event
-    #    @event_for_create = Event.new
-    #    @event_for_create.searchable ||= Searchable.new
-    #    @event_for_create.searchable.location ||= Location.new
-    #    @event_for_create.searchable.searchable_date_ranges.build({
-    #        :starts_at => Time.zone.now.advance(:hours => 3).floor(15.minutes),
-    #        :ends_at => Time.zone.now.advance(:hours => 6).floor(15.minutes)
-    #      })
-    #    #@event.action = @action - TODO - need to do this in javascript
-    #
-    #    if session[:stored_params]
-    #      @event_for_create.attributes = session[:stored_params] # event params
-    #      @event_for_create.valid?
-    #      session[:stored_params] = nil
-    #    end
-
-    #@event_types_for_create ||= EventType.order('name').all
-  end
 
   def create_search_subscription(params)
     @search_subscription = SearchSubscription.new_from_params(params[:q])
@@ -192,8 +174,10 @@ class ApplicationController < ActionController::Base
 
       puts "CREATING A NEW SEARCHABLE"
       @comment.searchable = Searchable.new_from_params(params)
+      puts @comment.inspect
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     elsif @commentable.respond_to?(:searchable) && @commentable.searchable
+    #elsif @commentable.searchable
       @comment.searchable = @commentable.searchable
     end
 

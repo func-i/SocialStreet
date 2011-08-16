@@ -17,8 +17,6 @@ class Searchable < ActiveRecord::Base
   accepts_nested_attributes_for :location
   accepts_nested_attributes_for :searchable_date_ranges
   accepts_nested_attributes_for :searchable_event_types, :reject_if => lambda{|set| set["name"].blank? }
-
-  validates :searchable_event_types, :presence => {:message => "^ What? can't be blank", :on => :create}
   
   before_save :cache_lat_lng
   #  after_create :set_explorable
@@ -38,10 +36,13 @@ class Searchable < ActiveRecord::Base
           OR searchables.id IN ( 
             SELECT searchable_event_types.searchable_id FROM searchable_event_types, event_types
               WHERE searchable_event_types.searchable_id = searchables.id
-              AND event_types.id = searchable_event_types.event_type_id
               AND (
-                UPPER(searchable_event_types.name) LIKE :key#{i}
-                OR UPPER(event_types.name) LIKE :key#{i}
+                  UPPER(searchable_event_types.name) LIKE :key#{i}
+                  OR (
+                    searchable_event_types.event_type_id IS NOT NULL
+                    AND event_types.id = searchable_event_types.event_type_id
+                    AND UPPER(event_types.name) LIKE :key#{i}
+                  )
               )
           )"
           args["key#{i}".to_sym] = "%#{k.upcase}%"
@@ -220,7 +221,7 @@ class Searchable < ActiveRecord::Base
       if location.text && !location.text.blank?
         title += ' near ' + location.text
       else
-        title += ' near ' + "#{location.street} #{location.city}"
+        title += ' near ' + "#{location.street}, #{location.city}"
       end
     end
 

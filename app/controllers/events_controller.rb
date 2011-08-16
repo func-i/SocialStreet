@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_filter :store_current_path, :only => [:show, :edit]
+  before_filter :store_current_path, :only => [:show, :edit, :post_to_facebook]
   before_filter :store_event_create, :only => [:create, :update]
   before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
   before_filter :require_editable_event, :only => [:edit, :update, :destroy]
@@ -8,6 +8,9 @@ class EventsController < ApplicationController
 
   # EVENT DETAIL PAGE
   def show
+    puts "JOSHY2"
+    puts params
+
     @event = Event.find params[:id]
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
     @comment = @event.comments.build
@@ -105,6 +108,10 @@ class EventsController < ApplicationController
         @rsvp.facebook = true
         @rsvp.save
       end
+    end
+
+    if !request.xhr?
+      redirect_to event_path(@event, :post_to_facebook => true)
     end
   end
 

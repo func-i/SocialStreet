@@ -4,7 +4,7 @@
       <% if @event.editable_by?(current_user) %>
         <div class="admin-view">
           <strong>
-            <%= link_to_popup_modal_ajax  'Edit this StreetMeet', 'Edit this StreetMeet', 'empty_modal_base', edit_event_path(@event), nil, nil%>
+            <%= link_to_popup_modal_ajax  'Edit...', 'Edit this StreetMeet', 'empty_modal_base', edit_event_path(@event), nil, nil%>
           </strong>
           <% if @event.user == current_user %>
             or
@@ -81,7 +81,7 @@
 
 </div>
 <div class="post-message">
-  <%= form_for [@event, @comment], :remote => true, :html => {"data-type" => "script",:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
+  <%= form_for [@event, @comment], :remote => true, :html => {:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
     <fieldset>
 
       <div class="box text">
@@ -278,7 +278,11 @@
 
     $(function() {
       makeShowEventPageless();
-    });
+
+  <% if params[:post_to_facebook] %>
+      $('#flash-messages').html('<div class="flash"><strong>The StreetMeet has been posted to your Facebook wall</strong></div>');
+  <% end %>
+  });
 
   </script>
 <% end %>
