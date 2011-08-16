@@ -2698,7 +2698,10 @@ form, fieldset {
 #sidebar .post .text  {
     width: 280px;
 }
-#sidebar .post .row .text { font:italic 12px/14px Georgia, sans-serif; }
+#sidebar .post .row .text { 
+    font: italic 12px Georgia, sans-serif;
+    font-weight: 500;
+}
 #sidebar .open .post .row .text {
     float: none;
     font: italic 15px/16px Georgia, sans-serif;
