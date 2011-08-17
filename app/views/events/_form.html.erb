@@ -57,7 +57,7 @@
 
     <%= form.fields_for :searchable do |searchable_fields| %>
       <%= searchable_fields.fields_for :location do |location_fields| %>
-        <%= text_field_tag 'location_address', "", :class => "text text_field location-address-field", :type => "text", :id=>"where", :title=> "Where?" %>
+        <%= text_field_tag 'location_address', "", :class => "text text_field location-address-field", :type => "text", :id=>"where", :title=> "Where?", :placeholder => "Enter Address, Select or Drop Pin" %>
         <%= location_fields.hidden_field :text, :id => "location-name-field" %>
         <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
         <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
