@@ -221,6 +221,10 @@
         $(window).bind("popstate", function(){
 
           var keywordParams = $(document).getUrlParam("keywords[]");
+          $.each(keywordParams, function(e, i) {
+            e = e.replace("+", "");
+          });
+
           if(typeof keywordParams == "string" || keywordParams == null)
             keywordParams = new Array(keywordParams);
 

@@ -1,5 +1,11 @@
 function addKeyword(keyword, selector) {
-    if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword+'"]').size() > 0 || keyword == '') return false;
+
+    
+    if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword.replace("+", " ")+'"]').size() > 0 || keyword == '')
+        return false;
+
+    console.log(keyword.replace("+", " "));
+
 
     var $inputName;
     if(selector == "#event-keywords")
@@ -14,9 +20,9 @@ function addKeyword(keyword, selector) {
 
 
     $('<li class="keyword-pill" container-selector = "' + selector + '">' +
-        keyword +
+        keyword.replace("+", " ") +
         '<a href="#" class="close remove-parent" data-parent-selector = ".keyword-pill">close</a>' +
-        '<input type="hidden" name="' + $inputName  + '" value="' +keyword + '" />' +
+        '<input type="hidden" name="' + $inputName  + '" value="' +keyword.replace("+", " ") + '" />' +
         '</li>'
         ).hide().appendTo($(selector)).fadeIn('slow');
 

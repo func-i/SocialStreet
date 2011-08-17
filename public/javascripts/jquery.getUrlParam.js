@@ -57,10 +57,14 @@ jQuery.fn.extend({
             if (index >= 0) {
                 var strCurrentParamName = escape(unescape(qString[i].substr(0, index)));
                 if (strCurrentParamName == strParamName) {
-                    returnVal.push(qString[i].substr(index + 1));
+                    returnVal.push(unescape(qString[i].substr(index + 1)));
                 }
             }
         }
+
+        //        if (returnVal.length==0) return null;
+        //        else if (returnVal.length==1) return unescape(returnVal[0]);
+        //        else return unescape(returnVal);
 
         if (returnVal.length==0) return null;
         else if (returnVal.length==1) return returnVal[0];
