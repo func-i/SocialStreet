@@ -326,7 +326,7 @@ class ExploreController < ApplicationController
         longitude ||= -79.3938175316406
       end
 
-      map_bounds = params[:map_bounds] = "#{latitude + 0.22},#{longitude + 0.44},#{latitude - 0.22},#{longitude - 0.44}"
+      map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end
 
     bounds = map_bounds.split(",").collect { |point| point.to_f }
@@ -450,7 +450,7 @@ class ExploreController < ApplicationController
         params[:map_center] = "#{latitude},#{longitude}"
       end
       
-      map_bounds = params[:map_bounds] = "#{latitude + 0.22},#{longitude + 0.44},#{latitude - 0.22},#{longitude - 0.44}"
+      map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end
 
     bounds = map_bounds.split(",").collect { |point| point.to_f }
