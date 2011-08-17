@@ -426,6 +426,7 @@ form, fieldset {
     z-index: 1;
 }
 .page-map #main .holder { height: 3000px; }
+.page-map #main .main-top .holder {height: auto;}
 #main .holder:after {
     clear: both;
     content: "";

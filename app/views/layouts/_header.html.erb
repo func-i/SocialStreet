@@ -26,7 +26,7 @@
         </li>
 
       <% else %>
-                                                  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                                            <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -135,6 +135,17 @@
 
   <%- if !@current_user && (current_page?(explore_path))-%>
       expandHowItWorks();
+
+      $(function(){
+
+        var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
+        if(IE7) {
+          // Hack fix for position in IE7
+          $('.main-top').css('height', '77px');
+          $('.main-top .holder').css('background', '');
+        }
+      });
+
   <% else %>
     <%- if params[:view].eql?("map") %>
         $('.w2').addClass('page-map');
@@ -157,7 +168,12 @@
   // local key/val cache so if it does ajax json for "ba", it caches the result the first time.
   // So if user types "ba" again it uses the local cache instead of doing another AJAX request - KV
   var cache = {},
-  lastXhr;
+  lastXhr;var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
+  if(IE7) {
+    // Hack fix for position in IE7
+    $('.main-top').css('height', "77px");
+    $('.main-top .holder').css('background', '');
+  }
 
   function saveModalClicked() {
     if($('#submit_form').length)
