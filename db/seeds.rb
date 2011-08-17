@@ -60,7 +60,7 @@ types[:tv] = EventType.create!(:name => 'Television', :image_path => "/images/ev
 types[:videogames] = EventType.create!(:name => 'Videogames', :image_path => "/images/event_types/videogames.png")
 types[:volleyball] = EventType.create!(:name => 'Volleyball', :image_path => "/images/event_types/volleyball.png")
 types[:walk] = EventType.create!(:name => 'Walk', :image_path => "/images/event_types/walk.png")
-types[:waterballon_toss] = EventType.create!(:name => 'Waterballon Toss', :image_path => "/images/event_types/waterballon.png")
+types[:waterballon_fight] = EventType.create!(:name => 'Waterballon Fight', :image_path => "/images/event_types/waterballon.png")
 types[:weights] = EventType.create!(:name => 'Weights', :image_path => "/images/event_types/weights.png")
 
 #SYNONYMS - Don't need to specify parent if defined on synonym

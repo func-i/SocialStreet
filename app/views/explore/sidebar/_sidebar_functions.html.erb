@@ -315,7 +315,8 @@
       markerManager = new MarkerManager({
         map: sideMap,
         gridSize: 15,
-        mapView: <%= params[:view].eql?('map') ? 'true' : 'false' %>
+        mapView: <%= params[:view].eql?('map') ? 'true' : 'false' %>,
+        listView: <%= params[:view].eql?('map') ? 'false' : 'true' %>
       });
 
   <% (@searchables || []).each do |searchable| %>
