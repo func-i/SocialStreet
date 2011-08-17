@@ -63,7 +63,7 @@ class Jobs::CreateConnectionsFromFacebook
     end
     
     unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-      while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+      while !Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
         # => Do nothing, just keep checking for the completion of the worker
       end
     else
