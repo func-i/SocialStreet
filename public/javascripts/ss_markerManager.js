@@ -372,12 +372,8 @@ function InfoWindow(markerManager){
     });
 
     $('#marker-name-field').live('keyup', function(e) {
-        $('#location-name-field').val(this.value);
-        getCreateMarkerManager().selectedMarker_.setTitle(this.value);
-        return true;
-    }
-    ).live('keydown', function(e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode == 13) {      
+            
             if(this.value.length > 0)
             {
                 $(this).siblings('a').html(this.value);
@@ -388,7 +384,7 @@ function InfoWindow(markerManager){
 
             that.infoBubble_.setMinWidth($(this).siblings('a').html().length*6.5);//TODO - Horrible hack
 
-            that.infoBubble_.setMinHeight('auto');
+            //that.infoBubble_.setMinHeight('auto');
 
             that.infoBubble_.setPadding(5);
             that.infoBubble_.setBorderWidth(5);
@@ -397,9 +393,14 @@ function InfoWindow(markerManager){
             $(this).hide();
 
             e.stopPropagation();
-
             return false;
         }
+        else {
+            $('#location-name-field').val(this.value);
+            getCreateMarkerManager().selectedMarker_.setTitle(this.value);
+            return true;
+        }
+        return false;
     });
 };
 

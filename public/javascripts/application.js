@@ -47,8 +47,10 @@ function refreshResults(caller) {
 }
 
 function expandHowItWorks() {
+    
     $('.w2').removeClass('page-explore');
     $('.w2').removeClass('page-map');
+            
     $('html').css('overflow', 'auto');
  
     $('#how_it_works').closest('li').addClass('active');
