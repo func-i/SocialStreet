@@ -289,9 +289,18 @@ class ExploreController < ApplicationController
   end
 
   def apply_keywords(searchable, keywords)
-    return searchable if keywords.blank?
+    return searchable if (keywords.blank? || keywords.empty?)
 
-    searchable = searchable.with_keywords(keywords)
+    all_keywords = []
+    keywords.each do |keyword|
+      unless keyword.blank?
+        all_keywords << keyword
+        all_keywords.concat(EventType.with_parent_name(keyword).all.map(&:name));
+      end
+    end
+
+    return searchable if all_keywords.empty?
+    return searchable = searchable.with_keywords(all_keywords)
   end
 
   def apply_map_bounds(searchable, map_bounds)

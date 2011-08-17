@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110812205031) do
+ActiveRecord::Schema.define(:version => 20110817142849) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20110812205031) do
     t.datetime "updated_at"
     t.string   "image_path"
     t.integer  "synonym_id"
+    t.integer  "parent_id"
   end
 
   add_index "event_types", ["name"], :name => "index_event_types_on_name"

@@ -8,7 +8,11 @@
 ## STUB EVENT TYPES
 ################################
 types = {}
-types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/event_types/basketball.png")
+#PARENTS
+types[:sports] = EventType.create!(:name => 'Sports', :image_path => "/images/event_types/basketball.png")
+
+#MAIN TYPES
+types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/event_types/basketball.png", :parent => types[:sports])
 types[:bbq] = EventType.create!(:name => 'BBQ', :image_path => "/images/event_types/bbq.png")
 types[:beer] = EventType.create!(:name => 'Beer', :image_path => "/images/event_types/beer.png")
 types[:board_game] = EventType.create!(:name => 'Board Game', :image_path => "/images/event_types/boardgame.png")
@@ -23,8 +27,7 @@ types[:clubbing] = EventType.create!(:name => 'Clubbing', :image_path => "/image
 types[:coffee] = EventType.create!(:name => 'Coffee', :image_path => "/images/event_types/coffee.png")
 types[:cycling] = EventType.create!(:name => 'Cycling', :image_path => "/images/event_types/cycling.png")
 types[:dinner] = EventType.create!(:name => 'Dinner', :image_path => "/images/event_types/dinner.png")
-types[:dodgeball] = EventType.create!(:name => 'Dodgeball', :image_path => "/images/event_types/dodgeball.png")
-types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/event_types/basketball.png")
+types[:dodgeball] = EventType.create!(:name => 'Dodgeball', :image_path => "/images/event_types/dodgeball.png", :parent => types[:sports])
 types[:espanol] = EventType.create!(:name => 'Spanish', :image_path => "/images/event_types/espanol.png")
 types[:fitness] = EventType.create!(:name => 'Fitness', :image_path => "/images/event_types/fitness.png")
 types[:fossball] = EventType.create!(:name => 'Foosball', :image_path => "/images/event_types/foosball.png")
@@ -51,7 +54,7 @@ types[:soccer] = EventType.create!(:name => 'Soccer', :image_path => "/images/ev
 types[:squash] = EventType.create!(:name => 'Squash', :image_path => "/images/event_types/squash.png")
 types[:study] = EventType.create!(:name => 'Study', :image_path => "/images/event_types/study.png")
 types[:swimming] = EventType.create!(:name => 'Swimming', :image_path => "/images/event_types/swimming.png")
-types[:table_tennis] = EventType.create!(:name => 'Table Tennis', :image_path => "/images/event_types/tabletennis.png")
+types[:table_tennis] = EventType.create!(:name => 'Table Tennis', :image_path => "/images/event_types/tabletennis.png", :parent => types[:sports])
 types[:tennis] = EventType.create!(:name => 'Tennis', :image_path => "/images/event_types/tennis.png")
 types[:tv] = EventType.create!(:name => 'Television', :image_path => "/images/event_types/tv.png")
 types[:videogames] = EventType.create!(:name => 'Videogames', :image_path => "/images/event_types/videogames.png")
@@ -59,8 +62,11 @@ types[:volleyball] = EventType.create!(:name => 'Volleyball', :image_path => "/i
 types[:walk] = EventType.create!(:name => 'Walk', :image_path => "/images/event_types/walk.png")
 types[:waterballon_toss] = EventType.create!(:name => 'Waterballon Toss', :image_path => "/images/event_types/waterballon.png")
 types[:weights] = EventType.create!(:name => 'Weights', :image_path => "/images/event_types/weights.png")
+
+#SYNONYMS - Don't need to specify parent if defined on synonym
 types[:futball] = EventType.create!(:name => 'Futball', :synonym => types[:soccer] )
 types[:ping_pong] = EventType.create!(:name => 'Ping Pong', :synonym => types[:table_tennis] )
+
 
 ################################
 ## STUB USERS
