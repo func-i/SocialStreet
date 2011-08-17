@@ -167,6 +167,15 @@
 
   $(function() {
 
+    if($('.link-login').width() > 100) {
+      var topLinkWidth = $('.link-login').width();
+      var topExploreWidth = $('.top-explore-field').width();
+      var newWidth = topExploreWidth - (topLinkWidth - 100);
+      $('.top-explore-field').width(newWidth);
+      $('.top-explore-field').closest('.text').width(newWidth);
+    }
+
+
     $( ".top-explore-field" ).autocomplete({
       minLength: 1,
       delay: 100,
