@@ -73,6 +73,13 @@ function retractHowItWorks(f) {
             if(typeof checkMapPageSize == 'function')
                 checkMapPageSize();
 
+            var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
+            if(IE7) {
+                // Hack fix for position in IE7
+                $('.main-top').css('height', '77px');
+                $('.main-top .holder').css('background', '');
+            }
+
         });
 
         if(typeof f == "function")
