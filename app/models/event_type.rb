@@ -2,6 +2,7 @@ class EventType < ActiveRecord::Base
 
   belongs_to :synonym, :class_name => "EventType"
   belongs_to :parent, :class_name => "EventType"
+  has_many :children, :class_name => "EventType", :foreign_key => "parent_id"
   has_many :searchable_event_types
 
   make_searchable :fields => %w{event_types.name}
