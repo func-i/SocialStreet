@@ -133,7 +133,8 @@
       });
   <% end %>
 
-  <%- if !@current_user && (current_page?(explore_path))-%>
+  <%- if(!@current_user &&  current_page?(explore_path) && (!session[:how_it_works_last_display_time] || (Time.zone.now - session[:how_it_works_last_display_time] > 30.minute)))-%>
+      <% session[:how_it_works_last_display_time] = Time.zone.now %>
       expandHowItWorks();
 
       $(function(){

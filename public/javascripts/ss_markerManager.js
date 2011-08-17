@@ -16,6 +16,10 @@ MarkerManager.prototype.init = function(opt_options)
     if(options['mapView'] == undefined){
         options['mapView'] = false;
     }
+    if(options['listView'] == undefined){
+        options['listView'] = false;
+    }
+
     if(options['createEvent'] == undefined){
         options['createEvent'] = false;
     }
@@ -45,6 +49,7 @@ MarkerManager.prototype.setValues_ = function(options)
     this.map_ = options['map'];
     this.gridSize_ = options['gridSize'];
     this.mapView_ = options['mapView'];
+    this.listView_ = options['listView'];
     this.createEvent_ = options['createEvent'];
     this.allMarkers_ = [];
     this.selectedMarker_ = null;
@@ -55,7 +60,7 @@ MarkerManager.prototype.createMarker = function(location, searchableID, geocodab
     var selected = false;
 
     //If in explore map view and searchableid was selected, change image and select
-    if(this.mapView_){
+    if(this.mapView_ || this.listView_){
         if(searchableID == $('#selected_searchable').val()){
             icoImage = '/images/ico-pin-selected.png';
             selected = true;
@@ -93,7 +98,7 @@ MarkerManager.prototype.createMarker = function(location, searchableID, geocodab
     }
 
     //If explore map view, add listener for click
-    if(this.mapView_ || this.createEvent_){
+    if(this.mapView_ || this.listView_ || this.createEvent_){
         //Add listener for the click event
         var that = this;
         google.maps.event.addListener(marker, 'click', function()
@@ -217,6 +222,10 @@ MarkerManager.prototype.userSelectMarker_ = function(marker){
         //set searchable id field for maintaining on refresh
         $('#selected_searchable').val(marker.searchableID_);
     }
+    else if(this.listView_){
+        //set searchable id field for maintaining on refresh
+        $('#selected_searchable').val(marker.searchableID_);
+    }
     else if(this.createEvent_){
         
 }
@@ -252,6 +261,20 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
         if(this.selectedMarker_.clusteredMarkers_){
             $.each(this.selectedMarker_.clusteredMarkers_, function(index, marker){
                 $('#result_for_searchable_' + marker.searchableID_).show();
+            });
+        }
+    }
+    else if(this.listView_){
+        //Unhighlight every element
+        $.each($('.result-list-item'), function(index, rLI) {
+            $(rLI).css('backgroundColor', 'transparent');
+        });
+
+        //Show each searchable attached to the selected marker
+        $('#result_for_searchable_' + this.selectedMarker_.searchableID_).css('backgroundColor', '#FE6');;
+        if(this.selectedMarker_.clusteredMarkers_){
+            $.each(this.selectedMarker_.clusteredMarkers_, function(index, marker){
+                $('#result_for_searchable_' + marker.searchableID_).css('backgroundColor', '#FE6');;
             });
         }
     }

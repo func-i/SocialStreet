@@ -94,10 +94,16 @@
     });
 
     $( "#from_date" ).datepicker({
-      dateFormat: 'M. dd, yy'
+      dateFormat: 'M. dd, yy',
+      showOn: "both",
+      buttonImage: '/images/calendar_grey.png',
+      buttonImageOnly: true
     });
     $( "#to_date" ).datepicker({
-      dateFormat: 'M. dd, yy'
+      dateFormat: 'M. dd, yy',
+      showOn: "both",
+      buttonImage: '/images/calendar_grey.png',
+      buttonImageOnly: true
     });
 
     $("#from_date").live("change", function(){
@@ -122,195 +128,196 @@
       return markerManager;
     }
 
-  function moveExploreMap(e, latLng) {
-    if(latLng == null) {
-      var loc = e.target.value;
-      geocoder.geocode({address: loc}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          sideMap.setCenter(results[0].geometry.location);
-          changeExploreLocationParams();
-          $('#location-not-found').hide();
-        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-          $('#location-not-found').show();
+    function moveExploreMap(e, latLng) {
+      if(latLng == null) {
+        var loc = e.target.value;
+        geocoder.geocode({address: loc}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            sideMap.setCenter(results[0].geometry.location);
+            changeExploreLocationParams();
+            $('#location-not-found').hide();
+          } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+            $('#location-not-found').show();
+          }
+        });
+      }
+      else if(latLng != null) {
+        sideMap.setCenter(latLng);
+        changeExploreLocationParams();
+        $('#location-not-found').hide();
+      }
+    }
+
+    function changeExploreLocationParams(event) {
+      setTimeout(function() {
+        var zoom = sideMap.getZoom();
+        $('#map_zoom').val(zoom);
+
+        bounds = sideMap.getBounds();
+        ne = bounds.getNorthEast();
+        sw = bounds.getSouthWest();
+        c = bounds.getCenter();
+
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(c.lat() + ',' + c.lng());
+
+        if(history && history.replaceState)
+          history.replaceState(null, null, getSearchParams());
+
+        setMapLocation("street_address");
+      
+        refreshResults("explore");
+      }, 15);
+    }
+
+    function setMapLocation(resultType){
+      var latlng = sideMap.getCenter();
+      geocoder.geocode( {
+        'latLng': latlng
+      }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK){
+          var resultText = "";
+          $.each(results, function(index, result){
+            $.each(result.types, function(index_2, type){
+              if(type == resultType){
+                if(resultType == 'street_address'){
+                  var streetNum = "";
+                  var streetName = "";
+                  var city = "";
+                  $.each(result.address_components, function(index_3, component){
+                    $.each(component.types, function(index_3, component_type){
+                      if(component_type == "street_number")
+                        streetNum = component.long_name;
+                      else if(component_type == "route")
+                        streetName = component.long_name;
+                      else if(component_type == "locality")
+                        city = component.long_name;
+                    });
+                  });
+
+                  resultText = streetNum + ' ' + streetName + ', ' + city;
+                }
+                else{
+                  resultText = result.formatted_address;
+                }
+              }
+            });
+          });
+
+          $('#map_location').val(resultText);
+          updateCommentBox();
         }
       });
     }
-    else if(latLng != null) {
-      sideMap.setCenter(latLng);
-      changeExploreLocationParams();
-      $('#location-not-found').hide();
-    }
-  }
 
-  function changeExploreLocationParams(event) {
-    setTimeout(function() {
-      var zoom = sideMap.getZoom();
-      $('#map_zoom').val(zoom);
+    $(function() {
 
-      bounds = sideMap.getBounds();
-      ne = bounds.getNorthEast();
-      sw = bounds.getSouthWest();
-      c = bounds.getCenter();
+      //Update comment box address and keywords
+      updateCommentBox();
 
-      $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-      $('#map_center').val(c.lat() + ',' + c.lng());
+      //History for ajax calls
+      if(history && history.pushState) {
+        //if(!$.browser.webit==true){
+        $(window).bind("popstate", function(){
 
-      if(history && history.replaceState)
-        history.replaceState(null, null, getSearchParams());
+          var keywordParams = $(document).getUrlParam("keywords[]");
+          if(typeof keywordParams == "string" || keywordParams == null)
+            keywordParams = new Array(keywordParams);
 
-      setMapLocation("street_address");
-      
-      refreshResults("explore");
-    }, 15);
-  }
-
-  function setMapLocation(resultType){
-    var latlng = sideMap.getCenter();
-    geocoder.geocode( {
-      'latLng': latlng
-    }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK){
-        var resultText = "";
-        $.each(results, function(index, result){
-          $.each(result.types, function(index_2, type){
-            if(type == resultType){
-              if(resultType == 'street_address'){
-                var streetNum = "";
-                var streetName = "";
-                var city = "";
-                $.each(result.address_components, function(index_3, component){
-                  $.each(component.types, function(index_3, component_type){
-                    if(component_type == "street_number")
-                      streetNum = component.long_name;
-                    else if(component_type == "route")
-                      streetName = component.long_name;
-                    else if(component_type == "locality")
-                      city = component.long_name;
-                  });
-                });
-
-                resultText = streetNum + ' ' + streetName + ', ' + city;
-              }
-              else{
-                resultText = result.formatted_address;
-              }
-            }
+          $.each(keywordParams, function(keywordIndex, keywordParam) {
+            addKeyword(keywordParam, '#explore-keywords');
           });
-        });
 
-        $('#map_location').val(resultText);
-        updateCommentBox();
-      }
-    });
-  }
+          $.each(arraySubtract(existingKeywords('#explore-keywords'), keywordParams), function(mk, missingKeyword){
+            removeKeyword(missingKeyword);
+          });
 
-  $(function() {
-
-    //Update comment box address and keywords
-    updateCommentBox();
-
-    //History for ajax calls
-    if(history && history.pushState) {
-      //if(!$.browser.webit==true){
-      $(window).bind("popstate", function(){
-
-        var keywordParams = $(document).getUrlParam("keywords[]");
-        if(typeof keywordParams == "string" || keywordParams == null)
-          keywordParams = new Array(keywordParams);
-
-        $.each(keywordParams, function(keywordIndex, keywordParam) {
-          addKeyword(keywordParam, '#explore-keywords');
-        });
-
-        $.each(arraySubtract(existingKeywords('#explore-keywords'), keywordParams), function(mk, missingKeyword){
-          removeKeyword(missingKeyword);
-        });
-
-        if($(document).getUrlParam("map_center") != null)
-          sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
+          if($(document).getUrlParam("map_center") != null)
+            sideMap.setCenter(new google.maps.LatLng($(document).getUrlParam("map_center").split(",")[0], $(document).getUrlParam("map_center").split(",")[1]))
 
 
-        var dtOptions = $(document).getUrlParam("date_search[]");
+          var dtOptions = $(document).getUrlParam("date_search[]");
 
-        if(dtOptions != undefined) {
+          if(dtOptions != undefined) {
 
-          var uScapedDtOptions = new Array;
+            var uScapedDtOptions = new Array;
 
-          if(dtOptions instanceof Array) {
-            $.each(dtOptions, function(i, e) {
-              uScapedDtOptions.push(unescape(e));
+            if(dtOptions instanceof Array) {
+              $.each(dtOptions, function(i, e) {
+                uScapedDtOptions.push(unescape(e));
+              });
+            }
+            else
+              uScapedDtOptions.push(unescape(dtOptions));
+
+            $.each($('.calendar-times'), function(index, ele) {
+              if($.inArray($(ele).attr("d-pos"), uScapedDtOptions) > -1)
+                $(ele).addClass('select');
+              else
+                $(ele).removeClass('select');
             });
           }
-          else
-            uScapedDtOptions.push(unescape(dtOptions));
-
-          $.each($('.calendar-times'), function(index, ele) {
-            if($.inArray($(ele).attr("d-pos"), uScapedDtOptions) > -1)
-              $(ele).addClass('select');
-            else
+          else {
+            $.each($('.calendar-times'), function(index, ele) {
               $(ele).removeClass('select');
-          });
-        }
-        else {
-          $.each($('.calendar-times'), function(index, ele) {
-            $(ele).removeClass('select');
-          });
-        }
+            });
+          }
 
 
-        $.getScript(location.href);
-      });
-      //}
-    }
-
-    //Bind for address text box
-    $('#map_location').keydown(function(e) {
-      if (e.keyCode == 13) {
-        e.stopPropagation();
-        moveExploreMap(e);
-        return false;
+          $.getScript(location.href);
+        });
+        //}
       }
-      return true;
-    });
+
+      //Bind for address text box
+      $('#map_location').keydown(function(e) {
+        if (e.keyCode == 13) {
+          e.stopPropagation();
+          moveExploreMap(e);
+          return false;
+        }
+        return true;
+      });
 
 
-    /* geolocation and map stuff */
-    var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
+      /* geolocation and map stuff */
+      var loc = new google.maps.LatLng(<%= params[:map_center].split(",").first %>, <%= params[:map_center].split(",").last %>);
 
-    //Create sidemap
-    var sidebarMapOptions = {
-      zoom: <%= params[:map_zoom] || 9 %>,
-      center: loc,
-      mapTypeControl: false,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      streetViewControl: false
-    };
+      //Create sidemap
+      var sidebarMapOptions = {
+        zoom: <%= params[:map_zoom] || 9 %>,
+        center: loc,
+        mapTypeControl: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false
+      };
 
-    sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
+      sideMap = new google.maps.Map(document.getElementById("location-map"), sidebarMapOptions);
 
-    var crosshairShape = {coords:[0,0,0,0],type:'rect'};
-    var crosshair_marker = new google.maps.Marker({
-      map: sideMap,
-      icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
-      shape: crosshairShape
-    });
-    crosshair_marker.bindTo('position', sideMap, 'center');
+      var crosshairShape = {coords:[0,0,0,0],type:'rect'};
+      var crosshair_marker = new google.maps.Marker({
+        map: sideMap,
+        icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
+        shape: crosshairShape
+      });
+      crosshair_marker.bindTo('position', sideMap, 'center');
 
-    //infoWindow = new google.maps.InfoWindow();
-    geocoder = new google.maps.Geocoder();
+      //infoWindow = new google.maps.InfoWindow();
+      geocoder = new google.maps.Geocoder();
 
-    setMapLocation("street_address");
+      setMapLocation("street_address");
     
-    google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
-    google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
-    //google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
-    //$(window).resize(changeLocationParams);
+      google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
+      google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
+      //google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
+      //$(window).resize(changeLocationParams);
 
-    markerManager = new MarkerManager({
-      map: sideMap,
-      gridSize: 15,
-      mapView: <%= params[:view].eql?('map') ? 'true' : 'false' %>
-    });
+      markerManager = new MarkerManager({
+        map: sideMap,
+        gridSize: 15,
+        mapView: <%= params[:view].eql?('map') ? 'true' : 'false' %>,
+        listView: <%= params[:view].eql?('map') ? 'false' : 'true' %>
+      });
 
   <% (@searchables || []).each do |searchable| %>
     <% if searchable.geo_located? %>
