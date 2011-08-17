@@ -1,11 +1,7 @@
 function addKeyword(keyword, selector) {
-
     
     if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword.replace("+", " ")+'"]').size() > 0 || keyword == '')
         return false;
-
-    console.log(keyword.replace("+", " "));
-
 
     var $inputName;
     if(selector == "#event-keywords")
