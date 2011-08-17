@@ -88,6 +88,7 @@
       <%= image_tag(event.photo.thumb.url) if event.photo? %>
       <%= form.file_field :photo %>
     </div>
+    
     <div id="bottom"></div>
   </div>
 
@@ -96,6 +97,7 @@
       or <a href="#" class="link-close">cancel</a>
     </div>-->
 
+  <%= hidden_field_tag :submit_form, false %>
 </fieldset>
 
 <%# content_for :end_of_body do %>
@@ -106,7 +108,7 @@
   SearchURL = '<%= locations_path(:format => :json) %>';
 </script>
 
-<%= javascript_include_tag 'ss_markerManager', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format' %>
+<%= javascript_include_tag 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format' %>
 <% if event.location.try(:geo_located?) %>
   <script type='text/javascript'>
     $(function() {
@@ -116,9 +118,18 @@
 <%- elsif event.new_record? -%>
   <script type='text/javascript'>
 
+    function checkButtonPressed() {
+      return $('#submit_form').val() == "true";
+    }
+
     var refreshTimer = null;
 
     $(function(){
+
+      $('#new_event').submit(function(e) {
+        return checkButtonPressed();
+      })
+
       $('#expand-extra-section').click(function(){
         $('#row-title').toggle();
         $('.title-row').toggle();
