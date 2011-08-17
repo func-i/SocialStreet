@@ -176,7 +176,7 @@
         'latLng': latlng
       }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK){
-          var resultText = "";
+          var resultText = null;
           $.each(results, function(index, result){
             $.each(result.types, function(index_2, type){
               if(type == resultType){
@@ -201,6 +201,9 @@
                   resultText = result.formatted_address;
                 }
               }
+              else if(!resultText){
+                resultText = result.formatted_address;
+              }
             });
           });
 
@@ -219,7 +222,6 @@
       if(history && history.pushState) {
         //if(!$.browser.webit==true){
         $(window).bind("popstate", function(){
-
           var keywordParams = $(document).getUrlParam("keywords[]");
           $.each(keywordParams, function(e, i) {
             e = e.replace("+", "");
