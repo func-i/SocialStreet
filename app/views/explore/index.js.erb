@@ -17,7 +17,7 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
 
 <% if @filter_level && @filter_level >= 0 && (true || (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)) %>
   if($('#end-of-results-message').data('closed') != true){
-    $('#end-of-results-message').show();
+  $('#end-of-results-message').show();
   }
 <% else %>
   $('#end-of-results-message').hide();
@@ -33,22 +33,25 @@ $('#community-bar').html('<%= escape_javascript render('community_bar')%>');
   $('#similar-results-list').html('');
 <% end %>
 
-clearSidebarClusterMarkers();
-clearSidebarMarkers();
+//Place pins on map
+var myMarkerManager = getMarkerManager();
+myMarkerManager.clearMarkers();
 
 <% (@searchables || []).each do |searchable| %>
   <% if searchable.geo_located? %>
-    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
+    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
   <% end %>
 <% end %>
 
 <% (@similar_results || []).each do |searchable| %>
   <% if searchable.geo_located? %>
-    placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>, '<%= searchable.location_address_for_explore -%>');
+    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
   <% end %>
 <% end %>
 
-placeSidebarClusterMarkers();
+//Draw all the markers
+myMarkerManager.placeAllMarkers();
+
 
 <% if !params[:view].eql?("map") %>
   getExplorePageless().reset(

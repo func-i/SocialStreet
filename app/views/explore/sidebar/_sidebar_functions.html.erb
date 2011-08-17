@@ -1,5 +1,5 @@
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'marker_clusterer', 'ss_pageless', 'keywords_field', 'jquery.getUrlParam' %>
+  <%= javascript_include_tag 'ss_markerManager', 'ss_pageless', 'keywords_field', 'jquery.getUrlParam' %>
   <script type='text/javascript'>
 
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
@@ -116,178 +116,11 @@
     var selectedMarker;
     var infoWindow;
     var geocoder;
-    var markerCluster;
+    var markerManager;
 
-    function clearSidebarMarkers() {
-      $.each(sideBarMarkers, function(index, marker) {
-        marker.setMap(null);
-      });
-      sideBarMarkers = [];
+    function getMarkerManager(){
+      return markerManager;
     }
-
-    function clearSidebarClusterMarkers() {
-      markerCluster.clearMarkers();
-      sideBarMarkers = [];
-    }
-    
-    function placeSidebarClusterMarkers(){
-      if(sideBarMarkers.length > 0)
-        markerCluster.addMarkers(sideBarMarkers);
-    }
-
-    function placeExploreMarker_MapView(location, searchableID, geocodableAddress){
-      var icoImage = "/images/map_pin.png";
-
-      //If pin is selected from url bar
-      var selected = false;
-      var selected_searchableIDs = '<%= params[:selected_searchable] ? params[:selected_searchable] : 0-%>';
-      selected_searchableIDs = selected_searchableIDs.split(',')
-
-      $.each(selected_searchableIDs, function(index, id){
-        if(searchableID == id){
-          selected = true;
-
-          icoImage = '/images/ico-pin-selected.png';
-          $('#result_for_searchable_' + searchableID).show();
-        }
-      });
-
-      /*      if(searchableID == <%= params[:selected_searchable].to_i -%>)
-      {
-        selected = true;
-
-        icoImage = '/images/ico-pin-selected.png';
-        $('#result_for_searchable_' + searchableID).show();
-      }*/
-
-      //Create pin
-      var marker = new google.maps.Marker({
-        map: sideMap,
-        position: location,
-        icon: icoImage
-      });
-      marker.searchableID = searchableID;
-      marker.geocodableAddress = geocodableAddress;
-
-      //Select the marker if set from url bar
-      if(selected == true){
-        selectedMarker = marker;
-        selectMarker_MapView(marker)
-      }
-
-      //Add listener for the click event
-      google.maps.event.addListener(marker, 'click', function()
-      {
-        marker.setIcon("/images/ico-pin-selected.png");
-        selectMarker_MapView(marker);
-      });
-
-      //Push marker onto marker list
-      sideBarMarkers.push(marker);
-    }
-
-    function placeExploreMarker_ListView(location, searchableID, geocodableAddress){
-      var icoImage = "/images/map_pin.png";
-
-      //Create pin
-      var marker = new google.maps.Marker({
-        map: sideMap,
-        position: location,
-        icon: icoImage
-      });
-      marker.searchableID = searchableID;
-      marker.geocodableAddress = geocodableAddress;
-
-      //Add listener for the mouseover and mouseout events
-      /*      google.maps.event.addListener(marker, 'mouseover', function()
-      {
-        console.log("mouseOver");
-        marker.setIcon("/images/ico-pin-selected.png");
-        console.log($('#result_for_searchable_' + marker.searchableID));
-        $('#result_for_searchable_' + marker.searchableID).css('background-color', 'red');
-      });
-      google.maps.event.addListener(marker, 'mouseover', function()
-      {
-        console.log("mouseOut");
-        marker.setIcon("/images/map_pin.png");
-        $('#result_for_searchable_' + marker.searchableID).css('background-color', '#FFFFFF');
-      });*/
-
-      //Push marker onto marker list
-      sideBarMarkers.push(marker);
-    }
-
-    function placeExploreMarker(location, searchableID, geocodableAddress) {
-  <% if params[:view].eql?("map") %>
-      placeExploreMarker_MapView(location, searchableID, geocodableAddress);
-  <% else %>
-      placeExploreMarker_ListView(location, searchableID, geocodableAddress);
-  <% end %>
-  }
-
-  function selectMarker_MapView(marker) {
-    //New selected marker - set old marker to regular icon
-    if(selectedMarker != null && selectedMarker != marker)
-    {
-      if(selectedMarker instanceof Cluster){
-        selectedMarker.isSelected(false);
-        selectedMarker.updateIcon();
-      }
-      else{
-        selectedMarker.setIcon("/images/map_pin.png");
-      }
-    }
-
-    //Set marker
-    selectedMarker = marker;
-
-    //Hide each element in the map result list
-    $.each($('.result-list-item'), function(index, rLI) {
-      $(rLI).hide();
-    });
-
-    if(marker instanceof Cluster){
-      var isAddressSet = false;
-      var cMarkers = marker.getMarkers();
-      searchable_ids = [];
-      $.each(cMarkers, function(index, mkr){
-        //Show the elements with this id
-        $('#result_for_searchable_' + mkr.searchableID).show();
-        searchable_ids.push(mkr.searchableID);
-
-        if(0 == index){
-          //Set form param to marker id for url reload
-          //$('#selected_searchable').val(mkr.searchableID);
-        }
-        if(!isAddressSet){
-          if(mkr.geocodableAddress != null){
-            $('.address').html('Near ' + mkr.geocodableAddress);
-            isAddressSet = true;
-          }
-          else{
-            $('.address').html('');
-          }
-        }
-      });
-
-      $('#selected_searchable').val(searchable_ids);
-    }
-    else{
-      //Show the elements with this id
-      $('#result_for_searchable_' + marker.searchableID).show();
-
-      //Set form param to marker id for url reload
-      $('#selected_searchable').val(marker.searchableID);
-
-      //Set the address in the map view result header
-      if(marker.geocodableAddress != null){
-        $('.address').html(marker.geocodableAddress);
-      }
-      else{
-        $('.address').html('');
-      }
-    }
-  }
 
   function moveExploreMap(e, latLng) {
     if(latLng == null) {
@@ -463,90 +296,6 @@
     });
     crosshair_marker.bindTo('position', sideMap, 'center');
 
-
-    var styles = [
-      {
-        url: '../images/map_pin.png',
-        height: 41,
-        width: 33,
-        anchor: [12, 14],
-        textSize: 8,
-        textColor: 'red'
-      },
-      {
-        url: '../images/map_pin.png',
-        height: 41,
-        width: 33,
-        anchor: [12, 12.5],
-        textSize: 8,
-        textColor: 'red'
-      },
-      {
-        url: '../images/ico-pin-selected.png',
-        height: 45,
-        width: 37,
-        anchor: [14.5, 16.5],
-        textSize: 8,
-        textColor: 'black'
-      },
-      {
-        url: '../images/ico-pin-selected.png',
-        height: 45,
-        width: 37,
-        anchor: [14, 14.5],
-        textSize: 8,
-        textColor: 'black'
-      }
-    ];
-    var mcSidebarOptions = {
-      gridSize: 30,
-      maxZoom: 20,
-      averageCenter: false,
-      zoomOnClick: false,
-      styles: styles
-    };
-    markerCluster = new MarkerClusterer(sideMap, sideBarMarkers, mcSidebarOptions);
-
-    markerCluster.setCalculator(function(markers, numStyles, isSelected)
-    {
-      var index = 0;
-      var count = markers.length;
-      var dv = count;
-      while (dv !== 0) {
-        dv = parseInt(dv / 10, 10);
-        index++;
-      }
-
-      index = Math.min(index, numStyles/2); //divide by two for selected state at end
-      if(isSelected){
-        index = index + numStyles/2
-      }
-      return {
-        text: count,
-        index: index
-      };
-    });
-
-
-  <%- if params[:view].eql?("map") -%>
-      google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
-        cluster.isSelected(true);
-        cluster.updateIcon();
-
-        selectMarker_MapView(cluster);
-      });
-  <%- end -%>
-
-
-  <% if params[:view] == "list" && !params[:map_bounds].blank? %>
-    <%# # order: ne_lat, ne_lng, sw_lat, sw_lng  %>
-    <% ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",") %>
-      //      sideMap.setZoom(<%= params[:map_zoom].to_i - 1 %>);
-      //      sideMap.fitBounds(new google.maps.LatLngBounds(
-      //      new google.maps.LatLng(<%= sw_lat %>, <%= sw_lng %>),
-      //      new google.maps.LatLng(<%= ne_lat %>, <%= ne_lng %>)));
-
-  <% end %>
     //infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
 
@@ -556,20 +305,26 @@
     google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
     //google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
     //$(window).resize(changeLocationParams);
+
+    markerManager = new MarkerManager({
+      map: sideMap,
+      gridSize: 15,
+      mapView: <%= params[:view].eql?('map') ? 'true' : 'false' %>
+    });
+
   <% (@searchables || []).each do |searchable| %>
     <% if searchable.geo_located? %>
-        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+        //placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 
   <% (@similar_results || []).each do |searchable| %>
     <% if searchable.geo_located? %>
-        placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+        //placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
-
-
-    placeSidebarClusterMarkers();
 
   });
   </script>
