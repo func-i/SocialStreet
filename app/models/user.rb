@@ -28,7 +28,8 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :gender, :location, :name, :password, :password_confirmation, :remember_me, :photo,
-    :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes, :fb_uid, :facebook_profile_picture_url
+    :first_name, :last_name, :comment_notification_frequency, :search_subscriptions_attributes, :fb_uid, :facebook_profile_picture_url,
+    :tncs_accepted
 
   attr_accessor :name
 

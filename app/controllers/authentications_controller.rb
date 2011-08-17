@@ -38,4 +38,14 @@ class AuthenticationsController < ApplicationController
     
   end
 
+
+  def tnc_accepted
+    if params[:accept] == "true"
+      current_user.update_attribute("accepted_tncs", true)
+      redirect_to after_sign_in_path_for(current_user.reload)
+    else
+      render :text => "ERROR", :status => "500"
+    end
+  end
+
 end
