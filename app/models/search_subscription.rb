@@ -6,7 +6,7 @@ class SearchSubscription < ActiveRecord::Base
     :immediate => 'Immediate',
     :daily => 'Daily',
     :weekly => 'Weekly',
-    :none => 'None'
+    :none => 'Home Feed Only'
   }
   cattr_accessor :frequencies
 

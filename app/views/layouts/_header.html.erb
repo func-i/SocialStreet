@@ -161,6 +161,7 @@
   $(function() {
     $( ".top-explore-field" ).autocomplete({
       minLength: 1,
+      delay: 100,
       autofill: true,
       source: function( request, response ) {
         var term = request.term;

@@ -33,7 +33,7 @@
     <%= form_for [action, Comment.new], :remote => true, :html => {"data-type" => "script", :class => "form action-subcomment-form form-comment comment-form"} do |form| %>
       <fieldset>
         <%= link_to_popup_modal_ajax  '', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:action_id => action.id), nil, nil, :class => "submit"  %>
-        <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
+        <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea", :placeholder => "Reply to this message" %>
       </fieldset>
     <% end %>
   </div>
