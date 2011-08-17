@@ -289,9 +289,18 @@ class ExploreController < ApplicationController
   end
 
   def apply_keywords(searchable, keywords)
-    return searchable if keywords.blank?
+    return searchable if (keywords.blank? || keywords.empty?)
 
-    searchable = searchable.with_keywords(keywords)
+    all_keywords = []
+    keywords.each do |keyword|
+      unless keyword.blank?
+        all_keywords << keyword
+        all_keywords.concat(EventType.with_parent_name(keyword).all.map(&:name));
+      end
+    end
+
+    return searchable if all_keywords.empty?
+    return searchable = searchable.with_keywords(all_keywords)
   end
 
   def apply_map_bounds(searchable, map_bounds)
@@ -317,7 +326,7 @@ class ExploreController < ApplicationController
         longitude ||= -79.3938175316406
       end
 
-      map_bounds = params[:map_bounds] = "#{latitude + 0.22},#{longitude + 0.44},#{latitude - 0.22},#{longitude - 0.44}"
+      map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end
 
     bounds = map_bounds.split(",").collect { |point| point.to_f }
@@ -441,7 +450,7 @@ class ExploreController < ApplicationController
         params[:map_center] = "#{latitude},#{longitude}"
       end
       
-      map_bounds = params[:map_bounds] = "#{latitude + 0.22},#{longitude + 0.44},#{latitude - 0.22},#{longitude - 0.44}"
+      map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end
 
     bounds = map_bounds.split(",").collect { |point| point.to_f }
