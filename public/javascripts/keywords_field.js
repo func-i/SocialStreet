@@ -1,11 +1,6 @@
 function addKeyword(keyword, selector) {
-
-    
     if ($(selector + ' .keyword-pill input[type="hidden"][value="'+keyword.replace("+", " ")+'"]').size() > 0 || keyword == '')
         return false;
-
-    console.log(keyword.replace("+", " "));
-
 
     var $inputName;
     if(selector == "#event-keywords")
@@ -84,8 +79,9 @@ $(function() {
     function keywordHandler(keyword, keywordContentSelector) {
         if(addKeyword(keyword, keywordContentSelector))
             if (typeof refreshResults == "function") {
-                if(history && history.pushState)
+                if(caller == "explore" && history && history.pushState){
                     history.pushState(null, null, getSearchParams());
+                }
                 var caller;
                 //  TODO: possibly look at cleaning this up later
                 if(keywordContentSelector == '#explore-keywords')

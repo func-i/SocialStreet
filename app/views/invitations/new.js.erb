@@ -1,4 +1,3 @@
-console.log("NEW");
 $('#invitation-user-list').html('<%= escape_javascript render(:partial => 'invitations/user_results') %>');
 getInvitationPageless().reset({
   currentPage: 1,

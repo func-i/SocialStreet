@@ -48,7 +48,6 @@
     });
 
     $('.remove-comment-keyword').live('click', function(e) {
-      console.log("REMOVE");
       $(this).closest('.keyword').remove();
 
       if($('#post-message-keywords').find('input[type=hidden]').length <= 0){

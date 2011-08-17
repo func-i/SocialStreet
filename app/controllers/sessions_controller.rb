@@ -10,5 +10,9 @@ class SessionsController < Devise::SessionsController
       end
     end    
   end
+
+#  def destroy
+ #   puts "JOSHY IS HERE"
+ # end
   
 end
