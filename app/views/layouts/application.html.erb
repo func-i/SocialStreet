@@ -8,6 +8,8 @@
 
     <%= javascript_include_tag :defaults, '/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js', 'autoresize.jquery.min', 'jquery.ui.autocomplete.html', 'infobubble' %>
     <%= csrf_meta_tag %>
+    <%= favicon_link_tag %>
+
     <%= yield :head %>
   </head>
   <body>
@@ -45,10 +47,10 @@
             <div class="footer-frame">
               <div class="footer-content">
                 <ul class="add-nav">
-                  <li><%= link_to "About", '#' -%></li>
-                  <li><%= link_to "Jobs", '#' -%></li>
-                  <li><%= link_to "Terms & Conditions", '#' -%></li>
-                  <li><%= link_to "Media", '#' -%></li>
+                  <!--<li><%= link_to "About", '#' -%></li>-->
+                  <li><%= link_to "Jobs", 'jobs@socialstreet.com' -%></li>
+                  <li><%= link_to "Terms & Conditions", '#' -%></li><!--TODO-->
+                  <li><%= link_to "Media", 'pr@socialstreet.com' -%></li>
                 </ul>
                 <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
               </div>

@@ -121,7 +121,7 @@
 <% if event.location.try(:geo_located?) %>
       loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
       map.setCenter(loc);
-      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), true);
+      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), true, true);
 <% end %>
 
     $('#new_event').submit(function(e) {

@@ -55,9 +55,12 @@ MarkerManager.prototype.setValues_ = function(options)
     this.selectedMarker_ = null;
 };
 
-MarkerManager.prototype.createMarker = function(location, searchableID, geocodableAddress, preserveMarker){
+MarkerManager.prototype.createMarker = function(location, searchableID, geocodableAddress, preserveMarker, markerIsSelected){
+    if(markerIsSelected == undefined)
+        markerIsSelected = false;
+
     var icoImage = "/images/map_pin.png";
-    var selected = false;
+    var selected = markerIsSelected;
 
     //If in explore map view and searchableid was selected, change image and select
     if(this.mapView_ || this.listView_){
@@ -338,6 +341,9 @@ MarkerManager.prototype.isWithinMarkerBound_ = function(markerToAddTo, markerToP
 MarkerManager.prototype.getExtendedBounds_ = function(bounds){
     var projection = this.projectionHelper_.getProjection();
 
+    if(projection == undefined)
+        return bounds;//TODO - error due to map being non-idle
+
     // Turn the bounds into latlng.
     var tr = new google.maps.LatLng(bounds.getNorthEast().lat(),
         bounds.getNorthEast().lng());
@@ -509,6 +515,9 @@ Label.prototype.onRemove = function() {
 // Implement draw
 Label.prototype.draw = function() {
     var projection = this.getProjection();
+    if(projection == undefined)
+        return;//TODO - error due to map being non-idle
+
     var position = projection.fromLatLngToDivPixel(this.get('position'));
     var div = this.div_;
     div.style.left = position.x + 'px';

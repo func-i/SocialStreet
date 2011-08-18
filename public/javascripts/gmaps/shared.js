@@ -1,13 +1,3 @@
-function clearMarkers() {
-    var markersToClear = arraySubtract(markers, preservedMarkers);
-    
-    $.each(markersToClear, function(index, marker) {
-        marker.setMap(null);
-    });
-    //markers = preservedMarkers.slice(0);;
-    markers = [];
-}
-
 $(function() {
     function moveMap(e) {
         var loc = e.target.value;
