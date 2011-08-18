@@ -21,6 +21,12 @@ class Searchable < ActiveRecord::Base
   before_save :cache_lat_lng
   #  after_create :set_explorable
 
+  scope :order_by_rank_to_user, lambda{ |user|
+    joins("LEFT OUTER JOIN connections ON searchable.user_id == connections.to_user_id AND connections.user_id = ?", user.id).
+      order("connections.rank ASC NULLS LAST")
+  }
+
+
   # overriding the with_keywords scope that is normally specified in SuperSearchable mixin
   scope :with_keywords, lambda { |keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
     unless keywords.blank?

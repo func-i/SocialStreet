@@ -34,6 +34,12 @@ class Rsvp < ActiveRecord::Base
   scope :waiting, where(:status => @@statuses[:attending], :waiting => true)
   scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
   scope :attending_or_maybe_attending, where("rsvps.status IN (?)", @@statuses.except(:not_attending).values)
+
+  scope :order_by_rank_to_user, lambda{ |user|
+    joins("LEFT OUTER JOIN connections ON rsvps.user_id = connections.to_user_id AND connections.user_id = #{user.id}").
+      order("connections.rank ASC NULLS LAST")
+    }
+
   scope :administrators, where(:administrator => true)
 
   scope :excluding_user, lambda {|user| where("rsvps.user_id <> ?", user.id) }

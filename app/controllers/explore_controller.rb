@@ -49,9 +49,13 @@ class ExploreController < ApplicationController
     @overlapping_subscriptions = @overlapping_subscriptions.where("search_subscriptions.user_id != #{current_user.id}") if current_user
     @overlapping_subscriptions_count = @overlapping_subscriptions.count;
 
+    #Order users by connection strength
+    @overlapping_subscriptions = @overlapping_subscriptions.joins("LEFT OUTER JOIN connections ON search_subscriptions.user_id = connections.to_user_id AND connections.user_id = ?", current_user)
+    @overlapping_subscriptions = @overlapping_subscriptions.order("connections.rank ASC NULLS LAST")
+
     # this executes a full search, which is bad, we want to paginate (eventually)
-    @overlapping_subscriptions = @overlapping_subscriptions.limit(8).uniq_by {|s| s.search_subscription.user_id }
-    
+    @overlapping_subscriptions = @overlapping_subscriptions.limit(7).uniq_by{|s| s.search_subscription.user_id}
+
   end
 
   def get_searchables
