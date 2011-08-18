@@ -21,10 +21,14 @@ class AdministratorsController < ApplicationController
   end
 
   def load_modal
-    load_connections
-    @rsvps = @event.rsvps.all
-    @connections = current_user.connections.most_relevant_first.all
-    @administrator_rsvps = @rsvps.select &:administrator?
+    if current_user.fb_friends_imported?
+      load_connections
+      @rsvps = @event.rsvps.all
+      @connections = current_user.connections.most_relevant_first.all
+      @administrator_rsvps = @rsvps.select &:administrator?
+    else
+      redirect_to import_facebook_friends_connections_path(:return => load_modal_event_administrator_path(@event))
+    end
   end
 
   def create

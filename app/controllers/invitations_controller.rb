@@ -20,14 +20,18 @@ class InvitationsController < ApplicationController
 
       render :partial => 'new_page' if request.xhr? && params[:page] # pagination request
     else
-      redirect_to import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @rsvp))
+      redirect_to import_facebook_friends_connections_path(:return => load_modal_event_rsvp_invitation_path(@event, @rsvp))
     end
 
   end
 
   def load_modal
-    load_connections
-    @invitations = @rsvp.invitations
+    if current_user.fb_friends_imported?
+      load_connections
+      @invitations = @rsvp.invitations
+    else
+      redirect_to import_facebook_friends_connections_path(:return => load_modal_event_rsvp_invitation_path(@event, @rsvp))
+    end
   end
 
   def change

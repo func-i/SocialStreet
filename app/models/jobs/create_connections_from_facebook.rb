@@ -5,7 +5,9 @@ class Jobs::CreateConnectionsFromFacebook
 
   def self.perform(user_id)
 
-    sleep(50)
+    #sleep(50)
+
+    timen = Time.now.to_f
 
     user = User.find(user_id)    
     fb = user.facebook_user
@@ -19,31 +21,52 @@ class Jobs::CreateConnectionsFromFacebook
       user.connections.to_user(no_user).each{|c| c.update_attribute("facebook_friend", false)}
     end
 
-    # => Not sure why there is a while loop here when only the users friends are creating connections
-    # => user.facebook_user.friends.next seems to always eql? [] which means this will only loop through once.
+    user_inserts = []
+    fb_user_ids = []
     while friends && !friends.empty?
       friends.each do |friend|
-        u = User.find_by_fb_uid(friend.identifier)
-        u ||= User.create({
-            :fb_uid => friend.identifier,
-            :first_name => friend.first_name || friend.name.to_s.split.first,
-            :last_name => friend.last_name || friend.name.to_s.split.last,
-            :facebook_profile_picture_url => friend.picture
-          })
+        #push identifier onto array
+        fb_user_ids.push(friend.identifier)
 
-        c = user.connections.to_user(u).first
-        c ||= user.connections.create({:to_user => u})
-
-        c.update_attribute("facebook_friend", true)
-
+        #Check if user exists
+        if(User.where(:fb_uid => friend.identifier).count <= 0)
+          user_inserts.push(
+            "('#{friend.identifier}',
+            '#{friend.first_name || friend.name.to_s.split.first}',
+            '#{friend.last_name || friend.name.to_s.split.last}',
+            '#{friend.picture}',
+            '#{SearchSubscription.frequencies[:immediate]}')"
+          )
+        end
       end
 
       friends = friends.next
+    end
 
+    unless user_inserts.empty?
+      sql = "INSERT INTO users (fb_uid, first_name, last_name, facebook_profile_picture_url, comment_notification_frequency) VALUES #{user_inserts.join(", ")}"
+      User.connection.insert(sql)
+    end
+
+    ss_uids = User.select(:id).where(:fb_uid => fb_user_ids).all.collect(&:id)
+
+    connection_inserts = []
+    ss_uids.each do |uid|
+      c = user.connections.to_user_id(uid).first
+      if nil == c
+        connection_inserts.push("('#{user.id}','#{uid}', 0, true)")
+      else
+        c.update_attribute("facebook_friend", true);
+      end
+    end
+
+    unless connection_inserts.empty?
+      sql = "INSERT INTO connections (user_id, to_user_id, strength, facebook_friend) VALUES #{connection_inserts.join(", ")}"
+      Connection.connection.insert(sql)
+      Connection.setAllRanks(user);
     end
 
     user.update_attribute("fb_friends_imported", true)
-    
   end
 
   def self.find_worker(user_id)
@@ -72,7 +95,7 @@ class Jobs::CreateConnectionsFromFacebook
       # => Check one more time to see if it completed after the dequeue
       unless User.find(user_id).fb_friends_imported?
         Jobs::CreateConnectionsFromFacebook.perform(user_id)
-      end      
+      end
     end
   end
 

@@ -67,29 +67,14 @@ class ApplicationController < ActionController::Base
         if create_or_edit_event(session[:stored_redirect][:params], :create)
 
           #Create was a success
-
-          if current_user.fb_friends_imported?
-            return_path = event_path(@event, :invite => true)
-          else
-            #TODO - What should this be?
-            return_path = event_path(@event, :invite => true)
-            #return_path = import_facebook_friends_connections_path(:return => new_event_rsvp_invitation_path(@event, @event.rsvps.first))
-          end
-
+          return_path = event_path(@event, :invite => true)
         else
 
           #Create failed
           session[:stored_params] = session[:stored_redirect][:params][:event]
 
-          if current_user.fb_friends_imported?
             #TODO - What should this be. Currently, doesn't load modal on error
             return_path = stored_path + "?&create_event=1"
-            #return_path = new_event_path
-          else
-            #TODO - What should this be. Currently, doesn't load modal on error
-            return_path = stored_path + "?&create_event=1"
-            #return_path = import_facebook_friends_connections_path(:return => new_event_path)
-          end
         end
 
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'

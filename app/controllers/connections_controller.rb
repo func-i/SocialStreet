@@ -15,9 +15,10 @@ class ConnectionsController < ApplicationController
 
   def import_friends   
     Jobs::CreateConnectionsFromFacebook.perform_sync_or_wait_for_async(current_user.id) if current_user
-    render :update do |page|
-      page.redirect_to(params[:return].blank? ? root_path : params[:return])
-    end
+    redirect_to(params[:return].blank? ? root_path : params[:return]);
+#    render :update do |page|
+ #     page.redirect_to(params[:return].blank? ? root_path : params[:return])
+  #  end
   end
 
   def import_facebook_friends    

@@ -8,6 +8,7 @@ class Connection < ActiveRecord::Base
   before_save :set_rank
 
   scope :to_user, lambda { |user| where(:to_user_id => user.id) }
+  scope :to_user_id, lambda { |user_id| where(:to_user_id => user_id) }
 
   scope :most_relevant_first, order("connections.strength DESC, connections.updated_at DESC")
 
@@ -61,6 +62,17 @@ class Connection < ActiveRecord::Base
     c.strength += strength_increase #TODO - make this time sensitive
 
     c.save!
+  end
+
+  def self.setAllRanks(user)
+    #TODO - must be a better way than instantiating each connection
+    rank = 0;
+    connections = Connection.where(:user_id => user.id).order("strength DESC").all
+    connections.each do |connection|
+      connection.rank = rank;
+      connection.save
+      rank = rank + 1
+    end
   end
 
   protected
