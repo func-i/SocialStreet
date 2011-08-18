@@ -96,10 +96,7 @@ $(function() {
 
     $('.keyword-pill').live('ss:removed', function() {
         if (typeof refreshResults == "function") {
-            if(history && history.pushState)
-                history.pushState(null, null, getSearchParams());
-
-            var caller;     
+            var caller;
 
             if($(this).attr("container-selector") == '#explore-keywords'){
                 caller = "explore";
@@ -107,6 +104,9 @@ $(function() {
             }
             else
                 caller = "events";
+
+            if(caller == "explore" && history && history.pushState)
+                history.pushState(null, null, getSearchParams());
 
             refreshResults(caller);
         }
