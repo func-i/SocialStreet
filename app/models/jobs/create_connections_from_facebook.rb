@@ -4,8 +4,10 @@ class Jobs::CreateConnectionsFromFacebook
   @queue = :connections
 
   def self.perform(user_id)
-    user = User.find(user_id)
-    
+
+    sleep(50)
+
+    user = User.find(user_id)    
     fb = user.facebook_user
     friends = fb.friends
 
@@ -63,7 +65,7 @@ class Jobs::CreateConnectionsFromFacebook
     end
     
     unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-      while Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+      while !Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
         # => Do nothing, just keep checking for the completion of the worker
       end
     else

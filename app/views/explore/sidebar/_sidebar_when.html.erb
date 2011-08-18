@@ -1,12 +1,12 @@
 <div class="box box1">
   <div class="heading">
     <h3 style="font-size:16">When?</h3>
+    <a id="when_btn" href="#" class="btn" <%='style=background-position:-16px 0;' if params[:view] == "map"%>>close</a>
     <div class="jump-date" style="display:inline; width: none;">
       <div class="col" style="height:0;float:right;">
         <span style="font-size: 9px;">Jump To:</span><span style="margin-top: -10px;"><%= text_field_tag 'from_date', params[:from_date] || Date.today, :class => "text_field", :style => "width: 80px; background: none; border: none;font-size:12px; margin-top: 8px;" %></span>
       </div>
     </div>
-    <a id="when_btn" href="#" class="btn" <%='style=background-position:-16px 0;' if params[:view] == "map"%>>close</a>
   </div>
   <div id="sidebar_when_box_content" class="box-content" <%= 'style=display:none;' if params[:view] == "map"%>>
     <div class="time-slot">

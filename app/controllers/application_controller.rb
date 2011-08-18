@@ -44,10 +44,12 @@ class ApplicationController < ActionController::Base
   def clear_redirect
     session[:stored_redirect] = nil
   end
-
+  
   #Override to change the path taken after sign_in
   def after_sign_in_path_for(resource_or_scope)
-    if session[:stored_redirect]
+    if current_user.sign_in_count == 1 || !current_user.accepted_tncs.eql?(true)
+      return_path = "/authentications/accept_tnc"
+    elsif session[:stored_redirect]
       #User has stored a redirect path for use after authentication
 
       if session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'
@@ -172,7 +174,7 @@ class ApplicationController < ActionController::Base
       @comment.searchable = Searchable.new_from_params(params)
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     elsif @commentable.respond_to?(:searchable) && @commentable.searchable
-    #elsif @commentable.searchable
+      #elsif @commentable.searchable
       @comment.searchable = @commentable.searchable
     end
 

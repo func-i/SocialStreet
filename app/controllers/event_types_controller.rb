@@ -8,7 +8,7 @@ class EventTypesController < ApplicationController
     return_list = []
     EventType.with_keywords(query).each do |et|
         return_list << {
-          :label => "#{"<img height='35' width='35' src='" + et.image_path + "' /> " if et.image_path}#{et.name}",
+          :label => "#{"<img height='35' width='35' src='" + et.image_path + "' /> " if et.image_path}<span style='vertical-align: middle;'>#{et.name}</span>",
           :value => et.name}
 
         et.children.limit(5).each do |child_et|

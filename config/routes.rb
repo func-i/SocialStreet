@@ -80,7 +80,12 @@ SocialStreet::Application.routes.draw do
     resources :comments, :only => [:create]
   end
 
-  resources :authentications
+  resources :authentications do
+    collection do
+      match "accept_tnc"
+      match "tnc_accepted"
+    end
+  end
 
   resources :actions do
     resources :comments, :only => [:create]
