@@ -67,7 +67,7 @@ class AdministratorsController < ApplicationController
 
     # => TODO: Add search user search functionality to endless pagination.
 
-    @per_page = 24
+    @per_page = 36
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
 
     # => TODO: see if you can take that inline string notation out

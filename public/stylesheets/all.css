@@ -1634,7 +1634,7 @@ form, fieldset {
 .pop-up-modal {
     left: 50%;
     margin: 0 0 0 -342px;
-    top: 76px;
+    top: 15px;
     position: absolute;
     z-index: 102;
     width: 1000px;

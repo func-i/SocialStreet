@@ -187,16 +187,16 @@ $(function() {
 
 function resizeModals(){
     var $mainWindowHeight = ($(window).height() > 450 ? $(window).height() : 450);
-    $mainWindowHeight = ($mainWindowHeight < 750 ? $mainWindowHeight : 750);
+    $mainWindowHeight = ($mainWindowHeight < 850 ? $mainWindowHeight : 850);
 
     var $saveButtonHeight = 0;
     $('.save-button-at-bottom').each(function(index, elem){
         if($(elem).css('display') != "none") {
-            $saveButtonHeight = 77; //Save button height
+            $saveButtonHeight = 54; //Save button height
         }
     });
 
-    $mainWindowHeight = $mainWindowHeight - 150; //76 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 150
+    $mainWindowHeight = $mainWindowHeight - 99; //15 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 99
     $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
     $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight - 200);
 
