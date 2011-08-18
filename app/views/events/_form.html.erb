@@ -93,6 +93,12 @@
     <div id="bottom"></div>
   </div>
 
+  <div class="row" style="float:left; margin-left: 109 px;display:block">
+    <% if @event && @event.cancellable_by?(current_user) %>
+      <%= link_to "Cancel Event", @event, :method => :delete, :confirm => 'Are you sure?'%>
+    <% end %>
+  </div>
+
   <!--    <div class="row-btn">
 <%#= submit_tag "Save", :class => "btn" -%>
       or <a href="#" class="link-close">cancel</a>
@@ -101,93 +107,55 @@
   <%= hidden_field_tag :submit_form, false %>
 </fieldset>
 
-<%# content_for :end_of_body do %>
-<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
+<%= javascript_include_tag 'ss_markerManager', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format' %>
 <script type='text/javascript'>
-  //var keywordsJsonURL   = "<%= event_types_path(:format => :json) %>";
   var keywordsParamKey  = "event[searchable_attributes][keywords][]";
   SearchURL = '<%= locations_path(:format => :json) %>';
-</script>
 
-<%= javascript_include_tag 'ss_markerManager', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format' %>
+  function checkButtonPressed() {
+    return $('#submit_form').val() == "true";
+  }
+
+  $(function()
+  {
 <% if event.location.try(:geo_located?) %>
-  <script type='text/javascript'>
-    $(function() {
-      placeMarker(new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>), $('#location-name-field').val());
-    });
-  </script>
-<%- elsif event.new_record? -%>
-  <script type='text/javascript'>
+      loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
+      map.setCenter(loc);
+      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), true);
+<% end %>
 
-    function checkButtonPressed() {
-      return $('#submit_form').val() == "true";
-    }
-
-    var refreshTimer = null;
-
-    $(function(){
-
-      $('#new_event').submit(function(e) {
-        return checkButtonPressed();
-      })
-
-      $('#expand-extra-section').click(function(){
-        $('#row-title').toggle();
-        $('.title-row').toggle();
-
-        $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
-        return false;
-      });
-
-
-      $('[name=\'event[description]\']').live('focus', function() {
-        $(this).autoResize({extraSpace: 0})
-      });
-
+    $('#new_event').submit(function(e) {
+      return checkButtonPressed();
     })
 
-    function getSearchParams() {
+    $('#expand-extra-section').click(function(){
+      $('#row-title').toggle();
+      $('.title-row').toggle();
 
-      var bounds = map.getBounds();
-      ne = bounds.getNorthEast();
-      sw = bounds.getSouthWest();
-      c = bounds.getCenter();
-
-      var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-      if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-        return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-      else
-        return str;
-
-    }
-
-    function createEventMarker(location, title) {
-      var stop = false;
-      $.each(preservedMarkers, function(index, elem){
-        if(elem.position.Na == location.Na && elem.position.Oa == location.Oa){
-          stop = true;
-          return;
-        }
-      });
-
-      if(stop)
-        return
-
-      var marker = new google.maps.Marker({
-        position: location,
-        title: title,
-        icon: '/images/map_pin.png'
-      });
-
-      google.maps.event.addListener(marker, 'click', function() {
-        selectEventMarker(marker);
-      });
-
-      markers.push(marker);
-    }
-
-  </script>
-  <%# end %>
+      $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
+      return false;
+    });
 
 
-<% end %>
+    $('[name=\'event[description]\']').live('focus', function() {
+      $(this).autoResize({extraSpace: 0})
+    });
+
+  })
+
+  function getSearchParams() {
+
+    var bounds = map.getBounds();
+    ne = bounds.getNorthEast();
+    sw = bounds.getSouthWest();
+    c = bounds.getCenter();
+
+    var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+    if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+      return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+    else
+      return str;
+
+  }
+
+</script>

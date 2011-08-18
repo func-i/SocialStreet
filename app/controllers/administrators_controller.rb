@@ -2,7 +2,7 @@
 
 class AdministratorsController < ApplicationController
   before_filter :store_current_path, :only => [:new, :edit]
-  before_filter :authenticate_user!
+  before_filter :ss_authenticate_user!
   before_filter :require_event
   before_filter :require_permission, :only => [:edit, :update]
 

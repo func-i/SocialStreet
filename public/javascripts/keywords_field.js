@@ -164,6 +164,7 @@ $(function() {
         select: function( event, ui ) {
             keywordHandler(ui.item.value, $(this).attr('keyword-content-selector'));
             this.value = '';
+            $('.q-textfield').val('');
             return false;
         },
         html: true

@@ -1,13 +1,9 @@
 var geocoder;
 var map;
 var infoWindow;
-var markers = [];
 var dropPinState = false; // true if button to drop pins is selected
-var selectedMarker = null;
 var controlUI = null;
-var mc;
 var overlay;
-var preservedMarkers = [];
 var createMarkerManager;
 
 // for testing only;
@@ -135,12 +131,6 @@ ProjectionHelperOverlay.prototype.draw = function () {
     }
 };
 
-function clearMarkers() {
-    $.each(arraySubtract(markers, preservedMarkers), function(index, marker) {
-        marker.setMap(null);
-    });
-}
-
 function searchLocations(e) {
     var loc = e.target.value;
     geocoder.geocode( {
@@ -190,10 +180,6 @@ function searchLocations(e) {
     return false;
 }
 
-function updateMarkerTitle() {
-
-}
-
 // don't allow enter to submit form
 
 $('.location-address-field').keydown(function(e) {
@@ -210,36 +196,13 @@ $('.location-address-field').keydown(function(e) {
     return true;
 });
 
-$('.location-address-field').change(function(){
-    searchLocations();
+$('.location-address-field').change(function(e){
+    $('#location-name-field').val("");
+
+    searchLocations(e);
+
+    e.stopPropagation();
+
+    return false;
+
 });
-
-function clearClusterMarkers() {
-    var markersToClear = arraySubtract(markers, preservedMarkers);
-    //        console.log("Clear Cluster Markers");
-    //    console.log('preservedMarkers: ', preservedMarkers);
-    // console.log('markersToClear: ', markersToClear);
-
-    mc.removeMarkers(markersToClear);
-
-    markers = [];
-}
-
-function placeClusterMarkers(){
-    //console.log("Place Cluster Markers");
-    //console.log("Markers: ", markers);
-    if(markers.length > 0)
-        mc.addMarkers(markers);
-//    console.log("DONE: ", mc.getMarkers());
-}
-
-/*function labelClicked(lnk) {
-    $(lnk).siblings('input').show().focus();
-
-    infoWindow.setMinHeight(20);
-    infoWindow.setMinWidth(200);
-
-    infoWindow.setPadding(0);
-    infoWindow.setBorderWidth(5);
-    $(lnk).hide();
-}*/

@@ -5,6 +5,14 @@ class ApplicationController < ActionController::Base
   before_filter :restricted
   #before_filter :prepare_create_event_event
 
+  def ss_authenticate_user!
+    authenticate_user!
+    if !current_user.accepted_tncs
+      store_redirect();
+      redirect_to "/authentications/accept_tnc"
+    end
+  end
+
   #  def authenticate_user_and_redirect!
   #    #User will be forced to sign-in when:
   #    # => Creating/Editing an Event (onSubmit)
@@ -47,7 +55,7 @@ class ApplicationController < ActionController::Base
   
   #Override to change the path taken after sign_in
   def after_sign_in_path_for(resource_or_scope)
-    if current_user.sign_in_count == 1 || !current_user.accepted_tncs.eql?(true)
+    if !current_user.accepted_tncs
       return_path = "/authentications/accept_tnc"
     elsif session[:stored_redirect]
       #User has stored a redirect path for use after authentication
@@ -108,6 +116,7 @@ class ApplicationController < ActionController::Base
 
       else
         puts "WHAT THE FUCK! HOW DID I END UP HERE"
+        return_path = session[:stored_current_path]
       end
 
       clear_redirect
@@ -123,7 +132,7 @@ class ApplicationController < ActionController::Base
     #      user_name == "ssusername" && password == "sspassword"
     #    end if Rails.env.staging?
   end
-
+  
   def nav_state
     # overwritten by controllers
   end

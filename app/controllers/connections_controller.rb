@@ -1,6 +1,6 @@
 class ConnectionsController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:import_facebook_friends, :import_friends, :index]
+  before_filter :ss_authenticate_user!, :only => [:import_facebook_friends, :import_friends, :index]
 
   # assume ajax / json for now (it's bad practice but this is prototype code) - KV
   def index

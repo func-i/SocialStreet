@@ -1,19 +1,21 @@
-<div class="block" id="block-lists">
-  <div class="content" style="margin: 0 auto; width: 500px; padding: 50px 0 50px 0;">
-    <h3>Terms and conditions</h3>
-    Terms and conditions go here
-
-    <%= form_tag tnc_accepted_authentications_path, :id => "tnc_form" do -%>
-      <%= check_box_tag "accept", true, false, :class => "tnc_accept" -%>I accept the terms and conditions
-    <%- end -%>
-  </div>
-</div>
-
 <script type="text/javascript">
   $(function() {
-    $('.tnc_accept').change(function (){
-      $('#tnc_form').submit();
-    })
+    //Set the modal title
+    $('#empty_modal_base').find('#modal-title').text("Please review our terms of service");
+
+    //Set the content
+    $('#empty_modal_base').find('.ajax-content').html('<%= escape_javascript(render(:template => 'authentications/accept_tnc_modal.html')) %>');
+
+    //show modal
+    $('#empty_modal_base').show();
+
+    //Show overlay
+    if(document.getElementById("ss_modal_overlay") === null)
+    {
+      $("body").append("<div id='ss_modal_overlay'></div>");
+      $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
+    }
+
   });
 </script>
 

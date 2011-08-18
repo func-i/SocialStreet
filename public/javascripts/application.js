@@ -27,6 +27,7 @@ $.fn.serializeObject = function()
     return o;
 };
 
+var refreshTimer = null;
 function refreshResults(caller) {
     if (refreshTimer) {
         clearInterval(refreshTimer);

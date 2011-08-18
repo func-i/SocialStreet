@@ -2,7 +2,7 @@ class EventsController < ApplicationController
 
   before_filter :store_current_path, :only => [:show, :edit, :post_to_facebook]
   before_filter :store_event_create, :only => [:create, :update]
-  before_filter :authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
+  before_filter :ss_authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
   before_filter :require_editable_event, :only => [:edit, :update, :destroy]
   before_filter :load_action, :only => [:new] # for event created through activity stream
 
