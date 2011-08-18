@@ -138,6 +138,14 @@ MarkerManager.prototype.clearMarkers = function(){
 };
 
 MarkerManager.prototype.placeAllMarkers = function(){
+    if(undefined == this.map_.mapTypes[this.map_.mapTypeId]){
+        that = this;
+        google.maps.event.addListenerOnce(this.map_, 'idle', function() {
+            that.placeAllMarkers();
+        });
+        return;
+    }
+
     var select_marker = null;
 
     //Copy allmarkers and empty
@@ -274,7 +282,8 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
         });
 
         //Show each searchable attached to the selected marker
-        $('#result_for_searchable_' + this.selectedMarker_.searchableID_).css('backgroundColor', '#FE6');;
+        $('#result_for_searchable_' + this.selectedMarker_.searchableID_).css('backgroundColor', '#FE6');
+        ;
         if(this.selectedMarker_.clusteredMarkers_){
             $.each(this.selectedMarker_.clusteredMarkers_, function(index, marker){
                 $('#result_for_searchable_' + marker.searchableID_).css('backgroundColor', '#FE6');;
@@ -341,8 +350,8 @@ MarkerManager.prototype.isWithinMarkerBound_ = function(markerToAddTo, markerToP
 MarkerManager.prototype.getExtendedBounds_ = function(bounds){
     var projection = this.projectionHelper_.getProjection();
 
-    if(projection == undefined)
-        return bounds;//TODO - error due to map being non-idle
+    //    if(projection == undefined)
+    //        return bounds;//TODO - error due to map being non-idle
 
     // Turn the bounds into latlng.
     var tr = new google.maps.LatLng(bounds.getNorthEast().lat(),
@@ -515,8 +524,8 @@ Label.prototype.onRemove = function() {
 // Implement draw
 Label.prototype.draw = function() {
     var projection = this.getProjection();
-    if(projection == undefined)
-        return;//TODO - error due to map being non-idle
+    //    if(projection == undefined)
+    //        return;//TODO - error due to map being non-idle
 
     var position = projection.fromLatLngToDivPixel(this.get('position'));
     var div = this.div_;
