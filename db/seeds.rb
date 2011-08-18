@@ -12,6 +12,7 @@ types = {}
 types[:sports] = EventType.create!(:name => 'Sports', :image_path => "/images/event_types/basketball.png")
 
 #MAIN TYPES
+types[:baseball] = EventType.create!(:name => 'Baseball', :image_path => "/images/event_types/baseball.png", :parent => types[:sports])
 types[:basketball] = EventType.create!(:name => 'Basketball', :image_path => "/images/event_types/basketball.png", :parent => types[:sports])
 types[:bbq] = EventType.create!(:name => 'BBQ', :image_path => "/images/event_types/bbq.png")
 types[:beer] = EventType.create!(:name => 'Beer', :image_path => "/images/event_types/beer.png")
