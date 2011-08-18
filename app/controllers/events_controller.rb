@@ -27,6 +27,8 @@ class EventsController < ApplicationController
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
     end
+
+    @page_title = "Event - #{@event.title}"
   end
 
   #EVENT CREATE/EDIT PAGES

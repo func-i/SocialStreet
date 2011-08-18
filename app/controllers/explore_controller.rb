@@ -32,6 +32,8 @@ class ExploreController < ApplicationController
     else
       find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
     end
+
+    @page_title = "Explore - #{params[:view].eql?('map') ? 'Map' : 'List'} View"
   end
 
   protected

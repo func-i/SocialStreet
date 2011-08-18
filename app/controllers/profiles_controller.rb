@@ -48,12 +48,16 @@ class ProfilesController < ApplicationController
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
     end
+
+    @page_title = "Profile - #{@user.name}"
   end
   
   def edit
     @authentications = @user.authentications
     @subscriptions = @user.search_subscriptions
     @events_where_administrator = Event.administered_by_user(current_user).upcoming.all
+
+    @page_title = "Settings"
   end
 
   def update
