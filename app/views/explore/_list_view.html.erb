@@ -23,13 +23,20 @@
 
 <script type='text/javascript'>
   function checkMapPageSize() {
-    if(!isScrolledIntoView('#sidebar_hidden_div', 0)){
-      $('.w2').removeClass('page-explore');
-    }
-    else {
-      $('.w2').addClass('page-explore');
+    if(!$('#header').hasClass("open")) {
+      if(!isScrolledIntoView('#sidebar_hidden_div', 0)){
+        $('.w2').removeClass('page-explore');
+      }
+      else {
+        $('.w2').addClass('page-explore');
+      }
     }
   }
+
+  $(function() {
+    checkMapPageSize();
+  });
 </script>
+
 
 
