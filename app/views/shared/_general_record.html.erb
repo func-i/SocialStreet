@@ -52,7 +52,9 @@ index_action
         <div class="attending">
           <span class="info"><%=event_record.num_attending_or_maybe_attending%></span>
           <ul>
-            <% event_record.attending_or_maybe_attendees_rsvps_list.order_by_rank_to_user(current_user).limit(10).each do |rsvp| %>
+            <% attending_rsvps = event_record.attending_or_maybe_attendees_rsvps_list %>
+            <% attending_rsvps = attending_rsvps.order_by_rank_to_user(current_user) if current_user %>
+            <% attending_rsvps.limit(10).each do |rsvp| %>
               <li>
                 <%= avatar rsvp.user, :size => "22x22" %>
               </li>

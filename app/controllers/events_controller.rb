@@ -21,8 +21,10 @@ class EventsController < ApplicationController
     @actions = @actions.limit(@per_page).offset(offset)
 
     # => Attendees && Administrator objects
-    @attendees_rsvps = @event.rsvps.attending_or_maybe_attending.order_by_rank_to_user(current_user).all
-    @administrators_rsvps = @event.rsvps.administrators.order_by_rank_to_user(current_user).all
+    @attendees_rsvps = @event.rsvps.attending_or_maybe_attending.all
+    @attendees_rsvps = @attendees_rsvps.order_by_rank_to_user(current_user) if current_user
+    @administrators_rsvps = @event.rsvps.administrators.all
+    @administrators_rsvps = @administrators_rsvps.order_by_rank_to_user(current_user) if current_user
 
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
