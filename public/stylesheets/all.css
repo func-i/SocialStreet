@@ -1958,9 +1958,9 @@ form, fieldset {
     width: 519px;
 }
 .pop-up .keyword li {
-    background: #ccc;
+    background: #999;
     border-radius: 2px;
-    color: #fff;
+    color: #eee;
     float: left;
     font: bold 13px/28px Arial, Helvetica, sans-serif;
     margin: 5px 3px 0 0;
@@ -1970,7 +1970,7 @@ form, fieldset {
     -moz-border-radius: 2px;
 }
 .pop-up .keyword a {
-    background: url("../images/btn-close2.png") no-repeat;
+    background: url("../images/btn-close4.png") no-repeat;
     height: 10px;
     overflow: hidden;
     position: absolute;
