@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
-  default :from => "notify@socialstreet.com"
+  default :from => ["SocialStreet", "notify@socialstreet.com"]
+
   layout "mail"
 
   if Rails.env.staging?
