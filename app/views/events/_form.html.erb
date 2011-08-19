@@ -93,7 +93,7 @@
     <div id="bottom"></div>
   </div>
 
-  <div class="row" style="float:left; margin-left: 109 px;display:block">
+  <div class="title-row" style="float:left; margin-left: 109 px;display:block">
     <% if @event && @event.cancellable_by?(current_user) %>
       <%= link_to "Cancel Event", @event, :method => :delete, :confirm => 'Are you sure?'%>
     <% end %>
