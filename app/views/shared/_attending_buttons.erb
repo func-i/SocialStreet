@@ -1,12 +1,16 @@
 <% if event.upcoming %>
   <%- if rsvp && Rsvp.statuses[:attending] == rsvp.status   -%>
-    <%= link_to [:edit, event, rsvp], :remote=>true, :class => "btn-attending" do %>
-      <span>Attending</span>
-    <% end %>
+  <a class="btn-attending"><span>Attending</span></a>
+    <%#= link_to [:edit, event, rsvp], :remote=>true do %>
+    <!--<span>or unattend</span>-->
+    <%# end %>
 
     <% if !(defined?(hide_invite_link) && hide_invite_link) %>
-      <p>or
-        <%= link_to_popup_modal_ajax  'Invite People', 'Invite your friends', 'empty_modal_sidebar', load_modal_event_rsvp_invitation_path(event, rsvp, :js), nil, nil, :id => "add_invitees_button"  %>
+      <p style="margin:6px 0px 0px 0px"><%= link_to_popup_modal_ajax  'Invite People', 'Invite your friends', 'empty_modal_sidebar', load_modal_event_rsvp_invitation_path(event, rsvp, :js), nil, nil, :id => "add_invitees_button"  %>
+        <span style="font-size:9px;">or
+        <%= link_to [:edit, event, rsvp], :remote=>true do%>
+          unattend
+        <% end %></span>
       </p>
     <% end %>
   <% else %>
