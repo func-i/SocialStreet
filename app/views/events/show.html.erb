@@ -131,7 +131,7 @@
     </div>
     <div class="map-holder">
       <% if @event.geo_located? %>
-        <img src="http://maps.google.com/maps/api/staticmap?zoom=14&size=317x217&maptype=roadmap&sensor=false&markers=color:red%7Clabel:A%7C<%= @event.latitude %>,<%= @event.longitude %>"
+        <img src="http://maps.google.com/maps/api/staticmap?zoom=14&size=317x217&maptype=roadmap&sensor=false&markers=icon:http://staging.socialstreet.com/images/map_pin.png%7C<%= @event.latitude %>,<%= @event.longitude %>"
              alt="location map" />
            <% end %>
     </div>
