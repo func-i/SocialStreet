@@ -69,7 +69,7 @@
     <!--img width="497" height="229" src="images/img-map.png" alt="image description"/-->
   </div>
 
-  <div class="title-row">
+  <div class="title-row" id="title-description-link">
     <p><%= link_to '+ Title, Description, Icon', '#', :id => "expand-extra-section" -%></p>
   </div>
 
@@ -93,7 +93,7 @@
     <div id="bottom"></div>
   </div>
 
-  <div class="title-row" style="float:left; margin-left: 109 px;display:block">
+  <div class="title-row">
     <% if @event && @event.cancellable_by?(current_user) %>
       <%= link_to "Cancel Event", @event, :method => :delete, :confirm => 'Are you sure?'%>
     <% end %>
@@ -130,7 +130,7 @@
 
     $('#expand-extra-section').click(function(){
       $('#row-title').toggle();
-      $('.title-row').toggle();
+      $('#title-description-link').toggle();
 
       $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
       return false;
@@ -141,6 +141,9 @@
       $(this).autoResize({extraSpace: 0})
     });
 
+<% unless event.description.blank? && event.name.blank? %>
+      $('#expand-extra-section').trigger('click');
+<% end %>
   })
 
   function getSearchParams() {

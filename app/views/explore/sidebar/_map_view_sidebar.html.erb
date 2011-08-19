@@ -73,7 +73,7 @@
     //  $(this).scrollTop(scrollTop-Math.round(delta * 20));
     //});
 
-    $('.short-box').mouseover(function() {
+    $('.short-box').mouseenter(function() {
       var postFrame = $('.post-frame');
       postFrame.css("overflow", "auto");
       var sTop = postFrame.scrollTop();
@@ -81,7 +81,7 @@
       postFrame.scrollTop(sTop);
     });
 
-    $('.short-box').mouseout(function(){
+    $('.short-box').mouseleave(function(){
       $('.post-frame').css("overflow", "hidden");
     });
 

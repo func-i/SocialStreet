@@ -551,6 +551,8 @@ form, fieldset {
 }
 .profile .description {
     padding: 18px 0 0px 3px;
+    white-space: normal;
+    word-wrap: break-word;
     /*font: bold 12px/23px Arial, Helvetica, sans-serif;*/
 }
 .profile .keyword a:hover { text-decoration: none; }
