@@ -890,7 +890,7 @@ form, fieldset {
 #sidebar .btn-attend span,
 #content .btn-attend span {
     display: block;
-    padding: 7px 5px;
+    padding: 6px 7px;
 }
 
 #sidebar .btn-attending {
@@ -2793,15 +2793,18 @@ form, fieldset {
     margin: 0;
 }
 
+#sidebar .post .btn-attend {
+    width: 110px;
+}
+
 #sidebar .post .btn-attend span,
-#sidebar .post .btn-attending span {
-    background: url("../images/separator1.png") no-repeat 3px 40%;
+#sidebar .post .btn-attending span {    
     display: block;
     /*padding: 6px 0;*/
 }
 
-#sidebar .post .btn-attend span {
-    background: none;
+#sidebar .post .btn-attending span {
+    background: url("../images/separator1.png") no-repeat 3px 40%;
 }
 
 #sidebar .open .post .btn-attend,
