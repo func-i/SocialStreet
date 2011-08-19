@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default :from => ["SocialStreet", "notify@socialstreet.com"]
+  default :from => "\"SocialStreet\" <notify@socialstreet.com>"
 
   layout "mail"
 
