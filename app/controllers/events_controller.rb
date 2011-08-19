@@ -48,7 +48,7 @@ class EventsController < ApplicationController
     @event_for_create.action = @action # nil if no @action (which is desired)
 
     if @action && @action.searchable && @action.searchable.location
-      @event_for_create.searchable.location = @action.searchable.location
+      @event_for_create.searchable.location = @action.searchable.location.clone
     end
 
     if session[:stored_params]

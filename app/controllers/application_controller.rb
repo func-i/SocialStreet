@@ -139,6 +139,8 @@ class ApplicationController < ActionController::Base
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
     end
  
+    puts "JOSHY"
+    puts params.inspect
     @event.attributes = params[:event]       
     @event.location.user = current_user if @event.location
     

@@ -28,6 +28,13 @@ class InvitationsController < ApplicationController
   def load_modal
     if current_user.fb_friends_imported?
       load_connections
+
+      @event.action.user_list.each do |user|
+        if user != current_user && current_user.invitations.for_event(@event).to_user(user).blank?
+          @rsvp.invitations.build :event => @event, :user => current_user, :to_user => user
+        end
+      end unless @event.action.blank?
+
       @invitations = @rsvp.invitations
     else
       redirect_to import_facebook_friends_connections_path(:return => load_modal_event_rsvp_invitation_path(@event, @rsvp))
