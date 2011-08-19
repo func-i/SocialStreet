@@ -89,6 +89,10 @@
 
           <% limited_invited_events.each do |event| %>
             <li>
+              <div class="sidebar-attending event_attend_button_<%= event.id -%>">
+                <!--Attend button-->
+                <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
+              </div>
               <h4><%= link_to event.title, event %></h4>
               <p>
                 <% event.searchable_event_types.each do |set| %>
@@ -97,10 +101,7 @@
                 <em class="date">
                   <%=event.starts_at.strftime("%b #{event.starts_at.day.ordinalize} @ %l:%M %p")%>
                 </em>
-              <div class="sidebar-attending event_attend_button_<%= event.id -%>">
-                <!--Attend button-->
-                <%=  render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
-              </div>
+
               </p>
             </li>
           <% end %>
