@@ -400,7 +400,7 @@ ProjectionHelperOverlay_.prototype.draw = function () {
 function InfoWindow(markerManager){
     this.markerManager_ = markerManager;
 
-    this.infoBubble_ = new InfoBubble();
+    this.infoBubble_ = new InfoBubble({disableAutoPan: true});
     this.infoBubble_.hideCloseButton();
 
     var that = this;

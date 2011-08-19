@@ -48,9 +48,9 @@
               <div class="footer-content">
                 <ul class="add-nav">
                   <!--<li><%= link_to "About", '#' -%></li>-->
-                  <li><%= link_to "Jobs", 'jobs@socialstreet.com' -%></li>
+                  <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%></li>
                   <li><%= link_to "Terms & Conditions", '#' -%></li><!--TODO-->
-                  <li><%= link_to "Media", 'pr@socialstreet.com' -%></li>
+                  <li><%= mail_to 'pr@SocialStreet.com', "Media" -%></li>
                 </ul>
                 <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
               </div>
