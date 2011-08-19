@@ -216,9 +216,6 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     // Scroll to the top of the document
     window.scrollTo(0,0);
 
-    //Disable scrolling for the body
-    $("body").css("overflow", "hidden !important");
-
     //Display the modal
     $(modal_divID).show();    
 
@@ -242,6 +239,10 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
         removeTabIndex(modal_divID);
     //$(modal_divID).find('input').first().focus();
     });
+
+    //Disable scrolling for the body
+    $("body").css("overflow", "hidden");
+
 }
 
 function removeTabIndex(modalDivID){
