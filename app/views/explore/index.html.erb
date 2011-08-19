@@ -28,9 +28,15 @@
     //return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom));
   }
 
+  var winHeight = $(window).height();
+
   $(function() {
-     $(window).resize(function () {
-      checkMapPageSize();
+    $(window).resize(function () {
+      if($(window).height() != winHeight) {
+        winHeight = $(window).height();
+        checkMapPageSize();
+      }
+        
     });
   });
 </script>

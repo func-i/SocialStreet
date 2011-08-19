@@ -77,8 +77,8 @@ function retractHowItWorks(f) {
             var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
             if(IE7) {
                 // Hack fix for position in IE7
-                $('.main-top').css('height', '77px');
-                $('.main-top .holder').css('background', '');
+                //$('.main-top').css('height', '77px');
+                //$('.main-top .holder').css('background', '');
             }
 
         });
@@ -241,7 +241,7 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     });
 
     //Disable scrolling for the body
-    $("body").css("overflow", "hidden");
+    $("html").css("overflow", "hidden");
 
 }
 
@@ -267,7 +267,7 @@ function addTabIndex() {
 function removeModal(element) {
     $(element).fadeOut("fast", function() {
         $('#ss_modal_overlay').trigger("unload").unbind().remove();
-        $("html").css("overflow", "auto !important");
+        $("html").css("overflow", "auto");
         
     });
 

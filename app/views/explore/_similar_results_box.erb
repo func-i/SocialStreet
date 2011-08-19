@@ -39,9 +39,10 @@
   $('#end_results_close').click(function() {
     $('#end-of-results-message').data('closed', true);
     $('#end-of-results-message').hide();
-    <% if params[:view].eql?('map') %>
-      resizeMap();
-    <% end %>
+<% if params[:view].eql?('map') %>
+      if($('.w2').hasClass('page-map'))
+        resizeMap();
+<% end %>
     $('.top-explore-field').focus();
     return false;
   });

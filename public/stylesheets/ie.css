@@ -21,3 +21,31 @@ textarea {
     overflow: hidden;
 }
 
+
+.box div.topleft {
+    display: block;
+    background: url("/images/bg-form-post-message-large.png") top left no-repeat;
+    padding: 0.0em 0em 0em 0em;
+}
+
+.box div.topright {
+    display: block;
+    background: url("/images/bg-form-post-message-large.png") top right no-repeat;
+    /*padding: 2.0em;*/
+    margin: -0.0em 0 0 0;
+}
+
+.box div.bottomleft {
+    display: block;
+    height: 27px;
+    margin-top: -2.0em;
+    background: url("/images/bg-form-post-message-large.png") bottom left no-repeat;
+}
+
+.box div.bottomright {
+    display: block;
+    background: url("/images/bg-form-post-message-large.png") bottom right no-repeat;
+    height: 27px;
+    margin-left: 2.0em;
+}
+

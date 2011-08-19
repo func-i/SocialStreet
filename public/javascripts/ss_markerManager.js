@@ -282,11 +282,11 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
         });
 
         //Show each searchable attached to the selected marker
-        $('#result_for_searchable_' + this.selectedMarker_.searchableID_).css('backgroundColor', '#FE6');
+        $('#result_for_searchable_' + this.selectedMarker_.searchableID_).css('backgroundColor', '#fffcd5');
         ;
         if(this.selectedMarker_.clusteredMarkers_){
             $.each(this.selectedMarker_.clusteredMarkers_, function(index, marker){
-                $('#result_for_searchable_' + marker.searchableID_).css('backgroundColor', '#FE6');;
+                $('#result_for_searchable_' + marker.searchableID_).css('backgroundColor', '#fffcd5');;
             });
         }
     }

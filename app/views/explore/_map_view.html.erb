@@ -15,7 +15,7 @@
     if(!$('#header').hasClass("open")) {
       if(!isScrolledIntoView('.short-box')){
         $('.w2').removeClass('page-map');
-        $('body').css('overflow', 'auto');
+        $('html').css('overflow', 'auto');
         $('#location-map').height(670);
         try {
           google.maps.event.trigger(sideMap, "resize");
@@ -27,7 +27,7 @@
       }
       else {
         $('.w2').addClass('page-map');
-        $('body').css('overflow', 'hidden');
+        $('html').css('overflow', 'hidden');
       }
 
       if($('.w2').hasClass('page-map')) {
