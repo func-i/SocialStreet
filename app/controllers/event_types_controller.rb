@@ -13,7 +13,7 @@ class EventTypesController < ApplicationController
 
         et.children.limit(5).each do |child_et|
           return_list << {
-            :label => "<span style='margin-left:20px'>#{"<img height='25' width='25' src='" + child_et.image_path + "' /> " if child_et.image_path}#{child_et.name}</span>",
+            :label => "<span style='margin-left:20px'>#{"<img height='25' width='25' src='" + child_et.image_path + "' /> " if child_et.image_path}<span style='vertical-align: top; position: relative; top: 2px; left: 5px;'>#{child_et.name}</span></span>",
             :value => child_et.name
           }
         end
