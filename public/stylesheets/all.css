@@ -896,7 +896,7 @@ form, fieldset {
 #sidebar .btn-attending {
     background: #9c3;
     font-size: 13px;
-    padding: 7px 5px;
+    padding: 6px 5px 6px 5px;
 }
 
 #content .post .btn-attend,
@@ -2776,7 +2776,7 @@ form, fieldset {
     background: #69b2d7;
 }
 #sidebar .post .btn-attending {
-    background: #86d125;
+    background: #9C3;
 }
 #sidebar .post .btn-attend,
 #sidebar .post .btn-attending {
@@ -2794,8 +2794,9 @@ form, fieldset {
 }
 #sidebar .post .btn-attend span,
 #sidebar .post .btn-attending span {
+    background: url("../images/separator1.png") no-repeat 3px 40%;
     display: block;
-    padding: 6px 0;
+    /*padding: 6px 0;*/
 }
 #sidebar .open .post .btn-attend,
 #sidebar .open .post .btn-attending {
