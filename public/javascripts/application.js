@@ -266,8 +266,8 @@ function addTabIndex() {
 function removeModal(element) {
     $(element).fadeOut("fast", function() {
         $('#ss_modal_overlay').trigger("unload").unbind().remove();
-        //$.unblockUI();
         $("html").css("overflow", "auto");
+        $('body').css('overflow', 'visible');
     });
 
     //Hack to make save this search modal work
