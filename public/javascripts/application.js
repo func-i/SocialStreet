@@ -217,7 +217,7 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     window.scrollTo(0,0);
 
     //Disable scrolling for the body
-    $("body").css("overflow", "hidden");
+    $("body").css("overflow", "hidden !important");
 
     //Display the modal
     $(modal_divID).show();    
@@ -266,8 +266,8 @@ function addTabIndex() {
 function removeModal(element) {
     $(element).fadeOut("fast", function() {
         $('#ss_modal_overlay').trigger("unload").unbind().remove();
-        $("html").css("overflow", "auto");
-        $('body').css('overflow', 'visible');
+        $("html").css("overflow", "auto !important");
+        
     });
 
     //Hack to make save this search modal work
