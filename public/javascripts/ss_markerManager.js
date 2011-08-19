@@ -30,6 +30,12 @@ MarkerManager.prototype.init = function(opt_options)
     that = this;
     google.maps.event.addListenerOnce(this.map_, 'idle', function() {
         that.placeAllMarkers();
+        $.each(that.allMarkers_, function(i, mkr) {
+           if(mkr.map != null){
+               mkr.setZIndex(i);
+               mkr.label_.getPanes().overlayLayer.style['zIndex'] = "-100";              
+           }
+        });
     });
 
     this.projectionHelper_ = new ProjectionHelperOverlay_(this.map_);
@@ -110,6 +116,10 @@ MarkerManager.prototype.createMarker = function(location, searchableID, geocodab
             that.userSelectMarker_(this);
             that.setSelectedMarker_(this);
         });
+
+        google.maps.event.addListener(marker, 'zindex_changed', function() {
+            console.log('here');
+        });
     }
 
     //Push marker onto marker array
@@ -184,7 +194,7 @@ MarkerManager.prototype.placeAllMarkers = function(){
             //Display marker and label
             marker.setMap(this.map_);
             marker.label_.set('map', this.map_);
-
+            
             //Set grid bounds for future clustering
             var bounds = new google.maps.LatLngBounds(marker.getPosition(), marker.getPosition());
             marker.extendedBounds_ = this.getExtendedBounds_(bounds);
@@ -400,7 +410,9 @@ ProjectionHelperOverlay_.prototype.draw = function () {
 function InfoWindow(markerManager){
     this.markerManager_ = markerManager;
 
-    this.infoBubble_ = new InfoBubble({disableAutoPan: true});
+    this.infoBubble_ = new InfoBubble({
+        disableAutoPan: true
+    });
     this.infoBubble_.hideCloseButton();
 
     var that = this;
@@ -477,7 +489,7 @@ function Label(opt_options) {
 
     // Here go the label styles
     var span = this.span_ = document.createElement('span');
-    span.style.cssText = 'position: relative; left: -50%; top: -10px; ' +
+    span.style.cssText = 'position: relative; left: -0.5em; top: -1.2em;' +
     'white-space: nowrap;color:#FF0000;' +
     'padding: 2px;font-family: Arial; font-weight: bold;' +
     'font-size: 8px;';
@@ -532,7 +544,7 @@ Label.prototype.draw = function() {
     div.style.left = position.x + 'px';
     div.style.top = (position.y - 25) + 'px';
     div.style.display = 'block';
-    div.style.zIndex = 1//this.get('zIndex'); //ALLOW LABEL TO OVERLAY MARKER
+    //div.style.zIndex = 1//this.get('zIndex'); //ALLOW LABEL TO OVERLAY MARKER
     this.span_.innerHTML = this.get('text').toString();
 };
 
