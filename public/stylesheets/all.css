@@ -939,10 +939,10 @@ form, fieldset {
     font-size: 17px;
     line-height: 39px;
     margin: 0 18px 0 0;
-    width: 107px;
+    /*width: 107px;*/
 }
 #content .profile .btn-attending span {
-    background: url("../images/separator1.png") no-repeat 5px 15px;
+    background: url("../images/separator1.png") no-repeat 5px 50%;
     display: block;
     padding: 0 0 0 7px;
 }
@@ -2792,12 +2792,18 @@ form, fieldset {
     width: 100px;
     margin: 0;
 }
+
 #sidebar .post .btn-attend span,
 #sidebar .post .btn-attending span {
     background: url("../images/separator1.png") no-repeat 3px 40%;
     display: block;
     /*padding: 6px 0;*/
 }
+
+#sidebar .post .btn-attend span {
+    background: none;
+}
+
 #sidebar .open .post .btn-attend,
 #sidebar .open .post .btn-attending {
     margin: 0;
