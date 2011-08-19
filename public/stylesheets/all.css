@@ -932,6 +932,11 @@ form, fieldset {
     display: block;
     padding: 6px 5px 6px 10px;
 }
+
+#content .post .threaded .btn-attending {
+    position: relative;
+}
+
 #content .profile .btn-attending {
     background: #86d125;
     display: block;

@@ -26,7 +26,7 @@
   <!--Event Image-->
   <%= link_to(image_tag(url_for_event_image(event), :size => "33x33"), event) %>
 
-  <div class="text">
+  <div class="text threaded">
     <!--Attend button-->
     <%= render(:partial => "shared/attending_buttons", :locals => {:event => event, :rsvp => (current_user ? event.rsvps.by_user(current_user).first : nil), :hide_invite_link => true}) %>
 
