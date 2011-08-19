@@ -182,7 +182,7 @@
 
             <% @attendees_rsvps.each do |rsvp| %>
 
-              <li>
+              <li class="attendee_<%=rsvp.user.id%>">
                 <%= avatar rsvp.user :size => "44x40" %>
                 <div class="text-holder">
                   <% if rsvp.user.fb_uid? && user_signed_in? && current_user.can_friend?(rsvp.user) %>
@@ -214,7 +214,7 @@
         <div class="pop-up1-content view-all-modal">
           <ul>
             <% @administrators_rsvps.each do |rsvp| %>
-              <li>
+              <li class="attendee_<%=rsvp.user.id%>">
                 <%= avatar rsvp.user :size => "44x40" %>
                 <div class="text-holder">
                   <% if rsvp.user.fb_uid? && user_signed_in? && current_user.can_friend?(rsvp.user) %>
