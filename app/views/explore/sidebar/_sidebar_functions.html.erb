@@ -224,7 +224,7 @@
         $(window).bind("popstate", function(){
           var keywordParams = $(document).getUrlParam("keywords[]");
           $.each(keywordParams, function(e, i) {
-            e = e.replace("+", "");
+            e = e.toString().replace("+", "");
           });
 
           if(typeof keywordParams == "string" || keywordParams == null)
