@@ -82,7 +82,7 @@
         <%= link_to_popup_modal "View all", "show-invitations", :class => "view"%>
         <h3>Outstanding Invitations</h3>
       </div>
-      <div class="box-content">
+      <div class="box-content post">
         <ul>
           <% limited_invited_events = @invited_events[0,3] %>
           <% invitations_remaining = @invited_events.count - 3 %>
