@@ -36,22 +36,22 @@ class Searchable < ActiveRecord::Base
       
       keywords.each_with_index do |k, i|
         unless(k.blank?)
-          query << "UPPER(comments.body) LIKE :key#{i}
-          OR UPPER(events.name) LIKE :key#{i}
-          OR UPPER(events.description) LIKE :key#{i}
+          query << "comments.body ~* :key#{i}
+          OR events.name ~* :key#{i}
+          OR events.description ~*:key#{i}
           OR searchables.id IN ( 
             SELECT searchable_event_types.searchable_id FROM searchable_event_types, event_types
               WHERE searchable_event_types.searchable_id = searchables.id
               AND (
-                  UPPER(searchable_event_types.name) LIKE :key#{i}
+                  searchable_event_types.name LIKE :key#{i}
                   OR (
                     searchable_event_types.event_type_id IS NOT NULL
                     AND event_types.id = searchable_event_types.event_type_id
-                    AND UPPER(event_types.name) LIKE :key#{i}
+                    AND event_types.name ~* :key#{i}
                   )
               )
           )"
-          args["key#{i}".to_sym] = "%#{k.upcase}%"
+          args["key#{i}".to_sym] = "#{k}"
         end
       end
       chain.where(query.join(" OR "), args)
@@ -66,8 +66,8 @@ class Searchable < ActiveRecord::Base
       args = {}
 
       searchable.searchable_event_types.each_with_index{ |k,i|
-        query << "LOWER(set.name) LIKE :key#{i}"
-        args["key#{i}".to_sym] = "%#{k.name.downcase}%"
+        query << "set.name ~* :key#{i}"
+        args["key#{i}".to_sym] = "#{k.name}"
 
         if k.event_type_id
           query << "set.event_type_id = :key_b#{i}"
@@ -77,10 +77,10 @@ class Searchable < ActiveRecord::Base
 
       text_array = text.split(' ') #TODO - this doesn't work when the keywords are multiple words (ex: Ping Pong)
       text_array.each_with_index { |k,i|
-        query << "LOWER(set.name) LIKE :key#{i}
-          OR LOWER(et.name) LIKE :key#{i}"
+        query << "set.name ~* :key#{i}
+          OR et.name ~* :key#{i}"
 
-        args["key#{i}".to_sym] = "%#{k.downcase}%"
+        args["key#{i}".to_sym] = "#{k}"
       }
       
       chain.where(query.join(" OR "), args)
