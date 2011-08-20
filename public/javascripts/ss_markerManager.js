@@ -197,7 +197,7 @@ MarkerManager.prototype.placeAllMarkers = function(){
         $.each(this.allMarkers_, function(i, mkr) {
             if(mkr.map != null){
                 mkr.setZIndex(i);
-                mkr.label_.span_.style.setProperty('z-index', '' + i);
+                mkr.label_.div_.style.zIndex = '' + i;
             }
         });
     }
@@ -543,8 +543,8 @@ Label.prototype.draw = function() {
     var div = this.div_;
     div.style.left = (position.x - 11) + 'px';
     div.style.top = (position.y - 35) + 'px';
-    div.style.setProperty('width', '22px');
-    div.style.setProperty('text-align', 'center');
+    div.style.width = '22px';
+    div.style.textAlign = 'center';
     div.style.display = 'block';
     //div.style.zIndex = 1//this.get('zIndex'); //ALLOW LABEL TO OVERLAY MARKER
     this.span_.innerHTML = this.get('text').toString();
