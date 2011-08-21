@@ -3,8 +3,10 @@
     <h3>Terms and conditions</h3>
     Terms and conditions go here
 
-    <%= form_tag tnc_accepted_authentications_path, :id => "tnc_form" do -%>
-      <%= check_box_tag "accept", true, false, :class => "tnc_accept" -%>I accept the terms and conditions
+    <%unless params[:display_only] %>
+      <%= form_tag tnc_accepted_authentications_path, :id => "tnc_form" do -%>
+        <%= check_box_tag "accept", true, false, :class => "tnc_accept" -%>I accept the terms and conditions
+      <%- end -%>
     <%- end -%>
   </div>
 </div>

@@ -49,7 +49,7 @@
                 <ul class="add-nav">
                   <!--<li><%= link_to "About", '#' -%></li>-->
                   <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%></li>
-                  <li><%= link_to "Terms & Conditions", '#' -%></li><!--TODO-->
+                  <li><%= link_to_popup_modal_ajax  'Terms & Conditions', 'Terms and Conditions', 'empty_modal_base', '/authentications/accept_tnc?display_only=true', nil, nil %></li>
                   <li><%= mail_to 'pr@SocialStreet.com', "Media" -%></li>
                 </ul>
                 <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>

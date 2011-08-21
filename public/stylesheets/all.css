@@ -3186,3 +3186,5 @@ form, fieldset {
     vertical-align: middle;
     margin-left: 2px;
 }
+
+scrollbar1 .scrollbar { position: relative; float: right; width: 15px; }
