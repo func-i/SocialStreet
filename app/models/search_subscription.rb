@@ -7,7 +7,7 @@ class SearchSubscription < ActiveRecord::Base
     :daily => 'Daily',
     :weekly => 'Weekly',
     :none => 'Home Feed Only'
-  }
+  }.freeze
   cattr_accessor :frequencies
 
   validates :name, :presence => true

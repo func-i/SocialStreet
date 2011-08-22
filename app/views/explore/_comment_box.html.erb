@@ -58,9 +58,10 @@
       return false;
     });
 
-    $('#change-location').click(function(){
+    $('#change-location').click(function(e){
       $('#map_location').val();//TODO - why doesn't this work?
       $('#map_location').focus();
+      e.stopPropagation();
     });
 
     $(document).not('.remove-comment-keyword').bind("click", function() {
