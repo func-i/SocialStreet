@@ -209,6 +209,7 @@ form, fieldset {
     -webkit-box-shadow: -2px 2px 4px #ccc;
     -moz-box-shadow: -2px 2px 4px #ccc;
     display: none;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .nav-serv li:hover ul { display: block; }
 .nav-serv .link-login a:hover,
@@ -289,6 +290,7 @@ form, fieldset {
     box-shadow: 4px 4px 3px #eee;
     -webkit-box-shadow: 4px 4px 3px #eee;
     -moz-box-shadow: 4px 4px 3px #eee;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .btn-add:hover { text-decoration: none; }
 .btn-add:hover span { text-decoration: underline; }
@@ -338,6 +340,7 @@ form, fieldset {
     -webkit-border-radius: 4px 4px 0 0;
     -moz-border-radius: 4px 4px 0 0;
     cursor: pointer;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .tabset .active a,
 .tabset a:hover {
@@ -548,6 +551,7 @@ form, fieldset {
     margin: 10px 2px 0 0;
     padding: 0 13px;
     cursor: pointer;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .profile .description {
     padding: 18px 0 0px 3px;
@@ -869,6 +873,7 @@ form, fieldset {
     overflow: hidden;
     text-align: center;
     position: relative;
+    behavior: url("/stylesheets/PIE.htc");
 }
 
 #sidebar .btn-attend,
@@ -1830,6 +1835,7 @@ form, fieldset {
     margin: 0 9px 0 0;
     padding: 0 26px;
     cursor:pointer;
+    /*behavior: url("/stylesheets/PIE.htc");*/
 }
 .pop-up1 .btn:hover { text-decoration: none; }
 .pop-up1 .btn:hover span { text-decoration: underline; }
@@ -2313,6 +2319,7 @@ form, fieldset {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     cursor: pointer;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .view-all-modal .add,
 .view-all-modal .btn-attend {
@@ -2326,6 +2333,7 @@ form, fieldset {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     cursor: pointer;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .view-all-modal .btn-attending,
 .view-all-modal .btn-attend {
@@ -2416,6 +2424,7 @@ form, fieldset {
     padding: 11px 10px 10px;
     position: relative;
     z-index: 3;
+    /*behavior: url("/stylesheets/PIE.htc");*/
 }
 #sidebar .map .heading h3 { font: 14px/20px Arial,Helvetica,sans-serif; }
 #sidebar .map-holder {
@@ -2487,6 +2496,7 @@ form, fieldset {
     margin: 5px 3px 0 0;
     padding: 0 27px 0 7px;
     position: relative;
+    behavior: url("/stylesheets/PIE.htc");
 }
 #sidebar .keyword a {
     background: url("../images/btn-close4.png") no-repeat;
@@ -2515,6 +2525,7 @@ form, fieldset {
     padding: 5px 27px 5px 7px;
     position: relative;
     display: inline;
+    behavior: url("/stylesheets/PIE.htc");
 }
 .keyword-small a {
     background: url("../images/btn-close4.png") no-repeat;
@@ -2798,6 +2809,7 @@ form, fieldset {
     text-align: center;
     width: 100px;
     margin: 0;
+    behavior: url("/stylesheets/PIE.htc");
 }
 
 #sidebar .post .btn-attend {
@@ -3186,3 +3198,5 @@ form, fieldset {
     vertical-align: middle;
     margin-left: 2px;
 }
+
+scrollbar1 .scrollbar { position: relative; float: right; width: 15px; }

@@ -29,13 +29,7 @@ MarkerManager.prototype.init = function(opt_options)
     //Create markers when map is ready
     that = this;
     google.maps.event.addListenerOnce(this.map_, 'idle', function() {
-        that.placeAllMarkers();
-        $.each(that.allMarkers_, function(i, mkr) {
-           if(mkr.map != null){
-               mkr.setZIndex(i);
-               mkr.label_.getPanes().overlayLayer.style['zIndex'] = "-100";              
-           }
-        });
+        that.placeAllMarkers();        
     });
 
     this.projectionHelper_ = new ProjectionHelperOverlay_(this.map_);
@@ -115,11 +109,7 @@ MarkerManager.prototype.createMarker = function(location, searchableID, geocodab
             marker.setIcon("/images/ico-pin-selected.png");
             that.userSelectMarker_(this);
             that.setSelectedMarker_(this);
-        });
-
-        google.maps.event.addListener(marker, 'zindex_changed', function() {
-            console.log('here');
-        });
+        });        
     }
 
     //Push marker onto marker array
@@ -202,6 +192,14 @@ MarkerManager.prototype.placeAllMarkers = function(){
 
         //Push marker back onto marker array
         this.allMarkers_.push(marker);
+
+        // Set the z-index to all the markers and their labels
+        $.each(this.allMarkers_, function(i, mkr) {
+            if(mkr.map != null){
+                mkr.setZIndex(i);
+                mkr.label_.div_.style.zIndex = '' + i;
+            }
+        });
     }
 
     if(select_marker){
@@ -489,14 +487,16 @@ function Label(opt_options) {
 
     // Here go the label styles
     var span = this.span_ = document.createElement('span');
-    span.style.cssText = 'position: relative; left: -0.5em; top: -1.2em;' +
-    'white-space: nowrap;color:#FF0000;' +
-    'padding: 2px;font-family: Arial; font-weight: bold;' +
+
+    span.style.cssText = 'white-space: nowrap; color:#FF0000;' +
+    'font-family: Arial; font-weight: bold;' +
     'font-size: 8px;';
+
+    //'position: relative; left: -0.5em; top: -1.2em;' + 
 
     var div = this.div_ = document.createElement('div');
     div.appendChild(span);
-    div.style.cssText = 'position: absolute; display: none';
+    div.style.cssText = 'position: absolute; display: none';  
 };
 
 Label.prototype = new google.maps.OverlayView;
@@ -541,8 +541,10 @@ Label.prototype.draw = function() {
 
     var position = projection.fromLatLngToDivPixel(this.get('position'));
     var div = this.div_;
-    div.style.left = position.x + 'px';
-    div.style.top = (position.y - 25) + 'px';
+    div.style.left = (position.x - 11) + 'px';
+    div.style.top = (position.y - 35) + 'px';
+    div.style.width = '22px';
+    div.style.textAlign = 'center';
     div.style.display = 'block';
     //div.style.zIndex = 1//this.get('zIndex'); //ALLOW LABEL TO OVERLAY MARKER
     this.span_.innerHTML = this.get('text').toString();

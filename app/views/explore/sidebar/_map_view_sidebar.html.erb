@@ -60,52 +60,52 @@
   </div>
 <% end %>
 
+<%= render "explore/sidebar/sidebar_functions" -%>
 <% content_for :end_of_body do %>
   <%= javascript_include_tag "jquery.mousewheel" -%>
-<%- end -%>
 
-<script type='text/javascript'>
+  <script type='text/javascript'>
   
-  $(function(){
-    
-    //$(".post-frame").bind("mousewheel",function(ev, delta) {
-    //  var scrollTop = $(this).scrollTop();
-    //  $(this).scrollTop(scrollTop-Math.round(delta * 20));
-    //});
+    $(function(){
+      //$(".post-frame").bind("mousewheel",function(ev, delta) {
+      //  var scrollTop = $(this).scrollTop();
+      //  $(this).scrollTop(scrollTop-Math.round(delta * 20));
+      //});
 
-    $('.short-box').mouseenter(function() {
-      var postFrame = $('.post-frame');
-      postFrame.css("overflow", "auto");
-      var sTop = postFrame.scrollTop();
-      postFrame.scrollTop(0);
-      postFrame.scrollTop(sTop);
-    });
-
-    $('.short-box').mouseleave(function(){
-      $('.post-frame').css("overflow", "hidden");
-    });
-
-    $('.short-box .btn-open').click(function(){
-      $('.short-box').addClass('open', 1, function(){
-        //  $('.short-box').hide().show('slide', {direction: 'right'}, 1000);
-        closeWhenBox();
-        $('.short-box .btn-open').hide();
-        $('.short-box .btn-close').show();
+      $('.short-box').mouseenter(function() {
+        var postFrame = $('.post-frame');
+        postFrame.css("overflow", "auto");
+        var sTop = postFrame.scrollTop();
+        postFrame.scrollTop(0);
+        postFrame.scrollTop(sTop);
       });
 
-      //$('.short-box').hide().addClass('open').show('slide', {direction: 'right'}, 1000);
+      $('.short-box').mouseleave(function(){
+        $('.post-frame').css("overflow", "hidden");
+      });
+
+      $('.short-box .btn-open').click(function(){
+        $('.short-box').addClass('open', 1, function(){
+          //  $('.short-box').hide().show('slide', {direction: 'right'}, 1000);
+          closeWhenBox();
+          $('.short-box .btn-open').hide();
+          $('.short-box .btn-close').show();
+        });
+
+        //$('.short-box').hide().addClass('open').show('slide', {direction: 'right'}, 1000);
       
-      return false;
-    });
+        return false;
+      });
 
-    $('.short-box .btn-close').click(function(){
-      $('.short-box').removeClass('open', 1, function(){
-        $('.short-box .btn-close').hide();
-        $('.short-box .btn-open').show();
-      });      
-      return false;
-    });
-  })
-</script>
+      $('.short-box .btn-close').click(function(){
+        $('.short-box').removeClass('open', 1, function(){
+          $('.short-box .btn-close').hide();
+          $('.short-box .btn-open').show();
+        });
+        return false;
+      });
 
-<%= render "explore/sidebar/sidebar_functions" -%>
+    })
+  </script>
+
+<%- end -%>

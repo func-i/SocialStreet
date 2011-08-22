@@ -42,7 +42,13 @@ class AuthenticationsController < ApplicationController
   def tnc_accepted
     if params[:accept] == "true"
       current_user.update_attribute("accepted_tncs", true)
-      current_user.post_to_facebook_wall(:message => "I have signed into Social Street for the first time!")
+      current_user.post_to_facebook_wall(
+        :picture => 'app_icon.png',
+        :link => "http://www.SocialStreet.com",
+        :name => "SocialStreet.com",
+        :description => "SocialStreet helps you explore real life. Never miss an opportunity to make new friends again!",
+        :message => "I just joined SocialStreet! "
+      )
       redirect_to after_sign_in_path_for(current_user.reload)
     else
       render :text => "ERROR", :status => "500"
