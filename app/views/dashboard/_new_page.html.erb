@@ -1,7 +1,6 @@
 <script type='text/javascript'>
 <%@feed_items.each do |feed|%>
   <% if feed %>
-
     <% if feed.reason == Feed.reasons[:subscription] %>
       <% action = feed.head_action %>
       <% if(action.action_type == Action.types[:event_created]) %>

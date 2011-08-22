@@ -43,9 +43,9 @@ index_action
         <!--Event Info-->
         <span class="time">
           <%=address_for(event_record.location)%>
-          <span><%= ss_time_ago_in_words(event_record.starts_at) -%></span>
-          @
-          <em><%=event_record.starts_at.strftime("%l:%M %p")%></em>
+          <span><%= ss_time_ago_in_words(event_record.starts_at, event_record.finishes_at) -%></span>
+<!--          @
+          <em><%=event_record.starts_at.strftime("%l:%M %p")%></em>-->
         </span>
 
         <!--attendees list-->

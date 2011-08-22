@@ -1391,10 +1391,10 @@ form, fieldset {
     font-weight: bold;
 }
 #footer .logo {
-    background: url("../images/ss_site_logo_gray.png") no-repeat;
+    background: url("../images/ss_site_logo_gray_small.png") no-repeat;
     float: right;
     height: 43px;
-    margin: -15px 2px 0 0;
+    margin: -5px 2px 0 0;
     width: 90px;
 }
 .pop-up {
@@ -3198,5 +3198,3 @@ form, fieldset {
     vertical-align: middle;
     margin-left: 2px;
 }
-
-scrollbar1 .scrollbar { position: relative; float: right; width: 15px; }

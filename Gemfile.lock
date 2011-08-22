@@ -68,6 +68,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
+    exception_notification (2.4.1)
     factory_girl (2.0.4)
     factory_girl_rails (1.1.0)
       factory_girl (~> 2.0.0)
@@ -231,6 +232,7 @@ DEPENDENCIES
   default_value_for
   devise (>= 1.2.0)
   dynamic_form!
+  exception_notification
   factory_girl_rails
   fb_graph
   geocoder

@@ -55,6 +55,8 @@
       if($('#post-message-keywords').find('input[type=hidden]').length <= 0){
         $('#post-message-keywords').hide();
       }
+
+      e.stopPropagation();
       return false;
     });
 
@@ -64,16 +66,16 @@
       e.stopPropagation();
     });
 
-    $(document).not('.remove-comment-keyword').bind("click", function() {
-      $('.form-post-message').removeClass('send');
-      //$('#content').css("top", "");
+    $(document).bind("click", function(e) {
+      if($(e.target).closest('#explore-post-message-form').length <= 0 && !$(e.target).hasClass('remove-comment-keyword'))
+        $('.form-post-message').removeClass('send');
     });
 
     $('.search-textarea').live('change', function(e){
       if(this.value.length > 0)
       {
         $('.form-post-message').removeClass('send');
-        var f = $('form.form-comment');
+        //var f = $('form.form-comment');
         //$('#content').css("top", "");
         $(this).closest('.form-comment').submit();
         this.value = '';
@@ -86,7 +88,7 @@
           if(this.value.length > 0)
           {
             $('.form-post-message').removeClass('send');
-            var f = $('form.form-comment');
+            //var f = $('form.form-comment');
             //$('#content').css("top", "");
             $(this).closest('.form-comment').submit();
             this.value = '';

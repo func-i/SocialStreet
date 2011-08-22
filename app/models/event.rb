@@ -73,10 +73,10 @@ class Event < ActiveRecord::Base
     includes(:rsvps).where({ :rsvps => {:user_id => user.id, :status => Rsvp::statuses[:attending] }})
   }
   scope :upcoming, lambda {
-    includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at > ? AND events.canceled = false", Time.zone.now)
+    includes({:searchable => [:searchable_date_ranges] }).where("((searchable_date_ranges.ends_at IS NULL AND searchable_date_ranges.starts_at >= ?) OR searchable_date_ranges.ends_at >= ?) AND events.canceled = false", Time.zone.now, Time.zone.now)
   }
   scope :passed, lambda {
-    includes({:searchable => [:searchable_date_ranges] }).where("searchable_date_ranges.starts_at < ?", Time.zone.now)
+    includes({:searchable => [:searchable_date_ranges] }).where("((searchable_date_ranges.ends_at IS NULL AND searchable_date_ranges.starts_at < ?) OR searchable_date_ranges.ends_at < ?)", Time.zone.now)
   }
   scope :administered_by_user, lambda {|user|
     includes(:rsvps).where({ :rsvps => {:user_id => user.id, :administrator => true }})
@@ -125,7 +125,7 @@ class Event < ActiveRecord::Base
   def upcoming
     bool = false
     searchable.searchable_date_ranges.each do |dr|
-      if dr.starts_at && dr.starts_at > Time.zone.now
+      if (!dr.ends_at && dr.starts_at && dr.starts_at > Time.zone.now) || (dr.ends_at && dr.ends_at > Time.zone.now)
         bool = true
       end
     end

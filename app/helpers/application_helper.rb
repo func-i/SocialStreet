@@ -87,9 +87,24 @@ module ApplicationHelper
 
   end
 
-  def ss_time_ago_in_words(check_time)
-    compare_time = check_time.is_a?(Date) ? Date.today : Time.now
-    time_ago_in_words(check_time) + (check_time < compare_time ? " ago" : " from now")
+  def ss_time_ago_in_words(start_time, end_time = nil)
+    compare_time = start_time.is_a?(Date) ? Date.today : Time.now
+
+    if(end_time)
+      if( start_time < compare_time )
+        if( end_time > compare_time )
+          return 'started ' + time_ago_in_words(start_time) + ' ago - ' + time_ago_in_words(end_time) + ' remaining'
+        else
+          return 'ended ' + time_ago_in_words(end_time) + ' ago'
+        end
+      end
+    end
+
+    if( start_time > compare_time)
+      return 'starts ' + time_ago_in_words(start_time) + ' from now'
+    else
+      return time_ago_in_words(start_time) + ' ago'
+    end
   end
 
 end

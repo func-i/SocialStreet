@@ -64,6 +64,7 @@ class ProfilesController < ApplicationController
     if @user.save
       if request.xhr?
         render :nothing => true
+        return
       end
 
       redirect_to :action => :edit

@@ -291,7 +291,7 @@ class ExploreController < ApplicationController
 
     #MATCH FROM DATE
     from_date = args.key?(:from_date) ? args[:from_date] : (params[:from_date] ? params[:from_date] : Time.zone.now)
-    from_date = Time.zone.now if from_date == Date.today
+    from_date = Time.zone.now if Date.today.eql?(from_date)
 
     event_searchables = apply_from_date(event_searchables, from_date)
   end
@@ -425,10 +425,9 @@ class ExploreController < ApplicationController
 
     # => By default only show events today and in the future unless a date search is specified.
     if from_date.blank? #&& to_date.blank?
-      search_object = search_object.on_or_after_date(Date.today)
+      search_object = search_object.on_or_after_datetime(Date.today)
     else
-      search_object = search_object.on_or_after_date(from_date) unless from_date.blank?
-      #search_object = search_object.on_or_before_date(to_date) unless to_date.blank?
+      search_object = search_object.on_or_after_datetime(from_date) unless from_date.blank?
     end
 
     # GEO LOCATION SEARCHING

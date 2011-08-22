@@ -36,9 +36,9 @@
     <!--Event Info-->
     <span class="time">
       <%=address_for(event.location)%>
-      <span><%= ss_time_ago_in_words(event.starts_at) -%></span>
-      @
-      <em><%=event.starts_at.strftime("%l:%M %p")%></em>
+      <span><%= ss_time_ago_in_words(event.starts_at, event.finishes_at) -%></span>
+<!--      @
+      <em><%=event.starts_at.strftime("%l:%M %p")%></em>-->
     </span>
   </div>
 
