@@ -39,22 +39,6 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Welcome to SocialStreet")
   end
 
-  def subscription_instant_notice(subscription, action, user)
-    @subscription = subscription
-    @action = action
-    @user = user
-
-    if action.action_type == Action.types[:event_created]
-      subject = "StreetMeet - #{subscription.name}"
-    elsif action.action_type == Action.types[:search_comment]
-      subject = "SocialStreet Message - #{subscription.name}"
-    elsif action.action_type == Action.types[:action_comment]
-      subject = "Reply to a SocialStreet Message - #{subscription.name}"
-    end
-
-    mail(:to => @user.email, :subject => subject)
-  end
-
   def event_cancel_notice(user, event)
     @user = user
     @event = event
@@ -74,13 +58,28 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "#{invitation.user.name} invited you to '#{invitation.event.title}' on SocialStreet")
   end
 
-  def daily_subscription_digest(subscription, actions, start_time, end_time)
+  def subscription_instant_notice(subscription, action, user)
+    @subscription = subscription
+    @action = action
+    @user = user
+
+    if action.action_type == Action.types[:event_created]
+      subject = "StreetMeet - #{subscription.name}"
+    elsif action.action_type == Action.types[:search_comment]
+      subject = "SocialStreet Message - #{subscription.name}"
+    elsif action.action_type == Action.types[:action_comment]
+      subject = "SocialStreet Message - #{subscription.name}"
+    end
+
+    mail(:to => @user.email, :subject => subject)
+  end
+
+  def subscription_summary_notice(subscription, actions, user)
     @actions = actions
     @subscription = subscription
-    # time ranges used to determine which sub-actions to render, since @actions is always top-level actions
-    @start_time = start_time
-    @end_time = end_time
-    mail(:to => @subscription.user.email, :subject => "Your daily summary for '#{subscription.name}' on SocialStreet")
+    @user = user
+    
+    mail(:to => @subscription.user.email, :subject => "SocialStreet #{@subscription.frequency == SearchSubscription.frequencies[:daily] ? 'Daily' : 'Weekly'} Summary - #{subscription.name}")
   end
 
   def test_notice(user)

@@ -1,11 +1,12 @@
-<% action_type_text = "StreetMeet" if @action.action_type == Action.types[:event_created] %>
-<% action_type_text = "Message" if @action.action_type == Action.types[:search_comment] || @action.action_type == Action.types[:action_comment] %>
+<% action_type_text = "A new StreetMeet" if @action.action_type == Action.types[:event_created] %>
+<% action_type_text = "A new SocialStreet Message" if @action.action_type == Action.types[:search_comment] || @action.action_type == Action.types[:action_comment] %>
+<% action_type_text = "A new reply to a SocialStreet Message" if @action.action_type == Action.types[:action_comment] %>
 
 <div style="margin-bottom:15px;font-size:12px">
   Hi <%@user.first_name%>,
 </div>
 <div style="margin-bottom:15px">
-  A new <%=action_type_text%> was posted to <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %> that matched your search,
+  <%=action_type_text%> was posted to <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %> that matched your search:
   <br/>
   <b><%=@subscription.name%></b>
 </div>
@@ -49,22 +50,34 @@
               </span>
             <% end %>
           </td>
-        <% else if @action.action_type == Action.types[:search_comment] %>
-            <% head_message = @action.reference %>
-            <td style="padding-right:5px">
-              <%= image_tag('http://staging.socialstreet.com/images/ss_chat_ico.png', :size => "80x80", :title=>"SocialStreet Message") %>
-            </td>
-            <td>
-              <% searchable = @action.searchable %>
-              <% title = 'Posted to ' %>
-              <% title += link_to(searchable.title_for_searchable, explore_url(searchable.url_params)) %>
-            </td>
-
-          <% end %>
-        </tr>
-      </tbody>
-    </table>
-    <div style="border-bottom:1px solid #ccc;line-height:5px">
-      &nbsp;
-    </div>
+        <% elsif @action.action_type == Action.types[:search_comment] || @action.action_type == Action.types[:action_comment] %>
+          <% head_action = @action.action || @action%>
+          <td>
+            <% searchable = head_action.searchable %>
+            Posted to <%= link_to searchable.title_for_searchable, explore_url(searchable.url_params), :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>
+            <br/>
+            <table>
+              <tbody>
+                <%= render(:partial => 'user_mailer/message_helper', :locals => {:action => head_action}) %>
+                <% (head_action.actions.oldest_first || []).each do |sub_action| %>
+                  <%= render(:partial => 'user_mailer/message_helper', :locals => {:action => sub_action}) %>
+                <% end %>
+              </tbody>
+            </table>
+          </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+  <div style="border-bottom:1px solid #ccc;line-height:5px">
+    &nbsp;
   </div>
+  <div>
+    <small>You can unsubscribe from these emails at any time by editing your notification settings at <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>.</small>
+  </div>
+  <div style="border-bottom:1px solid #ccc;line-height:5px">
+    &nbsp;
+  </div>
+
+</div>
+

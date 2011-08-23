@@ -1,0 +1,51 @@
+<tr style="vertical-align:top">
+  <% if action.action_type == Action.types[:search_comment] || action.action_type == Action.types[:action_comment] %>
+
+    <td style="padding-right:5px">
+      <%= image_tag url_for_avatar(action.user), :size => "44x44", :title=>"SocialStreet Message" %>
+    </td>
+
+    <td>
+      <b><%= action.user.name %></b>
+      <%= h("\"#{action.reference.body.strip}\"") unless action.reference.body.blank? %>
+    </td>
+
+  <% elsif action.action_type == Action.types[:event_created] %>
+    <% event = action.event %>
+    <% event_what = event.searchable_event_types.collect(&:name).to_sentence%>
+
+    <td style="padding-right:5px">
+      <%= image_tag('http://staging.socialstreet.com/' + url_for_event_image(event), :size => "44x44", :title => event_what) %><!--TODO Change to base url-->
+    </td>
+
+    <td>
+      <%=link_to event.title, event_url(event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
+      <br/>
+      <!--What: <%=event_what%>
+      <br/>-->
+      <% event_when = event.starts_at.strftime("%B %d %l:%M %p")%>
+      <% if event.finishes_at %>
+        <% if event.end_date != event.start_date%>
+          <% event_when += ' - ' + event.finishes_at.strftime("%B %d %l:%M %p")%>
+        <% else %>
+          <% event_when += ' - ' + event.finishes_at.strftime("%l:%M %p")%>
+        <% end %>
+      <% end %>
+      When: <%=event_when%>
+      <br/>
+      Where: <%=address_for(event.location)%>
+      <br/>
+      <br/>
+    </td>
+
+    <td style="padding-left: 100px">
+      <!--Attend button-->
+      <%= link_to new_event_rsvp_url(event), :style=>"background: #69B2D7;color:#FFFFFF;font:normal normal bold 11px/25px Arial, Helvetica, sans-serif;text-decoration: none;width:100px;height:29px;margin: 8px 0px 0px;line-height: 17px;font-size: 13px;border-bottom-left-radius: 4px 4px;border-bottom-right-radius: 4px 4px;border-top-left-radius: 4px 4px;border-top-right-radius: 4px 4px;float:right;text-align:center;" do %>
+        <span style="padding: 6px 7px;display:block">
+          Attend
+        </span>
+      <% end %>
+    </td>
+    
+  <% end %>
+</tr>
