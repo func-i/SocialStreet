@@ -2890,12 +2890,14 @@ form, fieldset {
     clear: both;
     float: left;
     padding: 3px 0 0;
+    display: none;
 }
 #sidebar .post-box .attending ul { display: none; }
 #sidebar .short-box.open .attending {
     clear: none;
     float: none;
     padding: 7px 0 0;
+    display: block;
 }
 #sidebar .short-box.open .attending ul { display: block; }
 #sidebar .short-box.open .keyword { float: none; }

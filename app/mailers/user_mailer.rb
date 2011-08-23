@@ -34,6 +34,39 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "New comment by #{comment.user.name} on SocialStreet")
   end
 
+  def user_welcome_notice(user)
+    @user = user
+    mail(:to => @user.email, :subject => "Welcome to SocialStreet")
+  end
+
+  def subscription_instant_notice(subscription, action, user)
+    @subscription = subscription
+    @action = action
+    @user = user
+
+    if action.action_type == Action.types[:event_created]
+      subject = "StreetMeet - #{subscription.name}"
+    elsif action.action_type == Action.types[:search_comment]
+      subject = "SocialStreet Message - #{subscription.name}"
+    elsif action.action_type == Action.types[:action_comment]
+      subject = "Reply to a SocialStreet Message - #{subscription.name}"
+    end
+
+    mail(:to => @user.email, :subject => subject)
+  end
+
+  def event_cancel_notice(user, event)
+    @user = user
+    @event = event
+    mail(:to => @user.email, :subject => "StreetMeet - #{event.title}' has been cancelled")
+  end
+
+  def event_edit_notice(user, event)
+    @user = user
+    @event = event
+    mail(:to => @user.email, :subject => "StreetMeet - #{event.title}' has been cancelled")
+  end
+
   def event_invitation_notice(invitation)
     @user = invitation.to_user
     @invitation = invitation

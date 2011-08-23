@@ -49,6 +49,9 @@ class AuthenticationsController < ApplicationController
         :description => "SocialStreet helps you explore real life. Never miss an opportunity to make new friends again!",
         :message => "I just joined SocialStreet! "
       )
+
+      Resque.enqueue(Jobs::EmailUserWelcomeNotice, current_user.id)
+
       redirect_to after_sign_in_path_for(current_user.reload)
     else
       render :text => "ERROR", :status => "500"

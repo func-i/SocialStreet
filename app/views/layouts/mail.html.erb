@@ -4,8 +4,43 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <%= yield %>
-    <br/><br/>
-    <p><small>This email was brought to you by <%= link_to 'SocialStreet', root_url %>... keepin' it real since 2011.</small></p>
-  </body>
+    <table style="background-color: #4d4d4f;width:98%;border:0;cellspacing:0;cellpadding:40;">
+      <tbody>
+        <tr>
+          <td style="width:100%;font-family:'arial',helvetica,sans-serif;">
+            <table style="cellpadding:0;cellspacing:0;border:0;width:620;">
+              <tbody>
+                <tr>
+                  <td style="background:#Ffc223;color:#FFFFFF;font-weight:bold;font-family:'arial',helvetica,sans-serif;vertical-align:middle;padding:20px 8px;font-size:16px;letter-spacing:-0.03em;text-align:left;">
+                    <!--<a href="http://www.SocialStreet.com" style="color:#F7EF6F;text-decoration:none;" alt="SocialStreet" caption="SocialStreet" title="SocialStreet">
+                      <img alt="SocialStreet" caption="SocialStreet" src="http://localhost:3000/images/ss_site_logo_gray.png"/>
+                    </a>-->
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="background-color:#FFFFFF;color:#4d4d4f;font-family:'arial',helvetica,sans-serif;padding:15px;valign:top;">
+                    <table style="width:100%;">
+                      <tbody>
+                        <tr>
+                          <td style="width:100%;font-size:12px;color:#4d4d4f;font-color:#4d4d4f;valign:top;align:left;">
+                            <%=yield%>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="background-color:#FFFFFF;font-color:#4d4d4f;color:#00;font-family:'arial',helvetica,sans-serif;padding:15px;valign:top;">
+                            Brought to you by <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>. Explore real life
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p><small>SocialStreet &#169; 2011</small></p>  </body>
 </html>

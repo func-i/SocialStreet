@@ -104,17 +104,17 @@ class Jobs::ProcessNewAction
       return
     end
 
-    defaultUser = User.where(:username => "default_socialstreet_user").first;
-    if !defaultUser
-      defaultUser = User.new(:username => "default_socialstreet_user");
+    default_user = User.where(:username => "default_socialstreet_user").first;
+    if !default_user
+      default_user = User.new(:username => "default_socialstreet_user");
     end
 
-    feed_item = Feed.where(:user_id => defaultUser, :head_action_id => action.action || action).first
+    feed_item = Feed.where(:user_id => default_user, :head_action_id => action.action || action).first
     if(nil == feed_item)
-      feed_item = Feed.new(:user => defaultUser, :head_action => action.action || action, :reason => Feed.reasons[:subscription])
+      feed_item = Feed.new(:user => default_user, :head_action => action.action || action, :reason => Feed.reasons[:subscription])
       feed_item.save
     end
-    Feed.push(redis, defaultUser, feed_item)
+    Feed.push(redis, default_user, feed_item)
 
   end
 

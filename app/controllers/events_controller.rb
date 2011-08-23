@@ -83,10 +83,11 @@ class EventsController < ApplicationController
     @event_for_edit = @event
     
     if create_or_edit_event(params, :edit)
+      Resque.enqueue(Jobs::EmailUserEditEvent, @event.id)
+      
       render :update do |page|
         page.redirect_to event_path(@event)
       end
-      #redirect_to @event
     else
       prepare_for_form
       render :edit
@@ -96,7 +97,7 @@ class EventsController < ApplicationController
   def destroy
     if @event.cancellable?(current_user)
       if @event.cancel
-        #TODO - send emails to everyone
+        Resque.enqueue(Jobs::EmailUserCancelEvent, @event.id)
       end
       redirect_to :root
     else
