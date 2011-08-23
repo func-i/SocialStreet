@@ -31,7 +31,7 @@ class Jobs::CreateConnectionsFromFacebook
         #Check if user exists
         if(User.where(:fb_uid => friend.identifier).count <= 0)
           first_name = (friend.first_name || friend.name.to_s.split.first).gsub(/[']/, "\\'")
-          last_name = (friend.first_name || friend.name.to_s.split.last).gsub(/[']/, "\\'")
+          last_name = (friend.last_name || friend.name.to_s.split.last).gsub(/[']/, "\\'")
           user_inserts.push(
             "('#{friend.identifier}',
             '#{first_name}',
