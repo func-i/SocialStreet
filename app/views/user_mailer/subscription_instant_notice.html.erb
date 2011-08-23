@@ -1,9 +1,9 @@
 <% action_type_text = "A new StreetMeet" if @action.action_type == Action.types[:event_created] %>
-<% action_type_text = "A new SocialStreet Message" if @action.action_type == Action.types[:search_comment] || @action.action_type == Action.types[:action_comment] %>
+<% action_type_text = "A new SocialStreet Message" if @action.action_type == Action.types[:search_comment] %>
 <% action_type_text = "A new reply to a SocialStreet Message" if @action.action_type == Action.types[:action_comment] %>
 
 <div style="margin-bottom:15px;font-size:12px">
-  Hi <%@user.first_name%>,
+  Hi <%=@user.first_name%>,
 </div>
 <div style="margin-bottom:15px">
   <%=action_type_text%> was posted to <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %> that matched your search:

@@ -1,5 +1,9 @@
 <tr style="vertical-align:top">
-  <% if action.action_type == Action.types[:search_comment] || action.action_type == Action.types[:action_comment] %>
+  <% if action.action_type == Action.types[:search_comment] || 
+      action.action_type == Action.types[:action_comment] ||
+      action.action_type == Action.types[:profile_comment] ||
+      action.action_type == Action.types[:event_comment]
+  %>
 
     <td style="padding-right:5px">
       <%= image_tag url_for_avatar(action.user), :size => "44x44", :title=>"SocialStreet Message" %>

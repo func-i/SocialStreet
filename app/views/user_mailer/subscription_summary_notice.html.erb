@@ -1,5 +1,5 @@
 <div style="margin-bottom:15px;font-size:12px">
-  Hi <%@user.first_name%>,
+  Hi <%=@user.first_name%>,
 </div>
 <div style="margin-bottom:15px">
   Here is a summary of StreetMeets and SocialStreet Messages posted to <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %> <% @subscription.frequency == SearchSubscription.frequencies[:daily] ? "today" : "this past week"%> that have matched your search:
