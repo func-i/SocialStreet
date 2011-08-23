@@ -43,11 +43,12 @@ class AuthenticationsController < ApplicationController
     if params[:accept] == "true"
       current_user.update_attribute("accepted_tncs", true)
       current_user.post_to_facebook_wall(
-        :picture => 'app_icon.png',
+        :picture => url_for('app_icon.png'),
         :link => "http://www.SocialStreet.com",
         :name => "SocialStreet.com",
-        :description => "SocialStreet helps you explore real life. Never miss an opportunity to make new friends again!",
-        :message => "I just joined SocialStreet! "
+        :caption => "SocialStreet helps you explore real life. Never miss an opportunity to make new friends again!",
+        :message => "I just joined SocialStreet!",
+        :type => "link"
       )
 
       Resque.enqueue(Jobs::EmailUserWelcomeNotice, current_user.id)
