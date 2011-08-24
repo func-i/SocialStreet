@@ -90,7 +90,7 @@ class InvitationsController < ApplicationController
           :link => "http://staging.socialstreet.com/events/#{@event.id}"
         )
 
-        update_attribute("posted_to_facebook", true)
+        @rsvp.update_attribute("posted_to_facebook", true)
       end
     end
  
