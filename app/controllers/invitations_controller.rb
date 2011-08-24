@@ -72,7 +72,28 @@ class InvitationsController < ApplicationController
 
     num_invited = (params[:user_ids] || []).size + (params[:emails] || []).size
     # TODO: Handle validation issues with non-unique invitations (maybe?)
-    #redirect_to @event, :notice => "You've invited #{num_invited} of your friends to this event. [[Link to modify invitations]]"
+
+    #Post to the user's wall if they have not unchecked the facebook checkbox
+    if params[:facebook] == '1'
+      if !@rsvp.posted_to_facebook
+        if @event.photo?
+          photo_url = @event.photo.thumb.url
+        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+          photo_url = et.image_path
+        else
+          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
+        end
+
+        @rsvp.user.post_to_facebook_wall(
+          :message => "I'm attending the StreetMeet - #{@event.title}",
+          :picture => "http://staging.socialstreet.com/#{photo_url}",
+          :link => "http://staging.socialstreet.com/events/#{@event.id}"
+        )
+
+        update_attribute("posted_to_facebook", true)
+      end
+    end
+ 
     redirect_to @event
   end
 
@@ -109,12 +130,33 @@ class InvitationsController < ApplicationController
   end
 
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
-    from_user.invitations.create :event => event, :rsvp => rsvp, :to_user => to_user, :email => email, :facebook => (params[:facebook] || false)
+    invitation = from_user.invitations.create :event => event, :rsvp => rsvp, :to_user => to_user, :email => email
+    invitation.save
     
     if to_user
       #Todo - handle when only have email
       Connection.connect_users_from_invitations(from_user, to_user)
     end
-  end
 
+    if !to_user || !to_user.sign_in_count.zero?
+      #Send email
+      Resque.enqueue(Jobs::EmailUserEventInvitation, invitation.id)
+    else if to_user
+        if @event.photo?
+          photo_url = @event.photo.thumb.url
+        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+          photo_url = et.image_path
+        else
+          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
+        end
+
+        fb_friend = from_user.facebook_user.friends.select{|f| f.identifier.eql?(to_user.fb_uid)}.first if user.facebook_user
+        @rsvp.user.post_to_facebook_wall(
+          :message => "#{from_user.name} has invited you to #{@event.title}",
+          :picture => "http://staging.socialstreet.com/#{photo_url}",
+          :link => "http://staging.socialstreet.com/events/#{@event.id}"
+        )
+      end
+    end
+  end
 end

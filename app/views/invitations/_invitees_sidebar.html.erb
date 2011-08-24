@@ -10,4 +10,6 @@
       <% end %>
     </ul>
   </div>
+
+  <%= hidden_field_tag :facebook, ((@rsvp.posted_to_facebook || @rsvp.user == @event.user) ? '0' : '1'), :id => "post-to-facebook"%>
 <% end %>

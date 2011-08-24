@@ -10,29 +10,13 @@ class Invitation < ActiveRecord::Base
 
   scope :still_valid, lambda{ joins(:event).merge(Event.upcoming)} # TODO - doesn't work
 
-  attr_accessor :facebook
-
-  # => Because this is an accessor the checkbox on the forms will populate it with "0"
-  # => If it is set to "0" then set it to false
-  def facebook=(val)
-    @facebook = (val.eql?("0") ? false : val)
-  end
-
-  default_value_for :facebook, true
-
-  after_create :post_to_facebook
-  after_create :send_email
+  #after_create :post_to_facebook
+  #after_create :send_email
 
   protected
 
   def post_to_facebook
     # Only post invitations to facebook walls for users that haven't yet signed into SocialStreet
-    if to_user.sign_in_count.zero?
-      fb_friend = user.facebook_user.friends.select{|f| f.identifier.eql?(to_user.fb_uid)}.first if user.facebook_user
-      fb_friend.feed!(
-        :message => "You have been invited to a SocialStreet StreetMeet! #{event.title}"
-      ) if fb_friend && self.facebook
-    end
   end
 
   # TODO: Perhaps don't send an email if we are writing to their facebook wall ? 

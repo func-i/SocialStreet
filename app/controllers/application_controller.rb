@@ -73,8 +73,8 @@ class ApplicationController < ActionController::Base
           #Create failed
           session[:stored_params] = session[:stored_redirect][:params][:event]
 
-            #TODO - What should this be. Currently, doesn't load modal on error
-            return_path = stored_path + "?&create_event=1"
+          #TODO - What should this be. Currently, doesn't load modal on error
+          return_path = stored_path + "?&create_event=1"
         end
 
       elsif session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
@@ -139,13 +139,28 @@ class ApplicationController < ActionController::Base
       @event.user = current_user if current_user # TODO: remove if statement when enforced.
     end
  
-    puts "JOSHY"
-    puts params.inspect
     @event.attributes = params[:event]       
     @event.location.user = current_user if @event.location
     
     if @event.save      
       Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
+
+      if(params[:facebook] == '1')
+        if @event.photo?
+          photo_url = @event.photo.thumb.url
+        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+          photo_url = et.image_path
+        else
+          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
+        end
+
+        @event.user.post_to_facebook_wall(
+          :message => "I created the StreetMeet - #{@event.title}",
+          :picture => "http://staging.socialstreet.com/#{photo_url}",
+          :link => "http://staging.socialstreet.com/events/#{@event.id}"
+        )
+      end
+      
       return true
     end
 

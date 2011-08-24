@@ -20,36 +20,12 @@ class Event < ActiveRecord::Base
 
   attr_accessor :exclude_end_date
   attr_accessor :current_user
-  attr_accessor :facebook
-
-  # => Because this is an accessor the checkbox on the forms will populate it with "0"
-  # => If it is set to "0" then set it to false
-  def facebook=(val)
-    rsvp = self.rsvps.by_user(user).first
-    raise "HELL" if !rsvp
-    rsvp.posted_to_facebook = (val.eql?("0") ? false : val)
-  end
 
   before_create :build_initial_rsvp
   
   #before_destroy :validate_destroy  
   after_create :make_searchable_explorable
 
-  after_create {|record|
-    if record.photo?
-      photo_url = record.photo.thumb.url
-    elsif !event.event_types.blank? && et = event.event_types.detect {|et| et.image_path? }
-      photo_url = et.image_path
-    else
-      photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
-    end
-
-    record.user.post_to_facebook_wall(
-      :message => "I created the StreetMeet - #{record.name}",
-      :picture => 'http://staging.socialstreet.com/' + photo_url,
-      :link => 'http://staging.socialstreet.com/events/' + record.id
-    ) if record.rsvp.posted_to_facebook 
-  }
 
   #after_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
 
@@ -79,7 +55,6 @@ class Event < ActiveRecord::Base
 
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
-  default_value_for :facebook, true
   default_value_for :canceled, false
 
   scope :attended_by_user, lambda {|user|
@@ -324,7 +299,7 @@ class Event < ActiveRecord::Base
   end
 
   def build_initial_rsvp
-    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1, :facebook => false) if rsvps.empty?
+    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
   end 
   
 end

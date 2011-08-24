@@ -113,8 +113,19 @@ class EventsController < ApplicationController
       @event.rsvps.create!(:status => "Interested", :facebook => true, :user => current_user)
     else
       unless @rsvp.posted_to_facebook?
-        @rsvp.facebook = true
-        @rsvp.save
+        if @event.photo?
+          photo_url = @event.photo.thumb.url
+        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+          photo_url = et.image_path
+        else
+          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
+        end
+
+        @rsvp.user.post_to_facebook_wall(
+          :message => "Checkout this StreetMeet - #{@event.title}",
+          :picture => "http://staging.socialstreet.com/#{photo_url}",
+          :link => "http://staging.socialstreet.com/events/#{@event.id}"
+        )
       end
     end
 
@@ -123,7 +134,7 @@ class EventsController < ApplicationController
     end
   end
 
-  def load_events   
+  def load_events
 
     @searchables = []
 
