@@ -149,12 +149,14 @@ class InvitationsController < ApplicationController
         else
           photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
         end
-
-        to_user.post_to_facebook_wall(
+        
+        options = {
           :message => "#{from_user.name} has invited you to #{@event.title}",
           :picture => "http://staging.socialstreet.com/#{photo_url}",
           :link => "http://staging.socialstreet.com/events/#{@event.id}"
-        )
+        }
+        
+        Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options) if from_user.facebook_user && from_user.facebook_user.permissions.include?(:publish_stream)
       end
     end
   end
