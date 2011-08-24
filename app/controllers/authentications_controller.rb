@@ -43,7 +43,7 @@ class AuthenticationsController < ApplicationController
     if params[:accept] == "true"
       current_user.update_attribute("accepted_tncs", true)
       current_user.post_to_facebook_wall(
-        :picture => 'http://staging.socialstreet.com/images/app_icon.png',
+        :picture => 'http://staging.socialstreet.com/images/app_icon_facebook.png',
         :link => "http://www.SocialStreet.com",
         :name => "SocialStreet.com",
         :caption => "SocialStreet helps you explore real life. Never miss an opportunity to make new friends again!",
