@@ -228,7 +228,8 @@ class Event < ActiveRecord::Base
   EDITABLE_OFFSET = 0
   def editable_time?
     #editable if not within X hours before the start_time
-    return (starts_at - EDITABLE_OFFSET > Time.zone.now)
+    #return (starts_at - EDITABLE_OFFSET > Time.zone.now)
+    return (finishes_at - EDITABLE_OFFSET > Time.zone.now)
   end
 
   def editable?(user)
