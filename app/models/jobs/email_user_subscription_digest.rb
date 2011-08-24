@@ -6,6 +6,7 @@ class Jobs::EmailUserSubscriptionDigest
 
   def self.perform(subscription_id)
     subscription = SearchSubscription.find subscription_id
+    return false unless subscription
 
     redis = Redis.new
     key = "digest_actions:#{subscription.id}"
