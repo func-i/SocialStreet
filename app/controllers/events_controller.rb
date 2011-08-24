@@ -110,23 +110,23 @@ class EventsController < ApplicationController
 
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
     if @rsvp.nil?
-      @event.rsvps.create!(:status => "Interested", :user => current_user)
-    else
-      unless @rsvp.posted_to_facebook?
-        if @event.photo?
-          photo_url = @event.photo.thumb.url
-        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
-          photo_url = et.image_path
-        else
-          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
-        end
-
-        @rsvp.user.post_to_facebook_wall(
-          :message => "Checkout this StreetMeet - #{@event.title}",
-          :picture => "http://staging.socialstreet.com/#{photo_url}",
-          :link => "http://staging.socialstreet.com/events/#{@event.id}"
-        )
+      @rsvp = @event.rsvps.create!(:status => "Interested", :user => current_user)
+    end
+    
+    unless @rsvp.posted_to_facebook?
+      if @event.photo?
+        photo_url = @event.photo.thumb.url
+      elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+        photo_url = et.image_path
+      else
+        photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
       end
+
+      @rsvp.user.post_to_facebook_wall(
+        :message => "Checkout this StreetMeet - #{@event.title}",
+        :picture => "http://staging.socialstreet.com/#{photo_url}",
+        :link => "http://staging.socialstreet.com/events/#{@event.id}"
+      )
     end
 
     if !request.xhr?
