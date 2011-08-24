@@ -25,7 +25,9 @@ class Event < ActiveRecord::Base
   # => Because this is an accessor the checkbox on the forms will populate it with "0"
   # => If it is set to "0" then set it to false
   def facebook=(val)
-    self.rsvp.posted_to_facebook = (val.eql?("0") ? false : val)
+    rsvp = self.rsvps.by_user(user).first
+    raise "HELL" if !rsvp
+    rsvp.posted_to_facebook = (val.eql?("0") ? false : val)
   end
 
   before_create :build_initial_rsvp
