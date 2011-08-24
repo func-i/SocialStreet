@@ -13,11 +13,14 @@
     <%= yield :head %>
   </head>
   <body>
+    <div style="display:block">
+    <div style="display:block !important;postion:fixed;left:0px;top:45%"><%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view"%></div></div>
     <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
         <div class="w2">
           <%= render 'layouts/header' %>
+
           <%= yield :popup_modals -%>
           <div id="wrapper" class="wat-cf">
             <div id="main">

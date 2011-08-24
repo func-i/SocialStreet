@@ -71,7 +71,7 @@
         $('.form-post-message').removeClass('send');
     });
 
-    $('.search-textarea').live('change', function(e){
+/*    $('.search-textarea').live('change', function(e){
       if(this.value.length > 0)
       {
         $('.form-post-message').removeClass('send');
@@ -81,7 +81,7 @@
         this.value = '';
         return false;
       }
-    });
+    });*/
     $('.search-textarea').live('keydown', function(e) {
       if (e.keyCode == 13) {
         if(e.shiftKey != true){

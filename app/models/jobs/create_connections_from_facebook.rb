@@ -30,8 +30,8 @@ class Jobs::CreateConnectionsFromFacebook
 
         #Check if user exists
         if(User.where(:fb_uid => friend.identifier).count <= 0)
-          first_name = (friend.first_name || friend.name.to_s.split.first).gsub(/[']/, "\\'")
-          last_name = (friend.last_name || friend.name.to_s.split.last).gsub(/[']/, "\\'")
+          first_name = (friend.first_name || friend.name.to_s.split.first).gsub(/[']/, "''")
+          last_name = (friend.last_name || friend.name.to_s.split.last).gsub(/[']/, "''")
           user_inserts.push(
             "('#{friend.identifier}',
             '#{first_name}',
@@ -72,8 +72,10 @@ class Jobs::CreateConnectionsFromFacebook
   end
 
   def self.find_worker(user_id)
+    return nil if !user_id
+    
     Resque.workers.each do |worker|
-      if !worker.job.empty? && worker.job["payload"]["class"].eql?(self.name) && worker.job["payload"]["args"].eql?([user_id])
+      if !(job = worker.job).blank? && job["payload"]["class"].eql?(self.name) && job["payload"]["args"].eql?([user_id])
         return worker
       end
     end

@@ -97,6 +97,13 @@ class UserMailer < ActionMailer::Base
     mail(:to => @subscription.user.email, :subject => "SocialStreet #{@subscription.frequency == SearchSubscription.frequencies[:daily] ? 'Daily' : 'Weekly'} Summary - #{subscription.name}")
   end
 
+  def send_feedback_mail(email, request)
+    @name = email[:name]
+    @the_body = email[:body]
+    @request = request
+    mail(:to => "jborts@socialstreet.com", :subject => "User feedback")
+  end
+
   def test_notice(user)
     @user = user
     mail(:to => user.email, :subject => "This is a test email")

@@ -173,7 +173,7 @@ $(function() {
         }
 
 
-        $(this).parent('.save-button-at-bottom').parent().parent().find('.modal-submit-form').submit();
+        $(this).parent('.row-btn').parent().parent().find('.modal-submit-form').submit();
     });
 
     $('.btn-close').live('click', function() {
