@@ -2,7 +2,7 @@
 
 <fieldset>
   <%= form.hidden_field :action_id %>
-  <%= form.hidden_field :facebook, :id => "post-to-facebook", :value => nil%>
+  <%= hidden_field_tag :facebook, '1', :id => "post-to-facebook"%>
 
   <div class="row">
     <label for="what">What?</label>

@@ -20,23 +20,12 @@ class Event < ActiveRecord::Base
 
   attr_accessor :exclude_end_date
   attr_accessor :current_user
-  attr_accessor :facebook
 
-  # => Because this is an accessor the checkbox on the forms will populate it with "0"
-  # => If it is set to "0" then set it to false
-  def facebook=(val)
-    @facebook = (val.eql?("0") ? false : val)
-  end
-
-  #before_validation :set_default_title, :if => Proc.new{|e| e.name.blank?}
   before_create :build_initial_rsvp
   
   #before_destroy :validate_destroy  
   after_create :make_searchable_explorable
 
-  after_create {|record| record.user.post_to_facebook_wall(
-      :message => "SocialStreet Event Created: #{record.name}"
-    ) if record.facebook }
 
   #after_save :set_default_title, :on => :update,  :if => Proc.new{|e| e.default_title?}
 
@@ -66,7 +55,6 @@ class Event < ActiveRecord::Base
 
   default_value_for :guests_allowed, true
   default_value_for :cost_in_dollars, 0
-  default_value_for :facebook, true
   default_value_for :canceled, false
 
   scope :attended_by_user, lambda {|user|
@@ -299,7 +287,7 @@ class Event < ActiveRecord::Base
   def set_default_title
     self.name = (searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
     self.name << (" @ " + (location.text ? location.text : "#{location.street} #{location.city}, #{location.state}"))
-    self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
+    #self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
   end
 
   #  def valid_dates
@@ -312,7 +300,7 @@ class Event < ActiveRecord::Base
   end
 
   def build_initial_rsvp
-    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1, :facebook => false) if rsvps.empty?
+    rsvps.build(:user=>user, :status => Rsvp.statuses[:attending], :administrator => 1) if rsvps.empty?
   end 
   
 end

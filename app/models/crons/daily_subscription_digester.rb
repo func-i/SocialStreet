@@ -13,7 +13,7 @@ class Crons::DailySubscriptionDigester
       # remove the "digest_actions:" part of the key and you get the subscription id
       if subscription = SearchSubscription.daily.find_by_id(key.gsub('digest_actions:', '').to_i)
         if redis.zcard("digest_actions:#{subscription.id}").to_i > 0
-          Resque.enqueue Jobs::EmailUserSubscriptionDigest, subscription.id, start_time, end_time
+          Resque.enqueue Jobs::EmailUserSubscriptionDigest, subscription.id
         end
       end
       

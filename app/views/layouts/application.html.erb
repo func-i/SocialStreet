@@ -10,14 +10,25 @@
     <%= csrf_meta_tag %>
     <%= favicon_link_tag %>
 
+    <meta property="og:title" content="<%= @og_title || "SocialStreet" %>" />
+    <meta property="og:type" content="<%= @og_type || "website" %>" />
+    <meta property="og:url" content="<%= @og_url || request.url %>" />
+    <meta property="og:image" content="<%= @og_image || 'http://staging.socialstreet.com/images/app_icon_facebook.png' %>" />
+    <meta property="og:site_name" content="SocialStreet" />
+    <meta property="og:description" content="<%= @og_description || 'SocialStreet mission is to make it easy to discover friends (new or old) that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!'%>" />
+    <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
+
     <%= yield :head %>
   </head>
   <body>
+    <div style="display:block">
+    <div style="display:block !important;postion:fixed;left:0px;top:45%"><%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view"%></div></div>
     <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
         <div class="w2">
           <%= render 'layouts/header' %>
+
           <%= yield :popup_modals -%>
           <div id="wrapper" class="wat-cf">
             <div id="main">

@@ -109,6 +109,8 @@ SocialStreet::Application.routes.draw do
 
   resources :feedbacks, :only => [:update, :show] # for providing feedback through the dash
 
+  match '/contact' => 'contact#create'
+
   resources :search_subscriptions
 
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }

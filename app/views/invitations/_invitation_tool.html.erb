@@ -23,7 +23,7 @@
       <%= text_field_tag "user_search", params[:user_search], :class => "text_field search-field text text1", :placeholder => "Name or email"-%>
     <%- end -%>
   </div>
-  <p><strong>Check as many friends or enter one email at a time</strong></p>
+  <p><strong>Check as many friends or enter one email at a time.<br/>Friends who are not on SocialStreet will receive an invitation on Facebook</strong></p>
 </div>
 <div class="users-holder">
   <div class="users-list">
@@ -33,14 +33,6 @@
       </ul>
     </div>
   </div>
-  <!-- <div class="row-btn">
-      <div class="col-facebook">
-        <label for="facebook">Post to:
-          <input type="checkbox" title="facebook" id="facebook"/>
-        </label>
-      </div>
-<%# render 'shared/form_submit_button' %>
-    </div>-->
 </div>
 
 <script type='text/javascript'>

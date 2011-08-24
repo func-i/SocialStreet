@@ -3,23 +3,13 @@ class Jobs::EmailUserForActionChain
   @queue = :emails
 
   # the "orig_action_id" is the action that was in the same chain as the new action represented by "action_id"
-  def self.perform(action_id, orig_action_id)
-    action = Action.find action_id
-    orig_action = Action.find orig_action_id
-    user = orig_action.user # user to notify
+  def self.perform(head_action_id, new_action_id, user_id)
+    head_action = Action.find head_action_id
+    new_action = Action.find new_action_id
+    user = User.find user_id
 
-    if action.action_type == Action.types[:event_created]
-      event = action.event
-      email = UserMailer.event_creation_notice(user, event)
-    elsif action.action_type == Action.types[:search_comment]
-      comment = action.reference
-      email = UserMailer.search_comment_notice(user, comment)
-    elsif action.action_type == Action.types[:action_comment]
-      comment = action.reference
-      email = UserMailer.action_comment_notice(user, comment)
-    end
-    
+    email = UserMailer.action_chain_notice(head_action, user, new_action)
+
     email.deliver if email
-    
   end
 end

@@ -68,27 +68,27 @@
 
   <div id="subscription" class="subscription tab-content" style="display:none">
 
-    <div class="row">
+<!--    <div class="row">
       <strong class="heading">Comments</strong>
       <div class="content">
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:immediate], :class => "radio submit-on-change", :id => "instant"%>
+          <%#=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:immediate], :class => "radio submit-on-change", :id => "instant"%>
           <label for="instant">Instant</label>
         </span>
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:daily], :class => "radio submit-on-change", :id => "daily"%>
+          <%#=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:daily], :class => "radio submit-on-change", :id => "daily"%>
           <label for="daily">Daily</label>
         </span>
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:weekly], :class => "radio submit-on-change", :id => "weekly"%>
+          <%#=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:weekly], :class => "radio submit-on-change", :id => "weekly"%>
           <label for="weekly">Weekly</label>
         </span>
         <span>
-          <%=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:none], :class => "radio submit-on-change", :id => "none"%>
+          <%#=form.radio_button :comment_notification_frequency, SearchSubscription.frequencies[:none], :class => "radio submit-on-change", :id => "none"%>
           <label for="none">None</label>
         </span>
       </div>
-    </div>
+    </div>-->
 
     <% if @subscriptions && !@subscriptions.empty? %>
       <% form.fields_for :search_subscriptions do |builder| %>

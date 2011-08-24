@@ -4,8 +4,9 @@ class Jobs::EmailUserSubscriptionDigest
 
   MAX_ACTIONS = 100
 
-  def self.perform(subscription_id, start_time, end_time)
+  def self.perform(subscription_id)
     subscription = SearchSubscription.find subscription_id
+    return false unless subscription
 
     redis = Redis.new
     key = "digest_actions:#{subscription.id}"
@@ -13,7 +14,7 @@ class Jobs::EmailUserSubscriptionDigest
     
     actions = Action.find action_ids
 
-    email = UserMailer.daily_subscription_digest(subscription, actions, start_time, end_time)
+    email = UserMailer.subscription_summary_notice(subscription, actions, subscription.user)
     email.deliver
 
     redis.del key # remove all data for this subscription

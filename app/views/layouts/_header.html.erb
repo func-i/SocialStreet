@@ -26,7 +26,7 @@
         </li>
 
       <% else %>
-                                                            <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                                              <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -66,9 +66,9 @@
 
         <%= link_to "close", '#', :class => "btn-close" -%>
 
-        <div class="col-facebook facebok-checkbox-in-header" style="float:right;display:none">
+        <div class="col-facebook facebook-checkbox-in-header" style="float:right;display:none">
           <label for="facebook" style="height:16px;margin:0 100px 0 0">
-            <input type="checkbox" title="facebook" checked style="padding: 0;"/>
+            <input type="checkbox" title="facebook" class="facebook-checkbox" checked style="padding: 0;"/>
           </label>
         </div>
 
@@ -102,7 +102,7 @@
 
         <%= link_to "close", '#', :class => "btn-close" -%>
 
-        <div class="col-facebook facebok-checkbox-in-header" style="float:right;display:none">          
+        <div class="col-facebook facebook-checkbox-in-header" style="float:right;display:none">
           <label for="facebook" style="height:16px;margin:0 100px 0 0">
             <input type="checkbox" title="facebook" class="facebook-checkbox" checked style="padding: 0;"/>
           </label>
@@ -118,11 +118,44 @@
       </div>
 
       <div class="row-btn save-button-at-bottom" style="display:none;margin:0;border-top-style:solid;border-top-width:1px">
-        <%= submit_tag "Continue", :class => "btn save-modal-button", :onclick => "saveModalClicked();" -%>
+        <%= submit_tag "Continue", :class => "btn save-modal-button", :onclick => "saveModalClicked(this);" -%>
         or <a href="#" class="link-close">cancel</a>
       </div>
     </div>
   </div>
+
+  <div id="feedback_modal" class="pop-up pop-up-modal" style="display:none;">
+    <div class="pop-up1">
+      <div class="heading">
+
+        <strong>
+          <span>Send us your thoughts!</span>
+        </strong>
+
+        <%= link_to "close", '#', :class => "btn-close" -%>
+
+      </div>
+
+      <div class="content content1">
+        <div class="pop-up1-content">
+          We'd love to hear from you. Send us your complaints, suggestions and/or stories (nothing would make our day like hearing how SocialStreet has helped people connect!)
+          <%= form_for :email, :url => '/contact', :html => {:class => "modal-submit-form form", :onclick => ""}, :remote => true do |f| %>
+            <%= f.label :name %><br />
+            <%= f.text_field :name, :size => 60 %><br />
+            <%= f.label :body %><br />
+            <%= f.text_area :body, :rols => 5, :cols => 60 %><br />
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row-btn" style="margin:0;border-top-style:solid;border-top-width:1px">
+        <%= submit_tag "Continue", :class => "btn save-modal-button", :onclick => "saveModalClicked();removeModal($(this).closest('.pop-up-modal'));" -%>
+        or <a href="#" class="link-close">cancel</a>
+      </div>
+    </div>
+  </div>
+
+
 <% end %>
 
 <%= content_for :end_of_body do -%>
@@ -134,7 +167,7 @@
   <% end %>
 
   <%- if(!@current_user &&  current_page?(explore_path) && (!session[:how_it_works_last_display_time] || (Time.zone.now - session[:how_it_works_last_display_time] > 30.minute)))-%>
-      <% session[:how_it_works_last_display_time] = Time.zone.now %>
+    <% session[:how_it_works_last_display_time] = Time.zone.now %>
       expandHowItWorks();
 
       $(function(){
@@ -177,7 +210,7 @@
     $('.main-top .holder').css('background', '');
   }
 
-  function saveModalClicked() {
+  function saveModalClicked(elem) {
     if($('#submit_form').length)
       $('#submit_form').val("true");
     return true;   
@@ -192,6 +225,10 @@
       $('.top-explore-field').width(newWidth);
       $('.top-explore-field').closest('.text').width(newWidth);
     }
+
+    $('.facebook-checkbox').change(function(e){
+      $('#post-to-facebook').val($(this).attr('checked') ? '1' : '0');
+    });
 
 
     $( ".top-explore-field" ).autocomplete({
