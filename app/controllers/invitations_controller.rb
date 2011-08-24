@@ -150,7 +150,7 @@ class InvitationsController < ApplicationController
           photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
         end
 
-        fb_friend = from_user.facebook_user.friends.select{|f| f.identifier.eql?(to_user.fb_uid)}.first if user.facebook_user
+        fb_friend = from_user.facebook_user.friends.select{|f| f.identifier.eql?(to_user.fb_uid)}.first if from_user.facebook_user
         @rsvp.user.post_to_facebook_wall(
           :message => "#{from_user.name} has invited you to #{@event.title}",
           :picture => "http://staging.socialstreet.com/#{photo_url}",
