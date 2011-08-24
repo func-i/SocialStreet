@@ -1,9 +1,9 @@
 #! /bin/bash
 
 echo ">>>Starting Resque Server"
-/usr/bin/redis-2.2.7/src/redis-server&
+/Users/azhar/Downloads/Applications/redis-2.2.12/src/redis-server&
 
-cd /Users/joshuaborts/SocialStreet
+cd /Users/azhar/SocialStreet
 
 echo ">>>Starting Resque Worker"
 QUEUE=* bundle exec rake environment resque:work&

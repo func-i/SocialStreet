@@ -1,6 +1,6 @@
 <% content_for :main_top do %>
   <div class="col1">
-    <% if @event.editable_time? && @rsvp%>
+    <%# if @event.editable_time? && @rsvp%>
       <% if @event.editable_by?(current_user) %>
         <div class="admin-view">
           <strong>
@@ -14,7 +14,7 @@
           <% end %>
         </div>
       <% end %>
-    <% end %>
+    <% #end %>
   </div>
   <div class="col2"></div>
 <% end %>
@@ -126,7 +126,11 @@
   <div class="box map">
     <div class="heading">
       <h3>
-        <%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
+        <%if @event.location.geocoded_address%>
+          <%="#{@event.location.geocoded_address}"%>
+        <%else %>
+          <%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
+        <%end%>
       </h3>
     </div>
     <div class="map-holder">

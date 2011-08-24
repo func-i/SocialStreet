@@ -105,8 +105,15 @@ function DropPinControl(controlImg, controlText, map) {
             var proj = new ProjectionHelperOverlay(map);
             var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(ui.position.left+20, ui.position.top+48));
             var location = new google.maps.LatLng(pos.lat(), pos.lng());
-            createMarkerManager.createMarker(location, null, '', true);
-            map.setCenter(location);
+            var geocoded_address = '';
+            geocoder.geocode({'location':location}, function(results,status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                     geocoded_address = results[0].formatted_address;
+                }
+                createMarkerManager.createMarker(location, null, null, geocoded_address, true);
+                map.setCenter(location);
+            });
+           
 
             dropPinState = false;            
         }
@@ -146,7 +153,7 @@ function searchLocations(e) {
                 $.each(result.address_components, function(ci, component) {
                     infoContents[component.types["0"]] = component.short_name;
                 });
-                createMarkerManager.createMarker(result.geometry.location, null, e.target.value, true);
+                createMarkerManager.createMarker(result.geometry.location, null, null, e.target.value, true);
                 map.setCenter(result.geometry.location);
             });
         } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
@@ -166,7 +173,7 @@ function searchLocations(e) {
                     $.each(data, function(index, result) {
                         //placeMarker(new google.maps.LatLng(result.latitude, result.longitude), result.text);
                         var location = new google.maps.LatLng(result.latitude, result.longitude)
-                        createMarkerManager.createMarker(location, null, result.text, true);
+                        createMarkerManager.createMarker(location, null, null, result.text, true);
                         map.setCenter(location);
                     });
                 } else {

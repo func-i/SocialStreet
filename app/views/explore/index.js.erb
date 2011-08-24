@@ -39,13 +39,13 @@ myMarkerManager.clearMarkers();
 
 <% (@searchables || []).each do |searchable| %>
   <% if searchable.geo_located? %>
-    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
   <% end %>
 <% end %>
 
 <% (@similar_results || []).each do |searchable| %>
   <% if searchable.geo_located? %>
-    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
   <% end %>
 <% end %>
 

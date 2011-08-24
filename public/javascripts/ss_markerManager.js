@@ -55,7 +55,7 @@ MarkerManager.prototype.setValues_ = function(options)
     this.selectedMarker_ = null;
 };
 
-MarkerManager.prototype.createMarker = function(location, searchableID, geocodableAddress, preserveMarker, markerIsSelected){
+MarkerManager.prototype.createMarker = function(location, searchableID, markerTitle, geocodableAddress, preserveMarker, markerIsSelected){
     if(markerIsSelected == undefined)
         markerIsSelected = false;
 
@@ -80,7 +80,7 @@ MarkerManager.prototype.createMarker = function(location, searchableID, geocodab
     var marker = new google.maps.Marker({
         position: location,
         icon: icoImage,
-        title: geocodableAddress
+        title: (markerTitle || geocodableAddress)
     });
     marker.setMap(null);
     marker.searchableID_ = searchableID;
@@ -304,6 +304,8 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
         var latlng = this.selectedMarker_.getPosition();
         $('#location-lat-field').val(latlng.lat());
         $('#location-lng-field').val(latlng.lng());
+        $('#location-geocodedaddress-field').val(this.selectedMarker_.geocodableAddress_);
+        $('.location-address-field').val(this.selectedMarker_.geocodableAddress_);
     }
 };
 
@@ -430,7 +432,7 @@ function InfoWindow(markerManager){
                 $(this).siblings('a').html("Add place name");
             }
 
-            that.infoBubble_.setMinWidth($(this).siblings('a').html().length*6.5);//TODO - Horrible hack
+            that.infoBubble_.setMinWidth($(this).siblings('a').html().length*7.5);//TODO - Horrible hack
 
             //that.infoBubble_.setMinHeight('auto');
 

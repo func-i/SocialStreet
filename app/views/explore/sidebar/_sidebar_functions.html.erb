@@ -328,14 +328,14 @@
   <% (@searchables || []).each do |searchable| %>
     <% if searchable.geo_located? %>
         //placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
-        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 
   <% (@similar_results || []).each do |searchable| %>
     <% if searchable.geo_located? %>
         //placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
-        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
+        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 

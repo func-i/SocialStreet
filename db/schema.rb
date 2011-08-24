@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110817231500) do
+ActiveRecord::Schema.define(:version => 20110824181838) do
 
   create_table "actions", :force => true do |t|
     t.integer  "event_id"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(:version => 20110817231500) do
     t.float    "ne_lng"
     t.string   "neighborhood"
     t.string   "route"
+    t.string   "geocoded_address"
   end
 
   add_index "locations", ["latitude", "longitude"], :name => "index_locations_on_latitude_and_longitude"

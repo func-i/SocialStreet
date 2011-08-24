@@ -62,6 +62,7 @@
         <%= location_fields.hidden_field :text, :id => "location-name-field" %>
         <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
         <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
+        <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field"%>
       <% end %>
     <% end %>
   </div>
@@ -121,7 +122,7 @@
 <% if event.location.try(:geo_located?) %>
       loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
       map.setCenter(loc);
-      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), true, true);
+      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
 <% end %>
 
     $('#new_event').submit(function(e) {
