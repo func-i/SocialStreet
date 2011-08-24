@@ -132,7 +132,7 @@ class Searchable < ActiveRecord::Base
       end
     end
 
-    if false && searchable_date_ranges && !searchable_date_ranges.blank?
+    if searchable_date_ranges && !searchable_date_ranges.blank?
       # TODO - Include date in title
       title += ' on '
       

@@ -286,7 +286,7 @@ class Event < ActiveRecord::Base
   def set_default_title
     self.name = (searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
     self.name << (" @ " + (location.text ? location.text : "#{location.street} #{location.city}, #{location.state}"))
-    self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
+    #self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
   end
 
   #  def valid_dates

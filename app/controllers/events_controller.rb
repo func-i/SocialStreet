@@ -110,7 +110,7 @@ class EventsController < ApplicationController
 
     @rsvp = @event.rsvps.by_user(current_user).first if current_user
     if @rsvp.nil?
-      @event.rsvps.create!(:status => "Interested", :facebook => true, :user => current_user)
+      @event.rsvps.create!(:status => "Interested", :user => current_user)
     else
       unless @rsvp.posted_to_facebook?
         if @event.photo?
