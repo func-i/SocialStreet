@@ -6,7 +6,11 @@ class Jobs::Facebook::PostToFbWall
     user = User.find(user_id)
     user.facebook_user.feed!(
       :message => hsh["message"],
-      :link => hsh["link"]
+      :picture => hsh["picture"],
+      :caption => hsh["caption"],
+      :description => hsh["description"],
+      :link => hsh["link"],
+      :type => hsh["type"]
     ) if user.facebook_user && user.facebook_user.permissions.include?(:publish_stream)
   end
 
