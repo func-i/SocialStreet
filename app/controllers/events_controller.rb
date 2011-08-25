@@ -128,7 +128,7 @@ class EventsController < ApplicationController
         :name => @event.title,
         :caption => "Brought to you by SocialStreet",
         :description => @event.name.blank? ? "" : @event.title_from_parameters(true),
-        :message => "Checkout this SocialStreet StreetMeet!",
+        :message => "Checkout this StreetMeet on SocialStreet!",
         :type => "link"
       )
     end
