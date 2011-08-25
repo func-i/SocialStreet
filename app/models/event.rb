@@ -85,7 +85,11 @@ class Event < ActiveRecord::Base
 
   def title
     return self.name unless self.name.blank?
-        
+
+    return title_from_parameters
+  end
+
+  def title_from_parameters(include_date = false)
     title = (self.searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
 
     if self.location
@@ -104,8 +108,7 @@ class Event < ActiveRecord::Base
       end
     end
 
-    title << (" - " + (self.starts_at ? self.starts_at.to_s(:date_with_time) : "Sometime"))
-
+    title << (" - " + (self.starts_at ? self.starts_at.to_s(:date_with_time) : "Sometime")) if include_date
 
     return title
   end
@@ -287,7 +290,7 @@ class Event < ActiveRecord::Base
   def set_default_title
     self.name = (searchable_event_types.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
     self.name << (" @ " + (location.text ? location.text : "#{location.street} #{location.city}, #{location.state}"))
-    #self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
+    self.name << (" on " + (starts_at ? starts_at.to_s(:date_with_time) : "Sometime"))
   end
 
   #  def valid_dates

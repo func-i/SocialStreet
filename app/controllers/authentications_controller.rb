@@ -44,9 +44,10 @@ class AuthenticationsController < ApplicationController
       current_user.update_attribute("accepted_tncs", true)
       current_user.post_to_facebook_wall(
         :picture => 'http://staging.socialstreet.com/images/app_icon_facebook.png',
-        :link => "http://staging.socialstreet.com/images/app_icon_facebook.png",
+        :link => "http://staging.socialstreet.com/",
         :name => "SocialStreet.com",
-        :caption => "SocialStreet helps you explore real life. Never miss an opportunity to make new friends again!",
+        :caption => "Explore real life!",
+        :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
         :message => "I just joined SocialStreet!",
         :type => "link"
       )

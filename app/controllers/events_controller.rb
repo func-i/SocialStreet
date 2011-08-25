@@ -116,16 +116,20 @@ class EventsController < ApplicationController
     unless @rsvp.posted_to_facebook?
       if @event.photo?
         photo_url = @event.photo.thumb.url
-      elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+      elsif !@event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
         photo_url = et.image_path
       else
         photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
       end
 
       @rsvp.user.post_to_facebook_wall(
-        :message => "Checkout this StreetMeet - #{@event.title}",
         :picture => "http://staging.socialstreet.com/#{photo_url}",
-        :link => "http://staging.socialstreet.com/events/#{@event.id}"
+        :link => "http://staging.socialstreet.com/events/#{@event.id}",
+        :name => @event.title,
+        :caption => "Brought to you by SocialStreet",
+        :description => @event.name.blank? ? "" : @event.title_from_parameters(true),
+        :message => "Checkout this SocialStreet StreetMeet!",
+        :type => "link"
       )
     end
 

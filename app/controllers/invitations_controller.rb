@@ -78,16 +78,20 @@ class InvitationsController < ApplicationController
       if !@rsvp.posted_to_facebook
         if @event.photo?
           photo_url = @event.photo.thumb.url
-        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+        elsif !@event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
           photo_url = et.image_path
         else
           photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
         end
 
         @rsvp.user.post_to_facebook_wall(
-          :message => "I'm attending the StreetMeet - #{@event.title}",
           :picture => "http://staging.socialstreet.com/#{photo_url}",
-          :link => "http://staging.socialstreet.com/events/#{@event.id}"
+          :link => "http://staging.socialstreet.com/events/#{@event.id}",
+          :name => @event.title,
+          :caption => "Brought to you by SocialStreet",
+          :description => @event.name.blank? ? "" : @event.title_from_parameters(true),
+          :message => "I'm attending this StreetMeet on SocialStreet!",
+          :type => "link"
         )
 
         @rsvp.update_attribute("posted_to_facebook", true)
@@ -142,21 +146,25 @@ class InvitationsController < ApplicationController
       #Send email
       Resque.enqueue(Jobs::EmailUserEventInvitation, invitation.id)
     elsif to_user
-        if @event.photo?
-          photo_url = @event.photo.thumb.url
-        elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
-          photo_url = et.image_path
-        else
-          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
-        end
+      if @event.photo?
+        photo_url = @event.photo.thumb.url
+      elsif !@event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
+        photo_url = et.image_path
+      else
+        photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
+      end
         
-        options = {
-          :message => "#{from_user.name} has invited you to #{@event.title}",
-          :picture => "http://staging.socialstreet.com/#{photo_url}",
-          :link => "http://staging.socialstreet.com/events/#{@event.id}"
-        }
+      options = {
+        :picture => "http://staging.socialstreet.com/#{photo_url}",
+        :link => "http://staging.socialstreet.com/events/#{@event.id}",
+        :name => @event.title,
+        :caption => "Brought to you by SocialStreet",
+        :description => @event.name.blank? ? "" : @event.title_from_parameters(true),
+        :message => "I want to invite you to join this StreetMeet on SocialStreet!",
+        :type => "link"
+      }
         
-        Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
+      Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
     end
   end
 end
