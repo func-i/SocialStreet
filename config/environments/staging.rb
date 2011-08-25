@@ -59,4 +59,10 @@ SocialStreet::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => "[SocialStreet Error] ",
+    :sender_address => %{"notifier" <notifier@socialstreet.com>},
+    :exception_recipients => %w{jon.salis@railias.ca jborts@gmail.com}   
+
 end
