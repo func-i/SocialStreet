@@ -85,7 +85,7 @@ MarkerManager.prototype.createMarker = function(location, searchableID, markerTi
     marker.setMap(null);
     marker.searchableID_ = searchableID;
     marker.geocodableAddress_ = geocodableAddress;
-    marker.clusteredMarker_ = [];
+    marker.clusteredMarkers_ = [];
     marker.selected_ = selected;
     marker.preserveMarker_ = preserveMarker
 
