@@ -89,8 +89,9 @@
         createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
-
+    
   <% (@similar_results || []).each do |searchable| %>
+
     <% if searchable.geo_located? %>
         createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
     <% end %>
@@ -189,7 +190,7 @@
       setSelectedMarker(select_marker);
     else{
   <% if params.eql?('map') %>
-      $('.address').html('');
+        $('.address').html('');
   <% end %>
     }
     markerArr_ = null;
