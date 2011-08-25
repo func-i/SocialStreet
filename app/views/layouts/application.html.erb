@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>SocialStreet <%= " - #{truncate(@page_title, :length => 30)}" if @page_title %></title>
-    <%= stylesheet_link_tag "/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css", "all" -%>
+    <%= stylesheet_link_tag "/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css", "all", :cache => "socialstreet" -%>
     <!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="/stylesheets/ie.css" media="screen"/><![endif]-->
     <!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="/stylesheets/ie7.css" media="screen"/><![endif]-->
 

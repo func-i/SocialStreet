@@ -33,6 +33,7 @@ gem 'json'
 group :production, :staging do
   gem 'exception_notification'
   gem 'newrelic_rpm'
+  gem 'jammit'
 end
 
 
