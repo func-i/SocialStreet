@@ -7,8 +7,6 @@ class Jobs::CreateConnectionsFromFacebook
 
     #sleep(50)
 
-    timen = Time.now.to_f
-
     user = User.find(user_id)    
     fb = user.facebook_user
     friends = fb.friends
