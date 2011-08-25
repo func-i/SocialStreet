@@ -193,13 +193,13 @@ MarkerManager.prototype.placeAllMarkers = function(){
         //Push marker back onto marker array
         this.allMarkers_.push(marker);
 
-        // Set the z-index to all the markers and their labels
-        $.each(this.allMarkers_, function(i, mkr) {
-            if(mkr.map != null){
-                mkr.setZIndex(i);
-                mkr.label_.div_.style.zIndex = '' + i;
-            }
-        });
+    // Set the z-index to all the markers and their labels
+    //$.each(this.allMarkers_, function(i, mkr) {
+    //    if(mkr.map != null){
+    //        mkr.setZIndex(i);
+    //        mkr.label_.div_.style.zIndex = '' + i;
+    //    }
+    // });
     }
 
     if(select_marker){
