@@ -6,6 +6,6 @@ class Jobs::Facebook::PostToFriendsFbWall
     from_user = User.find(from_user_id)
     to_user = User.find(to_user_id)
     fb_friend = from_user.facebook_user.friends.select{|f| f.identifier.eql?(to_user.fb_uid)}.first if from_user.facebook_user
-    fb_friend.feed!(hsh) if from_user.facebook_user.permissions.include?(:publish_stream)
+    fb_friend.feed!(hsh.merge(:access_token => from_user.fb_auth_token)) if from_user.facebook_user.permissions.include?(:publish_stream)
   end
 end

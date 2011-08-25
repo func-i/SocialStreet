@@ -141,7 +141,7 @@ class InvitationsController < ApplicationController
     if !to_user || !to_user.sign_in_count.zero?
       #Send email
       Resque.enqueue(Jobs::EmailUserEventInvitation, invitation.id)
-    else if to_user
+    elsif to_user
         if @event.photo?
           photo_url = @event.photo.thumb.url
         elsif @event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
@@ -156,8 +156,7 @@ class InvitationsController < ApplicationController
           :link => "http://staging.socialstreet.com/events/#{@event.id}"
         }
         
-        Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options) if from_user.facebook_user && from_user.facebook_user.permissions.include?(:publish_stream)
-      end
+        Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
     end
   end
 end
