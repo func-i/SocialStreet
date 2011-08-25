@@ -9,7 +9,7 @@
           <% if @event.user == current_user %>
             or
             <strong>
-              <%= link_to_popup_modal_ajax  '+add administrators', 'Add Administrators', 'empty_modal_sidebar', new_event_administrator_path(@event, :js), nil, nil%>
+              <%= link_to_popup_modal_ajax  '+administrators', 'Add Administrators', 'empty_modal_sidebar', new_event_administrator_path(@event, :js), nil, nil%>
             </strong>
           <% end %>
         </div>
