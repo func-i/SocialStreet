@@ -85,7 +85,7 @@ MarkerManager.prototype.createMarker = function(location, searchableID, markerTi
     marker.setMap(null);
     marker.searchableID_ = searchableID;
     marker.geocodableAddress_ = geocodableAddress;
-    marker.clusteredMarker_ = [];
+    marker.clusteredMarkers_ = [];
     marker.selected_ = selected;
     marker.preserveMarker_ = preserveMarker
 
@@ -193,14 +193,18 @@ MarkerManager.prototype.placeAllMarkers = function(){
         //Push marker back onto marker array
         this.allMarkers_.push(marker);
 
-        // Set the z-index to all the markers and their labels
-        $.each(this.allMarkers_, function(i, mkr) {
-            if(mkr.map != null){
-                mkr.setZIndex(i);
-                mkr.label_.div_.style.zIndex = '' + i;
-            }
-        });
+        
+       
     }
+
+    // Set the z-index to all the markers and their labels
+    $.each(this.allMarkers_, function(i, mkr) {
+        console.log(mkr);
+    //    if(mkr.map != null){
+    //        mkr.setZIndex(i);
+    //        mkr.label_.div_.style.zIndex = '' + i;
+    //    }
+    });
 
     if(select_marker){
         //Set the selected marker/containing marker to selected state

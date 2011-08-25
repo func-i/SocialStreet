@@ -255,6 +255,7 @@
       },
       select: function( event, ui ) {
         $('.top-explore-field').val(ui.item.value);
+        console.log('autocomplete submitted');
         $('#top_explore_form').submit();
         return false;
       },
