@@ -2039,6 +2039,9 @@ form, fieldset {
     float: left;
     margin: 0 10px 0 0;
 }
+.pop-up .users-list .facebook-icon{
+    display: none;
+}
 .pop-up .users-list .text-holder { overflow: hidden; }
 .pop-up .ttl {
     color: #0981be;
@@ -2077,6 +2080,7 @@ form, fieldset {
     padding: 4px 50px 4px 0;
     position: relative;
 }
+
 .pop-up .col-facebook input {
     height: 15px;
     margin: 0;
@@ -2216,7 +2220,8 @@ form, fieldset {
     height: 15px;
     float: left;
     margin: 5px 0 0 7px;
-    background: url("../images/btn-calendar.png") no-repeat 3px 0;
+    background: url("../
+        ages/btn-calendar.png") no-repeat 3px 0;
 }
 .calendar-pop-up .calendar-row .link-next {
     background: url("../images/btn-calendar.png") no-repeat -156px 0;
@@ -3111,6 +3116,9 @@ form, fieldset {
     overflow: hidden;
     padding: 16px 0 23px;
     text-align: center;
+}
+#flash-messages{
+    width: 640px;
 }
 .sidebar-holder {
     margin: 0 -16px 0 -10px;

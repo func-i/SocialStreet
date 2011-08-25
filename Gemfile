@@ -29,7 +29,7 @@ gem "redis", "~> 2.2.0", :require => ["redis/connection/hiredis", "redis"]
 gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
-gem 'exception_notification'
+# gem 'exception_notification'
 
 group :development do
   gem 'thin'
