@@ -1,5 +1,5 @@
 <% content_for :end_of_body do %>
-  <%= javascript_include_tag 'ss_markerManager', 'ss_pageless', 'keywords_field', 'jquery.getUrlParam' %>
+  <%= javascript_include_tag 'ss_markerManager', 'ss_pageless', 'keywords_field', 'jquery.getUrlParam', :cache => "socialstreet_sidebar" %>
   <script type='text/javascript'>
 
     var keywordsJsonURL = "<%= event_types_path(:format => :json) %>";
