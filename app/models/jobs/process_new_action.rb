@@ -124,18 +124,13 @@ class Jobs::ProcessNewAction
     # => Search Filter Comments
 
     # GET SUBSCRIPTIONS TO THIS ACTION
-    puts "in handle subscriptions"
     if action.action_type == Action.types[:event_created]
       subscriptions = SearchSubscription.matching_event(action.event)
-      puts "in create subscriptions"
-      puts subscriptions.inspect
       
     elsif action.action_type == Action.types[:search_comment] ||
         (action.action_type == Action.types[:action_comment] && action.action.action_type == Action.types[:search_comment])
 
       subscriptions = SearchSubscription.matching_search_comment(action.reference) # reference is the Comment instance
-      puts "in search comments"
-      puts subscriptions.inspect
     end
 
     return if subscriptions.blank?
@@ -143,7 +138,6 @@ class Jobs::ProcessNewAction
     # ADD TO NEWS STREAM / EMAIL (NO UNIQUENESS REQUIRED) FOR EACH SUBSCRIPTION
     subscriptions.each do |subscription|
       if subscription.user_id != action.user_id
-        puts subscription.inspect
 
         #SEND SUBSCRIBERS EMAIL
         if subscription.immediate?
@@ -158,7 +152,6 @@ class Jobs::ProcessNewAction
 
           action_id = action.action.try(:id) || action.id
           redis.zadd "digest_actions:#{subscription.id}", "#{Time.now.to_i}", action_id.to_s
-          puts "in not immediate"
         end
 
         #ADD TO DASHBOARD. CREATE RECORD IF NOT ALREADY THERE FROM A CONNECTION
