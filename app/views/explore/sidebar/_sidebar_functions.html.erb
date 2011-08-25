@@ -111,7 +111,7 @@
     });
 
   <% if !params[:view].eql?("map") %>
-      makeExplorePageless();
+    makeExplorePageless();
   <% end %>
 
   </script>
@@ -230,7 +230,8 @@
 
           var newKeywordParams = []
           $.each(keywordParams, function(index, element) {
-            newKeywordParams.push(element.toString().replace(/\+/g, " "));
+            if(element != null)
+              newKeywordParams.push(element.toString().replace(/\+/g, " "));
           });
 
           $.each(newKeywordParams, function(keywordIndex, keywordParam) {
@@ -271,8 +272,7 @@
             });
           }
 
-
-          $.getScript(location.href);
+          //$.getScript(location.href);
         });
         //}
       }
@@ -342,6 +342,6 @@
     <% end %>
   <% end %>
 
-    });
+  });
   </script>
 <% end %>
