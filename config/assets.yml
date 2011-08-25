@@ -1,0 +1,12 @@
+embed_assets: on
+
+javascripts:
+  common:
+    - public/javascripts/application.js
+    - public/javascripts/autoresize.jquery.min.js
+    - public/javascripts/jquery.ui.autocomplete.html.js
+    - public/javascripts/infobubble.js
+
+stylesheets:
+  common:
+    - public/stylesheets/all.css    

@@ -52,4 +52,6 @@ SocialStreet::Application.configure do
     :sender_address => %{"notifier" <notifier@socialstreet.com>},
     :exception_recipients => %w{jon.salis@railias.ca jborts@gmail.com}
 
+  config.serve_static_assets = true
+
 end

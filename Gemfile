@@ -29,13 +29,12 @@ gem "redis", "~> 2.2.0", :require => ["redis/connection/hiredis", "redis"]
 gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
+gem 'jammit'
 
 group :production, :staging do
   gem 'exception_notification'
   gem 'newrelic_rpm'
-  gem 'jammit'
 end
-
 
 group :development do
   gem 'thin'

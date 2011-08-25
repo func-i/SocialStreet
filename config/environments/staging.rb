@@ -63,6 +63,8 @@ SocialStreet::Application.configure do
   config.middleware.use ExceptionNotifier,
     :email_prefix => "[SocialStreet Error] ",
     :sender_address => %{"notifier" <notifier@socialstreet.com>},
-    :exception_recipients => %w{jon.salis@railias.ca jborts@gmail.com}   
+    :exception_recipients => %w{jon.salis@railias.ca jborts@gmail.com}
+
+  config.serve_static_assets = true
 
 end
