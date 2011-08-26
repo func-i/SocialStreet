@@ -166,6 +166,8 @@ $(function() {
 
     $('.save-modal-button').click('click', function() {
         $(this).parent('.row-btn').parent().parent().find('.modal-submit-form').submit();
+        //$(this).disabled = true;
+        console.log($(this));
     });
 
     $('.btn-close').live('click', function() {
@@ -276,6 +278,7 @@ function removeModal(element) {
     element.find('.facebook-checkbox-in-header').hide();
     element.find('.facebook-checkbox-in-header').find('.facebook-checkbox').attr('checked', true);
     element.find('.save-button-at-bottom').hide();
+    //element.find('.save-modal-button').disabled = false;
 
     addTabIndex();
 }

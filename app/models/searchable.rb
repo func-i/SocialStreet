@@ -59,7 +59,7 @@ class Searchable < ActiveRecord::Base
   }
 
   scope :with_keywords_that_match_text_or_keywords, lambda { |text, searchable|
-    if !text.blank? && searchable.searchable_event_types.count > 0
+    if !text.blank? || searchable.searchable_event_types.count > 0
       chain = joins("INNER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
       chain = chain.joins("INNER JOIN event_types AS et ON set.event_type_id = et.id")
       query = []
@@ -73,17 +73,20 @@ class Searchable < ActiveRecord::Base
           query << "set.event_type_id = :key_b#{i}"
           args["key_b#{i}".to_sym] = "#{k.event_type_id}"
         end
-      }
+      } unless searchable.searchable_event_types.empty?
 
       text_array = text.split(' ') #TODO - this doesn't work when the keywords are multiple words (ex: Ping Pong)
       text_array.each_with_index { |k,i|
-        query << "set.name ~* :key#{i}
+        if k.length >= 3
+          query << "set.name ~* :key#{i}
           OR et.name ~* :key#{i}"
 
-        args["key#{i}".to_sym] = "#{k}"
-      }
+          args["key#{i}".to_sym] = "#{k}"
+        end
+      } unless text_array.empty?
       
       chain.where(query.join(" OR "), args)
+      
     end
   }
 
