@@ -26,7 +26,7 @@
         </li>
 
       <% else %>
-                                                              <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                                                  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -142,11 +142,17 @@
       <div class="content content1">
         <div class="pop-up1-content">
           We'd love to hear from you. Send us your complaints, suggestions and/or stories (nothing would make our day like hearing how SocialStreet has helped people connect!)
+          <br/><br/>
           <%= form_for :email, :url => '/contact', :html => {:class => "modal-submit-form form", :onclick => ""}, :remote => true do |f| %>
-            <%= f.label :name %><br />
-            <%= f.text_field :name, :size => 60 %><br />
+            <div class="row">
+              <%= f.label :name %>
+              <%= f.text_field :name, :size => 60, :class=>"text" %>
+            </div>
+
+            <div class="row">
             <%= f.label :body %><br />
-            <%= f.text_area :body, :rols => 5, :cols => 60 %><br />
+            <%= f.text_area :body, :rols => 5, :cols => 60, :class=>"text" %>
+            </div>
           <% end %>
         </div>
       </div>
