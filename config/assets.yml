@@ -1,16 +1,39 @@
-embed_assets: on
+compress_assets: on
+javascript_compressor: yui
+embed_assets: datauri
+package_assets: on
 
 javascripts:
   common:
     - public/javascripts/jquery-1.5.1.js
     - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
+    - public/javascripts/jquery.mousewheel
     - public/javascripts/rails.js
     - public/javascripts/application.js
     - public/javascripts/autoresize.jquery.min.js
     - public/javascripts/jquery.ui.autocomplete.html.js
     - public/javascripts/infobubble.js
-
+  events:
+    - public/javascripts/ss_markerManager.js
+    - public/javascripts/events/organizer_map.js
+    - public/javascripts/gmaps/shared.js
+    - public/javascripts/events/form.js
+    - public/javascripts/keywords_field.js
+    - public/javascripts/date.format.js
+  sidebar:
+    - public/javascripts/ss_markerManager.js
+    - public/javascripts/ss_pageless.js
+    - public/javascripts/keywords_field.js
+    - public/javascripts/jquery.getUrlParam.js
+  ss_pageless:
+    - public/javascripts/ss_pageless.js
 stylesheets:
   common:
     - public/stylesheets/all.css
     - public/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css
+  authentications:
+    - public/stylesheets/authentications.css
+  ie:
+    - public/stylesheets/ie.css
+  ie7: 
+    - public/stylesheets/ie7.css

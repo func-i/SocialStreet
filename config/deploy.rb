@@ -23,6 +23,7 @@ set :use_sudo, false
 
 after "deploy:update_code", "db:symlink"
 after "deploy:update_code", "secrets:symlink"
+after "deploy:symlink",     "deploy:generate_assets"
 
 # Passenger restart hook
 namespace :deploy do
@@ -44,5 +45,12 @@ namespace :db do
   desc "Make symlink for database yaml" 
   task :symlink do
     run "#{try_sudo} ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
+  end
+end
+
+namespace :deploy do
+  desc "Generate assets with Jammit"
+  task :generate_assets do
+    run "cd #{deploy_to}/current && bundle exec jammit"
   end
 end
