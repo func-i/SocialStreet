@@ -22,8 +22,10 @@
     <%= yield :head %>
   </head>
   <body>
-    <div style="display:block">
-      <div style="display:block !important;postion:fixed;left:0px;top:45%"><%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view"%></div></div>
+    <div style="background-color:#69B2D7;color:white;font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;padding:7px;display:block !important;position:fixed;left:-30px;top:45%;z-index:1000;-webkit-transform: rotate(90deg);-moz-transform: rotate(90deg);filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);">
+      <%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view", :style=>"text-decoration:none;color:white"%>
+    </div>
+
     <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
@@ -74,6 +76,7 @@
 
     <%= yield :end_of_body  %>
     <div id="fb-root"></div>
+
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script type='text/javascript'>
       FB.init({

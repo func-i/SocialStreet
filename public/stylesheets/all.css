@@ -2220,8 +2220,7 @@ form, fieldset {
     height: 15px;
     float: left;
     margin: 5px 0 0 7px;
-    background: url("../
-        ages/btn-calendar.png") no-repeat 3px 0;
+    background: url("../images/btn-calendar.png") no-repeat 3px 0;
 }
 .calendar-pop-up .calendar-row .link-next {
     background: url("../images/btn-calendar.png") no-repeat -156px 0;
@@ -3207,4 +3206,19 @@ form, fieldset {
 .ui-datepicker-trigger {
     vertical-align: middle;
     margin-left: 2px;
+}
+
+#feedback-contact-link {
+    background-color:#69B2D7;
+    color:white;
+    font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;
+    padding:7px;
+    display:block !important;
+    position:fixed;
+    left:-30px;
+    top:45%;
+    z-index:1000;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }
