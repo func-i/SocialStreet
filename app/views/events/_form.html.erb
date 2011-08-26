@@ -120,46 +120,46 @@
   $(function()
   {
 <% if event.location.try(:geo_located?) %>
-      loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
-      map.setCenter(loc);
-      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
+    loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
+    map.setCenter(loc);
+    createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
 <% end %>
 
-    $('#new_event').submit(function(e) {
-      return checkButtonPressed();
-    })
-
-    $('#expand-extra-section').click(function(){
-      $('#row-title').toggle();
-      $('#title-description-link').toggle();
-
-      $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
-      return false;
-    });
-
-
-    $('[name=\'event[description]\']').live('focus', function() {
-      $(this).autoResize({extraSpace: 0})
-    });
-
-<% unless event.description.blank? && event.name.blank? %>
-      $('#expand-extra-section').trigger('click');
-<% end %>
+  $('#new_event').submit(function(e) {
+    return checkButtonPressed();
   })
 
-  function getSearchParams() {
+  $('#expand-extra-section').click(function(){
+    $('#row-title').toggle();
+    $('#title-description-link').toggle();
 
-    var bounds = map.getBounds();
-    ne = bounds.getNorthEast();
-    sw = bounds.getSouthWest();
-    c = bounds.getCenter();
+    $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
+    return false;
+  });
 
-    var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-    if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-      return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-    else
-      return str;
 
-  }
+  $('[name=\'event[description]\']').live('focus', function() {
+    $(this).autoResize({extraSpace: 0})
+  });
+
+<% unless event.description.blank? && event.name.blank? %>
+    $('#expand-extra-section').trigger('click');
+<% end %>
+})
+
+function getSearchParams() {
+
+  var bounds = map.getBounds();
+  ne = bounds.getNorthEast();
+  sw = bounds.getSouthWest();
+  c = bounds.getCenter();
+
+  var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+  if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+    return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+  else
+    return str;
+
+}
 
 </script>

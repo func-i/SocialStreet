@@ -5,8 +5,9 @@
     <%= stylesheet_link_tag "/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css", "/assets/common.css", :cache => "socialstreet" -%>
     <!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="/stylesheets/ie.css" media="screen"/><![endif]-->
     <!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="/stylesheets/ie7.css" media="screen"/><![endif]-->
-    <%= javascript_include_tag 'jquery-1.5.1', 'rails', "/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js" %>
     <%= javascript_include_tag '/assets/common.js' %>
+    <%= javascript_include_tag "/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js" %>
+
     <%= csrf_meta_tag %>
     <%= favicon_link_tag %>
 
@@ -22,7 +23,7 @@
   </head>
   <body>
     <div style="display:block">
-    <div style="display:block !important;postion:fixed;left:0px;top:45%"><%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view"%></div></div>
+      <div style="display:block !important;postion:fixed;left:0px;top:45%"><%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view"%></div></div>
     <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
     <div id="wrapper">
       <div class="w1">
