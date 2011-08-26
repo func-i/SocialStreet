@@ -52,7 +52,7 @@
           </td>
         <% elsif @action.action_type == Action.types[:search_comment] || @action.action_type == Action.types[:action_comment] %>
           <% head_action = @action.action || @action%>
-          <td>
+          <td colspan="2">
             <% searchable = head_action.searchable %>
             Posted to <%= link_to searchable.title_for_searchable, explore_url(searchable.url_params), :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>
             <br/>
@@ -66,6 +66,9 @@
             </table>
           </td>
         <% end %>
+        <div style="border-bottom:1px solid #ccc;line-height:5px;">
+            &nbsp;
+        </div>
       </tr>
     </tbody>
   </table>
