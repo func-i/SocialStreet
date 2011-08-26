@@ -2,6 +2,8 @@ embed_assets: on
 
 javascripts:
   common:
+    - public/javascripts/jquery-1.5.1.js
+    - public/javascripts/rails.js
     - public/javascripts/application.js
     - public/javascripts/autoresize.jquery.min.js
     - public/javascripts/jquery.ui.autocomplete.html.js
