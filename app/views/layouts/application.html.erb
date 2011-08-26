@@ -9,6 +9,7 @@
     <%= favicon_link_tag %>
 
     <%= javascript_include_tag 'jquery-1.5.1', 'rails', "/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js" %>
+    <%= javascript_include_tag '/assets/common.js' %>
 
     <meta property="og:title" content="<%= @og_title || "SocialStreet" %>" />
     <meta property="og:type" content="<%= @og_type || "website" %>" />
@@ -71,8 +72,6 @@
         </div>
       <%- end -%>
     </div>
-
-    <%= javascript_include_tag '/assets/common.js' %>
 
     <%= yield :end_of_body  %>
     <div id="fb-root"></div>
