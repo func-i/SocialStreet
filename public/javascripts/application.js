@@ -74,10 +74,10 @@ function retractHowItWorks(f) {
 
             var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
             if(IE7) {
-                // Hack fix for position in IE7
-                //$('.main-top').css('height', '77px');
-                //$('.main-top .holder').css('background', '');
-            }
+        // Hack fix for position in IE7
+        //$('.main-top').css('height', '77px');
+        //$('.main-top .holder').css('background', '');
+        }
 
         });
 
@@ -123,11 +123,15 @@ $(function() {
         var divId = '#' + $(this).attr('popup-div-id');
         $(divId).show();
 
-        if(document.getElementById("ss_modal_overlay") === null) {
+        // Scroll to the top of the document
+        window.scrollTo(0,0);
+
+        // Display overlay
+        if(document.getElementById("ss_modal_overlay") === null){
             $("body").append("<div id='ss_modal_overlay'></div>");
             $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
             $("#ss_modal_overlay").click(function(){
-                removeModal($(divId))
+                removeModal($(modal_divID));
             });
         }
 
@@ -142,6 +146,11 @@ $(function() {
         
         if($(divId).find('.row-map').length > 0)
             google.maps.event.trigger(map, 'resize');
+
+        //Disable scrolling for the body
+        $("html").css("overflow", "hidden");
+
+        resizeModals();
 
         return false;
     });

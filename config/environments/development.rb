@@ -14,7 +14,7 @@ SocialStreet::Application.configure do
   config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
-# Uncomment this code below and change the 2 boolean flags to test email delivery through Gmail from localhost - KV
+  # Uncomment this code below and change the 2 boolean flags to test email delivery through Gmail from localhost - KV
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
@@ -35,7 +35,7 @@ SocialStreet::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-
-  config.serve_static_assets = true
+  # JavaScript files you want as :defaults (application.js is always included).
+  
 end
 
