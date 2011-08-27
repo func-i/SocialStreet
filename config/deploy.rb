@@ -17,7 +17,7 @@ set :scm, :git
 #role :db,  "your slave db-server here"
 server "50.19.254.128", :app, :web, :db, :primary => true
 set :user, "ubuntu"
-ssh_options[:keys] = [File.join(ENV["HOME"], "socialstreet-web.pem")]
+ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "socialstreet-web.pem")]
 
 set :use_sudo, false
 
