@@ -30,9 +30,9 @@ gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 gem 'jammit'
+gem 'airbrake'
 
-group :production, :staging do
-  gem 'exception_notification'
+group :production, :staging do  
   gem 'newrelic_rpm'
 end
 

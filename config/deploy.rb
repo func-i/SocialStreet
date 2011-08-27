@@ -55,3 +55,6 @@ namespace :deploy do
     run "cd #{deploy_to}/current && bundle exec jammit"
   end
 end
+
+require './config/boot'
+require 'airbrake/capistrano'

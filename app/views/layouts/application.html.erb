@@ -3,8 +3,8 @@
   <head>
     <title>SocialStreet <%= " - #{truncate(@page_title, :length => 30)}" if @page_title %></title>
     <%= include_stylesheets :common %>
-    <!--[if lt IE 9]><%= include_stylesheets :ie, :media => "screen" %><![endif]-->
-    <!--[if lt IE 8]><%= include_stylesheets :ie7, :media => "screen" %><![endif]-->
+    <!--[if lt IE 9]><link href="/assets/ie.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if lt IE 8]><link href="/assets/ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <%= include_javascripts :common %>
 
     <%= csrf_meta_tag %>

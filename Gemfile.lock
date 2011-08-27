@@ -55,6 +55,9 @@ GEM
       activesupport (= 3.0.9)
     activesupport (3.0.9)
     addressable (2.2.4)
+    airbrake (3.0)
+      activesupport
+      builder
     arel (2.0.10)
     attr_required (0.0.3)
     bcrypt-ruby (2.1.4)
@@ -72,7 +75,6 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
-    exception_notification (2.4.1)
     factory_girl (2.0.5)
     factory_girl_rails (1.1.0)
       factory_girl (~> 2.0.0)
@@ -237,12 +239,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   carrierwave
   deep_cloneable
   default_value_for
   devise (>= 1.2.0)
   dynamic_form!
-  exception_notification
   factory_girl_rails
   fb_graph
   geocoder
