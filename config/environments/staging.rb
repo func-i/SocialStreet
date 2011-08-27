@@ -44,7 +44,7 @@ SocialStreet::Application.configure do
   #    :port                 => 587,
   #    :domain               => 'baci.lindsaar.net',
   #    :user_name            => 'notify@socialstreet.com',
-  #    :password             => 'ssPassw0rd',
+  #    :password             => 'ssPassword',
   #    :authentication       => 'plain',
   #    :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true

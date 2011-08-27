@@ -22,7 +22,7 @@ SocialStreet::Application.configure do
     :port                 => 587,
     :domain               => 'socialstreet.com',
     :user_name            => 'notify@socialstreet.com',
-    :password             => 'ssPassw0rd',
+    :password             => 'ssPassword',
     :authentication       => 'plain',
     :enable_starttls_auto => true  }
   config.action_mailer.perform_deliveries = true # change to true for testing emails
