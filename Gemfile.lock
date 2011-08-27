@@ -60,6 +60,11 @@ GEM
       builder
     arel (2.0.10)
     attr_required (0.0.3)
+    aws-ses (0.4.3)
+      builder
+      mail (> 2.2.5)
+      mime-types
+      xml-simple
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     carrierwave (0.5.7)
@@ -232,6 +237,7 @@ GEM
     warden (1.0.5)
       rack (>= 1.0)
     web-app-theme (0.7.0)
+    xml-simple (1.1.0)
     yui-compressor (0.9.6)
       POpen4 (>= 0.1.4)
 
@@ -240,6 +246,7 @@ PLATFORMS
 
 DEPENDENCIES
   airbrake
+  aws-ses (~> 0.4.3)
   carrierwave
   deep_cloneable
   default_value_for
