@@ -83,7 +83,7 @@
       </div>
 
       <div class="row-btn save-button-at-bottom" style="display:none;width:auto;margin:0;border-top-style:solid;border-top-width:1px">
-        <%= submit_tag "Continue", :class => "btn save-modal-button" -%>
+        <%= submit_tag "Continue", :class => "btn save-modal-button", :disable_with => "Please wait..."%>
         or <a href="#" class="link-close">cancel</a>
       </div>
 
@@ -121,7 +121,7 @@
       </div>
 
       <div class="row-btn save-button-at-bottom" style="display:none;margin:0;border-top-style:solid;border-top-width:1px">
-        <%= submit_tag "Continue", :class => "btn save-modal-button", :onclick => "saveModalClicked(this);" -%>
+        <%= submit_tag "Continue", :disable_with => "Please wait...", :class => "btn save-modal-button", :onclick => "saveModalClicked(this);" -%>
         or <a href="#" class="link-close">cancel</a>
       </div>
     </div>
@@ -158,7 +158,7 @@
       </div>
 
       <div class="row-btn" style="margin:0;border-top-style:solid;border-top-width:1px">
-        <%= submit_tag "Continue", :class => "btn save-modal-button", :onclick => "saveModalClicked();removeModal($(this).closest('.pop-up-modal'));" -%>
+        <%= submit_tag "Continue", :class => "btn save-modal-button", :disable_with => "Please wait...", :onclick => "saveModalClicked();removeModal($(this).closest('.pop-up-modal'));" -%>
         or <a href="#" class="link-close">cancel</a>
       </div>
     </div>

@@ -199,7 +199,6 @@ MarkerManager.prototype.placeAllMarkers = function(){
 
     // Set the z-index to all the markers and their labels
     $.each(this.allMarkers_, function(i, mkr) {
-        console.log(mkr);
     //    if(mkr.map != null){
     //        mkr.setZIndex(i);
     //        mkr.label_.div_.style.zIndex = '' + i;

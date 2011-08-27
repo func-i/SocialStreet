@@ -34,6 +34,7 @@ gem 'jammit'
 group :production, :staging do
   gem 'exception_notification'
   gem 'newrelic_rpm'
+  gem "aws-ses", "~> 0.4.3", :require => 'aws/ses'
 end
 
 group :development do
