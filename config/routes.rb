@@ -119,6 +119,9 @@ SocialStreet::Application.routes.draw do
 
   match '/locations/update_users_location' => 'locations#update_users_location'
 
+  get 'hb' => 'heartbeat#index'
+  get 'sim_error' => 'heartbeat#error'
+  
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

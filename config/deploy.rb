@@ -23,6 +23,7 @@ set :use_sudo, false
 
 after "deploy:update_code", "db:symlink"
 after "deploy:update_code", "secrets:symlink"
+after "deploy:update_code", "environment:symlink"
 after "deploy:symlink",     "deploy:generate_assets"
 
 # Passenger restart hook
@@ -46,6 +47,13 @@ namespace :db do
   desc "Make symlink for database yaml" 
   task :symlink do
     run "#{try_sudo} ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
+  end
+end
+
+namespace :environment do
+  desc "Make symlink for database yaml" 
+  task :symlink do
+    run "#{try_sudo} ln -nfs #{shared_path}/config/environments/production.rb #{release_path}/config/environments/production.rb" 
   end
 end
 
