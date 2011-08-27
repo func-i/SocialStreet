@@ -243,7 +243,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-ses
+  aws-ses (~> 0.4.3)
   carrierwave
   deep_cloneable
   default_value_for
