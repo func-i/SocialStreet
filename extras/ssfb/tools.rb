@@ -5,7 +5,7 @@ class Ssfb::Tools
     app.subscribe!(
       :object => "user",
       :fields => "friends",
-      :callback_url => "http://staging.socialstreet.com/connections/facebook_realtime",
+      :callback_url => "http://www.socialstreet.com/connections/facebook_realtime",
       :verify_token => '1234'
     )
   end 
