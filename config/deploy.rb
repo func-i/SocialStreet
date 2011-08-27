@@ -1,7 +1,7 @@
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require 'rvm/capistrano'
 require 'bundler/capistrano'
-
+require 'airbrake/capistrano'
 
 set :application, "SocialStreet"
 set :repository,  "git@github.com:JBorts/SocialStreet.git"
@@ -56,5 +56,3 @@ namespace :deploy do
   end
 end
 
-require './config/boot'
-require 'airbrake/capistrano'
