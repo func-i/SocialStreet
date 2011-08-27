@@ -59,5 +59,5 @@ class AuthenticationsController < ApplicationController
       render :text => "ERROR", :status => "500"
     end
   end
-
+  
 end

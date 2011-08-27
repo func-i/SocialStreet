@@ -166,8 +166,11 @@ $(function() {
 
     $('.save-modal-button').click('click', function() {
         $(this).parent('.row-btn').parent().parent().find('.modal-submit-form').submit();
-        //$(this).disabled = true;
-        console.log($(this));
+        $(this).attr('disabled', true);
+    });
+
+    $('.modal-submit-form').live('ajax:complete', function(event){
+        $(this).removeAttr('disabled');
     });
 
     $('.btn-close').live('click', function() {
