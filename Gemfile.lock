@@ -245,7 +245,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+<<<<<<< HEAD
+=======
   airbrake
+>>>>>>> d18f8b9188d75ede4f81ea34460adee3ac79398e
   aws-ses (~> 0.4.3)
   carrierwave
   deep_cloneable

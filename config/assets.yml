@@ -9,7 +9,7 @@ javascripts:
     - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
     - public/javascripts/jquery.mousewheel.js
     - public/javascripts/rails.js
-    - public/javascripts/application.js
+    - public/javascripts/ss.js
     - public/javascripts/autoresize.jquery.min.js
     - public/javascripts/jquery.ui.autocomplete.html.js
     - public/javascripts/infobubble.js
