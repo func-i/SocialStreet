@@ -21,7 +21,7 @@
     <%= yield :head %>
   </head>
   <body>
-    <div style="background-color:#69B2D7;color:white;font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;padding:7px;display:block !important;position:fixed;left:-30px;top:45%;z-index:99;-webkit-transform: rotate(90deg);-moz-transform: rotate(90deg);filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);">
+    <div style="background-color:#69B2D7;color:white;font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;padding:7px;display:block !important;position:fixed;left:-30px;top:45%;z-index:99;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">
       <%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view", :style=>"text-decoration:none;color:white"%>
     </div>
 
@@ -62,7 +62,8 @@
                 <ul class="add-nav">
                   <!--<li><%= link_to "About", '#' -%></li>-->
                   <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%></li>
-                  <li><%= link_to_popup_modal_ajax  'Terms & Conditions', 'Terms and Conditions', 'empty_modal_base', '/authentications/accept_tnc?display_only=true', nil, nil %></li>
+                  <li><%= link_to_popup_modal_ajax  'Terms', 'Terms and Conditions', 'empty_modal_base', '/authentications/accept_tnc?display_only=true', nil, nil %></li>
+                  <li><%= link_to_popup_modal_ajax  'Privacy', 'Privacy Policy', 'empty_modal_base', '/authentications/show_privacy', nil, nil %></li>
                   <li><%= mail_to 'pr@SocialStreet.com', "Media" -%></li>
                 </ul>
                 <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
