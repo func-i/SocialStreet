@@ -104,3 +104,66 @@ To see what's pending in the Redis (queues) order sets for email digests, run:
 ### Article used for Slicehost Server setup:
 
 - http://library.linode.com/databases/redis/ubuntu-10.04-lucid
+
+
+Production Servers
+================
+
+### Production Server Layout / Access
+
+ - There are 2 servers, a small instance for Web/Redis/BG Tasks and a micro instance for 'DB'
+ - Both servers allow SSH access but only the Web one has a static (Elastic IP) assigned
+ - There will only be one user 'ubuntu' on the host servers
+ - Every developer will have their own key pair generated via AWS, and the public key will be added to the web/db server
+ - The Postgres server (on the 'DB' instance) accepts TCP/IP connects only from the EC2 Web instance's PRIVATE IP address
+
+### Deployment (Capistrano)
+
+- There are various deployment related commands, but the 2 main ones you should know about are:
+
+    cap deploy # run when deploying code changes that do not have any migrations 
+    cap deploy:migrations # run instead of cap deploy when you have migrations to run as well 
+
+- Before running capistrano, make sure you install capistrano gem (not managed by bundler):  gem install capistrano
+- Capistrano deploy code is located in config/deploy.rb
+- Only deploy from 'master' branch (see Git Flow for release workflow)
+
+### Adding a new developer (for Josh)
+
+- Generate new keypair from AWS Management Console
+- Generate public key as per instructions here: http://seabourneinc.com/2011/01/19/change-key-pairs-on-aws-ec2-instance/
+- Provide developer private key and public key
+- Developer should save the private key as ~/.ssh/socialstreet-web.pem
+- Josh should append the public key contents to the /home/ubuntu/.ssh/authorized_keys file
+- Developer should add the following two aliases to their ~/.bash_profile or ~/.bash_aliases file:
+
+    alias sswebssh='ssh -i ~/.ssh/socialstreet-web.pem ubuntu@50.19.254.128'
+    alias ssdbssh='ssh -i ~/.ssh/socialstreet-web.pem ubuntu@ec2-184-72-194-208.compute-1.amazonaws.com'
+
+- Open a new Terminal tab/window and try running sswebssh to make sure you can connect to the Web server. Ditto for the DB server
+
+### Removing a developer from the servers (for Josh)
+
+- Remove their public key from authorized_keys
+- Remove their key pair from AWS Management Console
+- If they were given access to the management console / AWS Account API, remove that access via the management console
+
+### Git Flow usage / Release workflow
+
+- Git Flow is being used on top of Git
+- Please watch the screencast and ALWAYS use gitflow (for creating feature branches, performing hot fixes, releases, etc.)
+- Code: https://github.com/nvie/gitflow
+- Screencast: http://codesherpas.com/screencasts/on_the_path_gitflow.mov
+
+### Heartbeat monitoring (NewRelic)
+
+- URL: http://www.socialstreet.com/hb
+- Controller: HeartbeatController
+- Excluded from new relic performance calculations
+- Using SmartRackLogger to exclude any .log entries for URL /hb (See application.rb) otherwise production.log will be too noisy
+
+### Error simulation (Airbrake)
+
+- URL: http://www.socialstreet.com/sim_error
+- Causes a string exception to be thrown
+

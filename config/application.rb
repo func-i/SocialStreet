@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+require File.dirname(__FILE__) + '/../lib/ss/smart_rack_logger.rb'
+
 module SocialStreet
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -35,13 +37,8 @@ module SocialStreet
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    
+    config.middleware.swap Rails::Rack::Logger, SmartRackLogger, :silenced => ["/hb"]
 
-    if ["production", "staging"].include?(Rails.env)
-      config.action_view.stylesheet_expansions[:application] = ["../assets/common"]
-      config.action_view.javascript_expansions = {:defaults => "../assets/common"}
-    else
-      config.action_view.stylesheet_expansions[:application] = ["all", "../jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css"]
-      config.action_view.javascript_expansions[:defaults] = ['jquery-1.5.1', '../jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min', 'rails', 'ss', 'autoresize.jquery.min', 'jquery.ui.autocomplete.html', 'infobubble']
-    end
   end
 end
