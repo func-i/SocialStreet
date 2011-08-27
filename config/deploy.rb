@@ -32,7 +32,7 @@ namespace :deploy do
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-    run "curl -s http://aws.socialstreet.com/; exit 0;"
+    run "curl -I -s http://aws.socialstreet.com/hb; exit 0;"
   end
 end
 

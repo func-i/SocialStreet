@@ -4,5 +4,6 @@ class FixPasswordSaltNull < ActiveRecord::Migration
   end
 
   def self.down
+    change_column :users, :password_salt, :string, :default => "", :null => false
   end
 end
