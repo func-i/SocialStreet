@@ -108,7 +108,7 @@
   <%= hidden_field_tag :submit_form, false %>
 </fieldset>
 
-<%= javascript_include_tag 'ss_markerManager', 'events/organizer_map', 'gmaps/shared', 'events/form', 'keywords_field', 'date.format', :cache => "socialstreet_event" %>
+<%= include_javascripts :events %>
 <script type='text/javascript'>
   var keywordsParamKey  = "event[searchable_attributes][keywords][]";
   SearchURL = '<%= locations_path(:format => :json) %>';

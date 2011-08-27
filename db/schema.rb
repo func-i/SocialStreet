@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(:version => 20110824181838) do
   create_table "users", :force => true do |t|
     t.string   "email",                                         :default => "",    :null => false
     t.string   "encrypted_password",             :limit => 128, :default => "",    :null => false
+    t.string   "password_salt",                                 :default => "",    :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -241,8 +242,8 @@ ActiveRecord::Schema.define(:version => 20110824181838) do
     t.string   "username"
     t.string   "facebook_profile_picture_url"
     t.string   "twitter_profile_picture_url"
-    t.string   "fb_uid"
     t.string   "comment_notification_frequency"
+    t.string   "fb_uid"
     t.string   "photo"
     t.boolean  "fb_friends_imported",                           :default => false
     t.string   "gender"
@@ -250,7 +251,6 @@ ActiveRecord::Schema.define(:version => 20110824181838) do
     t.float    "last_known_longitude"
     t.float    "last_known_latitude"
     t.datetime "last_known_location_datetime"
-    t.string   "password_salt"
     t.boolean  "accepted_tncs",                                 :default => false
   end
 

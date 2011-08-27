@@ -168,7 +168,7 @@
 
 <% content_for :end_of_body do %>
 
-  <%= javascript_include_tag 'ss_pageless' %>
+  <%= include_javascripts :ss_pageless -%>
 
   <script type='text/javascript'>
     var dashboardPageless = null;
