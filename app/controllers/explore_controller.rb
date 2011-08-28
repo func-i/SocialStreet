@@ -294,7 +294,7 @@ class ExploreController < ApplicationController
 
     #MATCH FROM DATE
     from_date = args.key?(:from_date) ? args[:from_date] : (params[:from_date] ? params[:from_date] : Time.zone.now)
-    from_date = Time.zone.now if Date.today.eql?(from_date)
+    from_date = Time.zone.now if Date.today.to_s.eql?(from_date)
 
     event_searchables = apply_from_date(event_searchables, from_date)
   end
@@ -385,95 +385,6 @@ class ExploreController < ApplicationController
     searchable = searchable.on_or_after_datetime(from_date)
   end
   
-  def apply_filter(search_object, args = {})
-    # => Add these variables so that the params can be bypassed to expand the search
-    keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    from_date = args.key?(:from_date) ? args[:from_date] : params[:from_date]
-    prm_date_search = from_date.nil? ? nil : params[:date_search]
-    to_date = args.key?(:to_date) ? args[:to_date] : params[:to_date]
-    map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
-
-    search_object = search_object.where(:ignored => false)
-    search_object = search_object.matching_keywords(keywords, false) unless keywords.blank?
-
-    unless(date_search = prm_date_search).blank?
-
-      query = []
-      args = {}
-
-      date_search.group_by{|ds| ds.first}.each do |grp|
-        day = grp.first
-        hours = []
-  
-        grp.last.collect{|g| g.split(",").last}.each do |hr|
-          case hr
-          when "0"
-            hours << (0..12).to_a
-          when "1"
-            hours << (11..18).to_a
-          when "2"
-            hours << (17..24).to_a
-          end
-          hours.flatten!
-        end
-        
-        query << "((searchable_date_ranges.dow = :key#{day} OR EXTRACT(DOW FROM searchable_date_ranges.starts_at#{sql_interval_for_utc_offset}) = :key#{day}) AND EXTRACT(HOUR FROM searchable_date_ranges.starts_at#{sql_interval_for_utc_offset}) IN (:key_h#{day}))"
-        args["key#{day}".to_sym] = day
-        args["key_h#{day}".to_sym] = hours
-      end
-
-      query = query.join(" OR ")
-      search_object = search_object.includes(:searchable_date_ranges).where(query, args)
-    end
-
-    # => By default only show events today and in the future unless a date search is specified.
-    if from_date.blank? #&& to_date.blank?
-      search_object = search_object.on_or_after_datetime(Date.today)
-    else
-      search_object = search_object.on_or_after_datetime(from_date) unless from_date.blank?
-    end
-
-    # GEO LOCATION SEARCHING
-    
-    # order: ne_lat, ne_lng, sw_lat, sw_lng
-    # TODO: Temporary default handling for user's initial location, need to read user's location and use that LatLng here
-    if map_bounds.blank?
-      if params[:map_center]
-        center = params[:map_center].split(",").collect { |point| point.to_f }
-        latitude = center[0]
-        longitude = center[1]
-      else
-        if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
-          if current_user
-            latitude = current_user.last_known_latitude
-            longitude = current_user.last_known_longitude
-          end
-        else
-          latitude = cookies[:current_location_latitude].to_f
-          longitude = cookies[:current_location_longitude].to_f
-        end
-
-        #TODO - unlogged in user coming to our site for first time...setting to toronto for now...
-        latitude ||= 43.66061599944655
-        longitude ||= -79.3938175316406
-
-        params[:map_center] = "#{latitude},#{longitude}"
-      end
-      
-      map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
-    end
-
-    bounds = map_bounds.split(",").collect { |point| point.to_f }
-    
-    params[:map_center] = "#{(bounds[0].to_f + bounds[2].to_f)/2},#{(bounds[1].to_f + bounds[3].to_f)/2}" unless params[:map_center]
-    params[:map_zoom] = 9 unless params[:map_zoom]
-
-    search_object = search_object.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
-    #search_object = search_object.order("searchables.created_at DESC")
-    
-    return search_object
-  end
-
   def nav_state
     @on_explore = true
   end
