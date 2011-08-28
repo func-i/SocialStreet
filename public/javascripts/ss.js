@@ -176,7 +176,7 @@ $(function() {
     });
 
     $('.modal-submit-form').live('ajax:complete', function(event){
-        $(this).removeAttr('disabled');
+        $('.save-modal-button').removeAttr('disabled');
     });
 
     $('.btn-close').live('click', function() {
