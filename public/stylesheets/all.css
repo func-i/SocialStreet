@@ -206,6 +206,14 @@ form, fieldset {
     left: 235px;
 }
 
+@-moz-document url-prefix() {
+    .sign-in-ribbon {
+        left: 0px;
+        top: -62px;
+}
+}
+
+
 .feedback-btn {
     background-color:#69B2D7;
     color:white;
