@@ -51,7 +51,6 @@ class ExploreController < ApplicationController
     @overlapping_subscriptions = apply_map_bounds(@overlapping_subscriptions, params[:map_bounds])
 
     #@overlapping_subscriptions = @overlapping_subscriptions.where("search_subscriptions.user_id != #{current_user.id}") if current_user
-    @overlapping_subscriptions_count = @overlapping_subscriptions.count;
 
     #Order users by connection strength
     if current_user
@@ -60,7 +59,8 @@ class ExploreController < ApplicationController
     end
 
     # this executes a full search, which is bad, we want to paginate (eventually)
-    @overlapping_subscriptions = @overlapping_subscriptions.limit(7).uniq_by{|s| s.search_subscription.user_id}
+    @overlapping_subscriptions = @overlapping_subscriptions.uniq_by{|s| s.search_subscription.user_id}
+    @overlapping_subscriptions_count = @overlapping_subscriptions.count;
   end
 
   def get_searchables

@@ -148,7 +148,7 @@
     </div>
     <div class="box-content">
       <ul class="list-img">
-        <% @event.attendees_rsvps_list.each do |attendee_rsvp| %>
+        <% @attendees_rsvps[0,24].each do |attendee_rsvp| %>
           <li class="attendee_<%=attendee_rsvp.user.id%>"><%= render 'shared/user_list_element', :user => attendee_rsvp.user%></li>
         <% end %>
       </ul>
@@ -162,7 +162,7 @@
     </div>
     <div class="box-content">
       <ul class="list-img">
-        <% @event.administrators_rsvps_list.each do |administrator_rsvp| %>
+        <% @administrators_rsvps[0,24].each do |administrator_rsvp| %>
           <li class="attendee_<%=administrator_rsvp.user.id%>"><%= render 'shared/user_list_element', :user => administrator_rsvp.user%></li>
         <% end %>
       </ul>
