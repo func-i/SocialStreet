@@ -24,7 +24,10 @@ set :use_sudo, false
 after "deploy:update_code", "db:symlink"
 after "deploy:update_code", "secrets:symlink"
 after "deploy:update_code", "environment:symlink"
-after "deploy:symlink",     "deploy:generate_assets"
+after "deploy:update_code", "deploy:generate_assets"
+
+before "deploy:update", "god:stop_resque"
+after "deploy:update", "god:start_resque"
 
 # Passenger restart hook
 namespace :deploy do
@@ -32,7 +35,7 @@ namespace :deploy do
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-    run "curl -I -s http://aws.socialstreet.com/hb; exit 0;"
+    run "curl -I -s http://www.socialstreet.com/hb; exit 0;"
   end
 end
 
@@ -60,7 +63,26 @@ end
 namespace :deploy do
   desc "Generate assets with Jammit"
   task :generate_assets do
-    run "cd #{deploy_to}/current && bundle exec jammit"
+    run "cd #{release_path} && bundle exec jammit"
+  end
+end
+
+namespace :god do 
+  def god_command
+    # use rvm wrapper for God, generated via instructions: http://beginrescueend.com/integration/god/
+    "sudo /usr/local/rvm/bin/bootup_god"
+  end
+  desc "Stop all 'resque' tasks using God"
+  task :stop_resque do 
+    run "#{god_command} stop resque"
+  end
+  desc "Start all 'resque' tasks using God"
+  task :start_resque do 
+    run "#{god_command} start resque"
+  end
+  desc "Get a status on all 'resque' tasks using God"
+  task :status do
+    sudo "#{god_command} status resque"
   end
 end
 
