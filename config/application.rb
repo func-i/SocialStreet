@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-require File.dirname(__FILE__) + '/../lib/ss/smart_rack_logger.rb'
+#require File.dirname(__FILE__) + '/../lib/ss/smart_rack_logger.rb'
 
 module SocialStreet
   class Application < Rails::Application
@@ -38,7 +38,7 @@ module SocialStreet
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
     
-    config.middleware.swap Rails::Rack::Logger, SmartRackLogger, :silenced => ["/hb"]
+#    config.middleware.swap Rails::Rack::Logger, SmartRackLogger, :silenced => ["/hb"]
 
   end
 end
