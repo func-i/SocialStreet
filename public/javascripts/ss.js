@@ -65,10 +65,10 @@ function expandHowItWorks() {
 
 function retractHowItWorks(f) {
     if($('#header').hasClass('open')) {
+        $('#sign_in_ribbon_li').hide();
         $('.video-box').slideUp('slow', function() {
             $('#how_link_li').show();
-            $('#sign_in_li').show();
-            $('#sign_in_ribbon_li').hide();
+            $('#sign_in_li').show();            
             $('#header').removeClass('open');
             $('#top_explore_form').show();
             $('#how_it_works').closest('li').removeClass('active');
