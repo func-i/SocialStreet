@@ -58,3 +58,8 @@ textarea {
     left: 0px;
 }
 
+@font-face {
+    font-family: JLEE;
+    src: url('/fonts/JLEE.eot');
+}
+
