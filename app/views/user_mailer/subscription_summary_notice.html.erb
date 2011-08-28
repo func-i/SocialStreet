@@ -37,16 +37,15 @@
               <br/>
               Where: <%=address_for(event.location)%>
               <br/>
-              <br/>
-            </td>
-            <td style="padding-left: 100px">
               <!--Attend button-->
-              <%= link_to new_event_rsvp_url(event), :style=>"background: #69B2D7;color:#FFFFFF;font:normal normal bold 11px/25px Arial, Helvetica, sans-serif;text-decoration: none;width:100px;height:29px;margin: 8px 0px 0px;line-height: 17px;font-size: 13px;border-bottom-left-radius: 4px 4px;border-bottom-right-radius: 4px 4px;border-top-left-radius: 4px 4px;border-top-right-radius: 4px 4px;float:right;text-align:center;" do %>
+              <%= link_to new_event_rsvp_url(event), :style=>"background: #69B2D7;color:#FFFFFF;font:normal normal bold 11px/25px Arial, Helvetica, sans-serif;text-decoration: none;width:100px;height:29px;margin: 2px 0px 0px;line-height: 17px;font-size: 13px;border-bottom-left-radius: 4px 4px;border-bottom-right-radius: 4px 4px;border-top-left-radius: 4px 4px;border-top-right-radius: 4px 4px;float:left;text-align:center;" do %>
                 <span style="padding: 6px 7px;display:block">
                   Attend
                 </span>
               <% end %>
+              <br/>
             </td>
+  
           <% elsif action.action_type == Action.types[:search_comment] || action.action_type == Action.types[:action_comment] %>
             <% head_action = action.action || action%>
             <td colspan="2">
@@ -62,10 +61,7 @@
                 </tbody>
               </table>
             </td>
-          <% end %>
-          <div style="border-bottom:1px solid #ccc;line-height:5px;">
-            &nbsp;
-          </div>
+          <% end %>          
         </tr>
       <% end %>
     </tbody>
