@@ -131,7 +131,7 @@ form, fieldset {
     float: none;
     margin: 0 0 -7px;
     overflow: hidden;
-    padding: 19px 0 0;
+    padding: 5px 0 0;
     width: 983px;
 }
 .vb {
@@ -169,7 +169,7 @@ form, fieldset {
 }
 .video-box  p { margin: 0 0 10px; }
 .video-box .btn-close {
-    background: url("../images/bg-close.png") no-repeat;
+    background: url("../images/header-close.png") no-repeat;
     height: 19px;
     overflow: hidden;
     position: absolute;
@@ -299,7 +299,7 @@ form, fieldset {
 .open .form-explore .text { width: 294px; }
 .open .form-explore .text input { width: 273px; }
 .btn-add {
-    background: #fe6;
+    background: #FFC233;
     color: #010000;
     float: right;
     font: bold 14px/32px Arial, Helvetica, sans-serif;

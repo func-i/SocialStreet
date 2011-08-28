@@ -12,7 +12,7 @@
     <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add top-btn-add"  %>
     <ul class="nav-serv">
 
-      <li><%= link_to 'How this works', how_path, :id=>"how_it_works" %></li>
+      <li id="how_link_li"><%= link_to 'How this works', how_path, :id=>"how_it_works" %></li>
 
       <% if user_signed_in? %>
         <li class="link-login">
@@ -26,8 +26,12 @@
         </li>
 
       <% else %>
-                                                                        <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
-        <li><%= link_to "Sign in", '/auth/facebook'%></li>
+                                                                            <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+        <li id="sign_in_li"><%= link_to "Sign in", '/auth/facebook'%></li>
+        <li id="sign_in_ribbon_li" style="display: none; vertical-align: top; padding-right: 100px;" class="chalk">Sign in with facebook
+          <%= image_tag "sign-in-arrow.png", :style => "vertical-align: top;" %>
+          <%= link_to image_tag("sign-in-logo.png", :style => "position: absolute; top: -85px; left: 235px;"), "/auth/facebook" %>
+        </li>
       <%- end -%>
     </ul>
 
@@ -37,10 +41,10 @@
           <%= image_tag "icons.png", :alt => "SocialStreet Icons" %>
         </div>
         <div class="text header-content">
-          <strong class="ttl" style="font-size: 26px;">
-            <span style="color: #FE6">Explore</span>
+          <strong class="ttl" style="font-size: 30px;">
+            <span style="color: #FFC233">Explore</span>
             Real
-            <span style="color: #FE6">Life.</span>
+            <span style="color: #FFC233">Life.</span>
           </strong>
           <p style="margin-bottom: 50px;">
             Find things to do in your city with other people who want to do the same. <br />
@@ -48,7 +52,7 @@
             because on SocialStreet, the world is your friend.
           </p>
           <strong class="ttl">
-            What is <span style="color: #FE6">StreetMeet</span>?
+            What is <span style="color: #FFC233">StreetMeet</span>?
           </strong>
           <p>
             A StreetMeet is a real life activity you can plan, browse, and attend on SocialStreet. <br />
@@ -69,8 +73,6 @@
           </fieldset>
         <% end %>
       </div>
-      <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
-
     </div>
   </div>
 </div>
