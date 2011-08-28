@@ -667,7 +667,7 @@ form, fieldset {
 .profile .link a { font-weight: bold; }
 .profile .btn-add {
     font: bold 16px/38px Arial, Helvetica, sans-serif;
-    margin: 0 17px 0 0;
+    margin: -30px 17px 0 0;
 }
 .profile .btn-add:hover { text-decoration: none; }
 .profile .btn-add:hover span { text-decoration: underline; }
