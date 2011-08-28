@@ -31,10 +31,8 @@ gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 gem 'jammit'
 gem 'airbrake'
+gem 'newrelic_rpm'
 
-group :production, :staging do  
-  gem 'newrelic_rpm'
-end
 gem "aws-ses", "~> 0.4.3", :require => 'aws/ses'
 
 group :development do

@@ -13,7 +13,7 @@
     <meta property="og:title" content="<%= @og_title || "SocialStreet" %>" />
     <meta property="og:type" content="<%= @og_type || "website" %>" />
     <meta property="og:url" content="<%= @og_url || request.url %>" />
-    <meta property="og:image" content="<%= @og_image || 'http://staging.socialstreet.com/images/app_icon_facebook.png' %>" />
+    <meta property="og:image" content="<%= @og_image || 'http://www.socialstreet.com/images/app_icon_facebook.png' %>" />
     <meta property="og:site_name" content="SocialStreet" />
     <meta property="og:description" content="<%= @og_description || 'SocialStreet mission is to make it easy to discover friends (new or old) that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!'%>" />
     <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
@@ -21,7 +21,7 @@
     <%= yield :head %>
   </head>
   <body>
-    <div style="background-color:#69B2D7;color:white;font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;padding:7px;display:block !important;position:fixed;left:-30px;top:45%;z-index:99;-webkit-transform: rotate(90deg);-moz-transform: rotate(90deg);filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);">
+    <div style="background-color:#69B2D7;color:white;font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;padding:7px;display:block !important;position:fixed;left:-30px;top:45%;z-index:99;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);">
       <%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view", :style=>"text-decoration:none;color:white"%>
     </div>
 
@@ -51,7 +51,7 @@
             </div> <!-- End Main Div -->
           </div>
         </div>
-       
+
       </div>
 
       <%- unless current_page?(explore_path) -%>
@@ -59,16 +59,17 @@
           <div class="footer-holder">
             <div class="footer-frame">
               <div class="footer-content">
-                <ul class="add-nav">
+                <ul class="add-nav" style="color:#333">
+                  <li><span style="font: normal normal bold 12px/14px Arial, Helvetica, sans-serif;">SocialStreet &#169; 2011</span></li>
                   <!--<li><%= link_to "About", '#' -%></li>-->
                   <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%></li>
-                  <li><%= link_to_popup_modal_ajax  'Terms & Conditions', 'Terms and Conditions', 'empty_modal_base', '/authentications/accept_tnc?display_only=true', nil, nil %></li>
+                  <li><%= link_to_popup_modal_ajax  'Terms', 'Terms and Conditions', 'empty_modal_base', '/authentications/accept_tnc?display_only=true', nil, nil %></li>
+                  <li><%= link_to_popup_modal_ajax  'Privacy', 'Privacy Policy', 'empty_modal_base', '/authentications/show_privacy', nil, nil %></li>
                   <li><%= mail_to 'pr@SocialStreet.com', "Media" -%></li>
                 </ul>
                 <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
-                <div style="font: normal normal bold 12px/14px Arial, Helvetica, sans-serif;">SocialStreet &#169; 2011</div>
               </div>
-                
+
             </div>
           </div>
         </div>

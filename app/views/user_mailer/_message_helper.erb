@@ -19,7 +19,7 @@
     <% event_what = event.searchable_event_types.collect(&:name).to_sentence%>
 
     <td style="padding-right:5px">
-      <%= image_tag('http://staging.socialstreet.com/' + url_for_event_image(event), :size => "44x44", :title => event_what) %><!--TODO Change to base url-->
+      <%= image_tag('http://www.socialstreet.com/' + url_for_event_image(event), :size => "44x44", :title => event_what) %><!--TODO Change to base url-->
     </td>
 
     <td>

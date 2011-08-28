@@ -155,8 +155,8 @@ class ApplicationController < ActionController::Base
         end
 
         @event.user.post_to_facebook_wall(
-          :picture => "http://staging.socialstreet.com/#{photo_url}",
-          :link => "http://staging.socialstreet.com/events/#{@event.id}",
+          :picture => "http://www.socialstreet.com/#{photo_url}",
+          :link => "http://www.socialstreet.com/events/#{@event.id}",
           :name => @event.title,
           :caption => "Brought to you by SocialStreet",
           :description => @event.name.blank? ? "" : @event.title_from_parameters(true),

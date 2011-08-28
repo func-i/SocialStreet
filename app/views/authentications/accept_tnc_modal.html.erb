@@ -1,21 +1,288 @@
-<div class="block" id="block-lists">
-  <div class="content" style="margin: 0 auto; width: 500px; padding: 50px 0 50px 0;">
-    <h3>Terms and conditions</h3>
-    Terms and conditions go here
+<%unless params[:display_only] %>
+  <div style="margin: 0 auto; width: 500px; padding: 0px 0 0px 0;">
+    <span style="font: 18px/21px Arial, Helvetica, sans-serif;font-weight: bold;"><p>Welcome to SocialStreet!</p></span><br/>
+    <p>Our mission is to make it easy to discover friends (new or old) that enjoy the same things as you.</p><br/>
+    <p>By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!
+      Whether that means you are looking for a group to play basketball, a friend to watch the season finale of dancing with the stars or a buddy to check out the newest bar, you can find it all on SocialStreet!</p>
+  </div>
 
-    <%unless params[:display_only] %>
-      <%= form_tag tnc_accepted_authentications_path, :id => "tnc_form" do -%>
-        <%= check_box_tag "accept", true, false, :class => "tnc_accept" -%>I accept the terms and conditions
-      <%- end -%>
-    <%- end -%>
+  <div style="margin-left:120px;margin-top: 30px;">
+    <input type="checkbox" title="facebook" class="facebook-checkbox" checked style="padding: 0;"/>
+    <%= image_tag 'ico-share.png', :style=>'vertical-align:top'  %>
+    <span style="font-weight:bold;background-color:#f7ef6f;">Let my friends know I joined SocialStreet!</span>
+  </div>
+
+  <br/><br/>
+<%end%>
+<div class="content" style="margin: 0 auto; width: 500px; padding: 0px 0 0px 0;overflow:scroll; border: 1px solid black;">
+  <div style="height:400px;list-style:decimal">
+    <h1>Terms and Services</h1>
+    <h2>Welcome to SocialStreet!</h2>
+
+    <p>SocialStreet allows you to connect with the human world around you by meeting,
+      socializing and networking with individuals who share the same interests, location, and
+      availability as you.</p>
+
+    <p>Our service is designed to facilitate your interactions and activities. We ask, however,
+      that you be responsible in what you publish on our website and with how you use
+      SocialStreet. In particular, ensure that you are respectful to other users of the site and
+      that you do not use SocialStreet to break any laws. SocialStreet relies on you to ensure
+      its activities are safe, enjoyable and respectful.</p>
+
+    <p>Please use the feedback link [NTD:link] to respond to a post on the SocialStreet website
+      that you believe violates our terms of service or any other disrespectful or illegal activity
+      related to SocialStreet’s services.</p>
+
+    <h2>Terms of Service:</h2>
+    <ol>
+      <li> The following terms and conditions govern all use of the SocialStreet website (the
+        “Website”) and all activities, content, services and products available at or through the
+        Website.
+        <ol>
+          <li>  Th e   We b s i te  i s   ow n e d  a n d  o p e ra te d  b y   1 8 4 4 6 3 6  On ta r i o   In c .
+            (“SocialStreet”).</li>
+        </ol></li>
+      <li> The Website is offered subject to your acceptance without modiﬁcation of all of the
+        terms and conditions contained herein and all other operating rules, policies (including,
+        without limitation, SocialStreet’s Privacy Policy) and procedures that may be published
+        from time to time on this Site by SocialStreet (collectively, the “Agreement”).</li>
+      <li> Please read this Agreement carefully before accessing or using the Website. By
+        accessing or using any part of the web site, you agree to become bound by the terms
+        and conditions of this agreement. If you do not agree to all the terms and conditions of
+        this agreement, then you may not access the Website or use any services.
+        <ol>
+          <li> If these terms and conditions are considered an offer by SocialStreet,
+            acceptance is expressly limited to these terms. </li>
+          <li> The Website is available only to individuals who are at least 13 years old.
+            Privacy</li></ol></li>
+      <li>Your privacy is very important to SocialStreet. We designed our Privacy Policy
+        [NTD:link] to make important disclosures about how we collect, disclose and can use
+        your content and information. We encourage you to read the Privacy Policy, and to use
+        it to help make informed decisions. In particular, we encourage you to be aware of what
+        information you are sharing with SocialStreet and what information SocialStreet is
+        disclosing to the public.</li>
+      <h4>Your SocialStreet Account and Activities</h4>
+      <li> If you create an account and activities on the Website, you are responsible for
+        maintaining the security of your account and activities, and you are fully responsible for
+        all activities that occur under the account and any other actions or activities taken in
+        connection with SocialStreet.
+        <ol>
+          <li> You must not interact with other users in a manner that is, or create activities
+            that are, disrespectful, misleading or unlawful in any manner, including in a
+            manner intended to trade on the name or reputation of others. </li>
+          <li> SocialStreet may change or remove any material that it considers
+            inappropriate or unlawful, or otherwise likely to cause SocialStreet liability. </li>
+          <li> You must immediately notify SocialStreet of any unauthorized uses of your
+            account or any other breaches of security. </li>
+          <li> SocialStreet will not be liable for any acts or omissions by you, including any
+            damages of any kind incurred as a result of such acts or omissions.
+            Responsibility of Users</li></ol></li>
+      <li>If you operate an account, participate in an activity, post any information or material to
+        the Website, post links on the Website, or otherwise make (or allow any third party to
+        make) information or material available by means of the Website (any such information
+        and material, “Content”), you are entirely responsible for your actions and Content and
+        any harm resulting from your actions and Content.</li>
+      <li> Some or all of your Content will be able to be viewed by other users of the Service
+        and through third party services and websites. You should only provide Content that you
+        are comfortable sharing with others under the terms of this Agreement. All Content,
+        whether publicly posted or privately transmitted, is the sole responsibility of the person
+        who originated such Content.</li>
+      <li>By making Content available, you represent and warrant that:
+        (i) the downloading, copying and use of the Content will not infringe the
+        proprietary rights, including but not limited to the copyright, patent, trademark or
+        trade secret rights, of any third party;
+        (ii) if your employer has rights to intellectual property you create, you have either
+        (i) received permission from your employer to post or make available the
+        Content, including but not limited to any software, or (ii) secured from your
+        employer a waiver as to all rights in or to the Content;
+        (iii) you have fully complied with any third-party licenses relating to the Content,
+        and have done all things necessary to successfully pass through to end users
+        any required terms;
+        (iv) the Content does not contain or install any viruses, worms, malware, Trojan
+        horses or other harmful or destructive content;
+        (v) the Content is not spam, is not machine- or randomly-generated, and does
+        not contain unethical or unwanted commercial content designed to drive trafﬁc to
+        third party sites or boost the search engine rankings of third party sites, or to further unlawful acts (such as phishing) or mislead recipients as to the source of
+        the material (such as spooﬁng);
+        (vi) the Content is not pornographic, does not contain threats or incite violence
+        towards individuals or entities, and does not violate the privacy or publicity rights
+        of any third party;
+        (vii) your activity is not getting advertised via unwanted electronic messages such
+        as spam links on newsgroups, email lists, blogs and web sites, and similar
+        unsolicited promotional methods; and
+        (viii) your activity is not named in a manner that misleads your readers into
+        thinking that you are another person or company. For example, your activity or
+        name is not the name of a person other than yourself or company other than your
+        own.</li>
+      <li>By publishing Content on the Website, you grant SocialStreet a world-wide, royaltyfree, and non-exclusive license to reproduce, modify, adapt and publish the Content
+        solely the purpose of displaying, distributing and promoting the activities that you are
+        seeking to promote or SocialStreet’s services.
+        <ol><li> If you delete Content, SocialStreet will use reasonable efforts to remove it
+            from the Website, but you acknowledge that caching or references to the Content
+            may not be made immediately unavailable.</li></ol></li>
+      <li> Without limiting any of those representations or warranties, SocialStreet has the
+        right (though not the obligation) to, in SocialStreet’s sole discretion (i) refuse or remove
+        any content that, in SocialStreet’s reasonable opinion, violates any SocialStreet policy
+        or is in any way harmful or objectionable, or (ii) terminate or deny access to and use of
+        the Website to any individual or entity for any reason, in SocialStreet’s sole discretion.
+        SocialStreet will have no obligation to provide a refund of any amounts previously paid.
+        Responsibility of Website Visitors</li>
+      <li> SocialStreet has not reviewed, and cannot review, all of the material posted to the
+        Website, and cannot therefore be responsible for that material’s content, use or effects.
+        By operating the Website, SocialStreet does not represent or imply that it endorses the
+        material there posted, or that it believes such material to be accurate, useful or nonharmful.
+        <ol><li> You are responsible for taking precautions as necessary to protect yourself
+            and your computer systems from viruses, worms, Trojan horses, and other
+            harmful or destructive content. </li>
+          <li> The Website may contain content that is offensive, indecent, or otherwise
+            objectionable, as well as content containing technical inaccuracies, typographical
+            mistakes, and other errors. </li>
+          <li> The Website may also contain material that violates the privacy or publicity
+            rights, or infringes the intellectual property and other proprietary rights, of third
+            parties, or the downloading, copying or use of which is subject to additional terms
+            and conditions, stated or unstated. </li></ol></li>
+      <li>SocialStreet disclaims any responsibility for any harm resulting from the use by
+        visitors of the Website, or from any activities arranged through the use of its services.
+        Content Posted on Other Websites</li>
+      <li> We have not reviewed, and cannot review, all of the material made available
+        through the websites and webpages to which SocialStreet links, and that link to the
+        Website.
+        <ol><li> SocialStreet does not have any control over those non-SocialStreet
+            websites and webpages, and is not responsible for their contents or their use. </li>
+          <li> By linking to a non-SocialStreet website or webpage, SocialStreet does not
+            represent or imply that it endorses such website or webpage. </li>
+          <li> You are responsible for taking precautions as necessary to protect yourself
+            and your computer systems from viruses, worms, Trojan horses, and other
+            harmful or destructive content. </li></ol></li>
+      <li> SocialStreet disclaims any responsibility for any harm resulting from your use of
+        non-SocialStreet websites and webpages.</li>
+      <h4>Copyright Infringement</h4>
+      <li> As SocialStreet asks others to respect its intellectual property rights and it respects
+        the intellectual property rights of others.
+        <ol><li>If you believe that material located on or linked to on the Website violates
+            your copyright, you are encouraged to notify SocialStreet.</li></ol></li>
+      <li> SocialStreet will terminate a visitor’s access to and use of the Website if, under
+        appropriate circumstances, the visitor is determined to be a repeat infringer of the
+        copyrights or other intellectual property rights of SocialStreet or others.
+        <ol><li>In the case of such termination, SocialStreet will have no obligation to
+            provide a refund of any amounts previously paid to SocialStreet.</li></ol></li>
+      <h4>Intellectual Property. </h4>
+      <li>This Agreement does not transfer from SocialStreet to you any SocialStreet or third
+        party intellectual property, and all right, title and interest in and to such property will
+        remain (as between the parties) solely with SocialStreet. SocialStreet, SocialStreet.com,
+        the SocialStreet logo, and all other trademarks, service marks, graphics and logos used
+        in connection with the Website, or the Website are trademarks or registered trademarks
+        of SocialStreet or SocialStreet’s licensors. Other trademarks, service marks, graphics
+        and logos used in connection with the Website may be the trademarks of other third
+        parties. Your use of the Website grants you no right or license to reproduce or otherwise
+        use any SocialStreet or third-party trademarks.</li>
+      <h4>Advertisements</h4>
+      <li>SocialStreet reserves the right to display advertisements anywhere on the Website
+        including on your activities or account proﬁles.</li>
+      <h4>Amendments</h4>
+      <li>SocialStreet reserves the right, at its sole discretion, to modify or replace any part of
+        this Agreement. </li>
+      <li>It is your responsibility to check this Agreement periodically for changes. </li>
+      <li>Your continued use of or access to the Website following the posting of any changes
+        to this Agreement constitutes acceptance of those changes. </li>
+      <li>SocialStreet may also, in the future, offer new services and/or features through the
+        Website (including, the release of new tools and resources). Such new features and/or
+        services shall be subject to the terms and conditions of this Agreement. </li>
+      <h4>Termination</h4>
+      <li>SocialStreet may terminate your access to all or any part of the Website at any time,
+        with or without cause, with or without notice, effective immediately. </li>
+      <li>If you wish to terminate this Agreement or your SocialStreet account (if you have
+        one), you may simply discontinue using the Website. </li>
+      <li>All provisions of this Agreement which by their nature should survive termination
+        shall survive termination, including, without limitation, ownership provisions, warranty
+        disclaimers, indemnity and limitations of liability. </li>
+      <h4>Disclaimer of Warranties</h4>
+      <li>The Website is provided “as is”. SocialStreet and its suppliers and licensors hereby
+        disclaim all warranties of any kind, express or implied, including, without limitation, the
+        warranties of merchantability, ﬁtness for a particular purpose and non-infringement.
+        <ol><li> Neither SocialStreet nor its suppliers and licensors, makes any warranty
+            that the Website will be error free or that access thereto will be continuous or
+            uninterrupted. </li></ol></li>
+      <li>You understand that you obtain content or services through the Website at your own
+        discretion and risk.</li>
+      <h4>Limitation of Liability</h4>
+      <li>In no event will SocialStreet, or its suppliers or licensors, be liable with respect to
+        any subject matter of this agreement under any contract, negligence, strict liability or
+        other legal or equitable theory for:
+        (i) any special, incidental or consequential damages;
+        (ii) the cost of procurement for substitute products or services;
+        (iii) for interruption of use or loss or corruption of data;
+        (iv) for any damages resulting from participation in activities or other SocialStreet
+        related activities; or
+        (v) for personal injury of any sort resulting from participation in activities or other
+        SocialStreet related activities.</li>
+      <li>SocialStreet shall have no liability for any failure or delay due to matters beyond
+        their reasonable control.1.The foregoing shall not apply to the extent prohibited by applicable law.</li>
+      <h4>General Representation and Warranty</h4>
+      <li>You represent and warrant that:
+        <ol><li> your use of the Website will be in strict accordance with the SocialStreet
+            Privacy Policy, with this Agreement and with all applicable laws and regulations
+            (including without limitation any local laws or regulations in your country, province
+            or state, city, or other governmental area, regarding online conduct and
+            acceptable content, and including all applicable laws regarding the transmission
+            of technical data exported from Canada, the United States or the country in
+            which you reside) and</li>
+          <li>your use of the Website will not infringe or misappropriate the intellectual
+            property rights of any third party.</li></ol></li>
+      <h4>Indemniﬁcation</h4>
+      <li> You agree to indemnify and hold harmless SocialStreet, its contractors, and its
+        licensors, and their respective directors, ofﬁcers, employees and agents from and
+        against any and all claims and expenses, including attorneys’ fees, arising out of your
+        use of the Website, including but not limited to your violation of this Agreement.</li>
+      <h4>Miscellaneous</h4>
+      <li>This Agreement constitutes the entire agreement between SocialStreet and you
+        concerning the subject matter hereof, and may only be modiﬁed by a written
+        amendment signed by an authorized executive of SocialStreet, or by the posting by
+        SocialStreet of a revised version.</li>
+      <li>Except to the extent applicable law, if any, provides otherwise, this Agreement, any
+        access to or use of the Website will be governed by the laws of the province of Ontario,
+        Canada, excluding its conﬂict of law provisions, and the proper venue for any disputes
+        arising out of or relating to any of the same will be the provincial and federal courts
+        located in Toronto, Ontario. </li>
+      <li>If any part of this Agreement is held invalid or unenforceable, that part will be
+        construed to reﬂect the parties’ original intent, and the remaining portions will remain in
+        full force and effect. </li>
+      <li>A waiver by either party of any term or condition of this Agreement or any breach
+        thereof, in any one instance, will not waive such term or condition or any subsequent
+        breach thereof. </li>
+      <li>You may assign your rights under this Agreement to any party that consents to, and
+        agrees to be bound by, its terms and conditions; SocialStreet may assign its rights
+        under this Agreement without condition. </li>
+      <li>This Agreement will be binding upon and will inure to the beneﬁt of the parties, their
+        successors and permitted assigns.</li>
+    </ol>
+    © Copyright SocialStreet 2011We are grateful to Automattic Inc. [NTD:link] for making their privacy policy available
+    under a Creative Commons Sharealike license [NTD:link].
   </div>
 </div>
+
+<br/><br/>
+<div style="margin: 0 auto; width: 500px; padding: 0px 0 0px 0;">
+  <%unless params[:display_only] %>
+    <%= form_tag tnc_accepted_authentications_path, :id => "tnc_form" do -%>
+      <%= check_box_tag "accept", true, false, :class => "tnc_accept" -%>
+      <span style="font-weight:bold;background-color:#f7ef6f;">I accept the Terms and Condition. Take me to SocialStreet!</span>
+      <%= hidden_field_tag :facebook, '1', :id => "facebook_hidden_field"%>
+    <%- end -%>
+  <%- end -%>
+</div>
+<br/><br/>
+
 
 <script type="text/javascript">
   $(function() {
     $('.tnc_accept').change(function (){
       $('#tnc_form').submit();
     })
+
+    $('.facebook-checkbox').change(function(){
+      $('#facebook_hidden_field').val($(this).attr('checked') ? '1' : '0');
+    });
   });
 </script>
 

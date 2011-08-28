@@ -84,6 +84,7 @@ SocialStreet::Application.routes.draw do
     collection do
       match "accept_tnc"
       match "tnc_accepted"
+      match "show_privacy"
     end
   end
 
