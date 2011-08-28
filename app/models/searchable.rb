@@ -63,11 +63,13 @@ class Searchable < ActiveRecord::Base
 
   scope :with_keywords_that_match_text_or_keywords, lambda { |text, searchable|
     if !text.blank? || searchable.searchable_event_types.count > 0
-      chain = joins("INNER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
-      chain = chain.joins("INNER JOIN event_types AS et ON set.event_type_id = et.id")
+      chain = joins("LEFT OUTER JOIN searchable_event_types AS set ON set.searchable_id = searchables.id")
+      chain = chain.joins("LEFT OUTER JOIN event_types AS et ON set.id IS NOT NULL AND set.event_type_id = et.id")
       query = []
       args = {}
 
+      query << "set.id IS NULL"
+        
       searchable.searchable_event_types.each_with_index{ |k,i|
         query << "set.name ~* :key#{i}"
         args["key#{i}".to_sym] = "#{k.name}"
