@@ -155,7 +155,7 @@ class EventsController < ApplicationController
       bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
 
       @searchables = Searchable.explorable
-      @searchables = @searchables.with_keywords(params[:event][:searchable_attributes][:keywords].reject{|k| k.blank?})
+      @searchables = @searchables.matching_keywords(params[:event][:searchable_attributes][:keywords].reject{|k| k.blank?}, false)
       @searchables = @searchables.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")
       @searchables = @searchables.where(:ignored => false)
     end
