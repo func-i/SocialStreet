@@ -9,7 +9,7 @@
         </span>
       </fieldset>
     <% end %>
-    <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
+    <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add top-btn-add"  %>
     <ul class="nav-serv">
 
       <li><%= link_to 'How this works', how_path, :id=>"how_it_works" %></li>
@@ -26,7 +26,7 @@
         </li>
 
       <% else %>
-                                                                  <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                                                        <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li><%= link_to "Sign in", '/auth/facebook'%></li>
       <%- end -%>
     </ul>
@@ -34,23 +34,43 @@
     <div class="video-box" style="display:none">
       <div class="vb">
         <div class="video-holder">
-          <img width="520" height="240" src="/images/img16.png" alt="image description"/>
+          <%= image_tag "icons.png", :alt => "SocialStreet Icons" %>
         </div>
-        <div class="text">
-          <strong class="ttl">What is SocialStreet?</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed rhoncus orci. Quisque posuere elit sed erat vulputate sed mollis odio lobortis. Sed dui elit, cursus eu dignissim vestibulum, porttitor id lectus. Mauris suscipit nisi at urna eleifend luctus. </p>
+        <div class="text header-content">
+          <strong class="ttl" style="font-size: 26px;">
+            <span style="color: #FE6">Explore</span>
+            Real
+            <span style="color: #FE6">Life.</span>
+          </strong>
+          <p style="margin-bottom: 50px;">
+            Find things to do in your city with other people who want to do the same. <br />
+            It's now easy to connect with other people around you in real life for any reason <br />
+            because on SocialStreet, the world is your friend.
+          </p>
+          <strong class="ttl">
+            What is <span style="color: #FE6">StreetMeet</span>?
+          </strong>
+          <p>
+            A StreetMeet is a real life activity you can plan, browse, and attend on SocialStreet. <br />
+            It can be something that is either more fun or more practical with other people.
+          </p>
         </div>
         <a href="#" id="how_btn_close" class="btn-close">close</a>
       </div>
-      <strong class="note">Do something</strong>
-      <%= form_tag "/explore", :method => :get, :class=>"form-explore" do %>
-        <fieldset>
-          <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit"%>
-          <span class="text">
-            <%= text_field_tag 'keywords[]', params[:q], :id=>"q-textfield", :placeholder => "Do something today...", :class => "top-explore-field" %>
-          </span>
-        </fieldset>
-      <% end %>
+      <div style="margin-left: 150px;">
+        <span class="header-happening chalk">See what's happening in your neighbourhood.</span><br />
+        <%= image_tag "explore-arrow.png", :style => "width: 18px; display: inline; float: left; position: relative; top: -15px;" %>
+        <%= form_tag "/explore", :method => :get, :class=>"form-explore" do %>
+          <fieldset>
+            <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit"%>
+            <span class="text">
+              <%= text_field_tag 'keywords[]', params[:q], :id=>"q-textfield", :placeholder => "Do something today...", :class => "top-explore-field" %>
+            </span>
+          </fieldset>
+        <% end %>
+      </div>
+      <%= link_to_popup_modal_ajax  '+StreetMeet', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil, :class => "btn-add"  %>
+
     </div>
   </div>
 </div>
@@ -150,8 +170,8 @@
             </div>
 
             <div class="row">
-            <%= f.label :body %><br />
-            <%= f.text_area :body, :rols => 5, :cols => 60, :class=>"text" %>
+              <%= f.label :body %><br />
+              <%= f.text_area :body, :rols => 5, :cols => 60, :class=>"text" %>
             </div>
           <% end %>
         </div>
@@ -170,32 +190,32 @@
 <%= content_for :end_of_body do -%>
   <script type='text/javascript'>
   <% unless params[:create_event].blank? %>
-      $(function(){
-        popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
-      });
+    $(function(){
+      popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
+    });
   <% end %>
 
   <%- if(!@current_user &&  current_page?(explore_path) && (!session[:how_it_works_last_display_time] || (Time.zone.now - session[:how_it_works_last_display_time] > 30.minute)))-%>
     <% session[:how_it_works_last_display_time] = Time.zone.now %>
-      expandHowItWorks();
+    expandHowItWorks();
 
-      $(function(){
+    $(function(){
 
-        var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
-        if(IE7) {
-          // Hack fix for position in IE7
-          //$('.main-top').css('height', '77px');
-          //$('.main-top .holder').css('background', '');
-        }
-      });
+      var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
+      if(IE7) {
+        // Hack fix for position in IE7
+        //$('.main-top').css('height', '77px');
+        //$('.main-top .holder').css('background', '');
+      }
+    });
 
   <% else %>
     <%- if params[:view].eql?("map") %>
-        $('.w2').addClass('page-map');
-        $('html').css('overflow', 'hidden');
+      $('.w2').addClass('page-map');
+      $('html').css('overflow', 'hidden');
 
     <%- elsif params[:view].eql?("map") %>
-        $('.w2').addClass('page-explore');
+      $('.w2').addClass('page-explore');
     <%- end -%>
   <%- end -%>
   </script>

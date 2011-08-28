@@ -54,8 +54,9 @@ function expandHowItWorks() {
  
     $('#how_it_works').closest('li').addClass('active');
     $('#top_explore_form').hide(1, function() {
+        $('.top-btn-add').hide();
         $('#header').addClass('open');
-        $('.video-box').show(500);
+        $('.video-box').show(200);
         $('.w2').addClass('header-open');
     });
 }
@@ -64,6 +65,7 @@ function retractHowItWorks(f) {
     if($('#header').hasClass('open')) {
         $('.video-box').slideUp('slow', function() {
             $('#header').removeClass('open');
+            $('.top-btn-add').show();
             $('#top_explore_form').show();
             $('#how_it_works').closest('li').removeClass('active');
             $('.w2').removeClass('header-open');
