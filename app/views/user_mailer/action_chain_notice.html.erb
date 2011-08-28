@@ -7,11 +7,11 @@
 <div style="margin-bottom:15px">
   <%=action_type_text%> in reply to a message you posted 
   <% if @head_action.action_type == Action.types[:profile_comment] %>
-    on <%= link_to "#{@head_action.to_user.name}'s profile", profile_url(@head_action.to_user), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
+    on <%= link_to "#{@head_action.to_user.name}'s profile", profile_url(@head_action.to_user), :style=>"color:#0981BE;text-decoration:none;font-weight:bold;"%>
   <% elsif @head_action.action_type == Action.types[:search_comment] %>
-    to <%= link_to searchable.title_for_searchable, explore_url(searchable.url_params), :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>
+    to <%= link_to @head_action.searchable.title_for_searchable, explore_url(@head_action.searchable.url_params), :style=>"color:#0981BE;text-decoration:none;font-weight:bold;" %>
   <% elsif @head_action.action_type == Action.types[:event_comment] %>
-    on the StreetMeet - <%= link_to @head_action.event.title, event_url(@head_action.event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>
+    on the StreetMeet - <%= link_to @head_action.event.title, event_url(@head_action.event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold;" %>
   <% else %>
     <%= link_to 'SocialStreet', root_url, :style=>"color:#0981BE;text-decoration:none;font-weight:bold" %>
   <% end %>
