@@ -37,6 +37,10 @@ SocialStreet::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
+  ActionMailer::Base.add_delivery_method :ses, AWS::SES::Base,
+    :access_key_id     => 'AKIAJHXKPYMNL3P56FSQ',
+    :secret_access_key => '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'
+
   config.action_mailer.delivery_method = :ses
   #config.action_mailer.delivery_method = :smtp
   #  config.action_mailer.smtp_settings = {
