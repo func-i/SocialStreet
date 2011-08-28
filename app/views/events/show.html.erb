@@ -1,6 +1,5 @@
 <% content_for :main_top do %>
   <div class="col1">
-    <%# if @event.editable_time? && @rsvp%>
       <% if @event.editable_by?(current_user) %>
         <div class="admin-view">
           <strong>

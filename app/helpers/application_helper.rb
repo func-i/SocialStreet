@@ -101,7 +101,7 @@ module ApplicationHelper
     end
 
     if( start_time > compare_time)
-      return 'starts ' + time_ago_in_words(start_time) + ' from now'
+      return 'in ' + time_ago_in_words(start_time)
     else
       return time_ago_in_words(start_time) + ' ago'
     end

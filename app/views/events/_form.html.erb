@@ -30,7 +30,6 @@
           <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%I")), :class => "starts-at-time" %>
           <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_starts_at.strftime("%M")), :class => "starts-at-time" %>
           <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], new_event_starts_at.strftime("%p")), :class => "starts-at-time" %>
-
     <%#= select_time new_event_starts_at, {:minute_step => 15, :ignore_date => true}, :class => 'starts_at_time' -%>
           <%= date_range_fields.hidden_field :starts_at, :class => "starts-at-value" -%>
         </div>
@@ -53,7 +52,7 @@
     <%- end -%>
   </div>
 
-  <div class="row"> 
+  <div class="row">
     <label for="where">Where?</label>
 
     <%= form.fields_for :searchable do |searchable_fields| %>
@@ -120,46 +119,46 @@
   $(function()
   {
 <% if event.location.try(:geo_located?) %>
-    loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
-    map.setCenter(loc);
-    createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
+      loc = new google.maps.LatLng(<%= event.location.latitude %>, <%= event.location.longitude %>);
+      map.setCenter(loc);
+      createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
 <% end %>
 
-  $('#new_event').submit(function(e) {
-    return checkButtonPressed();
-  })
+    $('#new_event').submit(function(e) {
+      return checkButtonPressed();
+    })
 
-  $('#expand-extra-section').click(function(){
-    $('#row-title').toggle();
-    $('#title-description-link').toggle();
+    $('#expand-extra-section').click(function(){
+      $('#row-title').toggle();
+      $('#title-description-link').toggle();
 
-    $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
-    return false;
-  });
+      $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
+      return false;
+    });
 
 
-  $('[name=\'event[description]\']').live('focus', function() {
-    $(this).autoResize({extraSpace: 0})
-  });
+    $('[name=\'event[description]\']').live('focus', function() {
+      $(this).autoResize({extraSpace: 0})
+    });
 
 <% unless event.description.blank? && event.name.blank? %>
-    $('#expand-extra-section').trigger('click');
+      $('#expand-extra-section').trigger('click');
 <% end %>
-})
+  })
 
-function getSearchParams() {
+  function getSearchParams() {
 
-  var bounds = map.getBounds();
-  ne = bounds.getNorthEast();
-  sw = bounds.getSouthWest();
-  c = bounds.getCenter();
+    var bounds = map.getBounds();
+    ne = bounds.getNorthEast();
+    sw = bounds.getSouthWest();
+    c = bounds.getCenter();
 
-  var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
-  if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
-    return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
-  else
-    return str;
+    var str = '?map_bounds=' + ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng();
+    if($('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').length > 0)
+      return str + "&" + $('[name="event\\[searchable_attributes\\]\\[keywords\\]\\[\\]"]').serialize();
+    else
+      return str;
 
-}
+  }
 
 </script>

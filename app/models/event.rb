@@ -220,11 +220,12 @@ class Event < ActiveRecord::Base
   def editable_time?
     #editable if not within X hours before the start_time
     #return (starts_at - EDITABLE_OFFSET > Time.zone.now)
-    return (finishes_at - EDITABLE_OFFSET > Time.zone.now)
+    return (finishes_at - EDITABLE_OFFSET > Time.zone.now) if finishes_at
+    return true
   end
 
   def editable?(user)
-    editable_by?(user) && editable_time?
+    editable_by?(user)
   end
 
   def cancellable_by?(user)
@@ -232,7 +233,7 @@ class Event < ActiveRecord::Base
   end
 
   def cancellable?(user)
-    return cancellable_by?(user) && editable_time?
+    return cancellable_by?(user)
   end
 
   # TEMPORARY HELPERS
