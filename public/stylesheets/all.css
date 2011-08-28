@@ -188,7 +188,7 @@ form, fieldset {
 .header-happening {
     position: relative;
     top: -10px;
-    left: 30px;
+    left: -50px;
 }
 
 .header-content {

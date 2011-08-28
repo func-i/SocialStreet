@@ -24,7 +24,7 @@
         </li>
 
       <% else %>
-                                                                            <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                                                              <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li id="sign_in_li"><%= link_to "Sign in", '/auth/facebook'%></li>
         <li id="sign_in_ribbon_li" style="display: none; vertical-align: top; padding-right: 100px;" class="chalk">Sign in with facebook
           <%= image_tag "sign-in-arrow.png", :style => "vertical-align: top;" %>
@@ -45,23 +45,24 @@
             <span style="color: #FFC233">Life.</span>
           </strong>
           <p style="margin-bottom: 50px;">
-            Find things to do in your city with other people who want to do the same. <br />
-            It's now easy to connect with other people around you in real life for any reason <br />
-            because on SocialStreet, the world is your friend.
+          Our mission is to make it easy to discover friends that enjoy the same things as you!<br/>
+          You can now easily connect with your own personalized community, no matter where you are.
+          By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by great friends!
           </p>
           <strong class="ttl">
-            What is <span style="color: #FFC233">StreetMeet</span>?
+            What are <span style="color: #FFC233">StreetMeets</span>?
           </strong>
           <p>
-            A StreetMeet is a real life activity you can plan, browse, and attend on SocialStreet. <br />
-            It can be something that is either more fun or more practical with other people.
+            StreetMeets are real life, everyday interactions between you and your community.<br/>
+            Whether that means you are looking for a group to play basketball, a friend to watch the season finale of dancing with the stars or a buddy to check out the newest bar,<br/>
+            you can find it all on SocialStreet!
           </p>
         </div>
         <a href="#" id="how_btn_close" class="btn-close">close</a>
       </div>
       <div style="margin-left: 100px; margin-top: 15px;">
         <span class="header-happening chalk">See what's happening in your neighbourhood.</span><br />
-        <%= image_tag "explore-arrow.png", :style => "width: 18px; display: inline; float: left; position: relative; top: -15px;" %>
+        <%= image_tag "explore-arrow.png", :style => "width: 18px; display: inline; float: left; position: relative; top: -10px;" %>
         <%= form_tag "/explore", :method => :get, :class=>"form-explore" do %>
           <fieldset>
             <%= submit_tag "Explore", :value=>"Explore", :title=>"Explore", :class=>"submit"%>
@@ -190,32 +191,32 @@
 <%= content_for :end_of_body do -%>
   <script type='text/javascript'>
   <% unless params[:create_event].blank? %>
-    $(function(){
-      popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
-    });
+      $(function(){
+        popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
+      });
   <% end %>
 
   <%- if(!@current_user &&  current_page?(explore_path) && (!session[:how_it_works_last_display_time] || (Time.zone.now - session[:how_it_works_last_display_time] > 30.minute)))-%>
     <% session[:how_it_works_last_display_time] = Time.zone.now %>
-    expandHowItWorks();
+      expandHowItWorks();
 
-    $(function(){
+      $(function(){
 
-      var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
-      if(IE7) {
-        // Hack fix for position in IE7
-        //$('.main-top').css('height', '77px');
-        //$('.main-top .holder').css('background', '');
-      }
-    });
+        var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
+        if(IE7) {
+          // Hack fix for position in IE7
+          //$('.main-top').css('height', '77px');
+          //$('.main-top .holder').css('background', '');
+        }
+      });
 
   <% else %>
     <%- if params[:view].eql?("map") %>
-      $('.w2').addClass('page-map');
-      $('html').css('overflow', 'hidden');
+        $('.w2').addClass('page-map');
+        $('html').css('overflow', 'hidden');
 
     <%- elsif params[:view].eql?("map") %>
-      $('.w2').addClass('page-explore');
+        $('.w2').addClass('page-explore');
     <%- end -%>
   <%- end -%>
   </script>
