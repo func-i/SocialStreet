@@ -8,7 +8,7 @@ namespace :resque do
       ActiveRecord::Base.establish_connection
     end
 
-    require 'resque/failure/hoptoad'
+    #require 'resque/failure/hoptoad'
 
     #Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Hoptoad]
     #Resque::Failure.backend = Resque::Failure::Multiple
