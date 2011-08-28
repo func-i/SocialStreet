@@ -33,26 +33,27 @@
     <%#= select_time new_event_starts_at, {:minute_step => 15, :ignore_date => true}, :class => 'starts_at_time' -%>
           <%= date_range_fields.hidden_field :starts_at, :class => "starts-at-value" -%>
         </div>
-        <div class="col" id="EndDateTime" style="display:none; clear: both; margin-left: 108px; padding: 0;">
-          <span><label for="date">End Date:</label></span>
-          <div>
-            <% new_event_ends_at = event.searchable.searchable_date_ranges.first.ends_at %>
-            <%= text_field_tag 'ends_at_calendar', new_event_ends_at.strftime('%Y-%m-%d'), :class => "text_field ends-at-time", :style => "width: 80px;" %>
-            <%= select_tag :ends_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%I")), :class => "ends-at-time" %>
-            <%= select_tag :ends_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%M")), :class => "ends-at-time" %>
-            <%= select_tag :ends_at_meridian, options_for_select([["AM"], ["PM"]], new_event_ends_at.strftime("%p")), :class => "ends-at-time" %>
-          </div>
-    <%#= select_time event.searchable.searchable_date_ranges.first.ends_at, {:minute_step => 15, :ignore_date => true}, :class => 'ends_at_time' -%>
+        <div class="col" style="vertical-align: baseline;">
+          <span><label for="duration">Duration:</label></span>
+          <%= select_tag :duration, options_for_select((1...23).to_a, '3'), :id =>"duration"%>
+          <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], "Hours"), :id => "duration_size"%>
           <%= date_range_fields.hidden_field :ends_at, :class => "ends_at_value" -%>
         </div>
-<!--    <div>
-      <span><label for="duration">Duration:</label></span>
-      <%= select_tag :duration, options_for_select((1...23).to_a, '3'), :id =>"duration"%>
-      <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], "Hours"), :id => "duration_size"%>
-    </div>-->
-        <div id="Add-end-date-title">
-          <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle();$('#Add-end-date-title').toggle();$('#exclude_end_date').val(0)" %>
-        </div>
+
+        <!--        <div class="col" id="EndDateTime" style="display:none; clear: both; margin-left: 108px; padding: 0;">
+                  <span><label for="date">End Date:</label></span>
+                  <div>
+        <% new_event_ends_at = event.searchable.searchable_date_ranges.first.ends_at %>
+        <%= text_field_tag 'ends_at_calendar', new_event_ends_at.strftime('%Y-%m-%d'), :class => "text_field ends-at-time", :style => "width: 80px;" %>
+        <%= select_tag :ends_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%I")), :class => "ends-at-time" %>
+        <%= select_tag :ends_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%M")), :class => "ends-at-time" %>
+        <%= select_tag :ends_at_meridian, options_for_select([["AM"], ["PM"]], new_event_ends_at.strftime("%p")), :class => "ends-at-time" %>
+                  </div>
+    <%#= select_time event.searchable.searchable_date_ranges.first.ends_at, {:minute_step => 15, :ignore_date => true}, :class => 'ends_at_time' -%>
+                </div>-->
+        <!--        <div id="Add-end-date-title">
+        <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle();$('#Add-end-date-title').toggle();$('#exclude_end_date').val(0)" %>
+                </div>-->
       <%  end %>
     <%- end -%>
   </div>
@@ -129,13 +130,80 @@
       createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
 <% end %>
 
-/*    $("#duration_size").change(function(e){
-      var options = $("#duration").options;
-      //var duration_size = this.getValue();
-      for(i = 0; i < 12; i++){
-        options[i] = new Option(i*5, i*5);
+    $("#duration_size").change(function(e){
+      var options = '';
+      
+      var duration_size = $(this).val();
+      if(duration_size == "Minutes"){
+        for (var i = 1; i < 11; i++) {
+          if(i*5 == 30){
+            options += '<option value="' + i*5 + '" selected>' + i*5 + '</option>';
+          }else{
+            options += '<option value="' + i*5 + '">' + i*5 + '</option>';
+          }
+        }
       }
-    });*/
+      else if(duration_size == "Hours"){
+        for (var i = 1; i < 24; i++) {
+          if(i == 3){
+            options += '<option value="' + i + '" selected>' + i + '</option>';
+          }else{
+            options += '<option value="' + i + '">' + i + '</option>';
+          }
+        }
+      }
+      else if(duration_size == "Days"){
+        for (var i = 1; i < 30; i++) {
+          if(i == 1){
+            options += '<option value="' + i + '" selected>' + i + '</option>';
+          }else{
+            options += '<option value="' + i + '">' + i + '</option>';
+          }
+        }
+      }
+      
+      $("#duration").html(options);
+
+      updateEndDate();
+    });
+
+    $('#duration').change(function(){
+      updateEndDate();
+    });
+    $('.starts-at-time').change(function(){
+      updateEndDate();
+    });
+
+    function updateEndDate(){
+      var duration = 0;
+      var duration_size = $("#duration_size").val();
+      console.log(duration_size)
+      if(duration_size == "Minutes"){
+        duration = $('#duration').val()*1000*60;
+      }
+      else if(duration_size == "Hours"){
+        duration = $('#duration').val()*1000*60*60;
+      }
+      else if(duration_size == "Days"){
+        duration = $('#duration').val()*1000*60*60*24;
+      }
+      console.log(duration);
+
+      var stHour = $($('.starts-at-time')[1]).val();
+      var stMeridian = $($('.starts-at-time')[3]).val();
+      if(stMeridian == 'PM')
+        stHour = parseInt(stHour, 10) + 12;
+
+      var stTime = $('#starts_at_calendar').datepicker('getDate');
+      stTime.setHours(stHour);
+      stTime.setMinutes($($('.starts-at-time')[2]).val());
+
+      var endTime = new Date(stTime.getTime());
+      endTime.setMilliseconds(stTime.getMilliseconds() + duration);
+
+      $('.ends_at_value').val(endTime.format('yyyy-mm-dd HH:MM'));
+    };
+
 
     $('#new_event').submit(function(e) {
       return checkButtonPressed();

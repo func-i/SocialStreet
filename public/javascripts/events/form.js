@@ -6,12 +6,12 @@ $(function() {
         buttonImageOnly: true
     });
 
-    $( "#ends_at_calendar" ).datepicker({
+/*    $( "#ends_at_calendar" ).datepicker({
         dateFormat: 'yy-mm-dd',
         showOn: "both",
         buttonImage: '/images/calendar_grey.png',
         buttonImageOnly: true
-    });
+    });*/
 
     $('.starts-at-time').change(function() {
         var stHour = $($('.starts-at-time')[1]).val();
@@ -21,7 +21,7 @@ $(function() {
 
         $('.starts-at-value').val($('#starts_at_calendar').val() + ' ' + stHour + ':' + $($('.starts-at-time')[2]).val());
 
-        var stTime = $('#starts_at_calendar').datepicker('getDate');
+/*        var stTime = $('#starts_at_calendar').datepicker('getDate');
         stTime.setHours(stHour);
         stTime.setMinutes($($('.starts-at-time')[2]).val());
 
@@ -36,10 +36,10 @@ $(function() {
         $($('.ends-at-time')[1]).val(endTime.format('hh'));
         $($('.ends-at-time')[2]).val(endTime.format('MM'));
         $($('.ends-at-time')[3]).val(endTime.format('TT'));
-        $('.ends-at-time').trigger('change');
+        $('.ends-at-time').trigger('change');*/
     });
 
-    $('.ends-at-time').change(function() {
+/*    $('.ends-at-time').change(function() {
         var endHour = $($('.ends-at-time')[1]).val();
         var endMeridian = $($('.ends-at-time')[3]).val();
         if(endMeridian == 'PM')
@@ -63,5 +63,5 @@ $(function() {
         var diff = endTime - stTime;
 
         $('.ends-at-time').data("diff_milli", diff);
-    });
+    });*/
 });
