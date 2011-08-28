@@ -296,8 +296,8 @@ form, fieldset {
     padding: 7px 9px;
     width: 342px;
 }
-.open .form-explore .text { width: 294px; }
-.open .form-explore .text input { width: 273px; }
+/*.open .form-explore .text { width: 294px; }
+.open .form-explore .text input { width: 273px; }*/
 .btn-add {
     background: #FFC233;
     color: #010000;
