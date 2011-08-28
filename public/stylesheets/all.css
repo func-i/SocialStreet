@@ -181,8 +181,8 @@ form, fieldset {
 }
 
 .chalk {
- font-family: JLEE;
- color: #FFFCD5;
+    font-family: JLEE;
+    color: #FFFCD5;
 }
 
 .header-happening {
@@ -199,6 +199,36 @@ form, fieldset {
     float: right;
     margin: 8px 5px 0 0;
 }
+
+.sign-in-ribbon {
+    position: absolute; 
+    top: -85px;
+    left: 235px;
+}
+
+@-moz-document url-prefix() {
+    .sign-in-ribbon {
+        left: 0px;
+        top: -62px;
+}
+}
+
+
+.feedback-btn {
+    background-color:#69B2D7;
+    color:white;
+    font: normal normal bold 18px/25px Arial, Helvetica, sans-serif;
+    padding:7px;
+    display:block !important;
+    position:fixed;
+    left:-30px;
+    top:45%;
+    z-index:99;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
 .nav-serv li {
     float: left;
     position: relative;

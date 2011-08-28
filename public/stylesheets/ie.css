@@ -49,3 +49,17 @@ textarea {
     margin-left: 2.0em;
 }
 
+.sign-in-ribbon {
+    left: 0px;
+    top: -60px;
+}
+
+.feedback-btn {
+    left: 0px;
+}
+
+@font-face {
+    font-family: JLEE;
+    src: url('/fonts/JLEE.eot');
+}
+
