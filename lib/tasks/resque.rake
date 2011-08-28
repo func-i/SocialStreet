@@ -1,8 +1,12 @@
 namespace :resque do
-  task :setup do
+  task :setup => :environment do
     require 'resque'
     require 'resque_scheduler'
     require 'resque/scheduler'
+    
+    Resque.after_fork do |job|
+      ActiveRecord::Base.establish_connection
+    end
 
     # you probably already have this somewhere
     #Resque.redis = 'localhost:6379'
