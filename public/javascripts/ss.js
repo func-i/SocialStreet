@@ -38,7 +38,6 @@ function refreshResults(caller) {
         if(caller == "events")
             $.getScript('/events/load_events' + getSearchParams());
         else if(caller == "explore"){
-            console.log('refreshed');
             updateCommentBox();
             $('form.search-params').submit();
         }

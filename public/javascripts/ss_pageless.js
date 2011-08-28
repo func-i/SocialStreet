@@ -109,7 +109,6 @@ Pageless.prototype.watch = function(that){
                 that.loading(false);
             }
             else{
-                console.log("TODO - ERROR IN PAGELESS. No Loader defined");
             }
         });
     }

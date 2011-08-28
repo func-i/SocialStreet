@@ -45,6 +45,11 @@
     <%#= select_time event.searchable.searchable_date_ranges.first.ends_at, {:minute_step => 15, :ignore_date => true}, :class => 'ends_at_time' -%>
           <%= date_range_fields.hidden_field :ends_at, :class => "ends_at_value" -%>
         </div>
+<!--    <div>
+      <span><label for="duration">Duration:</label></span>
+      <%= select_tag :duration, options_for_select((1...23).to_a, '3'), :id =>"duration"%>
+      <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], "Hours"), :id => "duration_size"%>
+    </div>-->
         <div id="Add-end-date-title">
           <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle();$('#Add-end-date-title').toggle();$('#exclude_end_date').val(0)" %>
         </div>
@@ -123,6 +128,14 @@
       map.setCenter(loc);
       createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
 <% end %>
+
+/*    $("#duration_size").change(function(e){
+      var options = $("#duration").options;
+      //var duration_size = this.getValue();
+      for(i = 0; i < 12; i++){
+        options[i] = new Option(i*5, i*5);
+      }
+    });*/
 
     $('#new_event').submit(function(e) {
       return checkButtonPressed();

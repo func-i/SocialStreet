@@ -1,6 +1,5 @@
 if($('#attend-button').length > 0){
   $('#attend-button').html('<%=escape_javascript( render(:partial => "shared/attending_buttons", :locals => {:event => @event, :rsvp => @rsvp}))%>');
-  console.log($('.attendee_<%=current_user.id%>'));
   $.each($('.attendee_<%=current_user.id%>'), function(index, ele){
     $(ele).remove();
   });
