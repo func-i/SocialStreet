@@ -27,10 +27,11 @@ class Searchable < ActiveRecord::Base
   }
 
 
-  # overriding the with_keywords scope that is normally specified in SuperSearchable mixin
-  scope :with_keywords, lambda { |keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
+
+  scope :matching_keywords, lambda { |keywords, include_searchables_with_no_keywords| # keywords in this case is an array, not a string (as expected by SuperSearchable
     unless keywords.blank?
       chain = includes(:event).includes(:comment)
+      chain = chain.joins("LEFT OUTER JOIN searchable_event_types ON searchable_event_types.searchable_id = searchables.id") if include_searchables_with_no_keywords
       query = []
       args = {}
       
@@ -40,17 +41,19 @@ class Searchable < ActiveRecord::Base
           OR events.name ~* :key#{i}
           OR events.description ~*:key#{i}
           OR searchables.id IN ( 
-            SELECT searchable_event_types.searchable_id FROM searchable_event_types, event_types
-              WHERE searchable_event_types.searchable_id = searchables.id
+            SELECT set.searchable_id FROM searchable_event_types AS set, event_types
+              WHERE set.searchable_id = searchables.id
               AND (
-                  searchable_event_types.name LIKE :key#{i}
+                  set.name LIKE :key#{i}
                   OR (
-                    searchable_event_types.event_type_id IS NOT NULL
-                    AND event_types.id = searchable_event_types.event_type_id
+                    set.event_type_id IS NOT NULL
+                    AND event_types.id = set.event_type_id
                     AND event_types.name ~* :key#{i}
                   )
               )
-          )"
+          )
+          #{"OR searchable_event_types.id IS NULL" if include_searchables_with_no_keywords}
+          "
           args["key#{i}".to_sym] = "#{k}"
         end
       end

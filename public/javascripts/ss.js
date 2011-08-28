@@ -126,18 +126,18 @@ $(function() {
     resizeModals();
 
     $('.popup-modal').live('click', function() {
-        var divId = '#' + $(this).attr('popup-div-id');
-        $(divId).show();
-
         // Scroll to the top of the document
         window.scrollTo(0,0);
+
+        var divId = '#' + $(this).attr('popup-div-id');
+        $(divId).show();
 
         // Display overlay
         if(document.getElementById("ss_modal_overlay") === null){
             $("body").append("<div id='ss_modal_overlay'></div>");
             $("#ss_modal_overlay").addClass("ss_modal_overlayBG");
             $("#ss_modal_overlay").click(function(){
-                removeModal($(modal_divID));
+                removeModal($(divId));
             });
         }
 
@@ -153,10 +153,10 @@ $(function() {
         if($(divId).find('.row-map').length > 0)
             google.maps.event.trigger(map, 'resize');
 
+        resizeModals();
+
         //Disable scrolling for the body
         $("html").css("overflow", "hidden");
-
-        resizeModals();
 
         return false;
     });

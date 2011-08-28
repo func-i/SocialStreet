@@ -45,9 +45,12 @@ class ExploreController < ApplicationController
   def find_overlapping_subscriptions
     @overlapping_subscriptions = Searchable.with_only_subscriptions
 
-    @overlapping_subscriptions = apply_filter(@overlapping_subscriptions)
-    @overlapping_subscriptions = @overlapping_subscriptions.where("search_subscriptions.user_id != #{current_user.id}") if current_user
-    @overlapping_subscriptions_count = @overlapping_subscriptions.count;
+    @overlapping_subscriptions = apply_keywords(@overlapping_subscriptions, params[:keywords], true)
+
+    #MATCH MAP BOUNDS
+    @overlapping_subscriptions = apply_map_bounds(@overlapping_subscriptions, params[:map_bounds])
+
+    #@overlapping_subscriptions = @overlapping_subscriptions.where("search_subscriptions.user_id != #{current_user.id}") if current_user
 
     #Order users by connection strength
     if current_user
@@ -56,8 +59,8 @@ class ExploreController < ApplicationController
     end
 
     # this executes a full search, which is bad, we want to paginate (eventually)
-    @overlapping_subscriptions = @overlapping_subscriptions.limit(7).uniq_by{|s| s.search_subscription.user_id}
-
+    @overlapping_subscriptions = @overlapping_subscriptions.uniq_by{|s| s.search_subscription.user_id}
+    @overlapping_subscriptions_count = @overlapping_subscriptions.count;
   end
 
   def get_searchables
@@ -296,7 +299,7 @@ class ExploreController < ApplicationController
     event_searchables = apply_from_date(event_searchables, from_date)
   end
 
-  def apply_keywords(searchable, keywords)
+  def apply_keywords(searchable, keywords, include_searchables_with_no_keywords = false)
     return searchable if (keywords.blank? || keywords.empty?)
 
     all_keywords = []
@@ -308,7 +311,7 @@ class ExploreController < ApplicationController
     end
 
     return searchable if all_keywords.empty?
-    return searchable = searchable.with_keywords(all_keywords)
+    return searchable = searchable.matching_keywords(all_keywords, include_searchables_with_no_keywords)
   end
 
   def apply_map_bounds(searchable, map_bounds)
@@ -391,7 +394,7 @@ class ExploreController < ApplicationController
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
 
     search_object = search_object.where(:ignored => false)
-    search_object = search_object.with_keywords(keywords) unless keywords.blank?
+    search_object = search_object.matching_keywords(keywords, false) unless keywords.blank?
 
     unless(date_search = prm_date_search).blank?
 

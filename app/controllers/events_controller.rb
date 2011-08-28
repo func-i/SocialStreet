@@ -20,16 +20,16 @@ class EventsController < ApplicationController
     @num_pages = (total_count.to_f / @per_page.to_f).ceil
     @actions = @actions.limit(@per_page).offset(offset)
 
-    # => Attendees && Administrator objects
-    @attendees_rsvps = @event.rsvps.attending_or_maybe_attending
-    @attendees_rsvps = @attendees_rsvps.order_by_rank_to_user(current_user) if current_user
-    @attendees_rsvps = @attendees_rsvps.all
-    @administrators_rsvps = @event.rsvps.administrators
-    @administrators_rsvps = @administrators_rsvps.order_by_rank_to_user(current_user) if current_user
-    @administrators_rsvps = @administrators_rsvps.all
-
     if request.xhr? && params[:page] # pagination request
       render :partial => 'new_page'
+    else
+      # => Attendees && Administrator objects
+      @attendees_rsvps = @event.rsvps.attending_or_maybe_attending
+      @attendees_rsvps = @attendees_rsvps.order_by_rank_to_user(current_user) if current_user
+      @attendees_rsvps = @attendees_rsvps.all
+      @administrators_rsvps = @event.rsvps.administrators
+      @administrators_rsvps = @administrators_rsvps.order_by_rank_to_user(current_user) if current_user
+      @administrators_rsvps = @administrators_rsvps.all
     end
 
     @page_title = "Event - #{@event.title}"
@@ -155,7 +155,7 @@ class EventsController < ApplicationController
       bounds = params[:map_bounds].split(",").collect { |point| point.to_f }
 
       @searchables = Searchable.explorable
-      @searchables = @searchables.with_keywords(params[:event][:searchable_attributes][:keywords].reject{|k| k.blank?})
+      @searchables = @searchables.matching_keywords(params[:event][:searchable_attributes][:keywords].reject{|k| k.blank?}, false)
       @searchables = @searchables.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3]).order("searchables.created_at DESC")
       @searchables = @searchables.where(:ignored => false)
     end
