@@ -9,15 +9,15 @@
 ################################
 types = {}
 #PARENTS
-types[:sports] = EventType.create!(:name => 'Sports', :image_path => "/images/event_types/basketball.png")
-types[:fitness] = EventType.create!(:name => 'Fitness', :image_path => "/images/event_types/basketball.png")
-types[:recreation] = EventType.create!(:name => 'Recreation', :image_path => "/images/event_types/basketball.png")
-types[:language_exchange] = EventType.create!(:name => 'Language Exchange', :image_path => "/images/event_types/basketball.png")
-types[:eating] = EventType.create!(:name => 'Eating', :image_path => "/images/event_types/basketball.png")
-types[:drinking] = EventType.create!(:name => 'Drinking', :image_path => "/images/event_types/basketball.png")
-types[:arts_and_culture] = EventType.create!(:name => 'Arts & Culture', :image_path => "/images/event_types/basketball.png")
-types[:service_exchange] = EventType.create!(:name => 'Service Exchange', :image_path => "/images/event_types/basketball.png")
-types[:professional_networking] = EventType.create!(:name => 'Professional Networking', :image_path => "/images/event_types/basketball.png")
+types[:sports] = EventType.create!(:name => 'Sports', :image_path => "/images/event_types/sports.png")
+types[:fitness] = EventType.create!(:name => 'Fitness', :image_path => "/images/event_types/fitness.png")
+types[:recreation] = EventType.create!(:name => 'Recreation', :image_path => "/images/event_types/recreation.png")
+types[:language_exchange] = EventType.create!(:name => 'Language Exchange', :image_path => "/images/event_types/language_exchange.png")
+types[:eating] = EventType.create!(:name => 'Eating', :image_path => "/images/event_types/eating.png")
+types[:drinking] = EventType.create!(:name => 'Drinking', :image_path => "/images/event_types/drinking.png")
+types[:arts_and_culture] = EventType.create!(:name => 'Arts & Culture', :image_path => "/images/event_types/arts_culture.png")
+types[:service_exchange] = EventType.create!(:name => 'Service Exchange', :image_path => "/images/event_types/service_exchange.png")
+types[:professional_networking] = EventType.create!(:name => 'Professional Networking', :image_path => "/images/event_types/networking.png")
 
 #MAIN TYPES
 
@@ -32,17 +32,17 @@ types[:dodgeball] = EventType.create!(:name => 'Dodgeball', :image_path => "/ima
 types[:squash] = EventType.create!(:name => 'Squash', :image_path => "/images/event_types/squash.png", :parent => types[:sports])
 types[:golf] = EventType.create!(:name => 'Golf', :image_path => "/images/event_types/golf.png", :parent => types[:sports])
 types[:tennis] = EventType.create!(:name => 'Tennis', :image_path => "/images/event_types/tennis.png", :parent => types[:sports])
-types[:table_tennis] = EventType.create!(:name => 'Table Tennis', :image_path => "/images/event_types/tabletennis.png", :parent => types[:sports])
+types[:table_tennis] = EventType.create!(:name => 'Table Tennis', :image_path => "/images/event_types/table_tennis.png", :parent => types[:sports])
 
 types[:run] = EventType.create!(:name => 'Run', :image_path => "/images/event_types/run.png", :parent => types[:fitness])
 types[:swim] = EventType.create!(:name => 'Swim', :image_path => "/images/event_types/swimming.png", :parent => types[:fitness])
 types[:cycling] = EventType.create!(:name => 'Cycling', :image_path => "/images/event_types/cycling.png", :parent => types[:fitness])
 types[:weights] = EventType.create!(:name => 'Weights', :image_path => "/images/event_types/weights.png", :parent => types[:fitness])
-types[:cardio] = EventType.create!(:name => 'Cardio', :image_path => "/images/event_types/basketball.png", :parent => types[:fitness])
-types[:exercise_class] = EventType.create!(:name => 'Exercise Class', :image_path => "/images/event_types/basketball.png", :parent => types[:fitness])
+types[:cardio] = EventType.create!(:name => 'Cardio', :image_path => "/images/event_types/cardio.png", :parent => types[:fitness])
+types[:exercise_class] = EventType.create!(:name => 'Exercise Class', :image_path => "/images/event_types/exercise_class.png", :parent => types[:fitness])
 types[:walk] = EventType.create!(:name => 'Walk', :image_path => "/images/event_types/walk.png", :parent => types[:fitness])
 
-types[:mini_golf] = EventType.create!(:name => 'Mini Golf', :image_path => "/images/event_types/minigolf.png", :parent => types[:recreation])
+types[:mini_golf] = EventType.create!(:name => 'Mini Golf', :image_path => "/images/event_types/mini_golf.png", :parent => types[:recreation])
 types[:foosball] = EventType.create!(:name => 'Foosball', :image_path => "/images/event_types/foosball.png", :parent => types[:recreation])
 types[:board_game] = EventType.create!(:name => 'Board Game', :image_path => "/images/event_types/boardgame.png", :parent => types[:recreation])
 types[:pool] = EventType.create!(:name => 'Pool', :image_path => "/images/event_types/pool.png", :parent => types[:recreation])
@@ -50,13 +50,13 @@ types[:bowling] = EventType.create!(:name => 'Bowling', :image_path => "/images/
 types[:paintball] = EventType.create!(:name => 'Paintball', :image_path => "/images/event_types/paintball.png", :parent => types[:recreation])
 types[:chess] = EventType.create!(:name => 'Chess', :image_path => "/images/event_types/chess.png", :parent => types[:recreation])
 types[:cards] = EventType.create!(:name => 'Cards', :image_path => "/images/event_types/cards.png", :parent => types[:recreation])
-types[:water_balloon] = EventType.create!(:name => 'Water Balloon Fight', :image_path => "/images/event_types/waterballon.png", :parent => types[:recreation])
-types[:video_games] = EventType.create!(:name => 'Video Games', :image_path => "/images/event_types/videogames.png", :parent => types[:recreation])
+types[:water_balloon] = EventType.create!(:name => 'Water Balloon Fight', :image_path => "/images/event_types/water_balloon.png", :parent => types[:recreation])
+types[:video_games] = EventType.create!(:name => 'Video Games', :image_path => "/images/event_types/video_games.png", :parent => types[:recreation])
 
 types[:french] = EventType.create!(:name => 'French', :image_path => "/images/event_types/francais.png", :parent => types[:language_exchange])
 types[:spanish] = EventType.create!(:name => 'Spanish', :image_path => "/images/event_types/espanol.png", :parent => types[:language_exchange])
-types[:cantonese] = EventType.create!(:name => 'Cantonese', :image_path => "/images/event_types/chinese.png", :parent => types[:language_exchange])
-types[:mandarin] = EventType.create!(:name => 'Mandarin', :image_path => "/images/event_types/korean.png", :parent => types[:language_exchange])
+types[:cantonese] = EventType.create!(:name => 'Cantonese', :image_path => "/images/event_types/cantonese.png", :parent => types[:language_exchange])
+types[:mandarin] = EventType.create!(:name => 'Mandarin', :image_path => "/images/event_types/mandarin.png", :parent => types[:language_exchange])
 types[:italian] = EventType.create!(:name => 'Italian', :image_path => "/images/event_types/italiano.png", :parent => types[:language_exchange])
 
 types[:breakfast] = EventType.create!(:name => 'Breakfast', :image_path => "/images/event_types/breakfast.png", :parent => types[:eating])
@@ -67,28 +67,27 @@ types[:ice_cream] = EventType.create!(:name => 'Ice Cream', :image_path => "/ima
 types[:bbq] = EventType.create!(:name => 'BBQ', :image_path => "/images/event_types/bbq.png", :parent => types[:eating])
 
 types[:beer] = EventType.create!(:name => 'Beer', :image_path => "/images/event_types/beer.png", :parent => types[:drinking])
-types[:house_party] = EventType.create!(:name => 'House Party', :image_path => "/images/event_types/houseparty.png", :parent => types[:drinking])
+types[:house_party] = EventType.create!(:name => 'House Party', :image_path => "/images/event_types/house_party.png", :parent => types[:drinking])
 types[:clubbing] = EventType.create!(:name => 'Clubbing', :image_path => "/images/event_types/clubbing.png", :parent => types[:drinking])
-types[:pre_drink] = EventType.create!(:name => 'Pre-Drink', :image_path => "/images/event_types/predrink.png", :parent => types[:drinking])
-types[:bottle_service] = EventType.create!(:name => 'Bottle Service', :image_path => "/images/event_types/bottleservice.png", :parent => types[:drinking])
+types[:pre_drink] = EventType.create!(:name => 'Pre-Drink', :image_path => "/images/event_types/predrinking.png", :parent => types[:drinking])
+types[:bottle_service] = EventType.create!(:name => 'Bottle Service', :image_path => "/images/event_types/bottle_service.png", :parent => types[:drinking])
 
-types[:jam_session] = EventType.create!(:name => 'Jam Session', :image_path => "/images/event_types/jamsession.png", :parent => types[:arts_and_culture])
-types[:sight_seeing] = EventType.create!(:name => 'Sight Seeing', :image_path => "/images/event_types/sightseeing.png", :parent => types[:arts_and_culture])
+types[:jam_session] = EventType.create!(:name => 'Jam Session', :image_path => "/images/event_types/jam_session.png", :parent => types[:arts_and_culture])
+types[:sight_seeing] = EventType.create!(:name => 'Sight Seeing', :image_path => "/images/event_types/sight_seeing.png", :parent => types[:arts_and_culture])
 types[:movie] = EventType.create!(:name => 'Movie', :image_path => "/images/event_types/movie.png", :parent => types[:arts_and_culture])
 types[:tv] = EventType.create!(:name => 'TV', :image_path => "/images/event_types/tv.png", :parent => types[:arts_and_culture])
-types[:theatre] = EventType.create!(:name => 'Theatre', :image_path => "/images/event_types/basketball.png", :parent => types[:arts_and_culture])
-types[:concert] = EventType.create!(:name => 'Concert', :image_path => "/images/event_types/basketball.png", :parent => types[:arts_and_culture])
-types[:painting] = EventType.create!(:name => 'Painting', :image_path => "/images/event_types/basketball.png", :parent => types[:arts_and_culture])
-types[:cooking] = EventType.create!(:name => 'Cooking', :image_path => "/images/event_types/basketball.png", :parent => types[:arts_and_culture])
+types[:theatre] = EventType.create!(:name => 'Theatre', :image_path => "/images/event_types/theater.png", :parent => types[:arts_and_culture])
+types[:concert] = EventType.create!(:name => 'Concert', :image_path => "/images/event_types/concert.png", :parent => types[:arts_and_culture])
+types[:painting] = EventType.create!(:name => 'Painting', :image_path => "/images/event_types/painting.png", :parent => types[:arts_and_culture])
+types[:cooking] = EventType.create!(:name => 'Cooking', :image_path => "/images/event_types/cooking.png", :parent => types[:arts_and_culture])
 
 types[:carpool] = EventType.create!(:name => 'Carpool', :image_path => "/images/event_types/carpool.png", :parent => types[:service_exchange])
 types[:meeting] = EventType.create!(:name => 'Meeting', :image_path => "/images/event_types/meeting.png", :parent => types[:service_exchange])
 types[:study] = EventType.create!(:name => 'Study', :image_path => "/images/event_types/study.png", :parent => types[:service_exchange])
 
-types[:finance] = EventType.create!(:name => 'Study', :image_path => "/images/event_types/basketball.png", :parent => types[:professional_networking])
-types[:technology] = EventType.create!(:name => 'Study', :image_path => "/images/event_types/basketball.png", :parent => types[:professional_networking])
-types[:startups] = EventType.create!(:name => 'Study', :image_path => "/images/event_types/basketball.png", :parent => types[:professional_networking])
-
+types[:finance] = EventType.create!(:name => 'Networking: Finance', :image_path => "/images/event_types/finances.png", :parent => types[:professional_networking])
+types[:technology] = EventType.create!(:name => 'Networking: Technology', :image_path => "/images/event_types/technology.png", :parent => types[:professional_networking])
+types[:startups] = EventType.create!(:name => 'Networking: Startups', :image_path => "/images/event_types/startups.png", :parent => types[:professional_networking])
 
 
 #PARENT SYNONYMS - Don't need to specify parent if defined on synonym
@@ -110,7 +109,7 @@ types[:alcohol] = EventType.create!(:name => 'Alcohol', :synonym => types[:drink
 types[:parties] = EventType.create!(:name => 'Parties', :synonym => types[:drinking] )
 types[:bar] = EventType.create!(:name => 'Bar', :synonym => types[:drinking] )
 types[:networking] = EventType.create!(:name => 'Networking', :synonym => types[:professional_networking] )
-types[:business] = EventType.create!(:name => 'Business', :synonym => types[:professional_networking] )
+types[:business] = EventType.create!(:name => 'Networking: Business', :synonym => types[:professional_networking] )
 
 
 #MAIN TYPE SYNONYMS - Don't need to specify parent if defined on synonym
@@ -201,14 +200,14 @@ types[:sketch_comedy] = EventType.create!(:name => 'Sketch Comedy', :synonym => 
 types[:play] = EventType.create!(:name => 'Play', :synonym => types[:theatre] )
 types[:standup_comedy] = EventType.create!(:name => 'Standup Comedy', :synonym => types[:theatre] )
 types[:improv] = EventType.create!(:name => 'Improv', :synonym => types[:theatre] )
-types[:indie] = EventType.create!(:name => 'Indie', :synonym => types[:concert] )
-types[:alternative] = EventType.create!(:name => 'Alternative', :synonym => types[:concert] )
-types[:classical] = EventType.create!(:name => 'Classical', :synonym => types[:concert] )
-types[:rock] = EventType.create!(:name => 'Rock', :synonym => types[:concert] )
-types[:jazz] = EventType.create!(:name => 'Jazz', :synonym => types[:concert] )
-types[:blues] = EventType.create!(:name => 'Blues', :synonym => types[:concert] )
+types[:indie] = EventType.create!(:name => 'Concert: Indie', :synonym => types[:concert] )
+types[:alternative] = EventType.create!(:name => 'Concert: Alternative', :synonym => types[:concert] )
+types[:classical] = EventType.create!(:name => 'Concert: Classical', :synonym => types[:concert] )
+types[:rock] = EventType.create!(:name => 'Concert: Rock', :synonym => types[:concert] )
+types[:jazz] = EventType.create!(:name => 'Concert: Jazz', :synonym => types[:concert] )
+types[:blues] = EventType.create!(:name => 'Concert: Blues', :synonym => types[:concert] )
 types[:listen_music] = EventType.create!(:name => 'Listen Music', :synonym => types[:concert] )
-types[:house_music] = EventType.create!(:name => 'House', :synonym => types[:concert] )
+types[:house_music] = EventType.create!(:name => 'Concert: House Music', :synonym => types[:concert] )
 types[:music] = EventType.create!(:name => 'Music', :synonym => types[:concert] )
 types[:paint] = EventType.create!(:name => 'Paint', :synonym => types[:painting] )
 types[:draw] = EventType.create!(:name => 'Draw', :synonym => types[:painting] )
@@ -220,123 +219,123 @@ types[:presentation] = EventType.create!(:name => 'Presentation', :synonym => ty
 types[:lecture] = EventType.create!(:name => 'Lecture', :synonym => types[:meeting] )
 types[:homework] = EventType.create!(:name => 'Homework', :synonym => types[:study] )
 types[:tutor] = EventType.create!(:name => 'Tutor', :synonym => types[:study] )
-types[:banking] = EventType.create!(:name => 'Banking', :synonym => types[:finance] )
-types[:stocks] = EventType.create!(:name => 'Stocks', :synonym => types[:finance] )
-types[:investing] = EventType.create!(:name => 'Investing', :synonym => types[:finance] )
-types[:web] = EventType.create!(:name => 'Web', :synonym => types[:technology] )
-types[:information_technology] = EventType.create!(:name => 'Information Technology', :synonym => types[:technology] )
-types[:IT] = EventType.create!(:name => 'IT', :synonym => types[:technology] )
-types[:mobile] = EventType.create!(:name => 'Mobile', :synonym => types[:technology] )
-types[:internet] = EventType.create!(:name => 'Internet', :synonym => types[:technology] )
-types[:entrepreneurs] = EventType.create!(:name => 'Internet', :synonym => types[:startups] )
+types[:banking] = EventType.create!(:name => 'Networking: Banking', :synonym => types[:finance] )
+types[:stocks] = EventType.create!(:name => 'Networking: Stocks', :synonym => types[:finance] )
+types[:investing] = EventType.create!(:name => 'Networking: Investing', :synonym => types[:finance] )
+types[:web] = EventType.create!(:name => 'Networking: Web', :synonym => types[:technology] )
+types[:information_technology] = EventType.create!(:name => 'Networking: Information Technology', :synonym => types[:technology] )
+types[:IT] = EventType.create!(:name => 'Networking: IT', :synonym => types[:technology] )
+types[:mobile] = EventType.create!(:name => 'Networking: Mobile', :synonym => types[:technology] )
+types[:internet] = EventType.create!(:name => 'Networking: Internet', :synonym => types[:technology] )
+types[:entrepreneurs] = EventType.create!(:name => 'Networking: Entrepreneurs', :synonym => types[:startups] )
 
 
 
 ################################
 ## STUB USERS
 ################################
-user = User.create!({})
+#user = User.create!({})
 
 ################################
 ## STUB EVENTS
 ################################
 
-Event.create!(
-  {
-    :name => "Soccer at Turd Park!",
-    :user => user,
-    :description => "Fake description for Event based on some random string Lorem Ipsum style",
-    :searchable_attributes => {
-      :searchable_event_types_attributes => [
-        { :event_type => types[:soccer], :name => "Soccer" }
-      ],
-      :searchable_date_ranges_attributes => [
-        { :starts_at => 10.days.from_now.beginning_of_day + 240.minutes }
-      ],
-      :location_attributes => {
-        :text => "SocialStreet Head Office",
-        :street => "373 Front Street W \#1701",
-        :city => "Toronto",
-        :state => "ON",
-        :user_id => user.id
-      }
-    }
-  })
-
-Event.create!(
-  {:name => "Squash Tournament",
-    :user => user,
-    :description => "We love squash, do you?",
-    :cost => 1200,
-    :searchable_attributes => {
-      :searchable_event_types_attributes => [
-        { :event_type => types[:squash], :name => "Squash" }
-      ],
-      :searchable_date_ranges_attributes => [
-        {
-          :starts_at => 3.days.from_now.beginning_of_day + 480.minutes,
-          :ends_at => 3.days.from_now.beginning_of_day + 990.minutes,
-        }
-      ],
-      :location_attributes => {
-        :text => "YMCA Downtown (not really)",
-        :street => "628 Fleet Street \#1601",
-        :city => "Toronto",
-        :state => "ON",
-        :postal => "M5V 1A8",
-        :user_id => user.id
-      }
-    }
-  })
-
-Event.create!(
-  {:name => "Basketball - We only play '21'",
-    :user => user,
-    :description => "We suck at this, please help us",
-    :cost => 13000,
-    :searchable_attributes => {
-      :searchable_event_types_attributes => [
-        { :event_type => types[:basketball], :name => "Basketball" }
-      ],
-      :searchable_date_ranges_attributes => [
-        {
-          :starts_at => 2.days.from_now.beginning_of_day + 990.minutes,
-          :ends_at => 2.days.from_now.beginning_of_day + 1035.minutes,
-        }
-      ],
-      :location_attributes => {
-        :text => "Downtown Mississauga",
-        :street => "",
-        :city => "Mississauga",
-        :state => "ON",
-        :postal => "L5L3M1",
-        :user_id => user.id
-      }
-    }
-  })
-
-Event.create!(
-  {:name => "Baseball Tournament",
-    :user => user,
-    :description => "Baseball although it's not as good as cricket, is what this event is about.",
-    :cost => 1400,
-    :searchable_attributes => {
-      :searchable_event_types_attributes => [
-        { :event_type => types[:baseball], :name => "Baseball" }
-      ],
-      :searchable_date_ranges_attributes => [
-        {
-          :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
-          :ends_at => 5.days.from_now.beginning_of_day + 990.minutes,
-        }
-      ],
-      :location_attributes => {
-        :text => "Downtown Toronto",
-        :street => "",
-        :city => "Toronto",
-        :state => "ON",
-        :postal => "M5V1C4",
-        :user_id => user.id
-      }
-    }
-  })
+#Event.create!(
+#  {
+#    :name => "Soccer at Turd Park!",
+#    :user => user,
+#    :description => "Fake description for Event based on some random string Lorem Ipsum style",
+#    :searchable_attributes => {
+#      :searchable_event_types_attributes => [
+#        { :event_type => types[:soccer], :name => "Soccer" }
+#      ],
+#      :searchable_date_ranges_attributes => [
+#        { :starts_at => 10.days.from_now.beginning_of_day + 240.minutes }
+#      ],
+#      :location_attributes => {
+#        :text => "SocialStreet Head Office",
+#        :street => "373 Front Street W \#1701",
+#        :city => "Toronto",
+#        :state => "ON",
+#        :user_id => user.id
+#      }
+#    }
+#  })
+#
+#Event.create!(
+#  {:name => "Squash Tournament",
+#    :user => user,
+#    :description => "We love squash, do you?",
+#    :cost => 1200,
+#    :searchable_attributes => {
+#      :searchable_event_types_attributes => [
+#        { :event_type => types[:squash], :name => "Squash" }
+#      ],
+#      :searchable_date_ranges_attributes => [
+#        {
+#          :starts_at => 3.days.from_now.beginning_of_day + 480.minutes,
+#          :ends_at => 3.days.from_now.beginning_of_day + 990.minutes,
+#        }
+#      ],
+#      :location_attributes => {
+#        :text => "YMCA Downtown (not really)",
+#        :street => "628 Fleet Street \#1601",
+#        :city => "Toronto",
+#        :state => "ON",
+#        :postal => "M5V 1A8",
+#        :user_id => user.id
+#      }
+#    }
+#  })
+#
+#Event.create!(
+#  {:name => "Basketball - We only play '21'",
+#    :user => user,
+#    :description => "We suck at this, please help us",
+#    :cost => 13000,
+#    :searchable_attributes => {
+#      :searchable_event_types_attributes => [
+#        { :event_type => types[:basketball], :name => "Basketball" }
+#      ],
+#      :searchable_date_ranges_attributes => [
+#        {
+#          :starts_at => 2.days.from_now.beginning_of_day + 990.minutes,
+#          :ends_at => 2.days.from_now.beginning_of_day + 1035.minutes,
+#        }
+#      ],
+#      :location_attributes => {
+#        :text => "Downtown Mississauga",
+#        :street => "",
+#        :city => "Mississauga",
+#        :state => "ON",
+#        :postal => "L5L3M1",
+#        :user_id => user.id
+#      }
+#    }
+#  })
+#
+#Event.create!(
+#  {:name => "Baseball Tournament",
+#    :user => user,
+#    :description => "Baseball although it's not as good as cricket, is what this event is about.",
+#    :cost => 1400,
+#    :searchable_attributes => {
+#      :searchable_event_types_attributes => [
+#        { :event_type => types[:baseball], :name => "Baseball" }
+#      ],
+#      :searchable_date_ranges_attributes => [
+#        {
+#          :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
+#          :ends_at => 5.days.from_now.beginning_of_day + 990.minutes,
+#        }
+#      ],
+#      :location_attributes => {
+#        :text => "Downtown Toronto",
+#        :street => "",
+#        :city => "Toronto",
+#        :state => "ON",
+#        :postal => "M5V1C4",
+#        :user_id => user.id
+#      }
+#    }
+#  })
