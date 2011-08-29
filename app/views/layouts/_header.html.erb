@@ -26,7 +26,7 @@
       <% else %>
                                                                               <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li id="sign_in_li"><%= link_to "Sign in", '/auth/facebook'%></li>
-        <li id="sign_in_ribbon_li" style="display: none; vertical-align: top; padding-right: 100px;" class="chalk">Sign in with facebook
+        <li id="sign_in_ribbon_li" style="display: none; vertical-align: top; padding-right: 100px;" class="chalk"><%= link_to "Sign in with Facebook", '/auth/facebook'%>
           <%= image_tag "sign-in-arrow.png", :style => "vertical-align: top;" %>
           <%= link_to image_tag("sign-in-logo.png", :class => "sign-in-ribbon"), "/auth/facebook" %>
         </li>
