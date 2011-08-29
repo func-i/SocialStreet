@@ -392,7 +392,7 @@ form, fieldset {
     -webkit-border-radius: 4px 4px 0 0;
     -moz-border-radius: 4px 4px 0 0;
     cursor: pointer;
-    behavior: url("/stylesheets/PIE.htc");
+    /*behavior: url("/stylesheets/PIE.htc");*/
 }
 .tabset .active a,
 .tabset a:hover {
