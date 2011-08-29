@@ -56,7 +56,7 @@
           <% if item.reason == Feed.reasons[:subscription] %>
             <% action = item.head_action %>
             <% if(action.action_type == Action.types[:event_created]) %>
-              <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } %>
+              <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } unless action.event.canceled %>
             <% elsif(action.action_type == Action.types[:search_comment]) %>
               <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
             <% else %>
