@@ -164,7 +164,7 @@ class InvitationsController < ApplicationController
         :type => "link"
       }
         
-      Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
+      Resque.enqueue_in(10.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
     end
   end
 end
