@@ -49,7 +49,7 @@ class AuthenticationsController < ApplicationController
 
     Resque.enqueue(Jobs::EmailUserWelcomeNotice, current_user.id)
 
-    if params[:tnc][:facebook] == '1'
+    if params[:facebook] == '1'
       current_user.post_to_facebook_wall(
         :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
         :link => "http://www.socialstreet.com/",
