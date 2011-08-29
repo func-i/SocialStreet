@@ -203,7 +203,7 @@ form, fieldset {
 .sign-in-ribbon {
     position: absolute; 
     top: -85px;
-    left: 235px;
+    left: 220px;
 }
 
 @-moz-document url-prefix() {
