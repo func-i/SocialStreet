@@ -14,9 +14,9 @@
 
   <br/><br/>
 <%end%>
-<div class="content" style="margin: 0 auto; width: 500px; padding: 0px 0 0px 0;border: 1px solid black;">-->
+<div class="content" style="margin: 0 auto; width: 500px; padding: 0px 0 0px 0;overflow:scroll; border: 1px solid black;">
   <div style="height:400px;list-style:decimal">
-     <h1>Terms and Services</h1>
+    <h1>Terms and Services</h1>
     <h2>Welcome to SocialStreet!</h2>
 
     <p>SocialStreet allows you to connect with the human world around you by meeting,
@@ -257,31 +257,41 @@
         successors and permitted assigns.</li>
     </ol>
     © Copyright SocialStreet 2011We are grateful to Automattic Inc. [NTD:link] for making their privacy policy available
-    under a Creative Commons Sharealike license [NTD:link].-->
+    under a Creative Commons Sharealike license [NTD:link].
   </div>
 </div>
 
 <br/><br/>
+<%unless params[:display_only] %>
 
-<div style="margin: 0 auto; width: 500px; padding: 0px 0 0px 0;">
-  <%unless params[:display_only] %>
-    <%= form_tag tnc_accepted_authentications_path, :id => "tnc_form" do -%>
-      <%= check_box_tag "accept", true, false, :class => "tnc_accept" -%>
-      <span style="font-weight:bold;background-color:#f7ef6f;">I accept the Terms and Condition. Take me to SocialStreet!</span>
-      <%= hidden_field_tag :facebook, '1', :id => "facebook_hidden_field"%>
-    <%- end -%>
+  <div style="margin: 0 0 0 90px; padding: 0px 0 0px 0;display:block;" class ="btn tnc-accept">
+    I accept the Terms and Conditions. Take me to SocialStreet!
+  </div>
+
+<div>
+  <%= form_for :tnc, :url => tnc_accepted_authentications_url, :html => {:class => "form", :id => "tnc_form", :onclick => ""} do |f|-%>
+    <%= f.hidden_field :facebook, :value => '1', :id => "facebook_hidden_field"%>
   <%- end -%>
 </div>
+<%- end -%>
+
 <br/><br/>
 
 <script type="text/javascript">
-  $('.tnc_accept').change(function (){
-    $('#tnc_form').submit();
-  });
-  
-  $('.facebook-checkbox').change(function(){
-    $('#facebook_hidden_field').val($(this).attr('checked') ? '1' : '0');
-  });
+  console.log("HERE");
+//  $(function() {
+/*    $('.tnc-accept').live('click', function(e){
+      console.log("IN HERE");
+      $('.tnc-accept').html('CLICKED');
+      $('#tnc_form').submit();
+    });*/
+    /*    $('.tnc_accept').click(function (){
+      $('#tnc_form').submit();
+    })*/
+
+    $('.facebook-checkbox').change(function(){
+      $('#facebook_hidden_field').val($(this).attr('checked') ? '1' : '0');
+    });
   //})
 </script>
 
