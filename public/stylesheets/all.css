@@ -342,7 +342,7 @@ form, fieldset {
     box-shadow: 4px 4px 3px #eee;
     -webkit-box-shadow: 4px 4px 3px #eee;
     -moz-box-shadow: 4px 4px 3px #eee;
-    behavior: url("/stylesheets/PIE.htc");
+    /*behavior: url("/stylesheets/PIE.htc");*/
 }
 .btn-add:hover { text-decoration: none; }
 .btn-add:hover span { text-decoration: underline; }
