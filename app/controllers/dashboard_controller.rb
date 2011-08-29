@@ -29,6 +29,7 @@ class DashboardController < ApplicationController
         if @per_page - @feed_items.count > 0
           feed_default = Feed.for_user(redis, User.where(:username => "default_socialstreet_user").first, 0, @per_page - @feed_items.count);
           @feed_items += feed_default
+          @feed_items = @feed_items.uniq_by{|fi| fi.head_action.id}
         end
       end
 
