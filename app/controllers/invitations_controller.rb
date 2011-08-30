@@ -116,16 +116,18 @@ class InvitationsController < ApplicationController
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
     
     # => TODO: see if you can take that inline string notation out
-    @users = User.select("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
-      joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
-      where("users.id <> ?", current_user.id).
-      where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
-      group("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
-      order("connections.strength DESC NULLS LAST, users.last_name ASC, connections.created_at ASC NULLS LAST")
+#    @users = User.select("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
+#      joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
+#      where("users.id <> ?", current_user.id).
+#      where("users.sign_in_count > 0").
+#      group("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
+#      order("connections.strength DESC NULLS LAST, users.last_name ASC, connections.created_at ASC NULLS LAST")
+    @users = User.joins("INNER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}")
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
-    @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
+    @total_count = @users.count
     
+    @users = @users.order("connections.strength DESC NULLS LAST, users.last_name ASC, connections.created_at ASC NULLS LAST")
     @users = @users.
       limit(@per_page).
       offset(@offset)
