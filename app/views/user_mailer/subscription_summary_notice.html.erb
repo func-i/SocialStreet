@@ -19,7 +19,7 @@
             <% event_what = event.searchable_event_types.collect(&:name).to_sentence%>
             <td style="padding-right:5px">
               <% event_image = url_for_event_image(event) %>
-              <%= image_tag('http://www.socialstreet.com/' + event_image.match(/^images/) ? event_image : 'images/' + event_image, :size => "44x44", :title => event_what) %>
+              <%= image_tag('http://www.socialstreet.com/' + (event_image.match(/^images/) ? event_image : 'images/' + event_image), :size => "44x44", :title => event_what) %>
             </td>
             <td>
               <%=link_to event.title, event_url(event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
