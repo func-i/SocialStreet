@@ -138,6 +138,8 @@ class InvitationsController < ApplicationController
     @users = @users.
       limit(@per_page).
       offset(@offset)
+
+    @users = @users.all
        
     @num_pages_invitations = (@total_count.to_f / @per_page.to_f).ceil
 
