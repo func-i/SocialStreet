@@ -15,7 +15,9 @@
       <%event_what = @event.searchable_event_types.collect(&:name).to_sentence%>
       <tr style="vertical-align:top">
         <td style="padding-right:5px">
-          <%= image_tag('http://www.socialstreet.com/' + url_for_event_image(@event), :size => "80x80", :class => "avatar", :title => event_what) %><!--TODO Change to base url-->
+          <% event_image = url_for_event_image(@event) %>
+          <% event_image = event_image.match(%r|/|) ? event_image.slice!(0) : event_image %>
+          <%= image_tag('http://www.socialstreet.com/' + (event_image.match(/^images/) ? event_image : 'images/' + event_image), :size => "44x44", :title => event_what) %>
         </td>
         <td>
           <%=link_to @event.title, event_url(@event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
@@ -35,14 +37,14 @@
           Where: <%=address_for(@event.location)%>
           <br/>
           <!--Attend button-->
-            <%= link_to new_event_rsvp_url(@event), :style=>"background: #69B2D7;color:#FFFFFF;font:normal normal bold 11px/25px Arial, Helvetica, sans-serif;text-decoration: none;width:100px;height:29px;margin: 2px 0px 0px;line-height: 17px;font-size: 13px;border-bottom-left-radius: 4px 4px;border-bottom-right-radius: 4px 4px;border-top-left-radius: 4px 4px;border-top-right-radius: 4px 4px;float:left;text-align:center;" do %>
-              <span style="padding: 6px 7px;display:block">
-                Attend
-              </span>
-            <% end %>
+          <%= link_to new_event_rsvp_url(@event), :style=>"background: #69B2D7;color:#FFFFFF;font:normal normal bold 11px/25px Arial, Helvetica, sans-serif;text-decoration: none;width:100px;height:29px;margin: 2px 0px 0px;line-height: 17px;font-size: 13px;border-bottom-left-radius: 4px 4px;border-bottom-right-radius: 4px 4px;border-top-left-radius: 4px 4px;border-top-right-radius: 4px 4px;float:left;text-align:center;" do %>
+            <span style="padding: 6px 7px;display:block">
+              Attend
+            </span>
+          <% end %>
           <br/>
         </td>
-       
+
       </tr>
     </tbody>
   </table>

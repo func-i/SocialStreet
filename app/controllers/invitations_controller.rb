@@ -5,6 +5,10 @@ class InvitationsController < ApplicationController
   # only support nested action that expects event and rsvp IDs
   # Note: It's actually allowing the creation of multiple invitations here
   def new
+    if current_user.nil?
+      render :nothing => true
+      return
+    end
 
     if current_user.fb_friends_imported?
 
@@ -26,6 +30,11 @@ class InvitationsController < ApplicationController
   end
 
   def load_modal
+    if current_user.nil?
+      render :nothing => true
+      return
+    end
+
     if current_user.fb_friends_imported?
       load_connections
 
@@ -110,7 +119,7 @@ class InvitationsController < ApplicationController
 
   def load_connections
 
-    # => TODO: Add search user search functionality to endless pagination.
+    ActiveRecord::Base.connection.execute('SET enable_nestloop TO off;')
 
     @per_page = 36
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
@@ -120,8 +129,8 @@ class InvitationsController < ApplicationController
       joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
       where("users.id <> ?", current_user.id).
       where("(users.sign_in_count>0 OR connections.to_user_id IS NOT NULL)").
-      group("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
-      order("connections.strength DESC NULLS LAST, users.last_name ASC, connections.created_at ASC NULLS LAST")
+      #group("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url, connections.strength, connections.created_at").
+    order("connections.strength DESC NULLS LAST, users.last_name ASC, connections.created_at ASC NULLS LAST")
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
     @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
@@ -129,8 +138,12 @@ class InvitationsController < ApplicationController
     @users = @users.
       limit(@per_page).
       offset(@offset)
+
+    @users = @users.all
        
     @num_pages_invitations = (@total_count.to_f / @per_page.to_f).ceil
+
+    ActiveRecord::Base.connection.execute('SET enable_nestloop TO on;')
   end
 
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
@@ -164,7 +177,7 @@ class InvitationsController < ApplicationController
         :type => "link"
       }
         
-      Resque.enqueue_in(1.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
+      Resque.enqueue_in(10.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
     end
   end
 end

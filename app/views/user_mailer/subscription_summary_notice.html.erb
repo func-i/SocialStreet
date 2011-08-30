@@ -19,7 +19,9 @@
             <% event = action.event %>
             <% event_what = event.searchable_event_types.collect(&:name).to_sentence%>
             <td style="padding-right:5px">
-              <%= image_tag('http://www.socialstreet.com/' + url_for_event_image(event), :size => "80x80", :title => event_what) %><!--TODO Change to base url-->
+              <% event_image = url_for_event_image(event) %>
+              <% event_image = event_image.match(%r|/|) ? event_image.slice!(0) : event_image %>
+              <%= image_tag('http://www.socialstreet.com/' + (event_image.match(/^images/) ? event_image : 'images/' + event_image), :size => "44x44", :title => event_what) %>
             </td>
             <td>
               <%=link_to event.title, event_url(event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
@@ -46,7 +48,7 @@
               <% end %>
               <br/>
             </td>
-  
+
           <% elsif action.action_type == Action.types[:search_comment] || action.action_type == Action.types[:action_comment] %>
             <% head_action = action.action || action%>
             <td colspan="2">

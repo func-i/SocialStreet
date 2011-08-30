@@ -255,7 +255,7 @@ class ExploreController < ApplicationController
     return scored_events
   end
 
-  PENALTY = 1.day
+  PENALTY = 2.day
   def score_messages(message_searchables)
     scored_messages = []
 
