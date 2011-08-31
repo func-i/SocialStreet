@@ -9,6 +9,15 @@ if(!Array.indexOf) {
     }
 }
 
+var isTouchEnabled_;
+function isTouchEnabled(){
+    if(isTouchEnabled_ == undefined){
+        isTouchEnabled_ = 'ontouchstart' in window;
+        isTouchEnabled_ = true;
+    }
+    return isTouchEnabled_;
+}
+
 
 $.fn.serializeObject = function()
 {
@@ -157,6 +166,10 @@ $(function() {
         //Disable scrolling for the body
         $("html").css("overflow", "hidden");
 
+        setTimeout(function () {
+            attach_iScroll(divId);
+        },0);
+
         return false;
     });
 
@@ -219,7 +232,12 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     window.scrollTo(0,0);
 
     //Display the modal
-    $(modal_divID).show();    
+    $(modal_divID).show();
+
+    //attach_iScroll for touch displays
+    setTimeout(function () {
+        attach_iScroll(modal_divID);
+    },0);
 
     // Display overlay
     if(document.getElementById("ss_modal_overlay") === null){
@@ -239,13 +257,84 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     $.getScript(request, function(data, textStatus){
         resizeModals();
         removeTabIndex(modal_divID);
-    //$(modal_divID).find('input').first().focus();
+
+        refresh_iScrollers();
     });
 
     //Disable scrolling for the body
     $("html").css("overflow", "hidden");
 
 }
+
+var my_iScrollArr = [];
+function get_iScroller(scrollerID){
+    if(!isTouchEnabled())
+        return null;
+
+    console.log(scrollerID, my_iScrollArr);
+    for(var i = 0; i < my_iScrollArr.length; i++){
+        if(my_iScrollArr[i][0] == scrollerID){
+            return my_iScrollArr[i][1];
+        }
+    }
+    return null;
+}
+
+function refresh_iScrollers(){
+    for(var i = 0; i < my_iScrollArr.length; i++){
+        my_iScrollArr[i][1].refresh();
+    }
+}
+
+function attach_iScroll(divID){
+    if(!isTouchEnabled())
+        return;
+
+    console.log("Attach_iScroll", divID);
+    var myDiv = $(divID);
+    var iScroll_ids = myDiv.data('iscroll-ids');
+    var myIds = iScroll_ids.split(',');
+    for(var i = 0; i < myIds.length; i++){
+        console.log(myIds[i]);
+        my_iScrollArr.push([myIds[i], new iScroll(myIds[i], {
+            onScrollMove: pageless_iscroll_callback
+        })]);
+    }
+}
+
+function pageless_iscroll_callback(that, e){
+    var target = $(that.currentTarget);
+    target.trigger('scroll.ss_pageless');
+}
+
+function detach_iScroll(divID){
+    if(!isTouchEnabled())
+        return;
+
+    var myDiv = $(divID);
+    var iScroll_ids = myDiv.data('iscroll-ids');
+    var myIds = iScroll_ids.split(',');
+    var new_arr = []
+    for(var i = 0; i < myIds.length; i++){
+        for(var j = 0; j < my_iScrollArr.length; j++){
+            if(my_iScrollArr[j][0] != myIds[i]){
+                new_arr.push(my_iScrollArr[j])
+            }
+            else{
+                my_iScrollArr[j][1].destroy();
+            }
+        }
+    }
+    my_iScrollArr = [];
+    delete my_iScrollArr;
+    my_iScrollArr = new_arr;
+}
+
+
+
+function load_iScroll() {
+}
+
 
 function removeTabIndex(modalDivID){
     // an array of selectors to loop through to disable elements inside the body
@@ -289,6 +378,11 @@ function removeModal(element) {
     //element.find('.save-modal-button').disabled = false;
 
     addTabIndex();
+
+    setTimeout(function () {
+        detach_iScroll('#' + element.attr('id'));
+    },0);
+
 }
 
 $(function() {
