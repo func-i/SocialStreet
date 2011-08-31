@@ -2,6 +2,7 @@ $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'airbrake/capistrano'
+require 'new_relic/recipes'
 
 set :application, "SocialStreet"
 set :repository,  "git@github.com:JBorts/SocialStreet.git"
@@ -28,6 +29,8 @@ after "deploy:update_code", "deploy:generate_assets"
 
 before "deploy:update", "god:stop_resque"
 after "deploy:update", "god:start_resque"
+
+after "deploy:update", "newrelic:notice_deployment"
 
 # Passenger restart hook
 namespace :deploy do
