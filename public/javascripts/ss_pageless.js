@@ -36,6 +36,9 @@ Pageless.prototype.init = function(opt_options)
     if (options['parameterFunction'] == undefined) {
         options['parameterFunction'] = this.parameterFunction_ || "";//TODO
     }
+    if (options['iScroller'] == undefined) {
+        options['iScroller'] = this.iScroller_ || null;
+    }
 
     this.setValues(options);
 
@@ -61,6 +64,7 @@ Pageless.prototype.setValues = function(options){
     this.distance_ = options['distance'];
     this.loaderHtml_ = options['loaderHtml'];
     this.loaderContainer_ = options['loaderContainer'];
+    this.iScroller_ = options['iScroller'];
 
     this.isLoading_ = this.isLoading || false;
 };
@@ -72,13 +76,22 @@ Pageless.prototype.loading = function (bool) {
 };
 
 Pageless.prototype.distanceToBottom = function () {
-    return (this.container_ === window)
-    ? $(document).height()
-    - this.container_dom_.scrollTop()
-    - this.container_dom_.height()
-    : this.container_dom_[0].scrollHeight
-    - this.container_dom_.scrollTop()
-    - this.container_dom_.height();
+    if(this.container_ === window){
+        return $(document).height()
+        - this.container_dom_.scrollTop()
+        - this.container_dom_.height();
+    }
+    else{
+        if(this.iScroller_){
+            return this.iScroller_.scrollerH - this.iScroller_.wrapperH + this.iScroller_.y;
+        }
+        else{
+
+            return this.container_dom_[0].scrollHeight
+            - this.container_dom_.scrollTop()
+            - this.container_dom_.height();
+        }
+    }
 };
 
 Pageless.prototype.watch = function(that){
@@ -107,9 +120,12 @@ Pageless.prototype.watch = function(that){
             if(that.loader_){
                 that.loader_.before(data)
                 that.loading(false);
+                if(that.iScroller_){
+                    that.iScroller_.refresh();
+                }
             }
             else{
-            }
+        }
         });
     }
 };
