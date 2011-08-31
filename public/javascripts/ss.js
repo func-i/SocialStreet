@@ -13,7 +13,7 @@ var isTouchEnabled_;
 function isTouchEnabled(){
     if(isTouchEnabled_ == undefined){
         isTouchEnabled_ = 'ontouchstart' in window;
-    //isTouchEnabled_ = true;
+        //isTouchEnabled_ = true;
     }
     return isTouchEnabled_;
 }
@@ -299,7 +299,6 @@ function refresh_iScrollers(){
             my_iScrollArr[i][1].refresh();
         }
     }, 0);
-
 }
 
 function attach_iScroll(divID){
