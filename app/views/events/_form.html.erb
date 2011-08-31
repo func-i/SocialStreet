@@ -177,7 +177,7 @@
     function updateEndDate(){
       var duration = 0;
       var duration_size = $("#duration_size").val();
-      console.log(duration_size)
+
       if(duration_size == "Minutes"){
         duration = $('#duration').val()*1000*60;
       }
@@ -187,7 +187,6 @@
       else if(duration_size == "Days"){
         duration = $('#duration').val()*1000*60*60*24;
       }
-      console.log(duration);
 
       var stHour = $($('.starts-at-time')[1]).val();
       var stMeridian = $($('.starts-at-time')[3]).val();
