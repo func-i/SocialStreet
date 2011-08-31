@@ -45,12 +45,12 @@
         <div class="col-holder">
           <div class="col">
             <span>Start Day:</span>
-            <strong><%= @event.starts_at.strftime("%B %d") %></strong>
+            <strong><%= @event.starts_at.strftime("%b %d") %></strong>
           </div>
           <% if @event.finishes_at && @event.end_date != @event.start_date %>
             <div class="col">
               <span>End Day:</span>
-              <strong><%= @event.finishes_at.strftime("%B %d") %></strong>
+              <strong><%= @event.finishes_at.strftime("%b %d") %></strong>
             </div>
           <%- end -%>
           <div class="col">
