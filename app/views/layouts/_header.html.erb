@@ -81,7 +81,7 @@
 </div>
 
 <%= content_for :popup_modals do -%>
-  <div id="empty_modal_sidebar" class="pop-up pop-up-modal pop-up-modal_ajax" style="display:none;">
+  <div id="empty_modal_sidebar" class="pop-up pop-up-modal pop-up-modal_ajax" style="display:none;" data-iscroll-ids="modal_sidebar_scroll,modal_sidebar_sidebar_scroll">
     <div class="pop-up1 pop-up2">
       <div class="heading">
 
@@ -100,7 +100,7 @@
 
       </div>
 
-      <div class="content">
+      <div class="content" id="modal_sidebar_scroll">
         <div class="pop-up1-content ajax-main-content">
           <%=image_tag("load.gif", :style => "margin-left:auto;margin-right: auto;display: block;")%>
           <!--Add Ajax Main Content here-->
@@ -113,12 +113,12 @@
       </div>
 
     </div>
-    <div class="day-detail friend ajax-sidebar-content">
+    <div class="day-detail friend ajax-sidebar-content" id="modal_sidebar_sidebar_scroll">
       <!--Add Ajax Sidebar Content here-->
     </div>
   </div>
 
-  <div id="empty_modal_base" class="pop-up pop-up-modal pop-up-modal_ajax" style="display:none;">
+  <div id="empty_modal_base" class="pop-up pop-up-modal pop-up-modal_ajax" style="display:none;" data-iscroll-ids="modal_base_content_scroll">
     <div class="pop-up1">
       <div class="heading">
 
@@ -138,7 +138,7 @@
 
       </div>
 
-      <div class="content content1">
+      <div class="content content1" id="modal_base_content_scroll">
         <div class="pop-up1-content ajax-content">
           <%=image_tag("load.gif", :style => "margin-left:auto;margin-right: auto;display: block;")%>
           <!--Ajax add content here-->
@@ -152,7 +152,7 @@
     </div>
   </div>
 
-  <div id="feedback_modal" class="pop-up pop-up-modal" style="display:none;">
+  <div id="feedback_modal" class="pop-up pop-up-modal" style="display:none;" data-iscroll-ids="modal_feedback_scroll">
     <div class="pop-up1">
       <div class="heading">
 
@@ -164,7 +164,7 @@
 
       </div>
 
-      <div class="content content1">
+      <div class="content content1" id="modal_feedback_scroll">
         <div class="pop-up1-content">
           We'd love to hear from you. Send us your complaints, suggestions and/or stories (nothing would make our day like hearing how SocialStreet has helped people connect!)
           <br/><br/>
