@@ -28,7 +28,7 @@ class ProfilesController < ApplicationController
     @connected_actions_remaining = @connected_actions.count - 3
     @connected_actions = @connected_actions[0,3]
 
-    @common_people = current_user.connections.common_with(@user).order("connections.rank ASC")
+    @common_people = current_user.connections.common_with_through_facebook(@user).order("connections.rank ASC")
     @common_people_remaining = @common_people.count - 24
     @common_people = @common_people.limit(24)
 
