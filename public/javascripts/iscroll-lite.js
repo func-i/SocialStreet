@@ -467,7 +467,7 @@ iScroll.prototype = {
 		var left = -el.offsetLeft,
 			top = -el.offsetTop;
 			
-		while (el = el.offsetParent) {
+		while (el == el.offsetParent) {
 			left -= el.offsetLeft;
 			top -= el.offsetTop;
 		} 

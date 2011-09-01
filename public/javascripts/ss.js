@@ -13,7 +13,7 @@ var isTouchEnabled_;
 function isTouchEnabled(){
     if(isTouchEnabled_ == undefined){
         isTouchEnabled_ = 'ontouchstart' in window;
-        //isTouchEnabled_ = true;
+    //isTouchEnabled_ = true;
     }
     return isTouchEnabled_;
 }
