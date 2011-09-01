@@ -14,7 +14,7 @@
         <input type="hidden" name="event[searchable_attributes][keywords][]" value="<%= keyword %>" />
         <%= keyword %>
         <%= link_to("close", '#', :class => "close remove-parent", "data-parent-selector" => ".keyword-pill") %>
-      </li>
+      </li> 
     <% end %>
   </ul>
 
@@ -40,20 +40,6 @@
           <%= date_range_fields.hidden_field :ends_at, :class => "ends_at_value" -%>
         </div>
 
-        <!--        <div class="col" id="EndDateTime" style="display:none; clear: both; margin-left: 108px; padding: 0;">
-                  <span><label for="date">End Date:</label></span>
-                  <div>
-        <% new_event_ends_at = event.searchable.searchable_date_ranges.first.ends_at %>
-        <%= text_field_tag 'ends_at_calendar', new_event_ends_at.strftime('%Y-%m-%d'), :class => "text_field ends-at-time", :style => "width: 80px;" %>
-        <%= select_tag :ends_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%I")), :class => "ends-at-time" %>
-        <%= select_tag :ends_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, new_event_ends_at.strftime("%M")), :class => "ends-at-time" %>
-        <%= select_tag :ends_at_meridian, options_for_select([["AM"], ["PM"]], new_event_ends_at.strftime("%p")), :class => "ends-at-time" %>
-                  </div>
-    <%#= select_time event.searchable.searchable_date_ranges.first.ends_at, {:minute_step => 15, :ignore_date => true}, :class => 'ends_at_time' -%>
-                </div>-->
-        <!--        <div id="Add-end-date-title">
-        <%= link_to_function "Add End Date & Time", "$('#EndDateTime').toggle();$('#Add-end-date-title').toggle();$('#exclude_end_date').val(0)" %>
-                </div>-->
       <%  end %>
     <%- end -%>
   </div>
@@ -82,12 +68,12 @@
   <div id="row-title" style="display:none;">
     <div class="col">
       <label for="title">Title</label>
-      <%= form.text_field :name, :rows => 10, :cols => 80, :class => "text_field text" %>
+      <%= form.text_field :name, :rows => 10, :cols => 80, :class => "text_field text dismiss-onscreenkeyboard" %>
     </div>
 
     <div class="col">
       <label class="label">Description</label>
-      <%= form.text_area :description, :rows => 1, :cols => 80, :class => "text_area text" %>
+      <%= form.text_area :description, :rows => 1, :cols => 80, :class => "text_area text dismiss-onscreenkeyboard" %>
     </div>
 
     <div class="col">
@@ -211,7 +197,8 @@
     $('#expand-extra-section').click(function(){
       $('#row-title').toggle();
       $('#title-description-link').toggle();
-
+      resizeModals();
+      refresh_iScrollers();
       $(".content1").attr({ scrollTop: $(".content1").attr("scrollHeight") });
       return false;
     });

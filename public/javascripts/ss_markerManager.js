@@ -443,6 +443,7 @@ function InfoWindow(markerManager){
             $(this).hide();
 
             e.stopPropagation();
+            $(this).blur();
             return false;
         }
         else {
