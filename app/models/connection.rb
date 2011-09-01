@@ -64,15 +64,15 @@ class Connection < ActiveRecord::Base
     c.save!
   end
 
-  def self.setAllRanks(user)
-    #TODO - must be a better way than instantiating each connection
-    rank = 0;
-    connections = Connection.where(:user_id => user.id).order("strength DESC").all
-    connections.each do |connection|
-      connection.rank = rank;
-      connection.save
-      rank = rank + 1
-    end
+  def self.set_all_ranks(user)
+    Connection.connection.update("UPDATE connections co
+          SET rank = ranked_tbl.newRank
+          FROM (
+            SELECT c.id, rank() OVER (PARTITION BY c.user_id ORDER BY strength DESC) newRank
+            FROM connections c
+            WHERE c.user_id = #{user.id}
+          ) as ranked_tbl
+          WHERE co.id = ranked_tbl.id")
   end
 
   protected
