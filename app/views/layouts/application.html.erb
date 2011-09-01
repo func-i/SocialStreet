@@ -176,6 +176,8 @@
               $(this).height(24);
             else
               $(this).height(16);
+            e.stopPropagation();
+            $(this).blur();
             return false;
           }
         }

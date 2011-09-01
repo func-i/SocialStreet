@@ -154,6 +154,10 @@ iScroll.prototype = {
 	},
 
 	_start: function (e) {
+
+                if(e.target.tagName == "INPUT")
+                    return true;
+   
 		var that = this,
 			point = hasTouch ? e.touches[0] : e,
 			matrix, x, y;
@@ -463,7 +467,7 @@ iScroll.prototype = {
 		var left = -el.offsetLeft,
 			top = -el.offsetTop;
 			
-		while (el = el.offsetParent) {
+		while (el == el.offsetParent) {
 			left -= el.offsetLeft;
 			top -= el.offsetTop;
 		} 

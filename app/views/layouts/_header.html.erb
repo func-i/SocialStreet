@@ -24,11 +24,11 @@
         </li>
 
       <% else %>
-                                                                              <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
+                                                                                <!--<li><%#= link_to 'Sign in', [:new, :user_session] %></li>-->
         <li id="sign_in_li"><%= link_to "Sign in", '/auth/facebook'%></li>
         <li id="sign_in_ribbon_li" style="display: none; vertical-align: top; padding-right: 100px;" class="chalk">
-        <%= link_to '/auth/facebook' do%>
-          <span class="chalk">Sign in with Facebook</span>
+          <%= link_to '/auth/facebook' do%>
+            <span class="chalk">Sign in with Facebook</span>
           <%end%>
 
           <%= image_tag "sign-in-arrow.png", :style => "vertical-align: top;" %>
@@ -49,9 +49,9 @@
             <span style="color: #FFC233">Life.</span>
           </strong>
           <p style="margin-bottom: 50px;">
-          Our mission is to make it easy to discover friends that enjoy the same things as you!<br/>
-          You can now easily connect with your own personalized community, no matter where you are.
-          By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by great friends!
+            Our mission is to make it easy to discover friends that enjoy the same things as you!<br/>
+            You can now easily connect with your own personalized community, no matter where you are.
+            By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by great friends!
           </p>
           <strong class="ttl">
             What are <span style="color: #FFC233">StreetMeets</span>?
@@ -168,10 +168,10 @@
         <div class="pop-up1-content">
           We'd love to hear from you. Send us your complaints, suggestions and/or stories (nothing would make our day like hearing how SocialStreet has helped people connect!)
           <br/><br/>
-          <%= form_for :email, :url => '/contact', :html => {:class => "modal-submit-form form", :onclick => ""}, :remote => true do |f| %>
+          <%= form_for :email, :url => '/contact', :html => {:class => "modal-submit-form form", :onclick => "", :onsubmit => "return checkButtonPressed();"}, :remote => true do |f| %>
             <div class="row">
               <%= f.label :name %>
-              <%= f.text_field :name, :size => 60, :class=>"text" %>
+              <%= f.text_field :name, :size => 60, :class=>"text dismiss-onscreenkeyboard" %>
             </div>
 
             <div class="row">
@@ -195,32 +195,32 @@
 <%= content_for :end_of_body do -%>
   <script type='text/javascript'>
   <% unless params[:create_event].blank? %>
-      $(function(){
-        popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
-      });
+    $(function(){
+      popup_modal_ajax('#empty_modal_base', 'Plan a new StreetMeet', '<%=new_event_path(:js)%>', null);
+    });
   <% end %>
 
   <%- if(!@current_user &&  current_page?(explore_path) && (!session[:how_it_works_last_display_time] || (Time.zone.now - session[:how_it_works_last_display_time] > 30.minute)))-%>
     <% session[:how_it_works_last_display_time] = Time.zone.now %>
-      expandHowItWorks();
+    expandHowItWorks();
 
-      $(function(){
+    $(function(){
 
-        var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
-        if(IE7) {
-          // Hack fix for position in IE7
-          //$('.main-top').css('height', '77px');
-          //$('.main-top .holder').css('background', '');
-        }
-      });
+      var IE7 = (navigator.appVersion.indexOf("MSIE 7.")==-1) ? false : true;
+      if(IE7) {
+        // Hack fix for position in IE7
+        //$('.main-top').css('height', '77px');
+        //$('.main-top .holder').css('background', '');
+      }
+    });
 
   <% else %>
     <%- if params[:view].eql?("map") %>
-        $('.w2').addClass('page-map');
-        $('html').css('overflow', 'hidden');
+      $('.w2').addClass('page-map');
+      $('html').css('overflow', 'hidden');
 
     <%- elsif params[:view].eql?("map") %>
-        $('.w2').addClass('page-explore');
+      $('.w2').addClass('page-explore');
     <%- end -%>
   <%- end -%>
   </script>
@@ -248,6 +248,10 @@
     if($('#submit_form').length)
       $('#submit_form').val("true");
     return true;   
+  }
+
+  function checkButtonPressed() {
+    return $('#submit_form').val() == "true";
   }
 
   $(function() {
