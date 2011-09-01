@@ -77,9 +77,14 @@ Pageless.prototype.loading = function (bool) {
 
 Pageless.prototype.distanceToBottom = function () {
     if(this.container_ === window){
-        return $(document).height()
+        return $('#end_of_body').offset().top
+            + $('#end_of_body').height()
+            - window.innerHeight
+            - document.body.scrollTop;
+
+/*        return $(document).height()
         - this.container_dom_.scrollTop()
-        - this.container_dom_.height();
+        - this.container_dom_.height();*/
     }
     else{
         if(this.iScroller_){
