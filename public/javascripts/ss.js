@@ -13,7 +13,7 @@ var isTouchEnabled_;
 function isTouchEnabled(){
     if(isTouchEnabled_ == undefined){
         isTouchEnabled_ = 'ontouchstart' in window;
-        isTouchEnabled_ = true;
+        //isTouchEnabled_ = true;
     }
     return isTouchEnabled_;
 }
@@ -271,7 +271,6 @@ function get_iScroller(scrollerID){
     if(!isTouchEnabled())
         return null;
 
-    console.log(scrollerID, my_iScrollArr);
     for(var i = 0; i < my_iScrollArr.length; i++){
         if(my_iScrollArr[i][0] == scrollerID){
             return my_iScrollArr[i][1];
@@ -290,12 +289,18 @@ function attach_iScroll(divID){
     if(!isTouchEnabled())
         return;
 
-    console.log("Attach_iScroll", divID);
     var myDiv = $(divID);
+
     var iScroll_ids = myDiv.data('iscroll-ids');
-    var myIds = iScroll_ids.split(',');
+    var myIds;
+    if(iScroll_ids){
+        myIds = iScroll_ids.split(',');
+    }
+    else{
+        myIds = [divID];
+    }
+
     for(var i = 0; i < myIds.length; i++){
-        console.log(myIds[i]);
         my_iScrollArr.push([myIds[i], new iScroll(myIds[i], {
             onScrollMove: pageless_iscroll_callback
         })]);
@@ -312,8 +317,16 @@ function detach_iScroll(divID){
         return;
 
     var myDiv = $(divID);
+
     var iScroll_ids = myDiv.data('iscroll-ids');
-    var myIds = iScroll_ids.split(',');
+    var myIds;
+    if(iScroll_ids){
+        myIds = iScroll_ids.split(',');
+    }
+    else{
+        myIds = divID;
+    }
+
     var new_arr = []
     for(var i = 0; i < myIds.length; i++){
         for(var j = 0; j < my_iScrollArr.length; j++){
@@ -329,12 +342,6 @@ function detach_iScroll(divID){
     delete my_iScrollArr;
     my_iScrollArr = new_arr;
 }
-
-
-
-function load_iScroll() {
-}
-
 
 function removeTabIndex(modalDivID){
     // an array of selectors to loop through to disable elements inside the body
