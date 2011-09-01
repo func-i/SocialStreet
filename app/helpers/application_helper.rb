@@ -44,12 +44,12 @@ module ApplicationHelper
     end
   end
 
-  def url_for_avatar(user)
-    user.avatar_url || 'web-app-theme/avatar.png'
+  def url_for_avatar(user, options={})
+    user.avatar_url(options) || 'web-app-theme/avatar.png'
   end
 
   def avatar_image(user, options={})
-    image_tag(url_for_avatar(user),
+    image_tag(url_for_avatar(user, :fb_size => options[:fb_size] || 'square'),
       :title => user.name,
       :size=> options[:size] || "30x30")
   end
