@@ -13,7 +13,7 @@ var isTouchEnabled_;
 function isTouchEnabled(){
     if(isTouchEnabled_ == undefined){
         isTouchEnabled_ = 'ontouchstart' in window;
-        //isTouchEnabled_ = true;
+    //isTouchEnabled_ = true;
     }
     return isTouchEnabled_;
 }
@@ -198,6 +198,14 @@ $(function() {
     $('.link-close').live('click', function() {
         removeModal($(this).closest('.pop-up-modal'));
     });
+
+    $('.dismiss-onscreenkeyboard').live('keydown', function(e) {
+        if (e.keyCode == 13) {
+            e.stopPropagation();
+            $(this).blur();
+        }
+        
+    });
 })
 
 function resizeModals(){
@@ -212,7 +220,9 @@ function resizeModals(){
     });
 
     $mainWindowHeight = $mainWindowHeight - 99; //15 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 99
-    $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
+    if (isTouchEnabled() == false){
+        $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
+    }
     $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight - 200);
 
     var $sideWindowHeight = $mainWindowHeight - 39; //54+31=85 for sidebar padding, -19 for sidebar margin, -27 for modal padding == 39
@@ -280,9 +290,12 @@ function get_iScroller(scrollerID){
 }
 
 function refresh_iScrollers(){
-    for(var i = 0; i < my_iScrollArr.length; i++){
-        my_iScrollArr[i][1].refresh();
-    }
+    setTimeout(function () {
+        for(var i = 0; i < my_iScrollArr.length; i++){
+            my_iScrollArr[i][1].refresh();
+        }
+    }, 300);
+
 }
 
 function attach_iScroll(divID){
