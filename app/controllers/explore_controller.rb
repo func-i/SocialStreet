@@ -76,8 +76,8 @@ class ExploreController < ApplicationController
       @messages_total_count = messages.count
 
       if params[:view] != "map"
-        events = events.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset)
-        messages = messages.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset)
+        events = events.limit(EVENTS_PER_PAGE_REQUEST).offset(@events_offset).all
+        messages = messages.limit(MESSAGES_PER_PAGE_REQUEST).offset(@messages_offset).all
         records_per_page = RECORDS_PER_LIST_PAGE
       else
         records_per_page = RECORDS_PER_MAP_PAGE
@@ -331,11 +331,11 @@ class ExploreController < ApplicationController
           latitude = cookies[:current_location_latitude].to_f
           longitude = cookies[:current_location_longitude].to_f
         end
-
-        #TODO - unlogged in user coming to our site for first time...setting to toronto for now...
-        latitude ||= 43.66061599944655
-        longitude ||= -79.3938175316406
       end
+
+      #TODO - unlogged in user coming to our site for first time...setting to toronto for now...
+      latitude ||= 43.66061599944655
+      longitude ||= -79.3938175316406
 
       map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end
