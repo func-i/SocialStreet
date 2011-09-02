@@ -1,17 +1,20 @@
 <%= render "comment_box" %>
 
-<div id="pageless-container">
-  <div id="action-list" class="post-holder Post-Holder">
-    <%= render "results", :searchable_results => (@searchables || [])%>
-  </div>
 
-  <div class="post-holder Post-Holder">
-    <%= render "similar_results_box" %>
-  </div>
+<div id="pageless-holder">
+  <div id="pageless-container">
+    <div id="action-list" class="post-holder Post-Holder">
+      <%= render "results", :searchable_results => (@searchables || [])%>
+    </div>
+
+    <div class="post-holder Post-Holder">
+      <%= render "similar_results_box" %>
+    </div>
 
 
-  <div id="similar-results-list" class="post-holder Post-Holder">
-    <%= render "results", :searchable_results => (@similar_results || [])%>
+    <div id="similar-results-list" class="post-holder Post-Holder">
+      <%= render "results", :searchable_results => (@similar_results || [])%>
+    </div>
   </div>
 </div>
 
@@ -35,6 +38,11 @@
 
   $(function() {
     checkMapPageSize();
+
+    //setTimeout(function () {
+      //attach_iScroll('pageless-holder');
+    //},0);
+
   });
 </script>
 
