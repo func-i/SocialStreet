@@ -41,10 +41,10 @@
 
   <div class="short-box">
     <div class="address"></div>
-    <div class="post-box" style="overflow-x: visible;">
+    <div class="post-box" style="overflow-x: visible; height: 500px">
       <div class="post-wrapper">
         <div class="post-holder">
-          <div class="post-frame" style="height: 500px;">
+          <div id="mapview-sidebar-scroll" class="post-frame">
             <div id="action-list" class="post-content">
               <%= render 'results', :searchable_results=> (@searchables || []) %>
             </div>
@@ -92,7 +92,7 @@
         });
 
         //$('.short-box').hide().addClass('open').show('slide', {direction: 'right'}, 1000);
-      
+        refresh_iScrollers();
         return false;
       });
 
@@ -101,8 +101,13 @@
           $('.short-box .btn-close').hide();
           $('.short-box .btn-open').show();
         });
+        refresh_iScrollers();
         return false;
       });
+
+      setTimeout(function () {
+      attach_iScroll('mapview-sidebar-scroll');
+    },0);
 
     })
   </script>
