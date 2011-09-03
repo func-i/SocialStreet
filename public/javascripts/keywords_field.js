@@ -121,7 +121,9 @@ $(function() {
             keywordHandler(this.value, $(this).attr('keyword-content-selector'));
             this.value = '';
             $(this).autocomplete('close');
-            //e.stopPropagation();
+            e.stopPropagation();
+            $(this).blur();
+
             return false;
         }
         return true;
@@ -165,6 +167,7 @@ $(function() {
             keywordHandler(ui.item.value, $(this).attr('keyword-content-selector'));
             this.value = '';
             $('.q-textfield').val('');
+            $(this).blur();
             return false;
         },
         html: true

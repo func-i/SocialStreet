@@ -41,12 +41,15 @@
   var invitationPageless = null;
 
   function makeInvitationsPageless(){
+    var myScroller = get_iScroller('modal_sidebar_scroll');
+
     invitationPageless = new Pageless({
       container: '#empty_modal_sidebar .content',
       totalPages: <%= @num_pages_invitations -%>,
       currentPage: 1,
       url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
-      parameterFunction: invitationParamFunction
+      parameterFunction: invitationParamFunction,
+      iScroller: myScroller
     });
     invitationPageless.start();
 
