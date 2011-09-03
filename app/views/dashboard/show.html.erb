@@ -66,7 +66,10 @@
             <% end %>
           <% else %>
             <% action = item.index_action %>
-            <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
+            <% head_action = action.action || action %>
+            <% if !head_action.searchable || !head_action.searchable.ignored %>
+              <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
+            <% end %>
           <% end %>
         </div>
       <% end %>
