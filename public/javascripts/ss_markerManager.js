@@ -282,6 +282,7 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
                 $('#result_for_searchable_' + marker.searchableID_).show();
             });
         }
+        refresh_iScrollers();
     }
     else if(this.listView_){
         //Unhighlight every element

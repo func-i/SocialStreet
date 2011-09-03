@@ -103,6 +103,10 @@ function retractHowItWorks(f) {
 
 $(function() {
 
+    window.onorientationchange = function() {
+        refresh_iScrollers();
+    }
+
     $('.remove-parent').live('click', function(event) {
         var $this = $(this);
         var parentSelector = $this.data('parent-selector');
@@ -294,8 +298,7 @@ function refresh_iScrollers(){
         for(var i = 0; i < my_iScrollArr.length; i++){
             my_iScrollArr[i][1].refresh();
         }
-    }, 300);
-
+    }, 0);
 }
 
 function attach_iScroll(divID){
