@@ -8,7 +8,8 @@
 
 <script type='text/javascript'>
   $(function() {
-    checkMapPageSize();   
+    checkMapPageSize();
+    document.ontouchmove = function(e){ e.preventDefault(); }
   });
 
   function checkMapPageSize() {

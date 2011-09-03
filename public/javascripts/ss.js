@@ -9,6 +9,15 @@ if(!Array.indexOf) {
     }
 }
 
+var isTouchEnabled_;
+function isTouchEnabled(){
+    if(isTouchEnabled_ == undefined){
+        isTouchEnabled_ = 'ontouchstart' in window;
+    //isTouchEnabled_ = true;
+    }
+    return isTouchEnabled_;
+}
+
 
 $.fn.serializeObject = function()
 {
@@ -94,6 +103,10 @@ function retractHowItWorks(f) {
 
 $(function() {
 
+    window.onorientationchange = function() {
+        refresh_iScrollers();
+    }
+
     $('.remove-parent').live('click', function(event) {
         var $this = $(this);
         var parentSelector = $this.data('parent-selector');
@@ -157,6 +170,10 @@ $(function() {
         //Disable scrolling for the body
         $("html").css("overflow", "hidden");
 
+        setTimeout(function () {
+            attach_iScroll(divId);
+        },0);
+
         return false;
     });
 
@@ -185,6 +202,14 @@ $(function() {
     $('.link-close').live('click', function() {
         removeModal($(this).closest('.pop-up-modal'));
     });
+
+    $('.dismiss-onscreenkeyboard').live('keydown', function(e) {
+        if (e.keyCode == 13) {
+            e.stopPropagation();
+            $(this).blur();
+        }
+        
+    });
 })
 
 function resizeModals(){
@@ -199,7 +224,9 @@ function resizeModals(){
     });
 
     $mainWindowHeight = $mainWindowHeight - 99; //15 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 99
-    $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
+    if (isTouchEnabled() == false){
+        $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
+    }
     $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight - 200);
 
     var $sideWindowHeight = $mainWindowHeight - 39; //54+31=85 for sidebar padding, -19 for sidebar margin, -27 for modal padding == 39
@@ -219,7 +246,12 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     window.scrollTo(0,0);
 
     //Display the modal
-    $(modal_divID).show();    
+    $(modal_divID).show();
+
+    //attach_iScroll for touch displays
+    setTimeout(function () {
+        attach_iScroll(modal_divID);
+    },0);
 
     // Display overlay
     if(document.getElementById("ss_modal_overlay") === null){
@@ -239,12 +271,92 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
     $.getScript(request, function(data, textStatus){
         resizeModals();
         removeTabIndex(modal_divID);
-    //$(modal_divID).find('input').first().focus();
+
+        refresh_iScrollers();
     });
 
     //Disable scrolling for the body
     $("html").css("overflow", "hidden");
 
+}
+
+var my_iScrollArr = [];
+function get_iScroller(scrollerID){
+    if(!isTouchEnabled())
+        return null;
+
+    for(var i = 0; i < my_iScrollArr.length; i++){
+        if(my_iScrollArr[i][0] == scrollerID){
+            return my_iScrollArr[i][1];
+        }
+    }
+    return null;
+}
+
+function refresh_iScrollers(){
+    setTimeout(function () {
+        for(var i = 0; i < my_iScrollArr.length; i++){
+            my_iScrollArr[i][1].refresh();
+        }
+    }, 0);
+}
+
+function attach_iScroll(divID){
+    if(!isTouchEnabled())
+        return;
+
+    var myDiv = $(divID);
+
+    var iScroll_ids = myDiv.data('iscroll-ids');
+    var myIds;
+    if(iScroll_ids){
+        myIds = iScroll_ids.split(',');
+    }
+    else{
+        myIds = [divID];
+    }
+
+    for(var i = 0; i < myIds.length; i++){
+        my_iScrollArr.push([myIds[i], new iScroll(myIds[i], {
+            onScrollMove: pageless_iscroll_callback
+        })]);
+    }
+}
+
+function pageless_iscroll_callback(that, e){
+    var target = $(that.currentTarget);
+    target.trigger('scroll.ss_pageless');
+}
+
+function detach_iScroll(divID){
+    if(!isTouchEnabled())
+        return;
+
+    var myDiv = $(divID);
+
+    var iScroll_ids = myDiv.data('iscroll-ids');
+    var myIds;
+    if(iScroll_ids){
+        myIds = iScroll_ids.split(',');
+    }
+    else{
+        myIds = divID;
+    }
+
+    var new_arr = []
+    for(var i = 0; i < myIds.length; i++){
+        for(var j = 0; j < my_iScrollArr.length; j++){
+            if(my_iScrollArr[j][0] != myIds[i]){
+                new_arr.push(my_iScrollArr[j])
+            }
+            else{
+                my_iScrollArr[j][1].destroy();
+            }
+        }
+    }
+    my_iScrollArr = [];
+    delete my_iScrollArr;
+    my_iScrollArr = new_arr;
 }
 
 function removeTabIndex(modalDivID){
@@ -289,6 +401,11 @@ function removeModal(element) {
     //element.find('.save-modal-button').disabled = false;
 
     addTabIndex();
+
+    setTimeout(function () {
+        detach_iScroll('#' + element.attr('id'));
+    },0);
+
 }
 
 $(function() {

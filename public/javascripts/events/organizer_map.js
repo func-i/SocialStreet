@@ -197,6 +197,7 @@ $('.location-address-field').keydown(function(e) {
         searchLocations(e);
 
         e.stopPropagation();
+        $(this).blur();
 
         return false;
     }
@@ -209,6 +210,7 @@ $('.location-address-field').change(function(e){
     searchLocations(e);
 
     e.stopPropagation();
+    $(this).blur();
 
     return false;
 

@@ -6,6 +6,7 @@
     <!--[if lte IE 9]><link href="/assets/ie.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if lt IE 8]><link href="/assets/ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <%= include_javascripts :common %>
+    <%=  javascript_include_tag 'iscroll-lite.js' %>
 
     <%= csrf_meta_tag %>
     <%= favicon_link_tag %>
@@ -33,7 +34,7 @@
       })();
 
     </script>
-    
+
   </head>
   <body>
     <div class="feedback-btn">
@@ -93,6 +94,7 @@
 
     <%= yield :end_of_body  %>
     <div id="fb-root"></div>
+    <div id="end_of_body"></div>
 
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script type='text/javascript'>
@@ -174,6 +176,8 @@
               $(this).height(24);
             else
               $(this).height(16);
+            e.stopPropagation();
+            $(this).blur();
             return false;
           }
         }

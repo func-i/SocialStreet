@@ -43,12 +43,15 @@
   var administratorPageless = null;
 
   function makeAdministratorPageless(){
+    var myScroller = get_iScroller('modal_sidebar_scroll');
+    
     administratorPageless = new Pageless({
       container: '#empty_modal_sidebar .content',
       totalPages: <%= @num_pages_administrators -%>,
       currentPage: 1,
       url: '<%= new_event_administrator_path(@event) %>',
-      parameterFunction: administratorParamFunction
+      parameterFunction: administratorParamFunction,
+      iScroller: myScroller
     });
     administratorPageless.start();
 

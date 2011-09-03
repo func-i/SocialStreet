@@ -7,9 +7,9 @@
 
 <div class="text">
   <h3><%= raw title %></h3>
-  <%= simple_format(h("\"#{body.strip}\""), :class => "comment-body") unless body.blank? %>
+  <%= simple_format(h("\"#{body.strip}\""), :class => "comment-body dismiss-onscreenkeyboard") unless body.blank? %>
   <span class="more">
-    <%= link_to "Show more", '#', :class => 'comment-body-more', :style => "display:none;" -%>
+    <%= link_to "Show more", '#', :class => 'comment-body-more dismiss-onscreenkeyboard', :style => "display:none;" -%>
   </span>
   <div class="comment-body-extra" style="display:none"></div>
   <span class="time"><%= ss_time_ago_in_words action.occurred_at %> ago</span>
@@ -33,7 +33,7 @@
           <fieldset>
             <%= link_to_popup_modal '', "create-event", :action_id => action.id, :class => "submit" -%>
             <% #link_to '', new_event_path(:action_id => action.id), :class => "submit" %>
-            <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea" %>
+            <%= form.text_area :body, :cols => "1", :rows => "1", :class => "textarea dismiss-onscreenkeyboard" %>
           </fieldset>
         <% end %>
       </div>
