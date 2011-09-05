@@ -75,6 +75,29 @@ class EventsController < ApplicationController
   def edit
     @event_for_edit = @event
     prepare_for_form
+
+    if(@event.finishes_at)
+      my_diff = @event.finishes_at.to_i - @event.starts_at.to_i
+      puts my_diff
+      my_remainder = my_diff / (60*60*24)
+      puts my_remainder
+      if(my_remainder >= 1)
+        @duration_size = "Days"
+        @duration = my_remainder
+      else
+        my_remainder = my_diff / (60*60)
+        puts my_remainder
+        if(my_remainder >= 1)
+          @duration_size = "Hours"
+          @duration = my_remainder
+        else
+          my_remainder = my_diff / (60)
+          puts my_remainder
+          @duration_size = "Minutes"
+          @duration = my_remainder
+        end
+      end
+    end
   end
 
   def update
