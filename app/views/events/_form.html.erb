@@ -176,8 +176,10 @@
 
       var stHour = $($('.starts-at-time')[1]).val();
       var stMeridian = $($('.starts-at-time')[3]).val();
-      if(stMeridian == 'PM')
-        stHour = parseInt(stHour, 10) + 12;
+      if(stMeridian == 'PM'){
+        var hour = parseInt(stHour, 10);
+        stHour = hour + (hour == 12 ? 0 : 12);
+      }
 
       var stTime = $('#starts_at_calendar').datepicker('getDate');
       stTime.setHours(stHour);
