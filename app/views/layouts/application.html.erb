@@ -157,6 +157,10 @@
       return false;
     });
 
+    $('.remove_comment_button').live('click', function(){
+      $(this).closest('.post').hide();
+    });
+
     $('.textarea').live('change', function(e){
       if(this.value.length > 0){
         $(this).closest('.form-comment').submit();

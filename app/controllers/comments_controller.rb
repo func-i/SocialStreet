@@ -2,17 +2,35 @@ class CommentsController < ApplicationController
 
   before_filter :load_commentable_resource
   before_filter :store_comment_request, :only => [:create]
-  before_filter :ss_authenticate_user!, :only => [:create]#, :if => Proc.new { |c| !c.request.xhr? }
+  before_filter :ss_authenticate_user!, :only => [:create, :destroy]#, :if => Proc.new { |c| !c.request.xhr? }
 
   def create
     @success = create_comment(session[:stored_redirect][:params])
     
     if request.xhr?
-        render :partial => 'create'
+      render :partial => 'create'
     else
       redirect_to stored_path
       #redirect_to stored_path, :notice => "Thank you for your generous comment"
     end    
+  end
+
+  def destroy
+    comment_to_destroy = Comment.find(params[:id])
+    return unless comment_to_destroy
+
+    unless comment_to_destroy.action.actions.empty?
+      searchable_to_save = comment_to_destroy.action.searchable
+      comment_to_destroy.action.actions.first.reference.searchable = searchable_to_save
+    end
+
+    comment_to_destroy.destroy
+    
+    if request.xhr?
+      render :nothing => true
+    else
+      redirect_to stored_path
+    end
   end
 
   protected
