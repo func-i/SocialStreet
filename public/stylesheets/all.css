@@ -710,8 +710,9 @@ form, fieldset {
 }
 .form-post-message .info {
     overflow: hidden;
-    text-align: center;
+    text-align: left;
     display: none;
+    padding-left: 15px;
 }
 .send .info,
 .open .info { display: block; }
