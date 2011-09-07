@@ -1,6 +1,7 @@
 <div class="post-message" id="explore-post-message-form">
   <%= form_for @comment, :remote => true, :html => {:class => "form comment-form form-comment form-post-message Post-Message", :style => "min-height: 55px; "} do |form| %>
     <fieldset>
+      <div class="info" style="text-align: left;font-size:20px;font-weight: bold;">I'm Looking for People To...</div>
       <div class="box text">
         <div class="topleft">
           <div class="topright">
@@ -19,10 +20,9 @@
       <div style="width: 100%; background-image: url('/images/bg-form-post-message-large_bottom.png'); height: 11px; margin-top: -2px;"></div>
 
 
-      <div id="post-message-info" class="info" style="clear: both;">
-        <p><span style="font-size:18px">Leave a message to let your Community know about you and your interests!</span></p>
-        <p>Your message will be posted to the center of the map</p>
-        <p>approximately @ <span id="post-message-address" style="color:#000">#</span> <a href="#" id="change-location" style="font-size:10px">...change</a></p>
+      <div id="post-message-info" class="info" style="clear: both;text-align: left;">
+        <!--<p><span style="font-size:18px">Leave a message to let your Community know about you and your interests!</span></p>-->
+        <p>Your message will be posted to the center of the map ~ @ <span id="post-message-address" style="color:#000">#</span> <a href="#" id="change-location" style="font-size:10px">...change</a></p>
         <p>
           <% keywords = (params[:keywords] || []).reject{|k| k.blank?} %>
           <span id="post-message-keywords" style="color:#999;<%="display:none" if keywords.blank?%>">
@@ -71,7 +71,7 @@
         $('.form-post-message').removeClass('send');
     });
 
-/*    $('.search-textarea').live('change', function(e){
+    /*    $('.search-textarea').live('change', function(e){
       if(this.value.length > 0)
       {
         $('.form-post-message').removeClass('send');
