@@ -26,7 +26,6 @@ index_action
   <% end %>
 
   <!--Record Title-->
-  <!--TODO - Would like the title to truncate, but need to take into consideration html-->
   <h3><%= truncate_html(title, :length => 60) %></h3>
 
   <!--IF Event record-->
@@ -44,8 +43,6 @@ index_action
         <span class="time">
           <%=address_for(event_record.location)%>
           <span><%= ss_time_ago_in_words(event_record.starts_at, event_record.finishes_at) -%></span>
-<!--          @
-          <em><%=event_record.starts_at.strftime("%l:%M %p")%></em>-->
         </span>
 
         <!--attendees list-->
@@ -61,21 +58,12 @@ index_action
             <% end %>
           </ul>
         </div>
-
-        <% if !defined?(is_event_embedded) || !is_event_embedded %>
-          <!--Keywords-->
-          <!--<div class="keyword">
-            <% event_record.searchable_event_types.each do |set| %>
-              <span class="keyword"><%= set.try(:name) %></span>
-            <% end %>
-          </div>-->
-        <% end %>
       </div>
     </div>
 
     <% if is_thread %>
       <div class="row-text">
-        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 90, :include_quotes => true %>
       </div>
     <% end %>
 
@@ -83,9 +71,9 @@ index_action
     <!--First comment goes in record area-->
     <div class="row">
       <% if defined?(index_action) %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :image_size=>"41x41", :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 90, :image_size=>"41x41", :include_quotes => true %>
       <% else %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 90, :include_quotes => true %>
       <% end %>
     </div>
   <% end %>

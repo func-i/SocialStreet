@@ -881,7 +881,7 @@ form, fieldset {
     display: block;
     font: bold 11px/14px Arial, Helvetica, sans-serif;
     overflow: hidden;
-    padding: 19px 0 1px;
+    padding: 0px 0 4px;
 }
 #content .post .post p .more {
     display: inline-block;
