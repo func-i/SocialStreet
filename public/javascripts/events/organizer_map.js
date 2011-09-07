@@ -36,6 +36,8 @@ $(function() {
     var controlImg = document.createElement('IMG');
     controlImg.src = '/images/ico-pin.png';
 
+    initTouchElements(controlImg);
+
     var controlText = document.createElement('DIV');
     var homeControl = new DropPinControl(controlImg, controlText, map);
 
@@ -81,7 +83,9 @@ function DropPinControl(controlImg, controlText, map) {
 
     controlImg.onmouseout = function() {
         this.src='/images/ico-pin.png';
-    }    
+    }
+
+    controlImg.id = "marker-drag"
 
     controlText.style.marginRight = '10px';
     controlText.style.padding = '5px';
@@ -94,7 +98,7 @@ function DropPinControl(controlImg, controlText, map) {
     // Set CSS styles for the DIV containing the control
     // Setting padding to 5 px will offset the control
     // from the edge of the map
-    
+   
     $(controlImg).draggable({
         helper: 'clone',
         drag: function(event, ui){
@@ -106,9 +110,11 @@ function DropPinControl(controlImg, controlText, map) {
             var pos = proj.getProjection().fromContainerPixelToLatLng(new google.maps.Point(ui.position.left+20, ui.position.top+48));
             var location = new google.maps.LatLng(pos.lat(), pos.lng());
             var geocoded_address = '';
-            geocoder.geocode({'location':location}, function(results,status) {
+            geocoder.geocode({
+                'location':location
+            }, function(results,status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                     geocoded_address = results[0].formatted_address;
+                    geocoded_address = results[0].formatted_address;
                 }
                 createMarkerManager.createMarker(location, null, null, geocoded_address, true);
                 map.setCenter(location);
