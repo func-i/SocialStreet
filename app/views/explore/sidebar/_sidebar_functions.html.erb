@@ -160,6 +160,7 @@
 
         $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
         $('#map_center').val(c.lat() + ',' + c.lng());
+        updateUserLocation(c.lat(), c.lng(), false);
 
         if(history && history.replaceState)
           history.replaceState(null, null, getSearchParams());
@@ -318,8 +319,6 @@
     
       google.maps.event.addListener(sideMap, 'zoom_changed', changeExploreLocationParams);
       google.maps.event.addListener(sideMap, 'dragend', changeExploreLocationParams);
-      //google.maps.event.addListener(sideMap, 'resize', changeExploreLocationParams);
-      //$(window).resize(changeLocationParams);
 
       markerManager = new MarkerManager({
         map: sideMap,
