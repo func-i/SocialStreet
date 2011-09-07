@@ -32,6 +32,7 @@ gem 'json'
 gem 'jammit'
 gem 'airbrake'
 #gem 'hoptoad_notifier'
+gem 'rpm_contrib'
 gem 'newrelic_rpm'
 
 gem "aws-ses", "~> 0.4.3", :require => 'aws/ses'

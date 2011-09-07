@@ -54,7 +54,7 @@ class Jobs::CreateConnectionsFromFacebook
     ss_uids.each do |uid|
       c = user.connections.to_user_id(uid).first
       if nil == c
-        connection_inserts.push("('#{user.id}','#{uid}', 0, true)")
+        connection_inserts.push("('#{user.id}','#{uid}', 5, true)")
       else
         c.update_attribute("facebook_friend", true);
       end
@@ -63,7 +63,8 @@ class Jobs::CreateConnectionsFromFacebook
     unless connection_inserts.empty?
       sql = "INSERT INTO connections (user_id, to_user_id, strength, facebook_friend) VALUES #{connection_inserts.join(", ")}"
       Connection.connection.insert(sql)
-      Connection.setAllRanks(user);
+
+      Connection.set_all_ranks(user)
     end
 
     user.update_attribute("fb_friends_imported", true)

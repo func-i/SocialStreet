@@ -62,7 +62,7 @@
   </div>
 
   <div class="title-row" id="title-description-link">
-    <p><%= link_to '+ Title, Description, Icon', '#', :id => "expand-extra-section" -%></p>
+    <p><%= link_to '+ Title, Description', '#', :id => "expand-extra-section" -%></p>
   </div>
 
   <div id="row-title" style="display:none;">
@@ -76,11 +76,11 @@
       <%= form.text_area :description, :rows => 1, :cols => 80, :class => "text_area text dismiss-onscreenkeyboard" %>
     </div>
 
-    <div class="col">
+<!--    <div class="col">
       <label class="label">Image</label>
-      <%= image_tag(event.photo.thumb.url) if event.photo? %>
-      <%= form.file_field :photo %>
-    </div>
+      <%#= image_tag(event.photo.thumb.url) if event.photo? %>
+      <%#= form.file_field :photo %>
+    </div>-->
 
     <div id="bottom"></div>
   </div>

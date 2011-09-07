@@ -39,17 +39,17 @@ module ApplicationHelper
     elsif !event.event_types.blank? && et = event.event_types.detect {|et| et.image_path? }
       et.image_path
     else
-      'event_types/unknown' + (rand(8) + 1).to_s + '.png'
+      'event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
       #'web-app-theme/avatar.png'
     end
   end
 
-  def url_for_avatar(user)
-    user.avatar_url || 'web-app-theme/avatar.png'
+  def url_for_avatar(user, options={})
+    user.avatar_url(options) || 'web-app-theme/avatar.png'
   end
 
   def avatar_image(user, options={})
-    image_tag(url_for_avatar(user),
+    image_tag(url_for_avatar(user, :fb_size => options[:fb_size] || 'square'),
       :title => user.name,
       :size=> options[:size] || "30x30")
   end

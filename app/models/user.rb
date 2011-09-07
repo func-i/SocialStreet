@@ -116,12 +116,12 @@ class User < ActiveRecord::Base
     !(connection && connection.facebook_friend?)
   end
 
-  def avatar_url
+  def avatar_url(options={})
     # TODO: check for custom avatar image first, once it is implemented
     if photo?
       photo.thumb.url
     else
-      facebook_profile_picture_url.gsub(facebook_profile_picture_url[facebook_profile_picture_url.rindex('/')+1..facebook_profile_picture_url.length], "picture?type=large") if facebook_profile_picture_url
+      facebook_profile_picture_url.gsub(facebook_profile_picture_url[facebook_profile_picture_url.rindex('/')+1..facebook_profile_picture_url.length], "picture?type=#{options[:fb_size] || 'square'}") if facebook_profile_picture_url
     end
   end
 

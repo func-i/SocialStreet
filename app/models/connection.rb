@@ -18,6 +18,13 @@ class Connection < ActiveRecord::Base
     )
   }
 
+  scope :common_with_through_facebook, lambda{ |user|
+    joins("INNER JOIN connections AS joined_connections
+       ON joined_connections.to_user_id = connections.to_user_id AND joined_connections.user_id = #{user.id} AND joined_connections.to_user_id <> connections.user_id").
+    where("joined_connections.facebook_friend = true AND connections.facebook_friend = true")
+  }
+
+
   scope :ranked_less_or_eq, lambda { |rank| where("connections.rank <= ?", rank)}
 
   default_value_for :strength, 0
@@ -64,15 +71,15 @@ class Connection < ActiveRecord::Base
     c.save!
   end
 
-  def self.setAllRanks(user)
-    #TODO - must be a better way than instantiating each connection
-    rank = 0;
-    connections = Connection.where(:user_id => user.id).order("strength DESC").all
-    connections.each do |connection|
-      connection.rank = rank;
-      connection.save
-      rank = rank + 1
-    end
+  def self.set_all_ranks(user)
+    Connection.connection.update("UPDATE connections co
+          SET rank = ranked_tbl.newRank
+          FROM (
+            SELECT c.id, rank() OVER (PARTITION BY c.user_id ORDER BY strength DESC) newRank
+            FROM connections c
+            WHERE c.user_id = #{user.id}
+          ) as ranked_tbl
+          WHERE co.id = ranked_tbl.id")
   end
 
   protected

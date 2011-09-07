@@ -197,6 +197,8 @@ GEM
       rufus-scheduler
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rpm_contrib (2.1.4)
+      newrelic_rpm (>= 3.1.1)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -269,6 +271,7 @@ DEPENDENCIES
   redis (~> 2.2.0)
   resque!
   resque-scheduler
+  rpm_contrib
   rspec-rails (~> 2.6)
   silent-postgres
   thin

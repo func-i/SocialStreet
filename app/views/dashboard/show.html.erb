@@ -55,12 +55,14 @@
         <div class="post">
           <% if item.reason == Feed.reasons[:subscription] %>
             <% action = item.head_action %>
-            <% if(action.action_type == Action.types[:event_created]) %>
-              <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } unless action.event.canceled %>
-            <% elsif(action.action_type == Action.types[:search_comment]) %>
-              <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
-            <% else %>
-              <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
+            <% if !action.searchable || !action.searchable.ignored %>
+              <% if(action.action_type == Action.types[:event_created]) %>
+                <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } unless action.event.canceled %>
+              <% elsif(action.action_type == Action.types[:search_comment]) %>
+                <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:search_comment], :record => action} %>
+              <% else %>
+                <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
+              <% end %>
             <% end %>
           <% else %>
             <% action = item.index_action %>

@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
         elsif !@event.event_types.blank? && et = @event.event_types.detect {|et| et.image_path? }
           photo_url = et.image_path
         else
-          photo_url = 'images/event_types/unknown' + (rand(8) + 1).to_s + '.png'
+          photo_url = 'images/event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
         end
 
         @event.user.post_to_facebook_wall(

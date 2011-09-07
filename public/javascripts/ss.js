@@ -299,7 +299,6 @@ function refresh_iScrollers(){
             my_iScrollArr[i][1].refresh();
         }
     }, 0);
-
 }
 
 function attach_iScroll(divID){
