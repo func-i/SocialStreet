@@ -23,7 +23,7 @@
     <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
     <div class="text">
       <div class="row">
-        <div class="text-content">
+        <div class="event-title">
           <h2><%= @event.title %></h2>
           <p>
             <%=address_for(@event.location)%>

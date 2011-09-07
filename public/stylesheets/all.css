@@ -627,6 +627,10 @@ form, fieldset {
     float: left;
     width: 310px;
 }
+.event-title {
+    float: left;
+    width: 410px;
+}
 .btn-share {
     background: url("../images/ico-share.png") no-repeat 100% 0;
     color: #0981be;
