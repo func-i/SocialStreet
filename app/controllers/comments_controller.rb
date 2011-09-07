@@ -17,12 +17,36 @@ class CommentsController < ApplicationController
 
   def destroy
     comment_to_destroy = Comment.find(params[:id])
-    return unless comment_to_destroy
-
-    unless comment_to_destroy.action.actions.empty?
-      searchable_to_save = comment_to_destroy.action.searchable
-      comment_to_destroy.action.actions.first.reference.searchable = searchable_to_save
+    if comment_to_destroy.nil?
+      render :nothing => true
+      return
     end
+    
+    index = -1
+    next_head_comment = nil
+    while next_head_comment.nil? do
+      index = index + 1
+      next_head_comment = comment_to_destroy.action.actions[index].try(:reference)
+      if comment_to_destroy.action.actions.length < index
+        comment_to_destroy.destroy
+        render :nothing => true
+        return
+      end
+    end
+    next_head_comment = comment_to_destroy.action.actions[index].reference
+    next_head_comment.commentable = nil
+    next_head_comment.searchable = comment_to_destroy.searchable
+    next_head_comment.save
+
+    next_head_comment.action.action_type = comment_to_destroy.action.action_type
+    next_head_comment.action.to_user = comment_to_destroy.action.to_user
+    next_head_comment.action.action = nil
+    next_head_comment.action.actions = comment_to_destroy.action.actions
+    next_head_comment.action.actions.slice!(index)
+    next_head_comment.action.save
+      
+    comment_to_destroy.searchable = nil
+    comment_to_destroy.save
 
     comment_to_destroy.destroy
     

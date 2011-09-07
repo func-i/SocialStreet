@@ -18,7 +18,7 @@ class Action < ActiveRecord::Base
   belongs_to :action # tree based, but only 1 level deep
   belongs_to :reference, :polymorphic => true
 
-  has_many :comments, :as => :commentable, :dependent => :destroy # comments can be made against an action. so an action has many comments
+  has_many :comments, :as => :commentable# comments can be made against an action. so an action has many comments
   has_many :actions # child actions (1 level deep). Eg child comments, child event creations, etc
 
   scope :newest_first, order("actions.occurred_at DESC")
