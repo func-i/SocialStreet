@@ -120,6 +120,29 @@
       </div>
     </div>
   <% end %>
+  <% unless @closest_signed_up_friends.empty? %>
+    <div class="connections">
+      <div class="slide">
+        <div class="box people-list">
+          <div class="heading">
+            <h3>People you know on SocialStreet</h3>
+          </div>
+          <div class="box-content">
+            <ul class="list-img">
+              <% @closest_signed_up_friends.each do |person| %>
+                <%= render 'shared/user_list_element', :user => person.to_user%>
+              <% end %>
+            </ul>
+            <% if @closest_signed_up_friends_remaining >  0 %>
+              <div class="more">
+                <span><%=  "And #{@closest_signed_up_friends_remaining} more" %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 <% end %>
 
 <% content_for :popup_modals do -%>
