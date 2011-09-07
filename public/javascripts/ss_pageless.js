@@ -88,7 +88,6 @@ Pageless.prototype.distanceToBottom = function () {
     }
     else{
         if(this.iScroller_){
-            console.log(this.iScroller_.scrollerH - this.iScroller_.wrapperH + this.iScroller_.y);
             return this.iScroller_.scrollerH - this.iScroller_.wrapperH + this.iScroller_.y;
         }
         else{

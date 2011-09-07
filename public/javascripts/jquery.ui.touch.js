@@ -21,13 +21,11 @@ function initTouchElements(e) {
 	// Hook up touch events
 	//
 	if ($.support.touch) {
-		//var obj = document.getElementsByClassName('ui-draggable');
-                //for (i=0; i<obj.length; i++){
+		
                     e.addEventListener("touchstart", iPadTouchHandler, false);
                     e.addEventListener("touchmove", iPadTouchHandler, false);
                     e.addEventListener("touchend", iPadTouchHandler, false);
                     e.addEventListener("touchcancel", iPadTouchHandler, false);
-                //}
 
 	}
 }

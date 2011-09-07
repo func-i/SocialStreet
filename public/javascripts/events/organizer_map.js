@@ -85,8 +85,6 @@ function DropPinControl(controlImg, controlText, map) {
         this.src='/images/ico-pin.png';
     }
 
-    controlImg.id = "marker-drag"
-
     controlText.style.marginRight = '10px';
     controlText.style.padding = '5px';
     controlText.style.backgroundColor = 'white';
