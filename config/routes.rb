@@ -55,7 +55,7 @@ SocialStreet::Application.routes.draw do
   get 'explore' => 'explore#index', :as => 'explore'
   get 'explore/simple_page' => 'explore#simple_page'
 
-  resources :comments, :only => [:create]
+  resources :comments, :only => [:create, :destroy]
   resources :event_types, :only => [:index] # for autocomplete
   resources :events do
 

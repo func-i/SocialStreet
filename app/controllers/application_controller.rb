@@ -190,7 +190,7 @@ class ApplicationController < ActionController::Base
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     elsif @commentable.respond_to?(:searchable) && @commentable.searchable
       #elsif @commentable.searchable
-      @comment.searchable = @commentable.searchable
+      #@comment.searchable = @commentable.searchable
     end
 
     if @comment.save
