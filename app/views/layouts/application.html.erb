@@ -157,6 +157,20 @@
       return false;
     });
 
+    $('.post').live('mouseenter', function(){
+      var remove_posts = $(this).find('.remove-post-div');
+      if(remove_posts.length > 0){
+        $(remove_posts[0]).show();
+      }
+    });
+    $('.post').live('mouseleave', function(){
+      var remove_posts = $(this).find('.remove-post-div');
+      if(remove_posts.length > 0){
+        $(remove_posts[0]).hide();
+      }
+    });
+
+
     $('.remove_comment_button').live('click', function(){
       $(this).closest('.post').hide();
     });

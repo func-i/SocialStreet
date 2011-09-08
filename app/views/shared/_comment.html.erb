@@ -13,7 +13,7 @@
 <% is_truncated = total_body.length > truncate_at %>
 
 <%= (avatar action.user, :size => image_size) if show_image%>
-<div>
+<div class="remove-post-div" style="display:none">
   <span style="position:absolute;right:-2px;">
     <%= link_to image_tag("btn-close3.png"), action.reference, :remote=>true, :method => :delete, :confirm => 'Are you sure you want to delete this Message?', :class => "remove_comment_button" if action.user == current_user%>
   </span>
