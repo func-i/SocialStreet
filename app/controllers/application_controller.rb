@@ -190,13 +190,18 @@ class ApplicationController < ActionController::Base
       # intentionally don't give this search filter a user_id since it was not intentionally/directly created by the user
     elsif @commentable.respond_to?(:searchable) && @commentable.searchable
       #elsif @commentable.searchable
-      @comment.searchable = @commentable.searchable
+      #@comment.searchable = @commentable.searchable
     end
 
     if @comment.save
       @comment.reload
 
       Connection.connect_with_users_in_action_thread(@comment.user, @comment.action)
+
+      if @commentable.is_a? Event
+        Resque.enqueue(Jobs::Email::EmailEventAdminForAction, @comment.action.id, @commentable.id)
+      end
+
       return true
     end
 
