@@ -41,6 +41,8 @@ group :development do
   gem 'thin'
   # Boosts dev server response time significantly but if you have refresh issues, remove this gem
   gem 'rails-dev-boost', :git => 'git://github.com/thedarkone/rails-dev-boost.git', :require => 'rails_development_boost'
+  gem 'pry'
+  gem 'pry-doc'
 end
 
 group :test, :development do

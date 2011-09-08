@@ -154,5 +154,10 @@ class User < ActiveRecord::Base
   def rsvp_for_event(event)
     rsvps.for_event(event).first
   end
+
+  def self.execute_sql(array)
+    sql = self.send(:sanitize_sql_array, array)
+    self.connection.execute(sql)
+  end
   
 end
