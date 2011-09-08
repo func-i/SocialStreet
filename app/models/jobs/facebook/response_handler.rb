@@ -53,19 +53,23 @@ class Jobs::Facebook::ResponseHandler
                 User.execute_sql([sql] + user_values)
               end
 
-              ss_uids = User.select(:id).where(:fb_uid => user_fb_friends_uids).all.collect(&:id)
+              ss_uids = User.select(:id).where(:fb_uid =>new_friends.collect(&:identifier)).all.collect(&:id)
 
               connection_inserts = []
-              connection_values = []              
+              connection_values = []
+              c_fb_friends = []
+              
               ss_uids.each do |uid|
                 c = user.connections.to_user_id(uid).first
                 if nil == c
                   connection_inserts << "(" + Array.new(4, "?").join(",") + ")"
                   connection_values += [user.id, uid, 5, true]
                 else
-                  c.update_attribute("facebook_friend", true);
+                  c_fb_friends << c.id unless c.facebook_friend?
                 end
               end
+
+              Connection.update_all({:facebook_friend => true}, {:id => c_fb_friends}) unless c_fb_friends.empty? 
 
               unless connection_inserts.empty?
                 sql = "INSERT INTO connections (user_id, to_user_id, strength, facebook_friend) VALUES #{connection_inserts.join(", ")}"
