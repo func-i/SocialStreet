@@ -1,4 +1,4 @@
-class Jobs::EmailUserForActionChain
+class Jobs::Email::EmailUserForActionChain
 
   @queue = :emails
 

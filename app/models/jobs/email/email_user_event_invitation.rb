@@ -1,4 +1,4 @@
-class Jobs::EmailUserEventInvitation
+class Jobs::Email::EmailUserEventInvitation
 
   @queue = :emails
 

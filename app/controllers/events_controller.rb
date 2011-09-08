@@ -106,7 +106,7 @@ class EventsController < ApplicationController
     @event_for_edit = @event
     
     if create_or_edit_event(params, :edit)
-      Resque.enqueue(Jobs::EmailUserEditEvent, @event.id)
+      Resque.enqueue(Jobs::Email::Email::EmailUserEditEvent, @event.id)
       
       render :update do |page|
         page.redirect_to event_path(@event)
@@ -120,7 +120,7 @@ class EventsController < ApplicationController
   def destroy
     if @event.cancellable?(current_user)
       if @event.cancel
-        Resque.enqueue(Jobs::EmailUserCancelEvent, @event.id)
+        Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
       end
       redirect_to :root
     else

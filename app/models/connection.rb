@@ -25,7 +25,7 @@ class Connection < ActiveRecord::Base
   }
 
   scope :to_user_is_member, lambda {
-    joins("INNER JOIN users AS joined_users ON connections.to_user_id = joined_users.id").where("joined_users.sign_in_count > 0")
+    joins("INNER JOIN users AS joined_users ON connections.to_user_id = joined_users.id AND joined_users.sign_in_count > 0")
   }
 
 

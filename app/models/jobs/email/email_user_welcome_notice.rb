@@ -1,4 +1,4 @@
-class Jobs::EmailUserWelcomeNotice
+class Jobs::Email::EmailUserWelcomeNotice
 
   @queue = :emails
 

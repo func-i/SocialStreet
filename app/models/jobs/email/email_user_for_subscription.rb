@@ -1,4 +1,4 @@
-class Jobs::EmailUserForSubscription
+class Jobs::Email::EmailUserForSubscription
 
   @queue = :emails
 

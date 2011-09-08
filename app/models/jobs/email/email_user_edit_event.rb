@@ -1,4 +1,4 @@
-class Jobs::EmailUserCancelEvent
+class Jobs::Email::EmailUserEditEvent
 
   @queue = :emails
 
@@ -6,7 +6,7 @@ class Jobs::EmailUserCancelEvent
     event = Event.find_by_id event_id
     
     event.attending_or_maybe_attendees_rsvps_list.each do |rsvp|
-      email = UserMailer.event_cancel_notice(rsvp.user, event)
+      email = UserMailer.event_edit_notice(rsvp.user, event)
       email.deliver
     end
   end
