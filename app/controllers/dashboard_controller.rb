@@ -42,8 +42,12 @@ class DashboardController < ApplicationController
       @closest_signed_up_friends_remaining = @closest_signed_up_friends.count - 24
       @closest_signed_up_friends = @closest_signed_up_friends.limit(24)
 
-      if request.xhr? && params[:page] # pagination request
-        render :partial => 'new_page'
+      if request.xhr?
+        if params[:page] # pagination request
+          render :partial => 'new_page'
+        else
+          render :nothing => true
+        end
       end
     else
       redirect_to :explore

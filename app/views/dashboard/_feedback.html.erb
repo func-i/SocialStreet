@@ -6,7 +6,7 @@
       <%= link_to(image_tag(url_for_event_image(event), :size => "50x50", :class => "avatar"), event) %>
       <div class="text">
         <h3><%= link_to event.title, event %></h3>
-        <span class="time"><%= address_for(event.location) %> <span><%= ss_time_ago_in_words event.starts_at -%></span></span>
+        <span class="time"><%= address_for(event.location) %> <span><%= ss_time_ago_in_words event.finishes_at -%></span></span>
         <a href="#" class="did-not-attend" value=""><span class="info-attend">Did not attend</span></a>        
       </div>
     </div>
