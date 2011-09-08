@@ -106,7 +106,7 @@ class EventsController < ApplicationController
     @event_for_edit = @event
     
     if create_or_edit_event(params, :edit)
-      Resque.enqueue(Jobs::Email::Email::EmailUserEditEvent, @event.id)
+      Resque.enqueue(Jobs::Email::EmailUserEditEvent, @event.id)
       
       render :update do |page|
         page.redirect_to event_path(@event)
