@@ -197,6 +197,11 @@ class ApplicationController < ActionController::Base
       @comment.reload
 
       Connection.connect_with_users_in_action_thread(@comment.user, @comment.action)
+
+      if @commentable.is_a? Event
+        Resque.enqueue(Jobs::Email::EmailEventAdminForAction, @comment.action.id, @commentable.id)
+      end
+
       return true
     end
 

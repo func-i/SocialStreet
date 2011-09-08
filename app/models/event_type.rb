@@ -14,9 +14,9 @@ class EventType < ActiveRecord::Base
   end
 
   scope :matching_text, lambda { |text|
-     where("event_types.name ~* ?", '[[:<:]]?#{text}')
+     where("event_types.name ~* ?", "[[:<:]]#{text}")
   }
-  scope :with_parent_name, lambda { |keyword| joins(:parent).where("parents_event_types.name ~* ?", '[[:<:]]#{keyword}') }
+  scope :with_parent_name, lambda { |keyword| joins(:parent).where("parents_event_types.name ~* ?", "[[:<:]]#{keyword}") }
 
   protected
 
