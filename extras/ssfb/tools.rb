@@ -8,6 +8,15 @@ class Ssfb::Tools
       :callback_url => "http://www.socialstreet.com/connections/facebook_realtime",
       :verify_token => '1234'
     )
-  end 
+  end
 
+  def self.unsubscribe_to_facebook_realtime
+    app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret => FACEBOOK_APP_SECRET)
+    app.unsubscribe!(
+      :object => "user",
+      :fields => "friends",
+      :callback_url => "http://www.socialstreet.com/connections/facebook_realtime",
+      :verify_token => '1234'
+    )
+  end
 end
