@@ -13,7 +13,7 @@
           <%= render "shared/records", :record_type => "threaded_event", :record => sub_action.event%>
 
         <% else %>
-          <%= render "shared/comment", :action => sub_action, :truncate_at => 57 - sub_action.user.name.length, :image_size => "33x33" %>
+          <%= render "shared/comment", :action => sub_action, :truncate_at => 57 - sub_action.user.name.length - (sub_action.user == current_user ? 3 : 0), :image_size => "33x33" %>
 
         <% end %>
 
