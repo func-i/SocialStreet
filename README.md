@@ -122,7 +122,9 @@ Production Servers
 - There are various deployment related commands, but the 2 main ones you should know about are:
 
     cap deploy # run when deploying code changes that do not have any migrations 
-    cap deploy:migrations # run instead of cap deploy when you have migrations to run as well 
+    cap deploy:migrations # run instead of cap deploy when you have migrations to run as well
+    cap deploy -S quick_update=true  # use if you just want to update the git, create the current and all symlinks
+                                     # but want to skip restarting god, running jammit, notifying newrelic and hb
 
 - Before running capistrano, make sure you install capistrano gem (not managed by bundler):  gem install capistrano
 - Capistrano deploy code is located in config/deploy.rb

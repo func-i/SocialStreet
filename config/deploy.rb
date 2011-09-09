@@ -25,12 +25,12 @@ set :use_sudo, false
 after "deploy:update_code", "db:symlink"
 after "deploy:update_code", "secrets:symlink"
 after "deploy:update_code", "environment:symlink"
-after "deploy:update_code", "deploy:generate_assets"
+after "deploy:update_code", "deploy:generate_assets" unless fetch(:quick_update, false)
 
-before "deploy:update", "god:stop_resque"
-after "deploy:update", "god:start_resque"
+before "deploy:update", "god:stop_resque" unless fetch(:quick_update, false)
+after "deploy:update", "god:start_resque" unless fetch(:quick_update, false)
 
-after "deploy:update", "newrelic:notice_deployment"
+after "deploy:update", "newrelic:notice_deployment" unless fetch(:quick_update, false)
 
 # Passenger restart hook
 namespace :deploy do
@@ -38,7 +38,7 @@ namespace :deploy do
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-    run "curl -I -s http://www.socialstreet.com/hb; exit 0;"
+    run "curl -I -s http://www.socialstreet.com/hb; exit 0;" unless fetch(:quick_update, false)
   end
 end
 
