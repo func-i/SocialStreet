@@ -789,6 +789,7 @@ form, fieldset {
     width: auto;
     float: none;
     overflow: hidden;
+    padding-left: 3px;
 }
 .post .text .keyword {
     overflow: hidden;
@@ -833,10 +834,14 @@ form, fieldset {
     color: #999;
     font-size: 12px;
     line-height: 14px;
+    padding-right: 21px;
 }
 .post .text .time { font-size: 11px }
 .post .row-text .time,
-.post .post-holder .post .time { font-size: 11px; }
+.post .post-holder .post .time {
+    font-size: 11px;
+    padding-right: 0px;
+}
 .post .time em {
     font-size: 10px;
     font-style: normal;
