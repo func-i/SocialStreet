@@ -1085,13 +1085,13 @@ form, fieldset {
     display: block;
     font: bold 12px/17px Arial, Helvetica, sans-serif;
     overflow: hidden;
-    padding: 8px 0 0 4px;
+    padding: 4px 0 0 4px;
 }
 .feedback .post .time { line-height: 15px; }
 .feedback .rate-box {
     position: absolute;
     right: -1px;
-    top: 22px;
+    top: 14px;
     width: 96px;
 }
 .feedback .rate-box strong {
