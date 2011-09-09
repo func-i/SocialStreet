@@ -158,13 +158,13 @@
     });
 
     $('.post').live('mouseenter', function(){
-      var remove_posts = $(this).find('.remove-post-div');
+      var remove_posts = $(this).find('.remove-post-div a');
       if(remove_posts.length > 0){
         $(remove_posts[0]).show();
       }
     });
     $('.post').live('mouseleave', function(){
-      var remove_posts = $(this).find('.remove-post-div');
+      var remove_posts = $(this).find('.remove-post-div a');
       if(remove_posts.length > 0){
         $(remove_posts[0]).hide();
       }
