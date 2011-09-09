@@ -1,17 +1,13 @@
 <% if display_index <= 0%>
   <% display_index = 1 %>
 <% elsif display_index >= action.actions.length - 1 %>
-  <% display_index = action.actions.length - 2 %>
+  <% display_index = action.actions.length - 1 %>
 <% end %>
 
 <div class="post-holder">
   <div class="post-list">
-    <% if false && display_index > 1 %>
-      <span class="row-miss">...</span>
-    <% end %>
-
     <% action.actions.oldest_first.each_with_index do |sub_action, index| %>
-      <div class="post" <%= "style=display:none" if (display_index - index).abs > 1 %> >
+      <div class="post" <%= "style=display:none" if ((display_index - index) != 1 && (display_index - index) != 0) %> >
 
         <% if sub_action.action_type == Action.types[:event_created] %>
           <%= render "shared/records", :record_type => "threaded_event", :record => sub_action.event%>
@@ -22,10 +18,6 @@
         <% end %>
 
       </div>
-    <% end %>
-
-    <% if false && action.actions.length - display_index > 2 %>
-      <span class="row-miss">...</span>
     <% end %>
   </div>
 
