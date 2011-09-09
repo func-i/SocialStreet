@@ -151,6 +151,13 @@ MarkerManager.prototype.createMarker = function(location, searchableID, markerTi
         marker.selected_ = true;
         this.placeAllMarkers();//Hack
     }
+
+    return marker;
+};
+
+MarkerManager.prototype.selectMarker = function(marker){
+  this.userSelectMarker_(marker);
+  this.setSelectedMarker_(marker);
 };
 
 MarkerManager.prototype.clearMarkers = function(){
