@@ -52,11 +52,11 @@
   <div id="action-list">
     <% @feed_items.each do |item| %>
       <% if item %>
-        <div class="post">
-          <% if item.reason == Feed.reasons[:subscription] %>
-            <% action = item.head_action %>
-            <% raise @feed_items.inspect if action.nil?%>
-            <% if !action.searchable || !action.searchable.ignored %>
+        <% if item.reason == Feed.reasons[:subscription] %>
+          <% action = item.head_action %>
+          <% next if action.nil?%>
+          <% if !action.searchable || !action.searchable.ignored %>
+            <div class="post">
               <% if(action.action_type == Action.types[:event_created]) %>
                 <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } unless action.event.canceled %>
               <% elsif(action.action_type == Action.types[:search_comment]) %>
@@ -64,15 +64,18 @@
               <% else %>
                 <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
               <% end %>
-            <% end %>
-          <% else %>
-            <% action = item.index_action %>
-            <% head_action = action.action || action %>
-            <% if !head_action.searchable || !head_action.searchable.ignored %>
-              <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
-            <% end %>
+            </div>
           <% end %>
-        </div>
+        <% else %>
+          <% action = item.index_action %>
+          <% next if action.nil?%>
+          <% head_action = action.action || action %>
+          <% if !head_action.searchable || !head_action.searchable.ignored %>
+            <div class="post">
+              <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
+            </div>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
   </div>
@@ -125,7 +128,7 @@
       <div class="slide">
         <div class="box people-list">
           <div class="heading">
-            <h3>People you know on SocialStreet</h3>
+            <h3>Facebook Friends on SocialStreet</h3>
           </div>
           <div class="box-content">
             <ul class="list-img">
@@ -136,6 +139,29 @@
             <% if @closest_signed_up_friends_remaining >  0 %>
               <div class="more">
                 <span><%=  "And #{@closest_signed_up_friends_remaining} more" %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% unless @closest_connection_ex_facebook.empty? %>
+    <div class="connections">
+      <div class="slide">
+        <div class="box people-list">
+          <div class="heading">
+            <h3>Other Neighbours You Know</h3>
+          </div>
+          <div class="box-content">
+            <ul class="list-img">
+              <% @closest_connection_ex_facebook.each do |person| %>
+                <%= render 'shared/user_list_element', :user => person.to_user%>
+              <% end %>
+            </ul>
+            <% if @closest_connection_ex_facebook_remaining >  0 %>
+              <div class="more">
+                <span><%=  "And #{@closest_connection_ex_facebook_remaining} more" %></span>
               </div>
             <% end %>
           </div>
