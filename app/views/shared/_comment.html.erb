@@ -24,7 +24,7 @@
       <% end %>
     </p>
 
-    <span class="more">
+    <span class="more" style="display:inline;float:right">
       <%= link_to "Show more", '#', :class => 'show-total-comment'-%>
     </span>
   <% end %>
@@ -38,7 +38,7 @@
     <% end %>
   </p>
 
-  <span class="time">
+  <span class="time" style="float:left">
     <%= ss_time_ago_in_words action.occurred_at %>
   </span>
 </div>

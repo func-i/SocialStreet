@@ -63,7 +63,7 @@ index_action
 
     <% if is_thread %>
       <div class="row-text">
-        <%= render "shared/comment", :action => head_action, :truncate_at => 90, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102 - head_action.user.name.length, :include_quotes => true %>
       </div>
     <% end %>
 
@@ -71,9 +71,9 @@ index_action
     <!--First comment goes in record area-->
     <div class="row">
       <% if defined?(index_action) %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 90, :image_size=>"41x41", :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102 - head_action.user.name.length, :image_size=>"41x41", :include_quotes => true %>
       <% else %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 90, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102, :include_quotes => true %>
       <% end %>
     </div>
   <% end %>
