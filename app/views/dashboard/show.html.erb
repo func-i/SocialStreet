@@ -125,7 +125,7 @@
       <div class="slide">
         <div class="box people-list">
           <div class="heading">
-            <h3>People you know on SocialStreet</h3>
+            <h3>Facebook Friends on SocialStreet</h3>
           </div>
           <div class="box-content">
             <ul class="list-img">
@@ -136,6 +136,29 @@
             <% if @closest_signed_up_friends_remaining >  0 %>
               <div class="more">
                 <span><%=  "And #{@closest_signed_up_friends_remaining} more" %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% unless @closest_connection_ex_facebook.empty? %>
+    <div class="connections">
+      <div class="slide">
+        <div class="box people-list">
+          <div class="heading">
+            <h3>Other Neighbours You Know</h3>
+          </div>
+          <div class="box-content">
+            <ul class="list-img">
+              <% @closest_connection_ex_facebook.each do |person| %>
+                <%= render 'shared/user_list_element', :user => person.to_user%>
+              <% end %>
+            </ul>
+            <% if @closest_connection_ex_facebook_remaining >  0 %>
+              <div class="more">
+                <span><%=  "And #{@closest_connection_ex_facebook_remaining} more" %></span>
               </div>
             <% end %>
           </div>

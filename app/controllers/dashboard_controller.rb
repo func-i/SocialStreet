@@ -42,6 +42,10 @@ class DashboardController < ApplicationController
       @closest_signed_up_friends_remaining = @closest_signed_up_friends.count - 24
       @closest_signed_up_friends = @closest_signed_up_friends.limit(24)
 
+      @closest_connection_ex_facebook = current_user.connections.to_user_is_member.where("connections.facebook_friend = false").order("connections.rank ASC")
+      @closest_connection_ex_facebook_remaining = @closest_connection_ex_facebook.count - 24
+      @closest_connection_ex_facebook = @closest_connection_ex_facebook.limit(24)
+
       if request.xhr?
         if params[:page] # pagination request
           render :partial => 'new_page'
