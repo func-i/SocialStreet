@@ -326,7 +326,6 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
         this.infoWindow_.addInfoWindow_(this.selectedMarker_);
 
         var latlng = this.selectedMarker_.getPosition();
-        console.log(this.selectedMarker_.geocodableAddress_)
         $('#location-lat-field').val(latlng.lat());
         $('#location-lng-field').val(latlng.lng());
         $('#location-geocodedaddress-field').val(this.selectedMarker_.geocodableAddress_);
