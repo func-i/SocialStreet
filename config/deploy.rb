@@ -4,9 +4,13 @@ require 'bundler/capistrano'
 require 'airbrake/capistrano'
 require 'new_relic/recipes'
 
+# => Enable multistage deployment
+set :stages, %w(staging production)
+set :default_stage, "production"
+require 'capistrano/ext/multistage'
+
 set :application, "SocialStreet"
 set :repository,  "git@github.com:JBorts/SocialStreet.git"
-set :deploy_to, "/home/ubuntu/rails/socialstreet.com"
 
 set :scm, :git
 
@@ -16,7 +20,6 @@ set :scm, :git
 #role :app, "50.19.254.128"                          # This may be the same as your `Web` server
 #role :db,  "50.19.254.128", :primary => true # This is where Rails migrations will run
 #role :db,  "your slave db-server here"
-server "50.19.254.128", :app, :web, :db, :primary => true
 set :user, "ubuntu"
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "socialstreet-web.pem")]
 
@@ -26,11 +29,6 @@ after "deploy:update_code", "db:symlink"
 after "deploy:update_code", "secrets:symlink"
 after "deploy:update_code", "environment:symlink"
 after "deploy:update_code", "deploy:generate_assets" unless fetch(:quick_update, false)
-
-before "deploy:update", "god:stop_resque" unless fetch(:quick_update, false)
-after "deploy:update", "god:start_resque" unless fetch(:quick_update, false)
-
-after "deploy:update", "newrelic:notice_deployment" unless fetch(:quick_update, false)
 
 # Passenger restart hook
 namespace :deploy do
