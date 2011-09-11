@@ -123,7 +123,7 @@
       </div>
     </div>
   <% end %>
-  <% unless @closest_signed_up_friends.empty? %>
+  <% unless (@closest_signed_up_friends || []).empty? %>
     <div class="connections">
       <div class="slide">
         <div class="box people-list">
@@ -146,7 +146,7 @@
       </div>
     </div>
   <% end %>
-  <% unless @closest_connection_ex_facebook.empty? %>
+  <% unless (@closest_connection_ex_facebook || []).empty? %>
     <div class="connections">
       <div class="slide">
         <div class="box people-list">
