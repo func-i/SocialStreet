@@ -5,19 +5,9 @@ class Jobs::CreateConnectionsFromFacebook
 
   def self.perform(user_id)
 
-    #sleep(50)
-
     user = User.find(user_id)    
     fb = user.facebook_user
     friends = fb.friends
-
-    # => unflag facebook friends that have unfriended other users
-    uids_no_longer_friends = user.connections.where(:facebook_friend => true).collect(&:to_user).collect(&:fb_uid) - friends.collect(&:identifier)
-
-    uids_no_longer_friends.each do |no_friend_id|
-      no_user = User.find_by_fb_uid(no_friend_id)
-      user.connections.to_user(no_user).each{|c| c.update_attribute("facebook_friend", false)}
-    end
 
     user_inserts = []
     fb_user_ids = []

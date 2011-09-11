@@ -26,7 +26,6 @@ index_action
   <% end %>
 
   <!--Record Title-->
-  <!--TODO - Would like the title to truncate, but need to take into consideration html-->
   <h3><%= truncate_html(title, :length => 60) %></h3>
 
   <!--IF Event record-->
@@ -64,7 +63,7 @@ index_action
 
     <% if is_thread %>
       <div class="row-text">
-        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102 - head_action.user.name.length, :include_quotes => true %>
       </div>
     <% end %>
 
@@ -72,9 +71,9 @@ index_action
     <!--First comment goes in record area-->
     <div class="row">
       <% if defined?(index_action) %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :image_size=>"41x41", :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102 - head_action.user.name.length, :image_size=>"41x41", :include_quotes => true %>
       <% else %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 320, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102, :include_quotes => true %>
       <% end %>
     </div>
   <% end %>

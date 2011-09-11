@@ -21,7 +21,7 @@ class Invitation < ActiveRecord::Base
 
   # TODO: Perhaps don't send an email if we are writing to their facebook wall ? 
   def send_email
-    Resque.enqueue(Jobs::EmailUserEventInvitation, self.id)
+    Resque.enqueue(Jobs::Email::EmailUserEventInvitation, self.id)
   end
 
 end

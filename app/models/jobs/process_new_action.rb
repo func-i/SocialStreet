@@ -88,7 +88,7 @@ class Jobs::ProcessNewAction
         # email notice to user
         # TODO: here we should perhaps check their profile settings to see if they want to be notified? - KV
         unless @users_emailed[a.user_id.to_s]
-          Resque.enqueue(Jobs::EmailUserForActionChain, action.action.id, action.id, a.user.id)
+          Resque.enqueue(Jobs::Email::EmailUserForActionChain, action.action.id, action.id, a.user.id)
           @users_emailed[a.user_id.to_s] = true
         end
       end
@@ -144,7 +144,7 @@ class Jobs::ProcessNewAction
           user_id = subscription.user_id.to_s
 
           unless @users_emailed[user_id]
-            Resque.enqueue(Jobs::EmailUserForSubscription, subscription.id, action.id)
+            Resque.enqueue(Jobs::Email::EmailUserForSubscription, subscription.id, action.id)
             @users_emailed[user_id] = true
           end
 

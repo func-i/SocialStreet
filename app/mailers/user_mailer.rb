@@ -62,6 +62,15 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "#{invitation.user.name} invited you to '#{invitation.event.title}' on SocialStreet")
   end
 
+  #Send when a new comment thread is created in an event
+  def event_admin_message_notice(action, user, event)
+    @action = action
+    @user = user
+    @event = event
+    
+    mail(:to => @user.email, :subject => "#{@action.user.name} posted on your StreetMeet - #{event.title}")
+  end
+
   #Send when a new action is posted to a thread the user already participated in
   def action_chain_notice(head_action, user, new_action)
     @head_action = head_action

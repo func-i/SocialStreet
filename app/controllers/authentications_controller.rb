@@ -47,7 +47,7 @@ class AuthenticationsController < ApplicationController
 
     current_user.update_attribute("accepted_tncs", true)
 
-    Resque.enqueue(Jobs::EmailUserWelcomeNotice, current_user.id)
+    Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, current_user.id)
 
     if params[:facebook] == '1'
       current_user.post_to_facebook_wall(

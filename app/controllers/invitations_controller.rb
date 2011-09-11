@@ -157,7 +157,7 @@ class InvitationsController < ApplicationController
 
     if !to_user || !to_user.sign_in_count.zero?
       #Send email
-      Resque.enqueue(Jobs::EmailUserEventInvitation, invitation.id)
+      Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
     elsif to_user
       if @event.photo?
         photo_url = @event.photo.thumb.url

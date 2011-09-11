@@ -23,6 +23,10 @@ MarkerManager.prototype.init = function(opt_options)
     if(options['createEvent'] == undefined){
         options['createEvent'] = false;
     }
+    else{
+        this.geocoder = new google.maps.Geocoder();
+    }
+
 
     this.setValues_(options);
 
@@ -109,7 +113,35 @@ MarkerManager.prototype.createMarker = function(location, searchableID, markerTi
             marker.setIcon("/images/ico-pin-selected.png");
             that.userSelectMarker_(this);
             that.setSelectedMarker_(this);
-        });        
+        });
+
+        if(this.createEvent_ && preserveMarker){
+            marker.setDraggable(true);
+            google.maps.event.addListener(marker, 'dragend', function(latlng)
+            {
+                that.geocoder.geocode
+                (
+                {
+                    'location':latlng.latLng
+                },
+                function(results,status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if(marker.geocodableAddress_ == marker.title){
+                            marker.setTitle(results[0].formatted_address);
+                        }
+                        marker.geocodableAddress_ = results[0].formatted_address;
+                    }
+                    else{
+                        if(marker.geocodableAddress_ == marker.title){
+                            marker.setTitle("");
+                        }
+                        marker.geocodableAddress_ = "";
+                    }
+                    that.userSelectMarker_(marker);
+                    that.setSelectedMarker_(marker);
+                });
+            });
+        }
     }
 
     //Push marker onto marker array
@@ -119,6 +151,13 @@ MarkerManager.prototype.createMarker = function(location, searchableID, markerTi
         marker.selected_ = true;
         this.placeAllMarkers();//Hack
     }
+
+    return marker;
+};
+
+MarkerManager.prototype.selectMarker = function(marker){
+  this.userSelectMarker_(marker);
+  this.setSelectedMarker_(marker);
 };
 
 MarkerManager.prototype.clearMarkers = function(){
@@ -194,14 +233,6 @@ MarkerManager.prototype.placeAllMarkers = function(){
         this.allMarkers_.push(marker);
     }
 
-    // Set the z-index to all the markers and their labels
-    //$.each(this.allMarkers_, function(i, mkr) {
-    //    if(mkr.map != null){
-    //        mkr.setZIndex(i);
-    //        mkr.label_.div_.style.zIndex = '' + i;
-    //    }
-    //});
-
     if(select_marker){
         //Set the selected marker/containing marker to selected state
         this.setSelectedMarker_(select_marker);
@@ -245,8 +276,7 @@ MarkerManager.prototype.userSelectMarker_ = function(marker){
         //set searchable id field for maintaining on refresh
         $('#selected_searchable').val(marker.searchableID_);
     }
-    else if(this.createEvent_){
-        
+    else if(this.createEvent_){       
 }
 };
 

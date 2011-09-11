@@ -20,7 +20,7 @@ class LocationsController < ApplicationController
     cookies[:current_location_longitude] = { :value => params[:longitude], :expires => 1.day.from_now }
 
     #store in users model if current user exists
-    current_user.update_users_location(params[:latitude], params[:longitude]) if current_user
+    current_user.update_users_location(params[:latitude], params[:longitude]) if (current_user && (!defined?(params[:update_db]) || true == params[:update_db]))
 
     #TODO - update
 

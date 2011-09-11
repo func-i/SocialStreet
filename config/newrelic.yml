@@ -23,7 +23,7 @@ common: &default_settings
   # it from running with Rake or the console.  Set to false to
   # completely turn the agent off regardless of the other settings.
   # Valid values are true, false and auto.
-  # agent_enabled: auto
+  agent_enabled: false
   
   # Application Name
   # Set this to be the name of your application as you'd like it show
@@ -134,11 +134,11 @@ common: &default_settings
     # Determines whether the agent will capture query plans for slow
     # SQL queries.  Only supported in mysql and postgres.  Should be
     # set to false when using other adapters.
-    # explain_enabled: true
+    explain_enabled: true
 
     # Threshold for query execution time below which query plans will not 
     # not be captured.  Relevant only when `explain_enabled` is true.
-    # explain_threshold: 0.5
+    explain_threshold: 1
   
   # Error collector captures information about uncaught exceptions and
   # sends them to New Relic for viewing

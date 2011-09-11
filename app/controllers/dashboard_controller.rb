@@ -29,7 +29,7 @@ class DashboardController < ApplicationController
         if @per_page - @feed_items.count > 0
           feed_default = Feed.for_user(redis, User.where(:username => "default_socialstreet_user").first, 0, @per_page - @feed_items.count);
           @feed_items += feed_default
-          @feed_items = @feed_items.compact.uniq_by{|fi| fi.head_action.id}
+          @feed_items = @feed_items.map{|fi| (fi && fi.head_action) ? fi : nil}.compact.uniq_by{|fi| fi.head_action.id}
         end
       end
 
@@ -38,8 +38,20 @@ class DashboardController < ApplicationController
       total_count = Feed.count(redis, current_user)
       @num_pages = (total_count.to_f / @per_page.to_f).ceil
 
-      if request.xhr? && params[:page] # pagination request
-        render :partial => 'new_page'
+#      @closest_signed_up_friends = current_user.connections.to_user_is_member.where("connections.facebook_friend = true").order("connections.rank ASC")
+ #     @closest_signed_up_friends_remaining = @closest_signed_up_friends.count - 24
+  #    @closest_signed_up_friends = @closest_signed_up_friends.limit(24).all
+
+   #   @closest_connection_ex_facebook = current_user.connections.to_user_is_member.where("connections.facebook_friend = false").order("connections.rank ASC")
+    #  @closest_connection_ex_facebook_remaining = @closest_connection_ex_facebook.count - 24
+     # @closest_connection_ex_facebook = @closest_connection_ex_facebook.limit(24).all
+
+      if request.xhr?
+        if params[:page] # pagination request
+          render :partial => 'new_page'
+        else
+          render :nothing => true
+        end
       end
     else
       redirect_to :explore

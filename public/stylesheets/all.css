@@ -627,6 +627,10 @@ form, fieldset {
     float: left;
     width: 310px;
 }
+.event-title {
+    float: left;
+    width: 410px;
+}
 .btn-share {
     background: url("../images/ico-share.png") no-repeat 100% 0;
     color: #0981be;
@@ -706,8 +710,9 @@ form, fieldset {
 }
 .form-post-message .info {
     overflow: hidden;
-    text-align: center;
+    text-align: left;
     display: none;
+    padding-left: 15px;
 }
 .send .info,
 .open .info { display: block; }
@@ -784,6 +789,7 @@ form, fieldset {
     width: auto;
     float: none;
     overflow: hidden;
+    padding-left: 3px;
 }
 .post .text .keyword {
     overflow: hidden;
@@ -828,10 +834,14 @@ form, fieldset {
     color: #999;
     font-size: 12px;
     line-height: 14px;
+    padding-right: 21px;
 }
 .post .text .time { font-size: 11px }
 .post .row-text .time,
-.post .post-holder .post .time { font-size: 11px; }
+.post .post-holder .post .time {
+    font-size: 11px;
+    padding-right: 0px;
+}
 .post .time em {
     font-size: 10px;
     font-style: normal;
@@ -877,7 +887,7 @@ form, fieldset {
     display: block;
     font: bold 11px/14px Arial, Helvetica, sans-serif;
     overflow: hidden;
-    padding: 19px 0 1px;
+    padding: 0px 0 4px;
 }
 #content .post .post p .more {
     display: inline-block;
@@ -919,7 +929,7 @@ form, fieldset {
     -webkit-box-shadow: 4px 4px 3px #eee;
     -moz-box-shadow: 4px 4px 3px #eee;
     color: #fff;
-    cursor: pointer;
+    /*cursor: pointer;*/
     float: right;
     font: bold 11px/25px Arial, Helvetica, sans-serif;
     overflow: hidden;
@@ -944,7 +954,8 @@ form, fieldset {
 }
 .btn-attend:hover span,
 .btn-attending:hover span {
-    text-decoration: underline;
+    cursor: default;
+    /*text-decoration: underline;*/
 }
 #sidebar .btn-attend span,
 #content .btn-attend span {
@@ -1075,13 +1086,13 @@ form, fieldset {
     display: block;
     font: bold 12px/17px Arial, Helvetica, sans-serif;
     overflow: hidden;
-    padding: 8px 0 0 4px;
+    padding: 4px 0 0 4px;
 }
 .feedback .post .time { line-height: 15px; }
 .feedback .rate-box {
     position: absolute;
     right: -1px;
-    top: 22px;
+    top: 14px;
     width: 96px;
 }
 .feedback .rate-box strong {
@@ -1663,7 +1674,7 @@ form, fieldset {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 .day-detail .btn-attending {
     color: #999;
@@ -2374,7 +2385,7 @@ form, fieldset {
     width: 212px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    cursor: pointer;
+    /*cursor: pointer;*/
     behavior: url("/stylesheets/PIE.htc");
 }
 .view-all-modal .add,

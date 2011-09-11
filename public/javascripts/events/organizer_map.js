@@ -156,18 +156,28 @@ function searchLocations(e) {
         'bounds' : map.getBounds()
     }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-            $.each(results, function(index, result) {
+            var distance = 40000;
+            var selectedMarker = null;
 
+            $.each(results, function(index, result) {
                 var infoContents = {};
 
                 // Isolate the various address components
                 $.each(result.address_components, function(ci, component) {
                     infoContents[component.types["0"]] = component.short_name;
                 });
-                createMarkerManager.createMarker(result.geometry.location, null, null, e.target.value, true);
-                map.setCenter(result.geometry.location);
+                var marker = createMarkerManager.createMarker(result.geometry.location, null, null, e.target.value, true);
+
+                var d = createMarkerManager.distanceBetweenPoints_(map.getCenter(), result.geometry.location)
+                if(d < distance){
+                    distance = d;
+                    selectedMarker = marker;
+                }
             });
-        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+            map.setCenter(selectedMarker.getPosition());
+            createMarkerManager.selectMarker(selectedMarker);
+        }
+        else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
             var sw = map.getBounds().getSouthWest();
             var ne = map.getBounds().getNorthEast();
             var sw_lat = sw.lat(), sw_lng = sw.lng();
@@ -187,7 +197,8 @@ function searchLocations(e) {
                         createMarkerManager.createMarker(location, null, null, result.text, true);
                         map.setCenter(location);
                     });
-                } else {
+                }
+                else {
                     alert("No results found, please drop a pin to tell us where this is");
                 }
             });

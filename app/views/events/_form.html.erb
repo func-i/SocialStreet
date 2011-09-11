@@ -14,7 +14,7 @@
         <input type="hidden" name="event[searchable_attributes][keywords][]" value="<%= keyword %>" />
         <%= keyword %>
         <%= link_to("close", '#', :class => "close remove-parent", "data-parent-selector" => ".keyword-pill") %>
-      </li> 
+      </li>
     <% end %>
   </ul>
 
@@ -35,8 +35,8 @@
         </div>
         <div class="col" style="vertical-align: baseline;">
           <span><label for="duration">Duration:</label></span>
-          <%= select_tag :duration, options_for_select((1...23).to_a, '3'), :id =>"duration"%>
-          <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], "Hours"), :id => "duration_size"%>
+          <%= select_tag :duration, options_for_select((1...23).to_a, @duration || 3), :id =>"duration"%>
+          <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], @duration_size || "Hours"), :id => "duration_size"%>
           <%= date_range_fields.hidden_field :ends_at, :class => "ends_at_value" -%>
         </div>
 
@@ -76,11 +76,11 @@
       <%= form.text_area :description, :rows => 1, :cols => 80, :class => "text_area text dismiss-onscreenkeyboard" %>
     </div>
 
-<!--    <div class="col">
-      <label class="label">Image</label>
-      <%#= image_tag(event.photo.thumb.url) if event.photo? %>
-      <%#= form.file_field :photo %>
-    </div>-->
+    <!--    <div class="col">
+          <label class="label">Image</label>
+<%#= image_tag(event.photo.thumb.url) if event.photo? %>
+<%#= form.file_field :photo %>
+        </div>-->
 
     <div id="bottom"></div>
   </div>
@@ -110,6 +110,28 @@
       map.setCenter(loc);
       createMarkerManager.createMarker(loc, null, $('#location-name-field').val(), $('#location-geocodedaddress-field').val(), true, true);
 <% end %>
+
+    //Set end date on edit
+<% if false && event.finishes_at %>
+    var myEndsAtValue = '<%=event.finishes_at%>';
+    if(myEndsAtValue != "")
+    {
+      var myRemainder = myEndsAtValue % (1000*60*60*24)
+      if(myRemainder >= 1){
+        $("#duration_size").val("Days")
+        $("#duration").val(myRemainder)
+      }
+      myRemainder = myEndsAtValue % (1000*60*60)
+      if(myRemainder >= 1){
+        $("#duration_size").val("Hours")
+        $("#duration").val(myRemainder)
+      }
+      myRemainder = myEndsAtValue % (1000*60)
+      $("#duration_size").val("Minutes")
+      $("#duration").val(myRemainder)
+    }
+<% end %>
+
 
     $("#duration_size").change(function(e){
       var options = '';
@@ -171,8 +193,10 @@
 
       var stHour = $($('.starts-at-time')[1]).val();
       var stMeridian = $($('.starts-at-time')[3]).val();
-      if(stMeridian == 'PM')
-        stHour = parseInt(stHour, 10) + 12;
+      if(stMeridian == 'PM'){
+        var hour = parseInt(stHour, 10);
+        stHour = hour + (hour == 12 ? 0 : 12);
+      }
 
       var stTime = $('#starts_at_calendar').datepicker('getDate');
       stTime.setHours(stHour);

@@ -26,7 +26,8 @@ $(function() {
 
             $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
             $('#map_center').val(c.lat() + ',' + c.lng());
-
+            updateUserLocation(c.lat(), c.lng(), false);
+            
             if(history && history.replaceState)
                 //history.replaceState(null, null, getSearchParams());
                 refreshResults("events");

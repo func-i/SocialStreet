@@ -413,7 +413,7 @@ $(function() {
     {
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(function(e){
-                onGeoLocationSuccess(e)
+                updateUserLocation(e.coords.latitude, e.coords.longitude, true)
             }, function(e){
                 },
                 {
@@ -423,10 +423,8 @@ $(function() {
     }
 })
 
-function onGeoLocationSuccess(e){
-    $.getScript('/locations/update_users_location?latitude=' + e.coords.latitude + '&longitude=' + e.coords.longitude, function(data, textStatus){
-        //TODO - should update the explore page results somehow....
-        });
+function updateUserLocation(latitude, longitude, updateDB){
+    $.getScript('/locations/update_users_location?latitude=' + latitude + '&longitude=' + longitude + '&=update_db=' + updateDB, function(data, textStatus){});
 }
 
 $.extend({
