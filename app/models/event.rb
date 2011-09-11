@@ -94,14 +94,11 @@ class Event < ActiveRecord::Base
 
     if self.location
       if self.location.text.blank?
-        if self.location.neighborhood.blank?
           if self.location.route.blank?
             title << " @ #{self.location.street}"
           else
             title << " on #{self.location.route}"
           end
-        else
-          title << " in #{self.location.neighborhood}"
         end
       else
         title << " @ #{self.location.text}"
