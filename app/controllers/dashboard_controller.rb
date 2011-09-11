@@ -38,13 +38,13 @@ class DashboardController < ApplicationController
       total_count = Feed.count(redis, current_user)
       @num_pages = (total_count.to_f / @per_page.to_f).ceil
 
-#      @closest_signed_up_friends = current_user.connections.to_user_is_member.where("connections.facebook_friend = true").order("connections.rank ASC")
- #     @closest_signed_up_friends_remaining = @closest_signed_up_friends.count - 24
-  #    @closest_signed_up_friends = @closest_signed_up_friends.limit(24).all
+      @closest_signed_up_friends = current_user.connections.to_user_is_member.where("connections.facebook_friend = true").order("connections.rank ASC")
+      @closest_signed_up_friends_remaining = @closest_signed_up_friends.count - 24
+      @closest_signed_up_friends = @closest_signed_up_friends.limit(24).all
 
-   #   @closest_connection_ex_facebook = current_user.connections.to_user_is_member.where("connections.facebook_friend = false").order("connections.rank ASC")
-    #  @closest_connection_ex_facebook_remaining = @closest_connection_ex_facebook.count - 24
-     # @closest_connection_ex_facebook = @closest_connection_ex_facebook.limit(24).all
+      @closest_connection_ex_facebook = current_user.connections.to_user_is_member.where("connections.facebook_friend = false").order("connections.rank ASC")
+      @closest_connection_ex_facebook_remaining = @closest_connection_ex_facebook.count - 24
+      @closest_connection_ex_facebook = @closest_connection_ex_facebook.limit(24).all
 
       if request.xhr?
         if params[:page] # pagination request
