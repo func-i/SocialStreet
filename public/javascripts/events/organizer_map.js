@@ -16,13 +16,22 @@ function getCreateMarkerManager(){
 $(function() {
     var loc;
     var stored_loc = $('#users-current-location');
-    if(stored_loc.length > 0 && stored_loc.val()){
-        var loc_arr = $('#users-current-location').val().split(',');
+    var exploreMapCenter = $('#map_center').val();
+    var foundLoc;
+
+    if(exploreMapCenter != '')
+        foundLoc = exploreMapCenter;
+    
+    else if(stored_loc.length > 0 && stored_loc.val()) 
+        foundLoc = stored_loc.val();
+   
+    if(foundLoc != null){
+        var loc_arr = foundLoc.split(',');
         loc = new google.maps.LatLng(loc_arr[0], loc_arr[1]);
     }
-    else{
+    else
         loc = toronto;
-    }
+    
 
     var myOptions = {
         zoom: 13,
@@ -123,10 +132,10 @@ function DropPinControl(controlImg, controlText, map) {
 }
 
 /**@private
-   * In V3 it is quite hard to gain access to Projection and Panes.
-   * This is a helper class
-   * @param {google.maps.Map} map
-   */
+ * In V3 it is quite hard to gain access to Projection and Panes.
+ * This is a helper class
+ * @param {google.maps.Map} map
+ */
 function ProjectionHelperOverlay(map) {
     google.maps.OverlayView.call(this);
     this.setMap(map);
