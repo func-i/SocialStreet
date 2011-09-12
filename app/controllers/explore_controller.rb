@@ -34,6 +34,7 @@ class ExploreController < ApplicationController
     end
 
     @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
+    @searchables = @searchables.reject{|item| @promoted_events.include?(item.event)}
 
     @page_title = "Explore - #{params[:view].eql?('map') ? 'Map' : 'List'} View"
   end

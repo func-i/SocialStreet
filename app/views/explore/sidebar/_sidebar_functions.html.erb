@@ -111,7 +111,7 @@
     });
 
   <% if !params[:view].eql?("map") %>
-    makeExplorePageless();
+      makeExplorePageless();
   <% end %>
 
   </script>
@@ -329,19 +329,22 @@
 
   <% (@searchables || []).each do |searchable| %>
     <% if searchable.geo_located? %>
+          markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
+    <% end %>
+  <% end %>
 
-        //placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
-        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
+  <% (@promoted_events || []).each do |events| %>
+    <% if events.searchable.geo_located? %>
+          markerManager.createMarker(new google.maps.LatLng(<%= events.searchable.location.latitude %>, <%= events.searchable.location.longitude %>), <%= events.searchable.id -%>,null,'<%= events.searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 
   <% (@similar_results || []).each do |searchable| %>
     <% if searchable.geo_located? %>
-        //placeExploreMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,'<%= searchable.location_address_for_explore -%>');
-        markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
+          markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
     <% end %>
   <% end %>
 
-  });
+    });
   </script>
 <% end %>
