@@ -45,7 +45,7 @@
       <div class="post-wrapper">
         <div class="post-holder">
           <div id="mapview-sidebar-scroll" class="post-frame">
-            <% if @promoted_events %>
+            <% unless @promoted_events.empty? %>
               <div id="promoted-events" class="post-holder" style="border-top: 5px solid #FFC233;border-bottom: 5px solid #FFC233; margin:0px">
                 <div id="result_for_searchable_<%= @promoted_events[0].searchable.id -%>" class="post result-list-item">
                   <%= render "shared/records", :record_type => RecordType.types[:event], :record => @promoted_events[0] %>
