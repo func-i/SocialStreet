@@ -12,10 +12,10 @@ class Jobs::Email::EmailUserSubscriptionDigest
     key = "digest_actions:#{subscription.id}"
     action_ids = redis.zrevrange(key, 0, MAX_ACTIONS)
     
-    actions = Action.find action_ids
+    actions = Action.where(:id => action_ids).all
 
     email = UserMailer.subscription_summary_notice(subscription, actions, subscription.user)
-    email.deliver
+    email.deliver unless actions.empty?
 
     redis.del key # remove all data for this subscription
     
