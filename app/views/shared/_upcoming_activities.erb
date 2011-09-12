@@ -9,7 +9,7 @@
   <div class="box-content">
     <% if limited_events.empty? %>
       <strong style="color:#999">
-        <%= (!@user || @user == current_user) ? "You have " : @user.name + 'has '%> nothing currently planned...
+        <%= (!@user || @user == current_user) ? "You have " : @user.name + ' has '%> nothing currently planned...
         <br/>
         <%= link_to_popup_modal_ajax  'Why not change that?', 'Plan a new StreetMeet', 'empty_modal_base', new_event_path(:js), nil, nil %>
       </strong>
