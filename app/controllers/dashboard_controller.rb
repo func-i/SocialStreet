@@ -46,6 +46,8 @@ class DashboardController < ApplicationController
       @closest_connection_ex_facebook_remaining = @closest_connection_ex_facebook.count - 24
       @closest_connection_ex_facebook = @closest_connection_ex_facebook.limit(24).all
 
+      @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
+
       if request.xhr?
         if params[:page] # pagination request
           render :partial => 'new_page'
