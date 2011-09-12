@@ -73,8 +73,9 @@
           <% end %>
         <% else %>
           <% action = item.index_action %>
+          <% next if action.nil? %>
           <% head_action = action.action || action %>
-          <% if !action.nil? && !head_action.searchable.nil? && !head_action.searchable.ignored %>
+          <% if !head_action.nil? && !head_action.searchable.nil? && !head_action.searchable.ignored %>
             <div class="post">
               <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
             </div>
