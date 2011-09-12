@@ -33,6 +33,9 @@ class ExploreController < ApplicationController
       find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
     end
 
+    @promoted_event = Event.where(:promoted => true).upcoming.limit(1).all
+#    raise @promoted_event.inspect
+
     @page_title = "Explore - #{params[:view].eql?('map') ? 'Map' : 'List'} View"
   end
 

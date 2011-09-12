@@ -3,6 +3,10 @@
 
 <div id="pageless-holder">
   <div id="pageless-container">
+    <div id="promoted-event" class="post-holder" style="border-top: 5px solid #FFC233;border-bottom: 5px solid #FFC233">
+      <%= render "results", :searchable_results => [@promoted_event[0].searchable]%>
+    </div>
+
     <div id="action-list" class="post-holder Post-Holder">
       <%= render "results", :searchable_results => (@searchables || [])%>
     </div>
