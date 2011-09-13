@@ -73,7 +73,7 @@ index_action
       <% if defined?(index_action) %>
         <%= render "shared/comment", :action => head_action, :truncate_at => 102 - head_action.user.name.length, :image_size=>"41x41", :include_quotes => true %>
       <% else %>
-        <%= render "shared/comment", :action => head_action, :truncate_at => 102, :include_quotes => true %>
+        <%= render "shared/comment", :action => head_action, :truncate_at => 102 - head_action.user.name.length, :include_quotes => true %>
       <% end %>
     </div>
   <% end %>

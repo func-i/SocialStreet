@@ -13,7 +13,7 @@
     <% end %>
 
 
-    <div id="result_for_searchable_<%= searchable.id -%>" class="post result-list-item <%= "hidden" if defined?(hidden) && hidden -%>">
+    <div id="result_for_searchable_<%= searchable.id -%>" class="post result-list-item hide-me-list-item <%= "hidden" if defined?(hidden) && hidden -%>">
       <%= render "shared/records", :record_type => type, :record => record %>
     </div>
   <% end %>

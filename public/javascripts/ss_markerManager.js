@@ -41,7 +41,7 @@ MarkerManager.prototype.init = function(opt_options)
     this.infoWindow_ = new InfoWindow(this);
 
     if(this.mapView_){
-        $.each($('.result-list-item'), function(index, rLI){
+        $.each($('.hide-me-list-item'), function(index, rLI){
             $(rLI).hide();
         });
     }
@@ -301,7 +301,7 @@ MarkerManager.prototype.setSelectedMarker_ = function(marker){
 
     if(this.mapView_){
         //Hide each element in the map result list
-        $.each($('.result-list-item'), function(index, rLI) {
+        $.each($('.hide-me-list-item'), function(index, rLI) {
             $(rLI).hide();
         });
 

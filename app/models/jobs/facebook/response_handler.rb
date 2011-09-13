@@ -15,7 +15,8 @@ class Jobs::Facebook::ResponseHandler
           if user
             if entry["changed_fields"].include?("friends")
               fb = user.facebook_user
-              friends = fb.friends              
+              fb ? friends = fb.friends : return
+              return unless friends
 
               user_fb_friends_uids = user.connections.where(:facebook_friend => true).collect(&:to_user).collect(&:fb_uid)
               
