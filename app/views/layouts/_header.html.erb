@@ -12,6 +12,13 @@
       <div id="explore_btn" class="btn btn-not-important-color hidden">
         Explore
       </div>
+      <div class="btn btn-not-important-color">
+        <% if user_signed_in? %>
+          <%= link_to current_user.try(:name), '#' %>
+        <% else %>
+          <%= link_to "Sign in", '/auth/facebook'%>
+        <% end %>
+      </div>
 
       <!--      <div class="btn btn-not-important-color">
               +Message

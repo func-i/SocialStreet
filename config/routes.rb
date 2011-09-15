@@ -5,7 +5,7 @@ SocialStreetReborn::Application.routes.draw do
 
   resources :event_types, :only => [:index]
   resources :events do
-        resources :event_rsvps, :only => [:new]
+    resources :event_rsvps, :only => [:new]
   end
 
   # The priority is based upon order of creation:
@@ -64,4 +64,17 @@ SocialStreetReborn::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
+
+  resources :authentications do
+    collection do
+      match "accept_tnc"
+      match "tnc_accepted"
+      match "show_privacy"
+    end
+  end
+
+  devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
+
+  match '/auth/:provider/callback' => 'authentications#create'
+
 end
