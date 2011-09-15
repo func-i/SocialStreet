@@ -1,0 +1,20 @@
+<%= hidden_field_tag "current_page_name", "explore" %>
+
+<div class="map-holder">
+  <div id="location-map" class="map-frame" style="width:1280px; height: 594px;"></div>
+</div>
+
+<div id="results_list_overlay" class="overlay-group">
+  <%= render :partial => 'explore/explore'%>
+</div>
+
+<div id="event_overlay" class="overlay-group hidden">
+  <%= render :partial => 'event/show', :locals => {:event => @events.first} %>
+</div>
+
+<div id="create_overlay" class="overlay-group hidden">
+  <%= render :partial => 'event/new', :locals => {:event => @event_for_create} %>
+</div>
+
+
+<%=javascript_include_tag 'main_map', 'create'%>

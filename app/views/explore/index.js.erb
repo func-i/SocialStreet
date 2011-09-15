@@ -1,0 +1,5 @@
+clearExploreMarkers();
+$('#results_list').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @events })%>');
+add_explore_markers();
+
+toggle_suggested_actions();

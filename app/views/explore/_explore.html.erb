@@ -1,0 +1,43 @@
+<%= form_tag explore_path, :remote => true, :method => :get, :id => "explore_search_params" do %>
+  <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
+  <%= hidden_field_tag 'map_center', params[:map_center] %>
+  <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+<% end %>
+
+<div class="x-small-box y-large-box position-y-top position-x-left">
+  <div id="results_list">
+    <%= render :partial => "results", :locals => { :results => @events } %>   
+  </div>
+  <%= render :partial => "suggested_explore_actions" %>
+</div>
+
+<div id="explore_keyword_text_field_holder">
+  <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "What do you want to do?", :id=>'explore_keyword_text_field' %>
+</div>
+<div id="explore_keyword_tag_list_holder">
+  <ul id="explore_keyword_tag_list">
+    <li id="explore_keyword_tag_stamp" class="hidden">
+      <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50') %>
+      <span class="explore-keyword-tag-name"></span>
+    </li>
+  </ul>
+</div>
+<div id="explore_keyword_event_types_holder" class="hidden">
+  <ul>
+    <li id="explore_keyword_custom_event_type" class="explore-keyword-event-type hidden">
+      <%= image_tag('/images/event_types/streetmeet2.png') %>
+      <div class="explore-keyword-event-type-name">
+      </div>
+    </li>
+
+    <% @event_types.each do |et| %>
+      <li class="explore-keyword-event-type">
+        <%= image_tag(et.image_path) %>
+        <div class="explore-keyword-event-type-name">
+          <%= et.name %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
+

@@ -1,0 +1,31 @@
+module ApplicationHelper
+
+  def url_for_event_image(event)
+    if !event.event_types.empty? && et = event.event_types.detect {|et| et.image_path? }
+      et.image_path
+    else
+      'event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
+    end
+  end
+
+  def ss_time_ago_in_words(start_time, end_time = nil)
+    compare_time = start_time.is_a?(Date) ? Date.today : Time.now
+
+    if(end_time)
+      if( start_time < compare_time )
+        if( end_time > compare_time )
+          return 'started ' + time_ago_in_words(start_time) + ' ago - ' + time_ago_in_words(end_time) + ' remaining'
+        else
+          return 'ended ' + time_ago_in_words(end_time) + ' ago'
+        end
+      end
+    end
+
+    if( start_time > compare_time)
+      return 'in ' + time_ago_in_words(start_time)
+    else
+      return time_ago_in_words(start_time) + ' ago'
+    end
+  end
+
+end
