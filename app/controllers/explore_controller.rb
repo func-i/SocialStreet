@@ -13,7 +13,7 @@ class ExploreController < ApplicationController
   SIMILAR_RESULTS_STOP_THRESHOLD = 30
 
   def simple_page
-    raise "raising an error for email"
+    render "user_mailer/streetmeet_of_the_week.html.erb", :layout => false
   end
 
   def index    
