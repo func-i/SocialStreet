@@ -119,7 +119,9 @@ class UserMailer < ActionMailer::Base
   end
 
   def streetmeet_of_the_week(email)
-    mail(:to => email, :subject => "Your StreetMeet of the week invitation")
+    mail(:to => email, :subject => "Your StreetMeet of the week invitation") do |format|
+      format.html {render :layout => false}
+    end
   end
 
 end
