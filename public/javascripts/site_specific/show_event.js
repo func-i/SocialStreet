@@ -1,7 +1,9 @@
 var showMarker = null;
 
 $(function(){
-   
+   $('#show_join_event').click(function(){
+       join_event_btn_clicked();
+   })
 });
 
 function setup_show_event(result_dom){
@@ -23,6 +25,10 @@ function setup_show_event(result_dom){
     var marker = createShowMarker(lat.val(), lng.val());
     map.setCenter(marker.getPosition());
     map.setZoom(15);
+}
+
+function join_event_btn_clicked(){
+    //TODO
 }
 
 function createShowMarker(lat, lng){

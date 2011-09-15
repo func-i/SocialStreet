@@ -189,6 +189,7 @@ END OF RESET
     font-size: 22px;
     color: #FFC233;
     padding-bottom: 5px;
+    cursor: pointer;
 }
 .result-date{
     padding-bottom: 5px;
