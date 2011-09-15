@@ -65,6 +65,7 @@ SocialStreet::Application.routes.draw do
 
     collection do
       match "load_events"
+      match "streetmeet_of_the_week"
     end
 
     resources :rsvps do 

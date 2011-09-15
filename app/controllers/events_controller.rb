@@ -185,6 +185,10 @@ class EventsController < ApplicationController
     
   end
 
+  def streetmeet_of_the_week
+    render "user_mailer/streetmeet_of_the_week.html.erb", :layout => false
+  end
+
 
   protected
 
