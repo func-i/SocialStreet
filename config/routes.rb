@@ -4,7 +4,9 @@ SocialStreetReborn::Application.routes.draw do
   get 'explore' => 'explore#index', :as => 'explore'
 
   resources :event_types, :only => [:index]
-  resources :events
+  resources :events do
+        resources :event_rsvps, :only => [:new]
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

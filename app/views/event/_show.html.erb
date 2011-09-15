@@ -16,6 +16,9 @@
 </div>
 
 <div class="x-small-box y-medium-box position-y-middle position-x-left">
+  <div id="event_wall_text_field_holder">
+    <%= text_field_tag 'comment', params[:q], :type => "text", :title => "Comment", :placeholder => "Leave a Message", :id=>'event_wall_text_field' %>
+  </div>
   <div id="event_wall">
 
   </div>
@@ -25,4 +28,17 @@
 <%= image_tag('header-close.png', :class => 'position-y-middle position-x-center') %>
 
 <div class="x-medium-box y-small-box position-y-top position-x-center">
+  <div id="show_join_event">
+      I'll Join
+  </div>
+  <div id="show_attendees_holder">
+    <div id="show_attendees_title">
+      Attendees
+    </div>
+    <div id="show_attendees_list_holder">
+      <ul id="show_attendees_list">
+
+      </ul>
+    </div>
+  </div>
 </div>

@@ -11,14 +11,16 @@
   <%= render :partial => "suggested_explore_actions" %>
 </div>
 
+<div id="explore_keyword_header" class="important-color">Keywords</div>
 <div id="explore_keyword_text_field_holder">
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "What do you want to do?", :id=>'explore_keyword_text_field' %>
 </div>
 <div id="explore_keyword_tag_list_holder">
   <ul id="explore_keyword_tag_list">
-    <li id="explore_keyword_tag_stamp" class="hidden">
-      <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50') %>
+    <li id="explore_keyword_tag_stamp" class="explore-keyword-tag hidden">
+      <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50', :class=>"explore-tag-icon") %>
       <span class="explore-keyword-tag-name"></span>
+      <%= image_tag('header-close.png', :class => 'explore-keyword-tag-remove') %>
     </li>
   </ul>
 </div>

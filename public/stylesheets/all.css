@@ -227,24 +227,35 @@ END OF RESET
     height: 70px;
     font-weight: bold;
     font-size: 22px;
-    color: #FFC233;
+    color: #FFFCD5;
     text-align: center
+}
+#not_enough_results{
+    padding-bottom: 12px;
 }
 #suggested_actions_change_location{
     font-size: 16px;
-    color: #FFFCD5;
 }
 #suggested_actions_change_filter{
     font-size: 16px;
-    color: #FFFCD5;
     padding-bottom: 10px;
 }
 #suggested_actions_actions{
     font-size: 16px;
-    color: #FFFCD5;
     text-align: left;
     list-style: disc;
     padding: 10px 0 0 35px;
+}
+#explore_keyword_header{
+    position: absolute;
+    top: 30px;
+    right: 162px;
+    /*background: url("../images/overlay_box_bg.png");*/
+    background-color: #4F4F4D;
+    padding-top: 2px;
+    width: 100px;
+    font-size: 16px;
+    text-align: center;
 }
 #explore_keyword_text_field_holder{
     position: absolute;
@@ -258,11 +269,13 @@ END OF RESET
 }
 #explore_keyword_tag_list_holder{
     position: absolute;
-    top: 100px;
+    top: 86px;
     right: 50px;
-    width: 200px;
+    width: 212px;
+    background: url("../images/overlay_box_bg.png");
+    max-height: 180px;
+    overflow-y: auto;
 }
-
 #explore_keyword_event_types_holder{
     overflow-y: auto;
     position: absolute;
@@ -285,11 +298,17 @@ END OF RESET
     color: white;
     background: url("../images/overlay_box_bg.png");
 }
+.explore-keyword-tag{
+    padding-left: 5px;
+}
 .explore-keyword-tag-name{
     text-align: center;
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
     background: url("../images/overlay_box_bg.png");
+}
+.explore-keyword-tag-remove{
+
 }
 
 /*Buttons*/
@@ -456,4 +475,38 @@ END OF RESET
     border-bottom: 60px solid transparent;
 
     border-left: 60px solid #FFC233;
+}
+
+/*Show Event*/
+#show_join_event{
+    color: #010000;
+    background: #FFC233;
+    font: bold 22px/32px Arial, Helvetica, sans-serif;
+    margin: 70px 10px;
+    padding: 10px 50px;
+    float: left;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 80px;
+    text-align: center;
+}
+#show_attendees_holder{
+    height: 200px;
+    float: left;
+    width: 75%;
+}
+#show_attendees_title{
+    color: white;
+    text-align: center;
+    font: bold 22px/32px Arial, Helvetica, sans-serif;
+}
+#event_wall_text_field_holder{
+}
+#event_wall_text_field{
+    width:365px;
+    height:24px;
+    margin:10px;
+    border: 5px solid #4F4F4D;
 }

@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
 
   has_many :event_keywords
   has_many :event_rsvps;
+  has_many :comments
 
   belongs_to :user
   belongs_to :location
