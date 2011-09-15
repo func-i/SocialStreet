@@ -10,7 +10,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110913023710) do
+ActiveRecord::Schema.define(:version => 20110915173145) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "connections", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "to_user_id"
+    t.integer  "strength",        :default => 0
+    t.integer  "rank"
+    t.boolean  "facebook_friend", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "event_keywords", :force => true do |t|
     t.string   "name"

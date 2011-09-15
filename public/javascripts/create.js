@@ -59,7 +59,7 @@ function filter_what_icons(search_text){
         delete createEventEventTypeTimer;
     }
     createEventEventTypeTimer = setTimeout(function() {
-        var regEx = new RegExp(search_text);
+        var regEx = new RegExp(search_text, "i");
         var exact_match = false;
 
         //Filter the event_type list by the text entered
@@ -149,6 +149,10 @@ function setup_create_where(){
     $('#create-where-address').text('');
     $('#create-where-text-field').val('');
     $('#create-where-name-location-input').val('');
+}
+
+function setup_create_when(){
+    $('#create_date_picker').scroller();
 }
 
 function selectMarker_createWhere(marker){
