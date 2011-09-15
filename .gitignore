@@ -4,4 +4,4 @@ log/*.log
 tmp/
 nbproject
 nbproject/*
-
+config/database.yml
