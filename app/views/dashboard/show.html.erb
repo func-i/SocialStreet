@@ -47,15 +47,20 @@
 
   </script>
 <% end %>
-
+<% unless @promoted_events.empty? %>
+  <div id="promoted-events" class="post-holder" style="border-top: 5px solid #FFC233;border-bottom: 5px solid #FFC233">
+    <div class="post">
+      <%= render "shared/records", :record_type => RecordType.types[:event], :record => @promoted_events[0] %>
+    </div>
+  </div>
+<% end %>
 <div class="Post-Holder post-holder">
   <div id="action-list">
     <% @feed_items.each do |item| %>
       <% if item %>
         <% if item.reason == Feed.reasons[:subscription] %>
           <% action = item.head_action %>
-          <% next if action.nil?%>
-          <% if !action.searchable || !action.searchable.ignored %>
+          <% if !action.nil? && !action.searchable.nil? && !action.searchable.ignored %>
             <div class="post">
               <% if(action.action_type == Action.types[:event_created]) %>
                 <%= render :partial => 'shared/records', :locals => {:record_type => RecordType.types[:event], :record => action.event } unless action.event.canceled %>
@@ -68,9 +73,7 @@
           <% end %>
         <% else %>
           <% action = item.index_action %>
-          <% next if action.nil?%>
-          <% head_action = action.action || action %>
-          <% if !head_action.searchable || !head_action.searchable.ignored %>
+          <% if !action.nil? && !(head_action = action.action || action).nil? && !head_action.searchable.nil? && !head_action.searchable.ignored %>
             <div class="post">
               <%= render :partial => 'shared/records', :locals => {:record_type => (action.action || action).action_type, :record => action }%>
             </div>
@@ -128,7 +131,7 @@
       <div class="slide">
         <div class="box people-list">
           <div class="heading">
-            <h3>Facebook Friends on SocialStreet</h3>
+            <h3>FB Friends on SocialStreet</h3>
           </div>
           <div class="box-content">
             <ul class="list-img">
@@ -151,7 +154,7 @@
       <div class="slide">
         <div class="box people-list">
           <div class="heading">
-            <h3>Other Neighbours You Know</h3>
+            <h3>Other People You Know on SocialStreet</h3>
           </div>
           <div class="box-content">
             <ul class="list-img">
