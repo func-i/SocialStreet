@@ -118,4 +118,8 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "This is a test email")
   end
 
+  def streetmeet_of_the_week(email)
+    mail(:to => email, :subject => "Your StreetMeet of the week invitation")
+  end
+
 end
