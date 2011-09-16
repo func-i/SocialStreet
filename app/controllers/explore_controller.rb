@@ -224,7 +224,7 @@ class ExploreController < ApplicationController
   end
 
   def find_events(filter_overrides = {})
-    event_searchables = Searchable.explorable.where(:ignored => false)
+    event_searchables = Searchable.explorable.where(:ignored => false, :promoted => false)
     event_searchables = event_searchables.with_only_events
 
     event_searchables = apply_event_filter(event_searchables, filter_overrides)
