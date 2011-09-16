@@ -6,9 +6,14 @@ class Jobs::Email::EmailStreetmeetOfTheWeek
   def self.perform
     users = User.where("email <> ''")
 
+    i=0
     users.each do |user|
       email = UserMailer.streetmeet_of_the_week(user.email)
-      email.deliver if email
+
+      if email
+        email.deliver 
+        puts i+=1
+      end
     end
   end
 end
