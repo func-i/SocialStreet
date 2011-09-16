@@ -43,8 +43,16 @@ function setup_explore_page(){
     map.setCenter(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
     map.setZoom(parseInt($('#map_zoom').val()));
 
+    create_tags_from_input_fields();
+
     addExploreMarkers();
     toggle_suggested_actions();
+}
+
+function create_tags_from_input_fields(){
+    $.each($('#explore_search_params input[name="keywords[]"]'), function(index, elem){
+        filter_explore_keyword_icons($(elem).val(), true);
+    });
 }
 
 function remove_explore_tag(tag_dom){
@@ -61,10 +69,14 @@ function remove_explore_tag(tag_dom){
     refresh_explore_results();
 }
 
-function filter_explore_keyword_icons(search_text, submit){
+function filter_explore_keyword_icons(search_text, create, submit){
     if(submit == undefined){
         submit = false;
     }
+    if(create == undefined){
+        create = false;
+    }
+
 
     var regEx = new RegExp(search_text, "i");
     var exact_match = false;
@@ -88,8 +100,8 @@ function filter_explore_keyword_icons(search_text, submit){
             if(exact_match){
                 var i = 0;
             }
-            if(submit && exact_match){
-                explore_eventType_is_clicked(myEventName.parent());
+            if(create && exact_match){
+                explore_eventType_is_clicked(myEventName.parent(), submit);
             }
         }
     });
@@ -101,8 +113,8 @@ function filter_explore_keyword_icons(search_text, submit){
         }
         customType.removeClass('hidden');
 
-        if(submit){
-            explore_eventType_is_clicked(customType);
+        if(create){
+            explore_eventType_is_clicked(customType, submit);
         }
     }
     else{
@@ -126,7 +138,11 @@ function explore_keywords_textfield_keywdown(e){
     }
 }
 
-function explore_eventType_is_clicked(record){
+function explore_eventType_is_clicked(record, submit){
+    if(submit == undefined){
+        submit = true;
+    }
+
     var eventType_record = $(record);
     var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
 
@@ -143,7 +159,9 @@ function explore_eventType_is_clicked(record){
             '<input type="hidden" name="keywords[]" value="' + eventType_name + '" />'
             );
 
-        refresh_explore_results();
+        if(submit){
+            refresh_explore_results();
+        }
     }
 
     $('#explore_keyword_event_types_holder').addClass('hidden');
@@ -194,7 +212,6 @@ function updateExploreLocationParams(){
 }
 
 function refresh_explore_results(){
-    alert('here');
     $('#explore_search_params').submit();
 }
 

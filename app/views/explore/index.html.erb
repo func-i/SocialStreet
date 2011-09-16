@@ -2,6 +2,9 @@
   <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
   <%= hidden_field_tag 'map_center', params[:map_center] %>
   <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+  <% (params[:keywords] || []).each do |keyword|%>
+    <%= hidden_field_tag 'keywords[]', keyword %>
+  <% end %>
 <% end %>
 
 <div class="x-small-box y-large-box position-y-top position-x-left">

@@ -36,12 +36,12 @@ table {
 html,body { height:100%;min-width: 1003px; }
 body {
     margin: 0;
-    color: #999;
+    color: #010000;
     font: 14px Arial, Helvetica, sans-serif;
     /*background: #fff url(../images/bg-body.png) repeat-y 50% 0;*/
 }
 img{border-style:none;}
-a{text-decoration:none; color:#0981be;}
+a{text-decoration:none; color: inherit;}
 a:hover{text-decoration:underline;}
 input, textarea, select {
     font: 100% Arial, Helvetica, sans-serif;
