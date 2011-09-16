@@ -143,6 +143,7 @@ function explore_eventType_is_clicked(record){
             '<input type="hidden" name="keywords[]" value="' + eventType_name + '" />'
             );
 
+        
         refresh_explore_results();
     }
 
@@ -193,9 +194,11 @@ function updateExploreLocationParams(){
     }
 }
 
-function refresh_explore_results(){
-    alert('here');
+function refresh_explore_results() {
     $('#explore_search_params').submit();
+    if(history && history.pushState) {
+        history.pushState(null, "", $('#explore_search_params').serialize());
+    }
 }
 
 function addExploreMarkers(){

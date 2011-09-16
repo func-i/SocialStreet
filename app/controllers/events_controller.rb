@@ -7,4 +7,9 @@ class EventsController < ApplicationController
 
     @comment = @event.comments.build
   end
+
+  def new
+    @event_types = EventType.order('name').all
+    @event_for_create = Event.new
+  end
 end

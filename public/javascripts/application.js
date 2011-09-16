@@ -1,15 +1,24 @@
 if(history && history.pushState) {
     $(function() {
-        $('a.nav-link').live('click', function(e) {
+        $('.nav-link').live('click', function(e) {
             
             if(typeof cleanUpSelf == 'function') {
                 cleanUpSelf();
+            }            
+            var href;
+            
+            if(this.href != undefined) {
+                href = this.href;
             }
-             
-            $.getScript(this.href);
-            history.pushState(null, "", this.href);
-            e.preventDefault();
-        
+            else if($(this).data('ajax-href') != '') {
+                href = $(this).data('ajax-href');
+            }
+            
+            if(href != undefined) {
+                $.getScript(href);
+                history.pushState(null, "", href);
+                e.preventDefault();
+            }
         })
 
         $(window).bind('popstate', function() {

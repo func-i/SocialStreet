@@ -10,7 +10,6 @@ class ExploreController < ApplicationController
   end
 
   def init_page
-    @event_for_create = Event.new
     @event_types = EventType.order('name').all
   end
 

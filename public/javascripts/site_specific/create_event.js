@@ -3,6 +3,7 @@ var createEventSelectedMarker;
 var createEventMarkerArr = [];
 
 $(function(){
+
     init_create_event();
 });
 
