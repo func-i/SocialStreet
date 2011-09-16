@@ -1,0 +1,36 @@
+<div data-role="page">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+  </div>
+
+  <div data-role="fieldcontain">
+    <label for="what">What?</label>
+    <%= text_field_tag 'event[searchable_attributes][keywords][]', params[:q], :type => "text", :title => "What?", :class => "q-textfield text_field do-not-submit text", :placeholder => "Enter keywords here...", "keyword-content-selector" => '#event-keywords' %>
+  </div>
+  <ul id="event-keywords" class="keyword">
+    <% (event.searchable.keywords || []).reject{|k| k.blank?}.each do |keyword| %>
+      <li class="keyword-pill">
+        <input type="hidden" name="event[searchable_attributes][keywords][]" value="<%= keyword %>" />
+        <%= keyword %>
+        <%= link_to("close", '#', :class => "close remove-parent", "data-parent-selector" => ".keyword-pill") %>
+      </li>
+    <% end %>
+  </ul>
+
+  <script type='text/javascript'>
+    document.ontouchmove = function(e){
+      e.preventDefault();
+    }
+    function clearfield(this_field, default_text) {
+      if (this_field.value == default_text){
+        this_field.value = "";
+      }
+    }
+    function recalltext (this_field) {
+      if (this_field.value == "") {
+        this_field.value = "What?";
+      }
+    }
+  </script>
+</div>

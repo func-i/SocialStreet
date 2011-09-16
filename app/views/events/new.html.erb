@@ -1,3 +1,147 @@
-<%= form_for @event_for_create, :remote => true, :html => {:class => "modal-submit-form form", :multipart => true, :onsubmit => "return checkButtonPressed();"} do |form| %>
-  <%= render 'events/form', :form => form, :event => @event_for_create %>
-<% end %>
+
+<div data-role="page" id="create_what">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+  </div>
+
+  <div data-role ="content">
+    <div data-role ="fieldcontain">
+      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword...">
+        <% @event_types.each do |event|%>
+          <li>
+            <%= link_to image_tag(event.image_path) + event.name, "#create_when" %>
+          </li>
+
+        <% end %>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div data-role ="page" id="create_when">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+
+    <script src="/javascripts/mobiscroll-1.5.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/mobiscroll-1.5.css" />
+
+
+    <h1>SocialStreet</h1>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#startdate').scroller({ preset: 'datetime' });
+      $('#enddate').scroller({ preset: 'datetime' });
+      $('#next_button').click(function(){
+        var url = "#create_where";
+        window.location.replace(url);
+      });
+
+    })
+
+  </script>
+
+  <div data-role="content">
+    <!--form id="create_time"-->
+
+    <div data-role="fieldcontain">
+      <label for="startdate">Start Date</label>
+      <input type="text" name ="startdate" id="startdate" class="mobiscroll" />
+    </div>
+
+    <div data-role="fieldcontain">
+      <label for="enddate">End Date</label>
+      <input type="text" name ="enddate" id="enddate" class="mobiscroll" />
+    </div>
+
+    <button type="submit" data-theme="b" name="next" value="submit" id="next_button" data-ajax="false">Next</button>
+
+    <!--/form-->
+  </div>
+</div>
+
+<div data-role ="page" id="create_where" class="page-map">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+  </div>
+
+  <script type="text/javascript">
+    
+
+    /*var defaultLocation = '28.635308, 77.22496';
+     */var currentLocation = '<%=users_current_location_string()%>';/*
+      
+    $('#create_where').live("pageshow", function() {
+      $('#map-canvas').gmap(
+      { 'center' : currentLocation,
+        'zoom' : 15,
+        'mapTypeControl' : false,
+        'navigationControl' : false,
+        'streetViewControl' : false
+      });
+
+      $('#map-canvas').gmap(
+    'addMarker', {'position': currentLocation, 'bounds': false}).click(function(){
+      console.log(this._latLng);
+      $('#map-location').val = this._latLng;
+    });
+    
+    });*/
+
+    $('#create_where').live("pageshow",function() {
+
+      $('#map-canvas').gmap(
+      {'center': currentLocation, 'zoom': 15, 'mapTypeControl' : false,
+        'navigationControl' : false,
+        'streetViewControl' : false
+      }).bind('init', function(event, map) {
+        $(map).click( function(event) {
+          $('#map-canvas').gmap('addMarker', {'position': event.latLng, 'draggable': true, 'bounds': false}, function(map, marker) {
+            findLocation(marker.getPosition(), marker);
+          }).dragend( function(event) {
+            var self = this;
+            findLocation(event.latLng, this);
+          }).click( function() {
+            $('#map-location').val(this.title);
+          });
+        });
+      });
+
+      function findLocation(location, marker) {
+        $('#map-canvas').gmap('search', {'location': location}, function(results, status) {
+          if ( status === 'OK' ) {
+            $.each(results[0].address_components, function(i,v) {
+              if ( v.types[0] == "administrative_area_level_1" || v.types[0] == "administrative_area_level_2" ) {
+                $('#state'+marker.__gm_id).val(v.long_name);
+              } else if ( v.types[0] == "country") {
+                $('#country'+marker.__gm_id).val(v.long_name);
+              }
+            });
+            marker.setTitle(results[0].formatted_address);
+            $('#map-location').val(results[0].formatted_address);
+          }
+        });
+      }
+
+    });
+    
+
+
+    
+
+  </script>
+
+  <div data-role ="content">
+
+    <div data-role="fieldcontain">
+      <label for="map-location">Enter an Address</label>
+      <input type="text" name="map-location" id="map-location" />
+    </div>
+    <div data-role="fieldcontain" id="map-canvas"></div>
+  </div>
+
+</div>

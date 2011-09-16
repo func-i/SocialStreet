@@ -1,1 +1,17 @@
-<h1>Welcome to SocialStreet</h1>
+
+
+<div data-role="header" data-position="inline">
+  <%= link_to 'Searches', profiles_path, {"data-icon" => "star", "data-theme" => "d"}%>
+  <h1>SocialStreet</h1>
+  <%= link_to 'Profile', profiles_path, {"data-icon" => "gear", "data-theme" => "c"}%>
+</div>
+
+<div style="text-align: center;"><%= link_to image_tag("ss_site_logo_big.png") %></div>
+<%= link_to 'Explore!', explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search"} %>
+<%= link_to '+StreetMeet', new_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "data-ajax" => "false"} %>
+
+<script type='text/javascript'>
+  document.ontouchmove = function(e){
+    e.preventDefault();
+  }
+</script>

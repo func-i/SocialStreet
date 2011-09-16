@@ -48,11 +48,15 @@ SocialStreet::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'dashboard#show'
+  #root :to => 'dashboard#show'
   #root :to => "explore#index"
+
+  root :to => 'site#index'
 
   get 'how-it-works' => 'site#how', :as => 'how'
   get 'explore' => 'explore#index', :as => 'explore'
+  get 'events' => 'events#new', :as => 'create'
+  get 'profiles' => 'profiles#index', :as => 'profiles'
   get 'explore/simple_page' => 'explore#simple_page'
 
   resources :comments, :only => [:create, :destroy]

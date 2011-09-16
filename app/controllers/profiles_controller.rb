@@ -3,9 +3,9 @@
 
 class ProfilesController < ApplicationController
   before_filter :store_current_path, :only => [:show, :edit]
-  before_filter :ss_authenticate_user!
-  before_filter :require_user
-  before_filter :require_permission, :only => [:edit, :update]
+  #before_filter :ss_authenticate_user!
+  #before_filter :require_user
+  #before_filter :require_permission, :only => [:edit, :update]
 
 
   def show
@@ -85,6 +85,10 @@ class ProfilesController < ApplicationController
 
   def require_permission
     raise ActiveRecord::RecordNotFound if !@user.editable_by?(current_user)
+  end
+
+  def index
+    puts "Temp Profile Page"
   end
 
 end

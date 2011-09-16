@@ -261,5 +261,9 @@ class EventsController < ApplicationController
 
   end
 
+  def index
+    
+  end
+
 
 end

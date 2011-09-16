@@ -1,0 +1,8 @@
+.ui-page {
+	background: #999;
+}
+
+#map-canvas { 
+	height: 300px; 
+	width: 450px; 
+}

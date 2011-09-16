@@ -1,42 +1,6 @@
-<%- if params[:view].blank? || params[:view].eql?("list") -%>
-  <%= render "list_view" -%>
-<%- else -%>
-  <%= render "map_view" -%>
-<%- end -%>
 
-<input type="hidden" id="explore-id" name="explore-id" value="<%=@explore_id%>"/>
-<input type="hidden" id="filter-level" name="filter-level" value="<%=@filter_level%>"/>
-<input type="hidden" id="events-offset" name="events-offset" value="<%=@events_offset%>"/>
-<input type="hidden" id="messages-offset" name="messages-offset" value="<%=@messages_offset%>"/>
-
-<script type='text/javascript'>
-  function isScrolledIntoView(elem, offset)
-  {
-    var $elem = $(elem)
-    if($elem.length <= 0)
-      return true;
-    
-    var docViewTop = $(window).scrollTop();
-    var docViewBottom = docViewTop + $(window).height();
-
-    var elemTop = $(elem).offset().top;
-    if(offset == undefined)
-      offset = 200;
-    var elemBottom = elemTop + offset;
-
-    return ((docViewTop < elemTop) && (docViewBottom > elemBottom));
-    //return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom));
-  }
-
-  var winHeight = $(window).height();
-
-  $(function() {
-    $(window).resize(function () {
-      if($(window).height() != winHeight) {
-        winHeight = $(window).height();
-        checkMapPageSize();
-      }
-        
-    });
-  });
-</script>
+    <div data-role="header" data-position="inline">
+      <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+      <h1>SocialStreet</h1>
+    </div>
+  <h1>EXPLORE PAGE</h1>

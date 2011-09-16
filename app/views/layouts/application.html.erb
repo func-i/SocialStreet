@@ -1,252 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content ="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>SocialStreet <%= " - #{truncate(@page_title, :length => 30)}" if @page_title %></title>
-    <%= include_stylesheets :common %>
-    <!--[if lte IE 9]><link href="/assets/ie.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
-    <!--[if lt IE 8]><link href="/assets/ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+    <link rel="apple-touch-icon"
+          href="/images/app_icon.png" />
+
     <%= include_javascripts :common %>
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b3/jquery.mobile-1.0b3.min.css" />
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="/javascripts/jquerym_custom.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0b3/jquery.mobile-1.0b3.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="/javascripts/jquery.ui.map.js"></script>
+    <script src="/javascripts/jquery.ui.map.extensions.js"></script>
+    <script src="/javascripts/jquery.ui.map.services.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/mobile.css" />
     <%=  javascript_include_tag 'iscroll-lite.js' %>
 
-    <%= csrf_meta_tag %>
-    <%= favicon_link_tag %>
-
-    <meta property="og:title" content="<%= @og_title || "SocialStreet" %>" />
-    <meta property="og:type" content="<%= @og_type || "website" %>" />
-    <meta property="og:url" content="<%= @og_url || request.url %>" />
-    <meta property="og:image" content="<%= @og_image || 'http://www.socialstreet.com/images/app_icon_facebook.png' %>" />
-    <meta property="og:site_name" content="SocialStreet" />
-    <meta property="og:description" content="<%= @og_description || 'SocialStreet mission is to make it easy to discover friends (new or old) that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!'%>" />
-    <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
-
-    <%= yield :head %>
-
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-25448703-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
-
   </head>
+
   <body>
-    <div class="feedback-btn">
-      <%= link_to_popup_modal "Feedback", "feedback_modal", :class => "btn-view", :style=>"text-decoration:none;color:white"%>
-    </div>
-
-    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
-    <div id="wrapper">
-      <div class="w1">
-        <div class="w2">
-          <%= render 'layouts/header' %>
-
-          <%= yield :popup_modals -%>
-          <div id="wrapper" class="wat-cf">
-            <div id="main">
-              <div class="main-top">
-                <div class="holder">
-                  <%= render 'layouts/flash_notices' -%>
-                  <%= yield :main_top %>
-                </div>
-              </div>
-              <div class="holder">
-                <div id="content">
-                  <%= yield %>
-                </div> <!-- End Content Div -->
-                <div id="sidebar">
-                  <%= yield :sidebar %>
-                </div>                
-              </div>
-            </div> <!-- End Main Div -->
-          </div>
-        </div>
-
-      </div>
-
-      <%- unless current_page?(explore_path) -%>
-        <div id="footer">
-          <div class="footer-holder">
-            <div class="footer-frame">
-              <div class="footer-content">
-                <ul class="add-nav" style="color:#333">
-                  <li><span style="font: normal normal bold 12px/14px Arial, Helvetica, sans-serif;">SocialStreet &#169; 2011</span></li>
-                  <!--<li><%= link_to "About", '#' -%></li>-->
-                  <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%></li>
-                  <li><%= link_to_popup_modal_ajax  'Terms', 'Terms and Conditions', 'empty_modal_base', '/authentications/accept_tnc?display_only=true', nil, nil %></li>
-                  <li><%= link_to_popup_modal_ajax  'Privacy', 'Privacy Policy', 'empty_modal_base', '/authentications/show_privacy', nil, nil %></li>
-                  <li><%= mail_to 'pr@SocialStreet.com', "Media" -%></li>
-                </ul>
-                <strong class="logo"><%= link_to "SocialStreet", root_path -%></strong>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      <%- end -%>
-    </div>
-
-    <%= yield :end_of_body  %>
-    <div id="fb-root"></div>
-    <div id="end_of_body"></div>
-
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <script type='text/javascript'>
-      FB.init({
-        appId  : '<%= FACEBOOK_APP_ID %>',
-        status : true, // check login status
-        cookie : true, // enable cookies to allow the server to access the session
-        xfbml  : true  // parse XFBML
-      });
-
-      $(function() {
-        $('a[data-popup]').live('click', function(e) {
-          window.open(this.href);
-          e.preventDefault();
-        });
-
-
-<%- if current_page?(explore_path) -%>
-      $(window).scroll(function() {
-        if($(this).scrollTop() < 30){
-          return;
-        }
-
-        retractHowItWorks(function() {
-
-          if(typeof isScrolledIntoView == 'function' && !isScrolledIntoView('.short-box')) {
-            return false;
-          }
-          $('.w2').removeClass('header-open');
-  <%- if params[:view].eql?("map") %>
-            $('.w2').addClass('page-map');
-            $('body').css('overflow', 'hidden');
-  <%- else %>
-            $('.w2').addClass('page-explore');
-  <%- end %>
-        }); // End retractHowItWorks
-      }); // End window.scroll
-<%- end -%>
-
-    $('.show-total-comment').live('click', function(){
-      $(this).parent().siblings('.truncated-comment-body').hide();
-      $(this).parent().siblings('.total-comment-body').show();
-      $(this).parent().hide();
-
-      return false;
-    });
-
-    $('.view-all-messages').live('click', function(){
-      $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.post'), function(i,v){
-        $(v).show();
-      });
-
-      $.each($(this).parent().parent().siblings('.post-holder').children('.post-list').children('.row-miss'), function(i,v){
-        $(v).hide();
-      });
-
-
-      $(this).parent().hide()
-
-      return false;
-    });
-
-    $('.post').live('mouseenter', function(){
-      var remove_posts = $(this).find('.remove-post-div a');
-      if(remove_posts.length > 0){
-        $(remove_posts[0]).show();
-      }
-    });
-    $('.post').live('mouseleave', function(){
-      var remove_posts = $(this).find('.remove-post-div a');
-      if(remove_posts.length > 0){
-        $(remove_posts[0]).hide();
-      }
-    });
-
-
-    $('.remove_comment_button').live('click', function(){
-      $(this).closest('.post').hide();
-    });
-
-    $('.textarea').live('change', function(e){
-      if(this.value.length > 0){
-        $(this).closest('.form-comment').submit();
-        if($(this).attr('title') != '')
-          $(this).height(24);
-        else
-          $(this).height(16);
-        return false;
-      }
-    });
-    $('.textarea').live('keydown', function(e) {
-      if (e.keyCode == 13) {
-        if(e.shiftKey != true){
-          if(this.value.length > 0){
-            $(this).closest('.form-comment').submit();
-            if($(this).attr('title') != '')
-              $(this).height(24);
-            else
-              $(this).height(16);
-            e.stopPropagation();
-            $(this).blur();
-            return false;
-          }
-        }
-      }
-    });
-
-    $('[name=\'comment[body]\']').live('focus', function() {
-      $(this).autoResize({extraSpace: 0})
-    });
-
-
-    $('form.comment-form').live('ajax:beforeSend', function(e, xhr, settings)
-    {
-      $('.comment-box').fadeTo('fast', 0.3);
-      return true;
-
-    }).live('ajax:success', function(e, data, status, xhr)
-    {
-      $('.textarea').val('');
-
-      $('.comment-box').fadeTo('slow', 1);
-
-      var $list = $(this).parent().siblings('.post-list')
-      if($list.length)
-      {
-        $(data).hide();
-        $list.append($(data));
-        $(data).slideUp('fast');
-      }
-      else{
-        var $list = $('#action-list');
-        var $elem = $(data).hide();
-        $list.prepend($elem);
-        $elem.slideDown('fast');
-      }
-
-    }).live('ajax:error', function(e, xhr, status, error)
-    {
-      if (xhr.status == 401) {
-        window.location.href = '<%= new_user_session_path %>';
-      }
-      else {
-        alert('Error occurred:' + error);
-      }
-
-      $('.comment-box').fadeTo('slow', 1);
-    });
-  })
-
-    </script>
-    <%= yield :fb_scripts %>
-
+    
+      <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
+  
+        <%= yield %>
+    
   </body>
 </html>
