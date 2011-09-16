@@ -2,6 +2,5 @@ $('#current_overlay').html('<%= escape_javascript(render(:file => 'explore/index
 
 clearExploreMarkers();
 $('#results_list').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @events })%>');
-add_explore_markers();
 
 toggle_suggested_actions();

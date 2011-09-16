@@ -1,20 +1,20 @@
-$(function() {
-    $('a.nav-link').live('click', function() {
-        if(history && history.pushState) {
-            history.pushState(null, "", this.href);
+if(history && history.pushState) {
+    $(function() {
+        $('a.nav-link').live('click', function(e) {
+            
             if(typeof cleanUpSelf == 'function') {
                 cleanUpSelf();
-                delete cleanUpSelf
             }
-        }
-        $.getScript(this.href);
-        return false;
-    })
+             
+            $.getScript(this.href);
+            history.pushState(null, "", this.href);
+            e.preventDefault();
+        
+        })
 
-    if(history && history.pushState) {   
-        $(window).bind("popstate", function() {
+        $(window).bind('popstate', function() {
             $.getScript(location.href);
-            return false;
         });
-    }
-});
+       
+    });
+}
