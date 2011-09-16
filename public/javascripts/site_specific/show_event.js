@@ -1,10 +1,29 @@
 var showMarker = null;
 
 $(function(){
-   $('#show_join_event').click(function(){
-       join_event_btn_clicked();
-   })
+    $('#show_join_event').click(function(){
+        join_event_btn_clicked();
+    });
+
+    $('#event_wall_text_field').keyup(function(e){
+        if (e.keyCode == 13) {
+            if(e.shiftKey != true){
+                submit_event_wall_comment();
+                e.stopPropagation();
+                return false;
+            }
+        }
+    });
 });
+
+function submit_event_wall_comment(){
+    if($('#event_wall_text_field').val().length > 0){
+        $('#event_wall_form').submit();
+        $('#event_wall_text_field').val('');
+        $('#event_wall_text_field').blur();
+    }
+    return false;
+}
 
 function setup_show_event(result_dom){
     //Fill in the event details
@@ -28,7 +47,7 @@ function setup_show_event(result_dom){
 }
 
 function join_event_btn_clicked(){
-    //TODO
+//TODO
 }
 
 function createShowMarker(lat, lng){

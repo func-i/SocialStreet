@@ -6,6 +6,7 @@ SocialStreetReborn::Application.routes.draw do
   resources :event_types, :only => [:index]
   resources :events do
     resources :event_rsvps, :only => [:new]
+    resources :comments, :only => [:create]
   end
 
   # The priority is based upon order of creation:

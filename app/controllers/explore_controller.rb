@@ -1,4 +1,5 @@
 class ExploreController < ApplicationController
+  before_filter :store_current_path, :only => [:index]
 
   def index
     if !request.xhr?
@@ -6,6 +7,10 @@ class ExploreController < ApplicationController
     end
     
     @events = find_events()
+
+    #TODO - move to own controller
+    @event = @events[0]
+    @comment = @event.comments.build
   end
 
   def init_page

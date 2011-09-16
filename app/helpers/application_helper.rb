@@ -28,4 +28,15 @@ module ApplicationHelper
     end
   end
 
+  def url_for_avatar(user, options={})
+    user.avatar_url(options) || 'web-app-theme/avatar.png'
+  end
+
+  def avatar(user, options={})
+    image_tag(url_for_avatar(user, :fb_size => options[:fb_size] || 'square'),
+      :title => user.name,
+      :size=> options[:size] || "30x30")
+  end
+
+
 end
