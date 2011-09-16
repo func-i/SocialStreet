@@ -1,4 +1,5 @@
 class ExploreController < ApplicationController
+  before_filter :store_current_path, :only => [:index]
 
   def index
     #if !request.xhr?

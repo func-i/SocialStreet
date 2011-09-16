@@ -1,0 +1,12 @@
+<% if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
+  <div id="show_already_joined_btn">
+    Already Joined
+  </div>
+  <div id="show_unattend_btn">
+    <%=link_to "Click here if you can no longer join...", [:edit, event, rsvp], :remote=>true %>
+  </div>
+<% else %>
+  <div id="show_join_event_btn">
+    <%=link_to "I'll Join", [:new, event, :event_rsvp], :remote => true %>
+  </div>
+<% end %>

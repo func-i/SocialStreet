@@ -14,7 +14,7 @@
       </div>
       <div class="btn btn-not-important-color">
         <% if user_signed_in? %>
-          <%= link_to current_user.try(:name), '#' %>
+          <%=link_to "Sign Out", destroy_user_session_path%>
         <% else %>
           <%= link_to "Sign in", '/auth/facebook'%>
         <% end %>

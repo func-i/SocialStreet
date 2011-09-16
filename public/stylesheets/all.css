@@ -479,19 +479,41 @@ END OF RESET
 }
 
 /*Show Event*/
-#show_join_event{
+#join_btn_holder{
+    margin: 70px 10px;
+    width: 180px;
+    height: 200px;
+    float: left;
+}
+#show_join_event_btn{
     color: #010000;
     background: #FFC233;
     font: bold 22px/32px Arial, Helvetica, sans-serif;
-    margin: 70px 10px;
     padding: 10px 50px;
-    float: left;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     cursor: pointer;
     width: 80px;
     text-align: center;
+}
+#show_already_joined_btn{
+    color: #010000;
+    background: #9c3;
+    font: bold 16px/32px Arial, Helvetica, sans-serif;
+    padding: 10px 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 120px;
+    text-align: center;
+}
+#show_unattend_btn{
+  margin-top: 10px;
+  color: white;
+  font: 10px/12px Arial, Helvetica, sans-serif;
+  text-align: center;
+  cursor: pointer;
 }
 #show_attendees_holder{
     height: 200px;
@@ -510,4 +532,33 @@ END OF RESET
     height:24px;
     margin:10px;
     border: 5px solid #4F4F4D;
+}
+.event-wall-comment{
+    width: 370px;
+    margin: 0 20px 10px 10px;
+    height: auto;
+    color: white;
+}
+.event-wall-user-holder{
+    float: left;
+    width: 100px;
+}
+.event-wall-user-image{
+    padding: 0 22px 0 22px;
+}
+.event-wall-user-name{
+    text-align: center;
+}
+.event-wall-comment-body{
+    float: left;
+    height: auto;
+    overflow: visible;
+    width: 250px;
+    background: url("../images/overlay_box_bg.png");
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.event-wall-comment-body-overflow{
+    height: auto;
+    overflow: visible;
 }

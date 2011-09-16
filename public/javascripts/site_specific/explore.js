@@ -25,12 +25,7 @@ $(function(){
     });
 
     $('#explore_keyword_text_field').keyup(function(e){
-        if(e.keyCode == 13){
-            explore_eventType_is_clicked($('#explore_keyword_event_types_holder #explore_keyword_custom_event_type'));
-        }
-        else{
-            filter_explore_keyword_icons(e.target.value);
-        }
+        explore_keywords_textfield_keywdown(e);
     });
 
     $('.explore-keyword-tag-remove').live('click', function(){
@@ -47,7 +42,7 @@ function setup_explore_page(){
     var mapCenterArr = mapCenter.split(",");
     map.setCenter(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
     map.setZoom(parseInt($('#map_zoom').val()));
-   
+
     addExploreMarkers();
     toggle_suggested_actions();
 }
@@ -56,7 +51,6 @@ function remove_explore_tag(tag_dom){
     var tag_name = tag_dom.children('.explore-keyword-tag-name').text().trim();
 
     $.each($('#explore_search_params input[name="keywords[]"]'), function(index, elem){
-        console.log($(elem).val(), tag_name);
         if($(elem).val() == tag_name){
             $(elem).remove();
         }
@@ -67,40 +61,69 @@ function remove_explore_tag(tag_dom){
     refresh_explore_results();
 }
 
-function filter_explore_keyword_icons(search_text){
-    if (exploreEventTypeTimer) {
-        clearInterval(exploreEventTypeTimer);
-        delete exploreEventTypeTimer;
+function filter_explore_keyword_icons(search_text, submit){
+    if(submit == undefined){
+        submit = false;
     }
-    exploreEventTypeTimer = setTimeout(function() {
-        var regEx = new RegExp(search_text, "i");
-        var exact_match = false;
 
-        //Filter the event_type list by the text entered
-        $.each($('.explore-keyword-event-type-name'), function(index, value){
-            var myEventName = $(value);
-            if(myEventName.text().trim().match(regEx) == null){
-                myEventName.parent().addClass('hidden');
-            }
-            else{
-                myEventName.parent().removeClass('hidden');
+    var regEx = new RegExp(search_text, "i");
+    var exact_match = false;
 
-                exact_match = exact_match || myEventName.text().trim() == search_text;
-            }
-        });
+    //Filter the event_type list by the text entered
+    $.each($('.explore-keyword-event-type-name'), function(index, value){
+        var myEventName = $(value);
 
-        if(!exact_match && search_text.length > 0){
-            var customType = $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type');
-            if(customType.length > 0){
-                customType.children('.explore-keyword-event-type-name').text(search_text);
-            }
-            customType.removeClass('hidden');
+        if(myEventName.parent('#explore_keyword_custom_event_type').length > 0){
+            return true;
+        }
+
+        if(myEventName.text().trim().match(regEx) == null){
+            myEventName.parent().addClass('hidden');
         }
         else{
-            $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type').addClass('hidden');
-        }
+            myEventName.parent().removeClass('hidden');
 
-    }, 250);
+            exact_match = exact_match || myEventName.text().trim().toLowerCase() == search_text.toLowerCase();
+
+            if(exact_match){
+                var i = 0;
+            }
+            if(submit && exact_match){
+                explore_eventType_is_clicked(myEventName.parent());
+            }
+        }
+    });
+
+    if(!exact_match && search_text.length > 0){
+        var customType = $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type');
+        if(customType.length > 0){
+            customType.children('.explore-keyword-event-type-name').text(search_text);
+        }
+        customType.removeClass('hidden');
+
+        if(submit){
+            explore_eventType_is_clicked(customType);
+        }
+    }
+    else{
+        $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type').addClass('hidden');
+    }
+}
+
+function explore_keywords_textfield_keywdown(e){
+    if (exploreEventTypeTimer) {
+        clearTimeout(exploreEventTypeTimer);
+        delete exploreEventTypeTimer;
+    }
+
+    if(e.keyCode == 13){
+        filter_explore_keyword_icons(e.target.value, true);
+    }
+    else{
+        exploreEventTypeTimer = setTimeout(function() {
+            filter_explore_keyword_icons(e.target.value, false);
+        }, 100);
+    }
 }
 
 function explore_eventType_is_clicked(record){
