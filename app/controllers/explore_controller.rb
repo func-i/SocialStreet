@@ -1,9 +1,9 @@
 class ExploreController < ApplicationController
 
   def index
-    if !request.xhr?
-      init_page
-    end
+    #if !request.xhr?
+    init_page
+    #end
     
     @events = find_events()
   end

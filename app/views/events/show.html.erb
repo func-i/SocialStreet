@@ -1,16 +1,21 @@
 <div id="show_event_details" class="x-small-box y-small-box position-y-top position-x-left">
   <div class="result">
     <div class="result-image">
+      <%= image_tag(url_for_event_image(@event))%>
     </div>
     <div class="result-text">
       <div class="result-title">
+        <%= @event.name %>
       </div>
       <div class="result-date">
+        When: <%= @event.start_date.strftime("%B %d %l:%M %p") %> - <%= @event.end_date.strftime("%B %d %l:%M %p") %>
       </div>
       <div class="result-tags">
+        Tags: <%= @event.event_keywords.collect(&:name).compact.to_sentence({:two_words_connector => "&", :last_word_connector => "&"}) %>
       </div>
     </div>
     <div class="result-description">
+      <%= @event.description %>
     </div>
   </div>
 </div>
@@ -29,7 +34,7 @@
 
 <div class="x-medium-box y-small-box position-y-top position-x-center">
   <div id="show_join_event">
-      I'll Join
+    I'll Join
   </div>
   <div id="show_attendees_holder">
     <div id="show_attendees_title">
@@ -42,3 +47,8 @@
     </div>
   </div>
 </div>
+
+<%= hidden_field_tag 'lat', @event.location.latitude %>
+<%= hidden_field_tag 'lng', @event.location.longitude %>
+
+<%= javascript_include_tag "site_specific/show_event" %>

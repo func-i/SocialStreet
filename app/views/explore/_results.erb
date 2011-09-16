@@ -6,7 +6,7 @@
     </div>
     <div class="result-text">
       <span class="result-title result-event-link">
-        <%= event.title %>
+        <%= link_to event.title, event %>
       </span>
       <div class="result-date">
         <%= ss_time_ago_in_words(event.start_date, event.end_date) -%>
@@ -18,16 +18,5 @@
     <div class="result-join-btn">
       I'll Join
     </div>
-    <%= hidden_field_tag 'result_lat', event.location.latitude %>
-    <%= hidden_field_tag 'result_lng', event.location.longitude %>
-    <%= hidden_field_tag 'start_date', event.start_date.strftime("%B %d %l:%M %p") %>
-    <% if event.end_date.to_date != event.start_date.to_date%>
-      <%= hidden_field_tag 'end_date', event.end_date.strftime("%B %d %l:%M %p") %>
-    <% else %>
-      <%= hidden_field_tag 'end_date', event.end_date.strftime("%l:%M %p") %>
-    <% end %>
-    <%= hidden_field_tag 'tags', event.event_keywords.collect(&:name).compact.to_sentence({:two_words_connector => "&", :last_word_connector => "&"}) %>
-    <%= hidden_field_tag 'description', event.description %>
-
   </div>
 <% end %>

@@ -1,9 +1,15 @@
 var showMarker = null;
 
 $(function(){
-   $('#show_join_event').click(function(){
-       join_event_btn_clicked();
-   })
+    $('#show_join_event').click(function(){
+        join_event_btn_clicked();
+    })
+
+    var lat = $('#lat').val();
+    var lng = $('#lng').val();
+    var marker = createShowMarker(lat, lng);
+    map.setCenter(marker.getPosition());
+    map.setZoom(15);
 });
 
 function setup_show_event(result_dom){
@@ -28,10 +34,10 @@ function setup_show_event(result_dom){
 }
 
 function join_event_btn_clicked(){
-    //TODO
+//TODO
 }
 
-function createShowMarker(lat, lng){
+function createShowMarker(lat, lng) {
     var marker = new google.maps.Marker(
     {
         position: new google.maps.LatLng(lat, lng)
