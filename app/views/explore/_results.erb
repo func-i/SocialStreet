@@ -6,7 +6,7 @@
     </div>
     <div class="result-text">
       <span class="result-title result-event-link">
-        <%= link_to event.title, event %>
+        <%= link_to event.title, event, :class => "nav-link" %>
       </span>
       <div class="result-date">
         <%= ss_time_ago_in_words(event.start_date, event.end_date) -%>
