@@ -39,10 +39,12 @@ function init_map(){
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
     google.maps.event.addListener(map, 'dragend', function(){
-        updateExploreLocationParams();
+        if($('#on_explore').length > 0)
+            updateExploreLocationParams();
     });
     google.maps.event.addListener(map, 'bounds_changed', function(){
-        updateExploreLocationParams();
+        if($('#on_explore').length > 0)
+            updateExploreLocationParams();
     });
 }
 

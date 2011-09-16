@@ -4,9 +4,13 @@ $(function(){
         changePage('explore');
     });
 
-    $('.result-event-link').live('click',function(){
-        changePage('show_event', [$(this).parent().parent()]);
-    });
+    //    $('.result-event-link').live('click',function(){
+    //        changePage('show_event', [$(this).parent().parent()]);
+    //    });
+
+    //    $('.result-event-link').live('click',function() {
+    //
+    //    });
 
     $('#add_streetmeet_btn').click(function(){
         changePage('create_event_what');
@@ -63,7 +67,7 @@ function changePage(page_name, option_arr){
     }
 }
 
-function cleanupBeforeLeaving(){
+function cleanupBeforeLeaving() {
     var page_name = $('#current_page_name').val();
     if(page_name == "explore"){
         hideExploreMarkers();
@@ -84,7 +88,8 @@ function cleanupBeforeLeaving(){
 }
 
 function hide_all_overlays(){
-    $.each($('.overlay-group'), function(index, value){
-        $(value).addClass('hidden');
-    });
+    //$.each($('.overlay-group'), function(index, value){
+    //   $(value).addClass('hidden');
+    //});
+    $('#current_overlay').html('');
 }

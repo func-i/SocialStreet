@@ -14,6 +14,12 @@ $(function(){
             }
         }
     });
+
+    var lat = $('#lat').val();
+    var lng = $('#lng').val();
+    var marker = createShowMarker(lat, lng);
+    map.setCenter(marker.getPosition());
+    map.setZoom(15);
 });
 
 function submit_event_wall_comment(){
@@ -50,7 +56,7 @@ function join_event_btn_clicked(){
 //TODO
 }
 
-function createShowMarker(lat, lng){
+function createShowMarker(lat, lng) {
     var marker = new google.maps.Marker(
     {
         position: new google.maps.LatLng(lat, lng)
