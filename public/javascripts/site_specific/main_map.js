@@ -43,8 +43,10 @@ function init_map(){
             updateExploreLocationParams();
     });
     google.maps.event.addListener(map, 'bounds_changed', function(){
-        if($('#on_explore').length > 0)
+        if($('#on_explore').length > 0) {
             updateExploreLocationParams();
+
+        }
     });
 }
 

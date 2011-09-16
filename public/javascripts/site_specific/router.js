@@ -4,14 +4,6 @@ $(function(){
         changePage('explore');
     });
 
-    //    $('.result-event-link').live('click',function(){
-    //        changePage('show_event', [$(this).parent().parent()]);
-    //    });
-
-    //    $('.result-event-link').live('click',function() {
-    //
-    //    });
-
     $('#add_streetmeet_btn').click(function(){
         changePage('create_event_what');
     });

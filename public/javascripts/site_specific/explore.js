@@ -4,7 +4,9 @@ var exploreEventTypeTimer;
 var exploreUpdateTimer;
 
 $(function(){
-    add_explore_markers();
+    
+    setup_explore_page();
+
 
     $('#explore_keyword_text_field').focus(function(){
         $('#explore_keyword_event_types_holder').removeClass('hidden');
@@ -41,13 +43,7 @@ function setup_explore_page(){
     map.setCenter(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
     map.setZoom(parseInt($('#map_zoom').val()));
 
-    if(exploreMarkerArr.length < 1){
-        refresh_explore_results();
-    }
-    else{
-        showExploreMarkers();
-    }
-
+    addExploreMarkers();
     toggle_suggested_actions();
 }
 
@@ -198,13 +194,14 @@ function updateExploreLocationParams(){
 }
 
 function refresh_explore_results(){
+    alert('here');
     $('#explore_search_params').submit();
 }
 
-function add_explore_markers(){
-    $.each($('#results_list_overlay .result'), function(index, result){
-        var lat = $(result).children('#result_lat')
-        var lng = $(result).children('#result_lng')
+function addExploreMarkers(){
+    $.each($('#results_list .result'), function(index, result){
+        var lat = $(result).children('#result_lat');
+        var lng = $(result).children('#result_lng');
         createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()));
     });
 }
