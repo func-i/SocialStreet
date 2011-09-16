@@ -3,21 +3,11 @@ class CommentsController < ApplicationController
   before_filter :ss_authenticate_user!, :only => [:create]
   
   def create
-    event = Event.find params[:event_id]
-    if event
-      @comment = Comment.new params[:comment]
-      @comment.event = event
-      @comment.user = current_user
-
-      if @comment.save
-        #TODO - email event admin
-        #TODO - connect users (does this apply since to threading?)
-
-        if request.xhr?
-          render :partial => 'create'
-        else
-          raise "error"
-        end
+    if create_comment(params[:event_id].to_i, params[:comment][:body])
+      if request.xhr?
+        render :partial => 'create'
+      else
+        raise "error"
       end
     else
       render :nothing => true

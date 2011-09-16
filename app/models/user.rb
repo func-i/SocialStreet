@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   has_many :incoming_connections, :class_name => "Connection", :foreign_key => "to_user_id"
   has_many :connected_users, :through => :connections, :source => :to_user
 
-
   validates :email, :uniqueness => { :allow_blank => true }
 
   def name
@@ -32,6 +31,9 @@ class User < ActiveRecord::Base
     self.facebook_profile_picture_url.gsub(facebook_profile_picture_url[facebook_profile_picture_url.rindex('/')+1..facebook_profile_picture_url.length], "picture?type=#{options[:fb_size] || 'square'}") if facebook_profile_picture_url
   end
 
+  def attending?(event)
+    return self.event_rsvps.for_event(event).count > 0
+  end
 
   def apply_omniauth(omniauth)
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)

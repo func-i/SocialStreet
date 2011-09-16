@@ -7,10 +7,6 @@ class ExploreController < ApplicationController
     #end
     
     @events = find_events()
-
-    #TODO - move to own controller
-    @event = @events[0]
-    @comment = @event.comments.build
   end
 
   def init_page

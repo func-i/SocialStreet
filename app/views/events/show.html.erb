@@ -22,13 +22,13 @@
 
 <div class="x-small-box y-medium-box position-y-middle position-x-left">
   <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
-  <div id="event_wall_text_field_holder">
+    <div id="event_wall_text_field_holder">
       <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
     </div>
   <% end %>
   <div id="event_wall">
-    <%@event.comments.order('created_at DESC').all.each do |my_comment|%>
-        <%= render :partial => 'comments/create.html', :locals => {:comment => my_comment} %>
+    <%@comments.each do |comment|%>
+      <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
     <% end %>
   </div>
 </div>
@@ -37,9 +37,10 @@
 <%= image_tag('header-close.png', :class => 'position-y-middle position-x-center') %>
 
 <div class="x-medium-box y-small-box position-y-top position-x-center">
-  <div id="show_join_event">
-    I'll Join
+  <div id="join_btn_holder">
+    <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
   </div>
+
   <div id="show_attendees_holder">
     <div id="show_attendees_title">
       Attendees

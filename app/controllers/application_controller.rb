@@ -25,14 +25,30 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource_or_scope)
     if session[:stored_redirect]
       if session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
-        if create_comment(session[:stored_redirect][:params])
+
+        event_id = session[:stored_redirect][:params][:event_id].to_i
+        body = session[:stored_redirect][:params][:comment][:body]
+        if create_comment(event_id, body)
           return_path = get_current_path
         end
+
+      elsif session[:stored_redirect][:controller] == 'event_rsvps' && session[:stored_redirect][:action] == 'new'
+
+        if attending_event_rsvp(session[:stored_redirect][:params][:event_id].to_i)
+          return_path = get_current_path
+        end
+
       end
+
+      return return_path if return_path
+
+      curren_path = get_current_path
+      return curren_path if curren_path
     end
 
-    return return_path if return_path
-    raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
+    super
+
+    #raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
   end
 
   def create_comment(event_id, comment_body)
@@ -52,3 +68,24 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  def attending_event_rsvp(event_id)
+    return false unless current_user
+
+    @event = Event.find event_id
+    rsvp = @event.event_rsvps.by_user(current_user).first if current_user
+
+    if !rsvp
+      rsvp = @event.event_rsvps.build
+      rsvp.user = current_user
+    end
+
+    rsvp.status = EventRsvp.statuses[:attending]
+
+    if(rsvp.save)
+      return true
+    else
+      return false
+    end
+  end
+end
