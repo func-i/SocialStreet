@@ -47,6 +47,7 @@ class DashboardController < ApplicationController
       @closest_connection_ex_facebook = @closest_connection_ex_facebook.limit(24).all
 
       @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
+      @feed_items = @feed_items.reject{|fi| @promoted_events.include?(fi.head_action.event)}
 
       if request.xhr?
         if params[:page] # pagination request
