@@ -51,12 +51,12 @@ function setup_explore_page(){
 
 function create_tags_from_input_fields(){
     $.each($('#explore_search_params input[name="keywords[]"]'), function(index, elem){
-        filter_explore_keyword_icons($(elem).val(), true);
+        filter_explore_keyword_icons($(elem).val(), true, false);
     });
 }
 
 function remove_explore_tag(tag_dom){
-    var tag_name = tag_dom.children('.explore-keyword-tag-name').text().trim();
+    var tag_name = $.trim(tag_dom.children('.explore-keyword-tag-name').text());
 
     $.each($('#explore_search_params input[name="keywords[]"]'), function(index, elem){
         if($(elem).val() == tag_name){
@@ -89,13 +89,13 @@ function filter_explore_keyword_icons(search_text, create, submit){
             return true;
         }
 
-        if(myEventName.text().trim().match(regEx) == null){
+        if($.trim(myEventName.text()).match(regEx) == null){
             myEventName.parent().addClass('hidden');
         }
         else{
             myEventName.parent().removeClass('hidden');
 
-            exact_match = exact_match || myEventName.text().trim().toLowerCase() == search_text.toLowerCase();
+            exact_match = exact_match || $.trim(myEventName.text()).toLowerCase() == search_text.toLowerCase();
 
             if(exact_match){
                 var i = 0;
@@ -129,7 +129,7 @@ function explore_keywords_textfield_keywdown(e){
     }
 
     if(e.keyCode == 13){
-        filter_explore_keyword_icons(e.target.value, true);
+        filter_explore_keyword_icons(e.target.value, true, true);
     }
     else{
         exploreEventTypeTimer = setTimeout(function() {
@@ -144,7 +144,7 @@ function explore_eventType_is_clicked(record, submit){
     }
 
     var eventType_record = $(record);
-    var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
+    var eventType_name = $.trim(eventType_record.children('.explore-keyword-event-type-name').text());
 
     if(!does_explore_keyword_already_exist(eventType_name))
     {
@@ -158,19 +158,20 @@ function explore_eventType_is_clicked(record, submit){
         $('#explore_search_params').append(
             '<input type="hidden" name="keywords[]" value="' + eventType_name + '" />'
             );
-
-        if(submit){
-            refresh_explore_results();
-        }
     }
 
     $('#explore_keyword_event_types_holder').addClass('hidden');
     $.each($('.explore-keyword-event-type-name'), function(index, value){
         $(value).parent().removeClass('hidden');
     });
-    $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type').addClass('hidden');
+    $('#explore_keyword_custom_event_type').addClass('hidden');
+    $('#explore_keyword_custom_event_type .explore-keyword-event-type-name').text('');
     $('#explore_keyword_text_field').val('');
     $('#explore_keyword_text_field').blur();
+
+    if(submit){
+        refresh_explore_results();
+    }
 }
 
 function does_explore_keyword_already_exist(eventType_name){
@@ -178,7 +179,7 @@ function does_explore_keyword_already_exist(eventType_name){
     $.each(
         $('#explore_keyword_tag_list .explore-keyword-tag-name'),
         function(index, value){
-            if($(value).text().trim() == eventType_name)
+            if($.trim($(value).text()) == eventType_name)
                 rtn = true;
         }
         );

@@ -43,11 +43,20 @@
 
   <div id="show_attendees_holder">
     <div id="show_attendees_title">
-      Attendees
+      Who's Attending
     </div>
     <div id="show_attendees_list_holder">
       <ul id="show_attendees_list">
-
+        <% @event.event_rsvps.attending.each do |attendee|%>
+        <li class="show-attendee-holder">
+          <div class="attendee-image">
+            <%=avatar(attendee.user, :size => "55x55")%>
+          </div>
+          <div class="attendee-name">
+            <%=attendee.user.name%>
+          </div>
+        </li>
+        <% end %>
       </ul>
     </div>
   </div>

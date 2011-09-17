@@ -533,6 +533,19 @@ END OF RESET
     text-align: center;
     font: bold 22px/32px Arial, Helvetica, sans-serif;
 }
+#show_attendees_list_holder{
+    margin-left: 20px;
+}
+.show-attendee-holder{
+    float: left;
+    width: 100px;
+}
+.attendee-image{
+    padding: 0 22px 0 22px;
+}
+.attendee-name{
+    text-align: center;
+}
 #event_wall_text_field_holder{
 }
 #event_wall_text_field{
