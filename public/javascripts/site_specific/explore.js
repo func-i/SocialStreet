@@ -31,6 +31,11 @@ $(function(){
         remove_explore_tag($(this).parent());
     });
 
+    cleanUpSelf = function(){
+        $('#explore_btn').removeClass('hidden');
+        $('#notify_me_btn').addClass('hidden');
+    }
+
 });
 
 function setup_explore_page(){

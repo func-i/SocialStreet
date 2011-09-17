@@ -13,14 +13,6 @@
 }
 /* Datewheel overlay background */
 .dwo {
-    width: 100%;
-    background: #000;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    opacity: .7;
-    filter:Alpha(Opacity=70);
 }
 /* Datewheel wheel container wrapper */
 .dwc {

@@ -1,39 +1,9 @@
 var createEventEventTypeTimer;
 var createEventSelectedMarker;
-var createEventMarkerArr = [];
 var geocoder = new google.maps.Geocoder();
 
 $(function(){
-
-    setupCreateEvent();
-    init_create_event();
-
-    $('#create_what_next_arrow').click(function(){
-        setupCreateWhere();
-        
-        $('#create_what').addClass('hidden');
-        $('#create_where').removeClass('hidden');
-    });
-
-    $('#create_where_next_arrow').click(function(){
-        $('#create_date_picker').scroller({
-            onClose: function(valueText, inst) {
-                $('.set-when').html(valueText);
-            }
-        });
-
-        $('#create_date_picker').scroller('show');
-        $('#create_where').addClass('hidden');
-        $('#create_when').removeClass('hidden');
-
-        // Show scroller when time is clicked
-        $('.set-when').click(function() {
-            $('#create_date_picker').scroller('show');
-        })
-    });
-
-
-    
+    init_create_event();    
 });
 
 /*
@@ -48,6 +18,14 @@ function init_create_event(){
     $('.create-what-event-type').live('click', function(){
         create_eventType_is_clicked(this);
     });
+
+    $('#create_what_next_arrow').click(function(){
+        setupCreateWhere();
+
+        $('#create_what').addClass('hidden');
+        $('#create_where').removeClass('hidden');
+    });
+
 
     //Create Where bindings
     $('#create-where-text-field').keydown(function(e){
@@ -66,23 +44,32 @@ function init_create_event(){
             save_marker_name(e.target.value);
         }
     });
+
+    $('#create_where_next_arrow').click(function(){
+        $('#create_date_picker').scroller('show');
+        $('#create_where').addClass('hidden');
+        $('#create_when').removeClass('hidden');
+
+        markerManager.deleteAllMarkers();
+    });
+
+    //CREATE WHEN BINDINGS
+    $('#create_date_picker').scroller({
+        onClose: function(valueText, inst) {
+            $('.set-when').html(valueText);
+        }
+    });
+
+    // Show scroller when time is clicked
+    $('.set-when').click(function() {
+        $('#create_date_picker').scroller('show');
+    })
 }
 
-function setupCreateEvent(){
-    //Remove form values
-    $('#location-name-field').val('');
-    $('#location-lat-field').val('');
-    $('#location-lng-field').val('');
-    $('#location-geocodedaddress-field').val('');
-    $('#create-event-form input[name="event[event_keywords]"]').remove();
 
-    //Cleanup what
-    $('#create-what-tag-list').html('');
-    $('#create-what-tag-list-holder').addClass('hidden');
-    $('#create_what_next_arrow').addClass('hidden');
-    $('#create-what-custom-event-type .create-what-event-type-name').html('');
-}
-
+/*
+ *WHAT FUNCTIONS
+ **/
 function filter_what_icons(search_text){
     if (createEventEventTypeTimer) {
         clearInterval(createEventEventTypeTimer);
@@ -171,19 +158,25 @@ function does_keyword_already_exist(eventType_name){
     return rtn;
 }
 
+
+/*
+ *WHERE FUNCTIONS
+ **/
 function setupCreateWhere(){
-    createCreateMarker(map.getCenter());
     $('#create_where_next_arrow').addClass('hidden');
     $('#create-where-marker-info').addClass('hidden');
     $('#create-where-name-location-text').text('');
     $('#create-where-address').text('');
     $('#create-where-text-field').val('');
     $('#create-where-name-location-input').val('');
+
+    createCreateMarker(map.getCenter());
     markerManager.showAllMarkers();
 }
 
 function selectMarker_createWhere(marker){
     createEventSelectedMarker = marker;
+    
     $('#create-where-marker-info').removeClass('hidden');
     $('#create-where-address').text(marker.address_);
 
@@ -192,7 +185,7 @@ function selectMarker_createWhere(marker){
     $('#create-where-name-location-input').addClass('hidden');
     $('#create-where-name-location-input').val('');
 
-    map.setCenter(marker.getPosition());//Shouldnt center, but center in lower right quadrant
+    map.setCenter(marker.getPosition());//TODO: Shouldnt center, but center in lower right quadrant
 
     $('#create_where_next_arrow').removeClass('hidden');
 
@@ -207,7 +200,6 @@ function save_marker_name(marker_name){
     createEventSelectedMarker.text_ = marker_name;
     $('#create-where-name-location-text').removeClass('hidden');
     $('#create-where-name-location-input').addClass('hidden');
-
     $('#create-event-form #location-name-field').val(marker_name);
 }
 
@@ -269,8 +261,6 @@ function createCreateMarker(latlng, address){
         reverse_geocode(marker);
     }
     marker.address_ = address
-
-    createEventMarkerArr.push(marker);
 
     google.maps.event.addListener(marker, 'click', function(latlng){
         selectMarker_createWhere(this);

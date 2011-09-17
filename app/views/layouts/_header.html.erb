@@ -1,22 +1,17 @@
 <div id="header">
   <div class="holder">
-    <h1 class="logo"></h1>
+    <div style="float:left;width:100%;">
+      <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
 
-    <div style="float:left">
       <div id="add_streetmeet_btn" class="btn btn-important-color nav-link" data-ajax-href="<%= new_event_path %>">
         +StreetMeet
       </div>
-      <div id="notify_me_btn" class="btn btn-not-important-color">
+      <!--<div id="notify_me_btn" class="btn btn-not-important-color">
         Notify Me
-      </div>
-      <div id="explore_btn" class="btn btn-not-important-color hidden">
+      </div>-->
+      <div id="explore_btn" class="btn btn-not-important-color nav-link <%= "hidden" if current_page?(root_path)%>" data-ajax-href="<%= root_path %>">
         Explore
       </div>
-
-      <div class="btn btn-not-important-color nav-link" data-ajax-href='<%= user_signed_in? ? destroy_user_session_path : "/auth/facebook" %>'>
-        <%= user_signed_in? ? "Sign out" : "Sign In" %>
-      </div>
-
 
       <!--      <div class="btn btn-not-important-color">
               +Message
@@ -24,9 +19,11 @@
             <div class="btn btn-not-important-color">
               Filter
             </div>-->
-      <!--      <div style="float:left">
-      <%=image_tag("header_logout.png")%>
-            </div>-->
+
+      <div class="btn btn-not-important-color nav-link" style="float:right;" data-ajax-href='<%= user_signed_in? ? destroy_user_session_path : "/auth/facebook" %>'>
+        <%= user_signed_in? ? "Sign out" : "Sign In" %>
+      </div>
+
     </div>
   </div>
 </div>

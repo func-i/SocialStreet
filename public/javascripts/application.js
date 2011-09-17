@@ -1,11 +1,13 @@
+cleanUpSelf = function(){};
+
 if(history && history.pushState) {
     $(function() {
         $('.nav-link').live('click', function(e) {
             
             if(typeof cleanUpSelf == 'function') {
                 cleanUpSelf();
+                cleanUpSelf = function(){}
             }
-            console.log(markerManager);
             markerManager.deleteAllMarkers();
 
             var href;
