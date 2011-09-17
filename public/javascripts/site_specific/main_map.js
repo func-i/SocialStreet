@@ -1,5 +1,6 @@
 var map;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
+var markerManager;
 
 $(function(){
     init_map();
@@ -47,5 +48,10 @@ function init_map(){
 
         }
     });
+
+
+     markerManager = new MarkerManager({
+         map: map
+     });
 }
 

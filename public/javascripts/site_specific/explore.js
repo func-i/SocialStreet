@@ -241,39 +241,17 @@ function addExploreMarkers(){
         var lng = $(result).children('#result_lng');
         createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()));
     });
+    showExploreMarkers();
 }
+
 function createExploreMarker(lat, lng){
-    var marker = new google.maps.Marker(
-    {
-        position: new google.maps.LatLng(lat, lng)
-    });
-    marker.setMap(map);
-
-    exploreMarkerArr.push(marker);
-
-    google.maps.event.addListener(marker, 'click', function(latlng){
-        //TODO
-        });
-
-    return marker;
+    markerManager.addMarker(lat, lng);
 }
-
 function clearExploreMarkers(){
-    $.each(exploreMarkerArr, function(index, marker){
-        marker.setMap(null);
-    });
-    delete exploreMarkerArr;
-    exploreMarkerArr = [];
+    markerManager.deleteAllMarkers();
 }
-
 function hideExploreMarkers(){
-    $.each(exploreMarkerArr, function(index, marker){
-        marker.setMap(null);
-    });
 }
-
 function showExploreMarkers(){
-    $.each(exploreMarkerArr, function(index, marker){
-        marker.setMap(map);
-    });
+    markerManager.showAllMarkers();
 }

@@ -4,9 +4,11 @@ if(history && history.pushState) {
             
             if(typeof cleanUpSelf == 'function') {
                 cleanUpSelf();
-            }            
+            }
+            console.log(markerManager);
+            markerManager.deleteAllMarkers();
+
             var href;
-            
             if(this.href != undefined) {
                 href = this.href;
             }

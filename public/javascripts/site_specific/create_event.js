@@ -172,13 +172,14 @@ function does_keyword_already_exist(eventType_name){
 }
 
 function setupCreateWhere(){
-    var marker = createCreateMarker(map.getCenter());
+    createCreateMarker(map.getCenter());
     $('#create_where_next_arrow').addClass('hidden');
     $('#create-where-marker-info').addClass('hidden');
     $('#create-where-name-location-text').text('');
     $('#create-where-address').text('');
     $('#create-where-text-field').val('');
     $('#create-where-name-location-input').val('');
+    markerManager.showAllMarkers();
 }
 
 function selectMarker_createWhere(marker){
@@ -220,6 +221,7 @@ function searchLocations(e) {
             var selectedMarker = null;
             var distance = 40000;
 
+            markerManager.deleteAllMarkers();
             $.each(results, function(index, result)
             {
                 var marker = createCreateMarker(result.geometry.location, loc);
@@ -232,6 +234,7 @@ function searchLocations(e) {
 
                 selectMarker_createWhere(selectedMarker);
             });
+            markerManager.showAllMarkers();
         }
         else {
             alert("Geocode was not successful for the following reason: " + status);
@@ -257,11 +260,7 @@ function distanceBetweenMapPoints(pos1, pos2){
 }
 
 function createCreateMarker(latlng, address){
-    var marker = new google.maps.Marker(
-    {
-        position: latlng
-    });
-    marker.setMap(map);
+    var marker = markerManager.addMarker(latlng.lat(), latlng.lng());
     marker.setDraggable(true);
     marker.text_ = null;
 
