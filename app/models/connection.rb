@@ -89,26 +89,29 @@ class Connection < ActiveRecord::Base
   protected
 
   def set_rank
+    set_all_ranks(self.user)
+
+    return;
     #find rank based on strength
-    insert_rank_obj = Connection.select("rank").where("connections.user_id = ? AND connections.strength < ?", self.user_id, self.strength).order("rank").first
-
-    if insert_rank_obj
-      old_rank = self.rank
-
-      #insert into list at object rank
-      self.rank = insert_rank_obj.rank
-
-      #increase the rank of all objects between this rank and old rank
-      if old_rank
-        Connection.update_all "rank = rank + 1",
-          ["connections.user_id = ? AND connections.rank >= ? AND connections.rank < ?", self.user_id, self.rank, old_rank]
-      else
-        Connection.update_all "rank = rank + 1",
-          ["connections.user_id = ? AND connections.rank >= ?", self.user_id, self.rank]
-      end
-    else
-      #insert into end of list
-      self.rank = Connection.where("connections.user_id = ?", self.user_id).count
-    end
+#    insert_rank_obj = Connection.select("rank").where("connections.user_id = ? AND connections.strength < ?", self.user_id, self.strength).order("rank").first
+#
+#    if insert_rank_obj
+#      old_rank = self.rank
+#
+#      #insert into list at object rank
+#      self.rank = insert_rank_obj.rank
+#
+#      #increase the rank of all objects between this rank and old rank
+#      if old_rank
+#        Connection.update_all "rank = rank + 1",
+#          ["connections.user_id = ? AND connections.rank >= ? AND connections.rank < ?", self.user_id, self.rank, old_rank]
+#      else
+#        Connection.update_all "rank = rank + 1",
+#          ["connections.user_id = ? AND connections.rank >= ?", self.user_id, self.rank]
+#      end
+#    else
+#      #insert into end of list
+#      self.rank = Connection.where("connections.user_id = ?", self.user_id).count
+#    end
   end
 end

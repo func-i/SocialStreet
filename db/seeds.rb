@@ -85,9 +85,9 @@ types[:carpool] = EventType.create!(:name => 'Carpool', :image_path => "/images/
 types[:meeting] = EventType.create!(:name => 'Meeting', :image_path => "/images/event_types/meeting.png", :parent => types[:service_exchange])
 types[:study] = EventType.create!(:name => 'Study', :image_path => "/images/event_types/study.png", :parent => types[:service_exchange])
 
-types[:finance] = EventType.create!(:name => 'Networking: Finance', :image_path => "/images/event_types/finances.png", :parent => types[:professional_networking])
-types[:technology] = EventType.create!(:name => 'Networking: Technology', :image_path => "/images/event_types/technology.png", :parent => types[:professional_networking])
-types[:startups] = EventType.create!(:name => 'Networking: Startups', :image_path => "/images/event_types/startups.png", :parent => types[:professional_networking])
+types[:finance] = EventType.create!(:name => 'Finance Networking', :image_path => "/images/event_types/finances.png", :parent => types[:professional_networking])
+types[:technology] = EventType.create!(:name => 'Technology Networking', :image_path => "/images/event_types/technology.png", :parent => types[:professional_networking])
+types[:startups] = EventType.create!(:name => 'Startups Networking', :image_path => "/images/event_types/startups.png", :parent => types[:professional_networking])
 
 
 #PARENT SYNONYMS - Don't need to specify parent if defined on synonym
@@ -109,7 +109,7 @@ types[:alcohol] = EventType.create!(:name => 'Alcohol', :synonym => types[:drink
 types[:parties] = EventType.create!(:name => 'Parties', :synonym => types[:drinking] )
 types[:bar] = EventType.create!(:name => 'Bar', :synonym => types[:drinking] )
 types[:networking] = EventType.create!(:name => 'Networking', :synonym => types[:professional_networking] )
-types[:business] = EventType.create!(:name => 'Networking: Business', :synonym => types[:professional_networking] )
+types[:business] = EventType.create!(:name => 'Business Networking', :synonym => types[:professional_networking] )
 
 
 #MAIN TYPE SYNONYMS - Don't need to specify parent if defined on synonym
@@ -167,7 +167,6 @@ types[:nintendo_wii] = EventType.create!(:name => 'Nindendo Wii', :synonym => ty
 types[:wii] = EventType.create!(:name => 'Wii', :synonym => types[:video_games] )
 types[:playstation] = EventType.create!(:name => 'Playstation', :synonym => types[:video_games] )
 types[:xbox] = EventType.create!(:name => 'Xbox', :synonym => types[:video_games] )
-types[:arcade] = EventType.create!(:name => 'Arcade', :synonym => types[:video_games] )
 types[:supper] = EventType.create!(:name => 'Supper', :synonym => types[:dinner] )
 types[:coffee_break] = EventType.create!(:name => 'Coffee Break', :synonym => types[:coffee] )
 types[:starbucks] = EventType.create!(:name => 'Starbucks', :synonym => types[:coffee] )
@@ -200,14 +199,14 @@ types[:sketch_comedy] = EventType.create!(:name => 'Sketch Comedy', :synonym => 
 types[:play] = EventType.create!(:name => 'Play', :synonym => types[:theatre] )
 types[:standup_comedy] = EventType.create!(:name => 'Standup Comedy', :synonym => types[:theatre] )
 types[:improv] = EventType.create!(:name => 'Improv', :synonym => types[:theatre] )
-types[:indie] = EventType.create!(:name => 'Concert: Indie', :synonym => types[:concert] )
-types[:alternative] = EventType.create!(:name => 'Concert: Alternative', :synonym => types[:concert] )
-types[:classical] = EventType.create!(:name => 'Concert: Classical', :synonym => types[:concert] )
-types[:rock] = EventType.create!(:name => 'Concert: Rock', :synonym => types[:concert] )
-types[:jazz] = EventType.create!(:name => 'Concert: Jazz', :synonym => types[:concert] )
-types[:blues] = EventType.create!(:name => 'Concert: Blues', :synonym => types[:concert] )
+types[:indie] = EventType.create!(:name => 'Indie Concert', :synonym => types[:concert] )
+types[:alternative] = EventType.create!(:name => 'Alternative Concert', :synonym => types[:concert] )
+types[:classical] = EventType.create!(:name => 'Classical Concert', :synonym => types[:concert] )
+types[:rock] = EventType.create!(:name => 'Rock Concert', :synonym => types[:concert] )
+types[:jazz] = EventType.create!(:name => 'Jazz Concert', :synonym => types[:concert] )
+types[:blues] = EventType.create!(:name => 'Blues Concert', :synonym => types[:concert] )
 types[:listen_music] = EventType.create!(:name => 'Listen Music', :synonym => types[:concert] )
-types[:house_music] = EventType.create!(:name => 'Concert: House Music', :synonym => types[:concert] )
+types[:house_music] = EventType.create!(:name => 'House Music', :synonym => types[:concert] )
 types[:music] = EventType.create!(:name => 'Music', :synonym => types[:concert] )
 types[:paint] = EventType.create!(:name => 'Paint', :synonym => types[:painting] )
 types[:draw] = EventType.create!(:name => 'Draw', :synonym => types[:painting] )
@@ -219,15 +218,15 @@ types[:presentation] = EventType.create!(:name => 'Presentation', :synonym => ty
 types[:lecture] = EventType.create!(:name => 'Lecture', :synonym => types[:meeting] )
 types[:homework] = EventType.create!(:name => 'Homework', :synonym => types[:study] )
 types[:tutor] = EventType.create!(:name => 'Tutor', :synonym => types[:study] )
-types[:banking] = EventType.create!(:name => 'Networking: Banking', :synonym => types[:finance] )
-types[:stocks] = EventType.create!(:name => 'Networking: Stocks', :synonym => types[:finance] )
-types[:investing] = EventType.create!(:name => 'Networking: Investing', :synonym => types[:finance] )
-types[:web] = EventType.create!(:name => 'Networking: Web', :synonym => types[:technology] )
-types[:information_technology] = EventType.create!(:name => 'Networking: Information Technology', :synonym => types[:technology] )
-types[:IT] = EventType.create!(:name => 'Networking: IT', :synonym => types[:technology] )
-types[:mobile] = EventType.create!(:name => 'Networking: Mobile', :synonym => types[:technology] )
-types[:internet] = EventType.create!(:name => 'Networking: Internet', :synonym => types[:technology] )
-types[:entrepreneurs] = EventType.create!(:name => 'Networking: Entrepreneurs', :synonym => types[:startups] )
+types[:banking] = EventType.create!(:name => 'Banking Networking', :synonym => types[:finance] )
+types[:stocks] = EventType.create!(:name => 'Stocks Networking', :synonym => types[:finance] )
+types[:investing] = EventType.create!(:name => 'Investing Networking', :synonym => types[:finance] )
+types[:web] = EventType.create!(:name => 'Web Networking', :synonym => types[:technology] )
+types[:information_technology] = EventType.create!(:name => 'Information Technology Networking', :synonym => types[:technology] )
+types[:IT] = EventType.create!(:name => 'IT Networking', :synonym => types[:technology] )
+types[:mobile] = EventType.create!(:name => 'Mobile Networking', :synonym => types[:technology] )
+types[:internet] = EventType.create!(:name => 'Internet Networking', :synonym => types[:technology] )
+types[:entrepreneurs] = EventType.create!(:name => 'Entrepreneurs Networking', :synonym => types[:startups] )
 
 
 
