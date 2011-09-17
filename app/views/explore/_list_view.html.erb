@@ -4,7 +4,8 @@
 <div id="pageless-holder">
   <div id="pageless-container">
     <% unless @promoted_events.empty? %>
-      <div id="promoted-events" class="post-holder" style="border-top: 5px solid #FFC233;border-bottom: 5px solid #FFC233">
+      <div style="background-color: #4F4F4D; padding: 2px 2px 2px 10px; margin-top: 5px; font-size: 18px; color: #FFC233; font-weight: 900; text-shadow: 2px 2px #333;">StreetMeet of the Week</div>
+      <div id="promoted-events" class="post-holder" style="padding-top: 0px; border-bottom: 5px solid #4F4F4D;">
         <div id="result_for_searchable_<%= @promoted_events[0].searchable.id -%>" class="post result-list-item">
           <%= render "shared/records", :record_type => RecordType.types[:event], :record => @promoted_events[0] %>
         </div>

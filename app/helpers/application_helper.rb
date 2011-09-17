@@ -89,6 +89,16 @@ module ApplicationHelper
 
   def ss_time_ago_in_words(start_time, end_time = nil)
     compare_time = start_time.is_a?(Date) ? Date.today : Time.now
+    compare_date = compare_time.is_a?(Date) ? compare_time : compare_time.to_date
+    d_diff = (compare_date - Date.today).to_i
+
+    if d_diff > -7 && d_diff < 14
+      if d_diff < 0
+        # => The date is less than 2 weeks old.
+      else
+
+      end
+    end
 
     if(end_time)
       if( start_time < compare_time )

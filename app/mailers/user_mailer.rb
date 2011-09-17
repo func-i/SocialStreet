@@ -118,4 +118,10 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "This is a test email")
   end
 
+  def streetmeet_of_the_week(email)
+    mail(:to => email, :subject => "StreetMeet of the Week - FREE Blue Jays Game") do |format|
+      format.html {render :layout => false}
+    end
+  end
+
 end

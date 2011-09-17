@@ -929,7 +929,7 @@ form, fieldset {
     -webkit-box-shadow: 4px 4px 3px #eee;
     -moz-box-shadow: 4px 4px 3px #eee;
     color: #fff;
-    cursor: pointer;
+    /*cursor: pointer;*/
     float: right;
     font: bold 11px/25px Arial, Helvetica, sans-serif;
     overflow: hidden;
@@ -954,7 +954,8 @@ form, fieldset {
 }
 .btn-attend:hover span,
 .btn-attending:hover span {
-    text-decoration: underline;
+    cursor: default;
+    /*text-decoration: underline;*/
 }
 #sidebar .btn-attend span,
 #content .btn-attend span {
@@ -1673,7 +1674,7 @@ form, fieldset {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 .day-detail .btn-attending {
     color: #999;
@@ -2384,7 +2385,7 @@ form, fieldset {
     width: 212px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    cursor: pointer;
+    /*cursor: pointer;*/
     behavior: url("/stylesheets/PIE.htc");
 }
 .view-all-modal .add,
