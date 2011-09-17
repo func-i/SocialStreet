@@ -5,50 +5,12 @@
     <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
     <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field"%>
   <% end %>
+
+  <%= form.hidden_field :start_date %>
 <% end %>
 
-<div class="x-small-box y-small-box position-y-top position-x-left">
-  <div class="create-what-title">
-    What do you want to do?
-  </div>
-  <div class="create-what-subtitle">
-    Select a keyword from the list or define your own...
-  </div>
-</div>
-
-<div id="create-what-tag-list-holder" class="position-y-middle position-x-left hidden">
-  <div class="create-what-tag-list-title">
-    Tags:
-  </div>
-  <ul id="create-what-tag-list">
-
-  </ul>
-</div>
-
-<div class="create-what-text-field-holder">
-  <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :class=>'create-what-text-field' %>
-</div>
-<div class="create-what-event-types-holder">
-  <ul>
-    <li id="create-what-custom-event-type" class="create-what-event-type hidden">
-      <%= image_tag('/images/event_types/streetmeet1.png') %>
-      <div class="create-what-event-type-name">
-      </div>
-    </li>
-
-    <% @event_types.each do |et| %>
-      <li class="create-what-event-type">
-        <%= image_tag(et.image_path) %>
-        <div class="create-what-event-type-name">
-          <%= et.name %>
-        </div>
-      </li>
-    <% end %>
-  </ul>
-</div>
-
-<div id="create_what_next_arrow" class="next-arrow next-arrow-position">
-  <span class="next-arrow-text">Continue</span>
+<div id="create_what" class="overlay-group">
+  <%= render :partial => "create_what.html" %>
 </div>
 
 <div id="create_where" class="overlay-group hidden">

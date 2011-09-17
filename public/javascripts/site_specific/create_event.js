@@ -1,15 +1,44 @@
 var createEventEventTypeTimer;
 var createEventSelectedMarker;
 var createEventMarkerArr = [];
+var geocoder = new google.maps.Geocoder();
 
 $(function(){
 
+    setupCreateEvent();
     init_create_event();
+
+    $('#create_what_next_arrow').click(function(){
+        setupCreateWhere();
+        
+        $('#create_what').addClass('hidden');
+        $('#create_where').removeClass('hidden');
+    });
+
+    $('#create_where_next_arrow').click(function(){
+        $('#create_date_picker').scroller({
+            onClose: function(valueText, inst) {
+                $('.set-when').html(valueText);
+            }
+        });
+
+        $('#create_date_picker').scroller('show');
+        $('#create_where').addClass('hidden');
+        $('#create_when').removeClass('hidden');
+
+        // Show scroller when time is clicked
+        $('.set-when').click(function() {
+            $('#create_date_picker').scroller('show');
+        })
+    });
+
+
+    
 });
 
 /*
- * CREATE EVENT FUNCTIONS
- */
+* CREATE EVENT FUNCTIONS
+*/
 function init_create_event(){
     //Create What bindings
     $('.create-what-text-field').keyup(function(e){
@@ -39,7 +68,7 @@ function init_create_event(){
     });
 }
 
-function setup_create_event(){
+function setupCreateEvent(){
     //Remove form values
     $('#location-name-field').val('');
     $('#location-lat-field').val('');
@@ -142,7 +171,7 @@ function does_keyword_already_exist(eventType_name){
     return rtn;
 }
 
-function setup_create_where(){
+function setupCreateWhere(){
     var marker = createCreateMarker(map.getCenter());
     $('#create_where_next_arrow').addClass('hidden');
     $('#create-where-marker-info').addClass('hidden');
@@ -150,10 +179,6 @@ function setup_create_where(){
     $('#create-where-address').text('');
     $('#create-where-text-field').val('');
     $('#create-where-name-location-input').val('');
-}
-
-function setup_create_when(){
-    $('#create_date_picker').scroller();
 }
 
 function selectMarker_createWhere(marker){
