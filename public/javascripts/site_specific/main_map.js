@@ -1,7 +1,6 @@
 var map;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 
-
 $(function(){
     init_map();
 });

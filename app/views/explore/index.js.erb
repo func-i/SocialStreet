@@ -1,6 +1,1 @@
 $('#current_overlay').html('<%= escape_javascript(render(:file => 'explore/index.html.erb')) -%>');
-
-clearExploreMarkers();
-$('#results_list').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @events })%>');
-
-toggle_suggested_actions();

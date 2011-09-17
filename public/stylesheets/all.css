@@ -36,12 +36,12 @@ table {
 html,body { height:100%;min-width: 1003px; }
 body {
     margin: 0;
-    color: #999;
+    color: #010000;
     font: 14px Arial, Helvetica, sans-serif;
     /*background: #fff url(../images/bg-body.png) repeat-y 50% 0;*/
 }
 img{border-style:none;}
-a{text-decoration:none; color:#0981be;}
+a{text-decoration:none; color: inherit;}
 a:hover{text-decoration:underline;}
 input, textarea, select {
     font: 100% Arial, Helvetica, sans-serif;
@@ -207,21 +207,29 @@ END OF RESET
     overflow-y: auto;
     height: 80px;
 }
-.result-join-btn{
+.result-join-btn-holder{
     position: absolute;
     right: -50px;
     top: 40px;
-    color: #010000;
-    background: #FFC233;
-    font: bold 14px/32px Arial, Helvetica, sans-serif;
-    margin: 2px 10px 0 0;
-    padding: 3px 10px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     cursor: pointer;
-    width: 80px;
     text-align: center;
+}
+.result-join-btn-holder .unattend-btn{
+    display: none;
+}
+.result-join-btn-holder .already-joined_btn{
+    font: bold 12px/16px Arial, Helvetica, sans-serif;
+    margin: 2px 10px 0 0;
+    padding: 3px 10px;
+    width: 80px;
+}
+.result-join-btn-holder .join-event-btn{
+    font: bold 14px/32px Arial, Helvetica, sans-serif;
+    margin: 2px 10px 0 0;
+    padding: 3px 10px;
 }
 #suggested_actions{
     padding:60px 0 0 15px;
@@ -336,12 +344,42 @@ END OF RESET
     background: #FFFCD5;
 }
 
-/*Buttons in the header*/
 #header .btn {
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     float: left;
+}
+
+.join-event-btn{
+    color: #010000;
+    background: #FFC233;
+    font: bold 22px/32px Arial, Helvetica, sans-serif;
+    padding: 10px 50px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 80px;
+    text-align: center;
+}
+.already-joined_btn{
+    color: #010000;
+    background: #9c3;
+    font: bold 16px/32px Arial, Helvetica, sans-serif;
+    padding: 10px 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 120px;
+    text-align: center;
+}
+.unattend-btn{
+    margin-top: 10px;
+    color: white;
+    font: 10px/12px Arial, Helvetica, sans-serif;
+    text-align: center;
+    cursor: pointer;
 }
 
 /*Create Event*/
@@ -484,36 +522,6 @@ END OF RESET
     width: 180px;
     height: 200px;
     float: left;
-}
-#show_join_event_btn{
-    color: #010000;
-    background: #FFC233;
-    font: bold 22px/32px Arial, Helvetica, sans-serif;
-    padding: 10px 50px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 80px;
-    text-align: center;
-}
-#show_already_joined_btn{
-    color: #010000;
-    background: #9c3;
-    font: bold 16px/32px Arial, Helvetica, sans-serif;
-    padding: 10px 30px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    width: 120px;
-    text-align: center;
-}
-#show_unattend_btn{
-  margin-top: 10px;
-  color: white;
-  font: 10px/12px Arial, Helvetica, sans-serif;
-  text-align: center;
-  cursor: pointer;
 }
 #show_attendees_holder{
     height: 200px;

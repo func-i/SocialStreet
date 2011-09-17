@@ -6,7 +6,11 @@ class ExploreController < ApplicationController
     init_page
     #end
     
-    @events = find_events()
+    @events = find_events
+  end
+
+  def search
+    @events = find_events
   end
 
   def init_page

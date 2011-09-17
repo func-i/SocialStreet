@@ -3,28 +3,9 @@
   <%= hidden_field_tag 'map_center', params[:map_center] %>
   <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
 
-  <div id="explore_keyword_tag_list_holder">
-    <ul id="explore_keyword_tag_list">
-      <% unless params[:keywords].blank? %>
-        <% for keyword in params[:keywords] %>
-          <li id="explore_keyword_tag_stamp" class="explore-keyword-tag">
-            <%= image_tag("/images/event_types/#{keyword}.png", :size=>'50x50', :class=>"explore-tag-icon") %>
-            <span class="explore-keyword-tag-name">
-              <%= keyword %>
-            </span>
-            <%= image_tag('header-close.png', :class => 'explore-keyword-tag-remove') %>
-          </li>
-        <% end %>
-      <% end %>
-      <li id="explore_keyword_tag_stamp" class="explore-keyword-tag hidden">
-        <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50', :class=>"explore-tag-icon") %>
-        <span class="explore-keyword-tag-name"></span>
-        <%= image_tag('header-close.png', :class => 'explore-keyword-tag-remove') %>
-        <%= hidden_field_tag "keywords[]", keyword %>
-      </li>
-    </ul>
-  </div>
-
+  <% (params[:keywords] || []).each do |keyword|%>
+    <%= hidden_field_tag 'keywords[]', keyword %>
+  <% end %>
 <% end %>
 
 <div class="x-small-box y-large-box position-y-top position-x-left">
@@ -37,6 +18,16 @@
 <div id="explore_keyword_header" class="important-color">Keywords</div>
 <div id="explore_keyword_text_field_holder">
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "What do you want to do?", :id=>'explore_keyword_text_field' %>
+</div>
+
+<div id="explore_keyword_tag_list_holder">
+  <ul id="explore_keyword_tag_list">
+    <li id="explore_keyword_tag_stamp" class="explore-keyword-tag hidden">
+      <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50', :class=>"explore-tag-icon") %>
+      <span class="explore-keyword-tag-name"></span>
+      <%= image_tag('header-close.png', :class => 'explore-keyword-tag-remove') %>
+    </li>
+  </ul>
 </div>
 
 <div id="explore_keyword_event_types_holder" class="hidden">
@@ -60,7 +51,13 @@
 
 <%= hidden_field_tag "on_explore", "true" %>
 
+<% unless params[:keywords].blank? %>
+  <script type="text/javascript">
+  <% for keyword in params[:keywords] %>
+    addKeyword('<%= keyword %>');
+  <% end %>
+  </script>
+<% end %>
+
 <%= javascript_include_tag 'site_specific/explore' %>
-
-
 
