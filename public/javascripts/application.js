@@ -28,6 +28,10 @@ if(history && history.pushState) {
         $(window).bind('popstate', function() {
             $.getScript(location.href);
         });
+
+        $('#log_button').click(function() {
+            window.location = $(this).data('href');
+        })
        
     });
 }

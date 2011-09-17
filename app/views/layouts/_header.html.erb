@@ -20,7 +20,7 @@
               Filter
             </div>-->
 
-      <div class="btn btn-not-important-color nav-link" style="float:right;" data-ajax-href='<%= user_signed_in? ? destroy_user_session_path : "/auth/facebook" %>'>
+      <div id="log_button" class="btn btn-not-important-color" style="float:right;" data-href='<%= user_signed_in? ? destroy_user_session_path : "/auth/facebook" %>'>
         <%= user_signed_in? ? "Sign out" : "Sign In" %>
       </div>
 

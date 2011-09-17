@@ -181,7 +181,7 @@ END OF RESET
     margin: 0px 14px 0px 0px;
 }
 .result-text{
-    float: left;
+    /*float: left;*/
     color: white;
 }
 .result-title{
