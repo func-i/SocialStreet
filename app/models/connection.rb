@@ -89,7 +89,7 @@ class Connection < ActiveRecord::Base
   protected
 
   def set_rank
-    set_all_ranks(self.user)
+    Connection.set_all_ranks(self.user)
 
     return;
     #find rank based on strength
