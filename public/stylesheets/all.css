@@ -583,3 +583,7 @@ END OF RESET
     height: auto;
     overflow: visible;
 }
+
+.nav-link {
+    cursor: pointer;
+}
