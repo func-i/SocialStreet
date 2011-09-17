@@ -2,6 +2,7 @@
   <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
   <%= hidden_field_tag 'map_center', params[:map_center] %>
   <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
+
   <% (params[:keywords] || []).each do |keyword|%>
     <%= hidden_field_tag 'keywords[]', keyword %>
   <% end %>
@@ -18,6 +19,7 @@
 <div id="explore_keyword_text_field_holder">
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "What do you want to do?", :id=>'explore_keyword_text_field' %>
 </div>
+
 <div id="explore_keyword_tag_list_holder">
   <ul id="explore_keyword_tag_list">
     <li id="explore_keyword_tag_stamp" class="explore-keyword-tag hidden">
@@ -27,6 +29,7 @@
     </li>
   </ul>
 </div>
+
 <div id="explore_keyword_event_types_holder" class="hidden">
   <ul>
     <li id="explore_keyword_custom_event_type" class="explore-keyword-event-type hidden">
@@ -48,7 +51,13 @@
 
 <%= hidden_field_tag "on_explore", "true" %>
 
+<% unless params[:keywords].blank? %>
+  <script type="text/javascript">
+  <% for keyword in params[:keywords] %>
+    addKeyword('<%= keyword %>');
+  <% end %>
+  </script>
+<% end %>
+
 <%= javascript_include_tag 'site_specific/explore' %>
-
-
 

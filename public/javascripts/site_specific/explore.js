@@ -6,8 +6,7 @@ var exploreUpdateTimer;
 $(function(){
     
     setup_explore_page();
-
-
+    
     $('#explore_keyword_text_field').focus(function(){
         $('#explore_keyword_event_types_holder').removeClass('hidden');
     });
@@ -138,23 +137,39 @@ function explore_keywords_textfield_keywdown(e){
     }
 }
 
-function explore_eventType_is_clicked(record, submit){
-    if(submit == undefined){
-        submit = true;
-    }
+function addKeyword(keyword) {
 
-    var eventType_record = $(record);
-    var eventType_name = $.trim(eventType_record.children('.explore-keyword-event-type-name').text());
+    var eventType_record;
+    $('.explore-keyword-event-type').each(function(i, ele) {
+        if($(ele).children('.explore-keyword-event-type-name').text().trim() == keyword){
+            eventType_record = $(ele);
+        }
+    });
 
-    if(!does_explore_keyword_already_exist(eventType_name))
-    {
+    if(eventType_record != undefined){
         var new_tag_record = $($('#explore_keyword_tag_stamp').clone());
+        var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
+
         new_tag_record.id = "";
         new_tag_record.find('.explore-tag-icon').attr('src', eventType_record.find('img').attr('src'));
         new_tag_record.find('.explore-keyword-tag-name').text(eventType_name);
         $('#explore_keyword_tag_list').append(new_tag_record);
         new_tag_record.removeClass('hidden');
+    }
+}
 
+function explore_eventType_is_clicked(record, submit){
+    if(submit == undefined) {
+        submit = true;
+    }
+
+    var eventType_record = $(record);
+    var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
+
+    if(!does_explore_keyword_already_exist(eventType_name))
+    {
+        addKeyword(eventType_name);
+        
         $('#explore_search_params').append(
             '<input type="hidden" name="keywords[]" value="' + eventType_name + '" />'
             );
@@ -212,8 +227,12 @@ function updateExploreLocationParams(){
     }
 }
 
+
 function refresh_explore_results(){
     $('#explore_search_params').submit();
+    if(history && history.pushState) {
+        history.pushState(null, "", '?' + $('#explore_search_params').serialize());
+    }
 }
 
 function addExploreMarkers(){

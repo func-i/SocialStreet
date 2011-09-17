@@ -1,0 +1,24 @@
+<%= form_for @event_for_create, :remote => true, :html => {:id => 'create-event-form'} do |form| %>
+  <%= form.fields_for :location do |location_fields| %>
+    <%= location_fields.hidden_field :text, :id => "location-name-field" %>
+    <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
+    <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
+    <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field"%>
+  <% end %>
+
+  <%= form.hidden_field :start_date %>
+<% end %>
+
+<div id="create_what" class="overlay-group">
+  <%= render :partial => "create_what.html" %>
+</div>
+
+<div id="create_where" class="overlay-group hidden">
+  <%= render :partial => "create_where.html" %>
+</div>
+
+<div id="create_when" class="overlay-group hidden">
+  <%= render :partial => "create_when.html" %>
+</div>
+
+<%= javascript_include_tag "site_specific/create_event" %>

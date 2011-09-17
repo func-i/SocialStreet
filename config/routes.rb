@@ -1,7 +1,8 @@
 SocialStreetReborn::Application.routes.draw do
   root :to => 'explore#index'
 
-  get 'explore' => 'explore#index', :as => 'explore'
+  get 'explore' => 'explore#search', :as => 'explore'
+  
 
   resources :event_types, :only => [:index]
   resources :events do
