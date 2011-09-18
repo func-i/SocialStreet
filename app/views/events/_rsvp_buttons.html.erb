@@ -1,12 +1,13 @@
 <% if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
-  <div class="already-joined_btn">
-    Already Joined
+  <div class="invite-friends-btn">
+    Invite Friends
   </div>
   <div class="unattend-btn">
-    <%=link_to "Click here if you can no longer join...", [:edit, event, rsvp], :remote=>true %>
+    <%=link_to "Click here if you can no longer attend...", [:edit, event, rsvp], :remote=>true %>
   </div>
 <% else %>
-  <div class="join-event-btn">
-    <%=link_to "I'll Join", [:new, event, :event_rsvp], :remote => true %>
+  <div class="join-event-btn ajax-link" data-ajax-href='<%= [:new, event, :event_rsvp]%>'>
+    I'll Join
+    <%#=link_to "I'll Join", [:new, event, :event_rsvp], :remote => true %>
   </div>
 <% end %>

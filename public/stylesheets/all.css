@@ -363,7 +363,7 @@ END OF RESET
     width: 80px;
     text-align: center;
 }
-.already-joined_btn{
+.invite-friends-btn{
     color: #010000;
     background: #9c3;
     font: bold 16px/32px Arial, Helvetica, sans-serif;
@@ -372,6 +372,7 @@ END OF RESET
     -moz-border-radius: 4px;
     border-radius: 4px;
     width: 120px;
+    cursor: pointer;
     text-align: center;
 }
 .unattend-btn{
@@ -538,10 +539,7 @@ END OF RESET
 }
 .show-attendee-holder{
     float: left;
-    width: 100px;
-}
-.attendee-image{
-    padding: 0 22px 0 22px;
+    padding: 0 5px;
 }
 .attendee-name{
     text-align: center;

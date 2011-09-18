@@ -23,7 +23,7 @@ if(history && history.pushState) {
                 history.pushState(null, "", href);
                 e.preventDefault();
             }
-        })
+        });
 
         $(window).bind('popstate', function() {
             $.getScript(location.href);
@@ -31,3 +31,17 @@ if(history && history.pushState) {
        
     });
 }
+
+$(function(){
+    $('.ajax-link').live('click', function(e){
+        var href;
+        if(this.href != undefined) {
+            href = this.href;
+        }
+        else{
+            href = $(this).data('ajax-href');
+        }
+
+        $.getScript(href);
+    });
+});
