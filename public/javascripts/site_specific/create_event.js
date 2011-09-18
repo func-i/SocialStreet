@@ -185,7 +185,7 @@ function selectMarker_createWhere(marker){
     $('#create-where-name-location-input').addClass('hidden');
     $('#create-where-name-location-input').val('');
 
-    map.setCenter(marker.getPosition());//TODO: Shouldnt center, but center in lower right quadrant
+    map.panTo(marker.getPosition());//TODO: Shouldnt center, but center in lower right quadrant
 
     $('#create_where_next_arrow').removeClass('hidden');
 
