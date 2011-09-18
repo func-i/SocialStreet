@@ -31,6 +31,22 @@ class ApplicationController < ActionController::Base
         if create_comment(event_id, body)
           return_path = get_current_path
         end
+      elsif session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'
+
+        #User was trying to create an event. Create it
+
+        if create_or_edit_event(session[:stored_redirect][:params], :create)
+
+          #Create was a success
+          return_path = event_path(@event, :invite => true)
+        else
+
+          #Create failed
+          session[:stored_params] = session[:stored_redirect][:params][:event]
+
+          #TODO - What should this be. Currently, doesn't load modal on error
+          return_path = stored_path + "?&create_event=1"
+        end
 
       elsif session[:stored_redirect][:controller] == 'event_rsvps' && session[:stored_redirect][:action] == 'new'
 
@@ -49,6 +65,24 @@ class ApplicationController < ActionController::Base
     super
 
     #raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
+  end
+
+  def create_or_edit_event(params, action)
+    if action == :create
+      #Create the event
+      @event = Event.new()
+      @event.user = current_user if current_user # TODO: remove if statement when enforced.
+    end
+
+    @event.attributes = params[:event]
+    #@event.location.user = current_user if @event.location
+
+    if @event.save
+      # Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
+      return true
+    end
+
+    return false
   end
 
   def create_comment(event_id, comment_body)

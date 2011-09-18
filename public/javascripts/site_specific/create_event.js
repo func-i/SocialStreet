@@ -55,8 +55,12 @@ function init_create_event(){
 
     //CREATE WHEN BINDINGS
     $('#create_date_picker').scroller({
+        dateFormat: "yyyy-mm-dd",
+        preset: 'datetime',
         onClose: function(valueText, inst) {
             $('.set-when').html(valueText);
+            $('#new_event #event_start_date').val(valueText);
+            $('#create_when_next_arrow').removeClass('hidden');
         }
     });
 
@@ -64,6 +68,10 @@ function init_create_event(){
     $('.set-when').click(function() {
         $('#create_date_picker').scroller('show');
     })
+
+    $('#create_when_next_arrow').click(function(){
+        $('#new_event').submit();
+    });
 }
 
 
@@ -121,7 +129,7 @@ function create_eventType_is_clicked(record){
         eventType_record.remove();
 
         $.each(
-            $('#create-event-form input[name="event[event_keywords]"]'),
+            $('#new_event input[name="event[event_keywords]"]'),
             function(index, value){
                 if($(value).val().trim() == eventType_name)
                     $(value).remove();
@@ -139,8 +147,8 @@ function create_eventType_is_clicked(record){
         {
             $('#create-what-tag-list').append(eventType_record.clone());
 
-            $('#create-event-form').append(
-                '<input type="hidden" name="event[event_keywords]" value="' + eventType_name + '" />'
+            $('#new_event').append(
+                '<input type="hidden" name="event[event_keywords_attributes][][name]" value="' + eventType_name + '" />'
                 );
         }
     }
@@ -189,10 +197,10 @@ function selectMarker_createWhere(marker){
 
     $('#create_where_next_arrow').removeClass('hidden');
 
-    $('#create-event-form #location-lat-field').val(marker.getPosition().lat());
-    $('#create-event-form #location-lng-field').val(marker.getPosition().lng());
-    $('#create-event-form #location-geocodedaddress-field').val(marker.address_);
-    $('#create-event-form #location-name-field').val(marker.text_);
+    $('#new_event #location-lat-field').val(marker.getPosition().lat());
+    $('#new_event #location-lng-field').val(marker.getPosition().lng());
+    $('#new_event #location-geocodedaddress-field').val(marker.address_);
+    $('#new_event #location-name-field').val(marker.text_);
 }
 
 function save_marker_name(marker_name){
@@ -200,7 +208,7 @@ function save_marker_name(marker_name){
     createEventSelectedMarker.text_ = marker_name;
     $('#create-where-name-location-text').removeClass('hidden');
     $('#create-where-name-location-input').addClass('hidden');
-    $('#create-event-form #location-name-field').val(marker_name);
+    $('#new_event #location-name-field').val(marker_name);
 }
 
 function searchLocations(e) {
