@@ -1,4 +1,4 @@
-<%= form_for @event_for_create, :remote => true, :html => {:id => 'create-event-form'} do |form| %>
+<%= form_for @event, :remote => true do |form| %>
   <%= form.fields_for :location do |location_fields| %>
     <%= location_fields.hidden_field :text, :id => "location-name-field" %>
     <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
