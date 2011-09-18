@@ -44,7 +44,7 @@ function setup_explore_page(){
 
     var mapCenter = $('#map_center').val();
     var mapCenterArr = mapCenter.split(",");
-    map.setCenter(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
+    map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
     map.setZoom(parseInt($('#map_zoom').val()));
 
     create_tags_from_input_fields();

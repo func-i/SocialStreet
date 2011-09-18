@@ -18,8 +18,12 @@ $(function(){
     var lat = $('#lat').val();
     var lng = $('#lng').val();
     createShowMarker(lat, lng);
-    map.setCenter(new google.maps.LatLng(lat, lng));
+    map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
+
+    var xOffset = $('#location-map').width() / 10;
+    var yOffset = $('#location-map').height() / 10;
+    map.panBy(-xOffset, -yOffset);
 });
 
 function submit_event_wall_comment(){
