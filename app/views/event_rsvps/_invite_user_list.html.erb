@@ -1,4 +1,4 @@
-<ul id="invite_user_list">
+<ul id="user_list_for_invitation">
   <%(user_list || []).each do |connection|%>
     <%= render :partial => 'event_rsvps/invite_user_element.html', :locals => {:user => connection.to_user} %>
   <% end %>

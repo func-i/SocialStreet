@@ -66,11 +66,26 @@
   <div id="invite_user_text_field_holder">
     <%= form_tag search_event_event_rsvp_path(@event), :method => :get, :id=>'invite_user_form', :remote => true do %>
       <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
+      <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
     <% end %>
   </div>
-  <div id="invite_user_holder">
+  <div id="user_holder_for_invitation">
     <%= render :partial => 'event_rsvps/invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>
   </div>
+</div>
+
+<div class="position-y-middle position-x-left">
+  <% form_tag search_event_event_rsvp_path(@event), :id=>'invite_form' do %>
+  <% end %>
+  <div id="invitation_list_title" class="hidden">
+    Invitations
+  </div>
+  <ul id="invited_user_list">
+    <li id="invited_user_clone" class="already-invited-user hidden">
+      <div class="already-invited-user-image">        
+      </div>
+    </li>
+  </ul>
 </div>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>

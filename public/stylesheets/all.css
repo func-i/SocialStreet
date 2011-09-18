@@ -606,20 +606,51 @@ END OF RESET
     margin:10px;
     border: 5px solid #4F4F4D;
 }
-.invite-user{
+.user-for-invitation{
     float: left;
     padding: 0 5px;
     width: 110px;
     height: 110px;
 }
-.invite-user-image{
+.user-image-for-invitation{
     padding-left: 27px;
 }
-.invite-user-name{
+.user-name-for-invitation{
     text-align: center;
     color: #FFFCD5;
     overflow: hidden;
 }
+#invited_user_list{
+    width: 400px;
+    height: 300px;
+    overflow: auto;
+}
+.already-invited-user{
+    float: left;
+    margin: 5px;
+    width: 55px;
+    height: 55px;
+}
+.already-invited-email{
+    float: left;
+    margin: 5px;
+    height: 55px;
+    width: 120px;
+    color: white;
+    background: url("../images/overlay_box_bg.png");
+    word-wrap: break-word;
+    text-align: center;
+    vertical-align: middle;
+}
+#invitation_list_title{
+    font: bold 24px/32px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    background: url("../images/overlay_box_bg.png");
+    width: 400px;
+}
+
 
 
 
