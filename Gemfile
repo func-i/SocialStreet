@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.9'
+gem 'rake', '0.9.2'
 
 gem 'pg'
 gem 'silent-postgres'
@@ -9,9 +10,26 @@ gem 'omniauth'
 gem 'devise', '>= 1.2.0'
 gem 'geocoder'
 
+gem 'truncate_html'
+
 gem "default_value_for"
 
-gem 'sqlite3'
+gem 'fb_graph'
+
+gem "hiredis", "~> 0.3.1"
+gem "redis", "~> 2.2.0", :require => ["redis/connection/hiredis", "redis"]
+
+gem 'resque', :git => "git://github.com/defunkt/resque.git"
+gem 'resque-scheduler', :require => ['resque_scheduler']
+gem 'json'
+
+#gem 'jammit'
+gem 'airbrake'
+#gem 'rpm_contrib'
+#gem 'newrelic_rpm'
+
+gem "aws-ses", "~> 0.4.3", :require => 'aws/ses'
+
 
 # Use unicorn as the web server
 # gem 'unicorn'

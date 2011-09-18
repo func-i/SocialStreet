@@ -2,11 +2,14 @@ SocialStreetReborn::Application.routes.draw do
   root :to => 'explore#index'
 
   get 'explore' => 'explore#search', :as => 'explore'
-  
 
   resources :event_types, :only => [:index]
   resources :events do
-    resources :event_rsvps, :only => [:new, :edit]
+    resources :event_rsvps, :only => [:new, :edit] do
+      member do
+        get "search"
+      end
+    end
     resources :comments, :only => [:create]
   end
 

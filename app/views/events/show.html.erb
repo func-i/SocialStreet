@@ -20,7 +20,7 @@
   </div>
 </div>
 
-<div class="x-small-box y-medium-box position-y-middle position-x-left">
+<div class="x-small-box y-medium-box position-y-middle position-x-left hidden">
   <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
     <div id="event_wall_text_field_holder">
       <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
@@ -36,7 +36,7 @@
 <!--TODO better button and placement-->
 <%= image_tag('header-close.png', :class => 'position-y-middle position-x-center') %>
 
-<div class="x-medium-box y-small-box position-y-top position-x-center">
+<div class="x-medium-box y-small-box position-y-top position-x-center hidden">
   <div id="join_btn_holder">
     <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
   </div>
@@ -57,6 +57,17 @@
         <% end %>
       </ul>
     </div>
+  </div>
+</div>
+
+<div class="x-medium-box y-large-box position-y-top position-x-center">
+  <div id="invite_user_text_field_holder">
+    <%= form_tag search_event_event_rsvp_path(@event), :method => :get, :id=>'invite_user_form', :remote => true do %>
+      <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
+    <% end %>
+  </div>
+  <div id="invite_user_holder">
+    <%= render :partial => 'event_rsvps/invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>
   </div>
 </div>
 

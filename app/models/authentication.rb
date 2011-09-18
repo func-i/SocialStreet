@@ -5,6 +5,7 @@ class Authentication < ActiveRecord::Base
   belongs_to :user
 
   after_create :set_fb_uid
+  after_create :load_facebook_friends
 
   scope :facebook, where(:provider => "facebook")
 
@@ -23,5 +24,10 @@ class Authentication < ActiveRecord::Base
       user.update_attributes :fb_uid => self.uid
     end
   end
+
+  def load_facebook_friends
+    Resque.enqueue(Jobs::Facebook::CreateConnectionsFromFacebook, user.id) if facebook?
+  end
+
 
 end

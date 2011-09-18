@@ -19,6 +19,14 @@ class EventRsvpsController < ApplicationController
     end
   end
 
+  def search
+    @invited_user_connections = current_user.connections.includes(:to_user)
+    @invited_user_connections = @invited_user_connections.to_user_matches_keyword(params[:user_search]) unless params[:user_search].blank?
+    @invited_user_connections = @invited_user_connections.all
+  end
+
+  protected
+
   def store_new_rsvp_request
     store_redirect(:controller => 'event_rsvps', :action => 'new', :params => params)
   end

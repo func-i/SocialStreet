@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
 
   validates :email, :uniqueness => { :allow_blank => true }
 
+  scope :matching_keyword, lambda{ |keyword|
+    where("users.last_name ~* ? OR users.first_name ~* ?", keyword, keyword)
+  }
+
   def name
     if first_name? || last_name?
       "#{first_name} #{last_name}"
@@ -29,6 +33,16 @@ class User < ActiveRecord::Base
 
   def avatar_url(options={})
     self.facebook_profile_picture_url.gsub(facebook_profile_picture_url[facebook_profile_picture_url.rindex('/')+1..facebook_profile_picture_url.length], "picture?type=#{options[:fb_size] || 'square'}") if facebook_profile_picture_url
+  end
+
+  def fb_auth_token
+    authentications.first.fb_auth_token unless authentications.facebook.empty?
+  end
+
+  def facebook_user
+    myToken = fb_auth_token
+    # => Load the FB user through fb_graph if there is an access_token
+    FbGraph::User.me(myToken) if myToken
   end
 
   def attending?(event)

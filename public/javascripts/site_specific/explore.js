@@ -211,9 +211,11 @@ function toggle_suggested_actions(){
         $('#suggested_actions').removeClass('hidden');
 
         if($('#explore_search_params input[name="keywords[]"]').length > 0){
-
-    }
-
+            $('suggested_actions_change_filter').removeClass('hidden');
+        }
+        else{
+            $('suggested_actions_change_filter').addClass('hidden');
+        }
     }
     else{
         $('#suggested_actions').addClass('hidden');

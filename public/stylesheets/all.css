@@ -581,7 +581,34 @@ END OF RESET
     height: auto;
     overflow: visible;
 }
+#invite_user_text_field_holder{
+}
+#invite_user_text_field{
+    width:365px;
+    height:24px;
+    margin:10px;
+    border: 5px solid #4F4F4D;
+}
+.invite-user{
+    float: left;
+    padding: 0 5px;
+    width: 110px;
+    height: 110px;
+}
+.invite-user-image{
+    padding-left: 27px;
+}
+.invite-user-name{
+    text-align: center;
+    color: #FFFCD5;
+    overflow: hidden;
+}
+
+
 
 .nav-link {
+    cursor: pointer;
+}
+.ajax-link{
     cursor: pointer;
 }
