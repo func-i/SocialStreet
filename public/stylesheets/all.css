@@ -544,6 +544,7 @@ END OF RESET
 .attendee-name{
     text-align: center;
 }
+
 #event_wall_text_field_holder{
 }
 #event_wall_text_field{
@@ -557,6 +558,7 @@ END OF RESET
     margin: 0 20px 10px 10px;
     height: auto;
     color: white;
+    overflow: auto;
 }
 .event-wall-user-holder{
     float: left;
@@ -576,10 +578,25 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     overflow: hidden;
     margin-bottom: 10px;
+    min-height: 65px;
+    padding: 5px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    position: relative;
+    font-style: italic;
 }
 .event-wall-comment-body-overflow{
-    height: auto;
-    overflow: visible;
+    /*height: auto;
+    overflow: visible;*/
+}
+
+.comment-time {
+    float: right;
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    font-style: normal;
 }
 
 .nav-link {
