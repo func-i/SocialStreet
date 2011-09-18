@@ -33,7 +33,7 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-html,body { height:100%;min-width: 1003px; }
+/*html,body { height:100%;min-width: 1003px; }*/
 body {
     margin: 0;
     color: #010000;
@@ -181,7 +181,7 @@ END OF RESET
     margin: 0px 14px 0px 0px;
 }
 .result-text{
-    float: left;
+    /*float: left;*/
     color: white;
 }
 .result-title{
@@ -580,4 +580,8 @@ END OF RESET
 .event-wall-comment-body-overflow{
     height: auto;
     overflow: visible;
+}
+
+.nav-link {
+    cursor: pointer;
 }

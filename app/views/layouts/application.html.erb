@@ -20,16 +20,16 @@
       <div class="w1">
         <%= render 'layouts/header' %>
         <div id="wrapper" class="wat-cf">
-          <div id="main">
-            <div class="map-holder">
-              <div id="location-map" class="map-frame" style="width:1280px; height: 594px;"></div>
-            </div>
+          <div id="main">            
             <div id="current_overlay" class="overlay-group">
               <%= yield %>
             </div>            
           </div>
         </div>
       </div>
+    </div>
+    <div class="map-holder">
+      <div id="location-map" class="map-frame" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 0;"></div>
     </div>
   </body>
 </html>
