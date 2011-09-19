@@ -5,7 +5,8 @@ SocialStreetReborn::Application.routes.draw do
 
   resources :event_types, :only => [:index]
   resources :events do
-    resources :event_rsvps, :only => [:new, :edit] do
+    resources :event_rsvps, :only => [:new, :edit]
+    resources :invitations, :only => [:new] do
       member do
         get "search"
       end

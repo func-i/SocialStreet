@@ -35,41 +35,23 @@ class Event < ActiveRecord::Base
       end
       chain.where(query.join(" OR "), args)
     end
-
-    #    unless keywords.blank?
-    #      chain = includes(:event).includes(:comment)
-    #      chain = chain.joins("LEFT OUTER JOIN searchable_event_types ON searchable_event_types.searchable_id = searchables.id") if include_searchables_with_no_keywords
-    #      query = []
-    #      args = {}
-    #
-    #      keywords.each_with_index do |k, i|
-    #        unless(k.blank?)
-    #          query << "comments.body ~* :key#{i}
-    #          OR events.name ~* :key#{i}
-    #          OR events.description ~*:key#{i}
-    #          OR searchables.id IN (
-    #            SELECT set.searchable_id FROM searchable_event_types AS set, event_types
-    #              WHERE set.searchable_id = searchables.id
-    #              AND (
-    #                  set.name LIKE :key#{i}
-    #                  OR (
-    #                    set.event_type_id IS NOT NULL
-    #                    AND event_types.id = set.event_type_id
-    #                    AND event_types.name ~* :key#{i}
-    #                  )
-    #              )
-    #          )
-    #{"OR searchable_event_types.id IS NULL" if include_searchables_with_no_keywords}
-    #"
-    #          args["key#{i}".to_sym] = "#{k}"
-    #        end
-    #      end
-    #      chain.where(query.join(" OR "), args)
-    #    end
   }
 
   def event_types
     event_keywords.collect(&:event_type).compact
+  end
+
+  def event_keywords_as_sentence
+    event_keywords.collect(&:name).compact.to_sentence({:two_words_connector => "&", :last_word_connector => "&"})
+  end
+
+  def date_range_as_sentence
+    rtn_sentence = start_date.strftime("%B %d %l:%M %p")
+    if start_date.strftime("%B %d") != end_date.strftime("%B %d")
+      rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%B %d %l:%M %p")}"
+    else
+      rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%l:%M %p")}"
+    end
   end
 
   def title

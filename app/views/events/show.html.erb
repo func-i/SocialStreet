@@ -8,10 +8,10 @@
         <%= @event.name %>
       </div>
       <div class="result-date">
-        When: <%= @event.start_date.strftime("%B %d %l:%M %p") %> - <%= @event.end_date.strftime("%B %d %l:%M %p") %>
+        When: <%= @event.date_range_as_sentence %>
       </div>
       <div class="result-tags">
-        Tags: <%= @event.event_keywords.collect(&:name).compact.to_sentence({:two_words_connector => "&", :last_word_connector => "&"}) %>
+        Tags: <%= @event.event_keywords_as_sentence %>
       </div>
     </div>
     <div class="result-description">
@@ -20,7 +20,8 @@
   </div>
 </div>
 
-<div class="x-small-box y-medium-box position-y-middle position-x-left hidden">
+<div id="show_view" class="hidden">
+<div class="x-small-box y-medium-box position-y-middle position-x-left">
   <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
     <div id="event_wall_text_field_holder">
       <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
@@ -38,7 +39,7 @@
 <!--TODO better button and placement-->
 <%= image_tag('header-close.png', :class => 'position-y-middle position-x-center') %>
 
-<div class="x-medium-box y-small-box position-y-top position-x-center hidden">
+<div class="x-medium-box y-small-box position-y-top position-x-center">
   <div id="join_btn_holder">
     <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
   </div>
@@ -61,31 +62,38 @@
     </div>
   </div>
 </div>
-
-<div class="x-medium-box y-large-box position-y-top position-x-center">
-  <div id="invite_user_text_field_holder">
-    <%= form_tag search_event_event_rsvp_path(@event), :method => :get, :id=>'invite_user_form', :remote => true do %>
-      <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
-      <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
-    <% end %>
-  </div>
-  <div id="user_holder_for_invitation">
-    <%= render :partial => 'event_rsvps/invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>
-  </div>
 </div>
 
-<div class="position-y-middle position-x-left">
-  <% form_tag search_event_event_rsvp_path(@event), :id=>'invite_form' do %>
-  <% end %>
-  <div id="invitation_list_title" class="hidden">
-    Invitations
+<div id="invitation_view">
+  <div class="x-medium-box y-large-box position-y-top position-x-center">
+    <div id="invite_user_text_field_holder">
+      <%= form_tag search_event_invitation_path(@event), :method => :get, :id=>'invite_user_form', :remote => true do %>
+        <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
+        <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
+      <% end %>
+    </div>
+    <div id="user_holder_for_invitation">
+      <%= render :partial => 'invitations/invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>
+    </div>
   </div>
-  <ul id="invited_user_list">
-    <li id="invited_user_clone" class="already-invited-user hidden">
-      <div class="already-invited-user-image">        
-      </div>
-    </li>
-  </ul>
+
+  <div class="position-y-middle position-x-left">
+    <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>
+    <% end %>
+    <div id="invitation_list_title" class="hidden">
+      Invitations
+    </div>
+    <ul id="invited_user_list">
+      <li id="invited_user_clone" class="already-invited-user hidden">
+        <div class="already-invited-user-image">
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div id="submit_invitation_next_arrow" class="next-arrow next-arrow-position">
+    <span class="next-arrow-text">Continue</span>
+  </div>
 </div>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>

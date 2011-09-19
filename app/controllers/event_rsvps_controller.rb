@@ -18,13 +18,6 @@ class EventRsvpsController < ApplicationController
       raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
     end
   end
-
-  def search
-    @invited_user_connections = current_user.connections.includes(:to_user)
-    @invited_user_connections = @invited_user_connections.to_user_matches_keyword(params[:user_search]) unless params[:user_search].blank?
-    @invited_user_connections = @invited_user_connections.all
-  end
-
   protected
 
   def store_new_rsvp_request

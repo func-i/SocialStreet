@@ -22,14 +22,14 @@
 <div class="create-what-event-types-holder">
   <ul>
     <li id="create-what-custom-event-type" class="create-what-event-type hidden">
-      <%= image_tag('/images/event_types/streetmeet1.png') %>
+      <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image") %>
       <div class="create-what-event-type-name">
       </div>
     </li>
 
     <% @event_types.each do |et| %>
       <li class="create-what-event-type">
-        <%= image_tag(et.image_path) %>
+        <%= image_tag(et.image_path, :class=>"create-what-event-type-image") %>
         <div class="create-what-event-type-name">
           <%= et.name %>
         </div>

@@ -10,6 +10,9 @@ class EventType < ActiveRecord::Base
     where("event_types.name ~* ?", "[[:<:]]#{text}")
   }
   scope :with_parent_name, lambda { |keyword| joins(:parent).where("parents_event_types.name ~* ?", "[[:<:]]#{keyword}") }
+  scope :with_name, lambda {|text|
+    where("UPPER(event_types.name) = ?", text.upcase)
+  }
 
   def image_path
     synonym == self ? read_attribute('image_path') : synonym.image_path

@@ -301,11 +301,20 @@ END OF RESET
     width: 80px;
     height: 110px;
 }
+.explore-keyword-event-type-image{
+    -webkit-box-shadow: 5px 5px 5px #4F4F4D;
+    -moz-box-shadow: 5px 5px 5px #4f4f4d;
+    -webkit-border-radius: 15px;
+    -moz-border-radius-bottomright: 15px;
+    /*background-color: #4f4f4d;*/
+}
 .explore-keyword-event-type-name{
     text-align: center;
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
     background: url("../images/overlay_box_bg.png");
+    -webkit-box-shadow: 3px 3px 3px #4F4F4D;
+    -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
 .explore-keyword-tag{
     padding-left: 5px;
@@ -436,11 +445,20 @@ END OF RESET
     width: 80px;
     height: 110px;
 }
+.create-what-event-type-image{
+    -webkit-box-shadow: 5px 5px 5px #4F4F4D;
+    -moz-box-shadow: 5px 5px 5px #4f4f4d;
+    -webkit-border-radius: 15px;
+    -moz-border-radius-bottomright: 15px;
+    /*background-color: #4f4f4d;*/
+}
 .create-what-event-type-name{
     text-align: center;
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
     background: url("../images/overlay_box_bg.png");
+    -webkit-box-shadow: 3px 3px 3px #4F4F4D;
+    -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
 .next-arrow-position{
     position:absolute;
@@ -617,7 +635,7 @@ END OF RESET
 }
 .user-name-for-invitation{
     text-align: center;
-    color: #FFFCD5;
+    color: white;
     overflow: hidden;
 }
 #invited_user_list{

@@ -14,11 +14,15 @@ class EventsController < ApplicationController
     @location = @event.build_location
   end
 
-  def create
-    @event = Event.new params[:event]
+  def create 
     if create_or_edit_event(params, :create)
+      @event.reload
       prepare_for_show
-      render :file => "events/show.js.erb"
+      #render :file => "events/show.js.erb"
+      redirect_to @event
+      #render :update do |page|
+        #page.redirect_to @event
+      #end
     end
   end
 

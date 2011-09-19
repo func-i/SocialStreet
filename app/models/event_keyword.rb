@@ -7,9 +7,10 @@ class EventKeyword < ActiveRecord::Base
   protected
 
   def reference_correct_event_type
+    self.event_type = EventType.with_name(self.name).first unless self.event_type
+
     if self.event_type && self.event_type.synonym
-      self.event_type = self.event_type.synonym
+        self.event_type = self.event_type.synonym
     end
   end
-
 end

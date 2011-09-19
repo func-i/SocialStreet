@@ -1,5 +1,6 @@
 var showMarker = null;
 var refreshInviteListTimer = null;
+var invitationCounter = 0;
 
 $(function(){
     $('#event_wall_text_field').keyup(function(e){
@@ -10,6 +11,10 @@ $(function(){
                 return false;
             }
         }
+    });
+    $('.invite-friends-btn').live('click', function(){
+        $('#invitation_view').removeClass('hidden');
+        $('#show_view').addClass('hidden');
     });
     $('#invite_user_text_field').keydown(function(e){
         if(e.keyCode == 13){
@@ -29,8 +34,12 @@ $(function(){
         remove_invitation(this);
     });
     $('.already-invited-email').live('click', function(){
-        console.log(this.id);
         remove_invitation(this);
+    });
+    $('#submit_invitation_next_arrow').click(function(){
+        $('#invite_form').submit();
+        $('#invitation_view').addClass('hidden');
+        $('#show_view').removeClass('hidden');
     });
 
 
@@ -50,23 +59,22 @@ function add_invitation(that){
         //Check if user already added to list
         //Add to list
         var userClone = $('#invited_user_clone').clone();
-        userClone[0].id = that.id;
+        userClone[0].id = invitationCounter;
         userClone.children('.already-invited-user-image').html($(that).find('img').clone());
         userClone.removeClass('hidden');
         $('#invited_user_list').append(userClone);
 
         $('#invite_form').append(
-            '<input type="hidden" name="invited_users[]" value="' + that.id + '" />'
+            '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
             );
 
+        invitationCounter++;
         $('#invitation_list_title').removeClass('hidden');
     }
 }
 function remove_invitation(that){
-    $('#invite_form input[value="' + that.id + '"]').remove();
+    $('#invite_form input[id="' + that.id + '"]').remove();
     $('#invited_user_list').find('#' + that.id).remove();
-    console.log(that.id);
-    console.log($('#invited_user_list').find('#' + that.id));
 
     if($('#invite_form input[name="invited_users[]"]').length <= 0){
         $('#invitation_list_title').addClass('hidden');
@@ -89,19 +97,19 @@ function refreshInviteUserList() {
 function addEmail(email_address){
     // make sure it's a valid email that was not already included in the list
     if (isEmail(email_address))  {
-        email_address = email_address.replace("@", "_at_").replace(".","_");
-        if($('#invite_form input[name="invited_emails[]" value="' + email_address + '"]').length <= 0){
-            $('#invite_form').append(
-                '<input type="hidden" name="invited_emails[]" value="' + email_address + '" />'
-                );
+        //email_address = email_address.replace("@", "_at_").replace(".","_");
+        email_address = email_address.replace(".","\.");
+        $('#invite_form').append(
+            '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
+            );
 
-            var emailElem = $(document.createElement('li'));
-            emailElem.addClass('already-invited-email');
-            emailElem[0].id = email_address;
-            emailElem.text(email_address.replace("_at_", " '@' "));
-            $('#invited_user_list').append(emailElem);
-        }
+        var emailElem = $(document.createElement('li'));
+        emailElem.addClass('already-invited-email');
+        emailElem[0].id = invitationCounter;
+        emailElem.text(email_address.replace("@", " '@' "));
+        $('#invited_user_list').append(emailElem);
 
+        invitationCounter++;
     }
 }
 

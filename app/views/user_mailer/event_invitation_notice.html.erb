@@ -1,0 +1,46 @@
+<div style="margin-bottom:15px;font-size:12px">
+  Hi <%=@user.try(:first_name)%>,
+</div>
+<div style="margin-bottom:15px">
+  <%=@invitation.invitor.name%> invited you to
+  <%=link_to @event.title, event_url(@event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
+  .
+</div>
+<div style="margin-bottom:15px">
+  <div style="border-bottom:1px solid #ccc;line-height:5px;">
+    &nbsp;
+  </div>
+  <table style="cellspacing:0;cellpadding:0;border-collapse:collapse;margin-top:5px;">
+    <tbody>
+      <%event_what = @event.event_keywords_as_sentence%>
+      <tr style="vertical-align:top">
+        <td style="padding-right:5px">
+          <% event_image = url_for_event_image(@event) %>
+          <% event_image.slice!(0) if event_image.match(%r|^/|)%>
+          <%= image_tag('http://www.socialstreet.com/' + (event_image.match(/^images/) ? event_image : 'images/' + event_image), :size => "44x44", :title => event_what) %>
+        </td>
+        <td>
+          <%=link_to @event.title, event_url(@event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
+          <br/>
+          What: <%=event_what%>
+          <br/>
+          When: <%=@event.event_date_as_sentence%>
+          <br/>
+          Where: <%=address_for(@event.location)%>
+          <br/>
+          <!--Attend button-->
+          <%= link_to new_event_event_rsvp_url(@event), :style=>"background: #69B2D7;color:#FFFFFF;font:normal normal bold 11px/25px Arial, Helvetica, sans-serif;text-decoration: none;width:100px;height:29px;margin: 2px 0px 0px;line-height: 17px;font-size: 13px;border-bottom-left-radius: 4px 4px;border-bottom-right-radius: 4px 4px;border-top-left-radius: 4px 4px;border-top-right-radius: 4px 4px;float:left;text-align:center;" do %>
+            <span style="padding: 6px 7px;display:block">
+              I'll Join
+            </span>
+          <% end %>
+          <br/>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+  <div style="border-bottom:1px solid #ccc;line-height:5px">
+    &nbsp;
+  </div>
+</div>

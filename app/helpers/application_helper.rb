@@ -38,5 +38,14 @@ module ApplicationHelper
       :size=> options[:size] || "30x30")
   end
 
+  def address_for(location)
+    if location.text?
+      location.text
+    else
+      "#{location.street} #{location.city}, #{location.state}"
+    end
+  end
+
+
 
 end
