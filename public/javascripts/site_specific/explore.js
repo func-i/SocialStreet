@@ -138,7 +138,7 @@ function explore_keywords_textfield_keywdown(e){
     else{
         exploreEventTypeTimer = setTimeout(function() {
             filter_explore_keyword_icons(e.target.value, false);
-        }, 100);
+        }, 250);
     }
 }
 
@@ -223,23 +223,27 @@ function toggle_suggested_actions(){
 }
 
 function updateExploreLocationParams(){
-    var page_name = $('#current_page_name').val();
-    if(page_name == "explore"){
-        $('#map_zoom').val(map.getZoom());
-        var bounds = map.getBounds();
-        $('#map_bounds').val(bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng() + ',' + bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng());
-        $('#map_center').val(map.getCenter().lat() + ',' + map.getCenter().lng());
+    $('#map_zoom').val(map.getZoom());
+    var bounds = map.getBounds();
+    $('#map_bounds').val(bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng() + ',' + bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng());
+    $('#map_center').val(map.getCenter().lat() + ',' + map.getCenter().lng());
 
-        refresh_explore_results();
-    }
+    refresh_explore_results();
 }
 
 
 function refresh_explore_results(){
-    $('#explore_search_params').submit();
-    if(history && history.pushState) {
-        history.pushState(null, "", '?' + $('#explore_search_params').serialize());
+    if(exploreUpdateTimer){
+        clearTimeout(exploreUpdateTimer);
+        delete exploreUpdateTimer
     }
+
+    exploreUpdateTimer = setTimeout(function(){
+        $('#explore_search_params').submit();
+        if(history && history.pushState) {
+            history.pushState(null, "", '?' + $('#explore_search_params').serialize());
+        }
+    }, 100);
 }
 
 function addExploreMarkers(){

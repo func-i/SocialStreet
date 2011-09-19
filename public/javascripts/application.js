@@ -25,7 +25,15 @@ if(history && history.pushState) {
             }
         });
 
+        var popped = ('state' in window.history), initialURL = location.href;
+
         $(window).bind('popstate', function() {
+            var initialPop = !popped && location.href == initialURL;
+            popped = true;
+            if ( initialPop ){
+                return;
+            } 
+
             $.getScript(location.href);
         });
 
@@ -37,6 +45,9 @@ if(history && history.pushState) {
 }
 
 $(function(){
+    //setup scrollers
+    $('.scroller').jScrollPane();
+    
     $('.ajax-link').live('click', function(e){
         var href;
         if(this.href != undefined) {

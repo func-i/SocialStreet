@@ -1,4 +1,4 @@
-<div id="show_event_details" class="x-small-box y-small-box position-y-top position-x-left">
+<div id="show_event_details" class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
   <div class="result">
     <div class="result-image">
       <%= image_tag(url_for_event_image(@event))%>
@@ -20,8 +20,8 @@
   </div>
 </div>
 
-<div id="show_view" class="hidden">
-<div class="x-small-box y-medium-box position-y-middle position-x-left">
+<div id="show_view" class="<%="hidden" if params[:invite]%>">
+<div class="x-small-box y-medium-box position-y-middle position-x-left drop-shadow">
   <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
     <div id="event_wall_text_field_holder">
       <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
@@ -39,7 +39,7 @@
 <!--TODO better button and placement-->
 <%= image_tag('header-close.png', :class => 'position-y-middle position-x-center') %>
 
-<div class="x-medium-box y-small-box position-y-top position-x-center">
+<div class="x-medium-box y-small-box position-y-top position-x-center drop-shadow">
   <div id="join_btn_holder">
     <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
   </div>
@@ -64,36 +64,8 @@
 </div>
 </div>
 
-<div id="invitation_view">
-  <div class="x-medium-box y-large-box position-y-top position-x-center">
-    <div id="invite_user_text_field_holder">
-      <%= form_tag search_event_invitation_path(@event), :method => :get, :id=>'invite_user_form', :remote => true do %>
-        <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
-        <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
-      <% end %>
-    </div>
-    <div id="user_holder_for_invitation">
-      <%= render :partial => 'invitations/invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>
-    </div>
-  </div>
-
-  <div class="position-y-middle position-x-left">
-    <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>
-    <% end %>
-    <div id="invitation_list_title" class="hidden">
-      Invitations
-    </div>
-    <ul id="invited_user_list">
-      <li id="invited_user_clone" class="already-invited-user hidden">
-        <div class="already-invited-user-image">
-        </div>
-      </li>
-    </ul>
-  </div>
-
-  <div id="submit_invitation_next_arrow" class="next-arrow next-arrow-position">
-    <span class="next-arrow-text">Continue</span>
-  </div>
+<div id="invitation_view" class="<%="hidden" unless params[:invite] %>">
+  <%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
 </div>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>

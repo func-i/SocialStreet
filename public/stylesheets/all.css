@@ -302,8 +302,6 @@ END OF RESET
     height: 110px;
 }
 .explore-keyword-event-type-image{
-    -webkit-box-shadow: 5px 5px 5px #4F4F4D;
-    -moz-box-shadow: 5px 5px 5px #4f4f4d;
     -webkit-border-radius: 15px;
     -moz-border-radius-bottomright: 15px;
     /*background-color: #4f4f4d;*/
@@ -313,8 +311,6 @@ END OF RESET
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
     background: url("../images/overlay_box_bg.png");
-    -webkit-box-shadow: 3px 3px 3px #4F4F4D;
-    -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
 .explore-keyword-tag{
     padding-left: 5px;
@@ -329,6 +325,10 @@ END OF RESET
 
 }
 
+.drop-shadow{
+    -webkit-box-shadow: 3px 3px 3px #4F4F4D;
+    -moz-box-shadow: 3px 3px 3px #4f4f4d;
+}
 /*Buttons*/
 .btn {
     color: #010000;
@@ -413,7 +413,7 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     width: 400px;
 }
-#create-what-tag-list{
+#create_what_tag_list{
     overflow-y: auto;
     width: 400px;
     height: 260px;
@@ -430,7 +430,7 @@ END OF RESET
     border: 5px solid #4F4F4D;
 }
 .create-what-event-types-holder{
-    overflow-y: auto;
+    /*overflow-y: auto;*/
     position: absolute;
     left: 500px;
     /*    left: 100px;*/
@@ -446,8 +446,6 @@ END OF RESET
     height: 110px;
 }
 .create-what-event-type-image{
-    -webkit-box-shadow: 5px 5px 5px #4F4F4D;
-    -moz-box-shadow: 5px 5px 5px #4f4f4d;
     -webkit-border-radius: 15px;
     -moz-border-radius-bottomright: 15px;
     /*background-color: #4f4f4d;*/
@@ -615,6 +613,17 @@ END OF RESET
     bottom: 0px;
     right: 5px;
     font-style: normal;
+}
+#continue_invitation_holder{
+    position: absolute;
+    background: url("../images/overlay_box_bg.png");
+    top: 500px;
+    right: 100px;
+}
+#post_to_facebook_holder{
+    padding: 50px 100px;
+    color: white;
+    float:left;
 }
 #invite_user_text_field_holder{
 }

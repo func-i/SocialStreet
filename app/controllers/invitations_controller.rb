@@ -24,6 +24,19 @@ class InvitationsController < ApplicationController
       end
     end
 
+    if params[:post_to_facebook] == 'true'
+      my_event_rsvp = @event.event_rsvps.where(:user_id => current_user).first
+      if my_event_rsvp && my_event_rsvp.posted_to_facebook
+        if current_user == @event.user
+          Resque.enqueue_in(10.minutes, Jobs::Facebook::PostEventCreation, current_user.id, @event.id)
+        else
+          Resque.enqueue_in(10.minutes, Jobs::Facebook::PostEventAttending, current_user.id, @event.id)
+        end
+
+        my_event_rsvp.update_attribute(:posted_to_facebook => true)
+      end
+    end
+
     render :nothing => true
   end
 
@@ -36,26 +49,9 @@ class InvitationsController < ApplicationController
     invitation.save
 
     if (!to_user || !to_user.sign_in_count.zero?) && (email || to_user.email)
-      #Send email
       Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
     elsif to_user
-      if !@event.event_types.empty? && et = @event.event_types.detect {|et| et.image_path? }
-        et.image_path
-      else
-        'event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
-      end
-      
-      options = {
-        :picture => "http://www.socialstreet.com/#{photo_url}",
-        :link => "http://www.socialstreet.com/events/#{@event.id}",
-        :name => @event.title,
-        :caption => "Brought to you by SocialStreet",
-        :description => @event.name.blank? ? "" : @event.title_from_parameters(true),
-        :message => "I want to invite you to join this StreetMeet on SocialStreet!",
-        :type => "link"
-      }
-
-      Resque.enqueue_in(10.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
+      Resque.enqueue(Jobs::Facebook::PostEventInvitation, from_user.id, to_user.id, @event.id)
     end
   end
 end

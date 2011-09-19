@@ -1,4 +1,4 @@
-<div class="x-small-box y-small-box position-y-top position-x-left">
+<div class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
   <div class="create-what-title">
     What do you want to do?
   </div>
@@ -8,10 +8,10 @@
 </div>
 
 <div id="create-what-tag-list-holder" class="position-y-middle position-x-left hidden">
-  <div class="create-what-tag-list-title">
+  <div class="create-what-tag-list-title drop-shadow">
     Tags:
   </div>
-  <ul id="create-what-tag-list">
+  <ul id="create_what_tag_list">
 
   </ul>
 </div>
@@ -20,22 +20,24 @@
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :class=>'create-what-text-field' %>
 </div>
 <div class="create-what-event-types-holder">
-  <ul>
-    <li id="create-what-custom-event-type" class="create-what-event-type hidden">
-      <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image") %>
-      <div class="create-what-event-type-name">
-      </div>
-    </li>
-
-    <% @event_types.each do |et| %>
-      <li class="create-what-event-type">
-        <%= image_tag(et.image_path, :class=>"create-what-event-type-image") %>
+  <div class="scroller" style="height:400px;width:100%;overflow-y:auto;">
+    <ul>
+      <li id="create-what-custom-event-type" class="create-what-event-type hidden">
+        <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image drop-shadow") %>
         <div class="create-what-event-type-name">
-          <%= et.name %>
         </div>
       </li>
-    <% end %>
-  </ul>
+
+      <% @event_types.each do |et| %>
+        <li class="create-what-event-type">
+          <%= image_tag(et.image_path, :class=>"create-what-event-type-image drop-shadow") %>
+          <div class="create-what-event-type-name">
+            <%= et.name %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </div>
 
 <div id="create_what_next_arrow" class="next-arrow next-arrow-position hidden">

@@ -6,16 +6,16 @@
     </div>
     <div class="result-text">
       <span class="result-title result-event-link nav-link" data-ajax-href='<%= event_path(event)%>'>
-            <%=event.title%>
+        <%=event.title%>
       </span>
-      <div class="result-date">
-        <%= ss_time_ago_in_words(event.start_date, event.end_date) -%>
-      </div>
       <div class="result-attendees">
         <%= "#{pluralize event.number_of_attendees, 'Person'} Attending" %>
       </div>
+      <div class="result-date">
+        <%= ss_time_ago_in_words(event.start_date, event.end_date) -%>
+      </div>
     </div>
-    
+
     <div class="result-join-btn-holder">
       <%=render(:partial => 'events/rsvp_buttons', :locals => {:event => event})%>
     </div>

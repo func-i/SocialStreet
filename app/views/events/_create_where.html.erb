@@ -1,4 +1,4 @@
-<div class="x-small-box y-small-box position-y-top position-x-left">
+<div class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
   <div class="create-where-title">
     Where?
   </div>
@@ -11,7 +11,7 @@
   <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create-where-text-field' %>
 </div>
 
-<div id="create-where-marker-info" class="x-small-box y-small-box position-y-middle position-x-left hidden">
+<div id="create-where-marker-info" class="x-small-box y-small-box position-y-middle position-x-left drop-shadow hidden">
   <div id="create-where-name-location">
     <span id="create-where-name-location-text"></span>
     <%= text_field_tag 'name', params[:q], :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create-where-name-location-input', :class => 'hidden' %>

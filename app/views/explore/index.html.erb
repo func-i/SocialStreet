@@ -8,11 +8,13 @@
   <% end %>
 <% end %>
 
-<div class="x-small-box y-large-box position-y-top position-x-left">
-  <div id="results_list">
-    <%= render :partial => "results", :locals => { :results => @events } %>
+<div class="x-small-box y-large-box position-y-top position-x-left drop-shadow">
+  <div class="" style="height:100%;overflow:auto;">
+    <div id="results_list">
+      <%= render :partial => "results", :locals => { :results => @events } %>
+    </div>
+    <%= render :partial => "suggested_explore_actions" %>
   </div>
-  <%= render :partial => "suggested_explore_actions" %>
 </div>
 
 <div id="explore_keyword_header" class="important-color">Keywords</div>
@@ -33,14 +35,14 @@
 <div id="explore_keyword_event_types_holder" class="hidden">
   <ul>
     <li id="explore_keyword_custom_event_type" class="explore-keyword-event-type hidden">
-      <%= image_tag('/images/event_types/streetmeet2.png', :class=>'explore-keyword-event-type-image') %>
+      <%= image_tag('/images/event_types/streetmeet2.png', :class=>'explore-keyword-event-type-image drop-shadow') %>
       <div class="explore-keyword-event-type-name">
       </div>
     </li>
 
     <% @event_types.each do |et| %>
       <li class="explore-keyword-event-type">
-        <%= image_tag(et.image_path, :class=>'explore-keyword-event-type-image') %>
+        <%= image_tag(et.image_path, :class=>'explore-keyword-event-type-image drop-shadow') %>
         <div class="explore-keyword-event-type-name">
           <%= et.name %>
         </div>
@@ -54,7 +56,7 @@
 <% unless params[:keywords].blank? %>
   <script type="text/javascript">
   <% for keyword in params[:keywords] %>
-    addKeyword('<%= keyword %>');
+      addKeyword('<%= keyword %>');
   <% end %>
   </script>
 <% end %>
