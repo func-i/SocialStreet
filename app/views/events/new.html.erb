@@ -10,7 +10,7 @@
       <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword...">
         <% @event_types.each do |event|%>
           <li>
-            <%= link_to image_tag(event.image_path) + event.name, "#create_when" %>
+            <%= link_to image_tag(event.image_path) + event.name, "#create_where" %>
           </li>
 
         <% end %>
@@ -33,10 +33,10 @@
 
   <script type="text/javascript">
     $(document).ready(function () {
-      $('#startdate').scroller({ preset: 'datetime' });
-      $('#enddate').scroller({ preset: 'datetime' });
-      $('#next_button').click(function(){
-        var url = "#create_where";
+      $('#startdate').scroller({ preset: 'custom', theme: 'android'});
+      $('#enddate').scroller({ preset: 'datetime', theme: 'android' });
+      $('#submit_button').click(function(){
+        var url = "#create_what";
         window.location.replace(url);
       });
 
@@ -57,7 +57,7 @@
       <input type="text" name ="enddate" id="enddate" class="mobiscroll" />
     </div>
 
-    <button type="submit" data-theme="b" name="next" value="submit" id="next_button" data-ajax="false">Next</button>
+    <button type="submit" data-theme="b" name="next" value="submit" id="submit_button" data-ajax="false">Next</button>
 
     <!--/form-->
   </div>
@@ -70,27 +70,17 @@
   </div>
 
   <script type="text/javascript">
-    
 
-    /*var defaultLocation = '28.635308, 77.22496';
-     */var currentLocation = '<%=users_current_location_string()%>';/*
-      
-    $('#create_where').live("pageshow", function() {
-      $('#map-canvas').gmap(
-      { 'center' : currentLocation,
-        'zoom' : 15,
-        'mapTypeControl' : false,
-        'navigationControl' : false,
-        'streetViewControl' : false
+    $(document).ready(function () {
+      $('#next_button').click(function(){
+        var url = "#create_when";
+        window.location.replace(url);
       });
+    })
 
-      $('#map-canvas').gmap(
-    'addMarker', {'position': currentLocation, 'bounds': false}).click(function(){
-      console.log(this._latLng);
-      $('#map-location').val = this._latLng;
-    });
     
-    });*/
+    var currentLocation = '<%=users_current_location_string()%>';
+
 
     $('#create_where').live("pageshow",function() {
 
@@ -99,16 +89,16 @@
         'navigationControl' : false,
         'streetViewControl' : false
       }).bind('init', function(event, map) {
-        $(map).click( function(event) {
-          $('#map-canvas').gmap('addMarker', {'position': event.latLng, 'draggable': true, 'bounds': false}, function(map, marker) {
-            findLocation(marker.getPosition(), marker);
-          }).dragend( function(event) {
-            var self = this;
-            findLocation(event.latLng, this);
-          }).click( function() {
-            $('#map-location').val(this.title);
-          });
+        //$(map).click( function(event) {
+        $('#map-canvas').gmap('addMarker', {'position': currentLocation, 'draggable': true, 'bounds': false}, function(map, marker) {
+          findLocation(marker.getPosition(), marker);
+        }).dragend( function(event) {
+          var self = this;
+          findLocation(event.latLng, this);
+        }).click( function() {
+          $('#map-location').val(this.title);
         });
+        //});
       });
 
       function findLocation(location, marker) {
@@ -130,9 +120,6 @@
     });
     
 
-
-    
-
   </script>
 
   <div data-role ="content">
@@ -142,6 +129,8 @@
       <input type="text" name="map-location" id="map-location" />
     </div>
     <div data-role="fieldcontain" id="map-canvas"></div>
+
+    <button type="submit" data-theme="b" name="next" value="submit" id="next_button" data-ajax="false">Next</button>
   </div>
 
 </div>

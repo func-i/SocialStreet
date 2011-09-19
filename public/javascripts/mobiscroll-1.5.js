@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * jQuery MobiScroll v1.5
  * http://mobiscroll.com
  *
@@ -26,12 +26,14 @@
         }
 
         this.formatDate = function (format, date, settings) {
+            console.log('in format date');
+            
             if (!date) return null;
             var s = $.extend({}, this.settings, settings),
                 // Check whether a format character is doubled
                 look = function(m) {
                     var n = 0;
-                    while (i + 1 < format.length && format.charAt(i + 1) == m) { n++; i++; };
+                    while (i + 1 < format.length && format.charAt(i + 1) == m) {n++;i++;};
                     return n;
                 },
                 // Format a number, with leading zero if necessary
@@ -254,6 +256,10 @@
                 var hour = (s.ampm && d[s.seconds ? 6 : 5] == 'PM' && (d[3] - 0) < 12) ? (d[3] - 0 + 12) : d[3];
                 return new Date(d[yOrd], d[mOrd], d[dOrd], hour, d[4], s.seconds ? d[5] : null);
             }
+            if (s.preset == 'custom') {
+                var hour = (s.ampm && d[s.seconds ? 4 : 3] == 'PM' && (d[1] - 0) < 12) ? (d[1] - 0 + 12) : d[1];
+                return new Date(d[yOrd], d[mOrd], d[dOrd], hour, d[2], s.seconds ? d[3] : null);
+            }
         }
 
         this.setDate = function (d, input) {
@@ -277,6 +283,13 @@
                 if (s.seconds) this.temp[5] = d.getSeconds();
                 if (s.ampm) this.temp[s.seconds ? 6 : 5] = hour > 11 ? 'PM' : 'AM';
             }
+            if (s.preset == 'custom') {
+                var hour = d.getHours();
+                this.temp[1] = (s.ampm) ? (hour > 12 ? (hour - 12) : (hour == 0 ? 12 : hour)) : hour;
+                this.temp[2] = d.getMinutes();
+                if (s.seconds) this.temp[3] = d.getSeconds();
+                if (s.ampm) this.temp[s.seconds ? 4 : 3] = hour > 11 ? 'PM' : 'AM';
+            }
             this.setValue(input);
         }
 
@@ -285,13 +298,13 @@
             if (this.preset) {
                 var result = [];
                 if (s.preset == 'date') {
-                    try { var d = this.parseDate(s.dateFormat, val, s); } catch (e) { var d = new Date(); };
+                    try {var d = this.parseDate(s.dateFormat, val, s);} catch (e) {var d = new Date();};
                     result[yOrd] = d.getFullYear();
                     result[mOrd] = d.getMonth();
                     result[dOrd] = d.getDate();
                 }
                 else if (s.preset == 'time') {
-                    try { var d = this.parseDate(s.timeFormat, val, s); } catch (e) { var d = new Date(); };
+                    try {var d = this.parseDate(s.timeFormat, val, s);} catch (e) {var d = new Date();};
                     var hour = d.getHours();
                     result[0] = (s.ampm) ? (hour > 12 ? (hour - 12) : (hour == 0 ? 12 : hour)) : hour;
                     result[1] = d.getMinutes();
@@ -299,7 +312,7 @@
                     if (s.ampm) result[s.seconds ? 3 : 2] = hour > 11 ? 'PM' : 'AM';
                 }
                 else if (s.preset == 'datetime') {
-                    try { var d = this.parseDate(s.dateFormat + ' ' + s.timeFormat, val, s); } catch (e) { var d = new Date(); };
+                    try {var d = this.parseDate(s.dateFormat + ' ' + s.timeFormat, val, s);} catch (e) {var d = new Date();};
                     var hour = d.getHours();
                     result[yOrd] = d.getFullYear();
                     result[mOrd] = d.getMonth();
@@ -308,6 +321,19 @@
                     result[4] = d.getMinutes();
                     if (s.seconds) result[5] = d.getSeconds();
                     if (s.ampm) result[s.seconds ? 6 : 5] = hour > 11 ? 'PM' : 'AM';
+                }
+                else if (s.preset == 'custom') {
+                    console.log('in parse value');
+                    try {var d = this.parseDate(s.dateFormat + ' ' + s.timeFormat, val, s);} catch (e) {var d = new Date();};
+                    var hour = d.getHours();
+                    result[yOrd] = d.getFullYear();
+                    result[mOrd] = d.getMonth();
+                    result[dOrd] = d.getDate();
+                    result[1] = (s.ampm) ? (hour > 12 ? (hour - 12) : (hour == 0 ? 12 : hour)) : hour;
+                    result[2] = d.getMinutes();
+                    if (s.seconds) result[3] = d.getSeconds();
+                    if (s.ampm) result[s.seconds ? 4 : 3] = hour > 11 ? 'PM' : 'AM';
+                    console.log(result);
                 }
                 return result;
             }
@@ -328,6 +354,11 @@
                 else if (s.preset == 'time') {
                     var hour = (s.ampm) ? ((d[s.seconds ? 3 : 2] == 'PM' && (d[0] - 0) < 12) ? (d[0] - 0 + 12) : (d[s.seconds ? 3 : 2] == 'AM' && (d[0] == 12) ? 0 : d[0])) : d[0];
                     return this.formatDate(s.timeFormat, new Date(1970, 0, 1, hour, d[1], s.seconds ? d[2] : null), s);
+                }
+                else if (s.preset == 'custom') {
+                    console.log('in Format Result');
+                    var hour = (s.ampm) ? ((d[s.seconds ? 4 : 3] == 'PM' && (d[1] - 0) < 12) ? (d[1] - 0 + 12) : (d[s.seconds ? 4 : 3] == 'AM' && (d[1] == 12) ? 0 : d[1])) : d[1];
+                    return this.formatDate(s.dateFormat + ' ' + s.timeFormat, new Date(d[yOrd], d[mOrd], d[dOrd], hour, d[2], s.seconds ? d[3] : null), s);
                 }
             }
             return s.formatResult(d);
@@ -409,13 +440,46 @@
                     for (var i = 0; i < (s.ampm ? 13 : 24); i += s.stepHour)
                         w[s.hourText][i] = (i < 10) ? ('0' + i) : i;
                     w[s.minuteText] = {};
-                    for (var i = 0; i < 60; i += (5*s.stepMinute))
+                    for (var i = 0; i < 60; i += s.stepMinute)
                         w[s.minuteText][i] = (i < 10) ? ('0' + i) : i;
                     if (s.seconds) {
                         w[s.secText] = {};
                         for (var i = 0; i < 60; i += s.stepSecond)
                             w[s.secText][i] = (i < 10) ? ('0' + i) : i;
                     }
+                    if (s.ampm) {
+                        w[s.ampmText] = {};
+                        w[s.ampmText]['AM'] = 'AM';
+                        w[s.ampmText]['PM'] = 'PM';
+                    }
+                    s.wheels.push(w);
+                }
+                if (s.preset.match(/custom/i)) {
+                    var w = {};
+
+                    var now = new Date();
+                    var x = "Date";
+
+                    w[x] = {};
+
+                    for (i=0; i<90; i++){
+
+                        var currentDate = now.getDate();
+                        var currentDay = now.getDay();
+                        var currentMonth = now.getMonth();
+
+                        now = new Date(now.getTime() + 86400000);
+
+                        w[x][i] = this.formatDate(s.dateFormat, now, s);
+                    }
+
+
+                    w[s.hourText] = {};
+                    for (var i = 0; i < (s.ampm ? 13 : 24); i += s.stepHour)
+                        w[s.hourText][i] = (i < 10) ? ('0' + i) : i;
+                    w[s.minuteText] = {};
+                    for (var i = 0; i < 60; i += (s.stepMinute))
+                        w[s.minuteText][i] = (i < 10) ? ('0' + i) : i;
                     if (s.ampm) {
                         w[s.ampmText] = {};
                         w[s.ampmText]['AM'] = 'AM';
@@ -474,7 +538,7 @@
             show = true;
             // Set sizes
             $('.dww, .dwwl', dw).height(s.rows * h);
-            $('.dww', dw).each(function() { $(this).width($(this).parent().width() < s.width ? s.width : $(this).parent().width()); });
+            $('.dww', dw).each(function() {$(this).width($(this).parent().width() < s.width ? s.width : $(this).parent().width());});
             $('.dwbc a', dw).attr('class', s.btnClass);
             $('.dww li, .dwwb', dw).css({
                 height: h,
@@ -482,7 +546,7 @@
             });
             $('.dwwc', dw).each(function() {
                 var w = 0;
-                $('.dwwl', this).each(function() { w += $(this).outerWidth(true); });
+                $('.dwwl', this).each(function() {w += $(this).outerWidth(true);});
                 $(this).width(w);
             });
             $('.dwc', dw).each(function() {
@@ -490,7 +554,7 @@
             });
             // Set position
             this.pos();
-            $(window).bind('resize.dw', function() { that.pos(); });
+            $(window).bind('resize.dw', function() {that.pos();});
         }
 
         // Set position
@@ -511,7 +575,7 @@
             dw.width(w);
             w = dw.outerWidth();
             h = dw.outerHeight();
-            dw.css({ left: (ww - w) / 2, top: st + (wh - h) / 2 });
+            dw.css({left: (ww - w) / 2, top: st + (wh - h) / 2});
             dwo.height(0);
             dwo.height($(document).height());
         }
@@ -577,7 +641,7 @@
             theme: '',
             mode: 'scroller',
             preset: 'date',
-            dateFormat: 'mm/dd/yy',
+            dateFormat: 'D dd MM',
             dateOrder: 'mmddy',
             ampm: true,
             seconds: false,
@@ -761,14 +825,14 @@
                         e.preventDefault();
                         var t = $(this).closest('.dwwl').find('ul');
                         clearInterval(plustap);
-                        plustap = setInterval(function() { plus(t); }, 200);
+                        plustap = setInterval(function() {plus(t);}, 200);
                         plus(t);
                     }).delegate('.dwwbm', START_EVENT, function (e) {
                         // - Button
                         e.preventDefault();
                         var t = $(this).closest('.dwwl').find('ul');
                         clearInterval(minustap);
-                        minustap = setInterval(function() { minus(t); }, 200);
+                        minustap = setInterval(function() {minus(t);}, 200);
                         minus(t);
                     }).delegate('.dwwl', START_EVENT, function (e) {
                         // Scroll start
