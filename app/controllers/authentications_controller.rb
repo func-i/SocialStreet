@@ -36,7 +36,14 @@ class AuthenticationsController < ApplicationController
         redirect_to new_user_registration_url
       end
     end
+  end
 
+  def show_privacy
+
+  end
+
+  def show_tnc
+    
   end
   
 

@@ -19,6 +19,7 @@ SocialStreetReborn::Application.routes.draw do
       match "accept_tnc"
       match "tnc_accepted"
       match "show_privacy"
+      match "show_tnc"
     end
   end
 

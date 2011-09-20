@@ -28,5 +28,15 @@
     <div class="map-holder">
       <div id="location-map" class="map-frame" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 0;"></div>
     </div>
+    <div id="footer">
+      <ul style="float:left">
+        <!--<li><%#= link_to "About", '#' -%></li>-->
+        <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%> | </li>
+        <li><span class="nav-link" data-ajax-href="<%= show_tnc_authentications_path %>">Terms</span> | </li>
+        <li><span class="nav-link" data-ajax-href="<%= show_privacy_authentications_path %>">Privacy</span> | </li>
+        <li><%= mail_to 'pr@SocialStreet.com', "Media" -%> | </li>
+        <li><span style="font: normal normal bold 12px/14px Arial, Helvetica, sans-serif;">SocialStreet &#169; 2011</span></li>
+      </ul>
+    </div>
   </body>
 </html>

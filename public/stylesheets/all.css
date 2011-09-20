@@ -68,6 +68,18 @@ END OF RESET
     display: table-row;
 }
 
+#footer{
+    position: absolute;
+    bottom: 0px;
+    left: 450px;
+    z-index: 200;
+    color: black;
+    font-weight: bold;
+}
+#footer li{
+    float: left;
+    padding-left: 5px;
+}
 /*Header*/
 #header {
     background: url("../images/header-bg.png") repeat-x #333;
@@ -243,6 +255,9 @@ END OF RESET
     padding-bottom: 12px;
 }
 #suggested_actions_change_location{
+    font-size: 16px;
+}
+#suggested_actions_create{
     font-size: 16px;
 }
 #suggested_actions_change_filter{
