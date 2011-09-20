@@ -51,6 +51,7 @@ function setup_explore_page(){
 
     addExploreMarkers();
     toggle_suggested_actions();
+    
 }
 
 function create_tags_from_input_fields(){
