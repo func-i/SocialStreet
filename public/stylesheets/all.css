@@ -219,6 +219,17 @@ END OF RESET
     overflow-y: auto;
     height: 80px;
 }
+.result-arrow{
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid #BE1E2D;
+    float:left;
+    position:relative;
+    top: 25px;
+    left: -10px;
+}
 .result-join-btn-holder{
     position: absolute;
     right: -50px;

@@ -261,10 +261,14 @@ function createExploreMarker(lat, lng, resultID){
     marker.resultID_ = resultID;
 
     google.maps.event.addListener(marker, 'click', function(){
-       for(var i = 0; i < this.clusteredMarkers_.length; i++){
-           var myMarker = this.clusteredMarkers_[i];
-           $('#results_list').prepend($('#' + myMarker.resultID_));
-       }
+        $('.result-arrow').addClass('hidden');
+        
+        for(var i = 0; i < this.clusteredMarkers_.length; i++){
+            var myMarker = this.clusteredMarkers_[i];
+            var myResult = $('#' + myMarker.resultID_);
+            $('#results_list').prepend(myResult);
+            myResult.find('result-arrow').removeClass('hidden');
+        }
     });
 
 }
