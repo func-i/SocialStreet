@@ -45,6 +45,7 @@ if(history && history.pushState) {
 }
 
 $(function(){
+
     //setup scrollers
     $('.scroller').jScrollPane();
     
@@ -59,4 +60,23 @@ $(function(){
 
         $.getScript(href);
     });
+
+    function resizeResultsContainer() {
+        var docHeight = $(window).height();
+
+        $.each($('.expand-height'), function(i, ele) {
+            var cPos = $(ele).offset().top;
+            var cHeight = docHeight - cPos;
+
+            $(ele).height(cHeight);
+        });      
+    }
+
+    if($('.expand-height').length > 0) {
+        $(window).load(resizeResultsContainer()).resize(function() {
+            resizeResultsContainer();
+        });
+    }
+
+
 });

@@ -50,19 +50,8 @@ function setup_explore_page(){
     create_tags_from_input_fields();
 
     addExploreMarkers();
-    toggle_suggested_actions();    
-
-    $(window).load(resizeResultsContainer()).resize(function() {
-        resizeResultsContainer();
-    });
-}
-
-function resizeResultsContainer() {
-    var docHeight = $(window).height();
-    var cPos = $('#results_container').offset().top;
-    var cHeight = docHeight - cPos;
+    toggle_suggested_actions();
     
-    $('#results_container').height(cHeight);
 }
 
 function create_tags_from_input_fields(){
