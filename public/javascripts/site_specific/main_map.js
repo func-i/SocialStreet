@@ -49,9 +49,8 @@ function init_map(){
         }
     });
 
-
-     markerManager = new MarkerManager({
-         map: map
-     });
+    markerManager = new MarkerManager({
+        map: map
+    });
 }
 

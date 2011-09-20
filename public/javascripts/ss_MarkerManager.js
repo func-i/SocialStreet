@@ -12,11 +12,12 @@ MarkerManager.prototype.init = function(opt_options)
     //TODO throw error
     }
     if(options['gridSize'] == undefined){
-        options['gridSize'] = 15;
+        options['gridSize'] = 5;
     }
 
-
     this._setValues(options);
+
+    this.projectionHelper_ = new _ProjectionHelperOverlay(this.map_);
 };
 
 MarkerManager.prototype._setValues = function(options)
@@ -34,19 +35,143 @@ MarkerManager.prototype.addMarker = function(lat, lng){
     this.allMarkers_.push(marker);
 
     return marker;
-}
+};
 
 MarkerManager.prototype.showAllMarkers = function(){
-    for(var i = 0; i < this.allMarkers_.length; i++){
-        this.allMarkers_[i].setMap(this.map_);
+    if(undefined == this.map_.mapTypes[this.map_.mapTypeId]){
+        that = this;
+        google.maps.event.addListenerOnce(this.map_, 'idle', function() {
+            that.showAllMarkers();
+        });
+        return;
     }
-    return true;
-}
+
+    var markerArr = this.allMarkers_.slice(0);
+    this.allMarkers_ = [];
+
+    for(var i = 0; i < markerArr.length; i++){
+        var marker = markerArr[i];
+
+        if(null != (ownerMarker = this._clusterWith(marker))){
+            //Cluster with ownerMarker
+            ownerMarker.clusteredMarkers_.push(marker);
+            marker.setMap(null);
+        }
+        else{
+            marker.setMap(this.map_);
+            marker.clusteredMarkers_ = [];
+            marker.clusteredMarkers_.push(marker);
+
+            var bounds = new google.maps.LatLngBounds(marker.getPosition(), marker.getPosition());
+            marker.extendedBounds_ = this._getExtendedBounds(bounds);
+        }
+
+        this.allMarkers_.push(marker);
+    }
+
+    delete markerArr;
+    markerArr = null;
+};
 
 MarkerManager.prototype.deleteAllMarkers = function(){
     $.each(this.allMarkers_, function(index, marker){
         marker.setMap(null);
+        delete marker.clusteredWith_;
     });
     delete this.allMarkers_;
     this.allMarkers_ = [];
+};
+
+MarkerManager.prototype._clusterWith = function(markerToPlace){
+    //loop through every marker and choose closest marker to location
+    var distance = 40000;//large number
+    var markerToAddTo = null;
+    var markerToPlacePosition = markerToPlace.getPosition();
+
+    for(var i=0; placedMarker = this.allMarkers_[i]; i++){
+        if(placedMarker.getMap()){
+            var position = placedMarker.getPosition();
+            if(position){
+                var d = this._distanceBetweenPoints(position, markerToPlacePosition);
+                if(d < distance){
+                    distance = d;
+                    markerToAddTo = placedMarker;
+                }
+            }
+        }
+    }
+
+    if(markerToAddTo && this._isWithinMarkerBound(markerToAddTo, markerToPlacePosition)){
+        return markerToAddTo;
+    }
+    else{
+        return null;
+    }
+};
+
+MarkerManager.prototype._distanceBetweenPoints = function(marker1, marker2){
+    if(!marker1 || !marker2){
+        return 0
+    }
+
+    var R = 6371; //Radius of Earth in km
+    var dLat = (marker2.lat() - marker1.lat()) * Math.PI / 180;
+    var dLon = (marker2.lng() - marker1.lng()) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    (Math.cos(marker1.lat() * Math.PI / 180) * Math.cos(marker2.lat() * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2));
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+};
+
+MarkerManager.prototype._isWithinMarkerBound = function(markerWithBounds, markerToTest){
+    return markerWithBounds.extendedBounds_.contains(markerToTest);
+};
+
+MarkerManager.prototype._getExtendedBounds = function(bounds){
+    var projection = this.projectionHelper_.getProjection();
+
+    // Turn the bounds into latlng.
+    var tr = new google.maps.LatLng(bounds.getNorthEast().lat(),
+        bounds.getNorthEast().lng());
+    var bl = new google.maps.LatLng(bounds.getSouthWest().lat(),
+        bounds.getSouthWest().lng());
+
+    // Convert the points to pixels and the extend out by the grid size.
+    var trPix = projection.fromLatLngToDivPixel(tr);
+    trPix.x += this.gridSize_;
+    trPix.y -= this.gridSize_;
+
+    var blPix = projection.fromLatLngToDivPixel(bl);
+    blPix.x -= this.gridSize_;
+    blPix.y += this.gridSize_;
+
+    // Convert the pixel points back to LatLng
+    var ne = projection.fromDivPixelToLatLng(trPix);
+    var sw = projection.fromDivPixelToLatLng(blPix);
+
+    // Extend the bounds to contain the new bounds.
+    bounds.extend(ne);
+    bounds.extend(sw);
+
+    return bounds;
+};
+
+/**@private
+ * In V3 it is quite hard to gain access to Projection and Panes.
+ * This is a helper class
+ * @param {google.maps.Map} map
+ */
+function _ProjectionHelperOverlay(map) {
+    google.maps.OverlayView.call(this);
+    this.setMap(map);
 }
+
+_ProjectionHelperOverlay.prototype = new google.maps.OverlayView();
+_ProjectionHelperOverlay.prototype.draw = function () {
+    if (!this.ready) {
+        this.ready = true;
+        google.maps.event.trigger(this, 'ready');
+    }
+};

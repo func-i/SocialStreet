@@ -250,13 +250,22 @@ function addExploreMarkers(){
     $.each($('#results_list .result'), function(index, result){
         var lat = $(result).children('#result_lat');
         var lng = $(result).children('#result_lng');
-        createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()));
+        createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()), result.id);
     });
     showExploreMarkers();
 }
 
-function createExploreMarker(lat, lng){
-    markerManager.addMarker(lat, lng);
+function createExploreMarker(lat, lng, resultID){
+    marker = markerManager.addMarker(lat, lng);
+    marker.resultID_ = resultID;
+
+    google.maps.event.addListener(marker, 'click', function(){
+       for(var i = 0; i < this.clusteredMarkers_.length; i++){
+           var myMarker = this.clusteredMarkers_[i];
+           $('#results_list').prepend($('#' + myMarker.resultID_));
+       }
+    });
+
 }
 function clearExploreMarkers(){
     markerManager.deleteAllMarkers();

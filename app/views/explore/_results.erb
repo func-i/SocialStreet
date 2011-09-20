@@ -1,5 +1,5 @@
 <% results.each do |result| %>
-  <div class="result">
+  <div class="result" id="event_<%=result.id%>">
     <% event = result %>
     <div class="result-image">
       <%= image_tag(url_for_event_image(event))%>
