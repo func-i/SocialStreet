@@ -5,14 +5,14 @@
     </div>
     <div class="result-text">
       <div class="result-title">
-        <%= @event.name %>
+        <%= truncate_html(@event.title, :length => 50) %>
       </div>
       <div class="result-date">
-        When: <%= @event.date_range_as_sentence %>
+        <%= @event.date_range_as_sentence %>
       </div>
-      <div class="result-tags">
-        Tags: <%= @event.event_keywords_as_sentence %>
-      </div>
+    </div>
+    <div class="result-tags">
+      Tags: <%= @event.event_keywords_as_sentence %>
     </div>
     <div class="result-description">
       <%= @event.description %>
@@ -70,5 +70,7 @@
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>
 <%= hidden_field_tag 'lng', @event.location.longitude %>
+<%= hidden_field_tag 'location_text', @event.location.text %>
+<%= hidden_field_tag 'address', @event.location.short_address_as_sentence %>
 
-<%= javascript_include_tag "site_specific/show_event" %>
+<%= javascript_include_tag 'infobubble', "site_specific/show_event"%>

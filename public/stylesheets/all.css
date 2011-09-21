@@ -185,20 +185,31 @@ END OF RESET
 
 /*Results list*/
 .result{
-    padding:15px 0 0 15px;
-    height: 95px;
+    padding:15px 10px 10px 15px;
+    height: 80px;
 }
-.result img{
+.result-image{
     float: left;
     margin: 0px 14px 0px 0px;
+}
+.attending-info {
+    background: #0981BE;
+    color: #fff;
+    float: left;
+    font: bold 12px/19px Arial, Helvetica, sans-serif;
+    height: 18px;
+    width: 22px;
+    padding: 2px 0;
+    overflow: hidden;
+    text-align: center;
+    margin-right: 3px;
 }
 .result-text{
     /*float: left;*/
     color: white;
 }
 .result-title{
-    font-weight: bold;
-    font-size: 22px;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
     cursor: pointer;
@@ -207,6 +218,8 @@ END OF RESET
     padding-bottom: 5px;
 }
 .result-tags{
+    color: white;
+    float: left;
     padding-bottom: 5px;
 }
 .result-attendees{
@@ -586,7 +599,17 @@ END OF RESET
 .attendee-name{
     text-align: center;
 }
-
+.marker-label{
+    background: #FFC233;
+    color: #4F4F4D;
+    font: bold 12px/24px Arial, Helvetica, sans-serif;
+    padding: 4px 25px 4px 25px;
+    text-align: center;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: 2px solid #4F4F4D
+}
 #event_wall_text_field_holder{
 }
 #event_wall_text_field{
@@ -619,7 +642,7 @@ END OF RESET
     width: 250px;
     background: url("../images/overlay_box_bg.png");
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     min-height: 65px;
     padding: 5px;
     -webkit-border-radius: 4px;
@@ -635,10 +658,10 @@ END OF RESET
 
 .comment-time {
     float: right;
-    position: absolute;
+    position: relative;
     bottom: 0px;
     right: 5px;
-    font-style: normal;
+    font: italic 11px/26px Arial, Helvetica, sans-serif;
 }
 #continue_invitation_holder{
     position: absolute;

@@ -51,8 +51,7 @@ function setup_explore_page(){
     create_tags_from_input_fields();
 
     addExploreMarkers();
-    toggle_suggested_actions();
-    
+    toggle_suggested_actions();   
 }
 
 function create_tags_from_input_fields(){
@@ -260,6 +259,7 @@ function addExploreMarkers(){
 function createExploreMarker(lat, lng, resultID){
     marker = markerManager.addMarker(lat, lng);
     marker.resultID_ = resultID;
+
     google.maps.event.addListener(marker, 'click', function() {
         for(var i = 0; i < this.clusteredMarkers_.length; i++) {
             var myMarker = this.clusteredMarkers_[i];
