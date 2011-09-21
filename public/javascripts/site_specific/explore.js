@@ -261,14 +261,13 @@ function createExploreMarker(lat, lng, resultID){
     marker.resultID_ = resultID;
 
     google.maps.event.addListener(marker, 'click', function() {
+        $('.result').css('background-color', '');
+
         for(var i = 0; i < this.clusteredMarkers_.length; i++) {
-            var myMarker = this.clusteredMarkers_[i];
-            if(selectedResult != undefined)
-                selectedResult.css('backgroundColor', '');
-            
-            selectedResult = $('#' + myMarker.resultID_);
-            selectedResult.css('background-color', '#333');
-            $('#results_list').prepend(selectedResult);
+            var myMarker = this.clusteredMarkers_[i];            
+            var myResult = $('#' + myMarker.resultID_);
+            myResult.css('background-color', '#333');
+            $('#results_list').prepend(myResult);
             $('#results_container').scrollTop(0);
             myResult.find('result-arrow').removeClass('hidden');          
         }
