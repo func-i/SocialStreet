@@ -51,7 +51,23 @@ function setup_explore_page(){
     create_tags_from_input_fields();
 
     addExploreMarkers();
-    toggle_suggested_actions();   
+    toggle_suggested_actions();
+
+    $('.result').live('mouseenter', function(){
+        var $btn = $(this).find('.result-btn');
+        $btn.removeClass('not-attending');
+        $btn.addClass('join-event-btn').html("I'll Join");
+    });
+    
+    $('.result').live('mouseleave', function(){
+        var $btn = $(this).find('.result-btn');
+        $btn.removeClass('join-event-btn');
+        $btn.addClass('not-attending').html("");
+    });
+
+    //$('#results_container').jScrollPane();
+
+   
 }
 
 function create_tags_from_input_fields(){
