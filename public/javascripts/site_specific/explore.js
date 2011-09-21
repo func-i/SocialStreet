@@ -2,6 +2,7 @@ var geocoder = new google.maps.Geocoder();
 var exploreMarkerArr = [];
 var exploreEventTypeTimer;
 var exploreUpdateTimer;
+var selectedResult;
 
 $(function(){
     
@@ -259,14 +260,17 @@ function createExploreMarker(lat, lng, resultID){
     marker = markerManager.addMarker(lat, lng);
     marker.resultID_ = resultID;
 
-    google.maps.event.addListener(marker, 'click', function(){
-        $('.result-arrow').addClass('hidden');
-        
-            for(var i = 0; i < this.clusteredMarkers_.length; i++){
+    google.maps.event.addListener(marker, 'click', function() {
+        for(var i = 0; i < this.clusteredMarkers_.length; i++) {
             var myMarker = this.clusteredMarkers_[i];
-            var myResult = $('#' + myMarker.resultID_);
-            $('#results_list').prepend(myResult);
-            myResult.find('.result-arrow').removeClass('hidden');
+            if(selectedResult != undefined)
+                selectedResult.css('backgroundColor', '');
+            
+            selectedResult = $('#' + myMarker.resultID_);
+            selectedResult.css('background-color', '#333');
+            $('#results_list').prepend(selectedResult);
+            $('#results_container').scrollTop(0);
+            myResult.find('result-arrow').removeClass('hidden');          
         }
     });
 
