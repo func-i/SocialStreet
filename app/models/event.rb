@@ -54,6 +54,10 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def location_as_sentence
+    location.as_sentence
+  end
+
   def title
     return self.name unless self.name.blank?
 

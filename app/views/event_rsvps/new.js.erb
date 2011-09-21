@@ -1,1 +1,3 @@
 $('#join_btn_holder').html('<%=escape_javascript render(:partial => 'events/rsvp_buttons', :locals => {:event => @event})%>');
+$('#show_view').addClass('hidden');
+$('#invitation_view').removeClass('hidden');

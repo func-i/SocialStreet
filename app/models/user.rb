@@ -21,6 +21,21 @@ class User < ActiveRecord::Base
     where("users.last_name ~* ? OR users.first_name ~* ?", keyword, keyword)
   }
 
+  scope :order_by_rank_to_user, lambda{ |user|
+    return unless user
+    joins("LEFT OUTER JOIN connections ON users.id = connections.to_user_id AND connections.user_id = #{user.id}").order("connections.rank ASC NULLS LAST")
+  }
+
+  scope :attending_event, lambda{|event|
+    joins(:event_rsvps).where("event_rsvps.event_id = #{event.id}").merge(EventRsvp.attending_or_maybe_attending)
+  }
+
+  scope :excluding, lambda{|user| 
+    return unless user
+    where("users.id <> #{user.id}")    
+  }
+
+
   def name
     if first_name? || last_name?
       "#{first_name} #{last_name}"

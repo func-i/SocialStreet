@@ -50,8 +50,7 @@ function setup_explore_page(){
     create_tags_from_input_fields();
 
     addExploreMarkers();
-    toggle_suggested_actions();
-    
+    toggle_suggested_actions();   
 }
 
 function create_tags_from_input_fields(){
@@ -263,11 +262,11 @@ function createExploreMarker(lat, lng, resultID){
     google.maps.event.addListener(marker, 'click', function(){
         $('.result-arrow').addClass('hidden');
         
-        for(var i = 0; i < this.clusteredMarkers_.length; i++){
+            for(var i = 0; i < this.clusteredMarkers_.length; i++){
             var myMarker = this.clusteredMarkers_[i];
             var myResult = $('#' + myMarker.resultID_);
             $('#results_list').prepend(myResult);
-            myResult.find('result-arrow').removeClass('hidden');
+            myResult.find('.result-arrow').removeClass('hidden');
         }
     });
 

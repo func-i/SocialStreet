@@ -49,6 +49,14 @@ class Location < ActiveRecord::Base
     end # otherwise return nil
   end
 
+  def short_address_as_sentence
+    "#{street}, #{city}"
+  end
+
+  def as_sentence
+    "#{(text + "\n") if text}#{street}, #{city}, #{state}"
+  end
+
   def geo_located?
     latitude? && longitude?
   end

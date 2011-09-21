@@ -3,6 +3,15 @@ var refreshInviteListTimer = null;
 var invitationCounter = 0;
 
 $(function(){
+
+    setupShowEventPage();
+
+    cleanUpSelf = function(){
+        showMarker.infoBubble_.setMap(null);
+        delete showMarker.infoBubble_;
+        showMarker = null;
+    }
+
     $('#event_wall_text_field').keyup(function(e){
         if (e.keyCode == 13) {
             if(e.shiftKey != true){
@@ -41,18 +50,23 @@ $(function(){
         $('#invitation_view').addClass('hidden');
         $('#show_view').removeClass('hidden');
     });
+});
 
-
+function setupShowEventPage(){
     var lat = $('#lat').val();
     var lng = $('#lng').val();
-    createShowMarker(lat, lng);
+    var loc_text = $('#location_text').val();
+    var address = $('#address').val();
+
+    createShowMarker(lat, lng, address, loc_text);
+
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
 
-    var xOffset = $('#location-map').width() / 10;
-    var yOffset = $('#location-map').height() / 10;
+    var xOffset = $('#location-map').width() / 5;
+    var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);
-});
+}
 
 function add_invitation(that){
     if(!does_invitation_already_exist(that.id)){
@@ -128,7 +142,26 @@ function submit_event_wall_comment(){
     return false;
 }
 
-function createShowMarker(lat, lng) {
-    markerManager.addMarker(lat, lng);
+function createShowMarker(lat, lng, address, location_text) {
+    if(undefined === address)
+        address = "";
+    
+    showMarker = markerManager.addMarker(lat, lng);
+
+    var content;
+    if(location_text == undefined || location_text.length <= 0)
+        content = '<div class="marker-label">' + address + '</div>'
+    else
+        content = '<div class="marker-label">' + location_text + '<br/>' + address + '</div>'
+
+    showMarker.infoBubble_ = new InfoBubble({
+        hideCloseButton: true,
+        disableAutoPan: true,
+        content: content,
+        padding: 0,
+        arrowSize: 0,
+        borderWidth: 0
+    });
     markerManager.showAllMarkers();
+    showMarker.infoBubble_.open(map, showMarker);
 }
