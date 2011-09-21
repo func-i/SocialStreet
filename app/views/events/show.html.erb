@@ -39,12 +39,12 @@
   <!--TODO better button and placement-->
   <%= image_tag('header-close.png', :class => 'position-y-middle position-x-center') %>
 
-  <div class="x-medium-box y-small-box position-y-top position-x-center drop-shadow">
-    <div id="join_btn_holder">
+  <div class="position-y-top position-x-center">
+    <div id="join_btn_holder" class="drop-shadow">
       <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
     </div>
 
-    <div id="show_attendees_holder">
+    <div id="show_attendees_holder" class="drop-shadow">
       <div id="show_attendees_title">
         <%= "#{pluralize @event.number_of_attendees, 'Person'} Attending" %>
       </div>
@@ -52,7 +52,7 @@
         <ul id="show_attendees_list">
           <% @event.event_rsvps.attending.each do |attendee|%>
             <li class="show-attendee-holder">
-              <%=avatar(attendee.user, :size => "55x55")%>
+              <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
               <span class="attendee-name hidden">
                 <%=attendee.user.name%>
               </span>

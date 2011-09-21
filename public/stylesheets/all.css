@@ -439,8 +439,8 @@ END OF RESET
 }
 .unattend-btn{
     margin-top: 10px;
-    color: white;
-    font: 10px/12px Arial, Helvetica, sans-serif;
+    color: black;
+    font: italic 10px/12px Arial, Helvetica, sans-serif;
     text-align: center;
     cursor: pointer;
 }
@@ -588,15 +588,17 @@ END OF RESET
 
 /*Show Event*/
 #join_btn_holder{
-    margin: 70px 10px;
+    margin: 20px 20px 20px 0;
     width: 180px;
-    height: 200px;
+    height: 52px;
     float: left;
 }
 #show_attendees_holder{
-    height: 200px;
+    /*height: 200px;*/
+    max-height: 200px;
     float: left;
-    width: 75%;
+    width: 600px;
+    background: url("../images/overlay_box_bg.png");
 }
 #show_attendees_title{
     color: white;
@@ -658,7 +660,7 @@ END OF RESET
     overflow: hidden;
     margin-bottom: 0px;
     min-height: 65px;
-    padding: 5px;
+    padding: 5px 10px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
