@@ -425,8 +425,8 @@ END OF RESET
 }
 .unattend-btn{
     margin-top: 10px;
-    color: white;
-    font: 10px/12px Arial, Helvetica, sans-serif;
+    color: black;
+    font: italic 10px/12px Arial, Helvetica, sans-serif;
     text-align: center;
     cursor: pointer;
 }
@@ -574,13 +574,14 @@ END OF RESET
 
 /*Show Event*/
 #join_btn_holder{
-    margin: 20px 10px;
+    margin: 20px 20px 20px 0;
     width: 180px;
     height: 52px;
     float: left;
 }
 #show_attendees_holder{
     /*height: 200px;*/
+    max-height: 200px;
     float: left;
     width: 600px;
     background: url("../images/overlay_box_bg.png");
