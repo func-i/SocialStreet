@@ -11,7 +11,7 @@ SocialStreetReborn::Application.routes.draw do
         get "search"
       end
     end
-    resources :comments, :only => [:create]
+    resources :comments, :only => [:create, :destroy]
   end
 
   resources :authentications do

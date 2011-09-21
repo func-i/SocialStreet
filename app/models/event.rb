@@ -46,9 +46,9 @@ class Event < ActiveRecord::Base
   end
 
   def date_range_as_sentence
-    rtn_sentence = start_date.strftime("%B %d %l:%M %p")
-    if start_date.strftime("%B %d") != end_date.strftime("%B %d")
-      rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%B %d %l:%M %p")}"
+    rtn_sentence = start_date.strftime("%a %b %e %l:%M %p")
+    if start_date.strftime("%b %e") != end_date.strftime("%b %e")
+      rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%b %e %l:%M %p")}"
     else
       rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%l:%M %p")}"
     end
@@ -86,6 +86,10 @@ class Event < ActiveRecord::Base
 
   def number_of_attendees
     event_rsvps.attending_or_maybe_attending.size
+  end
+
+  def can_edit?(user)
+    event_rsvps.by_user(user).first.try(:organizer)
   end
 
   protected

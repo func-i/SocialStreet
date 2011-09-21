@@ -6,6 +6,12 @@ class EventsController < ApplicationController
   def show
     @event = Event.find params[:id]
     prepare_for_show
+
+    if current_user && @event.can_edit?(current_user)
+      render "show_with_edit"
+    else
+      render "show"
+    end
   end
 
   def new
@@ -18,12 +24,16 @@ class EventsController < ApplicationController
     if create_or_edit_event(params, :create)
       @event.reload
       prepare_for_show
-      #render :file => "events/show.js.erb"
       redirect_to @event
-      #render :update do |page|
-        #page.redirect_to @event
-      #end
     end
+  end
+
+  def update
+    event = Event.find params[:id]
+    event.attributes = params[:event]
+    event.save
+
+    render :nothing => true
   end
 
   protected

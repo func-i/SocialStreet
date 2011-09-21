@@ -14,6 +14,12 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    comment = Comment.find params[:id]
+    comment.destroy if comment
+    render :nothing => true
+  end
+
   protected
 
   def store_comment_request

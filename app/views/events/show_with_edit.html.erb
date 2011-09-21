@@ -1,24 +1,34 @@
 <div id="show_event_details" class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
-  <div class="result">
-    <div class="result-text">
-      <div class="result-image">
-        <%= image_tag(url_for_event_image(@event))%>
+  <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
+    <div class="result">
+      <div class="result-text">
+        <div class="result-image">
+          <%= image_tag(url_for_event_image(@event))%>
+        </div>
+        <div class="result-title">
+          <%= link_to "edit title...", '#', :id=>'edit_event_title_link' %>
+          <span id="result_title_text">
+            <%= truncate_html(@event.title, :length => 36) %>
+          </span>
+          <%= form.text_field :name, :id=> "edit_event_title_field", :class=>"hidden", :style=>"width:270px;" %>
+        </div>
+        <div class="result-date">
+          <%= @event.date_range_as_sentence %>
+        </div>
+        <div class="result-tags">
+          Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
+        </div>
       </div>
-      <div class="result-title">
-        <%= truncate_html(@event.title, :length => 50) %>
-      </div>
-      <div class="result-date">
-        <%= @event.date_range_as_sentence %>
-      </div>
-      <div class="result-tags">
-        Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
-      </div>
-    </div>
 
-    <div class="result-description">
-      <%= @event.description %>
+      <div class="result-description">
+        <%= link_to (@event.description.length > 0 ? "edit description..." : "...Add Description"), "#", :id => 'edit_event_description_link' %>
+        <span id="result_description_text">
+          <%= @event.description %>
+        </span>
+        <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:370px;" %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <div id="show_view" class="<%="hidden" if params[:invite]%>">

@@ -21,6 +21,16 @@ $(function(){
             }
         }
     });
+    $('.event-wall-comment').live('mouseenter', function(){
+        $(this).find('.comment-delete').removeClass('hidden');
+    });
+    $('.event-wall-comment').live('mouseleave', function(){
+        $(this).find('.comment-delete').addClass('hidden');
+    });
+    $('.comment-delete').live('click', function(){
+        $(this).closest('.event-wall-comment').hide();
+    });
+
     $('.invite-friends-btn').live('click', function(){
         $('#invitation_view').removeClass('hidden');
         $('#show_view').addClass('hidden');
@@ -50,6 +60,37 @@ $(function(){
         $('#invitation_view').addClass('hidden');
         $('#show_view').removeClass('hidden');
     });
+
+    $('#edit_event_title_link').click(function(){
+        $('#result_title_text').addClass('hidden');
+        $('#edit_event_title_link').addClass('hidden');
+        $('#edit_event_title_field').removeClass('hidden');
+    });
+    $('#edit_event_title_field').keydown(function(e){
+        if(e.keyCode == 13){
+            $('#result_title_text').text(e.target.value.substring(0, 36));
+            $('#result_title_text').removeClass('hidden');
+            $('#edit_event_title_link').removeClass('hidden');
+            $('#edit_event_title_field').addClass('hidden');
+            $('#event_edit_form').submit();
+        }
+    });
+    $('#edit_event_description_link').click(function(){
+        $('#result_description_text').addClass('hidden');
+        $('#edit_event_description_link').addClass('hidden');
+        $('#edit_event_description_field').removeClass('hidden');
+    });
+    $('#edit_event_description_field').keydown(function(e){
+        if(e.keyCode == 13){
+            $('#result_description_text').text(e.target.value);
+            $('#result_description_text').removeClass('hidden');
+            $('#edit_event_description_link').removeClass('hidden');
+            $('#edit_event_description_field').addClass('hidden');
+            $('#event_edit_form').submit();
+        }
+    });
+
+
 });
 
 function setupShowEventPage(){

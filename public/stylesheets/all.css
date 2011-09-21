@@ -186,7 +186,6 @@ END OF RESET
 /*Results list*/
 .result{
     padding:15px 10px 10px 15px;
-    height: 80px;
 }
 .result-image{
     float: left;
@@ -228,9 +227,9 @@ END OF RESET
 .result-description{
     color: white;
     float: left;
-    margin-top: 10px;
+    margin: 10px 0 30px 0;
     overflow-y: auto;
-    height: 80px;
+    max-height: 80px;
 }
 .result-arrow{
     width: 0;
@@ -573,6 +572,15 @@ END OF RESET
 }
 
 /*Show Event*/
+#edit_event_title_link{
+    color: #FFFD8B;
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+}
+#edit_event_description_link{
+    color: #FFFD8B;
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+}
+
 #join_btn_holder{
     margin: 20px 20px 20px 0;
     width: 180px;
@@ -582,9 +590,11 @@ END OF RESET
 #show_attendees_holder{
     /*height: 200px;*/
     max-height: 200px;
+    overflow: auto;
     float: left;
     width: 600px;
     background: url("../images/overlay_box_bg.png");
+    padding-top: 9px;
 }
 #show_attendees_title{
     color: white;
@@ -652,6 +662,11 @@ END OF RESET
     border-radius: 4px;
     position: relative;
     font-style: italic;
+}
+.comment-delete{
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
 .event-wall-comment-body-overflow{
     /*height: auto;
