@@ -37,6 +37,22 @@ class Event < ActiveRecord::Base
     end
   }
 
+  def duration_in_seconds
+    end_date - start_date
+  end
+
+  def duration_array
+    diff_in_seconds = end_date - start_date
+    minutes = diff_in_seconds / 60
+    hours = minutes / 60
+    days = hours / 24
+
+    return [days.floor, "Days"] if days > 1
+    return [hours.floor, "Hours"] if hours > 1
+    return [minutes.floor, "Minutes"] if minutes > 1
+    return [diff_in_seconds, "Seconds"]
+  end
+  
   def event_types
     event_keywords.collect(&:event_type).compact
   end

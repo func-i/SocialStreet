@@ -17,6 +17,10 @@ class EventsController < ApplicationController
   def new
     @event_types = EventType.order('name').all
     @event = Event.new
+
+    @event.start_date = Time.now.advance(:hours => 3).floor(15.minutes)
+    @event.end_date = Time.now.advance(:hours => 6).floor(15.minutes)
+    
     @location = @event.build_location
   end
 
@@ -28,12 +32,29 @@ class EventsController < ApplicationController
     end
   end
 
+  def edit
+    @event_types = EventType.order('name').all
+    
+    @event = Event.find params[:id]    
+  end
+
   def update
     event = Event.find params[:id]
+
+    if params[:event][:event_keywords_attributes]
+      event.event_keywords.each do |keyword|
+        keyword.destroy
+      end
+    end
+
     event.attributes = params[:event]
     event.save
 
-    render :nothing => true
+    if params[:event][:event_keywords_attributes] #HACK HACK HACKITY HACK
+      redirect_to event
+    else
+      render :nothing => true
+    end
   end
 
   protected

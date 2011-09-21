@@ -230,6 +230,7 @@ END OF RESET
     margin: 10px 0 30px 0;
     overflow-y: auto;
     max-height: 80px;
+    width: 380px;
 }
 .result-arrow{
     width: 0;
@@ -559,6 +560,24 @@ END OF RESET
     padding-top: 75px;
     text-align: center;
 }
+#create_when_date{
+    font: bold 20px/32px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    text-align: center;
+    padding: 10px 0;
+    width: 400px;
+}
+#create_when_time{
+    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+    padding-top: 30px;
+}
+#create_when_duration{
+    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+}
 
 
 /*Arrow*/
@@ -642,7 +661,7 @@ END OF RESET
     width: 100px;
 }
 .event-wall-user-image{
-    padding: 0 22px 0 22px;
+    padding: 0 27px 0 27px;
 }
 .event-wall-user-name{
     text-align: center;
@@ -655,7 +674,7 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     overflow: hidden;
     margin-bottom: 0px;
-    min-height: 65px;
+    min-height: 30px;
     padding: 5px 10px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;

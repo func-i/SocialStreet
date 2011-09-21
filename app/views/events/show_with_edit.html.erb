@@ -6,7 +6,7 @@
           <%= image_tag(url_for_event_image(@event))%>
         </div>
         <div class="result-title">
-          <%= link_to "edit title...", '#', :id=>'edit_event_title_link' %>
+          <%= link_to "Edit title...", '#', :id=>'edit_event_title_link' %>
           <span id="result_title_text">
             <%= truncate_html(@event.title, :length => 36) %>
           </span>
@@ -21,7 +21,7 @@
       </div>
 
       <div class="result-description">
-        <%= link_to (@event.description.length > 0 ? "edit description..." : "...Add Description"), "#", :id => 'edit_event_description_link' %>
+        <%= link_to ((@event.description && @event.description.length > 0) ? "Edit description..." : "...Add Description"), "#", :id => 'edit_event_description_link' %>
         <span id="result_description_text">
           <%= @event.description %>
         </span>

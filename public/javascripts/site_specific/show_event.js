@@ -87,6 +87,13 @@ $(function(){
             $('#edit_event_description_link').removeClass('hidden');
             $('#edit_event_description_field').addClass('hidden');
             $('#event_edit_form').submit();
+
+            if(e.target.value > 0){
+                $('#edit_event_description_link').text('Edit description...');
+            }
+            else{
+                $('#edit_event_description_link').text('Add description...');
+            }
         }
     });
 

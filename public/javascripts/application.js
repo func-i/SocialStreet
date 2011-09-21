@@ -28,11 +28,9 @@ if(history && history.pushState) {
         var popped = (null === window.history.state), initialURL = location.href;
 
         $(window).bind('popstate', function() {
-            console.log(popped, window.history.state);
             var initialPop = !popped && location.href == initialURL;
             popped = true;
             if ( initialPop ){
-                console.log("initial")
                 return;
             } 
 
