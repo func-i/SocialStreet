@@ -260,7 +260,6 @@ function addExploreMarkers(){
 function createExploreMarker(lat, lng, resultID){
     marker = markerManager.addMarker(lat, lng);
     marker.resultID_ = resultID;
-
     google.maps.event.addListener(marker, 'click', function() {
         for(var i = 0; i < this.clusteredMarkers_.length; i++) {
             var myMarker = this.clusteredMarkers_[i];
@@ -268,9 +267,10 @@ function createExploreMarker(lat, lng, resultID){
                 selectedResult.css('backgroundColor', '');
             
             selectedResult = $('#' + myMarker.resultID_);
-            $('#' + myMarker.resultID_).css('background-color', '#333');
-            $('#results_list').prepend($('#' + myMarker.resultID_));
+            selectedResult.css('background-color', '#333');
+            $('#results_list').prepend(selectedResult);
             $('#results_container').scrollTop(0);
+            myResult.find('result-arrow').removeClass('hidden');          
         }
     });
 
