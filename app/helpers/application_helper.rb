@@ -51,7 +51,8 @@ module ApplicationHelper
   def avatar_image(user, options={})
     image_tag(url_for_avatar(user, :fb_size => options[:fb_size] || 'square'),
       :title => user.name,
-      :size=> options[:size] || "30x30")
+      :size=> options[:size] || "30x30"
+      )
   end
 
   def avatar(user, options={})
