@@ -8,7 +8,7 @@ $(function(){
 
 
     function sizeEventTypesHolder() {
-        $('#explore_keyword_event_types_holder').width($(window).width() - $('.x-small-box').width() - $('#explore_keyword_text_field_holder').width() - 125);
+        $('#explore_keyword_event_types_holder').width($(window).width() - $('#sidebar').width() - $('#explore_keyword_text_field_holder').width() - 125);
     }
 
     $(window).bind('resize', sizeEventTypesHolder());
