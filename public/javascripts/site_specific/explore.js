@@ -43,6 +43,10 @@ function setup_explore_page(){
     $('#explore_btn').addClass('hidden');
     $('#notify_me_btn').removeClass('hidden');
 
+    $('#explore_search_params').ajaxComplete(function() {
+       initializeScrollPanes();
+    });
+
     var mapCenter = $('#map_center').val();
     var mapCenterArr = mapCenter.split(",");
     map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
@@ -51,7 +55,8 @@ function setup_explore_page(){
     create_tags_from_input_fields();
 
     addExploreMarkers();
-    toggle_suggested_actions();   
+    toggle_suggested_actions();
+
 }
 
 function create_tags_from_input_fields(){

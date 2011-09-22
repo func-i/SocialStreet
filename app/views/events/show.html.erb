@@ -44,13 +44,11 @@
         <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
       </div>
     <% end %>
-    <div id="event_wall" class="expand-height" style="overflow-y: auto; overflow-x: hidden;">
+    <div id="event_wall" class="scroll-pane" style="height: 100%; overflow: auto;">
       <%@comments.each do |comment|%>
         <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
       <% end %>
     </div>
-
-    <div style="clear: both;">&nbsp;</div>
   </div>
 
   <div class="position-y-top position-x-center">
@@ -60,7 +58,7 @@
         <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
       </div>
     <% end %>
-    <div id="join_btn_holder" class="drop-shadow">
+    <div id="join_btn_holder">
       <% if @event.canceled %>
         <div id="event_canceled_btn">
           Canceled

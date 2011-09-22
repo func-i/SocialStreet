@@ -21,8 +21,8 @@
       <% end %>
     </div>
 
-    <div class="result-join-btn-holder">
-      <%=render(:partial => 'events/rsvp_buttons', :locals => {:event => event})%>
+    <div class="result-join-btn-holder">      
+      <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => event})%>
     </div>
     <%= hidden_field_tag "result_lat", event.location.latitude %>
     <%= hidden_field_tag "result_lng", event.location.longitude %>

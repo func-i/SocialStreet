@@ -104,6 +104,7 @@ $(function(){
 });
 
 function setupShowEventPage(){
+    
     var lat = $('#lat').val();
     var lng = $('#lng').val();
     var loc_text = $('#location_text').val();
@@ -119,12 +120,13 @@ function setupShowEventPage(){
     map.panBy(-xOffset, -yOffset);
 
     //Load invitation users on delay
-    getInvitationUsers();
+    //getInvitationUsers();
+    initializeScrollPanes();
 }
 
 function getInvitationUsers(){
     setTimeout(function() {
-        $.getScript('/invitations/load_connections');
+        $.getScript('/invitations/load_connections');545
     }, 500);
 }
 

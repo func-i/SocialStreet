@@ -35,14 +35,40 @@ if(history && history.pushState) {
             } 
 
             $.getScript(location.href);
+            
         });
 
         $('#log_button').click(function() {
             window.location = $(this).data('href');
-        })                
+        });       
     });
 
 
+}
+
+function initializeScrollPanes() {
+
+    $('.scroll-pane').each(function() {
+        $(this).jScrollPane();
+
+        var api = $(this).data('jsp');
+        var throttleTimeout;
+        $(window).bind('resize', function() {
+            if ($.browser.msie) {
+                // IE fires multiple resize events while you are dragging the browser window which
+                // causes it to crash if you try to update the scrollpane on every one. So we need
+                // to throttle it to fire a maximum of once every 50 milliseconds...
+                if (!throttleTimeout) {
+                    throttleTimeout = setTimeout(function() {
+                        api.reinitialise();
+                        throttleTimeout = null;
+                    }, 50);
+                }
+            } else {
+                api.reinitialise();
+            }
+        });
+    }); 
 }
 
 $(function(){
@@ -62,6 +88,7 @@ $(function(){
         $.getScript(href);
     });
 
+<<<<<<< HEAD
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
@@ -73,12 +100,27 @@ $(function(){
                 timeout: 20000
             });
         }
+=======
+    function resizeResultsContainer() {
+        
+        var docHeight = $(window).height();
+
+        $.each($('.expand-height'), function(i, ele) {
+            var cPos = $(ele).offset().top;
+            var cHeight = docHeight - cPos - 10;
+
+            $(ele).height(cHeight);
+        });        
+>>>>>>> 470811a28d7ce28b30b2059826e4faeb88640559
     }
 
     if($('.expand-height').length > 0) {
+
         $(window).load(resizeResultsContainer()).resize(function() {
             resizeResultsContainer();
         });
+
+        initializeScrollPanes();
     }
 });
 
