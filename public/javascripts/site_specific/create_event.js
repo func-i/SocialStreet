@@ -372,7 +372,6 @@ function setupCreateWhen(){
     });
 
     var myStartDate = $('#start_date').val();
-    myStartDate = myStartDate.replace(/-/g, '/');
     var myDate = new Date(myStartDate);
     setWhenDate(myDate);
 
