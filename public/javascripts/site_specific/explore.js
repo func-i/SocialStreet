@@ -43,6 +43,10 @@ function setup_explore_page(){
     $('#explore_btn').addClass('hidden');
     $('#notify_me_btn').removeClass('hidden');
 
+    $('#explore_search_params').ajaxComplete(function() {
+       initializeScrollPanes();
+    });
+
     var mapCenter = $('#map_center').val();
     var mapCenterArr = mapCenter.split(",");
     map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
@@ -53,21 +57,6 @@ function setup_explore_page(){
     addExploreMarkers();
     toggle_suggested_actions();
 
-    $('.result').live('mouseenter', function(){
-        var $btn = $(this).find('.result-btn');
-        $btn.removeClass('not-attending');
-        $btn.addClass('join-event-btn').html("I'll Join");
-    });
-    
-    $('.result').live('mouseleave', function(){
-        var $btn = $(this).find('.result-btn');
-        $btn.removeClass('join-event-btn');
-        $btn.addClass('not-attending').html("");
-    });
-
-    //$('#results_container').jScrollPane();
-
-   
 }
 
 function create_tags_from_input_fields(){

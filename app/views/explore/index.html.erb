@@ -1,15 +1,15 @@
 <%= form_tag explore_path, :remote => true, :method => :get, :id => "explore_search_params" do %>
   <%= hidden_field_tag 'map_bounds', params[:map_bounds] %>
-  <%= hidden_field_tag 'map_center', params[:map_center] %>
+  <%= hidden_field_tag 'map_center', params[:map_center] %>4
   <%= hidden_field_tag 'map_zoom', params[:map_zoom] %>
 
-  <% (params[:keywords] || []).each do |keyword|%>
+  <% (params[:keywords] || []).each do |keyword| %>
     <%= hidden_field_tag 'keywords[]', keyword %>
   <% end %>
 <% end %>
 
 <div class="x-small-box y-large-box position-y-top position-x-left drop-shadow expand-height">
-  <div id="results_container" style="height:100%; overflow:auto;">
+  <div id="results_container" class="scroll-pane" style="height:85%; overflow: auto;">
     <div id="results_list">
       <%= render :partial => "results", :locals => { :results => @events } %>
     </div>
@@ -56,10 +56,9 @@
 <% unless params[:keywords].blank? %>
   <script type="text/javascript">
   <% for keyword in params[:keywords] %>
-    addKeyword('<%= keyword %>');
+      addKeyword('<%= keyword %>');
   <% end %>
   </script>
 <% end %>
 
 <%= javascript_include_tag 'site_specific/explore' %>
-

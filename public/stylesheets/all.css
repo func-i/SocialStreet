@@ -283,16 +283,17 @@ END OF RESET
     margin: 2px 10px 0 0;
     padding: 3px 10px;
 }
+
 #suggested_actions{
-    padding:60px 0 0 15px;
-    height: 70px;
+    /*padding:60px 0 0 15px;
+    height: 70px;*/
     font-weight: bold;
     font-size: 22px;
     color: #FFFCD5;
     text-align: center
 }
 #not_enough_results{
-    padding-bottom: 12px;
+    /* padding-bottom: 12px;*/
 }
 #suggested_actions_change_location{
     font-size: 16px;
@@ -308,7 +309,7 @@ END OF RESET
     font-size: 16px;
     text-align: left;
     list-style: disc;
-    padding: 10px 0 0 35px;
+    /*padding: 10px 0 0 35px;*/
 }
 #explore_keyword_header{
     position: absolute;
@@ -438,11 +439,11 @@ END OF RESET
     color: #010000;
     background: #9c3;
     font: bold 16px/32px Arial, Helvetica, sans-serif;
-    padding: 10px 30px;
+    padding: 3px 10px;
+    margin: 2px 10px 0px 0px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    width: 120px;
     cursor: pointer;
     text-align: center;
 }
