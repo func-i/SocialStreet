@@ -42,11 +42,11 @@ if(history && history.pushState) {
             window.location = $(this).data('href');
         });       
     });
-
-
 }
 
 function initializeScrollPanes() {
+
+    console.log('scrollpanes');
 
     $('.scroll-pane').each(function() {
         $(this).jScrollPane();
