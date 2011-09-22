@@ -23,8 +23,6 @@
             Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
           </div>
         </div>
-
-
       </div>
       <div class="scroll-pane result-description">
         <% if can_edit %>
@@ -45,7 +43,7 @@
           <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
         </div>
       <% end %>
-      <div id="event_wall" class="scroll-pane" style="height: 100%; overflow: auto;">
+      <div id="event_wall" class="scroll-pane" style="height:100%;overflow: auto;">
         <%@comments.each do |comment|%>
           <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
         <% end %>
