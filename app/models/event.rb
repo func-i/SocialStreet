@@ -50,6 +50,10 @@ class Event < ActiveRecord::Base
     return [minutes.floor, "Minutes"] if minutes > 1
     return [diff_in_seconds, "Seconds"]
   end
+
+  def upcoming
+    Time.zone.now < start_date
+  end
   
   def event_types
     event_keywords.collect(&:event_type).compact
@@ -103,7 +107,7 @@ class Event < ActiveRecord::Base
   end
 
   def can_edit?(user)
-    event_rsvps.by_user(user).first.try(:organizer)
+    !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end
 
   protected

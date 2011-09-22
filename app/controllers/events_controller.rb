@@ -29,11 +29,15 @@ class EventsController < ApplicationController
   def edit
     @event_types = EventType.order('name').all
     
-    @event = Event.find params[:id]    
+    @event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
   end
 
   def update
     event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
 
     if params[:event][:event_keywords_attributes]
       event.event_keywords.each do |keyword|
@@ -49,6 +53,21 @@ class EventsController < ApplicationController
     else
       render :nothing => true
     end
+  end
+
+  def destroy
+    event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
+
+    event.canceled = true
+    event.save
+
+    if(event.upcoming)
+      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, event.id)
+    end
+
+    redirect_to :root
   end
 
   protected

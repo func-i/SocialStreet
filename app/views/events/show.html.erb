@@ -54,8 +54,20 @@
   </div>
 
   <div class="position-y-top position-x-center">
+    <% if can_edit %>
+      <div>
+        <%= link_to "Edit StreetMeet...", edit_event_path(@event), :id=>"edit_event_link" %>
+        <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
+      </div>
+    <% end %>
     <div id="join_btn_holder" class="drop-shadow">
-      <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
+      <% if @event.canceled %>
+        <div id="event_canceled_btn">
+          Canceled
+        </div>
+      <% else %>
+        <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
+      <% end %>
     </div>
 
     <div id="show_attendees_holder" class="drop-shadow">
