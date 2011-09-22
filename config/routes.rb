@@ -6,14 +6,17 @@ SocialStreetReborn::Application.routes.draw do
   resources :event_types, :only => [:index]
   resources :events do
     resources :event_rsvps, :only => [:new, :edit]
-    resources :invitations, :only => [:new] do
-      member do
-        get "search"
-      end
-    end
-    resources :comments, :only => [:create]
+    resources :invitations, :only => [:new]
+    resources :comments, :only => [:create, :destroy]
   end
 
+  resources :invitations, :only => [] do
+    collection do
+      get "search"
+      get "load_connections"
+    end
+  end
+  
   resources :authentications do
     collection do
       match "accept_tnc"

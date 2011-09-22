@@ -1,8 +1,6 @@
 class Event < ActiveRecord::Base
   before_create :build_initial_rsvp
-  before_validation :set_end_time # => TODO: remove this
-  after_create :set_default_title
-
+  
   has_many :event_keywords
   has_many :event_rsvps;
   has_many :comments
@@ -37,6 +35,26 @@ class Event < ActiveRecord::Base
     end
   }
 
+  def duration_in_seconds
+    end_date - start_date
+  end
+
+  def duration_array
+    diff_in_seconds = end_date - start_date
+    minutes = diff_in_seconds / 60
+    hours = minutes / 60
+    days = hours / 24
+
+    return [days.floor, "Days"] if days > 1
+    return [hours.floor, "Hours"] if hours > 1
+    return [minutes.floor, "Minutes"] if minutes > 1
+    return [diff_in_seconds, "Seconds"]
+  end
+
+  def upcoming
+    Time.zone.now < start_date
+  end
+  
   def event_types
     event_keywords.collect(&:event_type).compact
   end
@@ -46,9 +64,9 @@ class Event < ActiveRecord::Base
   end
 
   def date_range_as_sentence
-    rtn_sentence = start_date.strftime("%B %d %l:%M %p")
-    if start_date.strftime("%B %d") != end_date.strftime("%B %d")
-      rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%B %d %l:%M %p")}"
+    rtn_sentence = start_date.strftime("%a %b %e %l:%M %p")
+    if start_date.strftime("%b %e") != end_date.strftime("%b %e")
+      rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%b %e %l:%M %p")}"
     else
       rtn_sentence = "#{rtn_sentence} - #{end_date.strftime("%l:%M %p")}"
     end
@@ -88,24 +106,13 @@ class Event < ActiveRecord::Base
     event_rsvps.attending_or_maybe_attending.size
   end
 
+  def can_edit?(user)
+    !canceled && event_rsvps.by_user(user).first.try(:organizer)
+  end
+
   protected
 
   def build_initial_rsvp
     event_rsvps.build(:user=>user, :status => EventRsvp.statuses[:attending], :organizer => true) if event_rsvps.empty?
   end
-
-  def set_end_time
-    self.end_date = self.start_date + 3.hours unless self.start_date.blank?
-  end
-
-  def set_default_title
-    new_name = (event_keywords.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
-    location_name = ""
-    location_name = location.text unless location.text.blank? 
-    location_name = "#{location.street} #{location.city}, #{location.state}" if location_name.blank?
-    location_name = location.geocoded_address if location_name.blank?
-    
-    self.update_attribute("name", "#{new_name} @ #{location_name}")
-  end
-
 end

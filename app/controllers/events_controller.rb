@@ -11,6 +11,10 @@ class EventsController < ApplicationController
   def new
     @event_types = EventType.order('name').all
     @event = Event.new
+
+    @event.start_date = Time.now.advance(:hours => 3).floor(15.minutes)
+    @event.end_date = Time.now.advance(:hours => 6).floor(15.minutes)
+    
     @location = @event.build_location
   end
 
@@ -18,12 +22,52 @@ class EventsController < ApplicationController
     if create_or_edit_event(params, :create)
       @event.reload
       prepare_for_show
-      #render :file => "events/show.js.erb"
       redirect_to @event
-      #render :update do |page|
-        #page.redirect_to @event
-      #end
     end
+  end
+
+  def edit
+    @event_types = EventType.order('name').all
+    
+    @event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
+  end
+
+  def update
+    event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
+
+    if params[:event][:event_keywords_attributes]
+      event.event_keywords.each do |keyword|
+        keyword.destroy
+      end
+    end
+
+    event.attributes = params[:event]
+    event.save
+
+    if params[:event][:event_keywords_attributes] #HACK HACK HACKITY HACK
+      redirect_to event
+    else
+      render :nothing => true
+    end
+  end
+
+  def destroy
+    event = Event.find params[:id]
+
+    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
+
+    event.canceled = true
+    event.save
+
+    if(event.upcoming)
+      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, event.id)
+    end
+
+    redirect_to :root
   end
 
   protected

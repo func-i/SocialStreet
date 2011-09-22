@@ -188,6 +188,7 @@ END OF RESET
     padding:15px 10px 10px 15px;
     height: 80px;
     position: relative;
+
 }
 .result-image{
     float: left;
@@ -229,9 +230,10 @@ END OF RESET
 .result-description{
     color: white;
     float: left;
-    margin-top: 10px;
+    margin: 10px 0 30px 0;
     overflow-y: auto;
-    height: 80px;
+    max-height: 80px;
+    width: 380px;
 }
 .result-arrow{
     width: 0;
@@ -367,15 +369,22 @@ END OF RESET
 }
 .explore-keyword-tag{
     padding-left: 5px;
+    float: left;
+    width: 200px;
+}
+.explore-tag-icon{
+    float:left;
 }
 .explore-keyword-tag-name{
     text-align: center;
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
-    background: url("../images/overlay_box_bg.png");
+    float: left;
+    padding: 19px 0 0 5px;
 }
 .explore-keyword-tag-remove{
-
+    float: right;
+    padding: 19px 0 0 15px;
 }
 
 .drop-shadow{
@@ -437,12 +446,26 @@ END OF RESET
     cursor: pointer;
     text-align: center;
 }
+#event_canceled_btn{
+    color: white;
+    background: #c41a30;
+    font: bold 16px/32px Arial, Helvetica, sans-serif;
+    padding: 10px 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 120px;
+    text-align: center;
+}
 .unattend-btn{
     margin-top: 10px;
     color: black;
-    font: italic 10px/12px Arial, Helvetica, sans-serif;
+    font: italic 11px/12px Arial, Helvetica, sans-serif;
     text-align: center;
     cursor: pointer;
+}
+#loading_invitation_image{
+    margin:100px 0 0 200px;
 }
 
 /*Create Event*/
@@ -574,6 +597,24 @@ END OF RESET
     padding-top: 75px;
     text-align: center;
 }
+#create_when_date{
+    font: bold 20px/32px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    text-align: center;
+    padding: 10px 0;
+    width: 400px;
+}
+#create_when_time{
+    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+    padding-top: 30px;
+}
+#create_when_duration{
+    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+}
 
 
 /*Arrow*/
@@ -582,11 +623,33 @@ END OF RESET
     height: 0;
     border-top: 60px solid transparent;
     border-bottom: 60px solid transparent;
-
     border-left: 60px solid #FFC233;
 }
 
 /*Show Event*/
+#edit_event_title_link{
+    color: #FFFD8B;
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+}
+#edit_event_description_link{
+    color: #FFFD8B;
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+}
+#edit_event_link{
+    color: #FFFD8B;
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+    padding: 5px;
+    margin-left: 2px;
+    background: url("../images/overlay_box_bg.png");
+}
+#destroy_event_link{
+    color: #FFFD8B;
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+    padding: 5px;
+    background: url("../images/overlay_box_bg.png");
+}
+
+
 #join_btn_holder{
     margin: 20px 20px 20px 0;
     width: 180px;
@@ -596,9 +659,11 @@ END OF RESET
 #show_attendees_holder{
     /*height: 200px;*/
     max-height: 200px;
+    overflow: auto;
     float: left;
     width: 600px;
     background: url("../images/overlay_box_bg.png");
+    padding-top: 9px;
 }
 #show_attendees_title{
     color: white;
@@ -646,7 +711,7 @@ END OF RESET
     width: 100px;
 }
 .event-wall-user-image{
-    padding: 0 22px 0 22px;
+    padding: 0 27px 0 27px;
 }
 .event-wall-user-name{
     text-align: center;
@@ -659,13 +724,18 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     overflow: hidden;
     margin-bottom: 0px;
-    min-height: 65px;
+    min-height: 30px;
     padding: 5px 10px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     position: relative;
     font-style: italic;
+}
+.comment-delete{
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
 .event-wall-comment-body-overflow{
     /*height: auto;

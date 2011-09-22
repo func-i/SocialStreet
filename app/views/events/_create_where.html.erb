@@ -13,10 +13,11 @@
 
 <div id="create-where-marker-info" class="x-small-box y-small-box position-y-middle position-x-left drop-shadow hidden">
   <div id="create-where-name-location">
-    <span id="create-where-name-location-text"></span>
-    <%= text_field_tag 'name', params[:q], :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create-where-name-location-input', :class => 'hidden' %>
+    <span id="create-where-name-location-text"><%= event.location.text %></span>
+    <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create-where-name-location-input', :class => 'hidden' %>
   </div>
   <div id="create-where-address">
+    <%= event.location.geocoded_address %>
   </div>
 </div>
 

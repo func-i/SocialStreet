@@ -20,12 +20,12 @@ if(history && history.pushState) {
             
             if(href != undefined) {
                 $.getScript(href);
-                history.pushState(null, "", href);
+                history.pushState({}, "", href);
                 e.preventDefault();
             }
         });
 
-        var popped = ('state' in window.history), initialURL = location.href;
+        var popped = (null === window.history.state), initialURL = location.href;
 
         $(window).bind('popstate', function() {
             var initialPop = !popped && location.href == initialURL;

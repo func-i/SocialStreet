@@ -1,6 +1,7 @@
 var showMarker = null;
 var refreshInviteListTimer = null;
 var invitationCounter = 0;
+var invitationPageless = null;
 
 $(function(){
 
@@ -21,6 +22,16 @@ $(function(){
             }
         }
     });
+    $('.event-wall-comment').live('mouseenter', function(){
+        $(this).find('.comment-delete').removeClass('hidden');
+    });
+    $('.event-wall-comment').live('mouseleave', function(){
+        $(this).find('.comment-delete').addClass('hidden');
+    });
+    $('.comment-delete').live('click', function(){
+        $(this).closest('.event-wall-comment').hide();
+    });
+
     $('.invite-friends-btn').live('click', function(){
         $('#invitation_view').removeClass('hidden');
         $('#show_view').addClass('hidden');
@@ -50,6 +61,46 @@ $(function(){
         $('#invitation_view').addClass('hidden');
         $('#show_view').removeClass('hidden');
     });
+
+
+
+    $('#edit_event_title_link').click(function(){
+        $('#result_title_text').addClass('hidden');
+        $('#edit_event_title_link').addClass('hidden');
+        $('#edit_event_title_field').removeClass('hidden');
+    });
+    $('#edit_event_title_field').keydown(function(e){
+        if(e.keyCode == 13){
+            $('#result_title_text').text(e.target.value.substring(0, 36));
+            $('#result_title_text').removeClass('hidden');
+            $('#edit_event_title_link').removeClass('hidden');
+            $('#edit_event_title_field').addClass('hidden');
+            $('#event_edit_form').submit();
+        }
+    });
+    $('#edit_event_description_link').click(function(){
+        $('#result_description_text').addClass('hidden');
+        $('#edit_event_description_link').addClass('hidden');
+        $('#edit_event_description_field').removeClass('hidden');
+    });
+    $('#edit_event_description_field').keydown(function(e){
+        if(e.keyCode == 13){
+            $('#result_description_text').text(e.target.value);
+            $('#result_description_text').removeClass('hidden');
+            $('#edit_event_description_link').removeClass('hidden');
+            $('#edit_event_description_field').addClass('hidden');
+            $('#event_edit_form').submit();
+
+            if(e.target.value > 0){
+                $('#edit_event_description_link').text('Edit description...');
+            }
+            else{
+                $('#edit_event_description_link').text('Add description...');
+            }
+        }
+    });
+
+
 });
 
 function setupShowEventPage(){
@@ -66,6 +117,25 @@ function setupShowEventPage(){
     var xOffset = $('#location-map').width() / 5;
     var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);
+
+    //Load invitation users on delay
+    getInvitationUsers();
+}
+
+function getInvitationUsers(){
+    setTimeout(function() {
+        $.getScript('/invitations/load_connections');
+    }, 500);
+}
+
+function makeInvitationPageless(){
+    invitationPageless = new Pageless({
+        container: '#user_holder',
+        totalPages: 100,
+        currentPage: 1,
+        url: '/invitations/load_connections'
+    });
+    invitationPageless.start();
 }
 
 function add_invitation(that){
@@ -79,8 +149,8 @@ function add_invitation(that){
         $('#invited_user_list').append(userClone);
 
         $('#invite_form').append(
-            '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
-            );
+        '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
+    );
 
         invitationCounter++;
         $('#invitation_list_title').removeClass('hidden');
@@ -114,8 +184,8 @@ function addEmail(email_address){
         //email_address = email_address.replace("@", "_at_").replace(".","_");
         email_address = email_address.replace(".","\.");
         $('#invite_form').append(
-            '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
-            );
+        '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
+    );
 
         var emailElem = $(document.createElement('li'));
         emailElem.addClass('already-invited-email');

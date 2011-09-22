@@ -1,14 +1,15 @@
 <div class="event-wall-comment">
   <div class="event-wall-user-holder">
     <div class="event-wall-user-image">
-      <%=avatar(comment.user, :size => "55x55", :class=> "drop-shadow")%>
+      <%=avatar(comment.user, :size => "44x44", :class=> "drop-shadow")%>
     </div>
     <div class="event-wall-user-name">
       <%=comment.user.name%>
     </div>
   </div>
-  <div class="event-wall-comment-body drop-shadow" style="position: relative;">
-    <%=comment.body %>    
+  <div class="event-wall-comment-body drop-shadow">
+    <%=comment.body %>
+    <%=link_to(image_tag('header-close.png'), [comment.event, comment], :method=>"delete", :remote=>true, :confirm => 'Are you sure you want to delete this Message?', :class => 'comment-delete hidden') if current_user && comment.user == current_user%>
   </div>
   <div class="comment-time"><%= time_ago_in_words(comment.created_at, Time.now) %> ago</div>
 </div>

@@ -1,4 +1,4 @@
-<%= form_for @event, :remote => true do |form| %>
+<%= form_for @event, :remote => true, :html => {:id => "event_create_form" } do |form| %>
   <%= form.fields_for :location do |location_fields| %>
     <%= location_fields.hidden_field :text, :id => "location-name-field" %>
     <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
@@ -6,19 +6,24 @@
     <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field"%>
   <% end %>
 
-  <%= form.hidden_field :start_date %>
+  <% (@event.event_keywords || []).each do |keyword| %>
+    <input type="hidden" name="event[event_keywords_attributes][][name]" value="<%=keyword.name%>" />
+  <% end %>
+
+  <%= hidden_field_tag "event[start_date]", @event.start_date.strftime('%Y/%m/%d %I:%M %p'), :id => 'start_date' %>
+  <%= hidden_field_tag "event[end_date]", @event.end_date.strftime('%Y/%m/%d %I:%M %p'), :id => 'end_date' %>
 <% end %>
 
 <div id="create_what" class="overlay-group">
-  <%= render :partial => "create_what.html" %>
+  <%= render :partial => "create_what.html", :locals => {:event => @event} %>
 </div>
 
 <div id="create_where" class="overlay-group hidden">
-  <%= render :partial => "create_where.html" %>
+  <%= render :partial => "create_where.html", :locals => {:event => @event} %>
 </div>
 
 <div id="create_when" class="overlay-group hidden">
-  <%= render :partial => "create_when.html" %>
+  <%= render :partial => "create_when.html", :locals => {:event => @event} %>
 </div>
 
-<%= javascript_include_tag "site_specific/create_event" %>
+<%= javascript_include_tag "site_specific/create_event", 'fullcalendar.js' %>

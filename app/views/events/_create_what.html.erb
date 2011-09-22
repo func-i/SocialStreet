@@ -7,12 +7,19 @@
   </div>
 </div>
 
-<div id="create-what-tag-list-holder" class="position-y-middle position-x-left hidden">
+<div id="create-what-tag-list-holder" class="position-y-middle position-x-left <%="hidden" unless @event && !@event.event_keywords.empty?%>">
   <div class="create-what-tag-list-title drop-shadow">
     Tags:
   </div>
   <ul id="create_what_tag_list">
-
+    <% (event.event_keywords || []).each do |keyword| %>
+      <li class="create-what-event-type">
+        <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
+        <div class="create-what-event-type-name">
+          <%=keyword.name%>
+        </div>
+      </li>
+    <% end %>
   </ul>
 </div>
 
@@ -40,6 +47,6 @@
   </div>
 </div>
 
-<div id="create_what_next_arrow" class="next-arrow next-arrow-position hidden">
+<div id="create_what_next_arrow" class="next-arrow next-arrow-position <%="hidden" unless @event && !@event.event_keywords.empty?%>">
   <span class="next-arrow-text">Continue</span>
 </div>
