@@ -26,20 +26,20 @@
 
 
       </div>
+      <div class="scroll-pane result-description">
+        <% if can_edit %>
+          <%= link_to ((@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."), "#", :id => 'edit_event_description_link' %>
+          <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:360px;height:70px;" %>
+        <% end %>
+        <span id="result_description_text">
+          <%= @event.description %>
+        </span>
+      </div>
     <% end %>
-    <div class="result-description">
-      <% if can_edit %>
-        <%= link_to ((@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."), "#", :id => 'edit_event_description_link' %>
-        <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:360px;height:70px;" %>
-      <% end %>
-      <span id="result_description_text">
-        <%= @event.description %>
-      </span>
-    </div>
   </div>
 
   <div id="show_view" class="<%="hidden" if params[:invite]%>">
-    <div class="container expand-height">
+    <div class="container">
       <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
         <div id="event_wall_text_field_holder">
           <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>

@@ -251,9 +251,9 @@ END OF RESET
 }
 .result-description{
     color: white;
-    margin: 10px 0 30px 30px;
+    margin: 10px 10px 30px 10px;
     overflow-y: auto;
-    max-height: 80px;
+    max-height: 75px;
     width: 380px;
     padding-bottom: 20px;
 
