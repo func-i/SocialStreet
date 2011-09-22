@@ -353,15 +353,22 @@ END OF RESET
 }
 .explore-keyword-tag{
     padding-left: 5px;
+    float: left;
+    width: 200px;
+}
+.explore-tag-icon{
+    float:left;
 }
 .explore-keyword-tag-name{
     text-align: center;
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
-    background: url("../images/overlay_box_bg.png");
+    float: left;
+    padding: 19px 0 0 5px;
 }
 .explore-keyword-tag-remove{
-
+    float: right;
+    padding: 19px 0 0 15px;
 }
 
 .drop-shadow{
@@ -426,7 +433,7 @@ END OF RESET
 .unattend-btn{
     margin-top: 10px;
     color: black;
-    font: italic 10px/12px Arial, Helvetica, sans-serif;
+    font: italic 11px/12px Arial, Helvetica, sans-serif;
     text-align: center;
     cursor: pointer;
 }

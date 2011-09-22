@@ -87,16 +87,16 @@ function updateCreateWhenDates(){
     var duration = $('#duration').val();
     var duration_size = $('#duration_size').val();
     if(duration_size == "Minutes"){
-        duration = duration *1000*60;
+        duration = duration*60000;
     }
     else if(duration_size == "Hours"){
-        duration = duration *1000*60*60;
+        duration = duration*3600000;
     }
     else if(duration_size == "Days"){
-        duration = duration *1000*60*60*24;
+        duration = duration*86400000;
     }
 
-    var end_date = new Date();
+    var end_date = new Date(start_date.getTime());
     end_date.setMilliseconds(start_date.getMilliseconds() + duration);
 
     $('#start_date').val(formatDateStringForInput(start_date));

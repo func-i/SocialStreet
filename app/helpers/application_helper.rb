@@ -20,7 +20,8 @@ module ApplicationHelper
     if(end_time)
       if( start_time < compare_time )
         if( end_time > compare_time )
-          return 'started ' + time_ago_in_words(start_time) + ' ago - ' + time_ago_in_words(end_time) + ' remaining'
+          #return 'started ' + time_ago_in_words(start_time) + ' ago - ' + time_ago_in_words(end_time) + ' remaining'
+          return 'started ' + time_ago_in_words(start_time) + ' ago'
         else
           return 'ended ' + time_ago_in_words(end_time) + ' ago'
         end

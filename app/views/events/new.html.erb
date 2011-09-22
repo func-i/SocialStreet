@@ -10,8 +10,8 @@
     <input type="hidden" name="event[event_keywords_attributes][][name]" value="<%=keyword.name%>" />
   <% end %>
 
-  <%= form.hidden_field :start_date, :id => 'start_date' %>
-  <%= form.hidden_field :end_date, :id => 'end_date' %>
+  <%= hidden_field_tag "event[start_date]", @event.start_date.strftime('%Y/%m/%d %I:%M %p'), :id => 'start_date' %>
+  <%= hidden_field_tag "event[end_date]", @event.end_date.strftime('%Y/%m/%d %I:%M %p'), :id => 'end_date' %>
 <% end %>
 
 <div id="create_what" class="overlay-group">

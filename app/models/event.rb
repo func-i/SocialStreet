@@ -1,8 +1,6 @@
 class Event < ActiveRecord::Base
   before_create :build_initial_rsvp
-  before_validation :set_end_time # => TODO: remove this
-  after_create :set_default_title
-
+  
   has_many :event_keywords
   has_many :event_rsvps;
   has_many :comments
@@ -113,19 +111,4 @@ class Event < ActiveRecord::Base
   def build_initial_rsvp
     event_rsvps.build(:user=>user, :status => EventRsvp.statuses[:attending], :organizer => true) if event_rsvps.empty?
   end
-
-  def set_end_time
-    self.end_date = self.start_date + 3.hours unless self.start_date.blank?
-  end
-
-  def set_default_title
-    new_name = (event_keywords.first.try(:name) || "Something").clone # need clone otherwise event type name is modified
-    location_name = ""
-    location_name = location.text unless location.text.blank? 
-    location_name = "#{location.street} #{location.city}, #{location.state}" if location_name.blank?
-    location_name = location.geocoded_address if location_name.blank?
-    
-    self.update_attribute("name", "#{new_name} @ #{location_name}")
-  end
-
 end

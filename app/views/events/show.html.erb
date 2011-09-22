@@ -1,24 +1,40 @@
-<div id="show_event_details" class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
-  <div class="result">
-    <div class="result-text">
-      <div class="result-image">
-        <%= image_tag(url_for_event_image(@event))%>
-      </div>
-      <div class="result-title">
-        <%= truncate_html(@event.title, :length => 50) %>
-      </div>
-      <div class="result-date">
-        <%= @event.date_range_as_sentence %>
-      </div>
-      <div class="result-tags">
-        Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
-      </div>
-    </div>
+<% can_edit = @event.can_edit?(current_user) %>
 
-    <div class="result-description">
-      <%= @event.description %>
+<div id="show_event_details" class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
+  <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
+    <div class="result">
+      <div class="result-text">
+        <div class="result-image">
+          <%= image_tag(url_for_event_image(@event))%>
+        </div>
+        <div class="result-title">
+          <span id="result_title_text">
+            <%= truncate_html(@event.title, :length => (can_edit ? 36 : 50)) %>
+          </span>
+          <% if can_edit %>
+            <%= link_to "...Edit Title", '#', :id=>'edit_event_title_link' %>
+            <%= form.text_field :name, :id=> "edit_event_title_field", :class=>"hidden", :style=>"width:270px;" %>
+          <% end %>
+        </div>
+        <div class="result-date">
+          <%= @event.date_range_as_sentence %>
+        </div>
+        <div class="result-tags">
+          Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
+        </div>
+      </div>
+
+      <div class="result-description">
+        <% if can_edit %>
+          <%= link_to ((@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."), "#", :id => 'edit_event_description_link' %>
+          <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:360px;height:70px;" %>
+        <% end %>
+        <span id="result_description_text">
+          <%= @event.description %>
+        </span>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <div id="show_view" class="<%="hidden" if params[:invite]%>">
