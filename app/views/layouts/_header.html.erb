@@ -20,10 +20,22 @@
               Filter
             </div>-->
 
-      <div id="log_button" class="btn btn-not-important-color" style="float:right;" data-href='<%= user_signed_in? ? destroy_user_session_path : "/auth/facebook" %>'>
-        <%= user_signed_in? ? "Sign out" : "Sign In" %>
-      </div>
-
+      <% if user_signed_in? %>
+        <div id="signed_in_button">
+          <%=image_tag "user_outline.png", :size => "40x40", :id=>'user_signed_in_btn'%>
+          <ul class="drop-shadow">
+            <!--<li><%#=link_to "Settings", '#' %></li>-->
+            <li><%=link_to "Sign Out", destroy_user_session_path%></li>
+          </ul>
+        </div>
+        <span id="current_user_name">
+          <%=current_user.name%>
+        </span>
+      <% else %>
+        <div id="log_button" class="btn btn-not-important-color" style="float:right;margin-bottom: 9px;" data-href='/auth/facebook'>
+          Sign In
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

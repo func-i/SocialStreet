@@ -18,7 +18,7 @@ class ExploreController < ApplicationController
   end
 
   def find_events(args = {})
-    events = Event.valid
+    events = Event.valid.upcoming
 
     #MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
@@ -54,7 +54,7 @@ class ExploreController < ApplicationController
         longitude = center[1]
       else
         if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
-          if defined?(current_user) && current_user #TODO - hack until I setup devise
+          if current_user
             latitude = current_user.last_known_latitude
             longitude = current_user.last_known_longitude
           end
@@ -75,10 +75,7 @@ class ExploreController < ApplicationController
     params[:map_center] = "#{(bounds[0].to_f + bounds[2].to_f)/2},#{(bounds[1].to_f + bounds[3].to_f)/2}" unless params[:map_center]
     params[:map_zoom] = 12 unless params[:map_zoom]
 
-    puts events.count
     events = events.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
-    puts events.count
-    return events
   end
 
 end

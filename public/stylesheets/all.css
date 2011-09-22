@@ -95,13 +95,35 @@ END OF RESET
 #header .open { padding: 0; }
 #header .holder {
     margin: 0 auto;
-    padding: 18px 0;
+    padding: 18px 0 0 0;
     width: 983px;
 }
 #header .holder:after {
     clear: both;
     content: "";
     display: block;
+}
+#current_user_name{
+    float:right;
+    color: white;
+    padding-top: 17px;
+}
+#signed_in_button{
+    float:right;
+    position: relative;
+}
+#signed_in_button ul{
+    display:none;
+    color: #000;
+    z-index:2;
+    left: -25px;
+    width: 60px;
+    position:absolute;
+    background: #d2e9f3;
+    padding: 10px 20px 10px 20px;
+}
+#signed_in_button:hover ul{
+    display:block;
 }
 
 /*Hidden*/
@@ -421,6 +443,7 @@ END OF RESET
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     float: left;
+    margin-top: -4px;
 }
 
 .join-event-btn{

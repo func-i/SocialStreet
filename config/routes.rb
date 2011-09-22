@@ -19,12 +19,12 @@ SocialStreetReborn::Application.routes.draw do
   
   resources :authentications do
     collection do
-      match "accept_tnc"
-      match "tnc_accepted"
       match "show_privacy"
       match "show_tnc"
     end
   end
+
+  match '/locations/update_user_location' => 'locations#update_user_location'
 
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
 

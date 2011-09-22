@@ -40,9 +40,10 @@ if(history && history.pushState) {
 
         $('#log_button').click(function() {
             window.location = $(this).data('href');
-        });
-       
+        });       
     });
+
+
 }
 
 function initializeScrollPanes() {
@@ -87,16 +88,17 @@ $(function(){
         $.getScript(href);
     });
 
-    function resizeResultsContainer() {
-        
-        var docHeight = $(window).height();
-
-        $.each($('.expand-height'), function(i, ele) {
-            var cPos = $(ele).offset().top;
-            var cHeight = docHeight - cPos - 10;
-
-            $(ele).height(cHeight);
-        });        
+    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
+    {
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(function(e){
+                updateUserLocation(e.coords.latitude, e.coords.longitude, true);
+            }, function(e){
+            },{ 
+                maximumAge: 600000,
+                timeout: 20000
+            });
+        }
     }
 
     if($('.expand-height').length > 0) {
@@ -107,6 +109,20 @@ $(function(){
 
         initializeScrollPanes();
     }
-
-
 });
+
+function resizeResultsContainer() {
+    var docHeight = $(window).height();
+
+    $.each($('.expand-height'), function(i, ele) {
+        var cPos = $(ele).offset().top;
+        var cHeight = docHeight - cPos;
+
+        $(ele).height(cHeight);
+    });
+}
+
+function updateUserLocation(latitude, longitude, updateDB){
+    $.getScript('/locations/update_user_location?latitude=' + latitude + '&longitude=' + longitude + '&=update_db=' + updateDB, function(data, textStatus){});
+}
+

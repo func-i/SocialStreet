@@ -4,23 +4,42 @@ var markerManager;
 
 $(function(){
     init_map();
+
+    markerManager = new MarkerManager({
+        map: map
+    });
 });
 
 function init_map(){
+    //GET LOCATION
+    var loc, loc_params;
+
     var mapCenter = $('#map_center').val();
-    var loc = toronto;
     if(undefined != mapCenter && mapCenter.length > 0){
-        var loc_params = mapCenter.split(',');
-        if(loc_params.length == 2)
-            loc = new google.maps.LatLng(loc_params[0], loc_params[1]);
+        loc_params = mapCenter.split(',');
+    }
+    else{
+        loc_params = $('#users_current_location').val().split(',');
     }
 
+    if(loc_params.length == 2){
+        loc = new google.maps.LatLng(loc_params[0], loc_params[1]);
+    }
+    else{
+        loc = toronto;
+    }
+
+    //GET ZOOM
     var mapZoom = $('#map_zoom').val();
-    var zoom = 13;
+    var zoom;
     if(undefined != mapZoom && mapZoom.length > 0){
         zoom = parseInt(mapZoom, 10);
     }
+    else{
+        zoom = 14;
+    }
 
+    //CREATE MAP
     var myOptions = {
         zoom: zoom,
         center: loc,
@@ -38,6 +57,7 @@ function init_map(){
     };
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
+    //ADD LISTENERS
     google.maps.event.addListener(map, 'dragend', function(){
         if($('#on_explore').length > 0)
             updateExploreLocationParams();
@@ -47,10 +67,6 @@ function init_map(){
             updateExploreLocationParams();
 
         }
-    });
-
-    markerManager = new MarkerManager({
-        map: map
     });
 }
 

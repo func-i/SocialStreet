@@ -11,6 +11,8 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :event_keywords, :location
 
   scope :valid, where(:canceled => false);
+  scope :upcoming, where("events.end_date > ?", Time.now)
+  
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     includes(:location).merge(Location.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng))
   }
@@ -107,7 +109,7 @@ class Event < ActiveRecord::Base
   end
 
   def can_edit?(user)
-    !canceled && event_rsvps.by_user(user).first.try(:organizer)
+    user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end
 
   protected
