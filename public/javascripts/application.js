@@ -88,7 +88,6 @@ $(function(){
         $.getScript(href);
     });
 
-<<<<<<< HEAD
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
@@ -100,18 +99,6 @@ $(function(){
                 timeout: 20000
             });
         }
-=======
-    function resizeResultsContainer() {
-        
-        var docHeight = $(window).height();
-
-        $.each($('.expand-height'), function(i, ele) {
-            var cPos = $(ele).offset().top;
-            var cHeight = docHeight - cPos - 10;
-
-            $(ele).height(cHeight);
-        });        
->>>>>>> 470811a28d7ce28b30b2059826e4faeb88640559
     }
 
     if($('.expand-height').length > 0) {
