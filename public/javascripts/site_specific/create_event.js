@@ -6,7 +6,6 @@ $(function(){
     init_create_event();    
 
     cleanUpSelf = function(){
-        $('#create_date_picker').scroller('hide');
     }
 });
 
@@ -50,7 +49,6 @@ function init_create_event(){
     });
 
     $('#create_where_next_arrow').click(function(){
-        //$('#create_date_picker').scroller('show');
         $('#create_where').addClass('hidden');
         $('#create_when').removeClass('hidden');
 
@@ -108,6 +106,11 @@ function setupCreateWhen(){
         defaultView: 'month',
         dayClick: function(date, allDay, jsEvent, view) {
             setWhenDate(date);
+        },
+        header: {
+            left:   'title',
+            center: '',
+            right:  'today prev,next'
         }
     });
 
@@ -116,19 +119,21 @@ function setupCreateWhen(){
     var myDate = new Date(myStartDate);
     setWhenDate(myDate);
 
+}
+
+function highlightDate(date){
     $.each($('.fc-day-number'), function(index, elem){
         if(! $(elem).parent().parent().hasClass('fc-other-month')){
-            if($(elem).text() == myDate.getDate()){
+            if($(elem).text() == date.getDate()){
                 $(elem).parent().parent().addClass('fc-state-highlight');
             }
         }
     });
 }
-
 function setWhenDate(date){
     $('#create_when_calendar').fullCalendar('gotoDate', date);
     $('.fc-state-highlight').removeClass('fc-state-highlight');
-    $(this).addClass('fc-state-highlight');
+    highlightDate(date);
 
     $('#create_when_date').text(formatDateStringForDisplay(date));
 

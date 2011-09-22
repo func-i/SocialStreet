@@ -229,6 +229,8 @@ function updateExploreLocationParams(){
     $('#map_bounds').val(bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng() + ',' + bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng());
     $('#map_center').val(map.getCenter().lat() + ',' + map.getCenter().lng());
 
+    updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), true);
+
     refresh_explore_results();
 }
 

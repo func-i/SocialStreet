@@ -13,6 +13,8 @@
     <%= yield :head %>
   </head>
   <body>
+    <input type="hidden" id="users_current_location" name="users_current_location" value="<%=users_current_location_string()%>"/>
+
     <div id="wrapper">
       <div class="w1">
         <%= render 'layouts/header' %>
