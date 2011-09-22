@@ -44,7 +44,7 @@
         <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
       </div>
     <% end %>
-    <div id="event_wall" class="scroll-pane">
+    <div id="event_wall" class="scroll-pane" style="height: 100%; overflow: auto;">
       <%@comments.each do |comment|%>
         <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
       <% end %>

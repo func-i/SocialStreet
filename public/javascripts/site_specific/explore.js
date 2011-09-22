@@ -5,10 +5,18 @@ var exploreUpdateTimer;
 var selectedResult;
 
 $(function(){
+
+
+    function sizeEventTypesHolder() {
+        $('#explore_keyword_event_types_holder').width($(window).width() - $('.x-small-box').width() - $('#explore_keyword_text_field_holder').width() - 125);
+    }
+
+    $(window).bind('resize', sizeEventTypesHolder());
     
     setup_explore_page();
     
     $('#explore_keyword_text_field').focus(function(){
+        sizeEventTypesHolder();
         $('#explore_keyword_event_types_holder').removeClass('hidden');
     });
 
@@ -44,7 +52,7 @@ function setup_explore_page(){
     $('#notify_me_btn').removeClass('hidden');
 
     $('#explore_search_params').ajaxComplete(function() {
-       initializeScrollPanes();
+        initializeScrollPanes();
     });
 
     var mapCenter = $('#map_center').val();
