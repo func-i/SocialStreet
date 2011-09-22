@@ -251,11 +251,12 @@ END OF RESET
 }
 .result-description{
     color: white;
-    float: left;
-    margin: 10px 0 30px 0;
+    margin: 10px 0 30px 30px;
     overflow-y: auto;
     max-height: 80px;
     width: 380px;
+    padding-bottom: 20px;
+
 }
 .result-arrow{
     width: 0;
@@ -842,4 +843,19 @@ END OF RESET
 }
 .ajax-link{
     cursor: pointer;
+}
+
+#sidebar {
+    position: fixed;
+    left:20px;
+    top: 100px;
+    width: 400px;
+}
+
+#sidebar .container {
+    background: url("../images/overlay_box_bg.png");
+    margin-bottom: 20px;
+    -webkit-box-shadow: 3px 3px 3px #4F4F4D;
+    -moz-box-shadow: 3px 3px 3px #4f4f4d;
+
 }

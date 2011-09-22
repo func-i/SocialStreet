@@ -50,6 +50,8 @@ function cleanup(){
 
 function initializeScrollPanes() {
 
+    console.log('scrollpanes');
+
     $('.scroll-pane').each(function() {
         $(this).jScrollPane();
 
