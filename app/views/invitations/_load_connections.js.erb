@@ -1,0 +1,10 @@
+<% if current_user.try(:facebook_friends_imports) %>
+    if($('#loading_invitation_image').length > 0){
+      $('#user_list_for_invitation').html('');
+      makeInvitationPageless(<%=@num_pages%>);
+    }
+
+    $('#user_list_for_invitation').append('<%= escape_javascript render :file => '/invitations/_invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>')
+<% else %>
+    getInvitationUsers();
+<% end %>

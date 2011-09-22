@@ -448,6 +448,9 @@ END OF RESET
     text-align: center;
     cursor: pointer;
 }
+#loading_invitation_image{
+    margin:100px 0 0 200px;
+}
 
 /*Create Event*/
 .create-what-title{

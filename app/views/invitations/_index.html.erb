@@ -1,12 +1,14 @@
-<div class="x-medium-box y-medium-box position-y-top position-x-center drop-shadow" style="overflow-y:auto;">
+<div id="user_holder" class="x-medium-box y-medium-box position-y-top position-x-center drop-shadow" style="overflow-y:auto;">
   <div id="invite_user_text_field_holder">
-    <%= form_tag search_event_invitation_path(event), :method => :get, :id=>'invite_user_form', :remote => true do %>
+    <%= form_tag search_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
       <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
       <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
     <% end %>
   </div>
   <div id="user_holder_for_invitation">
-    <%= render :partial => 'invitations/invite_user_list.html', :locals => {:user_list => user_list} %>
+    <ul id="user_list_for_invitation">
+      <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
+    </ul>
   </div>
 </div>
 

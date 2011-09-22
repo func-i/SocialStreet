@@ -40,6 +40,25 @@ class InvitationsController < ApplicationController
     render :nothing => true
   end
 
+  USERS_PER_PAGE = 50  
+  def load_connections
+    page = (params[:page] || 1).to_i
+    offset = (page - 1) * USERS_PER_PAGE
+
+    if(current_user)
+      connection_query = current_user.connections.includes(:to_user).order("connections.strength DESC NULLS LAST, users.last_name ASC")
+      @invitation_user_connections = connection_query.limit(USERS_PER_PAGE).offset(offset).all
+
+      if 1 == page
+        @num_pages = (@invitation_user_connections.count / USERS_PER_PAGE).ceil if 1 == page
+        render :partial => 'load_connections.js'
+        return
+      end
+    end
+
+    render :partial => 'load_connections.html'
+  end
+
   protected
 
   def create_invitation(event, from_user, to_user, email = nil)

@@ -1,5 +1,7 @@
-<ul id="user_list_for_invitation">
+<% if current_user.try(:facebook_friends_imports) %>
   <%(user_list || []).each do |connection|%>
     <%= render :partial => 'invitations/invite_user_element.html', :locals => {:user => connection.to_user} %>
   <% end %>
-</ul>
+<% else %>
+  <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
+<% end %>
