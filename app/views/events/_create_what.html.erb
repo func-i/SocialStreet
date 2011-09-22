@@ -11,23 +11,25 @@
   <div class="create-what-tag-list-title drop-shadow">
     Tags:
   </div>
-  <ul id="create_what_tag_list">
-    <% (event.event_keywords || []).each do |keyword| %>
-      <li class="create-what-event-type">
-        <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
-        <div class="create-what-event-type-name">
-          <%=keyword.name%>
-        </div>
-      </li>
-    <% end %>
-  </ul>
+  <div id="tag_scroller" <!--class="scroll-pane"-->>
+    <ul id="create_what_tag_list">
+      <% (event.event_keywords || []).each do |keyword| %>
+        <li class="create-what-event-type">
+          <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
+          <div class="create-what-event-type-name">
+            <%=keyword.name%>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </div>
 
 <div class="create-what-text-field-holder">
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :class=>'create-what-text-field' %>
 </div>
 <div class="create-what-event-types-holder">
-  <div class="scroller" style="height:400px;width:100%;overflow-y:auto;">
+  <div id="what_scroller" class="scroll-pane" style="height:400px;width:100%;overflow-y:auto;">
     <ul>
       <li id="create-what-custom-event-type" class="create-what-event-type hidden">
         <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image drop-shadow") %>

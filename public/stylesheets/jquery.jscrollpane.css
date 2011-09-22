@@ -18,12 +18,12 @@
 
 .jspVerticalBar
 {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 16px;
-	height: 100%;
-/*        background: red;*/
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 100%;
+    /*        background: red;*/
 }
 
 .jspHorizontalBar
@@ -54,13 +54,13 @@
 
 .jspTrack
 {
-    background: url("../images/overlay_box_bg.png");;
+    /*background: url("../images/overlay_box_bg.png");*/
     position: relative;
 }
 
 .jspDrag
 {
-    background: #FFC233;
+    background: #4F4F4d;
     position: relative;
     top: 0;
     left: 0;

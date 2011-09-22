@@ -119,14 +119,15 @@ function setupShowEventPage(){
     var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);
 
-    //Load invitation users on delay
-    //getInvitationUsers();
     initializeScrollPanes();
+
+    getInvitationUsers();//Load invitation users on delay
 }
 
 function getInvitationUsers(){
     setTimeout(function() {
-        $.getScript('/invitations/load_connections');545
+        $.getScript('/invitations/load_connections');
+        545
     }, 500);
 }
 
@@ -151,8 +152,8 @@ function add_invitation(that){
         $('#invited_user_list').append(userClone);
 
         $('#invite_form').append(
-        '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
-    );
+            '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
+            );
 
         invitationCounter++;
         $('#invitation_list_title').removeClass('hidden');
@@ -186,8 +187,8 @@ function addEmail(email_address){
         //email_address = email_address.replace("@", "_at_").replace(".","_");
         email_address = email_address.replace(".","\.");
         $('#invite_form').append(
-        '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
-    );
+            '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
+            );
 
         var emailElem = $(document.createElement('li'));
         emailElem.addClass('already-invited-email');

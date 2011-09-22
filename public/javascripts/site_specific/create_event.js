@@ -3,7 +3,9 @@ var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
 
 $(function(){
-    init_create_event();    
+    init_create_event();
+
+    initializeScrollPanes();
 
     cleanUpSelf = function(){
     }
@@ -16,7 +18,7 @@ function init_create_event(){
     //Create What bindings
     $('.create-what-text-field').keyup(function(e){
         filter_what_icons(e.target.value);
-        $('.scroller').data('jsp').scrollToY(0);
+        $('#what_scroller').data('jsp').scrollToY(0);
     });
 
     $('.create-what-event-type').live('click', function(){
@@ -65,79 +67,6 @@ function init_create_event(){
     $('.create-when-field').change(function(){
         updateCreateWhenDates();
     });
-}
-
-function updateCreateWhenDates(){
-    var start_date = $('#create_when_date').text();
-    start_date = new Date(start_date);
-
-    var start_hour = $($('.create-when-time')[0]).val();
-    var start_meridian = $($('.create-when-time')[2]).val();
-    if(start_meridian == "PM"){
-        var hour = parseInt(start_hour, 10);
-        start_hour = hour + (hour == 12 ? 0 : 12);
-    }
-    start_date.setHours(start_hour);
-
-    var start_minute = $($('.create-when-time')[1]).val();
-    start_date.setMinutes(start_minute);
-
-    var duration = $('#duration').val();
-    var duration_size = $('#duration_size').val();
-    if(duration_size == "Minutes"){
-        duration = duration*60000;
-    }
-    else if(duration_size == "Hours"){
-        duration = duration*3600000;
-    }
-    else if(duration_size == "Days"){
-        duration = duration*86400000;
-    }
-
-    var end_date = new Date(start_date.getTime());
-    end_date.setMilliseconds(start_date.getMilliseconds() + duration);
-
-    $('#start_date').val(formatDateStringForInput(start_date));
-    $('#end_date').val(formatDateStringForInput(end_date));
-}
-
-function setupCreateWhen(){
-    $('#create_when_calendar').fullCalendar({
-        defaultView: 'month',
-        dayClick: function(date, allDay, jsEvent, view) {
-            setWhenDate(date);
-        },
-        header: {
-            left:   'title',
-            center: '',
-            right:  'today prev,next'
-        }
-    });
-
-    var myStartDate = $('#start_date').val();
-    myStartDate = myStartDate.replace(/-/g, '/');
-    var myDate = new Date(myStartDate);
-    setWhenDate(myDate);
-
-}
-
-function highlightDate(date){
-    $.each($('.fc-day-number'), function(index, elem){
-        if(! $(elem).parent().parent().hasClass('fc-other-month')){
-            if($(elem).text() == date.getDate()){
-                $(elem).parent().parent().addClass('fc-state-highlight');
-            }
-        }
-    });
-}
-function setWhenDate(date){
-    $('#create_when_calendar').fullCalendar('gotoDate', date);
-    $('.fc-state-highlight').removeClass('fc-state-highlight');
-    highlightDate(date);
-
-    $('#create_when_date').text(formatDateStringForDisplay(date));
-
-    updateCreateWhenDates();
 }
 
 /*
@@ -192,6 +121,7 @@ function create_eventType_is_clicked(record){
         }
 
         eventType_record.remove();
+        resizeScrollPane(record.parent().parent());
 
         $.each(
             $('#event_create_form input[name="event[event_keywords_attributes][][name]"]'),
@@ -200,6 +130,7 @@ function create_eventType_is_clicked(record){
                     $(value).remove();
             }
             );
+
     }
     else
     {
@@ -215,6 +146,8 @@ function create_eventType_is_clicked(record){
             $('#event_create_form').append(
                 '<input type="hidden" name="event[event_keywords_attributes][][name]" value="' + eventType_name + '" />'
                 );
+
+            resizeScrollPane($('#tag_scroller'));
         }
     }
 }
@@ -375,6 +308,10 @@ function reverse_geocode(marker){
     });
 }
 
+
+/*
+ *WHEN FUNCTIONS
+ **/
 function formatDateStringForDisplay(myDate){
     //Create date
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -387,4 +324,76 @@ function formatDateStringForInput(myDate){
     return myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes();
 }
 
+function updateCreateWhenDates(){
+    var start_date = $('#create_when_date').text();
+    start_date = new Date(start_date);
+
+    var start_hour = $($('.create-when-time')[0]).val();
+    var start_meridian = $($('.create-when-time')[2]).val();
+    if(start_meridian == "PM"){
+        var hour = parseInt(start_hour, 10);
+        start_hour = hour + (hour == 12 ? 0 : 12);
+    }
+    start_date.setHours(start_hour);
+
+    var start_minute = $($('.create-when-time')[1]).val();
+    start_date.setMinutes(start_minute);
+
+    var duration = $('#duration').val();
+    var duration_size = $('#duration_size').val();
+    if(duration_size == "Minutes"){
+        duration = duration*60000;
+    }
+    else if(duration_size == "Hours"){
+        duration = duration*3600000;
+    }
+    else if(duration_size == "Days"){
+        duration = duration*86400000;
+    }
+
+    var end_date = new Date(start_date.getTime());
+    end_date.setMilliseconds(start_date.getMilliseconds() + duration);
+
+    $('#start_date').val(formatDateStringForInput(start_date));
+    $('#end_date').val(formatDateStringForInput(end_date));
+}
+
+function setupCreateWhen(){
+    $('#create_when_calendar').fullCalendar({
+        defaultView: 'month',
+        dayClick: function(date, allDay, jsEvent, view) {
+            setWhenDate(date);
+        },
+        header: {
+            left:   'title',
+            center: '',
+            right:  'today prev,next'
+        }
+    });
+
+    var myStartDate = $('#start_date').val();
+    myStartDate = myStartDate.replace(/-/g, '/');
+    var myDate = new Date(myStartDate);
+    setWhenDate(myDate);
+
+}
+
+function highlightDate(date){
+    $.each($('.fc-day-number'), function(index, elem){
+        if(! $(elem).parent().parent().hasClass('fc-other-month')){
+            if($(elem).text() == date.getDate()){
+                $(elem).parent().parent().addClass('fc-state-highlight');
+            }
+        }
+    });
+}
+function setWhenDate(date){
+    $('#create_when_calendar').fullCalendar('gotoDate', date);
+    $('.fc-state-highlight').removeClass('fc-state-highlight');
+    highlightDate(date);
+
+    $('#create_when_date').text(formatDateStringForDisplay(date));
+
+    updateCreateWhenDates();
+}
 

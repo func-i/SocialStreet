@@ -3,12 +3,7 @@ cleanUpSelf = function(){};
 if(history && history.pushState) {
     $(function() {
         $('.nav-link').live('click', function(e) {
-            
-            if(typeof cleanUpSelf == 'function') {
-                cleanUpSelf();
-                cleanUpSelf = function(){}
-            }
-            markerManager.deleteAllMarkers();
+            cleanup();
 
             var href;
             if(this.href != undefined) {
@@ -34,16 +29,23 @@ if(history && history.pushState) {
                 return;
             } 
 
-            $.getScript(location.href);
+            cleanup();
             
+            $.getScript(location.href);            
         });
 
         $('#log_button').click(function() {
             window.location = $(this).data('href');
         });       
     });
+}
 
-
+function cleanup(){
+    if(typeof cleanUpSelf == 'function') {
+        cleanUpSelf();
+        cleanUpSelf = function(){}
+    }
+    markerManager.deleteAllMarkers();
 }
 
 function initializeScrollPanes() {
@@ -51,31 +53,35 @@ function initializeScrollPanes() {
     $('.scroll-pane').each(function() {
         $(this).jScrollPane();
 
-        var api = $(this).data('jsp');
-        var throttleTimeout;
+        $(this).find('.jspVerticalBar').addClass('hidden');
+
+        var that = this;
         $(window).bind('resize', function() {
-            if ($.browser.msie) {
-                // IE fires multiple resize events while you are dragging the browser window which
-                // causes it to crash if you try to update the scrollpane on every one. So we need
-                // to throttle it to fire a maximum of once every 50 milliseconds...
-                if (!throttleTimeout) {
-                    throttleTimeout = setTimeout(function() {
-                        api.reinitialise();
-                        throttleTimeout = null;
-                    }, 50);
-                }
-            } else {
-                api.reinitialise();
-            }
+            resizeScrollPane(that);
         });
     }); 
 }
 
-$(function(){
+var throttleTimeout;
+function resizeScrollPane(scrollPane){
+    var api = $(scrollPane).data('jsp');
 
-    //setup scrollers
-    $('.scroller').jScrollPane();
-    
+    if ($.browser.msie) {
+        // IE fires multiple resize events while you are dragging the browser window which
+        // causes it to crash if you try to update the scrollpane on every one. So we need
+        // to throttle it to fire a maximum of once every 50 milliseconds...
+        if (!throttleTimeout) {
+            throttleTimeout = setTimeout(function() {
+                api.reinitialise();
+                throttleTimeout = null;
+            }, 50);
+        }
+    } else {
+        api.reinitialise();
+    }
+}
+
+$(function(){    
     $('.ajax-link').live('click', function(e){
         var href;
         if(this.href != undefined) {
@@ -94,10 +100,10 @@ $(function(){
             navigator.geolocation.getCurrentPosition(function(e){
                 updateUserLocation(e.coords.latitude, e.coords.longitude, true);
             }, function(e){
-            },{ 
-                maximumAge: 600000,
-                timeout: 20000
-            });
+                },{
+                    maximumAge: 600000,
+                    timeout: 20000
+                });
         }
     }
 
@@ -109,6 +115,15 @@ $(function(){
 
         initializeScrollPanes();
     }
+
+    $('.scroll-pane').live('mouseenter', function(){
+        $(this).find('.jspVerticalBar').removeClass('hidden');
+    });
+
+    $('.scroll-pane').live('mouseleave', function(){
+        $(this).find('.jspVerticalBar').addClass('hidden');
+    });
+
 });
 
 function resizeResultsContainer() {

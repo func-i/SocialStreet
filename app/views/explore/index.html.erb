@@ -23,32 +23,37 @@
 </div>
 
 <div id="explore_keyword_tag_list_holder">
-  <ul id="explore_keyword_tag_list">
-    <li id="explore_keyword_tag_stamp" class="explore-keyword-tag hidden">
-      <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50', :class=>"explore-tag-icon") %>
-      <span class="explore-keyword-tag-name"></span>
-      <%= image_tag('header-close.png', :class => 'explore-keyword-tag-remove') %>
-    </li>
-  </ul>
+  <div id="keyword_scroller">
+    <ul id="explore_keyword_tag_list">
+      <li id="explore_keyword_tag_stamp" class="explore-keyword-tag hidden">
+        <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50', :class=>"explore-tag-icon") %>
+        <span class="explore-keyword-tag-name"></span>
+        <%= image_tag('header-close.png', :class => 'explore-keyword-tag-remove') %>
+      </li>
+    </ul>
+  </div>
 </div>
 
-<div id="explore_keyword_event_types_holder" class="hidden">
-  <ul>
-    <li id="explore_keyword_custom_event_type" class="explore-keyword-event-type hidden">
-      <%= image_tag('/images/event_types/streetmeet2.png', :class=>'explore-keyword-event-type-image drop-shadow') %>
-      <div class="explore-keyword-event-type-name">
-      </div>
-    </li>
 
-    <% @event_types.each do |et| %>
-      <li class="explore-keyword-event-type">
-        <%= image_tag(et.image_path, :class=>'explore-keyword-event-type-image drop-shadow') %>
+<div id="explore_keyword_event_types_holder" class="hidden">
+  <div id="event_types_scroller">
+    <ul>
+      <li id="explore_keyword_custom_event_type" class="explore-keyword-event-type hidden">
+        <%= image_tag('/images/event_types/streetmeet2.png', :class=>'explore-keyword-event-type-image drop-shadow') %>
         <div class="explore-keyword-event-type-name">
-          <%= et.name %>
         </div>
       </li>
-    <% end %>
-  </ul>
+
+      <% @event_types.each do |et| %>
+        <li class="explore-keyword-event-type">
+          <%= image_tag(et.image_path, :class=>'explore-keyword-event-type-image drop-shadow') %>
+          <div class="explore-keyword-event-type-name">
+            <%= et.name %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </div>
 
 <%= hidden_field_tag "on_explore", "true" %>
@@ -56,7 +61,7 @@
 <% unless params[:keywords].blank? %>
   <script type="text/javascript">
   <% for keyword in params[:keywords] %>
-      addKeyword('<%= keyword %>');
+    addKeyword('<%= keyword %>');
   <% end %>
   </script>
 <% end %>

@@ -514,7 +514,7 @@ END OF RESET
     width: 400px;
 }
 #create_what_tag_list{
-    overflow-y: auto;
+    overflow: auto;
     width: 400px;
     height: 260px;
 }
