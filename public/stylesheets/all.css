@@ -113,6 +113,7 @@ END OF RESET
 #signed_in_button{
     float:right;
     position: relative;
+    margin-right: 50px;
 }
 #signed_in_button ul{
     display:none;
@@ -145,7 +146,7 @@ END OF RESET
     background: url("../images/ss_site_logo.png") no-repeat;
     float: left;
     height: 43px;
-    margin: -9px 30px 0 6px;
+    margin: -9px 30px 0 50px;
     overflow: hidden;
     text-indent: -9999px;
     width: 90px;
@@ -531,17 +532,13 @@ END OF RESET
     border: 5px solid #4F4F4D;
 }
 .create-what-event-types-holder{
-    /*overflow-y: auto;*/
     position: absolute;
     left: 450px;
-    /*    left: 100px;*/
     top: 170px;
     width: 520px;
-    /*height: 400px;*/
-    /*background: url("../images/overlay_box_bg.png");*/
 }
 .create-what-event-type{
-    float: left;
+    float: right;
     padding: 10px;
     width: 80px;
     height: 110px;
@@ -549,7 +546,6 @@ END OF RESET
 .create-what-event-type-image{
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
-    /*background-color: #4f4f4d;*/
 }
 .create-what-event-type-name{
     text-align: center;
