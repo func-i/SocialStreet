@@ -84,6 +84,7 @@ function sizeFields() {
 
     contentSize = contentSize - 125;
     contentSize = contentSize - (contentSize % 96) + 10 + 5; //5 is buffer, 10 is scrollbar width
+
     $('.create-what-event-types-holder').width(contentSize);
     $('#what_scroller').width(contentSize);
 
@@ -95,6 +96,7 @@ function sizeFields() {
         textWidth = contentSize - 50;
         $('#keywords').width(textWidth);
     }
+
 
 }
 
@@ -393,15 +395,12 @@ function updateCreateWhenDates(){
 }
 
 function setupCreateWhen(){
+    $('#create_where_calendar_holder').width($('#create_where_calendar_holder').height() * 1.35);//1.35 default aspect ratio
+
     $('#create_when_calendar').fullCalendar({
         defaultView: 'month',
         dayClick: function(date, allDay, jsEvent, view) {
             setWhenDate(date);
-        },
-        header: {
-            left:   'title',
-            center: '',
-            right:  'today prev,next'
         }
     });
 
