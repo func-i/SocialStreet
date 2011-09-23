@@ -22,6 +22,8 @@ $(function(){
             }
         }
     });
+    $('#event_wall_text_field').autoResize({extraSpace: 5});
+
     $('.event-wall-comment').live('mouseenter', function(){
         $(this).find('.comment-delete').removeClass('hidden');
     });
