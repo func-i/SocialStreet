@@ -520,7 +520,7 @@ END OF RESET
     width: 400px;
     height: 260px;
 }
-.create-what-text-field-holder{
+#create_what_text_field_holder{
     position: absolute;
     top: 100px;
     left: 550px;
@@ -538,14 +538,15 @@ END OF RESET
     width: 520px;
 }
 .create-what-event-type{
-    float: right;
-    padding: 10px;
+    float: left;
+    padding: 8px;
     width: 80px;
     height: 110px;
 }
 .create-what-event-type-image{
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
+    /*background-color: #4f4f4d;*/
 }
 .create-what-event-type-name{
     text-align: center;

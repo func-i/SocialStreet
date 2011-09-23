@@ -80,17 +80,22 @@ function initCreateEvent(){
 }
 
 function sizeFields() {
-    var $contentSize = $(window).width() - $('.x-small-box').width();
-    var textWidth = 300;
+    var contentSize = $(window).width() - $('.x-small-box').width();
 
-    if($contentSize - 200 < textWidth)
-        textWidth = $contentSize - 200;
-    $('#keywords').width(textWidth);
-
-    $('.create-what-event-types-holder').width($contentSize - 125);
-    $('#what_scroller').width($contentSize - 125);
+    contentSize = contentSize - 125;
+    contentSize = contentSize - (contentSize % 96) + 10 + 5; //5 is buffer, 10 is scrollbar width
+    $('.create-what-event-types-holder').width(contentSize);
+    $('#what_scroller').width(contentSize);
 
     initScrollPane($('#what_scroller'));
+
+    var textWidth = $('#create_what_text_field_holder').width();
+
+    if(contentSize -50 < textWidth){//50 is buffer
+        textWidth = contentSize - 50;
+        $('#keywords').width(textWidth);
+    }
+
 }
 
 /*
@@ -136,7 +141,7 @@ function createEventTypeIsClicked(record) {
     var eventType_record = $(record);
     var eventType_name = eventType_record.children('.create-what-event-type-name').text().trim();
 
-    if(eventType_record.parent().attr('id') == 'create_what_tag_list')
+    if(eventType_record.closest('#create_what_tag_list').length > 0)
     {
         if(eventType_record.siblings().length == 0)
         {
@@ -145,7 +150,7 @@ function createEventTypeIsClicked(record) {
         }
 
         eventType_record.remove();
-        //resizeScrollPane(record.parent().parent());
+        initScrollPane($('#create_what_tag_list'));
 
         $.each(
             $('#event_create_form input[name="event[event_keywords_attributes][][name]"]'),
