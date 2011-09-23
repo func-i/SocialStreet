@@ -670,7 +670,9 @@ END OF RESET
     padding: 5px;
     background: url("../images/overlay_box_bg.png");
 }
-
+#show_event_details{
+    padding-bottom: 5px;
+}
 
 #join_btn_holder{
     margin: 20px 20px 20px 0;
