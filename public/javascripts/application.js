@@ -95,26 +95,30 @@ function cleanup(){
     markerManager.deleteAllMarkers();
 }
 
-function initScrollPane(ele) {
-    var $ele = $(ele);
-    var height = $ele.height();
-    
-    if(!$ele.is(':visible')) {
-        var $par = $ele.closest('.hidden');
+function initScrollPane(scroll_pane) {
+    var $myElem = $(scroll_pane);
+    var height = $myElem.height();
+
+    var $par = $myElem.closest('.hidden');
+    if($par.length > 0) {
         var zIndex = $par.css('z-index');
         $par.css('z-index', -1);
         $par.removeClass('hidden');
         
-        height = $ele.height();
+        height = $myElem.height();
 
         $par.addClass('hidden');
         $par.css('z-index', zIndex);
     }
 
-    $ele.height(height);
-    ele.jScrollPane();
+    $myElem.height(height);
+    $myElem.jScrollPane();
 
-    var that = ele;
+    if($(this).hasClass('show-scroll-on-hover')){
+        $(this).find('.jspVerticalBar').addClass('hidden');
+    }
+
+    var that = $myElem;
     $(window).bind('resize', function() {
         resizeScrollPane(that);
     });
@@ -123,10 +127,6 @@ function initScrollPane(ele) {
 function initializeScrollPanes() {
     $('.scroll-pane').each(function() {
         initScrollPane($(this));
-
-        if($(this).hasClass('show-scroll-on-hover')){
-            $(this).find('.jspVerticalBar').addClass('hidden');
-        }
     });
 }
 
@@ -156,13 +156,14 @@ function resizeExpandHeightContainer() {
         
         var cPos = $(ele).offset().top;
 
-        if(!$(ele).is(':visible')) {
-            // The element is not visible
-            var $par = $(ele).closest('.hidden');
+        var $par = $(ele).closest('.hidden');
+        if($par.length > 0) {
             var zIndex = $par.css('z-index');
             $par.css('z-index', -1);
             $par.removeClass('hidden');
+
             cPos = $(ele).offset().top;
+
             $par.addClass('hidden');
             $par.css('z-index', zIndex);
         }
@@ -177,19 +178,19 @@ function resizeExpandHeightContainer() {
 
 function capHeightContainer(){
     $.each($('.cap-height'), function(i, ele){
-        var $ele = $(ele);
+        var $myElem = $(ele);
 
-        var height = $ele.height()
-        var maxHeight = $(window).height() - $ele.offset().top;
+        var height = $myElem.height()
+        var maxHeight = $(window).height() - $myElem.offset().top;
 
-        if(!$ele.is(':visible')) {
-            var $par = $ele.closest('.hidden');
+        var $par = $myElem.closest('.hidden');
+        if($par.length > 0) {
             var zIndex = $par.css('z-index');
             $par.css('z-index', -1);
             $par.removeClass('hidden');
 
-            height = $ele.height();
-            maxHeight = $(window).height() - $ele.offset().top;
+            height = $myElem.height();
+            maxHeight = $(window).height() - $myElem.offset().top;
 
             $par.addClass('hidden');
             $par.css('z-index', zIndex);
@@ -202,7 +203,7 @@ function capHeightContainer(){
         if(height > (maxHeight - bottomOffset))
             height = maxHeight - bottomOffset;
 
-        $ele.height(height);
+        $myElem.height(height);
     });
 }
 
