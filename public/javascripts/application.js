@@ -104,7 +104,7 @@ function initializeScrollPanes()
 
         var that = this;
         $(window).bind('resize', function() {
-            resizeScrollPane(that);
+            //resizeScrollPane(that);
         });
     });
 }

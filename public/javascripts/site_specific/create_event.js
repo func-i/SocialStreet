@@ -3,8 +3,14 @@ var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
 
 function sizeFields() {
-    var $contentSize = $(window).width() - $('.x-small-box').width();
-    $('#keywords').width($contentSize - 200);
+
+    var $contentSize = $(window).width() - $('.x-small-box').width();    
+    var textWidth = 300;
+    
+    if($contentSize - 200 < textWidth)
+        textWidth = $contentSize - 200;
+    $('#keywords').width(textWidth);
+
     $('.create-what-event-types-holder').width($contentSize - 125);
     $('#what_scroller').width($contentSize - 125);
 }

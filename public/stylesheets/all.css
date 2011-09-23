@@ -530,7 +530,7 @@ END OF RESET
 .create-what-event-types-holder{
     /*overflow-y: auto;*/
     position: absolute;
-    left: 500px;
+    left: 450px;
     /*    left: 100px;*/
     top: 170px;
     width: 520px;
@@ -559,7 +559,7 @@ END OF RESET
 .next-arrow-position{
     position:absolute;
     top: 260px;
-    right: 80px;
+    right: 25px;
 }
 .next-arrow{
     width: 0;
