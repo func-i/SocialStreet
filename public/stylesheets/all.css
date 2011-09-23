@@ -50,6 +50,7 @@ input, textarea, select {
     font: 100% Arial, Helvetica, sans-serif;
     vertical-align: middle;
     color: #000;
+    resize: none;
 }
 /*
 END OF RESET
