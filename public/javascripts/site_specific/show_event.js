@@ -22,7 +22,9 @@ $(function(){
             }
         }
     });
-    $('#event_wall_text_field').autoResize({extraSpace: 5});
+    $('#event_wall_text_field').autoResize({
+        extraSpace: 5
+    });
 
     $('.event-wall-comment').live('mouseenter', function(){
         $(this).find('.comment-delete').removeClass('hidden');
@@ -121,14 +123,17 @@ function setupShowEventPage(){
     var loc_text = $('#location_text').val();
     var address = $('#address').val();
 
-    createShowMarker(lat, lng, address, loc_text);
-
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
 
     var xOffset = $('#location-map').width() / 5;
     var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);
+
+    google.maps.event.addListenerOnce(map, 'idle', function() {
+        createShowMarker(lat, lng, address, loc_text);
+    });
+
     
     initializeScrollPanes();
 
@@ -163,8 +168,8 @@ function add_invitation(that){
         $('#invited_user_list').append(userClone);
 
         $('#invite_form').append(
-        '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
-    );
+            '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
+            );
 
         invitationCounter++;
         $('#invitation_list_title').removeClass('hidden');
@@ -198,8 +203,8 @@ function addEmail(email_address){
         //email_address = email_address.replace("@", "_at_").replace(".","_");
         email_address = email_address.replace(".","\.");
         $('#invite_form').append(
-        '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
-    );
+            '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
+            );
 
         var emailElem = $(document.createElement('li'));
         emailElem.addClass('already-invited-email');
@@ -245,7 +250,7 @@ function createShowMarker(lat, lng, address, location_text) {
         padding: 0,
         arrowSize: 0,
         borderWidth: 0
-    });
+    });    
     markerManager.showAllMarkers();
     showMarker.infoBubble_.open(map, showMarker);
 }
