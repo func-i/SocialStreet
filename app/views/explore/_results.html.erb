@@ -16,17 +16,17 @@
     <div class="result-attendees">
       <% attendees = User.attending_event(event)%>
       <span class="attending-info"><%=attendees.count%></span>
-      <% attendees.order_by_rank_to_user(current_user).excluding(current_user).limit(10).each do |attendee| %>
+      <% attendees.order_by_rank_to_user(current_user).excluding(current_user).limit(6).each do |attendee| %>
         <%= avatar attendee, :size => "22x22" %>
       <% end %>
     </div>
 
-    <div class="result-join-btn-holder">      
-      <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => event})%>
+    <div class="result-join-btn-holder">
+        <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => event})%>
+      </div>
+      <%= hidden_field_tag "result_lat", event.location.latitude %>
+      <%= hidden_field_tag "result_lng", event.location.longitude %>
     </div>
-    <%= hidden_field_tag "result_lat", event.location.latitude %>
-    <%= hidden_field_tag "result_lng", event.location.longitude %>
-  </div>
 
 
-<% end %>
+  <% end %>

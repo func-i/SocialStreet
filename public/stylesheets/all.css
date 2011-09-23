@@ -296,8 +296,8 @@ END OF RESET
 .result-join-btn-holder .unattend-btn{
     display: none;
 }
-.result-join-btn-holder .already-joined_btn{
-    font: bold 12px/16px Arial, Helvetica, sans-serif;
+.result-join-btn-holder .invite-friends-btn{
+    font: bold 14px/16px Arial, Helvetica, sans-serif;
     margin: 2px 10px 0 0;
     padding: 3px 10px;
     width: 80px;
