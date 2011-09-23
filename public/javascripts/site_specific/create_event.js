@@ -193,7 +193,6 @@ function setupCreateWhere(){
         $('#create_where_next_arrow').removeClass('hidden');
         $('#create-where-marker-info').removeClass('hidden');
 
-
         var marker = createCreateMarker(new google.maps.LatLng(lat, lng));
         map.panTo(marker.getPosition());
     }else{

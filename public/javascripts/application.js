@@ -133,7 +133,11 @@ function resizeExpandHeightContainer() {
 
     $.each($('.expand-height'), function(i, ele) {
         var cPos = $(ele).offset().top;
-        var cHeight = docHeight - cPos;
+
+        var bottomOffset = $(ele).data('expandBottomOffset');
+        bottomOffset = bottomOffset || 0;
+
+        var cHeight = docHeight - cPos - bottomOffset;
 
         $(ele).height(cHeight);
     });
