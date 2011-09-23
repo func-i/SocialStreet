@@ -96,7 +96,6 @@ END OF RESET
 #header .holder {
     margin: 0 auto;
     padding: 18px 0 0 0;
-    width: 983px;
 }
 #header .holder:after {
     clear: both;
@@ -251,12 +250,10 @@ END OF RESET
 }
 .result-description{
     color: white;
-    margin: 10px 10px 30px 10px;
+    margin: 10px 10px 5px 10px;
     overflow-y: auto;
     max-height: 75px;
     width: 380px;
-    padding-bottom: 20px;
-
 }
 .result-arrow{
     width: 0;
@@ -685,10 +682,11 @@ END OF RESET
     /*height: 200px;*/
     max-height: 200px;
     overflow: auto;
-    float: left;
     width: 600px;
     background: url("../images/overlay_box_bg.png");
     padding-top: 9px;
+    position: absolute;
+    left: 200px;
 }
 #show_attendees_title{
     color: white;
@@ -857,5 +855,8 @@ END OF RESET
     margin-bottom: 20px;
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
+}
 
+#show_event_details {
+    padding-bottom: 5px;
 }

@@ -121,7 +121,7 @@ function setupShowEventPage(){
 
     initializeScrollPanes();
 
-    getInvitationUsers();//Load invitation users on delay
+    //getInvitationUsers();//Load invitation users on delay
 }
 
 function getInvitationUsers(){

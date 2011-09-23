@@ -1,5 +1,5 @@
 <% if current_user.try(:facebook_friends_imports) %>
-    if($('#loading_invitation_image').length > 0){
+    if($('#loading_invitation_image').length > 0) {
       $('#user_list_for_invitation').html('');
       makeInvitationPageless(<%=@num_pages%>);
     }

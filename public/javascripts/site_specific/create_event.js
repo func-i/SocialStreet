@@ -2,11 +2,23 @@ var createEventEventTypeTimer;
 var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
 
+function sizeFields() {
+    var $contentSize = $(window).width() - $('.x-small-box').width();
+    $('#keywords').width($contentSize - 200);
+    $('.create-what-event-types-holder').width($contentSize - 125);
+    $('#what_scroller').width($contentSize - 125);
+}
+
 $(function(){
     init_create_event();
-
+    sizeFields();
     initializeScrollPanes();
 
+    $(window).bind('resize', function() {
+        sizeFields();
+        initializeScrollPanes();
+    });
+    
     cleanUpSelf = function(){
     }
 });
