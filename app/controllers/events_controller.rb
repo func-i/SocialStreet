@@ -22,7 +22,15 @@ class EventsController < ApplicationController
     if create_or_edit_event(params, :create)
       @event.reload
       prepare_for_show
-      redirect_to @event
+
+      if request.xhr?
+        render :update do |page|
+          page.redirect_to @event
+        end
+      else
+        redirect_to @event
+      end
+      
     end
   end
 
