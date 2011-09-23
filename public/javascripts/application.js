@@ -110,7 +110,7 @@ function initializeScrollPanes() {
     $('.scroll-pane').each(function() {
         initScrollPane($(this));
 
-        $(this).find('.jspVerticalBar').addClass('hidden');        
+        $(this).find('.jspVerticalBar').addClass('hidden');
     });
 }
 
@@ -150,8 +150,11 @@ function resizeExpandHeightContainer() {
             $par.addClass('hidden');
             $par.css('z-index', zIndex);
         }
-        
-        var cHeight = docHeight - cPos;
+
+        var bottomOffset = $(ele).data('expandBottomOffset');
+        bottomOffset = bottomOffset || 0;
+
+        var cHeight = docHeight - cPos - bottomOffset;
         $(ele).height(cHeight);
     });
 }
