@@ -1,1 +1,7 @@
+$('#event_wall').data('jsp').destroy();
+$('#event_wall').height('auto');
+
 $('#event_wall').prepend('<%=escape_javascript render(:partial => 'create.html', :locals => {:comment => @comment})%>');
+capHeightContainer();
+
+initScrollPane($('#event_wall'));
