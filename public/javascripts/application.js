@@ -77,11 +77,11 @@ $(function() {
 
     initializeScrollPanes();
 
-    $('.scroll-pane').live('mouseenter', function(){
+    $('.show-scroll-on-hover').live('mouseenter', function(){
         $(this).find('.jspVerticalBar').removeClass('hidden');
     });
 
-    $('.scroll-pane').live('mouseleave', function(){
+    $('.show-scroll-on-hover').live('mouseleave', function(){
         $(this).find('.jspVerticalBar').addClass('hidden');
     });
 
@@ -100,7 +100,9 @@ function initializeScrollPanes()
     $('.scroll-pane').each(function() {
         $(this).jScrollPane();
 
-        $(this).find('.jspVerticalBar').addClass('hidden');
+        if($(this).hasClass('show-scroll-on-hover')){
+            $(this).find('.jspVerticalBar').addClass('hidden');
+        }
 
         var that = this;
         $(window).bind('resize', function() {

@@ -11,7 +11,7 @@
   <div class="create-what-tag-list-title drop-shadow">
     Tags:
   </div>
-  <div id="tag_scroller" <!--class="scroll-pane"-->>
+  <div id="tag_scroller">
     <ul id="create_what_tag_list">
       <% (event.event_keywords || []).each do |keyword| %>
         <li class="create-what-event-type">
@@ -29,7 +29,7 @@
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :class=>'create-what-text-field' %>
 </div>
 <div class="create-what-event-types-holder">
-  <div id="what_scroller" class="expand-height scroll-pane" data-expandBottomOffset="50" style="overflow-y:auto;">
+  <div id="what_scroller" class="expand-height scroll-pane include-vertical-bar" data-expandBottomOffset="50" style="overflow-y:auto;">
     <ul>
       <li id="create-what-custom-event-type" class="create-what-event-type hidden">
         <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image drop-shadow") %>

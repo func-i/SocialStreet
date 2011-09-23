@@ -60,6 +60,8 @@ $(function(){
         $('#invite_form').submit();
         $('#invitation_view').addClass('hidden');
         $('#show_view').removeClass('hidden');
+
+        initializeScrollPanes();
     });
 
 
@@ -118,10 +120,10 @@ function setupShowEventPage(){
     var xOffset = $('#location-map').width() / 5;
     var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);
-
+    
     initializeScrollPanes();
 
-    //getInvitationUsers();//Load invitation users on delay
+    getInvitationUsers();//Load invitation users on delay
 }
 
 function getInvitationUsers(){

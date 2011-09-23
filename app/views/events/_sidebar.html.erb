@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div class="scroll-pane result-description">
+      <div class="result-description scroll-pane show-scroll-on-hover">
         <% if can_edit %>
           <%= link_to ((@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."), "#", :id => 'edit_event_description_link' %>
           <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:360px;height:70px;" %>
@@ -43,7 +43,7 @@
           <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
         </div>
       <% end %>
-      <div id="event_wall" class="expand-height scroll-pane" data-expandBottomOffset="5" style="overflow:auto;">
+      <div id="event_wall" class="scroll-pane show-scroll-on-hover" data-expandBottomOffset="10" style="overflow:auto;">
         <%@comments.each do |comment|%>
           <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
         <% end %>
