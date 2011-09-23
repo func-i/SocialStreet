@@ -37,7 +37,12 @@ $(function(){
     });
 
     $('.explore-keyword-tag-remove').live('click', function(){
-        remove_explore_tag($(this).parent());
+        removeExploreTag($(this).parent());        
+        
+        if($('[name="keywords[]"]').length==3) {
+            $('#explore_keyword_tag_list_holder').data('jsp').destroy();
+            $('#explore_keyword_tag_list_holder').height('auto');
+        }
     });
 
     cleanUpSelf = function() {
@@ -73,7 +78,7 @@ function create_tags_from_input_fields(){
     });
 }
 
-function remove_explore_tag(tag_dom){
+function removeExploreTag(tag_dom){
     var tag_name = $.trim(tag_dom.children('.explore-keyword-tag-name').text());
 
     $.each($('#explore_search_params input[name="keywords[]"]'), function(index, elem){
