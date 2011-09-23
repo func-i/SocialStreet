@@ -522,7 +522,7 @@ END OF RESET
 }
 .create-what-text-field-holder{
     position: absolute;
-    top: 100px;
+    top: 45px;
     left: 550px;
     /*left: 200px;*/
 }
@@ -534,7 +534,7 @@ END OF RESET
 .create-what-event-types-holder{
     position: absolute;
     left: 450px;
-    top: 170px;
+    top: 100px;
     width: 520px;
 }
 .create-what-event-type{
@@ -556,20 +556,25 @@ END OF RESET
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
 .next-arrow-position{
-    position:absolute;
-    top: 260px;
-    right: 25px;
+    position: fixed;
+    bottom: 25px;
+    right: 75px;
 }
 .next-arrow{
-    width: 0;
-    height: 0;
-    border-top: 60px solid transparent;
+    width: 400px;
+    height: 150px;
+    text-align: right;
+    vertical-align: middle;
+    /*border-top: 60px solid transparent;
     border-bottom: 60px solid transparent;
-    border-left: 60px solid #FFC233;
+    border-left: 60px solid #FFC233;*/
+    background-image: url('../images/arrow.png');
+    background-repeat: no-repeat;
+    background-size: 400px 150px;
 }
 .next-arrow-text{
-    position:relative;
-    right:80px;
+    width: 100%;
+    text-align: right;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #4F4F4D;
 }

@@ -29,7 +29,7 @@
   <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :class=>'create-what-text-field' %>
 </div>
 <div class="create-what-event-types-holder">
-  <div id="what_scroller" class="expand-height scroll-pane include-vertical-bar" data-expandBottomOffset="50" style="overflow-y:auto;">
+  <div id="what_scroller" class="expand-height scroll-pane include-vertical-bar" data-expandBottomOffset="175" style="overflow-y:auto;">
     <ul>
       <li id="create-what-custom-event-type" class="create-what-event-type hidden">
         <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image drop-shadow") %>
@@ -50,5 +50,5 @@
 </div>
 
 <div id="create_what_next_arrow" class="next-arrow next-arrow-position <%="hidden" unless @event && !@event.event_keywords.empty?%>">
-  <span class="next-arrow-text">Continue</span>
+  Continue
 </div>
