@@ -207,6 +207,11 @@ function setupCreateWhere(){
 
         createCreateMarker(map.getCenter());
     }
+
+    var xOffset = $('#location-map').width() / 5;
+    var yOffset = $('#location-map').height() / 5;
+    map.panBy(-xOffset, -yOffset);
+
     markerManager.showAllMarkers();
 }
 
