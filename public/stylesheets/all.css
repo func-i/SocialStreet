@@ -110,6 +110,7 @@ END OF RESET
 #signed_in_button{
     float:right;
     position: relative;
+    margin-right: 50px;
 }
 #signed_in_button ul{
     display:none;
@@ -142,7 +143,7 @@ END OF RESET
     background: url("../images/ss_site_logo.png") no-repeat;
     float: left;
     height: 43px;
-    margin: -9px 30px 0 6px;
+    margin: -9px 30px 0 50px;
     overflow: hidden;
     text-indent: -9999px;
     width: 90px;
