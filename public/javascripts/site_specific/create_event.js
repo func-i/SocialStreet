@@ -18,11 +18,10 @@ function sizeFields() {
 $(function(){
     init_create_event();
     sizeFields();
-    initializeScrollPanes();
 
     $(window).bind('resize', function() {
         sizeFields();
-        initializeScrollPanes();
+        resizeScrollPane($('#what_scroller'));
     });
     
     cleanUpSelf = function(){

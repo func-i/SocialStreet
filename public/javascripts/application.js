@@ -68,13 +68,14 @@ $(function() {
     }
 
     if($('.expand-height').length > 0) {
+        resizeExpandHeightContainer();
 
-        $(window).load(resizeExpandHeightContainer()).resize(function() {
+        $(window).resize(function() {
             resizeExpandHeightContainer();
         });
-
-        initializeScrollPanes();
     }
+
+    initializeScrollPanes();
 
     $('.scroll-pane').live('mouseenter', function(){
         $(this).find('.jspVerticalBar').removeClass('hidden');
@@ -104,7 +105,7 @@ function initializeScrollPanes()
         var that = this;
         $(window).bind('resize', function() {
             //resizeScrollPane(that);
-        });
+            });
     });
 }
 
