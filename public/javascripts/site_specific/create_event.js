@@ -2,19 +2,6 @@ var createEventEventTypeTimer;
 var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
 
-function sizeFields() {
-
-    var $contentSize = $(window).width() - $('.x-small-box').width();    
-    var textWidth = 300;
-    
-    if($contentSize - 200 < textWidth)
-        textWidth = $contentSize - 200;
-    $('#keywords').width(textWidth);
-
-    $('.create-what-event-types-holder').width($contentSize - 125);
-    $('#what_scroller').width($contentSize - 125);
-}
-
 $(function(){
     init_create_event();
     sizeFields();
@@ -77,13 +64,31 @@ function init_create_event(){
     });
    
     //Create When Bindings
+    var alreadySubmitted = false;
     $('#create_when_next_arrow').click(function(){
-        $('#event_create_form').submit();
+        if(!alreadySubmitted){
+            $('#event_create_form').submit();
+            alreadySubmitted = true;
+        }
     });
 
     $('.create-when-field').change(function(){
         updateCreateWhenDates();
     });
+}
+
+function sizeFields() {
+    var $contentSize = $(window).width() - $('.x-small-box').width();
+    var textWidth = 300;
+
+    if($contentSize - 200 < textWidth)
+        textWidth = $contentSize - 200;
+    $('#keywords').width(textWidth);
+
+    $('.create-what-event-types-holder').width($contentSize - 125);
+    $('#what_scroller').width($contentSize - 125);
+
+    initScrollPane($('#what_scroller'));
 }
 
 /*

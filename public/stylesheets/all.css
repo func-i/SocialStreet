@@ -532,17 +532,13 @@ END OF RESET
     border: 5px solid #4F4F4D;
 }
 .create-what-event-types-holder{
-    /*overflow-y: auto;*/
     position: absolute;
     left: 450px;
-    /*    left: 100px;*/
     top: 170px;
     width: 520px;
-    /*height: 400px;*/
-    /*background: url("../images/overlay_box_bg.png");*/
 }
 .create-what-event-type{
-    float: left;
+    float: right;
     padding: 10px;
     width: 80px;
     height: 110px;
@@ -550,7 +546,6 @@ END OF RESET
 .create-what-event-type-image{
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
-    /*background-color: #4f4f4d;*/
 }
 .create-what-event-type-name{
     text-align: center;
