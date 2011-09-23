@@ -95,17 +95,22 @@ function cleanup(){
     markerManager.deleteAllMarkers();
 }
 
-function initializeScrollPanes()
-{
+function initScrollPane(ele) {
+    
+    ele.height(ele.height());
+    ele.jScrollPane();
+
+    var that = ele;
+    $(window).bind('resize', function() {
+        resizeScrollPane(that);
+    });
+}
+
+function initializeScrollPanes() {
     $('.scroll-pane').each(function() {
-        $(this).jScrollPane();
+        initScrollPane($(this));
 
-        $(this).find('.jspVerticalBar').addClass('hidden');
-
-        var that = this;
-        $(window).bind('resize', function() {
-            //resizeScrollPane(that);
-            });
+        $(this).find('.jspVerticalBar').addClass('hidden');        
     });
 }
 
@@ -132,9 +137,21 @@ function resizeExpandHeightContainer() {
     var docHeight = $(window).height();
 
     $.each($('.expand-height'), function(i, ele) {
+        
         var cPos = $(ele).offset().top;
-        var cHeight = docHeight - cPos;
 
+        if(!$(ele).is(':visible')) {
+            // The element is not visible
+            var $par = $(ele).closest('.hidden');
+            var zIndex = $par.css('z-index');
+            $par.css('z-index', -1);
+            $par.removeClass('hidden');
+            cPos = $(ele).offset().top;
+            $par.addClass('hidden');
+            $par.css('z-index', zIndex);
+        }
+        
+        var cHeight = docHeight - cPos;
         $(ele).height(cHeight);
     });
 }

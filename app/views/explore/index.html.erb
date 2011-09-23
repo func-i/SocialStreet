@@ -27,7 +27,6 @@
   </div>
 </div>
 
-
 <div id="explore_keyword_event_types_holder" class="hidden">
   <div id="event_types_scroller" class="expand-height scroll-pane">
     <ul>
@@ -54,7 +53,7 @@
 <% unless params[:keywords].blank? %>
   <script type="text/javascript">
   <% for keyword in params[:keywords] %>
-    addKeyword('<%= keyword %>');
+      addKeyword('<%= keyword %>');
   <% end %>
   </script>
 <% end %>

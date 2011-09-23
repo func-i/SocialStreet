@@ -39,7 +39,7 @@ function init_create_event(){
     });
 
     $('.create-what-event-type').live('click', function(){
-        create_eventType_is_clicked(this);
+        createEventTypeIsClicked(this);
     });
 
     $('#create_what_next_arrow').click(function(){
@@ -63,7 +63,7 @@ function init_create_event(){
 
     $('#create-where-name-location-input').keydown(function(e){
         if(e.keyCode == 13){//Enter pressed
-            save_marker_name(e.target.value);
+            saveMarkerName(e.target.value);
         }
     });
 
@@ -125,7 +125,7 @@ function filter_what_icons(search_text){
     }, 250);
 }
 
-function create_eventType_is_clicked(record){
+function createEventTypeIsClicked(record) {
     var eventType_record = $(record);
     var eventType_name = eventType_record.children('.create-what-event-type-name').text().trim();
 
@@ -156,7 +156,7 @@ function create_eventType_is_clicked(record){
             $('#create_what_next_arrow').removeClass('hidden');
         }
 
-        if(!does_keyword_already_exist(eventType_name))
+        if(!doesKeywordAlreadyExist(eventType_name))
         {
             $('#create_what_tag_list').append(eventType_record.clone());
 
@@ -169,7 +169,7 @@ function create_eventType_is_clicked(record){
     }
 }
 
-function does_keyword_already_exist(eventType_name){
+function doesKeywordAlreadyExist(eventType_name){
     var rtn = false;
     $.each(
         $('#create_what_tag_list .create-what-event-type-name'),
@@ -230,7 +230,7 @@ function selectMarker_createWhere(marker){
     $('#event_create_form #location-name-field').val(marker.text_);
 }
 
-function save_marker_name(marker_name){
+function saveMarkerName(marker_name){
     $('#create-where-name-location-text').text(marker_name);
     createEventSelectedMarker.text_ = marker_name;
     $('#create-where-name-location-text').removeClass('hidden');

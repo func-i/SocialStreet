@@ -3,7 +3,7 @@
     <%= location_fields.hidden_field :text, :id => "location-name-field" %>
     <%= location_fields.hidden_field :latitude, :id => "location-lat-field" %>
     <%= location_fields.hidden_field :longitude, :id => "location-lng-field" %>
-    <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field"%>
+    <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field" %>
   <% end %>
 
   <% (@event.event_keywords || []).each do |keyword| %>
