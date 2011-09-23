@@ -18,6 +18,7 @@ $(function(){
     $('#explore_keyword_text_field').focus(function(){
         sizeEventTypesHolder();
         $('#explore_keyword_event_types_holder').removeClass('hidden');
+        $('#explore_keyword_tag_list_holder').jScrollPane();
     });
 
     $(document).bind("click", function(e){
@@ -25,6 +26,7 @@ $(function(){
         {
             $('#explore_keyword_event_types_holder').addClass('hidden');
             $('#explore_keyword_text_field').blur();
+            initializeScrollPanes();
         }
     });
 

@@ -362,7 +362,7 @@ END OF RESET
     overflow-y: auto;
 }
 #explore_keyword_event_types_holder{
-    overflow-y: auto;
+    /*overflow-y: auto;*/
     position: absolute;
     left: 470px;
     /*    left: 100px;*/
@@ -379,7 +379,7 @@ END OF RESET
 }
 .explore-keyword-event-type-image{
     -webkit-border-radius: 15px;
-    -moz-border-radius-bottomright: 15px;
+    -moz-border-radius: 15px;
     /*background-color: #4f4f4d;*/
 }
 .explore-keyword-event-type-name{
@@ -534,7 +534,7 @@ END OF RESET
     /*    left: 100px;*/
     top: 170px;
     width: 520px;
-    height: 400px;
+    /*height: 400px;*/
     /*background: url("../images/overlay_box_bg.png");*/
 }
 .create-what-event-type{
@@ -545,12 +545,12 @@ END OF RESET
 }
 .create-what-event-type-image{
     -webkit-border-radius: 15px;
-    -moz-border-radius-bottomright: 15px;
+    -moz-border-radius: 15px;
     /*background-color: #4f4f4d;*/
 }
 .create-what-event-type-name{
     text-align: center;
-    font: bold 12px/18px Arial, Helvetica, sans-serif;
+    font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
     background: url("../images/overlay_box_bg.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
