@@ -63,9 +63,7 @@ $(function(){
 
         initializeScrollPanes();
     });
-
-
-
+    
     $('#edit_event_title_link').click(function(){
         $('#result_title_text').addClass('hidden');
         $('#edit_event_title_link').addClass('hidden');

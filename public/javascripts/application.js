@@ -1,6 +1,7 @@
 cleanUpSelf = function(){};
 
 $(function() {
+
     $('.nav-link').live('click', function(e) {
         cleanup();
 
@@ -14,7 +15,11 @@ $(function() {
             
         if(href != undefined) {
             if(history && history.pushState) {
-                $.getScript(href);
+
+                $.getScript(href, function() {
+                    console.log('resized');
+                    initializeSizePages();
+                });
                 history.pushState({}, "", href);
             }
             else{
@@ -35,7 +40,9 @@ $(function() {
 
         cleanup();
             
-        $.getScript(location.href);
+        $.getScript(location.href, function() {
+            initializeSizePages();
+        });        
     });
 
     $('#log_button').click(function() {
@@ -67,15 +74,13 @@ $(function() {
         }
     }
 
-    resizeExpandHeightContainer();
-    capHeightContainer();
+    initializeSizePages();
 
     $(window).resize(function() {
         resizeExpandHeightContainer();
         capHeightContainer();
     });
 
-    initializeScrollPanes();
 
     $('.show-scroll-on-hover').live('mouseenter', function(){
         $(this).find('.jspVerticalBar').removeClass('hidden');
@@ -86,6 +91,12 @@ $(function() {
     });
 
 });
+
+function initializeSizePages() {
+    resizeExpandHeightContainer();
+    capHeightContainer();
+    initializeScrollPanes();
+}
 
 function cleanup(){
     if(typeof cleanUpSelf == 'function') {
