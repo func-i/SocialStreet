@@ -67,13 +67,13 @@ $(function() {
         }
     }
 
-    if($('.expand-height').length > 0) {
-        resizeExpandHeightContainer();
+    resizeExpandHeightContainer();
+    capHeightContainer();
 
-        $(window).resize(function() {
-            resizeExpandHeightContainer();
-        });
-    }
+    $(window).resize(function() {
+        resizeExpandHeightContainer();
+        capHeightContainer();
+    });
 
     initializeScrollPanes();
 
@@ -96,8 +96,22 @@ function cleanup(){
 }
 
 function initScrollPane(ele) {
+    var $ele = $(ele);
+    var height = $ele.height();
     
-    ele.height(ele.height());
+    if(!$ele.is(':visible')) {
+        var $par = $ele.closest('.hidden');
+        var zIndex = $par.css('z-index');
+        $par.css('z-index', -1);
+        $par.removeClass('hidden');
+        
+        height = $ele.height();
+
+        $par.addClass('hidden');
+        $par.css('z-index', zIndex);
+    }
+
+    $ele.height(height);
     ele.jScrollPane();
 
     var that = ele;
@@ -113,16 +127,11 @@ function initializeScrollPanes() {
         if($(this).hasClass('show-scroll-on-hover')){
             $(this).find('.jspVerticalBar').addClass('hidden');
         }
-
-        var that = this;
-        $(window).bind('resize', function() {
-            //resizeScrollPane(that);
-            });
     });
 }
 
 var throttleTimeout;
-function resizeScrollPane(scrollPane){
+function resizeScrollPane(scrollPane){    
     var api = $(scrollPane).data('jsp');
 
     if ($.browser.msie) {
@@ -163,6 +172,37 @@ function resizeExpandHeightContainer() {
 
         var cHeight = docHeight - cPos - bottomOffset;
         $(ele).height(cHeight);
+    });
+}
+
+function capHeightContainer(){
+    $.each($('.cap-height'), function(i, ele){
+        var $ele = $(ele);
+
+        var height = $ele.height()
+        var maxHeight = $(window).height() - $ele.offset().top;
+
+        if(!$ele.is(':visible')) {
+            var $par = $ele.closest('.hidden');
+            var zIndex = $par.css('z-index');
+            $par.css('z-index', -1);
+            $par.removeClass('hidden');
+
+            height = $ele.height();
+            maxHeight = $(window).height() - $ele.offset().top;
+
+            $par.addClass('hidden');
+            $par.css('z-index', zIndex);
+        }
+
+        var bottomOffset = $(ele).data('expandBottomOffset');
+        bottomOffset = bottomOffset || 0;
+
+
+        if(height > (maxHeight - bottomOffset))
+            height = maxHeight - bottomOffset;
+
+        $ele.height(height);
     });
 }
 
