@@ -16,7 +16,7 @@ function sizeFields() {
 }
 
 $(function(){
-    init_create_event();
+    initCreateEvent();
     sizeFields();
 
     $(window).bind('resize', function() {
@@ -31,7 +31,7 @@ $(function(){
 /*
  * CREATE EVENT FUNCTIONS
  */
-function init_create_event(){
+function initCreateEvent(){
     //Create What bindings
     $('.create-what-text-field').keyup(function(e){
         filter_what_icons(e.target.value);
@@ -84,6 +84,8 @@ function init_create_event(){
     $('.create-when-field').change(function(){
         updateCreateWhenDates();
     });
+
+    initScrollPane($('#create_what_tag_list'));
 }
 
 /*
@@ -138,15 +140,14 @@ function createEventTypeIsClicked(record) {
         }
 
         eventType_record.remove();
-        resizeScrollPane(record.parent().parent());
+        //resizeScrollPane(record.parent().parent());
 
         $.each(
             $('#event_create_form input[name="event[event_keywords_attributes][][name]"]'),
             function(index, value){
                 if($(value).val().trim() == eventType_name)
                     $(value).remove();
-            }
-            );
+            });
 
     }
     else
@@ -158,13 +159,15 @@ function createEventTypeIsClicked(record) {
 
         if(!doesKeywordAlreadyExist(eventType_name))
         {
-            $('#create_what_tag_list').append(eventType_record.clone());
+            var api = $('#create_what_tag_list').data('jsp');
+            api.getContentPane().append(eventType_record.clone());
+            api.reinitialise();
 
             $('#event_create_form').append(
                 '<input type="hidden" name="event[event_keywords_attributes][][name]" value="' + eventType_name + '" />'
                 );
 
-            resizeScrollPane($('#tag_scroller'));
+        //resizeScrollPane($('#create-what-tag-list-holder'));
         }
     }
 }
