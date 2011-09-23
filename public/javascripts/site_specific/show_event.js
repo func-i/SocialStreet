@@ -29,7 +29,7 @@ $(function(){
         $(this).find('.comment-delete').addClass('hidden');
     });
     $('.comment-delete').live('click', function(){
-        $(this).closest('.event-wall-comment').hide();
+        removeComment($(this).closest('.event-wall-comment'));
     });
 
     $('.invite-friends-btn').live('click', function(){
@@ -101,9 +101,18 @@ $(function(){
             }
         }
     });
-
-
 });
+
+function removeComment(comment){
+    comment.hide();
+
+    $('#event_wall').data('jsp').destroy();
+    $('#event_wall').height('auto');
+
+    capHeightContainer();
+
+    initScrollPane($('#event_wall'));
+}
 
 function setupShowEventPage(){
     
@@ -154,8 +163,8 @@ function add_invitation(that){
         $('#invited_user_list').append(userClone);
 
         $('#invite_form').append(
-            '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
-            );
+        '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
+    );
 
         invitationCounter++;
         $('#invitation_list_title').removeClass('hidden');
@@ -189,8 +198,8 @@ function addEmail(email_address){
         //email_address = email_address.replace("@", "_at_").replace(".","_");
         email_address = email_address.replace(".","\.");
         $('#invite_form').append(
-            '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
-            );
+        '<input type="hidden" name="invited_emails[]" value="' + email_address + '" id="' + invitationCounter + '"/>'
+    );
 
         var emailElem = $(document.createElement('li'));
         emailElem.addClass('already-invited-email');
