@@ -389,7 +389,7 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
 }
 .explore-keyword-tag{
-    padding-left: 5px;
+    padding: 2px 2px 2px 5px;
     float: left;
     width: 200px;
 }
@@ -862,3 +862,4 @@ END OF RESET
 #show_event_details {
     padding-bottom: 5px;
 }
+
