@@ -22,10 +22,9 @@ $(function() {
             }
             e.preventDefault();
         }
-
     });
 
-    var popped = (null === window.history.state), initialURL = location.href;
+    var popped = (window.history && null === window.history.state), initialURL = location.href;
 
     $(window).bind('popstate', function() {
         var initialPop = !popped && location.href == initialURL;
@@ -70,8 +69,8 @@ $(function() {
 
     if($('.expand-height').length > 0) {
 
-        $(window).load(resizeResultsContainer()).resize(function() {
-            resizeResultsContainer();
+        $(window).load(resizeExpandHeightContainer()).resize(function() {
+            resizeExpandHeightContainer();
         });
 
         initializeScrollPanes();
@@ -128,7 +127,7 @@ function resizeScrollPane(scrollPane){
     }
 }
 
-function resizeResultsContainer() {
+function resizeExpandHeightContainer() {
     var docHeight = $(window).height();
 
     $.each($('.expand-height'), function(i, ele) {
