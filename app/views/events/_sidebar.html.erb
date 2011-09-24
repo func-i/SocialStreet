@@ -36,7 +36,7 @@
     <% end %>
   </div>
 
-  <div id="show_view" class="<%="hidden" if params[:invite]%>">
+  <div class="show_view" class="<%="hidden" if params[:invite]%>">
     <div class="container">
       <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
         <div id="event_wall_text_field_holder">
@@ -47,42 +47,6 @@
         <%@comments.each do |comment|%>
           <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
         <% end %>
-      </div>
-    </div>
-
-    <div class="position-y-top position-x-center">
-      <% if can_edit %>
-        <div>
-          <%= link_to "Edit StreetMeet...", edit_event_path(@event), :id=>"edit_event_link" %>
-          <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
-        </div>
-      <% end %>
-      <div id="join_btn_holder">
-        <% if @event.canceled %>
-          <div id="event_canceled_btn">
-            Canceled
-          </div>
-        <% else %>
-          <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
-        <% end %>
-      </div>
-
-      <div id="show_attendees_holder" class="drop-shadow">
-        <div id="show_attendees_title">
-          <%= "#{pluralize @event.number_of_attendees, 'Person'} Attending" %>
-        </div>
-        <div id="show_attendees_list_holder">
-          <ul id="show_attendees_list">
-            <%@event.event_rsvps.attending.each do |attendee|%>
-              <li class="show-attendee-holder">
-                <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
-                <span class="attendee-name hidden">
-                  <%=attendee.user.name%>
-                </span>
-              </li>
-            <% end %>
-          </ul>
-        </div>
       </div>
     </div>
   </div>

@@ -134,10 +134,16 @@ function setupShowEventPage(){
         createShowMarker(lat, lng, address, loc_text);
     });
 
+    sizeAttendees();
     
     initializeScrollPanes();
 
     getInvitationUsers();//Load invitation users on delay
+}
+
+function sizeAttendees(){
+    var attendee = $('.show_attendee_holder')
+    var widthOfAttendees = attendee.width() * attendee.length();
 }
 
 function getInvitationUsers(){

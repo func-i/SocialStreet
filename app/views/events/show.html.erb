@@ -1,4 +1,45 @@
-<%= render 'sidebar' %>
+<% can_edit = @event.can_edit?(current_user) %>
+
+<%= render 'sidebar', :locals => {:can_edit => can_edit} %>
+
+<div class="show_event">
+  <div class="position-y-top position-x-right">
+    <% if can_edit %>
+      <div>
+        <%= link_to "Edit StreetMeet...", edit_event_path(@event), :id=>"edit_event_link" %>
+        <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
+      </div>
+    <% end %>
+    <div id="join_btn_holder">
+      <% if @event.canceled %>
+        <div id="event_canceled_btn">
+          Canceled
+        </div>
+      <% else %>
+        <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
+      <% end %>
+    </div>
+
+    <div id="show_attendees_holder" class="container">
+      <div id="show_attendees_title">
+        <%= "#{pluralize @event.number_of_attendees, 'Person'} Attending" %>
+      </div>
+      <div id="show_attendees_list_holder" class="scroll-pane">
+        <ul id="show_attendees_list">
+          <%@event.event_rsvps.attending.each do |attendee|%>
+              <li class="show-attendee-holder">
+                <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
+                <span class="attendee-name hidden">
+                  <%=attendee.user.name%>
+                </span>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div id="invitation_view" class="<%="hidden" unless params[:invite] %>">
   <%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>

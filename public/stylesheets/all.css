@@ -206,7 +206,7 @@ END OF RESET
 }
 .position-x-right{
     position: fixed;
-    left:860px;
+    right:20px;
 }
 
 /*Results list*/
@@ -461,8 +461,8 @@ END OF RESET
 .invite-friends-btn{
     color: #010000;
     background: #9c3;
-    font: bold 16px/32px Arial, Helvetica, sans-serif;
-    padding: 3px 10px;
+    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    padding: 12px 10px;
     margin: 2px 10px 0px 0px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -685,13 +685,10 @@ END OF RESET
 }
 #show_attendees_holder{
     /*height: 200px;*/
-    max-height: 200px;
-    overflow: auto;
-    width: 600px;
+    width: 300px;
     background: url("../images/overlay_box_bg.png");
     padding-top: 9px;
-    position: absolute;
-    left: 200px;
+    float: right;
 }
 #show_attendees_title{
     color: white;
@@ -699,7 +696,9 @@ END OF RESET
     font: bold 22px/32px Arial, Helvetica, sans-serif;
 }
 #show_attendees_list_holder{
-    margin-left: 20px;
+    margin-left: 20px;    
+    max-height: 120px;
+    overflow: auto;
 }
 .show-attendee-holder{
     float: left;
