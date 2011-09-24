@@ -294,9 +294,6 @@ END OF RESET
     background-image: url('../images/checkmark_small_grey.png');
 }
 
-.result-join-btn-holder .unattend-btn{
-    display: none;
-}
 .result-join-btn-holder .invite-friends-btn{
     font: bold 14px/16px Arial, Helvetica, sans-serif;
     margin: 2px 10px 0 0;

@@ -5,21 +5,26 @@ var exploreUpdateTimer;
 var selectedResult;
 
 $(function(){
-    
-    function sizeEventTypesHolder() {
-        $('#explore_keyword_event_types_holder').width($(window).width() - $('#sidebar').width() - $('#explore_keyword_text_field_holder').width() - 125);
+    //Size event types holder
+    $(window).bind('resize', sizeEventTypesHolder());
+
+    //Cleanup function on leaving the page
+    cleanUpSelf = function() {
+        $('#explore_btn').removeClass('hidden');
+        $('#notify_me_btn').addClass('hidden');
     }
 
-    $(window).bind('resize', sizeEventTypesHolder());
-    
+    //Setup the explore page
     setupExplorePage();
-    
+
+    //Keyword field gets focus, setip
     $('#explore_keyword_text_field').focus(function() {
         sizeEventTypesHolder();
         $('#explore_keyword_event_types_holder').removeClass('hidden');
         initScrollPane($('#event_types_scroller'));
     });
 
+    //User clicks somewhere that isn't the event types, hide
     $(document).bind("click", function(e){
         if($(e.target).closest('#explore_keyword_text_field_holder').length < 1 && $(e.target).closest('#explore_keyword_event_types_holder').length < 1 )
         {
@@ -28,14 +33,17 @@ $(function(){
         }
     });
 
+    //User clicks the event type
     $('.explore-keyword-event-type').live('click', function() {
         exploreEventTypeIsClicked(this);
     });
 
+    //User filter event type
     $('#explore_keyword_text_field').keyup(function(e){
         explore_keywords_textfield_keywdown(e);
     });
 
+    //User removes filter
     $('.explore-keyword-tag-remove').live('click', function(){
         removeExploreTag($(this).parent());        
         
@@ -44,13 +52,11 @@ $(function(){
             $('#explore_keyword_tag_list_holder').height('auto');
         }
     });
-
-    cleanUpSelf = function() {
-        $('#explore_btn').removeClass('hidden');
-        $('#notify_me_btn').addClass('hidden');
-    }
-
 });
+
+function sizeEventTypesHolder() {
+    $('#explore_keyword_event_types_holder').width($(window).width() - $('#sidebar').width() - $('#explore_keyword_text_field_holder').width() - 125);
+}
 
 function setupExplorePage(){
 

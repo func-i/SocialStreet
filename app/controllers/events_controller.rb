@@ -25,10 +25,10 @@ class EventsController < ApplicationController
 
       if request.xhr?
         render :update do |page|
-          page.redirect_to @event
+          page.redirect_to @event, :invite => true
         end
       else
-        redirect_to @event
+        redirect_to @event, :invite => true
       end
       
     end

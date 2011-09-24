@@ -1,7 +1,7 @@
-cleanUpSelf = function(){};
+var cleanUpSelf = function(){};
 
 $(function() {
-
+    //Ajax call when clicking nav buttons
     $('.nav-link').live('click', function(e) {
         cleanup();
 
@@ -17,7 +17,6 @@ $(function() {
             if(history && history.pushState) {
 
                 $.getScript(href, function() {
-                    console.log('resized');
                     initializeSizePages();
                 });
                 history.pushState({}, "", href);
@@ -29,8 +28,27 @@ $(function() {
         }
     });
 
-    var popped = (window.history && null === window.history.state), initialURL = location.href;
+        //Signin link
+    $('#log_button').click(function() {
+        window.location = $(this).data('href');
+    });
 
+    //Ajax Link
+    $('.ajax-link').live('click', function(e){
+        var href;
+        if(this.href != undefined) {
+            href = this.href;
+        }
+        else{
+            href = $(this).data('ajax-href');
+        }
+
+        $.getScript(href);
+    });
+
+
+    //HISTORY. Pop state is called when pressing back button in the browser
+    var popped = (window.history && null === window.history.state), initialURL = location.href;
     $(window).bind('popstate', function() {
         var initialPop = !popped && location.href == initialURL;
         popped = true;
@@ -45,22 +63,8 @@ $(function() {
         });        
     });
 
-    $('#log_button').click(function() {
-        window.location = $(this).data('href');
-    });
 
-    $('.ajax-link').live('click', function(e){
-        var href;
-        if(this.href != undefined) {
-            href = this.href;
-        }
-        else{
-            href = $(this).data('ajax-href');
-        }
-
-        $.getScript(href);
-    });
-
+    //Get users current Location
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
@@ -74,29 +78,23 @@ $(function() {
         }
     }
 
+    //Initialize the size elements to match page size and initialize scrollbars
     initializeSizePages();
 
     $(window).resize(function() {
-        resizeExpandHeightContainer();
-        capHeightContainer();
+        initializeSizePages();
     });
 
 
+    //Scrollbar behaviour on mouseover
     $('.show-scroll-on-hover').live('mouseenter', function(){
         $(this).find('.jspVerticalBar').removeClass('hidden');
     });
-
     $('.show-scroll-on-hover').live('mouseleave', function(){
         $(this).find('.jspVerticalBar').addClass('hidden');
     });
 
 });
-
-function initializeSizePages() {
-    resizeExpandHeightContainer();
-    capHeightContainer();
-    initializeScrollPanes();
-}
 
 function cleanup(){
     if(typeof cleanUpSelf == 'function') {
@@ -104,6 +102,13 @@ function cleanup(){
         cleanUpSelf = function(){}
     }
     markerManager.deleteAllMarkers();
+}
+
+
+function initializeSizePages() {
+    resizeExpandHeightContainer();
+    capHeightContainer();
+    initializeScrollPanes();
 }
 
 function initScrollPane(scroll_pane) {
@@ -131,7 +136,7 @@ function initScrollPane(scroll_pane) {
 
     var that = $myElem;
     $(window).bind('resize', function() {
-        resizeScrollPane(that);
+        //resizeScrollPane(that);
     });
 }
 
