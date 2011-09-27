@@ -1,27 +1,31 @@
-<div class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
-  <div class="create-where-title">
-    Where?
+<% content_for :left_side_pane do %>
+  <div class="create-info-box create-where-view container">
+    <div id="create_where_title">
+      Where?
+    </div>
+    <div id="create_where_subtitle">
+      Drag the pin or enter an address in the text box...
+    </div>
   </div>
-  <div class="create-where-subtitle">
-    Drag the pin or enter an address in the text box...
-  </div>
-</div>
 
-<div class="create-where-text-field-holder">
+  <div id="create-where-marker-info" class="create-where-view container hidden">
+    <div id="create-where-name-location">
+      <span id="create-where-name-location-text"><%= event.location.text %></span>
+      <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create-where-name-location-input', :class => 'hidden' %>
+    </div>
+    <div id="create-where-address">
+      <%= event.location.geocoded_address %>
+    </div>
+  </div>
+<% end %>
+
+<div class="create-where-view create-where-text-field-holder">
   <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create-where-text-field' %>
 </div>
 
-<div id="create-where-marker-info" class="x-small-box y-small-box position-y-middle position-x-left drop-shadow hidden">
-  <div id="create-where-name-location">
-    <span id="create-where-name-location-text"><%= event.location.text %></span>
-    <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create-where-name-location-input', :class => 'hidden' %>
-  </div>
-  <div id="create-where-address">
-    <%= event.location.geocoded_address %>
-  </div>
-</div>
-
-<div id="create_where_next_arrow" class="next-arrow next-arrow-position hidden">
+<% content_for :bottom_pane do %>
+<div id="create_where_next_arrow" class="create-where-view next-arrow hidden">
   Continue
 </div>
+<% end %>
 

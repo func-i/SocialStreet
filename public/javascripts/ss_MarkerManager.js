@@ -81,6 +81,11 @@ MarkerManager.prototype.deleteAllMarkers = function(){
     delete this.allMarkers_;
     this.allMarkers_ = [];
 };
+MarkerManager.prototype.hideAllMarkers = function(){
+    $.each(this.allMarkers_, function(index, marker){
+        marker.setMap(null);
+    });
+};
 
 MarkerManager.prototype._clusterWith = function(markerToPlace){
     //loop through every marker and choose closest marker to location

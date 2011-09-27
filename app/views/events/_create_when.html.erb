@@ -1,34 +1,40 @@
-<div class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
-  <div class="create-when-title">
-    When?
+<% content_for :left_side_pane do %>
+  <div class="create-info-box container create-when-view">
+    <div class="create-when-title">
+      When?
+    </div>
   </div>
-</div>
 
-<div id="create_where_calendar_holder" class="expand-height position-y-top position-x-center " data-expandBottomOffset="175">
-  <div id="create_when_calendar" class="drop-shadow"></div>
-</div>
+  <div id="create-when-info" class="container create-when-view">
+    <div id="create_when_date">
+      <%= event.start_date.strftime("%B %e, %Y") %>
+    </div>
+    <div id="create_when_time">
+      Start Time:
+      <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime("%I")), :class => "create-when-time create-when-field"%>
+      <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime('%M')), :class => "create-when-time create-when-field"%>
+      <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], event.start_date.strftime('%p')), :class => "create-when-time create-when-field"%>
+    </div>
+    <div id="create_when_duration">
+      Duration:
+      <% duration, duration_size = event.duration_array %>
+      <%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration", :class => "create-when-field"%>
+      <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size", :class => "create-when-field"%>
+    </div>
+  </div>
+<% end %>
 
-<div id="create-when-info" class="x-small-box y-small-box position-y-middle position-x-left drop-shadow">
-  <div id="create_when_date">
-    <%= event.start_date.strftime("%B %e, %Y") %>
+<% content_for :center_pane do %>
+  <div id="create_when_calendar_holder" class="create-when-view">
+    <div id="create_when_calendar" class="drop-shadow" style="height: 100%; width: 100%;"></div>
   </div>
-  <div id="create_when_time">
-    Start Time:
-    <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime("%I")), :class => "create-when-time create-when-field"%>
-    <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime('%M')), :class => "create-when-time create-when-field"%>
-    <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], event.start_date.strftime('%p')), :class => "create-when-time create-when-field"%>
-  </div>
-  <div id="create_when_duration">
-    Duration:
-    <% duration, duration_size = event.duration_array %>
-    <%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration", :class => "create-when-field"%>
-    <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size", :class => "create-when-field"%>
-  </div>
-</div>
+<% end %>
 
-<div id="create_when_next_arrow" class="next-arrow next-arrow-position">
-  <%=event.new_record? ? "Create" : "Update"%>
-</div>
+<% content_for :bottom_pane do %>
+  <div id="create_when_next_arrow" class="next-arrow create-when-view">
+    <%=event.new_record? ? "Create" : "Update"%>
+  </div>
+<% end %>
 
 
 

@@ -7,6 +7,10 @@ class ExploreController < ApplicationController
     #end
     
     @events = find_events
+
+    if request.xhr?
+      render "shared/ajax_load.js", :locals => {:file_name_var => 'explore/index.html.erb'}
+    end
   end
 
   def search

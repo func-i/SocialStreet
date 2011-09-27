@@ -6,6 +6,10 @@ class EventsController < ApplicationController
   def show
     @event = Event.find params[:id]
     prepare_for_show
+
+    if request.xhr?
+      render "shared/ajax_load.js", :locals => {:file_name_var => 'events/show.html.erb'}
+    end
   end
 
   def new
@@ -16,6 +20,10 @@ class EventsController < ApplicationController
     @event.end_date = Time.now.advance(:hours => 6).floor(15.minutes)
     
     @location = @event.build_location
+
+    if request.xhr?
+      render "shared/ajax_load.js", :locals => {:file_name_var => 'events/new.html.erb'}
+    end
   end
 
   def create 
@@ -25,10 +33,10 @@ class EventsController < ApplicationController
 
       if request.xhr?
         render :update do |page|
-          page.redirect_to @event, :invite => true
+          page.redirect_to event_path(@event, :invite => true)
         end
       else
-        redirect_to @event, :invite => true
+        redirect_to event_path(@event, :invite => true)
       end
       
     end

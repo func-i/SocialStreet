@@ -5,30 +5,29 @@ var exploreUpdateTimer;
 var selectedResult;
 
 $(function(){
-    //Size event types holder
-    $(window).bind('resize', sizeEventTypesHolder());
-
     //Cleanup function on leaving the page
     cleanUpSelf = function() {
         $('#explore_btn').removeClass('hidden');
         $('#notify_me_btn').addClass('hidden');
     }
-
+    
     //Setup the explore page
     setupExplorePage();
-
-    //Keyword field gets focus, setip
+    
+    //Keyword field gets focus, setup
     $('#explore_keyword_text_field').focus(function() {
-        sizeEventTypesHolder();
         $('#explore_keyword_event_types_holder').removeClass('hidden');
+        $('#center_pane').removeClass('hidden');
         initScrollPane($('#event_types_scroller'));
     });
 
     //User clicks somewhere that isn't the event types, hide
     $(document).bind("click", function(e){
-        if($(e.target).closest('#explore_keyword_text_field_holder').length < 1 && $(e.target).closest('#explore_keyword_event_types_holder').length < 1 )
+        if($('#on_explore').length > 0 && $(e.target).closest('#explore_keyword_text_field_holder').length < 1 && $(e.target).closest('#explore_keyword_event_types_holder').length < 1 )
         {
             $('#explore_keyword_event_types_holder').addClass('hidden');
+            console.log('hidden');
+            $('#center_pane').addClass('hidden');
             $('#explore_keyword_text_field').blur();
         }
     });
@@ -54,17 +53,13 @@ $(function(){
     });
 });
 
-function sizeEventTypesHolder() {
-    $('#explore_keyword_event_types_holder').width($(window).width() - $('#sidebar').width() - $('#explore_keyword_text_field_holder').width() - 125);
-}
-
 function setupExplorePage(){
 
     $('#explore_btn').addClass('hidden');
     $('#notify_me_btn').removeClass('hidden');
 
     $('#explore_search_params').ajaxComplete(function() {
-        initializeSizePages();
+        resizePageElements();
     });
 
     var mapCenter = $('#map_center').val();
@@ -76,7 +71,6 @@ function setupExplorePage(){
 
     addExploreMarkers();
     toggle_suggested_actions();
-
 }
 
 function createTagsFromInputFields(){
@@ -97,6 +91,10 @@ function removeExploreTag(tag_dom){
     tag_dom.remove();
 
     refresh_explore_results();
+
+    if($('#explore_search_params input[name="keywords[]"]').length < 1){
+        $('#explore_keyword_header').addClass('hidden');
+    }
 }
 
 function filter_explore_keyword_icons(search_text, create, submit){
@@ -127,9 +125,6 @@ function filter_explore_keyword_icons(search_text, create, submit){
 
             exact_match = exact_match || $.trim(myEventName.text()).toLowerCase() == search_text.toLowerCase();
 
-            if(exact_match){
-                var i = 0;
-            }
             if(create && exact_match){
                 exploreEventTypeIsClicked(myEventName.parent(), submit);
             }
@@ -137,12 +132,8 @@ function filter_explore_keyword_icons(search_text, create, submit){
     });
 
     if(!exact_match && search_text.length > 0){
-        var customType = $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type');
-        if(customType.length > 0){
-            customType.children('.explore-keyword-event-type-name').text(search_text);
-        }
-        customType.removeClass('hidden');
-
+        var customType = setCustomEventType(search_text)
+        
         if(create){
             exploreEventTypeIsClicked(customType, submit);
         }
@@ -150,6 +141,16 @@ function filter_explore_keyword_icons(search_text, create, submit){
     else{
         $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type').addClass('hidden');
     }
+}
+
+function setCustomEventType(text){
+    var customType = $('#explore_keyword_event_types_holder #explore_keyword_custom_event_type');
+    if(customType.length > 0){
+        customType.children('.explore-keyword-event-type-name').text(text);
+    }
+    customType.removeClass('hidden');
+
+    return customType;
 }
 
 function explore_keywords_textfield_keywdown(e){
@@ -169,15 +170,21 @@ function explore_keywords_textfield_keywdown(e){
 }
 
 function addKeyword(keyword) {
+    if(keyword.length < 1)
+        return;
 
-    var eventType_record;
-    $('.explore-keyword-event-type').each(function(i, ele) {
-        if($(ele).children('.explore-keyword-event-type-name').text().trim() == keyword){
-            eventType_record = $(ele);
+    if(!doesExploreKeywordAlreadyExist(keyword)){
+        var eventType_record;
+        $('.explore-keyword-event-type').each(function(i, ele) {
+            if($(ele).children('.explore-keyword-event-type-name').text().trim() == keyword){
+                eventType_record = $(ele);
+            }
+        });
+
+        if(eventType_record == undefined){
+            eventType_record = setCustomEventType(keyword);
         }
-    });
 
-    if(eventType_record != undefined){
         var new_tag_record = $($('#explore_keyword_tag_stamp').clone());
         var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
 
@@ -186,7 +193,18 @@ function addKeyword(keyword) {
         new_tag_record.find('.explore-keyword-tag-name').text(eventType_name);
         $('#explore_keyword_tag_list').append(new_tag_record);
         new_tag_record.removeClass('hidden');
-    }
+
+        $('#explore_search_params').append(
+            '<input type="hidden" name="keywords[]" value="' + keyword + '" />'
+            );
+
+        $('#explore_keyword_header').removeClass('hidden');
+
+        var $tagHolder = $('#explore_keyword_tag_list_holder');
+
+        if($tagHolder.height() > 150)
+            initScrollPane($tagHolder);
+    }  
 }
 
 function exploreEventTypeIsClicked(record, submit){
@@ -197,19 +215,7 @@ function exploreEventTypeIsClicked(record, submit){
     var eventType_record = $(record);
     var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
 
-    if(!doesExploreKeywordAlreadyExist(eventType_name)){       
-        
-        addKeyword(eventType_name);
-        
-        $('#explore_search_params').append(
-            '<input type="hidden" name="keywords[]" value="' + eventType_name + '" />'
-            );
-
-        var $tagHolder = $('#explore_keyword_tag_list_holder');
-
-        if($tagHolder.height() > 150)
-            initScrollPane($tagHolder);
-    }
+    addKeyword(eventType_name);
 
     $('#explore_keyword_event_types_holder').addClass('hidden');
     $.each($('.explore-keyword-event-type-name'), function(index, value){
@@ -295,16 +301,15 @@ function createExploreMarker(lat, lng, resultID){
 
     google.maps.event.addListener(marker, 'click', function() {
         $('.result').css('background-color', '');
-        $('.result-arrow').addClass('hidden');
+        //$('.result-arrow').addClass('hidden');
 
         for(var i = 0; i < this.clusteredMarkers_.length; i++) {
             var myMarker = this.clusteredMarkers_[i];            
             var myResult = $('#' + myMarker.resultID_);
             myResult.css('background-color', '#333');
-            myResult.find('.result-arrow').removeClass('hidden');
+            //  myResult.find('.result-arrow').removeClass('hidden');
             $('#results_list').prepend(myResult);
             $('#results_container').scrollTop(0);
-            myResult.find('result-arrow').removeClass('hidden');          
         }
     });
 

@@ -18,6 +18,7 @@ class EventRsvpsController < ApplicationController
       raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
     end
   end
+
   protected
 
   def store_new_rsvp_request
