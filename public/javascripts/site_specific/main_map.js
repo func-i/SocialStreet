@@ -52,7 +52,8 @@ function init_map(){
         zoomControl: true,
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_CENTER,
-            style: google.maps.ZoomControlStyle.SMALL
+            style: google.maps.ZoomControlStyle.DEFAULT
+
         }
     };
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);

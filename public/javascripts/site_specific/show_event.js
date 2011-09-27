@@ -142,8 +142,8 @@ function setupShowEventPage(){
 }
 
 function sizeAttendees(){
-    var attendee = $('.show_attendee_holder')
-    var widthOfAttendees = attendee.width() * attendee.length();
+    //var attendee = $('#show_attendee_holder')
+    //var widthOfAttendees = attendee.width() * attendee.length();
 }
 
 function getInvitationUsers(){

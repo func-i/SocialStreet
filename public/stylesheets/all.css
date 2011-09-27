@@ -777,9 +777,13 @@ END OF RESET
     font: italic 11px/26px Arial, Helvetica, sans-serif;
 }
 #continue_invitation_holder{
-    position: absolute;
+
     background: url("../images/overlay_box_bg.png");
-    top: 500px;
+    /*top: 500px;
+    right: 100px;
+    position: absolute;*/
+    position: fixed;
+    bottom: 10px;
     right: 100px;
 }
 #post_to_facebook_holder{

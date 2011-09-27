@@ -1,4 +1,4 @@
-<div id="user_holder" class="x-medium-box y-medium-box position-y-top position-x-center drop-shadow" style="overflow-y:auto;">
+<div id="user_holder" class="x-medium-box y-medium-box position-y-top position-x-center drop-shadow expand-height scroll-pane" style="overflow-y: auto; top: 210px;" data-expandBottomOffset="175">
   <div id="invite_user_text_field_holder">
     <%= form_tag search_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
       <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
