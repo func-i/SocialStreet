@@ -292,6 +292,7 @@ END OF RESET
 #suggested_actions{
     /*padding:60px 0 0 15px;
     height: 70px;*/
+    padding: 10px 0;
     font-weight: bold;
     font-size: 22px;
     color: #FFFCD5;
@@ -324,14 +325,13 @@ END OF RESET
     text-align: center;
 }
 #explore_keyword_text_field_holder{
-    position: absolute;
-    left: 450px;
     height: 35px;
-    top: 11px;
+    padding: 10px;
 }
 #explore_keyword_text_field{
-    width:500px;
+    width:380px;
     height:35px;
+    border: 0;
     /*border: 5px solid #4F4F4D;*/
 }
 #explore_keyword_tag_list_holder{

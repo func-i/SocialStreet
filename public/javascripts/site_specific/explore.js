@@ -16,6 +16,7 @@ $(function(){
     
     //Keyword field gets focus, setup
     $('#explore_keyword_text_field').focus(function() {
+        $(this).val('');
         $('#explore_keyword_event_types_holder').removeClass('hidden');
         $('#center_pane').removeClass('hidden');
         initScrollPane($('#event_types_scroller'));
