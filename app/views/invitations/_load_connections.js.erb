@@ -4,7 +4,8 @@
       makeInvitationPageless(<%=@num_pages%>);
     }
 
-    $('#user_list_for_invitation').append('<%= escape_javascript render :file => '/invitations/_invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>')
+    $('#user_list_for_invitation').append('<%= escape_javascript render :file => '/invitations/_invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>');
+    $('#center_pane').height('auto');
 <% else %>
     getInvitationUsers();
 <% end %>
