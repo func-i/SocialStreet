@@ -46,12 +46,12 @@ function initCreateEvent(){
         }
     });
 
-    $('#create-where-name-location').click(function(){
-        $('#create-where-name-location-text').addClass('hidden');
-        $('#create-where-name-location-input').removeClass('hidden');
+    $('#create_where_name_location').click(function(){
+        $('#create_where_name_location_text').addClass('hidden');
+        $('#create_where_name_location_input').removeClass('hidden');
     });
 
-    $('#create-where-name-location-input').keydown(function(e){
+    $('#create_where_name_location_input').keydown(function(e){
         if(e.keyCode == 13){//Enter pressed
             saveMarkerName(e.target.value);
         }
@@ -199,17 +199,17 @@ function setupCreateWhere(){
 
     if(lat && lng){
         $('#create_where_next_arrow').removeClass('hidden');
-        $('#create-where-marker-info').removeClass('hidden');
+        $('#create_where_marker_info').removeClass('hidden');
 
         var marker = createCreateMarker(new google.maps.LatLng(lat, lng));
         map.panTo(marker.getPosition());
     }else{
         $('#create_where_next_arrow').addClass('hidden');
-        $('#create-where-marker-info').addClass('hidden');
-        $('#create-where-name-location-text').text('');
-        $('#create-where-address').text('');
+        $('#create_where_marker_info').addClass('hidden');
+        $('#create_where_name_location-text').text('');
+        $('#create_where_address').text('');
         $('#create-where-text-field').val('');
-        $('#create-where-name-location-input').val('');
+        $('#create_where_name_location_input').val('');
 
         createCreateMarker(map.getCenter());
     }
@@ -224,13 +224,13 @@ function setupCreateWhere(){
 function selectMarker_createWhere(marker){
     createEventSelectedMarker = marker;
     
-    $('#create-where-marker-info').removeClass('hidden');
-    $('#create-where-address').text(marker.address_);
+    $('#create_where_marker_info').removeClass('hidden');
+    $('#create_where_address').text(marker.address_);
 
-    $('#create-where-name-location-text').text(marker.text_ ? marker.text_ : "Click here to name this pin...");
-    $('#create-where-name-location-text').removeClass('hidden');
-    $('#create-where-name-location-input').addClass('hidden');
-    $('#create-where-name-location-input').val('');
+    $('#create_where_name_location_text').text(marker.text_ ? marker.text_ : "Click here to name this pin...");
+    $('#create_where_name_location_text').removeClass('hidden');
+    $('#create_where_name_location_input').addClass('hidden');
+    $('#create_where_name_location_input').val('');
 
     map.panTo(marker.getPosition());//TODO: Shouldnt center, but center in lower right quadrant
 
@@ -243,10 +243,10 @@ function selectMarker_createWhere(marker){
 }
 
 function saveMarkerName(marker_name){
-    $('#create-where-name-location-text').text(marker_name);
+    $('#create_where_name_location_text').text(marker_name);
     createEventSelectedMarker.text_ = marker_name;
-    $('#create-where-name-location-text').removeClass('hidden');
-    $('#create-where-name-location-input').addClass('hidden');
+    $('#create_where_name_location_text').removeClass('hidden');
+    $('#create_where_name_location_input').addClass('hidden');
     $('#event_create_form #location-name-field').val(marker_name);
 }
 

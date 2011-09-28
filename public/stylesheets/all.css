@@ -143,20 +143,19 @@ END OF RESET
     display: block;
 }
 #current_user_name{
-    float:right;
     color: white;
-    padding-top: 17px;
+    padding: 17px 5px 0 0;
 }
 #signed_in_button{
     float:right;
     position: relative;
-    margin-right: 50px;
+    margin: 0 50px 0 5px;
 }
 #signed_in_button ul{
     display:none;
     color: #000;
     z-index:2;
-    left: -25px;
+    right: 0px;
     width: 60px;
     position:absolute;
     background: #d2e9f3;
@@ -567,20 +566,20 @@ END OF RESET
     height:24px;
     border: 5px solid #4F4F4D;
 }
-#create-where-address{
+#create_where_address{
     font: bold 20px/32px Arial, Helvetica, sans-serif;
     color: #FFC233;
     text-align: center;
     padding: 10px;
 }
-#create-where-name-location{
+#create_where_name_location{
     font: bold 16px/32px Arial, Helvetica, sans-serif;
     color: #FFFCD5;
-    margin: 50px 0 10px 0;
+    padding: 50px 0 10px 0;
     text-align: center;
     cursor: pointer;
 }
-#create-where-name-location-input{
+#create_where_name_location_input{
     width: 300px;
 }
 #create_when_calendar_holder{

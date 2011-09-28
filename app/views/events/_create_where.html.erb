@@ -8,12 +8,12 @@
     </div>
   </div>
 
-  <div id="create-where-marker-info" class="create-where-view container hidden">
-    <div id="create-where-name-location">
-      <span id="create-where-name-location-text"><%= event.location.text %></span>
-      <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create-where-name-location-input', :class => 'hidden' %>
+  <div id="create_where_marker_info" class="create-info-box create-where-view container hidden">
+    <div id="create_where_name_location">
+      <span id="create_where_name_location_text"><%= event.location.text %></span>
+      <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create_where_name_location_input', :class => 'hidden' %>
     </div>
-    <div id="create-where-address">
+    <div id="create_where_address">
       <%= event.location.geocoded_address %>
     </div>
   </div>

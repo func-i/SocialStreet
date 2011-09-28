@@ -80,7 +80,6 @@ $(function() {
 
     //Initialize the size elements to match page size and initialize scrollbars
     resizePageElements();
-
     $(window).resize(function() {
         resizePageElements();
     });
@@ -93,8 +92,33 @@ $(function() {
     $('.show-scroll-on-hover').live('mouseleave', function(){
         $(this).find('.jspVerticalBar').addClass('hidden');
     });
-
 });
+
+function cleanup(){
+    if(typeof cleanUpSelf == 'function') {
+        cleanUpSelf();
+        cleanUpSelf = function(){};
+    }
+    markerManager.deleteAllMarkers();
+
+    $('.content-group').html(' ');
+}
+
+function updateUserLocation(latitude, longitude, updateDB){
+    $.getScript('/locations/update_user_location?latitude=' + latitude + '&longitude=' + longitude + '&=update_db=' + updateDB, function(data, textStatus){});
+}
+
+function resizePageElements() {
+    resizeLayout();
+    resizeExpandHeightContainer();
+    capHeightContainer();
+    initializeScrollPanes();
+
+    if(typeof resizeSelf == 'function'){
+        resizeSelf();
+        resizeSelf = function(){};
+    }
+}
 
 function resizeLayout(){
     //var docHeight = $(window).height();
@@ -123,27 +147,62 @@ function resizeLayout(){
     $('#center_pane').height(bottomPaneTopOffset - topPaneTopOffset - topPaneHeight - 40);//40 is for 2x20px gutters
 }
 
-function cleanup(){
-    if(typeof cleanUpSelf == 'function') {
-        cleanUpSelf();
-        cleanUpSelf = function(){};
-    }
-    markerManager.deleteAllMarkers();
+function resizeExpandHeightContainer() {
+    var docHeight = $(window).height();
 
-    $('.content-group').html(' ');
+    $.each($('.expand-height'), function(i, ele) {
+
+        var cPos = $(ele).offset().top;
+
+        var $par = $(ele).closest('.hidden');
+        if($par.length > 0) {
+            var zIndex = $par.css('z-index');
+            $par.css('z-index', -1);
+            $par.removeClass('hidden');
+
+            cPos = $(ele).offset().top;
+
+            $par.addClass('hidden');
+            $par.css('z-index', zIndex);
+        }
+
+        var bottomOffset = $(ele).data('expandBottomOffset');
+        bottomOffset = bottomOffset || 0;
+
+        var cHeight = docHeight - cPos - bottomOffset;
+        $(ele).height(cHeight);
+    });
 }
 
+function capHeightContainer(){
+    $.each($('.cap-height'), function(i, ele){
+        var $myElem = $(ele);
 
-function resizePageElements() {
-    resizeLayout();
-    resizeExpandHeightContainer();
-    capHeightContainer();
-    initializeScrollPanes();
+        var height = $myElem.height()
+        var maxHeight = $(window).height() - $myElem.offset().top;
 
-    if(typeof resizeSelf == 'function'){
-        resizeSelf();
-        resizeSelf = function(){};
-    }
+        var $par = $myElem.closest('.hidden');
+        if($par.length > 0) {
+            var zIndex = $par.css('z-index');
+            $par.css('z-index', -1);
+            $par.removeClass('hidden');
+
+            height = $myElem.height();
+            maxHeight = $(window).height() - $myElem.offset().top;
+
+            $par.addClass('hidden');
+            $par.css('z-index', zIndex);
+        }
+
+        var bottomOffset = $(ele).data('expandBottomOffset');
+        bottomOffset = bottomOffset || 0;
+
+
+        if(height > (maxHeight - bottomOffset))
+            height = maxHeight - bottomOffset;
+
+        $myElem.height(height);
+    });
 }
 
 function initScrollPane(scroll_pane) {
@@ -199,67 +258,5 @@ function resizeScrollPane(scrollPane){
     } else {
         api.reinitialise();
     }
-}
-
-function resizeExpandHeightContainer() {
-    var docHeight = $(window).height();
-
-    $.each($('.expand-height'), function(i, ele) {
-        
-        var cPos = $(ele).offset().top;
-
-        var $par = $(ele).closest('.hidden');
-        if($par.length > 0) {
-            var zIndex = $par.css('z-index');
-            $par.css('z-index', -1);
-            $par.removeClass('hidden');
-
-            cPos = $(ele).offset().top;
-
-            $par.addClass('hidden');
-            $par.css('z-index', zIndex);
-        }
-
-        var bottomOffset = $(ele).data('expandBottomOffset');
-        bottomOffset = bottomOffset || 0;
-
-        var cHeight = docHeight - cPos - bottomOffset;
-        $(ele).height(cHeight);
-    });
-}
-
-function capHeightContainer(){
-    $.each($('.cap-height'), function(i, ele){
-        var $myElem = $(ele);
-
-        var height = $myElem.height()
-        var maxHeight = $(window).height() - $myElem.offset().top;
-
-        var $par = $myElem.closest('.hidden');
-        if($par.length > 0) {
-            var zIndex = $par.css('z-index');
-            $par.css('z-index', -1);
-            $par.removeClass('hidden');
-
-            height = $myElem.height();
-            maxHeight = $(window).height() - $myElem.offset().top;
-
-            $par.addClass('hidden');
-            $par.css('z-index', zIndex);
-        }
-
-        var bottomOffset = $(ele).data('expandBottomOffset');
-        bottomOffset = bottomOffset || 0;
-
-
-        if(height > (maxHeight - bottomOffset))
-            height = maxHeight - bottomOffset;
-
-        $myElem.height(height);
-    });
-}
-
-function updateUserLocation(latitude, longitude, updateDB){
-    $.getScript('/locations/update_user_location?latitude=' + latitude + '&longitude=' + longitude + '&=update_db=' + updateDB, function(data, textStatus){});
 }
 
