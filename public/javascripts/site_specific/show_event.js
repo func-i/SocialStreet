@@ -166,7 +166,7 @@ function setupShowEventPage(){
 
 function showInvitationView(){
     $('.event-invitation-view').removeClass('hidden');
-    $('#center_pane').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
     $('.event-details-view').addClass('hidden');
 
     hideMarkers();
@@ -176,7 +176,7 @@ function showInvitationView(){
 
 function showEventView(){
     $('.event-invitation-view').addClass('hidden');
-    $('#center_pane').addClass('hidden');
+    $('#center_pane').addClass('invisible');
     $('.event-details-view').removeClass('hidden');
 
     showMarkers();
@@ -194,7 +194,7 @@ function getInvitationUsers(){
 
 function makeInvitationPageless(){
     invitationPageless = new Pageless({
-        container: '#user_holder',
+        container: '#user_holder_for_invitation',
         totalPages: 100,
         currentPage: 1,
         url: '/invitations/load_connections'
@@ -217,7 +217,7 @@ function add_invitation(that){
             );
 
         invitationCounter++;
-        $('#invitation_list_title').removeClass('hidden');
+        $('#invitation_list_title').removeClass('invisible');
     }
 }
 function remove_invitation(that){
@@ -225,7 +225,7 @@ function remove_invitation(that){
     $('#invited_user_list').find('#' + that.id).remove();
 
     if($('#invite_form input[name="invited_users[]"]').length <= 0){
-        $('#invitation_list_title').addClass('hidden');
+        $('#invitation_list_title').addClass('invisible');
     }
 }
 

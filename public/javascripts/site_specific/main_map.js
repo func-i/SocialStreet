@@ -52,7 +52,7 @@ function init_map(){
         zoomControl: true,
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_CENTER,
-            style: google.maps.ZoomControlStyle.DEFAULT
+            style: google.maps.ZoomControlStyle.SMALL
 
         }
     };

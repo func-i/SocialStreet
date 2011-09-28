@@ -7,7 +7,6 @@ var selectedResult;
 $(function(){
     //Cleanup function on leaving the page
     cleanUpSelf = function() {
-        $('#explore_btn').removeClass('hidden');
         $('#notify_me_btn').addClass('hidden');
     }
     
@@ -18,7 +17,7 @@ $(function(){
     $('#explore_keyword_text_field').focus(function() {
         $(this).val('');
         $('#explore_keyword_event_types_holder').removeClass('hidden');
-        $('#center_pane').removeClass('hidden');
+        $('#center_pane').removeClass('invisible');
         initScrollPane($('#event_types_scroller'));
     });
 
@@ -27,8 +26,7 @@ $(function(){
         if($('#on_explore').length > 0 && $(e.target).closest('#explore_keyword_text_field_holder').length < 1 && $(e.target).closest('#explore_keyword_event_types_holder').length < 1 )
         {
             $('#explore_keyword_event_types_holder').addClass('hidden');
-            console.log('hidden');
-            $('#center_pane').addClass('hidden');
+            $('#center_pane').addClass('invisible');
             $('#explore_keyword_text_field').blur();
         }
     });
@@ -55,8 +53,6 @@ $(function(){
 });
 
 function setupExplorePage(){
-
-    $('#explore_btn').addClass('hidden');
     $('#notify_me_btn').removeClass('hidden');
 
     $('#explore_search_params').ajaxComplete(function() {
@@ -94,7 +90,7 @@ function removeExploreTag(tag_dom){
     refresh_explore_results();
 
     if($('#explore_search_params input[name="keywords[]"]').length < 1){
-        $('#explore_keyword_header').addClass('hidden');
+        $('#explore_keyword_header').addClass('invisible');
     }
 }
 
@@ -199,7 +195,7 @@ function addKeyword(keyword) {
             '<input type="hidden" name="keywords[]" value="' + keyword + '" />'
             );
 
-        $('#explore_keyword_header').removeClass('hidden');
+        $('#explore_keyword_header').removeClass('invisible');
 
         var $tagHolder = $('#explore_keyword_tag_list_holder');
 

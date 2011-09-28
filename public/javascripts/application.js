@@ -71,10 +71,10 @@ $(function() {
             navigator.geolocation.getCurrentPosition(function(e){
                 updateUserLocation(e.coords.latitude, e.coords.longitude, true);
             }, function(e){
-                },{
-                    maximumAge: 600000,
-                    timeout: 20000
-                });
+            },{
+                maximumAge: 600000,
+                timeout: 20000
+            });
         }
     }
 
@@ -87,10 +87,10 @@ $(function() {
 
     //Scrollbar behaviour on mouseover
     $('.show-scroll-on-hover').live('mouseenter', function(){
-        $(this).find('.jspVerticalBar').removeClass('hidden');
+        $(this).find('.jspVerticalBar').removeClass('invisible');
     });
     $('.show-scroll-on-hover').live('mouseleave', function(){
-        $(this).find('.jspVerticalBar').addClass('hidden');
+        $(this).find('.jspVerticalBar').addClass('invisible');
     });
 });
 
@@ -224,7 +224,7 @@ function initScrollPane(scroll_pane) {
     $myElem.height(height);
     $myElem.bind('jsp-initialised', function(event, isScrollable){
         if($myElem.hasClass('show-scroll-on-hover')){
-            $myElem.find('.jspVerticalBar').addClass('hidden');
+            $myElem.find('.jspVerticalBar').addClass('invisible');
         }
     });
     $myElem.jScrollPane();
@@ -232,7 +232,7 @@ function initScrollPane(scroll_pane) {
     var that = $myElem;
     $(window).bind('resize', function() {
         //resizeScrollPane(that);
-        });
+    });
 }
 
 function initializeScrollPanes() {

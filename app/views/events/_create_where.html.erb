@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div id="create_where_marker_info" class="create-info-box create-where-view container hidden">
+  <div id="create_where_marker_info" class="create-info-box create-where-view container hidden invisible">
     <div id="create_where_name_location">
       <span id="create_where_name_location_text"><%= event.location.text %></span>
       <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create_where_name_location_input', :class => 'hidden' %>
@@ -19,12 +19,12 @@
   </div>
 <% end %>
 
-<div class="create-where-view create-where-text-field-holder">
+<div class="create-where-view create-where-text-field-holder hidden">
   <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create-where-text-field' %>
 </div>
 
 <% content_for :bottom_pane do %>
-<div id="create_where_next_arrow" class="create-where-view next-arrow hidden">
+<div id="create_where_next_arrow" class="create-where-view next-arrow hidden invisible">
   Continue
 </div>
 <% end %>

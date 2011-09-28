@@ -86,7 +86,7 @@ function initCreateEvent(){
  *WHAT FUNCTIONS
  **/
 function setupCreateWhat(){
-    $('#center_pane').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
 
     $('.create-where-view').addClass('hidden');
     $('.create-when-view').addClass('hidden');
@@ -136,8 +136,8 @@ function createEventTypeIsClicked(record) {
     {
         if(eventType_record.siblings().length == 0)
         {
-            $('#create_what_tag_list_holder').addClass('hidden');
-            $('#create_what_next_arrow').addClass('hidden');
+            $('#create_what_tag_list_holder').addClass('invisible');
+            $('#create_what_next_arrow').addClass('invisible');
         }
 
         eventType_record.remove();
@@ -154,8 +154,8 @@ function createEventTypeIsClicked(record) {
     else
     {
         if($('#create_what_tag_list .create-what-event-type-name').length == 0){
-            $('#create_what_tag_list_holder').removeClass('hidden');
-            $('#create_what_next_arrow').removeClass('hidden');
+            $('#create_what_tag_list_holder').removeClass('invisible');
+            $('#create_what_next_arrow').removeClass('invisible');
         }
 
         if(!doesKeywordAlreadyExist(eventType_name))
@@ -191,21 +191,21 @@ function doesKeywordAlreadyExist(eventType_name){
  **/
 function setupCreateWhere(){
     $('.create-what-view').addClass('hidden');
-    $('#center_pane').addClass('hidden');
+    $('#center_pane').addClass('invisible');
     $('.create-where-view').removeClass('hidden');
 
     var lat = $('#location-lat-field').val();
     var lng = $('#location-lng-field').val();
 
     if(lat && lng){
-        $('#create_where_next_arrow').removeClass('hidden');
-        $('#create_where_marker_info').removeClass('hidden');
+        $('#create_where_next_arrow').removeClass('invisible');
+        $('#create_where_marker_info').removeClass('invisible');
 
         var marker = createCreateMarker(new google.maps.LatLng(lat, lng));
         map.panTo(marker.getPosition());
     }else{
-        $('#create_where_next_arrow').addClass('hidden');
-        $('#create_where_marker_info').addClass('hidden');
+        $('#create_where_next_arrow').addClass('invisible');
+        $('#create_where_marker_info').addClass('invisible');
         $('#create_where_name_location-text').text('');
         $('#create_where_address').text('');
         $('#create-where-text-field').val('');
@@ -224,7 +224,7 @@ function setupCreateWhere(){
 function selectMarker_createWhere(marker){
     createEventSelectedMarker = marker;
     
-    $('#create_where_marker_info').removeClass('hidden');
+    $('#create_where_marker_info').removeClass('invisible');
     $('#create_where_address').text(marker.address_);
 
     $('#create_where_name_location_text').text(marker.text_ ? marker.text_ : "Click here to name this pin...");
@@ -234,7 +234,7 @@ function selectMarker_createWhere(marker){
 
     map.panTo(marker.getPosition());//TODO: Shouldnt center, but center in lower right quadrant
 
-    $('#create_where_next_arrow').removeClass('hidden');
+    $('#create_where_next_arrow').removeClass('invisible');
 
     $('#event_create_form #location-lat-field').val(marker.getPosition().lat());
     $('#event_create_form #location-lng-field').val(marker.getPosition().lng());
@@ -390,7 +390,7 @@ function updateCreateWhenDates(){
 function setupCreateWhen(){
     $('.create-where-view').addClass('hidden');
     $('.create-when-view').removeClass('hidden');
-    $('#center_pane').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
 
     $('#create_when_calendar_holder').width($('#create_when_calendar_holder').height() * 1.35);//1.35 default aspect ratio
 

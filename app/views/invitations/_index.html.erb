@@ -1,21 +1,21 @@
 <% content_for :center_pane do %>
-  <div id="user_holder" class="event-invitation-view container" style="overflow-y:auto;">
-    <div id="invite_user_text_field_holder">
-      <%= form_tag search_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
-        <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
-        <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
-      <% end %>
+    <div id="user_holder" class="event-invitation-view container <%="hidden" unless params[:invite]%>" style="height: 100%;width:100%">
+        <div id="invite_user_text_field_holder">
+          <%= form_tag search_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
+            <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
+            <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
+          <% end %>
+        </div>
+        <div id="user_holder_for_invitation" class="scroll-pane" style="height: 320px; overflow: auto;">
+          <ul id="user_list_for_invitation">
+            <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
+          </ul>
+        </div>
     </div>
-    <div id="user_holder_for_invitation">
-      <ul id="user_list_for_invitation">
-        <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
-      </ul>
-    </div>
-  </div>
 <% end %>
 
 <% content_for :bottom_pane do %>
-  <div id="continue_invitation_holder" class="container event-invitation-view">
+  <div id="continue_invitation_holder" class="container event-invitation-view <%="hidden" unless params[:invite]%>">
     <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form', :style=>"float:left" do %>
       <div id="post_to_facebook_holder">
         <%= check_box_tag 'post_to_facebook', 'true', true,:style=>"float:left"%>
@@ -29,8 +29,8 @@
 <% end %>
 
 <% content_for :left_side_pane do %>
-  <div class="event-invitation-view">
-    <div id="invitation_list_title" class="hidden drop-shadow">
+  <div class="event-invitation-view <%="hidden" unless params[:invite]%>">
+    <div id="invitation_list_title" class="invisible drop-shadow">
       Invitations
     </div>
     <ul id="invited_user_list">

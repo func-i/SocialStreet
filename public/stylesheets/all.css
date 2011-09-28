@@ -169,6 +169,9 @@ END OF RESET
 .hidden {
     display:none;
 }
+.invisible{
+    visibility: hidden;
+}
 
 /*Main*/
 #main {
@@ -792,12 +795,6 @@ END OF RESET
 }
 #continue_invitation_holder{
     background: url("../images/overlay_box_bg.png");
-    /*top: 500px;
-    right: 100px;
-    position: absolute;*/
-    position: fixed;
-    bottom: 10px;
-    right: 100px;
 }
 #post_to_facebook_holder{
     padding: 50px 100px;

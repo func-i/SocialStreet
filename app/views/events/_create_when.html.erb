@@ -5,7 +5,7 @@
     </div>
   </div>
 
-  <div id="create-when-info" class="container create-when-view hidden">
+  <div id="create-when-info" class="create-info-box container create-when-view hidden">
     <div id="create_when_date">
       <%= event.start_date.strftime("%B %e, %Y") %>
     </div>
@@ -25,7 +25,7 @@
 <% end %>
 
 <% content_for :center_pane do %>
-  <div id="create_when_calendar_holder" class="create-when-view">
+  <div id="create_when_calendar_holder" class="create-when-view hidden">
     <div id="create_when_calendar" class="drop-shadow" style="height: 100%; width: 100%;"></div>
   </div>
 <% end %>
