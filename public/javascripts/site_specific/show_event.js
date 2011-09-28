@@ -1,5 +1,6 @@
 var showMarker = null;
 var refreshInviteListTimer = null;
+var invitationView = false;
 var invitationCounter = 0;
 var invitationPageless = null;
 
@@ -8,18 +9,18 @@ $(function(){
     setupShowEventPage();
 
     cleanUpSelf = function(){
-        showMarker.infoBubble_.setMap(null);
-        delete showMarker.infoBubble_;
-        showMarker = null;
+        if(showMarker){
+            showMarker.infoBubble_.close();
+            delete showMarker.infoBubble_;
+            showMarker = null;
+        }
     }
 
     $('#event_wall_text_field').keyup(function(e){
-        if (e.keyCode == 13) {
-            if(e.shiftKey != true){
-                submit_event_wall_comment();
-                e.stopPropagation();
-                return false;
-            }
+        if (!e.shiftKey && e.keyCode == 13) {
+            submit_event_wall_comment();
+            e.stopPropagation();
+            return false;
         }
     });
     $('#event_wall_text_field').autoResize({
@@ -37,8 +38,7 @@ $(function(){
     });
 
     $('.invite-friends-btn').live('click', function(){
-        $('#invitation_view').removeClass('hidden');
-        $('#show_view').addClass('hidden');
+        showInvitationView();
     });
     $('#invite_user_text_field').keydown(function(e){
         if(e.keyCode == 13){
@@ -62,35 +62,34 @@ $(function(){
     });
     $('#submit_invitation_next_arrow').click(function(){
         $('#invite_form').submit();
-        $('#invitation_view').addClass('hidden');
-        $('#show_view').removeClass('hidden');
+        showEventView();
 
         initializeScrollPanes();
     });
     
     $('#edit_event_title_link').click(function(){
-        $('#result_title_text').addClass('hidden');
+        $('#show_event_title_text').addClass('hidden');
         $('#edit_event_title_link').addClass('hidden');
         $('#edit_event_title_field').removeClass('hidden');
     });
     $('#edit_event_title_field').keydown(function(e){
         if(e.keyCode == 13){
-            $('#result_title_text').text(e.target.value.substring(0, 36));
-            $('#result_title_text').removeClass('hidden');
+            $('#show_event_title_text').text(e.target.value.substring(0, 36));
+            $('#show_event_title_text').removeClass('hidden');
             $('#edit_event_title_link').removeClass('hidden');
             $('#edit_event_title_field').addClass('hidden');
             $('#event_edit_form').submit();
         }
     });
     $('#edit_event_description_link').click(function(){
-        $('#result_description_text').addClass('hidden');
+        $('#show_event_description_text').addClass('hidden');
         $('#edit_event_description_link').addClass('hidden');
         $('#edit_event_description_field').removeClass('hidden');
     });
     $('#edit_event_description_field').keydown(function(e){
-        if(e.keyCode == 13){
-            $('#result_description_text').text(e.target.value);
-            $('#result_description_text').removeClass('hidden');
+        if(!e.shiftKey && e.keyCode == 13){
+            $('#show_event_description_text').text(e.target.value);
+            $('#show_event_description_text').removeClass('hidden');
             $('#edit_event_description_link').removeClass('hidden');
             $('#edit_event_description_field').addClass('hidden');
             $('#event_edit_form').submit();
@@ -133,17 +132,39 @@ function setupShowEventPage(){
     google.maps.event.addListenerOnce(map, 'idle', function() {
         createShowMarker(lat, lng, address, loc_text);
     });
-
-    sizeAttendees();
     
     initializeScrollPanes();
+
+    invitationView = $('#invite_view_bool').val();
+    if(invitationView){
+        showInvitationView();
+    }
+    else{
+        showEventView();
+    }
 
     getInvitationUsers();//Load invitation users on delay
 }
 
-function sizeAttendees(){
-    //var attendee = $('#show_attendee_holder')
-    //var widthOfAttendees = attendee.width() * attendee.length();
+function showInvitationView(){
+    $('.event-invitation-view').removeClass('hidden');
+    $('#center_pane').removeClass('hidden');
+    $('.event-details-view').addClass('hidden');
+
+    hideMarkers();
+
+    resizeLayout();
+}
+
+function showEventView(){
+    $('.event-invitation-view').addClass('hidden');
+    $('#center_pane').addClass('hidden');
+    $('.event-details-view').removeClass('hidden');
+
+    showMarkers();
+
+    resizeLayout();
+
 }
 
 function getInvitationUsers(){
@@ -258,5 +279,24 @@ function createShowMarker(lat, lng, address, location_text) {
         borderWidth: 0
     });    
     markerManager.showAllMarkers();
-    showMarker.infoBubble_.open(map, showMarker);
+    
+    if(!invitationView)
+        showMarkers();
+    else
+        hideMarkers();
+}
+
+function hideMarkers(){
+    markerManager.hideAllMarkers();
+    if(showMarker){
+        showMarker.infoBubble_.close();
+    }
+}
+
+function showMarkers(){
+    markerManager.showAllMarkers();
+
+    if(showMarker){
+        showMarker.infoBubble_.open(map, showMarker);
+    }
 }

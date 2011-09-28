@@ -1,9 +1,11 @@
 <% can_edit = @event.can_edit?(current_user) %>
 
-<%= render 'sidebar', :locals => {:can_edit => can_edit} %>
+<% content_for :left_side_pane do %>
+  <%= render 'sidebar', :locals => {:can_edit => can_edit} %>
+<% end %>
 
-<div class="show_event">
-  <div class="position-y-top position-x-right">
+<% content_for :top_pane do %>
+  <div class="event-details-view">
     <% if can_edit %>
       <div>
         <%= link_to "Edit StreetMeet...", edit_event_path(@event), :id=>"edit_event_link" %>
@@ -27,23 +29,22 @@
       <div id="show_attendees_list_holder" class="scroll-pane">
         <ul id="show_attendees_list">
           <%@event.event_rsvps.attending.each do |attendee|%>
-              <li class="show-attendee-holder">
-                <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
-                <span class="attendee-name hidden">
-                  <%=attendee.user.name%>
-                </span>
-              </li>
+            <li class="show-attendee-holder">
+              <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
+              <span class="attendee-name hidden">
+                <%=attendee.user.name%>
+              </span>
+            </li>
           <% end %>
         </ul>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
+<%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
 
-<div id="invitation_view" class="<%="hidden" unless params[:invite] %>">
-  <%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
-</div>
+<%= hidden_field_tag 'invite_view_bool', params[:invite] %>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>
 <%= hidden_field_tag 'lng', @event.location.longitude %>

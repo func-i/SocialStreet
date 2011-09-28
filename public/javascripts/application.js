@@ -17,7 +17,7 @@ $(function() {
             if(history && history.pushState) {
 
                 $.getScript(href, function() {
-                    initializeSizePages();
+                    resizePageElements();
                 });
                 history.pushState({}, "", href);
             }
@@ -28,7 +28,7 @@ $(function() {
         }
     });
 
-        //Signin link
+    //Signin link
     $('#log_button').click(function() {
         window.location = $(this).data('href');
     });
@@ -59,8 +59,8 @@ $(function() {
         cleanup();
             
         $.getScript(location.href, function() {
-            initializeSizePages();
-        });        
+            resizePageElements();
+        });
     });
 
 
@@ -79,10 +79,10 @@ $(function() {
     }
 
     //Initialize the size elements to match page size and initialize scrollbars
-    initializeSizePages();
+    resizePageElements();
 
     $(window).resize(function() {
-        initializeSizePages();
+        resizePageElements();
     });
 
 
@@ -96,19 +96,54 @@ $(function() {
 
 });
 
+function resizeLayout(){
+    //var docHeight = $(window).height();
+    var docWidth = $(window).width();
+    //var leftPaneTopOffset = $('#left_side_pane').offset().top;
+    //var rightPaneTopOffset = $('#right_side_pane').offset().top;
+    var rightPaneWidth = $('#right_side_pane').width();
+    var leftPaneWidth = $('#left_side_pane').width();
+    //var topPaneLeftOffset = $('#top_pane').offset().left;
+    //var bottomPaneLeftOffset = $('#bottom_pane').offset().left;
+
+    var centerPaneLeftOffset = $('#center_pane').offset().left;
+    var topPaneTopOffset = $('#top_pane').offset().top;
+    var topPaneTopPosition = $('#top_pane').position().top;
+    var topPaneHeight = $('#top_pane').height();
+    var bottomPaneTopOffset = $('#bottom_pane').offset().top;
+    //    $('#left_side_pane').height(docHeight - leftPaneTopOffset); //Commented out because expanding prematurely causes the map to not be movable
+    //    $('#right_side_pane').height(docHeight - rightPaneTopOffset); //Commented out because expanding prematurely causes the map to not be movable
+    //    $('#top_pane').width(docWidth - topPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
+    //  $('#bottom_pane').width(docWidth - bottomPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
+
+    $('#right_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0))
+    $('#center_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0));//20 is fo 20px gutters
+    $('#center_pane').css('left', leftPaneWidth + 40);//40 is for 2x20px gutters
+    $('#center_pane').width(docWidth - leftPaneWidth - 40 - rightPaneWidth - 40);//20 is for 20px gutters
+    $('#center_pane').height(bottomPaneTopOffset - topPaneTopOffset - topPaneHeight - 40);//40 is for 2x20px gutters
+}
+
 function cleanup(){
     if(typeof cleanUpSelf == 'function') {
         cleanUpSelf();
-        cleanUpSelf = function(){}
+        cleanUpSelf = function(){};
     }
     markerManager.deleteAllMarkers();
+
+    $('.content-group').html(' ');
 }
 
 
-function initializeSizePages() {
+function resizePageElements() {
+    resizeLayout();
     resizeExpandHeightContainer();
     capHeightContainer();
     initializeScrollPanes();
+
+    if(typeof resizeSelf == 'function'){
+        resizeSelf();
+        resizeSelf = function(){};
+    }
 }
 
 function initScrollPane(scroll_pane) {
@@ -128,16 +163,17 @@ function initScrollPane(scroll_pane) {
     }
 
     $myElem.height(height);
+    $myElem.bind('jsp-initialised', function(event, isScrollable){
+        if($myElem.hasClass('show-scroll-on-hover')){
+            $myElem.find('.jspVerticalBar').addClass('hidden');
+        }
+    });
     $myElem.jScrollPane();
-
-    if($(this).hasClass('show-scroll-on-hover')){
-        $(this).find('.jspVerticalBar').addClass('hidden');
-    }
 
     var that = $myElem;
     $(window).bind('resize', function() {
         //resizeScrollPane(that);
-    });
+        });
 }
 
 function initializeScrollPanes() {

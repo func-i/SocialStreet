@@ -1,54 +1,62 @@
-<div class="x-small-box y-small-box position-y-top position-x-left drop-shadow">
-  <div class="create-what-title">
-    What do you want to do?
-  </div>
-  <div class="create-what-subtitle">
-    Select a keyword from the list or define your own...
-  </div>
-</div>
+<% content_for :left_side_pane do %>
 
-<div id="create-what-tag-list-holder" class="position-y-middle position-x-left <%="hidden" unless @event && !@event.event_keywords.empty?%>">
-  <div class="create-what-tag-list-title drop-shadow">
-    Tags:
+  <div class="create-info-box create-what-view container">
+    <div id="create_what_title">
+      What do you want to do?
+    </div>
+    <div id="create_what_subtitle">
+      Select a keyword from the list or define your own...
+    </div>
   </div>
-  <div id="tag_scroller">
-    <ul id="create_what_tag_list">
-      <% (event.event_keywords || []).each do |keyword| %>
-        <li class="create-what-event-type">
-          <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
+
+  <div id="create_what_tag_list_holder" class="create-what-view <%="hidden" unless @event && !@event.event_keywords.empty?%>">
+    <div id="create_what_tag_list_title" class="container drop-shadow">
+      Tags:
+    </div>
+    <div id="tag_scroller">
+      <ul id="create_what_tag_list" class="expand-height">
+        <% (event.event_keywords || []).each do |keyword| %>
+          <li class="create-what-event-type">
+            <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
+            <div class="create-what-event-type-name">
+              <%=keyword.name%>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+<% end %>
+
+<% content_for :center_pane do %>
+  <div id="create_what_text_field_holder" class="create-what-view">
+    <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :id=>'create_what_text_field' %>
+  </div>
+  <div id="create_what_event_types_holder" class="create-what-view">
+    <div id="what_scroller" class="expand-height scroll-pane include-vertical-bar" style="overflow-y:auto;">
+      <ul>
+        <li id="create-what-custom-event-type" class="create-what-event-type hidden">
+          <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image drop-shadow") %>
           <div class="create-what-event-type-name">
-            <%=keyword.name%>
           </div>
         </li>
-      <% end %>
-    </ul>
+
+        <% @event_types.each do |et| %>
+          <li class="create-what-event-type">
+            <%= image_tag(et.image_path, :class=>"create-what-event-type-image drop-shadow") %>
+            <div class="create-what-event-type-name">
+              <%= et.name %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
+<% end %>
 
-<div id="create_what_text_field_holder">
-  <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :class=>'create-what-text-field' %>
-</div>
-<div class="create-what-event-types-holder">
-  <div id="what_scroller" class="expand-height scroll-pane include-vertical-bar" data-expandBottomOffset="175" style="overflow-y:auto;">
-    <ul>
-      <li id="create-what-custom-event-type" class="create-what-event-type hidden">
-        <%= image_tag('/images/event_types/streetmeet1.png', :class=>"create-what-event-type-image drop-shadow") %>
-        <div class="create-what-event-type-name">
-        </div>
-      </li>
-
-      <% @event_types.each do |et| %>
-        <li class="create-what-event-type">
-          <%= image_tag(et.image_path, :class=>"create-what-event-type-image drop-shadow") %>
-          <div class="create-what-event-type-name">
-            <%= et.name %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
+<% content_for :bottom_pane do %>
+  <div id="create_what_next_arrow" class="create-what-view next-arrow <%="hidden" unless @event && !@event.event_keywords.empty?%>">
+    Continue
   </div>
-</div>
-
-<div id="create_what_next_arrow" class="next-arrow next-arrow-position <%="hidden" unless @event && !@event.event_keywords.empty?%>">
-  Continue
-</div>
+<% end %>

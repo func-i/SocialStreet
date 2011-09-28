@@ -3,13 +3,15 @@ var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
 
 $(function(){
-    initCreateEvent();
-    sizeFields();
+    setupCreateWhat();
+    
+    resizePageElements();
 
-    $(window).bind('resize', function() {
-        sizeFields();
+    initCreateEvent();
+
+/*    $(window).bind('resize', function() {
         resizeScrollPane($('#what_scroller'));
-    });
+    });*/
     
     cleanUpSelf = function(){
     }
@@ -20,7 +22,7 @@ $(function(){
  */
 function initCreateEvent(){
     //Create What bindings
-    $('.create-what-text-field').keyup(function(e){
+    $('#create_what_text_field').keyup(function(e){
         filter_what_icons(e.target.value);
         $('#what_scroller').data('jsp').scrollToY(0);
     });
@@ -79,30 +81,16 @@ function initCreateEvent(){
     initScrollPane($('#create_what_tag_list'));
 }
 
-function sizeFields() {
-    var contentSize = $(window).width() - $('.x-small-box').width();
-
-    contentSize = contentSize - 125;
-    contentSize = contentSize - (contentSize % 96) + 10 + 5; //5 is buffer, 10 is scrollbar width
-
-    $('.create-what-event-types-holder').width(contentSize);
-    $('#what_scroller').width(contentSize);
-
-    initScrollPane($('#what_scroller'));
-
-    var textWidth = $('#create_what_text_field_holder').width();
-
-    if(contentSize -50 < textWidth){//50 is buffer
-        textWidth = contentSize - 50;
-        $('#keywords').width(textWidth);
-    }
-
-
-}
-
 /*
  *WHAT FUNCTIONS
  **/
+function setupCreateWhat(){
+    $('#center_pane').removeClass('hidden');
+
+    $('.create-where-view').addClass('hidden');
+    $('.create-when-view').addClass('hidden');
+}
+
 function filter_what_icons(search_text){
     if (createEventEventTypeTimer) {
         clearInterval(createEventEventTypeTimer);
@@ -126,14 +114,14 @@ function filter_what_icons(search_text){
         });
 
         if(!exact_match && search_text.length > 0){
-            var customType = $('.create-what-event-types-holder #create-what-custom-event-type');
+            var customType = $('#create_what_event_types_holder #create-what-custom-event-type');
             if(customType.length > 0){
                 customType.children('.create-what-event-type-name').text(search_text);
             }
             customType.removeClass('hidden');
         }
         else{
-            $('.create-what-event-types-holder #create-what-custom-event-type').addClass('hidden');
+            $('#create_what_event_types_holder #create-what-custom-event-type').addClass('hidden');
         }
 
     }, 250);
@@ -147,7 +135,7 @@ function createEventTypeIsClicked(record) {
     {
         if(eventType_record.siblings().length == 0)
         {
-            $('#create-what-tag-list-holder').addClass('hidden');
+            $('#create_what_tag_list_holder').addClass('hidden');
             $('#create_what_next_arrow').addClass('hidden');
         }
 
@@ -165,7 +153,7 @@ function createEventTypeIsClicked(record) {
     else
     {
         if($('#create_what_tag_list .create-what-event-type-name').length == 0){
-            $('#create-what-tag-list-holder').removeClass('hidden');
+            $('#create_what_tag_list_holder').removeClass('hidden');
             $('#create_what_next_arrow').removeClass('hidden');
         }
 
@@ -201,6 +189,10 @@ function doesKeywordAlreadyExist(eventType_name){
  *WHERE FUNCTIONS
  **/
 function setupCreateWhere(){
+    $('.create-what-view').addClass('hidden');
+    $('#center_pane').addClass('hidden');
+    $('.create-where-view').removeClass('hidden');
+
     var lat = $('#location-lat-field').val();
     var lng = $('#location-lng-field').val();
 
@@ -395,10 +387,15 @@ function updateCreateWhenDates(){
 }
 
 function setupCreateWhen(){
-    $('#create_where_calendar_holder').width($('#create_where_calendar_holder').height() * 1.35);//1.35 default aspect ratio
+    $('.create-where-view').addClass('hidden');
+    $('.create-when-view').removeClass('hidden');
+    $('#center_pane').removeClass('hidden');
+
+    $('#create_when_calendar_holder').width($('#create_when_calendar_holder').height() * 1.35);//1.35 default aspect ratio
 
     $('#create_when_calendar').fullCalendar({
         defaultView: 'month',
+        height: $('#create_when_calendar_holder').height(),
         dayClick: function(date, allDay, jsEvent, view) {
             setWhenDate(date);
         }
