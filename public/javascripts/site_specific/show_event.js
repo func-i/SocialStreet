@@ -70,22 +70,40 @@ $(function(){
     $('#edit_event_title_link').click(function(){
         $('#show_event_title_text').addClass('hidden');
         $('#edit_event_title_link').addClass('hidden');
-        $('#edit_event_title_field').removeClass('hidden');
+
+        var $textField = $('#edit_event_title_field');
+
+        $textField.removeClass('hidden');
+    //$textField.focus().val($textField.val());
     });
     $('#edit_event_title_field').keydown(function(e){
         if(e.keyCode == 13){
-            $('#show_event_title_text').text(e.target.value.substring(0, 36));
-            $('#show_event_title_text').removeClass('hidden');
-            $('#edit_event_title_link').removeClass('hidden');
-            $('#edit_event_title_field').addClass('hidden');
-            $('#event_edit_form').submit();
+            submitEventTitle();
         }
     });
+
+    $('#edit_event_title_field').blur(function() {
+        submitEventTitle();
+    });
+    
+    function submitEventTitle() {        
+        $('#show_event_title_text').text($('#edit_event_title_field').val().substring(0, 36));
+        $('#show_event_title_text').removeClass('hidden');
+        $('#edit_event_title_link').removeClass('hidden');
+        $('#edit_event_title_field').addClass('hidden');
+        $('#event_edit_form').submit();
+        
+    }
+
     $('#edit_event_description_link').click(function(){
         $('#show_event_description_text').addClass('hidden');
         $('#edit_event_description_link').addClass('hidden');
         $('#edit_event_description_field').removeClass('hidden');
+        $('#show_event_description_holder').data('jsp').destroy();
+        $('#show_event_description_holder').height('auto');
+        $('#show_event_description_holder').css('max-height', 'none');
     });
+
     $('#edit_event_description_field').keydown(function(e){
         if(!e.shiftKey && e.keyCode == 13){
             $('#show_event_description_text').text(e.target.value);
