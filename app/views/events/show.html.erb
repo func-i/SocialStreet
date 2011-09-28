@@ -42,7 +42,9 @@
   </div>
 <% end %>
 
-<%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
+<% unless params[:invite].blank? %>
+  <%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
+<% end %>
 
 <%= hidden_field_tag 'invite_view_bool', params[:invite] %>
 

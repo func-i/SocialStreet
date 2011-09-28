@@ -1,5 +1,5 @@
 <% if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
-  <div class="result-btn invite-friends-btn">
+  <div class="result-btn invite-friends-btn nav-link" data-ajax-href="<%= event_path(@event, :invite => true) %>">
     Invite Friends
   </div>
   <div class="unattend-btn">

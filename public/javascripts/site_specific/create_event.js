@@ -9,7 +9,7 @@ $(function(){
 
     initCreateEvent();
 
-/*    $(window).bind('resize', function() {
+    /*    $(window).bind('resize', function() {
         resizeScrollPane($('#what_scroller'));
     });*/
     
@@ -29,6 +29,7 @@ function initCreateEvent(){
 
     $('.create-what-event-type').live('click', function(){
         createEventTypeIsClicked(this);
+        resizeLayout();
     });
 
     $('#create_what_next_arrow').click(function(){
