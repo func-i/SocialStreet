@@ -1,4 +1,3 @@
-<% 5.times do %>
 <% results.each do |result| %>
   <div class="result" id="event_<%=result.id%>">
     <% event = result %>
@@ -36,7 +35,4 @@
     <%= hidden_field_tag "result_lat", event.location.latitude %>
     <%= hidden_field_tag "result_lng", event.location.longitude %>
   </div>
-
-
-<% end %>
 <% end %>
