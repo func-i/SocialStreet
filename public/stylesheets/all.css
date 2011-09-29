@@ -73,6 +73,7 @@ END OF RESET
     right: 0;
     bottom: 0;
     overflow: hidden;
+    display: table-cell;
 }
 #left_side_pane{
     position: absolute;
@@ -807,6 +808,8 @@ END OF RESET
     float:left;
 }
 #invite_user_text_field_holder{
+    margin:0 auto;
+    text-align: center;
 }
 #invite_user_text_field{
     width:365px;

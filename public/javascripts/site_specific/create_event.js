@@ -114,7 +114,7 @@ function filter_what_icons(search_text){
         //Filter the event_type list by the text entered
         $.each($('.create-what-event-type-name'), function(index, value){
             var myEventName = $(value);
-            if(myEventName.text().trim().match(regEx) == null){
+            if($.trim(myEventName.text()).match(regEx) == null){
                 myEventName.parent().addClass('hidden');
             }
             else{
@@ -140,7 +140,7 @@ function filter_what_icons(search_text){
 
 function createEventTypeIsClicked(record) {
     var eventType_record = $(record);
-    var eventType_name = eventType_record.children('.create-what-event-type-name').text().trim();
+    var eventType_name = $.trim(eventType_record.children('.create-what-event-type-name').text());
 
     if(eventType_record.closest('#create_what_tag_list').length > 0)
     {
@@ -156,7 +156,7 @@ function createEventTypeIsClicked(record) {
         $.each(
             $('#event_create_form input[name="event[event_keywords_attributes][][name]"]'),
             function(index, value){
-                if($(value).val().trim() == eventType_name)
+                if($.trim($(value).val()) == eventType_name)
                     $(value).remove();
             });
 
@@ -188,7 +188,7 @@ function doesKeywordAlreadyExist(eventType_name){
     $.each(
         $('#create_what_tag_list .create-what-event-type-name'),
         function(index, value){
-            if($(value).text().trim() == eventType_name)
+            if($.trim($(value).text()) == eventType_name)
                 rtn = true;
         }
         );
