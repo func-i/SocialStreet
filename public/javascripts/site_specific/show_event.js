@@ -203,7 +203,6 @@ function showEventView(){
 function getInvitationUsers(){
     setTimeout(function() {
         $.getScript('/invitations/load_connections');
-        545
     }, 500);
 }
 
