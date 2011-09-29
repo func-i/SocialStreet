@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  USERS_PER_PAGE = 50
+  USERS_PER_PAGE = 10
   def load_connections
     page = (params[:page] || 1).to_i
     offset = (page - 1) * USERS_PER_PAGE
@@ -12,6 +12,9 @@ class InvitationsController < ApplicationController
 
       @invitation_user_connections = @invited_user_connections.limit(USERS_PER_PAGE).offset(offset).all
     end
+
+    render :file => "invitations/load_connections.js.erb" if request.xhr? && !params[:page].blank?
+
   end
 
   #Create invitations
