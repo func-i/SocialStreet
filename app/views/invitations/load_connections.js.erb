@@ -1,7 +1,7 @@
 console.log("HELLO1");
 <% if current_user.try(:facebook_friends_imports) %>
   <% if params[:page] %>
-    $('#user_list_for_invitation').append('<%= escape_javascript render :file => '/invitations/_invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>');
+    $('#user_list_for_invitation').append('<%= escape_javascript render 'invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections} %>');
   <% else %>
     var pageless = getInvitationPageless();
     if(null == pageless) {
@@ -17,7 +17,7 @@ console.log("HELLO1");
     });*/ %>
     }
     console.log("before results");
-    $('#user_list_for_invitation').html('<%= escape_javascript render :file => '/invitations/_invite_user_list.html', :locals => {:user_list => @invitation_user_connections} %>');
+    $('#user_list_for_invitation').html('<%= escape_javascript render 'invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections} %>');
   <% end %>
   initScrollPane($('#user_holder_for_invitation'));
 <% else %>

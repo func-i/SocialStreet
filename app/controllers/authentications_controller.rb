@@ -39,6 +39,7 @@ class AuthenticationsController < ApplicationController
   end
 
   def show_privacy
+    
   end
 
   def show_tnc   
