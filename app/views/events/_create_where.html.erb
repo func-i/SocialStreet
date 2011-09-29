@@ -19,13 +19,15 @@
   </div>
 <% end %>
 
-<div class="create-where-view create-where-text-field-holder hidden">
-  <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create-where-text-field' %>
-</div>
+<% content_for :top_pane do %>
+  <div id="create_where_text_field_holder" class="create-where-view hidden">
+    <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create_where_text_field' %>
+  </div>
+<% end %>
 
 <% content_for :bottom_pane do %>
-<div id="create_where_next_arrow" class="create-where-view next-arrow hidden invisible">
-  Continue
-</div>
+  <div id="create_where_next_arrow" class="create-where-view next-arrow hidden invisible">
+    Continue
+  </div>
 <% end %>
 

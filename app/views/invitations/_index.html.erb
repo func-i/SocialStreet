@@ -29,8 +29,8 @@
 <% end %>
 
 <% content_for :left_side_pane do %>
-  <div class="event-invitation-view <%="hidden" unless params[:invite]%>">
-    <div id="invitation_list_title" class="invisible drop-shadow">
+  <div id="invitation_list" class="event-invitation-view invisible <%="hidden" unless params[:invite]%>">
+    <div id="invitation_list_title" class="drop-shadow">
       Invitations
     </div>
     <ul id="invited_user_list">

@@ -7,3 +7,4 @@ nbproject
 nbproject/*
 config/database.yml
 config/secrets.yml
+dump.rdb

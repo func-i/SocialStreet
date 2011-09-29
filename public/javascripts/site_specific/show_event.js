@@ -241,7 +241,7 @@ function add_invitation(that){
             );
 
         invitationCounter++;
-        $('#invitation_list_title').removeClass('invisible');
+        $('#invitation_list').removeClass('invisible');
     }
 }
 function remove_invitation(that){
@@ -249,7 +249,7 @@ function remove_invitation(that){
     $('#invited_user_list').find('#' + that.id).remove();
 
     if($('#invite_form input[name="invited_users[]"]').length <= 0){
-        $('#invitation_list_title').addClass('invisible');
+        $('#invitation_list').addClass('invisible');
     }
 }
 
@@ -282,6 +282,8 @@ function addEmail(email_address){
         $('#invited_user_list').append(emailElem);
 
         invitationCounter++;
+
+        $('#invitation_list').removeClass('invisible');
     }
 }
 

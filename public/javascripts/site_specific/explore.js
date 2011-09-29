@@ -183,7 +183,7 @@ function addKeyword(keyword) {
     if(!doesExploreKeywordAlreadyExist(keyword)){
         var eventType_record;
         $('.explore-keyword-event-type').each(function(i, ele) {
-            if($(ele).children('.explore-keyword-event-type-name').text().trim() == keyword){
+            if($.trim($(ele).children('.explore-keyword-event-type-name').text()) == keyword){
                 eventType_record = $(ele);
             }
         });
@@ -193,7 +193,7 @@ function addKeyword(keyword) {
         }
 
         var new_tag_record = $($('#explore_keyword_tag_stamp').clone());
-        var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
+        var eventType_name = $.trim(eventType_record.children('.explore-keyword-event-type-name').text());
 
         new_tag_record.id = "";
         new_tag_record.find('.explore-tag-icon').attr('src', eventType_record.find('img').attr('src'));
@@ -220,7 +220,7 @@ function exploreEventTypeIsClicked(record, submit){
     }
 
     var eventType_record = $(record);
-    var eventType_name = eventType_record.children('.explore-keyword-event-type-name').text().trim();
+    var eventType_name = $.trim(eventType_record.children('.explore-keyword-event-type-name').text());
 
     addKeyword(eventType_name);
 

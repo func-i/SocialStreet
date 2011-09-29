@@ -39,8 +39,15 @@ class AuthenticationsController < ApplicationController
   end
 
   def show_privacy
+    if request.xhr?
+      render "shared/ajax_load.js", :locals => {:file_name_var => 'authentications/show_privacy.html.erb'}
+    end
   end
 
-  def show_tnc   
+  def show_tnc
+    if request.xhr?
+      render "shared/ajax_load.js", :locals => {:file_name_var => 'authentications/show_tnc.html.erb'}
+    end
+
   end  
 end

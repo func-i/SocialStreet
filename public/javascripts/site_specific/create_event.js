@@ -50,7 +50,7 @@ function initCreateEvent(){
     });   
 
     //Create Where bindings
-    $('#create-where-text-field').keydown(function(e){
+    $('#create_where_text_field').keydown(function(e){
         if(e.keyCode == 13){//Enter pressed
             searchLocations(e);
         }
@@ -114,13 +114,13 @@ function filter_what_icons(search_text){
         //Filter the event_type list by the text entered
         $.each($('.create-what-event-type-name'), function(index, value){
             var myEventName = $(value);
-            if(myEventName.text().trim().match(regEx) == null){
+            if($.trim(myEventName.text()).match(regEx) == null){
                 myEventName.parent().addClass('hidden');
             }
             else{
                 myEventName.parent().removeClass('hidden');
 
-                exact_match = exact_match || myEventName.text().trim() == search_text;
+                exact_match = exact_match || $.trim(myEventName.text()) == search_text;
             }
         });
 
@@ -140,7 +140,7 @@ function filter_what_icons(search_text){
 
 function createEventTypeIsClicked(record) {
     var eventType_record = $(record);
-    var eventType_name = eventType_record.children('.create-what-event-type-name').text().trim();
+    var eventType_name = $.trim(eventType_record.children('.create-what-event-type-name').text());
 
     if(eventType_record.closest('#create_what_tag_list').length > 0)
     {
@@ -156,7 +156,7 @@ function createEventTypeIsClicked(record) {
         $.each(
             $('#event_create_form input[name="event[event_keywords_attributes][][name]"]'),
             function(index, value){
-                if($(value).val().trim() == eventType_name)
+                if($.trim($(value).val()) == eventType_name)
                     $(value).remove();
             });
 
@@ -188,7 +188,7 @@ function doesKeywordAlreadyExist(eventType_name){
     $.each(
         $('#create_what_tag_list .create-what-event-type-name'),
         function(index, value){
-            if($(value).text().trim() == eventType_name)
+            if($.trim($(value).text()) == eventType_name)
                 rtn = true;
         }
         );
@@ -204,6 +204,8 @@ function setupCreateWhere(){
     $('#center_pane').addClass('invisible');
     $('.create-where-view').removeClass('hidden');
 
+    $('#top_pane').width($(window).width() - $('#left_side_pane').offset().left - $('#left_side_pane').width() - 40);//20 is for 20px gutters
+
     var lat = $('#location-lat-field').val();
     var lng = $('#location-lng-field').val();
 
@@ -218,7 +220,7 @@ function setupCreateWhere(){
         $('#create_where_marker_info').addClass('invisible');
         $('#create_where_name_location-text').text('');
         $('#create_where_address').text('');
-        $('#create-where-text-field').val('');
+        $('#create_where_text_field').val('');
         $('#create_where_name_location_input').val('');
 
         createCreateMarker(map.getCenter());

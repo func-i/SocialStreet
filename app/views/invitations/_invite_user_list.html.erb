@@ -1,5 +1,5 @@
 <% if current_user.try(:facebook_friends_imports) %>
-  <%(user_list || []).each do |connection|%>
+  <%(@invitation_user_connections || []).each do |connection|%>
     <%= render :partial => 'invitations/invite_user_element.html', :locals => {:user => connection.to_user} %>
   <% end %>
 <% else %>
