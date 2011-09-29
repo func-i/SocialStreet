@@ -80,6 +80,7 @@ END OF RESET
     left: 20px;
     width: 400px;
     overflow: hidden;
+    z-index: 10;
 }
 #right_side_pane{
     position: absolute;
@@ -87,6 +88,7 @@ END OF RESET
     right: 20px;
     width: auto;
     overflow: hidden;
+    z-index: 10;
 }
 #top_pane{
     position: absolute;
@@ -94,6 +96,7 @@ END OF RESET
     right: 20px;
     height: auto;
     overflow: hidden;
+    z-index: 10;
 }
 #bottom_pane{
     position: absolute;
@@ -101,10 +104,12 @@ END OF RESET
     right: 20px;
     height: auto;
     overflow: hidden;
+    z-index: 10;
 }
 #center_pane{
     position: absolute;
     overflow: hidden;
+    z-index: 10;
 }
 
 #footer{
@@ -713,9 +718,9 @@ END OF RESET
     font: bold 22px/32px Arial, Helvetica, sans-serif;
 }
 #show_attendees_list_holder{
-    margin-left: 20px;    
     max-height: 120px;
     overflow: auto;
+    padding-top: 5px;
 }
 .show-attendee-holder{
     float: left;

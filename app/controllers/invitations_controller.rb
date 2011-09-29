@@ -12,7 +12,6 @@ class InvitationsController < ApplicationController
 
       @invitation_user_connections = @invited_user_connections.limit(USERS_PER_PAGE).offset(offset).all
     end
-
   end
 
   #Create invitations
