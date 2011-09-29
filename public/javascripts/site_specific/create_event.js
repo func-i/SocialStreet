@@ -3,19 +3,29 @@ var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
 
 $(function(){
+    cleanUpSelf = function(){
+    }
+
+    resizeSelf = function(){
+        resizeCenterPaneContent();
+    }
+
     setupCreateWhat();
     
     resizePageElements();
 
     initCreateEvent();
 
-    /*    $(window).bind('resize', function() {
+/*    $(window).bind('resize', function() {
         resizeScrollPane($('#what_scroller'));
-    });*/
-    
-    cleanUpSelf = function(){
-    }
+    });*/    
 });
+
+function resizeCenterPaneContent(){
+    var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
+    var scrollerTop = $('#what_scroller').offset().top;
+    $('#what_scroller').height(centerPaneBottom - scrollerTop);
+}
 
 /*
  * CREATE EVENT FUNCTIONS

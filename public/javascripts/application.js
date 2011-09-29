@@ -71,10 +71,10 @@ $(function() {
             navigator.geolocation.getCurrentPosition(function(e){
                 updateUserLocation(e.coords.latitude, e.coords.longitude, true);
             }, function(e){
-            },{
-                maximumAge: 600000,
-                timeout: 20000
-            });
+                },{
+                    maximumAge: 600000,
+                    timeout: 20000
+                });
         }
     }
 
@@ -101,6 +101,8 @@ function cleanup(){
     }
     markerManager.deleteAllMarkers();
 
+    resizeSelf = function(){};
+
     $('.content-group').html(' ');
 }
 
@@ -116,7 +118,6 @@ function resizePageElements() {
 
     if(typeof resizeSelf == 'function'){
         resizeSelf();
-        resizeSelf = function(){};
     }
 }
 
@@ -232,7 +233,7 @@ function initScrollPane(scroll_pane) {
     var that = $myElem;
     $(window).bind('resize', function() {
         //resizeScrollPane(that);
-    });
+        });
 }
 
 function initializeScrollPanes() {
@@ -259,4 +260,21 @@ function resizeScrollPane(scrollPane){
         api.reinitialise();
     }
 }
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 

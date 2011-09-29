@@ -36,7 +36,8 @@ module ApplicationHelper
   end
 
   def url_for_avatar(user, options={})
-    (user && user.avatar_url(options)) || 'web-app-theme/avatar.png'
+    return 'web-app-theme/avatar.png' unless user
+    return user.avatar_url(options) || 'web-app-theme/avatar.png'
   end
 
   def avatar(user, options={})

@@ -1,12 +1,12 @@
 <% content_for :center_pane do %>
     <div id="user_holder" class="event-invitation-view container <%="hidden" unless params[:invite]%>" style="height: 100%;width:100%">
         <div id="invite_user_text_field_holder">
-          <%= form_tag search_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
+          <%= form_tag load_connections_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
             <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
             <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
           <% end %>
         </div>
-        <div id="user_holder_for_invitation" class="scroll-pane" style="height: 320px; overflow: auto;">
+        <div id="user_holder_for_invitation" class="scroll-pane" style="height: 100%;overflow: auto;">
           <ul id="user_list_for_invitation">
             <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
           </ul>

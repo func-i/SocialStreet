@@ -1,9 +1,19 @@
 class InvitationsController < ApplicationController
-  #Search for invitations
-  def search
-    @invited_user_connections = current_user.connections.includes(:to_user)
-    @invited_user_connections = @invited_user_connections.to_user_matches_keyword(params[:user_search]) unless params[:user_search].blank?
-    @invited_user_connections = @invited_user_connections.all
+  USERS_PER_PAGE = 50
+  def load_connections
+    page = (params[:page] || 1).to_i
+    offset = (page - 1) * USERS_PER_PAGE
+
+    if(current_user)
+      @invited_user_connections = current_user.connections.includes(:to_user).order("connections.strength DESC NULLS LAST, users.last_name ASC")
+      @invited_user_connections = @invited_user_connections.to_user_matches_keyword(params[:user_search]) unless params[:user_search].blank?
+
+      @num_pages = (@invited_user_connections.count / USERS_PER_PAGE).ceil if 1 == page
+
+      @invitation_user_connections = @invited_user_connections.limit(USERS_PER_PAGE).offset(offset).all
+    end
+
+    render :partial => 'load_connections'
   end
 
   #Create invitations
@@ -38,26 +48,7 @@ class InvitationsController < ApplicationController
     end
 
     render :nothing => true
-  end
-
-  USERS_PER_PAGE = 50  
-  def load_connections
-    page = (params[:page] || 1).to_i
-    offset = (page - 1) * USERS_PER_PAGE
-
-    if(current_user)
-      connection_query = current_user.connections.includes(:to_user).order("connections.strength DESC NULLS LAST, users.last_name ASC")
-      @invitation_user_connections = connection_query.limit(USERS_PER_PAGE).offset(offset).all
-
-      if 1 == page
-        @num_pages = (@invitation_user_connections.count / USERS_PER_PAGE).ceil if 1 == page
-        render :partial => 'load_connections.js'
-        return
-      end
-    end
-
-    render :partial => 'load_connections.html'
-  end
+  end 
 
   protected
 

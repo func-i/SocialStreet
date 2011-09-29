@@ -865,4 +865,6 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
 }

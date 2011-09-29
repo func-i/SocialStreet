@@ -6,8 +6,6 @@ var invitationPageless = null;
 
 $(function(){
 
-    setupShowEventPage();
-
     cleanUpSelf = function(){
         if(showMarker){
             showMarker.infoBubble_.close();
@@ -15,6 +13,14 @@ $(function(){
             showMarker = null;
         }
     }
+
+    resizeSelf = function(){
+        resizeCenterPaneContent();
+    }
+
+    resizePageElements();
+        
+    setupShowEventPage();
 
     $('#event_wall_text_field').keyup(function(e){
         if (!e.shiftKey && e.keyCode == 13) {
@@ -122,6 +128,15 @@ $(function(){
     });
 });
 
+function resizeCenterPaneContent(){
+    if($('#user_holder_for_invitation').length > 0){
+        var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
+
+        var scrollerTop = $('#user_holder_for_invitation').offset().top;
+        $('#user_holder_for_invitation').height(centerPaneBottom - scrollerTop);
+    }
+}
+
 function removeComment(comment){
     comment.hide();
 
@@ -192,15 +207,25 @@ function getInvitationUsers(){
     }, 500);
 }
 
-function makeInvitationPageless(){
+function getInvitationPageless(){
+    return invitationPageless;
+}
+
+function makeInvitationPageless(totalPages){
     invitationPageless = new Pageless({
         container: '#user_holder_for_invitation',
-        totalPages: 100,
+        totalPages: totalPages,
         currentPage: 1,
+        parameterFunction: invitationPagelessFunction,
         url: '/invitations/load_connections'
     });
     invitationPageless.start();
 }
+function invitationPagelessFunction(){
+    return $('#invite_user_form').serializeObject();
+}
+
+
 
 function add_invitation(that){
     if(!does_invitation_already_exist(that.id)){

@@ -12,7 +12,6 @@ SocialStreetReborn::Application.routes.draw do
 
   resources :invitations, :only => [] do
     collection do
-      get "search"
       get "load_connections"
     end
   end

@@ -9,6 +9,10 @@ $(function(){
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');
     }
+
+    resizeSelf = function(){
+        resizeCenterPaneContent();
+    }
     
     //Setup the explore page
     setupExplorePage();
@@ -51,6 +55,12 @@ $(function(){
         }
     });
 });
+
+function resizeCenterPaneContent(){
+    var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
+    var scrollerTop = $('#event_types_scroller').offset().top;
+    $('#event_types_scroller').height(centerPaneBottom - scrollerTop);
+}
 
 function setupExplorePage(){
     $('#notify_me_btn').removeClass('hidden');
