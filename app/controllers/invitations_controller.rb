@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  USERS_PER_PAGE = 10
+  USERS_PER_PAGE = 5
   def load_connections
     page = (params[:page] || 1).to_i
     offset = (page - 1) * USERS_PER_PAGE

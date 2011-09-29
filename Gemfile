@@ -23,12 +23,21 @@ gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 
+gem 'mechanize'
+gem 'watir-webdriver-rails' 
+gem 'headless'
+
 #gem 'jammit'
 gem 'airbrake'
 #gem 'rpm_contrib'
 #gem 'newrelic_rpm'
 
 gem "aws-ses", "~> 0.4.3", :require => 'aws/ses'
+
+group :test, :development do
+  gem "rspec-rails", "~> 2.6"
+  gem 'factory_girl_rails'
+end
 
 
 # Use unicorn as the web server
