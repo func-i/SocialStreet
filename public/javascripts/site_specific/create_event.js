@@ -50,7 +50,7 @@ function initCreateEvent(){
     });   
 
     //Create Where bindings
-    $('#create-where-text-field').keydown(function(e){
+    $('#create_where_text_field').keydown(function(e){
         if(e.keyCode == 13){//Enter pressed
             searchLocations(e);
         }
@@ -120,7 +120,7 @@ function filter_what_icons(search_text){
             else{
                 myEventName.parent().removeClass('hidden');
 
-                exact_match = exact_match || myEventName.text().trim() == search_text;
+                exact_match = exact_match || $.trim(myEventName.text()) == search_text;
             }
         });
 
@@ -204,6 +204,8 @@ function setupCreateWhere(){
     $('#center_pane').addClass('invisible');
     $('.create-where-view').removeClass('hidden');
 
+    $('#top_pane').width($(window).width() - $('#left_side_pane').offset().left - $('#left_side_pane').width() - 40);//20 is for 20px gutters
+
     var lat = $('#location-lat-field').val();
     var lng = $('#location-lng-field').val();
 
@@ -218,7 +220,7 @@ function setupCreateWhere(){
         $('#create_where_marker_info').addClass('invisible');
         $('#create_where_name_location-text').text('');
         $('#create_where_address').text('');
-        $('#create-where-text-field').val('');
+        $('#create_where_text_field').val('');
         $('#create_where_name_location_input').val('');
 
         createCreateMarker(map.getCenter());

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110919001701) do
+ActiveRecord::Schema.define(:version => 20110929192537) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20110919001701) do
   end
 
   create_table "event_rsvps", :force => true do |t|
-    t.integer  "user_id",                               :null => false
+    t.integer  "user_id"
     t.integer  "invitor_id"
     t.integer  "event_id",                              :null => false
     t.boolean  "organizer",          :default => false
