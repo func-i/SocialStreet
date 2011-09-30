@@ -269,11 +269,21 @@ function toggle_suggested_actions(){
 function updateExploreLocationParams(){
     $('#map_zoom').val(map.getZoom());
     var bounds = map.getBounds();
-    $('#map_bounds').val(bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng() + ',' + bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng());
-    $('#map_center').val(map.getCenter().lat() + ',' + map.getCenter().lng());
+
+    var projection = markerManager.projectionHelper_.getProjection();
+    var bl = new google.maps.LatLng(bounds.getSouthWest().lat(),
+        bounds.getSouthWest().lng());
+
+    var blPix = projection.fromLatLngToDivPixel(bl);
+    blPix.x += $('#left_side_pane').offset().left + $('#left_side_pane').width();
+
+    var sw = projection.fromDivPixelToLatLng(blPix);
+    var ne = bounds.getNorthEast();
+
+    $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+    $('#map_center').val(((ne.lat() + sw.lat()) / 2) + ',' + ((ne.lng() + sw.lng()) / 2));
 
     updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), true);
-
     
     refresh_explore_results();
 }
@@ -316,7 +326,7 @@ function createExploreMarker(lat, lng, resultID){
             myResult.css('background-color', '#333');
             //  myResult.find('.result-arrow').removeClass('hidden');
             $('#results_list').prepend(myResult);
-            $('#results_container').scrollTop(0);
+            $('#results_container').data('jsp').scrollToY(0);
         }
     });
 

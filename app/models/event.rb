@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   before_create :build_initial_rsvp
+  before_save :save_default_name
   
   has_many :event_keywords
   has_many :event_rsvps;
@@ -116,5 +117,9 @@ class Event < ActiveRecord::Base
 
   def build_initial_rsvp
     event_rsvps.build(:user=>user, :status => EventRsvp.statuses[:attending], :organizer => true) if event_rsvps.empty?
+  end
+
+  def save_default_name
+    self.name = title_from_parameters(false)
   end
 end

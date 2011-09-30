@@ -1,0 +1,23 @@
+<% content_for :center_pane do %>
+<div id="users" class="container" style="color:white;padding:5px;">
+  <ul>
+    <%@users.each do |user|%>
+      <li><%="#{user.name}, #{user.sign_in_count}, #{user.current_sign_in_at}"%></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<script>
+  $(function(){
+    $('#center_pane').removeClass('invisible');
+
+    resizeSelf = function(){
+      var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
+      var scrollerTop = $('#users').offset().top;
+      $('#users').height(centerPaneBottom - scrollerTop);
+      initializeScrollPanes();
+    }
+    resizePageElements();
+  });
+</script>

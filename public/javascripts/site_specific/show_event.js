@@ -129,7 +129,7 @@ $(function(){
 });
 
 function resizeCenterPaneContent(){
-    if($('#user_holder_for_invitation').length > 0){
+    if(false && $('#user_holder_for_invitation').length > 0){
         var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
 
         var scrollerTop = $('#user_holder_for_invitation').offset().top;

@@ -18,7 +18,7 @@ class Jobs::Scraper::Now
         doc = Nokogiri::HTML(open(date_url))
         listing_ids = doc.css('.List-Name').collect{|listing| listing.parent.parent.parent.parent.attributes['onclick'].value.gsub(/[^\d]/, '') rescue nil}
 
-        listing_ids.compact.each do |listing_id|
+        listing_ids.compact.first(100).each do |listing_id|
           event_link = "#{url}/listing.cfm?listingid=#{listing_id}"
           event_page = Nokogiri::HTML(open(event_link))
         

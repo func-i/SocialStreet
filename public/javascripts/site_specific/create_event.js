@@ -204,7 +204,7 @@ function setupCreateWhere(){
     $('#center_pane').addClass('invisible');
     $('.create-where-view').removeClass('hidden');
 
-    $('#top_pane').width($(window).width() - $('#left_side_pane').offset().left - $('#left_side_pane').width() - 40);//20 is for 20px gutters
+    $('#top_pane').width($(window).width() - $('#left_side_pane').width() - 40);//20 is for 20px gutters
 
     var lat = $('#location-lat-field').val();
     var lng = $('#location-lng-field').val();
