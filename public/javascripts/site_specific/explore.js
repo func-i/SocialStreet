@@ -271,19 +271,19 @@ function updateExploreLocationParams(){
     var bounds = map.getBounds();
 
     var projection = markerManager.projectionHelper_.getProjection();
-    var trPix
-    trPix.y = $('#left_side_pane').offset().top;
-    trPix.x = $('#left_side_pane').offset().left + $('#left_side_pane').width();
+    var bl = new google.maps.LatLng(bounds.getSouthWest().lat(),
+        bounds.getSouthWest().lng());
 
-    var ne = projection.fromDivPixelToLatLng(trPix);
+    var blPix = projection.fromLatLngToDivPixel(bl);
+    blPix.x += $('#left_side_pane').offset().left + $('#left_side_pane').width();
 
+    var sw = projection.fromDivPixelToLatLng(blPix);
+    var ne = bounds.getNorthEast();
 
-
-    $('#map_bounds').val(bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng() + ',' + bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng());
-    $('#map_center').val(map.getCenter().lat() + ',' + map.getCenter().lng());
+    $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+    $('#map_center').val(((ne.lat() + sw.lat()) / 2) + ',' + ((ne.lng() + sw.lng()) / 2));
 
     updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), true);
-
     
     refresh_explore_results();
 }
