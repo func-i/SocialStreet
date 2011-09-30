@@ -8,7 +8,7 @@ class Jobs::Scraper::Now
 
       ss_user = User.find_by_first_name_and_last_name("Social", "Street")
 
-      %w{art music}.each do |keyword|
+      %w{music art}.each do |keyword|
 
         date_one = Date.today.strftime("%d-%b-%y")
         date_two = (Date.today + 2.months).strftime("%d-%b-%y")
@@ -47,7 +47,7 @@ class Jobs::Scraper::Now
                 ed_month = ed_arr.first
                 ed_day = ed_arr.last.gsub(/[^\d]/, ' ').split(" ").first
               
-                event_date = DateTime.strptime("#{ed_month} #{ed_day} 2011", "%b %d %Y")
+                event_date = DateTime.strptime("#{ed_month} #{ed_day} 2011 21", "%b %d %Y %H")
               rescue
                 next
               end
@@ -61,7 +61,7 @@ class Jobs::Scraper::Now
             next if !lat_lng || lat_lng.empty?
             event_date = event_page.search('span').select{|s| !s.attributes["property"].blank? && s.attributes["property"].value == "v:datestart"}.first.attributes['content'].value.gsub("\t", '').gsub("\n", '')
 
-            event_date = "#{event_date} 21:00".to_date
+            event_date = "#{event_date} 21:00".to_time
             #rescue
             #  next
             #end
@@ -84,11 +84,12 @@ class Jobs::Scraper::Now
             :end_date => event_date + 1.hour,
             :description => description,
             :location_attributes => {:geocoded_address => event_location, :latitude => lat_lng.first, :longitude => lat_lng.last},
-            :event_keywords_attributes => [{:name => keyword}]
+            :event_keywords_attributes => [{:name => keyword.eql?("art") ? "Arts & Culture" : keyword.capitalize}]
           }
             
           if Event.where(:name => event_title).empty?
-            Event.create!(event_attrs)
+            e = Event.create!(event_attrs)
+            e.event_rsvps.first.update_attribute("status", EventRsvp.statuses[:not_attending])
             puts "created => #{event_title}"
           end
              

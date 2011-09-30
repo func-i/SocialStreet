@@ -73,7 +73,7 @@ END OF RESET
     right: 0;
     bottom: 0;
     overflow: hidden;
-    display: table-cell;
+    /*display: table-cell;*/
 }
 #left_side_pane{
     position: absolute;
