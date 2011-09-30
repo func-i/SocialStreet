@@ -1,6 +1,6 @@
 <% content_for :left_side_pane do %>
 
-  <div class="create-info-box create-what-view container">
+  <div class="create-info-box create-what-view">
     <div id="create_what_title">
       What do you want to do?
     </div>
@@ -9,12 +9,12 @@
     </div>
   </div>
 
-  <div id="create_what_tag_list_holder" class="create-what-view <%="invisible" unless @event && !@event.event_keywords.empty?%>">
-    <div id="create_what_tag_list_title" class="container drop-shadow">
+  <div id="create_what_tag_list_holder" class="create-info-box create-what-view <%="invisible" unless @event && !@event.event_keywords.empty?%>">
+    <div id="create_what_tag_list_title" class="invisible">
       Tags:
     </div>
-    <div id="tag_scroller">
-      <ul id="create_what_tag_list" class="expand-height">
+    <div id="tag_scroller" style="height:165px;">
+      <ul id="create_what_tag_list" style="height:165px;">
         <% (event.event_keywords || []).each do |keyword| %>
           <li class="create-what-event-type">
             <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
@@ -25,6 +25,10 @@
         <% end %>
       </ul>
     </div>
+  </div>
+
+  <div id="create_what_next_arrow" class="create-what-view next-arrow <%= "invisible" unless @event && !@event.event_keywords.empty? %>">
+    Continue
   </div>
 
 <% end %>
@@ -56,7 +60,4 @@
 <% end %>
 
 <% content_for :bottom_pane do %>
-  <div id="create_what_next_arrow" class="create-what-view next-arrow <%= "invisible" unless @event && !@event.event_keywords.empty? %>">
-    Continue
-  </div>
 <% end %>

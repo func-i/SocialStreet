@@ -73,15 +73,16 @@ END OF RESET
     right: 0;
     bottom: 0;
     overflow: hidden;
-    display: table-cell;
+    /*display: table-cell;*/
 }
 #left_side_pane{
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 0px;
+    left: 0px;
+    height: 100%;
     width: 400px;
     overflow: hidden;
-    z-index: 10;
+    z-index: 15;
 }
 #right_side_pane{
     position: absolute;
@@ -131,7 +132,7 @@ END OF RESET
     position: relative;
     width: 100%;
     z-index: 3;
-    height: 65px
+    height: 65px;
 }
 #header:after {
     clear: both;
@@ -334,7 +335,8 @@ END OF RESET
 }
 #explore_keyword_text_field_holder{
     height: 35px;
-    padding: 10px;
+    margin: 10px auto;
+    text-align: center;
 }
 #explore_keyword_text_field{
     width:380px;
@@ -408,7 +410,7 @@ END OF RESET
     box-shadow: 4px 4px 3px #eee;
     -webkit-box-shadow: 4px 4px 3px #eee;
     -moz-box-shadow: 4px 4px 3px #eee;
-    width: 80px;
+    width: 62px;
     text-align: center;
 }
 .btn:hover { text-decoration: none; }
@@ -494,8 +496,7 @@ END OF RESET
     font: bold 24px/32px Arial, Helvetica, sans-serif;
     color: white;
     text-align: center;
-    padding: 5px 0;
-    background: url("../images/overlay_box_bg.png");
+    padding: 5px 0;   
     width: 400px;
 }
 #create_what_tag_list{
@@ -534,20 +535,21 @@ END OF RESET
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
-.next-arrow-position{
-}
 .next-arrow{
-    width: 400px;
-    height: 150px;
-    text-align: right;
-    vertical-align: middle;
-    /*border-top: 60px solid transparent;
-    border-bottom: 60px solid transparent;
-    border-left: 60px solid #FFC233;*/
-    background-image: url('../images/arrow.png');
-    background-repeat: no-repeat;
-    background-size: 400px 150px;
+    position:absolute;
+    bottom: 15px;
+    right: 15px;
+    color: #010000;
+    background: #FFC233;
+    font: bold 18px/36px Arial, Helvetica, sans-serif;
+    padding: 3px 20px;
+    cursor: pointer;
+    text-align: center;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
+.next-arrow:hover { text-decoration: none; }
 .next-arrow-text{
     width: 100%;
     text-align: right;
@@ -723,6 +725,7 @@ END OF RESET
     max-height: 120px;
     overflow: auto;
     padding-top: 5px;
+    min-height: 62px;
 }
 .show-attendee-holder{
     float: left;
@@ -859,7 +862,6 @@ END OF RESET
     color: white;
     text-align: center;
     padding: 5px 0;
-    background: url("../images/overlay_box_bg.png");
     width: 400px;
 }
 
@@ -874,6 +876,4 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
 }

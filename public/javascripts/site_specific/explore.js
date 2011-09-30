@@ -269,6 +269,16 @@ function toggle_suggested_actions(){
 function updateExploreLocationParams(){
     $('#map_zoom').val(map.getZoom());
     var bounds = map.getBounds();
+
+    var projection = markerManager.projectionHelper_.getProjection();
+    var trPix
+    trPix.y = $('#left_side_pane').offset().top;
+    trPix.x = $('#left_side_pane').offset().left + $('#left_side_pane').width();
+
+    var ne = projection.fromDivPixelToLatLng(trPix);
+
+
+
     $('#map_bounds').val(bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng() + ',' + bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng());
     $('#map_center').val(map.getCenter().lat() + ',' + map.getCenter().lng());
 
@@ -316,7 +326,7 @@ function createExploreMarker(lat, lng, resultID){
             myResult.css('background-color', '#333');
             //  myResult.find('.result-arrow').removeClass('hidden');
             $('#results_list').prepend(myResult);
-            $('#results_container').scrollTop(0);
+            $('#results_container').data('jsp').scrollToY(0);
         }
     });
 

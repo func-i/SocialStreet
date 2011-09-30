@@ -20,6 +20,7 @@ SocialStreetReborn::Application.routes.draw do
     collection do
       match "show_privacy"
       match "show_tnc"
+      match "show_signins"
     end
   end
 

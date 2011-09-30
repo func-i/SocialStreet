@@ -1,7 +1,7 @@
 <% can_edit = @event.can_edit?(current_user) %>
 
 <% content_for :left_side_pane do %>
-  <div id="show_event_details" class="container">
+  <div id="show_event_details" class="">
     <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
       <div id="show_event_details_holder">
         <div id="show_event_text">
@@ -40,7 +40,7 @@
   </div>
 
   <div class="event-details-view <%="hidden" if params[:invite]%>">
-    <div class="container">
+    <div class="">
       <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
         <div id="event_wall_text_field_holder">
           <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
@@ -73,23 +73,25 @@
       <% end %>
     </div>
 
-    <div id="show_attendees_holder" class="">
-      <div id="show_attendees_title" class="container">
-        <%= "#{pluralize @event.number_of_attendees, 'Person'} Attending" %>
+    <% unless @event.event_rsvps.attending.blank? %>
+      <div id="show_attendees_holder" class="">
+        <div id="show_attendees_title" class="container">
+          <%= "#{pluralize @event.number_of_attendees, 'Person'} Attending" %>
+        </div>
+        <div id="show_attendees_list_holder" class="scroll-pane">
+          <ul id="show_attendees_list">
+            <%@event.event_rsvps.attending.each do |attendee|%>
+              <li class="show-attendee-holder">
+                <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
+                <span class="attendee-name hidden">
+                  <%=attendee.user.name%>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
-      <div id="show_attendees_list_holder" class="scroll-pane">
-        <ul id="show_attendees_list">
-          <%@event.event_rsvps.attending.each do |attendee|%>
-            <li class="show-attendee-holder">
-              <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
-              <span class="attendee-name hidden">
-                <%=attendee.user.name%>
-              </span>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+    <% end %>
   </div>
 <% end %>
 

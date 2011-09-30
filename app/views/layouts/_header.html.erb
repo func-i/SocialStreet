@@ -1,41 +1,39 @@
-<div id="header">
-  <div class="holder">
-    <div style="float:left;width:100%;">
-      <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
+<div class="holder">
+  <div style="float:left;width:100%;">
+    <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
 
-      <div id="add_streetmeet_btn" class="btn btn-important-color nav-link" data-ajax-href="<%= new_event_path %>">
-        Plan
-      </div>
-      <!--<div id="notify_me_btn" class="btn btn-not-important-color">
-        Notify Me
-      </div>-->
-      <div id="explore_btn" class="btn btn-not-important-color nav-link" data-ajax-href="<%= root_path %>">
-        Find
-      </div>
-
-      <!--      <div class="btn btn-not-important-color">
-              +Message
-            </div>
-            <div class="btn btn-not-important-color">
-              Filter
-            </div>-->
-
-      <% if user_signed_in? %>
-        <div id="signed_in_button">
-          <span id="current_user_name">
-            <%=current_user.name%>
-          </span>
-          <%= avatar(current_user, :size => "40x40", :class=>'drop-shadow') %>
-          <ul class="drop-shadow">
-            <!--<li><%#=link_to "Settings", '#' %></li>-->
-            <li><%=link_to "Sign Out", destroy_user_session_path%></li>
-          </ul>
-        </div>
-      <% else %>
-        <div id="log_button" class="btn btn-not-important-color" style="float:right;margin-bottom: 9px;" data-href='/auth/facebook'>
-          Sign In
-        </div>
-      <% end %>
+    <div id="add_streetmeet_btn" class="btn btn-important-color nav-link" data-ajax-href="<%= new_event_path %>">
+      Plan
     </div>
+    <!--<div id="notify_me_btn" class="btn btn-not-important-color">
+      Notify Me
+    </div>-->
+    <div id="explore_btn" class="btn btn-not-important-color nav-link" data-ajax-href="<%= root_path %>">
+      Find
+    </div>
+
+    <!--      <div class="btn btn-not-important-color">
+            +Message
+          </div>
+          <div class="btn btn-not-important-color">
+            Filter
+          </div>-->
+
+    <% if user_signed_in? %>
+      <div id="signed_in_button">
+        <span id="current_user_name">
+          <%=current_user.name%>
+        </span>
+        <%= avatar(current_user, :size => "40x40", :class=>'drop-shadow') %>
+        <ul class="drop-shadow">
+          <!--<li><%#=link_to "Settings", '#' %></li>-->
+          <li><%=link_to "Sign Out", destroy_user_session_path%></li>
+        </ul>
+      </div>
+    <% else %>
+      <div id="log_button" class="btn btn-not-important-color" style="float:right;margin-bottom: 9px;" data-href='/auth/facebook'>
+        Sign In
+      </div>
+    <% end %>
   </div>
 </div>
