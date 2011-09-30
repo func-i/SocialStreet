@@ -433,7 +433,7 @@ END OF RESET
     color: #010000;
     background: #FFC233;
     font: bold 22px/32px Arial, Helvetica, sans-serif;
-    padding: 10px 50px;
+    padding: 3px 50px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -445,7 +445,7 @@ END OF RESET
     color: #010000;
     background: #9c3;
     font: bold 18px/32px Arial, Helvetica, sans-serif;
-    padding: 11px 10px;
+    padding: 3px 10px;
     margin: 2px 10px 0px 0px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -707,7 +707,7 @@ END OF RESET
 #join_btn_holder{
     margin: 10px 20px 20px 0;
     width: 180px;
-    height: 52px;
+    height: 32px;
     float: left;
 }
 #show_attendees_holder{
@@ -725,7 +725,7 @@ END OF RESET
     max-height: 120px;
     overflow: auto;
     padding-top: 5px;
-    min-height: 62px;
+    min-height: 65px;
 }
 .show-attendee-holder{
     float: left;
@@ -803,13 +803,26 @@ END OF RESET
     right: 5px;
     font: italic 11px/26px Arial, Helvetica, sans-serif;
 }
-#continue_invitation_holder{
-    background: url("../images/overlay_box_bg.png");
-}
+#submit_invitation_next_arrow{
+    position:absolute;
+    bottom: 15px;
+    right: 15px;
+    color: #010000;
+    background: #FFC233;
+    font: bold 14px/32px Arial, Helvetica, sans-serif;
+    padding: 3px 20px;
+    cursor: pointer;
+    text-align: center;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+}i
 #post_to_facebook_holder{
-    padding: 50px 100px;
-    color: white;
-    float:left;
+    color: black;
+    margin: 0 auto 5px auto;
+    padding: 10px 0;
+    text-align: center;
 }
 #invite_user_text_field_holder{
     margin:0 auto;
@@ -837,7 +850,7 @@ END OF RESET
 }
 #invited_user_list{
     width: 400px;
-    height: 300px;
+    height: 100%;
     overflow: auto;
 }
 .already-invited-user{

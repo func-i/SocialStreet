@@ -13,17 +13,6 @@
 <% end %>
 
 <% content_for :bottom_pane do %>
-  <div id="continue_invitation_holder" class="container event-invitation-view <%="hidden" unless params[:invite]%>">
-    <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form', :style=>"float:left" do %>
-      <div id="post_to_facebook_holder">
-        <%= check_box_tag 'post_to_facebook', 'true', true,:style=>"float:left"%>
-        <span style="float:left;">Post this event to your facebook wall</span>
-      </div>
-    <% end %>
-    <div id="submit_invitation_next_arrow" class="next-arrow" style="float:left">
-      <span class="next-arrow-text">Next</span>
-    </div>
-  </div>
 <% end %>
 
 <% content_for :left_side_pane do %>
@@ -34,11 +23,24 @@
         <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
       <% end %>
     </div>
-    <div id="user_holder_for_invitation" class="expand-height scroll-pane" style="height: 100%;overflow: auto;">
-      <ul id="user_list_for_invitation">
+    <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>
+      <% unless @event.event_rsvps.where(:user_id => current_user).first.try(:posted_to_facebook) %>
+        <div id="post_to_facebook_holder" class="btn-important-color">
+          <%= check_box_tag 'post_to_facebook', 'true', true%>
+          <span>Post this event to your facebook wall</span>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div id="user_holder_for_invitation" class="expand-height scroll-pane" style="overflow: auto;">
+      <ul id="user_list_for_invitation" class="expand-height">
         <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
       </ul>
     </div>
+  </div>
+
+  <div id="submit_invitation_next_arrow" class="event-invitation-view <%="hidden" unless params[:invite]%>" style="float:left">
+    <span id="submit_invitation__text">Continue to StreetMeet</span>
   </div>
 <% end %>
 

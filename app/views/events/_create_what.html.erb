@@ -10,21 +10,16 @@
   </div>
 
   <div id="create_what_tag_list_holder" class="create-info-box create-what-view <%="invisible" unless @event && !@event.event_keywords.empty?%>">
-    <div id="create_what_tag_list_title" class="invisible">
-      Tags:
-    </div>
-    <div id="tag_scroller" style="height:165px;">
-      <ul id="create_what_tag_list" style="height:165px;">
-        <% (event.event_keywords || []).each do |keyword| %>
-          <li class="create-what-event-type">
-            <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
-            <div class="create-what-event-type-name">
-              <%=keyword.name%>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <ul id="create_what_tag_list" class="scroll-pane">
+      <% (event.event_keywords || []).each do |keyword| %>
+        <li class="create-what-event-type">
+          <%= image_tag(url_for_event_keyword(keyword), :class=>"create-what-event-type-image drop-shadow") %>
+          <div class="create-what-event-type-name">
+            <%=keyword.name%>
+          </div>
+        </li>
+      <% end %>
+    </ul>
   </div>
 
   <div id="create_what_next_arrow" class="create-what-view next-arrow <%= "invisible" unless @event && !@event.event_keywords.empty? %>">

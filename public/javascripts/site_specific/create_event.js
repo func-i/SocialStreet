@@ -8,6 +8,7 @@ $(function(){
 
     resizeSelf = function(){
         resizeCenterPaneContent();
+        resizeWhatTags();
     }
 
     setupCreateWhat();
@@ -25,6 +26,11 @@ function resizeCenterPaneContent(){
     var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
     var scrollerTop = $('#what_scroller').offset().top;
     $('#what_scroller').height(centerPaneBottom - scrollerTop);
+}
+function resizeWhatTags(){
+    var whatTagTopOffset = $('#create_what_tag_list').offset().top;
+    var continueButtonTopOffset = $('#create_what_next_arrow').offset().top;
+    $('#create_what_tag_list').height(continueButtonTopOffset - whatTagTopOffset - 20);
 }
 
 /*
@@ -88,8 +94,6 @@ function initCreateEvent(){
     $('.create-when-field').change(function(){
         updateCreateWhenDates();
     });
-
-    initScrollPane($('#create_what_tag_list'));
 }
 
 /*

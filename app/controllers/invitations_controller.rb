@@ -37,14 +37,14 @@ class InvitationsController < ApplicationController
 
     if params[:post_to_facebook] == 'true'
       my_event_rsvp = @event.event_rsvps.where(:user_id => current_user).first
-      if my_event_rsvp && my_event_rsvp.posted_to_facebook
+      if my_event_rsvp && !my_event_rsvp.posted_to_facebook
         if current_user == @event.user
           Resque.enqueue_in(10.minutes, Jobs::Facebook::PostEventCreation, current_user.id, @event.id)
         else
-          Resque.enqueue_in(10.minutes, Jobs::Facebook::PostEventAttending, current_user.id, @event.id)
+          Resque.enqueue_in(10.minutes, Jobs::Facebook::PostEventAttendance, current_user.id, @event.id)
         end
 
-        my_event_rsvp.update_attribute(:posted_to_facebook => true)
+        my_event_rsvp.update_attribute(:posted_to_facebook, true)
       end
     end
 

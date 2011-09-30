@@ -129,7 +129,7 @@ $(function(){
 });
 
 function resizeCenterPaneContent(){
-    if(false && $('#user_holder_for_invitation').length > 0){
+    if($('#user_holder_for_invitation').length > 0){
         var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
 
         var scrollerTop = $('#user_holder_for_invitation').offset().top;
@@ -225,7 +225,6 @@ function invitationPagelessFunction(){
 }
 
 
-
 function add_invitation(that){
     if(!does_invitation_already_exist(that.id)){
         //Check if user already added to list
@@ -242,6 +241,8 @@ function add_invitation(that){
 
         invitationCounter++;
         $('#invitation_list').removeClass('invisible');
+
+        $('#submit_invitation__text').text("Invite Friends");
     }
 }
 function remove_invitation(that){
@@ -250,6 +251,7 @@ function remove_invitation(that){
 
     if($('#invite_form input[name="invited_users[]"]').length <= 0){
         $('#invitation_list').addClass('invisible');
+        $('#submit_invitation__text').text("Continue to StreetMeet");
     }
 }
 
