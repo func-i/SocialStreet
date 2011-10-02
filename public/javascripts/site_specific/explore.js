@@ -314,15 +314,16 @@ function addExploreMarkers(){
 }
 
 function createExploreMarker(lat, lng, resultID){
-    marker = markerManager.addMarker(lat, lng);
+    var marker = markerManager.addMarker(lat, lng);
     marker.resultID_ = resultID;
 
     $('#' + resultID).mouseenter(function() {
-        if(selectedMarker != undefined && selectedMarker != marker){
+        if(selectedMarker != null && selectedMarker != marker){
             selectedMarker.setIcon("/images/map_pin.png");
         }
         selectedMarker = marker;
-        selectedMarker.setIcon("/images/ico-pin-selected.png");
+        marker.setIcon("/images/ico-pin-selected.png");
+        
     });
 
     $('#' + resultID).mouseleave(function() {
@@ -333,8 +334,6 @@ function createExploreMarker(lat, lng, resultID){
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-
-        console.log(selectedMarker);
 
         if(selectedMarker != null && selectedMarker != this) {
             console.log(selectedMarker.clusterdMarkers_);
