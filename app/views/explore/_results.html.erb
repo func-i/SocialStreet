@@ -14,7 +14,9 @@
     </div>
     <div class="result-attendees">
       <% attendees = User.attending_event(event)%>
-      <span class="attending-info"><%=attendees.count%></span>
+      <% unless attendees.count.zero? %>
+        <span class="attending-info"><%= attendees.count%></span>
+      <% end %>
       <% attendees.order_by_rank_to_user(current_user).excluding(current_user).limit(6).each do |attendee| %>
         <%= avatar attendee, :size => "22x22" %>
       <% end %>
