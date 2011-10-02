@@ -105,6 +105,7 @@ $(function(){
         $('#show_event_description_text').addClass('hidden');
         $('#edit_event_description_link').addClass('hidden');
         $('#edit_event_description_field').removeClass('hidden');
+        $('#edit_event_description_field').autoResize();
         $('#show_event_description_holder').data('jsp').destroy();
         $('#show_event_description_holder').height('auto');
         $('#show_event_description_holder').css('max-height', 'none');
