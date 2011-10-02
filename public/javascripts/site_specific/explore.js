@@ -3,6 +3,7 @@ var exploreMarkerArr = [];
 var exploreEventTypeTimer;
 var exploreUpdateTimer;
 var selectedResult;
+var selectedMarker;
 
 $(function(){
     //Cleanup function on leaving the page
@@ -316,7 +317,33 @@ function createExploreMarker(lat, lng, resultID){
     marker = markerManager.addMarker(lat, lng);
     marker.resultID_ = resultID;
 
+    $('#' + resultID).mouseenter(function() {
+        if(selectedMarker != undefined && selectedMarker != marker){
+            selectedMarker.setIcon("/images/map_pin.png");
+        }
+        selectedMarker = marker;
+        selectedMarker.setIcon("/images/ico-pin-selected.png");
+    });
+
+    $('#' + resultID).mouseleave(function() {
+        if(selectedMarker != null){
+            selectedMarker.setIcon("/images/map_pin.png");
+        }
+        selectedMarker = null;
+    });
+
     google.maps.event.addListener(marker, 'click', function() {
+
+        console.log(selectedMarker == marker);
+
+        if(selectedMarker != undefined && selectedMarker != marker) {
+            console.log(selectedMarker)
+            selectedMarker.setIcon("/images/map_pin.png");
+        }
+        
+        selectedMarker = marker;
+        this.setIcon("/images/ico-pin-selected.png");
+
         $('.result').css('background-color', '');
         //$('.result-arrow').addClass('hidden');
 
