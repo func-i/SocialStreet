@@ -1,11 +1,11 @@
 <% results.each do |result| %>
-  <div class="result" id="event_<%=result.id%>">
-    <% event = result %>
+  <% event = result %>
+  <div id="event_<%=result.id%>" class="result nav-link" data-ajax-href='<%= event_path(event)%>'>
     <div class="result-image">
       <%= image_tag(url_for_event_image(event))%>
     </div>
     <div class="result-text">
-      <span class="result-title result-event-link nav-link" data-ajax-href='<%= event_path(event)%>'>
+      <span class="result-title result-event-link">
         <%= truncate_html(event.title, :length => 50) %>
       </span>
       <div class="result-date">
