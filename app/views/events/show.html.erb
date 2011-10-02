@@ -33,7 +33,7 @@
           <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:360px;height:70px;" %>
         <% end %>
         <span id="show_event_description_text">
-          <%= @event.description %>
+          <%= raw @event.description %>
         </span>
       </div>
     <% end %>
