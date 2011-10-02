@@ -29,6 +29,7 @@ MarkerManager.prototype._setValues = function(options)
 
 MarkerManager.prototype.addMarker = function(lat, lng){
     var marker = new google.maps.Marker({
+        icon: '/images/map_pin.png',
         position: new google.maps.LatLng(lat, lng)
     });
     

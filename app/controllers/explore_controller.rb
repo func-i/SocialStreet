@@ -22,7 +22,7 @@ class ExploreController < ApplicationController
   end
 
   def find_events(args = {})
-    events = Event.valid.upcoming
+    events = Event.valid#.upcoming
 
     #MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
