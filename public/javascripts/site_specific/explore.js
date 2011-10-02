@@ -334,14 +334,16 @@ function createExploreMarker(lat, lng, resultID){
 
     google.maps.event.addListener(marker, 'click', function() {
 
-        console.log(selectedMarker == marker);
+        console.log(selectedMarker);
 
-        if(selectedMarker != undefined && selectedMarker != marker) {
-            console.log(selectedMarker)
-            selectedMarker.setIcon("/images/map_pin.png");
+        if(selectedMarker != null && selectedMarker != this) {
+            console.log(selectedMarker.clusterdMarkers_);
+            $.each(selectedMarker.clusteredMarkers_, function(mkr, i) {
+                selectedMarker.setIcon("/images/map_pin.png");
+            });
         }
         
-        selectedMarker = marker;
+        selectedMarker = this;
         this.setIcon("/images/ico-pin-selected.png");
 
         $('.result').css('background-color', '');
