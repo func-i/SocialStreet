@@ -1,6 +1,8 @@
 class Event < ActiveRecord::Base
   before_create :build_initial_rsvp
   before_save :save_default_name
+
+  before_save Proc.new{|event| event.description = event.description.gsub("\r", "<br />")}
   
   has_many :event_keywords
   has_many :event_rsvps;
