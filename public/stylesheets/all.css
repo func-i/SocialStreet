@@ -877,3 +877,10 @@ END OF RESET
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
+
+.event-type-selected {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+}
