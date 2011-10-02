@@ -653,7 +653,7 @@ END OF RESET
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
-    cursor: pointer;
+/*    cursor: pointer; */
 }
 #show_event_title_text{
 
@@ -889,4 +889,11 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
+}
+
+.event-type-selected {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
 }

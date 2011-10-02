@@ -175,7 +175,7 @@ function createEventTypeIsClicked(record) {
         if(!doesKeywordAlreadyExist(eventType_name))
         {
             var api = $('#create_what_tag_list').data('jsp');
-            api.getContentPane().append(eventType_record.clone());
+            api.getContentPane().append(eventType_record.clone().css('position', 'relative').append($('#bg_close').clone().removeClass('hidden').addClass('event-type-selected')));
             api.reinitialise();
 
             $('#event_create_form').append(
