@@ -23,10 +23,6 @@ gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 
-gem 'mechanize'
-gem 'watir-webdriver-rails' 
-gem 'headless'
-
 #gem 'jammit'
 gem 'airbrake'
 #gem 'rpm_contrib'
