@@ -222,10 +222,6 @@ GEM
       rack (>= 1.0.0)
     warden (1.0.5)
       rack (>= 1.0)
-    watir-webdriver (0.3.4)
-      selenium-webdriver (>= 0.2.2)
-    watir-webdriver-rails (0.0.6)
-      watir-webdriver
     webrobots (0.0.12)
       nokogiri (>= 1.4.4)
     xml-simple (1.1.0)
@@ -256,4 +252,3 @@ DEPENDENCIES
   rspec-rails (~> 2.6)
   silent-postgres
   truncate_html
-  watir-webdriver-rails
