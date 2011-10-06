@@ -83,9 +83,6 @@
             <%@event.event_rsvps.attending.each do |attendee|%>
               <li class="show-attendee-holder">
                 <%=avatar(attendee.user, :size => "55x55", :class=> "drop-shadow")%>
-                <span class="attendee-name hidden">
-                  <%=attendee.user.name%>
-                </span>
               </li>
             <% end %>
           </ul>
@@ -93,6 +90,10 @@
       </div>
     <% end %>
   </div>
+<% end %>
+
+<% content_for :bottom_pane do %>
+<div id="show_panorama" style="width:400px; height: 300px;"></div>
 <% end %>
 
 <% unless params[:invite].blank? %>

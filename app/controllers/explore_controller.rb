@@ -7,8 +7,8 @@ class ExploreController < ApplicationController
     #end
     
     @events = find_events
-
-    if request.xhr?
+    
+    if request.xhr?      
       render "shared/ajax_load.js", :locals => {:file_name_var => 'explore/index.html.erb'}
     end
   end
@@ -36,7 +36,7 @@ class ExploreController < ApplicationController
   end
 
   def with_keywords(event, keywords)
-    return event if (keywords.blank? || keywords.empty?)
+    return event.includes(:event_keywords) if (keywords.blank? || keywords.empty?)
 
     all_keywords = []
     keywords.each do |keyword|
@@ -68,8 +68,15 @@ class ExploreController < ApplicationController
         end
       end
 
-      latitude ||= 43.66061599944655
-      longitude ||= -79.3938175316406
+      if latitude.nil? ||
+          !(latitude.is_a?(Numeric) && !latitude.nan? && !latitude.infinite?) ||
+          longitude.nil? ||
+          !(longitude.is_a?(Numeric) && !longitude.nan? && !longitude.infinite?)
+
+        latitude = 43.66061599944655
+        longitude = -79.3938175316406
+
+      end
 
       map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end

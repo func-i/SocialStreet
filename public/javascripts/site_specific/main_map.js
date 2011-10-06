@@ -23,7 +23,7 @@ function init_map(){
     }
 
     if(loc_params.length == 2){
-        loc = new google.maps.LatLng(loc_params[0], loc_params[1]);
+        loc = new google.maps.LatLng(parseFloat(loc_params[0]), parseFloat(loc_params[1]));
     }
     else{
         loc = toronto;
@@ -59,15 +59,17 @@ function init_map(){
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
     //ADD LISTENERS
-    google.maps.event.addListener(map, 'dragend', function(){
-        if($('#on_explore').length > 0)
-            updateExploreLocationParams();
-    });
-    google.maps.event.addListener(map, 'bounds_changed', function(){
-        if($('#on_explore').length > 0) {
-            updateExploreLocationParams();
+    google.maps.event.addListenerOnce(map, 'idle', function() {
+        google.maps.event.addListener(map, 'dragend', function(){
+            if($('#on_explore').length > 0)
+                updateExploreLocationParams();
+        });
+        google.maps.event.addListener(map, 'bounds_changed', function(){
+            if($('#on_explore').length > 0) {
+                updateExploreLocationParams();
 
-        }
+            }
+        });
     });
 }
 
