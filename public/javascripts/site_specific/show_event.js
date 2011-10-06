@@ -153,11 +153,10 @@ function setupShowEventPage(){
     
     var lat = $('#lat').val();
     var lng = $('#lng').val();
-    var latLng = new google.maps.LatLng(lat, lng)
     var loc_text = $('#location_text').val();
     var address = $('#address').val();
 
-    map.panTo(latLng);
+    map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
 
     var xOffset = $('#location-map').width() / 5;
@@ -166,20 +165,8 @@ function setupShowEventPage(){
 
     google.maps.event.addListenerOnce(map, 'idle', function() {
         createShowMarker(lat, lng, address, loc_text);
-
-        var panoramaOptions = {
-            visible: true,
-            addressControl: false,
-            enableCloseButton: false,
-            linksControl: true,
-            panControl: false,
-            position: latLng,
-            zoomControl: false
-        };
-        var panorama = new  google.maps.StreetViewPanorama(document.getElementById("show_panorama"), panoramaOptions);
-        map.setStreetView(panorama);
     });
-
+    
     initializeScrollPanes();
 
     invitationView = $('#invite_view_bool').val();

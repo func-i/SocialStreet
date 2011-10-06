@@ -7,8 +7,8 @@ class ExploreController < ApplicationController
     #end
     
     @events = find_events
-    
-    if request.xhr?      
+
+    if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'explore/index.html.erb'}
     end
   end
@@ -68,15 +68,8 @@ class ExploreController < ApplicationController
         end
       end
 
-      if latitude.nil? ||
-          !(latitude.is_a?(Numeric) && !latitude.nan? && !latitude.infinite?) ||
-          longitude.nil? ||
-          !(longitude.is_a?(Numeric) && !longitude.nan? && !longitude.infinite?)
-
-        latitude = 43.66061599944655
-        longitude = -79.3938175316406
-
-      end
+      latitude ||= 43.66061599944655
+      longitude ||= -79.3938175316406
 
       map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
     end

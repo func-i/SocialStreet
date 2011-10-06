@@ -12,7 +12,7 @@ MarkerManager.prototype.init = function(opt_options)
     //TODO throw error
     }
     if(options['gridSize'] == undefined){
-        options['gridSize'] = 20;
+        options['gridSize'] = 5;
     }
 
     this._setValues(options);

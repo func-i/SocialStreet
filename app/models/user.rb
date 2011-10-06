@@ -35,12 +35,6 @@ class User < ActiveRecord::Base
     where("users.id <> #{user.id}")    
   }
 
-  def update_users_location(latitude, longitude)
-    self.last_known_latitude = latitude
-    self.last_known_longitude = longitude
-    self.last_known_location_datetime = Time.zone.now
-  end
-
 
   def name
     if first_name? || last_name?
