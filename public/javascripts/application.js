@@ -92,6 +92,14 @@ $(function() {
     $('.show-scroll-on-hover').live('mouseleave', function(){
         $(this).find('.jspVerticalBar').addClass('invisible');
     });
+
+    $('#how_it_works_btn').click(function() {
+        openHowItWorks();
+    });
+
+    $('#close_how_it_works').click(function() {
+        closeHowItWorks();
+    });
 });
 
 function cleanup(){
@@ -277,4 +285,22 @@ $.fn.serializeObject = function()
     });
     return o;
 };
+
+function openHowItWorks() {
+    $('.content-group').addClass('hidden');
+    $('#header').addClass('invisible');
+    markerManager.hideAllMarkers();
+    
+    $('#how_it_works').removeClass('hidden');
+}
+
+function closeHowItWorks() {
+    $('#how_it_works').addClass('hidden');
+
+    markerManager.showAllMarkers();
+    $('.content-group').removeClass('hidden');
+    $('#header').removeClass('invisible');
+
+    
+}
 
