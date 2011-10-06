@@ -55,8 +55,9 @@ SocialStreet::Application.routes.draw do
 
   get 'how-it-works' => 'site#how', :as => 'how'
   get 'explore' => 'explore#index', :as => 'explore'
-  get 'events' => 'events#new', :as => 'create'
-  get 'profiles' => 'profiles#index', :as => 'profiles'
+  get 'events/new' => 'events#new', :as => 'create'
+  get 'events' => 'events#index', :as => 'view'
+  get 'profiles' => 'profiles#show', :as => 'profiles'
   get 'explore/simple_page' => 'explore#simple_page'
 
   resources :comments, :only => [:create, :destroy]
@@ -65,6 +66,10 @@ SocialStreet::Application.routes.draw do
 
     member do
       get "post_to_facebook"
+    end
+
+    member do
+      get "show_attendees"
     end
 
     collection do

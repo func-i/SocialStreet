@@ -1,8 +1,85 @@
-.ui-page {
-	background: #999;
+
+/*.ui-page {
+        background: transparent;
+	background: url(/images/gray-gradient.jpg) no-repeat;
+}*/
+
+.wallpaper_page {
+     background: transparent;
+     background: url(/images/gray-gradient.jpg) no-repeat;
+}
+
+.page-map {
+    overflow: hidden;
+    position: relative;
 }
 
 #map-canvas { 
 	height: 300px; 
 	width: 450px; 
+}
+
+#event_map_canvas {
+	height: 300px;
+	width: 290px;
+}
+
+#explore_map_canvas {
+	height: 100%;
+        width: 100%;
+        position: absolute;
+}
+
+#event_title {
+    font-size: 25px;
+    font-weight: bolder;
+    position: absolute;
+    margin: 10px 10px;
+    
+}
+
+#more_details_link {
+	float: right;
+	margin: 70px 5px;
+	font-style: italic;
+	font-size: 15px;
+}
+
+#event_keyword {
+    background: #999;
+    border-radius: 2px;
+    float: left;
+    font: bold 14px/24px Helvetica, Helvetica;
+    margin: 5px 3px 10px 0;
+    padding: 0px 25px 0 7px;
+    position: relative;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+#sign-in {
+ background: #11991A;
+}
+
+#explore_message_box {
+	background: #fff;
+	font: bold 16px/24px Helvetica, Helvetica;
+}
+
+#explore_map_marker_title {
+    font-size: 18px;
+    font-weight: bolder;
+    margin: 10px 10px;
+}
+
+#attending-button {
+    white-space: normal;
+}
+
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb {
+    min-height: 25px;
+}
+
+#explore-list-address {
+    margin-left: 100px;
 }

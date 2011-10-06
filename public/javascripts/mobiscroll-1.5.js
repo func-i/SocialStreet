@@ -611,6 +611,8 @@
             if (!that.settings.disabled && that.settings.showOnFocus && !show)
                 that.show();
         });
+        
+        
     }
 
     var dw,
@@ -641,7 +643,7 @@
             theme: '',
             mode: 'scroller',
             preset: 'date',
-            dateFormat: 'D dd MM',
+            dateFormat: 'D dd M',
             dateOrder: 'mmddy',
             ampm: true,
             seconds: false,

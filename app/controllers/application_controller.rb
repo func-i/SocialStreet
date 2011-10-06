@@ -7,10 +7,10 @@ class ApplicationController < ActionController::Base
 
   def ss_authenticate_user!
     authenticate_user!
-    if !current_user.accepted_tncs
-      store_redirect();
-      redirect_to "/authentications/accept_tnc"
-    end
+    #if !current_user.accepted_tncs
+      #store_redirect();
+      #redirect_to "/authentications/accept_tnc"
+    #end
   end
 
   #  def authenticate_user_and_redirect!
@@ -55,9 +55,9 @@ class ApplicationController < ActionController::Base
   
   #Override to change the path taken after sign_in
   def after_sign_in_path_for(resource_or_scope)
-    if !current_user.accepted_tncs
-      return_path = "/authentications/accept_tnc"
-    elsif session[:stored_redirect]
+    #if !current_user.accepted_tncs
+      #return_path = "/authentications/accept_tnc"
+    if session[:stored_redirect]
       #User has stored a redirect path for use after authentication
 
       if session[:stored_redirect][:controller] == 'events' && session[:stored_redirect][:action] == 'create'

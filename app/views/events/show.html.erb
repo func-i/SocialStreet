@@ -1,282 +1,99 @@
-<% content_for :main_top do %>
-  <div class="col1">
-      <% if @event.editable_by?(current_user) %>
-        <div class="admin-view">
-          <strong>
-            <%= link_to_popup_modal_ajax  'Edit', 'Edit this StreetMeet', 'empty_modal_base', edit_event_path(@event), nil, nil%>
-          </strong>
-          <% if @event.user == current_user %>
-            or
-            <strong>
-              <%= link_to_popup_modal_ajax  '+organizers', 'Add Administrators', 'empty_modal_sidebar', new_event_administrator_path(@event, :js), nil, nil%>
-            </strong>
-          <% end %>
-        </div>
-      <% end %>
-    <% #end %>
-  </div>
-  <div class="col2"></div>
-<% end %>
 
-<div class="profile">
-  <div class="profile-holder">
-    <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
-    <div class="text">
-      <div class="row">
-        <div class="event-title">
-          <h2><%= @event.title %></h2>
-          <p>
-            <%=address_for(@event.location)%>
-          </p>
-        </div>
-
-        <%= link_to "Share", [:post_to_facebook, @event], :remote=>true, :id => 'fb-share', :class => "btn-share" -%>
-
-      </div>
-      <div class="info">
-        <div id="attend-button" class="col">
-
-          <%- if !@event.canceled? && @event.editable_time?%>
-
-            <%= render :partial => "shared/attending_buttons", :locals => {:rsvp => @rsvp, :event => @event} %>
-
-          <%- end -%>
-        </div>
-        <div class="col-holder">
-          <div class="col">
-            <span>Start Day:</span>
-            <strong><%= @event.starts_at.strftime("%b %d") %></strong>
-          </div>
-          <% if @event.finishes_at && @event.end_date != @event.start_date %>
-            <div class="col">
-              <span>End Day:</span>
-              <strong><%= @event.finishes_at.strftime("%b %d") %></strong>
-            </div>
-          <%- end -%>
-          <div class="col">
-            <span>Start Time:</span>
-            <strong><%= @event.starts_at.strftime("%l:%M %p") -%></strong>
-          </div>
-          <% if @event.finishes_at %>
-            <div class="col">
-              <span>End Time:</span>
-              <strong><%= @event.finishes_at.strftime("%l:%M %p") -%></strong>
-            </div>
-          <%- end -%>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="keyword">
-    <%- @event.searchable_event_types.each do |set| -%>
-      <span><%= set.name %></span>
-    <%- end -%>
-  </div>
-
-  <div class="description">
-    <%=@event.description if !@event.description.blank?%>
-  </div>
-
-</div>
-<div class="post-message">
-  <%= form_for [@event, @comment], :remote => true, :html => {:class => "form-post-message Post-Message form comment-form form-comment" } do |form| %>
-    <fieldset>
-
-      <div class="box text">
-        <div class="topleft">
-          <div class="topright">
-            <div>
-              <%= form.text_area :body, :title => "Post a Message", :class => "textarea", :placeholder => "Leave a message", :rows => 1 -%>
-              <div style="clear:both">&nbsp;</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bottomleft">
-          <div class="bottomright">
-          </div>
-        </div>
-      </div>
-      <div style="width: 100%; background-image: url('/images/bg-form-post-message-large_bottom.png'); height: 11px; margin-top: -2px;"></div>
-      <div class="info">
-      </div>
-    </fieldset>
-  <%- end -%>
-<%#= render 'shared/commenting' %>
-
-</div>
-<div id="comment-box" class="post-holder Post-Holder" >
-  <div id="action-list">
-    <% @actions.each do |action| %>
-
-      <div class="post">
-        <%= render "shared/records", :record_type => RecordType.types[:plain_thread], :record => action %>
-      </div>
-
+<div data-role="page" data-theme="a" id="event_main">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+    <% if @event.editable_by?(current_user) %>
+      <%= link_to 'Edit', edit_event_path(@event), {'data-theme' => 'b'}%>
     <% end %>
+  </div>
 
-<%#=  render :partial => 'actions' %>
+  <div data-role="content" data-theme="c">
+    <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
+    <span id="event_title"><%= @event.title %></span>
+
+    <div id="more_details_link">
+      <%= link_to "More Details"%>
+    </div>
+
+    <fieldset class="ui-grid-a">
+      <%  if(@rsvp && Rsvp.statuses[:attending] == @rsvp.status) %>
+        <div id="attending-button"class="ui-block-a"><%= link_to "Attending", [:edit, @event, :rsvp], {'data-role' => 'button', 'data-theme' => 'a', 'data-ajax' => false} %></div>
+      <% else %>
+        <div class="ui-block-a"><%= link_to "Attend", [:new, @event, :rsvp], {'data-role' => 'button', 'data-theme' => 'e', 'data-ajax' => false} %></div>
+      <% end %>
+
+      <div class="ui-block-b" style="margin: -38px 10px 10px 200px"><%= link_to "Invite People" %></div>
+    </fieldset>
+
+
+    <div data-role="fieldcontain" style="font-size: 18px"><%= address_for(@event.location)%>
+      <span style="float:right; font-size: 12px" id="map_link"><%= link_to "See on Map" %></span>
+    </div>
+
+    <div data-role="fieldcontain" style="font-size: 14px"><%= @event.date_range_as_sentence %> </div>
+
+    <div data-role ="fieldcontain">
+
+      <div><%= link_to "#{@event.num_attending} Attending", [:show_attendees, @event] %> </div>
+
+    </div>
+
+    <div data-role="fieldcontain">
+      <textarea cols="40" rows="8" name="textarea" placeholder="Leave a Comment..." data-theme="d"></textarea>
+      <div style="float:right; margin: 3px"><%= link_to "#{@event.comments.count} Comments" %> </div>
+    </div>
+
+    <div data-role="fieldcontain" id="event_details">
+      <%=@event.description if !@event.description.blank?%>
+    </div>
+
+    <div id="event_keyword">
+      <%- @event.searchable_event_types.each do |set| -%>
+        <span><%= set.name %></span>
+      <%- end -%>
+    </div>
+
+
+    <div data-role="fieldcontain" id="event_map_canvas" class="page-map">
+
+    </div>
+
+    <div data-role="fieldcontain">
+      <% if @event && @event.cancellable_by?(current_user) %>
+        <%= link_to "Cancel Event", [@event], :confirm => 'Are you sure?', :method => 'delete' %>
+      <% end %>
+    </div>
+
   </div>
 </div>
 
-<% content_for :sidebar do %>
+<script type="text/javascript">
 
-  <div class="box map">
-    <div class="heading">
-      <h3>
-        <%if @event.location.geocoded_address%>
-          <%="#{@event.location.geocoded_address}"%>
-        <%else %>
-          <%="#{@event.location.street} #{@event.location.city}, #{@event.location.state}" %>
-        <%end%>
-      </h3>
-    </div>
-    <div class="map-holder">
-      <% if @event.geo_located? %>
-        <img src="http://maps.google.com/maps/api/staticmap?zoom=14&size=317x217&maptype=roadmap&sensor=false&markers=icon:http://www.socialstreet.com/images/map_pin.png%7C<%= @event.latitude %>,<%= @event.longitude %>"
-             alt="location map" />
-           <% end %>
-    </div>
-  </div>
-
-  <div class="box people-list">
-    <div class="heading">
-      <h3>Attending</h3>
-      <%= link_to_popup_modal "View all", "show-attendees", :class => "btn-view"%>
-    </div>
-    <div class="box-content">
-      <ul class="list-img">
-        <% @attendees_rsvps[0,24].each do |attendee_rsvp| %>
-          <li class="attendee_<%=attendee_rsvp.user.id%>"><%= render 'shared/user_list_element', :user => attendee_rsvp.user%></li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-
-  <div class="box people-list">
-    <div class="heading">
-      <h3>Organizers</h3>
-      <%= link_to_popup_modal "View all", "show-organizers", :class => "btn-view"%>
-    </div>
-    <div class="box-content">
-      <ul class="list-img">
-        <% @administrators_rsvps[0,24].each do |administrator_rsvp| %>
-          <li class="attendee_<%=administrator_rsvp.user.id%>"><%= render 'shared/user_list_element', :user => administrator_rsvp.user%></li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-
-<% end %>
-
-<%= content_for :popup_modals do -%>
-  <div id="show-attendees" class="pop-up pop-up-modal" style="display:none; position: fixed;" data-iscroll-ids="modal_show_attendees_scroll">
-    <div class="pop-up1">
-
-      <div class="heading">
-        <strong>Attendees</strong>
-        <%= link_to "close", '#', :class => "btn-close" -%>
-      </div>
-
-      <div class="content" id="modal_show_attendees_scroll">
-        <div class="pop-up1-content view-all-modal">
-          <ul>
-
-            <% @attendees_rsvps.each do |rsvp| %>
-
-              <li class="attendee_<%=rsvp.user.id%>">
-                <%= avatar rsvp.user :size => "44x40" %>
-                <div class="text-holder">
-                  <% if rsvp.user.fb_uid? && user_signed_in? && current_user.can_friend?(rsvp.user) %>
-                    <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
-                      <span>Add to Facebook</span>
-                    <% end %>
-                  <% end %>
-                  <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
-                </div>
-              </li>
-
-            <% end %>
-
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="show-organizers" class="pop-up pop-up-modal" style="display:none; position: fixed;" data-iscroll-ids="modal_show_organizers_scroll">
-    <div class="pop-up1">
-
-      <div class="heading">
-        <strong>Organizers</strong>
-        <%= link_to "close", '#', :class => "btn-close" -%>
-      </div>
-
-      <div class="content" id="modal_show_organizers_scroll">
-        <div class="pop-up1-content view-all-modal">
-          <ul>
-            <% @administrators_rsvps.each do |rsvp| %>
-              <li class="attendee_<%=rsvp.user.id%>">
-                <%= avatar rsvp.user :size => "44x40" %>
-                <div class="text-holder">
-                  <% if rsvp.user.fb_uid? && user_signed_in? && current_user.can_friend?(rsvp.user) %>
-                    <%= link_to '#', :class => "add-to-fb-button add", "data-fb-uid" => rsvp.user.fb_uid do %>
-                      <span>Add to Facebook</span>
-                    <% end %>
-                  <% end %>
-                  <strong class="ttl"><%= link_to rsvp.user.name, profile_path(rsvp.user) %></strong>
-                </div>
-              </li>
-
-            <% end %>
-
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <% unless params[:invite].blank? %>
-    <script type='text/javascript'>
-      // TODO this should popup the modal by default
-      $(function(){
-        popup_modal_ajax('#empty_modal_sidebar', 'Invite your friends', '<%=load_modal_event_rsvp_invitation_path(@event, @rsvp, :js)%>', null);
-      });
-    </script>
-
-  <% end %>
-
-<%- end -%>
-
-<% content_for :end_of_body do %>
-
-  <%= include_javascripts :ss_pageless -%>
-
-  <script type='text/javascript'>
-    var showEventPageless = null;
-
-    function makeShowEventPageless(){
-      showEventPageless = new Pageless({
-        loaderContainer: '#action-list',
-        totalPages: <%= @num_pages -%>,
-        currentPage: 1,
-        url: '<%= @event %>'
-      });
-      showEventPageless.start();
-    }
-
-    function getShowEventPageless(){
-      return showEventPageless;
-    }
-
-    $(function() {
-      makeShowEventPageless();
-
-  <% if params[:post_to_facebook] %>
-      $('#flash-messages').html('<div class="flash"><strong>The StreetMeet has been posted to your Facebook wall</strong></div>');
-  <% end %>
+  $('#more_details_link').click(function(event){
+    event.preventDefault(); // Prevent link from following its href
+    document.getElementById('event_details').scrollIntoView();
   });
 
-  </script>
-<% end %>
+  $('#map_link').click(function(event){
+    event.preventDefault(); // Prevent link from following its href
+    document.getElementById('event_map_canvas').scrollIntoView();
+  });
+
+  var latlng = '<%= @event.latitude %>,<%= @event.longitude %>'
+
+  $('#event_main').live("pageshow", function() {
+    $('#event_map_canvas').gmap('refresh');
+  });
+
+  $('#event_main').live("pagecreate",function() {
+
+    $('#event_map_canvas').gmap(
+    {'center': latlng, 'zoom': 15, 'disableDefaultUI': true
+    }).bind('init', function(event, map) {
+      $('#event_map_canvas').gmap('addMarker', {'position': latlng, 'draggable': false, 'bounds': false
+      });
+    });
+      
+  });
+</script>

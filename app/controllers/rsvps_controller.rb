@@ -17,10 +17,11 @@ class RsvpsController < ApplicationController
     if(@rsvp.save)
 
       if request.xhr?
-        #render :partial => "buttons.js"
-        render :update do |page|
-          page.redirect_to event_path(@event, :invite => true)
-        end
+        redirect_to event_path(@event, :invite => true)
+        #page.redirect_to event_path(@event, :invite => true)
+        #render :update do |page|
+          #page.redirect_to event_path(@event, :invite => true)
+        #end
         return
       else
         redirect_to event_path(@event, :invite => true)
@@ -38,7 +39,8 @@ class RsvpsController < ApplicationController
 
     @rsvp.status = Rsvp.statuses[:not_attending]
     if(@rsvp.save)
-      render :partial => "buttons.js"
+      #render :partial => "buttons.js"
+      redirect_to event_path(@event, :invite => true)
       return
     else
       puts "FUCK ME"

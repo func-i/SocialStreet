@@ -206,9 +206,10 @@ class Event < ActiveRecord::Base
 
   def editable_by?(user)
     return false if user == nil
-    
+   
     rsvp = rsvps.by_user(user).first
-
+    puts rsvp.inspect
+    puts self.user
     user == self.user || (rsvp && rsvp.administrator)
   end
 
@@ -221,6 +222,7 @@ class Event < ActiveRecord::Base
   end
 
   def editable?(user)
+    puts user.inspect
     editable_by?(user)
   end
 
@@ -275,6 +277,15 @@ class Event < ActiveRecord::Base
 
   def default_title?
     self.name =~ /^\w+\s@\s.+(\son\s)/
+  end
+
+  def date_range_as_sentence
+    rtn_sentence = starts_at.strftime("%a %b %e %l:%M %p")
+    if starts_at.strftime("%b %e") != finishes_at.strftime("%b %e")
+      rtn_sentence = "#{rtn_sentence} - #{finishes_at.strftime("%b %e %l:%M %p")}"
+    else
+      rtn_sentence = "#{rtn_sentence} - #{finishes_at.strftime("%l:%M %p")}"
+    end
   end
 
   

@@ -61,10 +61,11 @@ class EventsController < ApplicationController
   end
 
   def create
-    if create_or_edit_event(params, :create)      
-      render :update do |page|
-        page.redirect_to event_path(@event_for_create, :invite => true)
-      end
+    if create_or_edit_event(params, :create)
+      redirect_to event_path(@event_for_create)
+      #render :update do |page|
+       # page.redirect_to event_path(@event_for_create, :invite => true)
+      #end
       
     else
       prepare_for_form
@@ -118,14 +119,23 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    if @event.cancellable?(current_user)
-      if @event.cancel
-        Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
-      end
-      redirect_to :root
-    else
-      raise "WHAT THE F***"
+    puts "I'm deleting shit..."
+    event = Event.find params[:id]
+
+    
+
+    #raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
+
+    #event.canceled = true
+    #event.save
+    
+    event.update_attribute('canceled', true)
+
+    if(event.upcoming)
+      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, event.id)
     end
+
+    redirect_to :root
   end
 
   def post_to_facebook
@@ -185,6 +195,11 @@ class EventsController < ApplicationController
     
   end
 
+  def show_attendees
+    @event = Event.find params[:id]
+    
+  end
+
 
   protected
 
@@ -199,7 +214,7 @@ class EventsController < ApplicationController
   end
 
   def load_event_types
-    @event_types ||= EventType.order('name').all
+    @event_types = EventType.order('name').all
   end
 
   def load_action

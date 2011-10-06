@@ -234,108 +234,166 @@ types[:entrepreneurs] = EventType.create!(:name => 'Networking: Entrepreneurs', 
 ################################
 ## STUB USERS
 ################################
-#user = User.create!({})
+user = User.create!({})
 
 ################################
 ## STUB EVENTS
 ################################
 
-#Event.create!(
-#  {
-#    :name => "Soccer at Turd Park!",
-#    :user => user,
-#    :description => "Fake description for Event based on some random string Lorem Ipsum style",
-#    :searchable_attributes => {
-#      :searchable_event_types_attributes => [
-#        { :event_type => types[:soccer], :name => "Soccer" }
-#      ],
-#      :searchable_date_ranges_attributes => [
-#        { :starts_at => 10.days.from_now.beginning_of_day + 240.minutes }
-#      ],
-#      :location_attributes => {
-#        :text => "SocialStreet Head Office",
-#        :street => "373 Front Street W \#1701",
-#        :city => "Toronto",
-#        :state => "ON",
-#        :user_id => user.id
-#      }
-#    }
-#  })
-#
-#Event.create!(
-#  {:name => "Squash Tournament",
-#    :user => user,
-#    :description => "We love squash, do you?",
-#    :cost => 1200,
-#    :searchable_attributes => {
-#      :searchable_event_types_attributes => [
-#        { :event_type => types[:squash], :name => "Squash" }
-#      ],
-#      :searchable_date_ranges_attributes => [
-#        {
-#          :starts_at => 3.days.from_now.beginning_of_day + 480.minutes,
-#          :ends_at => 3.days.from_now.beginning_of_day + 990.minutes,
-#        }
-#      ],
-#      :location_attributes => {
-#        :text => "YMCA Downtown (not really)",
-#        :street => "628 Fleet Street \#1601",
-#        :city => "Toronto",
-#        :state => "ON",
-#        :postal => "M5V 1A8",
-#        :user_id => user.id
-#      }
-#    }
-#  })
-#
-#Event.create!(
-#  {:name => "Basketball - We only play '21'",
-#    :user => user,
-#    :description => "We suck at this, please help us",
-#    :cost => 13000,
-#    :searchable_attributes => {
-#      :searchable_event_types_attributes => [
-#        { :event_type => types[:basketball], :name => "Basketball" }
-#      ],
-#      :searchable_date_ranges_attributes => [
-#        {
-#          :starts_at => 2.days.from_now.beginning_of_day + 990.minutes,
-#          :ends_at => 2.days.from_now.beginning_of_day + 1035.minutes,
-#        }
-#      ],
-#      :location_attributes => {
-#        :text => "Downtown Mississauga",
-#        :street => "",
-#        :city => "Mississauga",
-#        :state => "ON",
-#        :postal => "L5L3M1",
-#        :user_id => user.id
-#      }
-#    }
-#  })
-#
-#Event.create!(
-#  {:name => "Baseball Tournament",
-#    :user => user,
-#    :description => "Baseball although it's not as good as cricket, is what this event is about.",
-#    :cost => 1400,
-#    :searchable_attributes => {
-#      :searchable_event_types_attributes => [
-#        { :event_type => types[:baseball], :name => "Baseball" }
-#      ],
-#      :searchable_date_ranges_attributes => [
-#        {
-#          :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
-#          :ends_at => 5.days.from_now.beginning_of_day + 990.minutes,
-#        }
-#      ],
-#      :location_attributes => {
-#        :text => "Downtown Toronto",
-#        :street => "",
-#        :city => "Toronto",
-#        :state => "ON",
-#        :postal => "M5V1C4",
-#        :user_id => user.id
-#      }
-#    }
-#  })
+Event.create!(
+  {
+    :name => "Soccer at Turd Park!",
+    :user => user,
+    :description => "Fake description for Event based on some random string Lorem Ipsum style",
+    :searchable_attributes => {
+      :searchable_event_types_attributes => [
+        { :event_type => types[:soccer], :name => "Soccer" }
+      ],
+      :searchable_date_ranges_attributes => [
+        { 
+          :starts_at => 10.days.from_now.beginning_of_day + 240.minutes,
+          :ends_at => 10.days.from_now.beginning_of_day + 540.minutes
+        }
+      ],
+      :location_attributes => {
+        :text => "SocialStreet Head Office",
+        :street => "373 Front Street W \#1701",
+        :city => "Toronto",
+        :state => "ON",
+        :user_id => user.id
+      }
+    }
+  })
+
+Event.create!(
+  {:name => "Squash Tournament",
+    :user => user,
+    :description => "We love squash, do you?",
+    :cost => 1200,
+    :searchable_attributes => {
+      :searchable_event_types_attributes => [
+        { :event_type => types[:squash], :name => "Squash" }
+      ],
+      :searchable_date_ranges_attributes => [
+        {
+          :starts_at => 3.days.from_now.beginning_of_day + 480.minutes,
+          :ends_at => 3.days.from_now.beginning_of_day + 990.minutes,
+        }
+      ],
+      :location_attributes => {
+        :text => "YMCA Downtown (not really)",
+        :street => "628 Fleet Street \#1601",
+        :city => "Toronto",
+        :state => "ON",
+        :postal => "M5V 1A8",
+        :user_id => user.id
+      }
+    }
+  })
+
+Event.create!(
+  {:name => "Basketball - We only play '21'",
+    :user => user,
+    :description => "Just Bring It!",
+    :cost => 13000,
+    :searchable_attributes => {
+      :searchable_event_types_attributes => [
+        { :event_type => types[:basketball], :name => "Basketball" }
+      ],
+      :searchable_date_ranges_attributes => [
+        {
+          :starts_at => 2.days.from_now.beginning_of_day + 990.minutes,
+          :ends_at => 2.days.from_now.beginning_of_day + 1035.minutes,
+        }
+      ],
+      :location_attributes => {
+        :text => "Home Court",
+        :street => "211 Terra Road",
+        :city => "Vaughan",
+        :state => "ON",
+        :postal => "L4L3J4",
+        :user_id => user.id
+      }
+    }
+  })
+
+Event.create!(
+  {:name => "Baseball Tournament",
+    :user => user,
+    :description => "Baseball although it's not as good as cricket, is what this event is about.",
+    :cost => 1400,
+    :searchable_attributes => {
+      :searchable_event_types_attributes => [
+        { :event_type => types[:baseball], :name => "Baseball" }
+      ],
+      :searchable_date_ranges_attributes => [
+        {
+          :starts_at => 4.days.from_now.beginning_of_day + 1035.minutes,
+          :ends_at => 5.days.from_now.beginning_of_day + 990.minutes,
+        }
+      ],
+      :location_attributes => {
+        :text => "Downtown Toronto",
+        :street => "",
+        :city => "Toronto",
+        :state => "ON",
+        :postal => "M5V1C4",
+        :user_id => user.id
+      }
+    }
+  })
+
+Event.create!(
+  {:name => "Rave in the Cave",
+    :user => user,
+    :description => "For all you Deep House, Minimal and Tech fiends. Bring glowsticks, fancy footwork.
+        Ladies, please don't dress up too well,
+        things are going to get sweaty up in here. Sunglasses and Advil,
+        last night was mad real...",
+    :cost => 25,
+    :searchable_attributes => {
+      :searchable_event_types_attributes => [
+        { :event_type => types[:clubbing], :name => "Rave" }
+      ],
+      :searchable_date_ranges_attributes => [
+        {
+          :starts_at => 14.days.from_now.beginning_of_day + 2035.minutes,
+          :ends_at => 15.days.from_now.beginning_of_day + 990.minutes,
+        }
+      ],
+      :location_attributes => {
+        :text => "Footwork",
+        :street => "425 Adelaide Street West",
+        :city => "Toronto",
+        :state => "ON",
+        :postal => "M5V3C1",
+        :user_id => user.id
+      }
+    }
+  })
+
+Event.create!(
+  {:name => "Getting the Band back Together",
+    :user => user,
+    :description => "Bring extra drumsticks, a rock n' roll attitude, excessive hair products, tonnes of smokes, patch cords and mad skills",
+    :cost => 25,
+    :searchable_attributes => {
+      :searchable_event_types_attributes => [
+        { :event_type => types[:play_music], :name => "Jam Session" }
+      ],
+      :searchable_date_ranges_attributes => [
+        {
+          :starts_at => 20.days.from_now.beginning_of_day + 2035.minutes,
+          :ends_at => 21.days.from_now.beginning_of_day + 990.minutes,
+        }
+      ],
+      :location_attributes => {
+        :text => "Rehearsal Factory",
+        :street => "330 Geary Ave",
+        :city => "Toronto",
+        :state => "ON",
+        :postal => "M6H2C7",
+        :user_id => user.id
+      }
+    }
+  })

@@ -45,7 +45,7 @@ class ExploreController < ApplicationController
   def find_overlapping_subscriptions
     @overlapping_subscriptions = Searchable.with_only_subscriptions
 
-    @overlapping_subscriptions = apply_keywords(@overlapping_subscriptions, params[:keywords], true)
+    @overlapping_subscriptions = apply_keywords(@overlapping_subscriptions, params[:keyword], true)
 
     #MATCH MAP BOUNDS
     @overlapping_subscriptions = apply_map_bounds(@overlapping_subscriptions, params[:map_bounds])
@@ -271,8 +271,8 @@ class ExploreController < ApplicationController
 
   def apply_message_filter(message_searchables, args = {})
     #MATCH KEYWORDS
-    keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    message_searchables = apply_keywords(message_searchables, keywords)
+    keyword = args.key?(:keyword) ? args[:keyword] : params[:keyword]
+    message_searchables = apply_keywords(message_searchables, keyword)
 
     #MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
@@ -281,8 +281,8 @@ class ExploreController < ApplicationController
 
   def apply_event_filter(event_searchables, args = {})
     #MATCH KEYWORDS
-    keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
-    event_searchables = apply_keywords(event_searchables, keywords)
+    keyword = args.key?(:keyword) ? args[:keyword] : params[:keyword]
+    event_searchables = apply_keywords(event_searchables, keyword)
 
     #MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
@@ -299,16 +299,27 @@ class ExploreController < ApplicationController
     event_searchables = apply_from_date(event_searchables, from_date)
   end
 
-  def apply_keywords(searchable, keywords, include_searchables_with_no_keywords = false)
-    return searchable if (keywords.blank? || keywords.empty?)
+  #def apply_keywords(searchable, keywords, include_searchables_with_no_keywords = false)
+    #return searchable if (keywords.blank? || keywords.empty?)
+
+    #all_keywords = []
+    #keywords.each do |keyword|
+      #unless keyword.blank?
+        #all_keywords << keyword
+        #all_keywords.concat(EventType.with_parent_name(keyword).all.map(&:name));
+      #end
+    #end
+
+    #return searchable if all_keywords.empty?
+    #return searchable = searchable.matching_keywords(all_keywords, include_searchables_with_no_keywords)
+  #end
+
+  def apply_keywords(searchable, keyword, include_searchables_with_no_keywords = false)
+    return searchable if keyword.blank?
 
     all_keywords = []
-    keywords.each do |keyword|
-      unless keyword.blank?
-        all_keywords << keyword
-        all_keywords.concat(EventType.with_parent_name(keyword).all.map(&:name));
-      end
-    end
+    all_keywords << keyword
+    all_keywords.concat(EventType.with_parent_name(keyword).all.map(&:name));
 
     return searchable if all_keywords.empty?
     return searchable = searchable.matching_keywords(all_keywords, include_searchables_with_no_keywords)
