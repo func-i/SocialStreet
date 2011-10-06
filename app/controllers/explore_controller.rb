@@ -18,7 +18,7 @@ class ExploreController < ApplicationController
   end
 
   def init_page
-    @event_types = EventType.order('name').all
+    @event_types = EventType.order('name').includes(:synonym).all
   end
 
   def find_events(args = {})
@@ -36,7 +36,7 @@ class ExploreController < ApplicationController
   end
 
   def with_keywords(event, keywords)
-    return event.includes(:event_keywords) if (keywords.blank? || keywords.empty?)
+    return event.includes({:event_keywords => {:event_type => :synonym}}) if (keywords.blank? || keywords.empty?)
 
     all_keywords = []
     keywords.each do |keyword|
