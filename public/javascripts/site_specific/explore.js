@@ -72,8 +72,13 @@ function setupExplorePage(){
 
     var mapCenter = $('#map_center').val();
     var mapCenterArr = mapCenter.split(",");
-    map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
-    map.setZoom(parseInt($('#map_zoom').val()));
+
+    if(map.getZoom() != parseInt($('#map_zoom').val(), 10)){
+        map.setZoom(parseInt($('#map_zoom').val(), 10));
+    }
+    if(map.getCenter().lat() != parseFloat(mapCenterArr[0]) || map.getCenter().lng() != parseFloat(mapCenterArr[1])){
+        map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
+    }
 
     createTagsFromInputFields();
 
@@ -282,7 +287,7 @@ function updateExploreLocationParams(){
     var ne = bounds.getNorthEast();
 
     $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-    $('#map_center').val(((ne.lat() + sw.lat()) / 2) + ',' + ((ne.lng() + sw.lng()) / 2));
+    $('#map_center').val(map.getCenter().lat() + "," + map.getCenter().lng());
 
     updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), true);
     

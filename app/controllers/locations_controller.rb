@@ -1,7 +1,9 @@
 class LocationsController < ApplicationController
 
-  def update_user_location
+  def update_user_location   
     #store in session for quick access
+    cookies.delete :current_location_latitude
+    cookies.delete :current_location_longitude
     cookies[:current_location_latitude] = { :value => params[:latitude], :expires => 1.day.from_now }
     cookies[:current_location_longitude] = { :value => params[:longitude], :expires => 1.day.from_now }
 
