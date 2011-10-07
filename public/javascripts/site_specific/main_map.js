@@ -59,15 +59,17 @@ function init_map(){
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
     //ADD LISTENERS
-    google.maps.event.addListener(map, 'dragend', function(){
-        if($('#on_explore').length > 0)
-            updateExploreLocationParams();
-    });
-    google.maps.event.addListener(map, 'bounds_changed', function(){
-        if($('#on_explore').length > 0) {
-            updateExploreLocationParams();
+    google.maps.event.addListenerOnce(map, 'idle', function() {
+        google.maps.event.addListener(map, 'dragend', function(){
+            if($('#on_explore').length > 0)
+                updateExploreLocationParams();
+        });
+        google.maps.event.addListener(map, 'bounds_changed', function(){
+            if($('#on_explore').length > 0) {
+                updateExploreLocationParams();
 
-        }
+            }
+        });
     });
 }
 
