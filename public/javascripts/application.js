@@ -100,6 +100,10 @@ $(function() {
     $('#close_how_it_works').click(function() {
         closeHowItWorks();
     });
+
+    $('#how_it_works_explore').click(function() {
+        closeHowItWorks();
+    });
 });
 
 function cleanup(){

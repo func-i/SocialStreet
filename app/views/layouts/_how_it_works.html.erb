@@ -22,7 +22,7 @@
     <% end %>
   </div>
 </div>
-<div class="container" style="z-index: 3; width: 75%; margin: 0 auto; height: 350px; padding: 10px 75px 10px 10px;">
+<div class="container" style="z-index: 3; width: 75%; margin: 0 auto; min-height: 350px; padding: 10px 75px 10px 10px;">
   <%= image_tag "icons.png", :alt => "SocialStreet", :style => "float: left; margin: 5px;" %>
 
   <div style="clear: right;">
@@ -44,11 +44,11 @@
       StreetMeets are real life, everyday interactions between you and your community.<br/>
       Whether that means you are looking for a group to play basketball, a friend to watch the season finale of dancing with the stars or a buddy to check out the newest bar,<br/>
       you can find it all on SocialStreet!
-    </p>
+    </p>    
   </div>
-  <div style="clear: both; position: absolute; right: 20%; bottom: 15px;">
-    <div class="btn btn-not-important-color" style="margin-bottom: 9px; width: auto;">
-      Start Exploring
-    </div>
+  <div id="how_it_works_explore" class="btn btn-not-important-color nav-link" style="clear: both; margin-bottom: 9px; width: 125px; float: right;" data-ajax-href="<%= root_path %>">
+    Start Exploring
   </div>
+  <div style="clear:both">&nbsp;</div>
+
 </div>
