@@ -24,13 +24,18 @@ $(function(){
 
 function resizeCenterPaneContent(){
     var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
-    var scrollerTop = $('#what_scroller').offset().top;
-    $('#what_scroller').height(centerPaneBottom - scrollerTop);
+    var scrollerTop = $('#event_types_scroller').offset().top;
+    $('#event_types_scroller').height(centerPaneBottom - scrollerTop);
 }
 function resizeWhatTags(){
-    var whatTagTopOffset = $('#create_what_tag_list').offset().top;
-    var continueButtonTopOffset = $('#create_what_next_arrow').offset().top;
-    $('#create_what_tag_list').height(continueButtonTopOffset - whatTagTopOffset - 20);
+    var docHeight = $(window).height();
+    var keywordTopOffset = $('#keyword_tag_list').offset().top;
+    var keywordHeight = $('.keyword-tag-holder').height() + 5;
+    var continueHeight = $('#create_what_next_arrow').height() + 35;//30 for padding
+    if(keywordHeight > docHeight - keywordTopOffset - continueHeight){
+        $('.keyword-tag-holder').height(docHeight - keywordTopOffset - continueHeight);
+        initScrollPane($('.keyword-tag-holder'));
+    }
 }
 
 /*
@@ -100,105 +105,11 @@ function initCreateEvent(){
  *WHAT FUNCTIONS
  **/
 function setupCreateWhat(){
-    $('#center_pane').removeClass('invisible');
+    showEventTypeHolder();
 
     $('.create-where-view').addClass('hidden');
     $('.create-when-view').addClass('hidden');
 }
-
-function filter_what_icons(search_text){
-    if (createEventEventTypeTimer) {
-        clearInterval(createEventEventTypeTimer);
-        delete createEventEventTypeTimer;
-    }
-    createEventEventTypeTimer = setTimeout(function() {
-        var regEx = new RegExp(search_text, "i");
-        var exact_match = false;
-
-        //Filter the event_type list by the text entered
-        $.each($('.create-what-event-type-name'), function(index, value){
-            var myEventName = $(value);
-            if($.trim(myEventName.text()).match(regEx) == null){
-                myEventName.parent().addClass('hidden');
-            }
-            else{
-                myEventName.parent().removeClass('hidden');
-
-                exact_match = exact_match || $.trim(myEventName.text()) == search_text;
-            }
-        });
-
-        if(!exact_match && search_text.length > 0){
-            var customType = $('#create_what_event_types_holder #create-what-custom-event-type');
-            if(customType.length > 0){
-                customType.children('.create-what-event-type-name').text(search_text);
-            }
-            customType.removeClass('hidden');
-        }
-        else{
-            $('#create_what_event_types_holder #create-what-custom-event-type').addClass('hidden');
-        }
-
-    }, 250);
-}
-
-function createEventTypeIsClicked(record) {
-    var eventType_record = $(record);
-    var eventType_name = $.trim(eventType_record.children('.create-what-event-type-name').text());
-
-    if(eventType_record.closest('#create_what_tag_list').length > 0)
-    {
-        if(eventType_record.siblings().length == 0)
-        {
-            $('#create_what_tag_list_holder').addClass('invisible');
-            $('#create_what_next_arrow').addClass('invisible');
-        }
-
-        eventType_record.remove();
-        initScrollPane($('#create_what_tag_list'));
-
-        $.each(
-            $('#event_create_form input[name="event[event_keywords_attributes][][name]"]'),
-            function(index, value){
-                if($.trim($(value).val()) == eventType_name)
-                    $(value).remove();
-            });
-
-    }
-    else
-    {
-        if($('#create_what_tag_list .create-what-event-type-name').length == 0){
-            $('#create_what_tag_list_holder').removeClass('invisible');
-            $('#create_what_next_arrow').removeClass('invisible');
-        }
-
-        if(!doesKeywordAlreadyExist(eventType_name))
-        {
-            var api = $('#create_what_tag_list').data('jsp');
-            api.getContentPane().append(eventType_record.clone().css('position', 'relative').append($('#bg_close').clone().removeClass('hidden').addClass('event-type-selected')));
-            api.reinitialise();
-
-            $('#event_create_form').append(
-                '<input type="hidden" name="event[event_keywords_attributes][][name]" value="' + eventType_name + '" />'
-                );
-
-        //resizeScrollPane($('#create-what-tag-list-holder'));
-        }
-    }
-}
-
-function doesKeywordAlreadyExist(eventType_name){
-    var rtn = false;
-    $.each(
-        $('#create_what_tag_list .create-what-event-type-name'),
-        function(index, value){
-            if($.trim($(value).text()) == eventType_name)
-                rtn = true;
-        }
-        );
-    return rtn;
-}
-
 
 /*
  *WHERE FUNCTIONS
