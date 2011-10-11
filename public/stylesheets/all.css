@@ -1,3 +1,8 @@
+@font-face {
+    font-family: JLEE;
+    src: url('/fonts/JLEE.ttf');
+}
+
 /*RESET*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -359,6 +364,7 @@ END OF RESET
     background: #FFFCD5;
 }
 
+#how_it_works_header .btn,
 #header .btn {
     box-shadow: none;
     -webkit-box-shadow: none;
@@ -829,6 +835,7 @@ END OF RESET
     right: 12px;
     cursor: pointer;
 }
+<<<<<<< HEAD
 #explore_keyword_text_field{
     width:380px;
     height:35px;
@@ -932,3 +939,31 @@ END OF RESET
     float: right;
     padding: 3px 2px 0 0;
 }
+=======
+
+#how_it_works {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+#how_it_works_header {
+    background: url("../images/header-bg.png") repeat-x #333;
+    height: 65px;
+    display: block;    
+}
+
+#how_it_works_header .holder {
+    padding-top: 18px;
+}
+
+#close_how_it_works {
+    cursor: pointer;
+}
+
+.chalk {
+    font-family: JLEE;
+    color: #FFFCD5;
+}
+>>>>>>> dfe5a608cd85c824d8f5aa98e359181328990c24

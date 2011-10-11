@@ -1,0 +1,54 @@
+<div id="how_it_works_header">
+  <div class="holder">
+    <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
+
+    <% if user_signed_in? %>
+      <div id="signed_in_button">
+        <span id="current_user_name">
+          <%=current_user.name%>
+        </span>
+        <%= avatar(current_user, :size => "40x40", :class=>'drop-shadow') %>
+        <ul class="drop-shadow">
+          <!--<li><%#=link_to "Settings", '#' %></li>-->
+          <li><%=link_to "Sign Out", destroy_user_session_path%></li>
+        </ul>
+      </div>
+    <% else %>
+      <div id="log_button" style="margin-bottom: 9px; float: right; margin-right: 20%;" data-href='/auth/facebook'>
+        <%= image_tag("sign-in-logo.png", :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -42px;") %>
+      </div>
+      <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
+      <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
+    <% end %>
+  </div>
+</div>
+<div class="container" style="z-index: 3; width: 75%; margin: 0 auto; min-height: 350px; padding: 10px 75px 10px 10px;">
+  <%= image_tag "icons.png", :alt => "SocialStreet", :style => "float: left; margin: 5px;" %>
+
+  <div style="clear: right;">
+    <%= image_tag "btn-close1.png", :alt => "X", :id => "close_how_it_works", :style => "float: right; margin-top: 40px;" %>
+    <strong style="font-size: 30px;">
+      <span style="color: #FFC233">Explore</span>
+      <span style="color: white;">Real</span>
+      <span style="color: #FFC233">Life.</span>
+    </strong>
+    <p style="margin-bottom: 50px; color: white; line-height: 1.25;">
+      Our mission is to make it easy to discover friends that enjoy the same things as you!<br/>
+      You can now easily connect with your own personalized community, no matter where you are.
+      By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by great friends!
+    </p>
+    <strong style="font-size: 20px;">
+      <span style="color: white;">What are </span><span style="color: #FFC233">StreetMeets</span><span style="color: white;">?</span>
+    </strong>
+    <p style="color: white; line-height: 1.25;">
+      StreetMeets are real life, everyday interactions between you and your community.<br/>
+      Whether that means you are looking for a group to play basketball, a friend to watch the season finale of dancing with the stars or a buddy to check out the newest bar,<br/>
+      you can find it all on SocialStreet!
+    </p>    
+  </div>
+  <div id="how_it_works_explore" class="btn btn-not-important-color nav-link" style="clear: both; margin-bottom: 9px; width: 125px; float: right;" data-ajax-href="<%= root_path %>">
+    Start Exploring
+  </div>
+  <div style="clear:both">&nbsp;</div>
+
+</div>
