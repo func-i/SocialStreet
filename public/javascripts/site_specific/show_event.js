@@ -12,6 +12,8 @@ $(function(){
             delete showMarker.infoBubble_;
             showMarker = null;
         }
+
+        clearTimeout(myTimout);
     }
 
     resizeSelf = function(){

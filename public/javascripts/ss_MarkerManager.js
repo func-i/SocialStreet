@@ -87,7 +87,7 @@ MarkerManager.prototype.deleteAllMarkers = function(){
 };
 MarkerManager.prototype.hideAllMarkers = function(){
     $.each(this.allMarkers_, function(index, marker){
-        marker.setMap(null);
+        marker.setMap(null);        
     });
 };
 
@@ -185,4 +185,63 @@ ProjectionHelperOverlay.prototype.draw = function () {
     }
 };
 
+// Define the overlay, derived from google.maps.OverlayView
+function IconLabel() {
+    // Here go the label styles
+    this.div_ = document.createElement('div');
+    this.div_.style.cssText = 'position: absolute;';
 
+    this.image_ = document.createElement('img');
+    this.image_.src = '/images/event_types/streetmeet5.png';
+    this.image_.style.cssText = "width:50px;height:50px";
+    this.div_.appendChild(this.image_);
+};
+
+IconLabel.prototype = new google.maps.OverlayView;
+
+IconLabel.prototype.onAdd = function() {
+    var pane = this.getPanes().overlayImage;
+    pane.appendChild(this.div_);
+
+    // Ensures the label is redrawn if the text or position is changed.
+    var me = this;
+    this.listeners_ = [
+    google.maps.event.addListener(this, 'position_changed',
+        function() {
+            me.draw();
+        }),
+    google.maps.event.addListener(this, 'text_changed',
+        function() {
+            me.draw();
+        }),
+    google.maps.event.addListener(this, 'zindex_changed',
+        function() {
+            me.draw();
+        })
+    ];
+};
+
+IconLabel.prototype.onRemove = function() {
+    this.div_.parentNode.removeChild(this.div_);
+
+    // Label is removed from the map, stop updating its position/text.
+    for (var i = 0, I = this.listeners_.length; i < I; ++i) {
+        google.maps.event.removeListener(this.listeners_[i]);
+    }
+};
+
+// Implement draw
+IconLabel.prototype.draw = function() {
+    var projection = this.getProjection();
+
+    var position = projection.fromLatLngToDivPixel(this.get('position'));
+    var div = this.div_;
+    div.style.display = 'block';
+
+    div.style.left = (position.x - 25) + 'px';//25 for half the width of the icon
+    div.style.top = (position.y - 78) + 'px';//50 for height of icon, 34 for height of base, -6 to get it to sit on base
+};
+
+IconLabel.prototype.setIcon = function(iconSrc){
+    this.image_.src = iconSrc;
+};

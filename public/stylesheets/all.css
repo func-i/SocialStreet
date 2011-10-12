@@ -233,6 +233,9 @@ END OF RESET
     height: 80px;
     position: relative;
 }
+.selected-result{
+    background-color: #4f4f4d;
+}
 .result-image{
     float: left;
     margin: 0px 14px 0px 0px;

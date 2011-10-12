@@ -4,11 +4,14 @@ var exploreEventTypeTimer;
 var exploreUpdateTimer;
 var selectedResult;
 var selectedMarker;
+var markerSlideShowInterval;
 
 $(function(){
     //Cleanup function on leaving the page
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');
+        if(selectedMarker != null)
+            selectedMarker.label_.setMap(null);
     }
 
     resizeSelf = function(){
@@ -123,6 +126,11 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
     marker.resultID_ = resultID;
 
     $('#' + resultID).mouseenter(function() {
+        if($(this).hasClass('selected-result'))
+            return;
+
+        $('.selected-result').removeClass('selected-result');
+
         if(selectedMarker != null && selectedMarker != marker.ownerMarker_){
             selectedMarker.setIcon("/images/green-pin.png");
             selectedMarker.label_.setMap(null);
@@ -133,9 +141,16 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         selectedMarker.setIcon("/images/marker-base.png");
         selectedMarker.label_.setIcon(marker.iconSrc_);
         selectedMarker.label_.setMap(map);
+
+        if(markerSlideShowInterval != null){
+            clearTimeout(markerSlideShowInterval);
+        }
     });
 
     $('#' + resultID).mouseleave(function() {
+        if($(this).hasClass('selected-result'))
+            return;
+
         if(selectedMarker != null){
             selectedMarker.setIcon("/images/green-pin.png");
             selectedMarker.label_.setMap(null);
@@ -144,23 +159,34 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-        if(selectedMarker != null && selectedMarker.clusteredMarkers_ != null && selectedMarker != this) {
-            $.each(selectedMarker.clusteredMarkers_, function(mkr, i) {
-                selectedMarker.setIcon("/images/green-pin.png");
-                selectedMarker.label_.setMap(null);
-            });
+        if(selectedMarker != null && selectedMarker != this) {
+            selectedMarker.setIcon("/images/green-pin.png");
+            selectedMarker.label_.setMap(null);
         }
-        
+
         selectedMarker = this;
         this.setIcon("/images/marker-base.png");
         this.label_.setMap(map);
 
-        $('.result').css('background-color', '');
+        if(markerSlideShowInterval != null){
+            clearTimeout(markerSlideShowInterval);
+        }
+        if(selectedMarker.clusteredMarkers_ != null){
+            var count = 0;
+            markerSlideShowInterval = setInterval(function(){
+                selectedMarker.label_.setIcon(selectedMarker.clusteredMarkers_[count].iconSrc_);
+                count += 1;
+                if(count >= selectedMarker.clusteredMarkers_.length)
+                    count = 0;
+            }, 1000);
+        }
+
+        $('.selected-result').removeClass('selected-result');
 
         for(var i = 0; i < this.clusteredMarkers_.length; i++) {
             var myMarker = this.clusteredMarkers_[i];            
             var myResult = $('#' + myMarker.resultID_);
-            myResult.css('background-color', '#4f4f4d');
+            myResult.addClass('selected-result');
             $('#results_list').prepend(myResult);
             $('#results_container').data('jsp').scrollToY(0);
         }
@@ -176,68 +202,3 @@ function clearExploreMarkers(){
 function showExploreMarkers(){
     markerManager.showAllMarkers();
 }
-
-
-// Define the overlay, derived from google.maps.OverlayView
-function IconLabel(opt_options) {
-    // Initialization
-    this.setValues(opt_options);
-
-    // Here go the label styles
-    this.div_ = document.createElement('div');
-    this.div_.style.cssText = 'position: absolute;';
-
-    this.image_ = document.createElement('img');
-    this.image_.src = '/images/event_types/streetmeet5.png';
-    this.image_.style.cssText = "width:50px;height:50px";
-    this.div_.appendChild(this.image_);
-};
-
-IconLabel.prototype = new google.maps.OverlayView;
-
-IconLabel.prototype.onAdd = function() {
-    var pane = this.getPanes().overlayImage;
-    pane.appendChild(this.div_);
-
-    // Ensures the label is redrawn if the text or position is changed.
-    var me = this;
-    this.listeners_ = [
-    google.maps.event.addListener(this, 'position_changed',
-        function() {
-            me.draw();
-        }),
-    google.maps.event.addListener(this, 'text_changed',
-        function() {
-            me.draw();
-        }),
-    google.maps.event.addListener(this, 'zindex_changed',
-        function() {
-            me.draw();
-        })
-    ];
-};
-
-IconLabel.prototype.onRemove = function() {
-    this.div_.parentNode.removeChild(this.div_);
-
-    // Label is removed from the map, stop updating its position/text.
-    for (var i = 0, I = this.listeners_.length; i < I; ++i) {
-        google.maps.event.removeListener(this.listeners_[i]);
-    }
-};
-
-// Implement draw
-IconLabel.prototype.draw = function() {
-    var projection = this.getProjection();
-
-    var position = projection.fromLatLngToDivPixel(this.get('position'));
-    var div = this.div_;
-    div.style.display = 'block';
-
-    div.style.left = (position.x - 25) + 'px';//25 for half the width of the icon
-    div.style.top = (position.y - 78) + 'px';//50 for height of icon, 34 for height of base, -6 to get it to sit on base
-};
-
-IconLabel.prototype.setIcon = function(iconSrc){
-    this.image_.src = iconSrc;
-};
