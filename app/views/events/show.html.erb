@@ -1,29 +1,47 @@
 <% can_edit = @event.can_edit?(current_user) %>
 
 <% content_for :left_side_pane do %>
-  <div id="show_event_details" class="">
+  <div id="show_event_details">
+    <% if can_edit %>
+      <div id="edit_event_links">
+        <%= link_to "Edit StreetMeet", edit_event_path(@event), :id=>"edit_event_link" %>        
+        <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
+      </div>
+    <% end %>
+
     <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
       <div id="show_event_details_holder">
+
         <div id="show_event_text">
-          <div id="show_event_image">
-            <%= image_tag(url_for_event_image(@event))%>
-          </div>
+          <% @event.event_keywords.each_with_index do |ek, index| %>
+            <div class="show-event-image <%= 'hidden' if index > 0 %>">
+              <%= image_tag(url_for_event_keyword(ek))%>
+              <div style="text-align:center;font:11px/11px Arial, Helvetica, sans-serif;">
+                <%= ek.name %>
+              </div>
+            </div>
+          <% end %>
           <div id="show_event_title">
-            <span id="show_event_title_text">
-              <%= truncate_html(@event.title, :length => (can_edit ? 36 : 50)) %>
-            </span>
             <% if can_edit %>
-              <span id="edit_event_title_link">...Edit Title</span>
+              <span id="edit_event_title_link">Edit Title...</span>
               <%= form.text_field :name, :id=> "edit_event_title_field", :class=>"hidden", :style=>"width:270px;" %>
             <% end %>
+            <span id="show_event_title_text" class="text-shadow">
+              <%= truncate_html(@event.title, :length => (can_edit ? 27 : 31)) %>
+            </span>
           </div>
           <div id="show_event_date">
             <%= @event.date_range_as_sentence %>
           </div>
-          <div id="show_event_tags">
-            Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
-          </div>
+          <!--          <div id="show_event_tags">
+                      Tags: <%= truncate_html(@event.event_keywords_as_sentence, :length => 35) %>
+                    </div>-->
         </div>
+
+        <div id="join_btn_holder" class="event-details-view">
+          <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => @event}) %>
+        </div>
+
       </div>
       <div id="show_event_description_holder" class="scroll-pane show-scroll-on-hover">
         <% if can_edit %>
@@ -50,6 +68,11 @@
         <%@comments.each do |comment|%>
           <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
         <% end %>
+        <% if @comments.empty? %>
+          <div id="event_leave_message">
+            Leave a Message for your fellow SocialStreeters
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
@@ -57,22 +80,6 @@
 
 <% content_for :top_pane do %>
   <div class="event-details-view <%="hidden" if params[:invite]%>">
-    <% if can_edit %>
-      <div>
-        <%= link_to "Edit StreetMeet...", edit_event_path(@event), :id=>"edit_event_link" %>
-        <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
-      </div>
-    <% end %>
-    <div id="join_btn_holder">
-      <% if @event.canceled %>
-        <div id="event_canceled_btn">
-          Canceled
-        </div>
-      <% else %>
-        <%=render(:partial => 'rsvp_buttons', :locals => {:event => @event})%>
-      <% end %>
-    </div>
-
     <% unless @event.event_rsvps.attending.blank? %>
       <div id="show_attendees_holder" class="">
         <div id="show_attendees_title" class="container">

@@ -66,7 +66,7 @@ $(function(){
     $('.already-invited-email').live('click', function(){
         remove_invitation(this);
     });
-    $('#submit_invitation_next_arrow').click(function(){
+    $('.submit-invitation-next-arrow').click(function(){
         $('#invite_form').submit();
         showEventView();
 
@@ -93,7 +93,7 @@ $(function(){
     });
     
     function submitEventTitle() {        
-        $('#show_event_title_text').text($('#edit_event_title_field').val().substring(0, 36));
+        $('#show_event_title_text').text($('#edit_event_title_field').val().substring(0, 25));
         $('#show_event_title_text').removeClass('hidden');
         $('#edit_event_title_link').removeClass('hidden');
         $('#edit_event_title_field').addClass('hidden');
@@ -106,7 +106,8 @@ $(function(){
         $('#edit_event_description_link').addClass('hidden');
         $('#edit_event_description_field').removeClass('hidden');
         $('#edit_event_description_field').autoResize();
-        $('#show_event_description_holder').data('jsp').destroy();
+        if($('#show_event_description_holder').data('jsp'))
+            $('#show_event_description_holder').data('jsp').destroy();
         $('#show_event_description_holder').height('auto');
         $('#show_event_description_holder').css('max-height', 'none');
     });
@@ -119,7 +120,7 @@ $(function(){
             $('#edit_event_description_field').addClass('hidden');
             $('#event_edit_form').submit();
 
-            if(e.target.value > 0){
+            if(e.target.value.length > 0){
                 $('#edit_event_description_link').text('Edit description...');
             }
             else{
@@ -140,8 +141,8 @@ function resizeCenterPaneContent(){
 
 function removeComment(comment){
     comment.hide();
-
-    $('#event_wall').data('jsp').destroy();
+    if($('#event_wall').data('jsp'))
+        $('#event_wall').data('jsp').destroy();
     $('#event_wall').height('auto');
 
     capHeightContainer();
@@ -178,6 +179,13 @@ function setupShowEventPage(){
     }
 
     getInvitationUsers();//Load invitation users on delay
+
+    if($('.show-event-image').length > 1){
+        myTimout = setInterval(function(){
+            $('.show-event-image').addClass('hidden');
+            $('.show-event-image').eq(Math.floor(Math.random() * $('.show-event-image').length)).removeClass('hidden');
+        }, 5000);
+    }
 }
 
 function showInvitationView(){
@@ -242,8 +250,10 @@ function add_invitation(that){
 
         invitationCounter++;
         $('#invitation_list').removeClass('invisible');
+        $('#invite_friend_pretext').addClass('hidden');
 
-        $('#submit_invitation__text').text("Invite Friends");
+        $('#invite_friends_btn').removeClass('hidden');
+        $('#continue_invitation_btn').addClass('hidden');
     }
 }
 function remove_invitation(that){
@@ -252,7 +262,10 @@ function remove_invitation(that){
 
     if($('#invite_form input[name="invited_users[]"]').length <= 0){
         $('#invitation_list').addClass('invisible');
-        $('#submit_invitation__text').text("Continue to StreetMeet");
+        $('#invite_friend_pretext').removeClass('hidden');
+
+        $('#invite_friends_btn').addClass('hidden');
+        $('#continue_invitation_btn').removeClass('hidden');
     }
 }
 
@@ -301,6 +314,7 @@ function submit_event_wall_comment(){
         $('#event_wall_form').submit();
         $('#event_wall_text_field').val('');
         $('#event_wall_text_field').blur();
+        $('#event_leave_message').addClass('hidden');
     }
     return false;
 }

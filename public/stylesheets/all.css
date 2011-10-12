@@ -156,12 +156,26 @@ END OF RESET
 }
 #current_user_name{
     color: white;
-    padding: 17px 5px 0 0;
+    font: bold 12px/19px Arial, Helvetica, sans-serif;
+}
+#signin_button{
+    float: right;
+    color: white;
+    font: bold 12px/19px Arial, Helvetica, sans-serif;
+    margin: 9px 50px 0 5px;
+}
+#how_it_works_btn{
+    float: right;
+    color: white;
+    font: bold 12px/19px Arial, Helvetica, sans-serif;
+    margin: 9px 15px 0 5px;
+    cursor: pointer;
 }
 #signed_in_button{
     float:right;
     position: relative;
-    margin: 0 50px 0 5px;
+    margin: 0px 50px 0 5px;
+    cursor: pointer;
 }
 #signed_in_button ul{
     display:none;
@@ -237,6 +251,7 @@ END OF RESET
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
+    width: 260px;
     cursor: pointer;
 }
 .result-date{
@@ -408,8 +423,7 @@ END OF RESET
     width: 120px;
     text-align: center;
 }
-.unattend-btn{
-    margin-top: 10px;
+.unattend-btn{   
     color: black;
     font: italic 11px/12px Arial, Helvetica, sans-serif;
     text-align: center;
@@ -420,7 +434,7 @@ END OF RESET
 }
 
 /*Create Event*/
-#create_what_left_pane{
+.create-left-pane{
     padding-left: 20px;
 }
 .create-info-box{
@@ -494,70 +508,75 @@ END OF RESET
     cursor: pointer;
 }
 #create_where_title{
-    font: bold 30px/32px Arial, Helvetica, sans-serif;
-    color: white;
-    padding-top: 75px;
-    text-align: center;
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    padding: 60px 0 5px 0;
+    text-align: left;
 }
 #create_where_subtitle{
-    font: bold 12px/32px Arial, Helvetica, sans-serif;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
     color: white;
-    padding-top: 60px;
-    text-align: center;
+    text-align: left;
 }
 #create_where_text_field_holder{
-    margin: 0 auto;
-    text-align:center;
-    padding-top: 50px;
+    height: 35px;
+    margin: 24px 0;
 }
 #create_where_text_field{
-    width:400px;
-    height:24px;
-    border: 5px solid #4F4F4D;
+    width:360px;
+    height:35px;
+    border: 0;
+}
+#create_where_address_title{
+    font: bold 11px/11px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: left;
+    padding: 20px 0 20px 2px;
 }
 #create_where_address{
     font: bold 20px/32px Arial, Helvetica, sans-serif;
-    color: #FFC233;
-    text-align: center;
-    padding: 10px;
+    color: #FFFCD5;
 }
 #create_where_name_location{
-    font: bold 16px/32px Arial, Helvetica, sans-serif;
-    color: #FFFCD5;
-    padding: 50px 0 10px 0;
-    text-align: center;
+    font: bold 11px/11px Arial, Helvetica, sans-serif;
+    color: #FFC233;
     cursor: pointer;
+    float: left;
+    padding-left: 5px;
 }
 #create_where_name_location_input{
     width: 300px;
+    border: 0px;
+    margin: 0px;
+    vertical-align: baseline;
 }
 #create_when_calendar_holder{
     width: 100%;
     height: 100%;
 }
-.create-when-title{
-    font: bold 30px/32px Arial, Helvetica, sans-serif;
+#create_when_title{
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    padding: 60px 0 5px 0;
+    text-align: left;
+}
+#create_when_subtitle{
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
     color: white;
-    padding-top: 75px;
-    text-align: center;
+    text-align: left;
 }
 #create_when_date{
-    font: bold 20px/32px Arial, Helvetica, sans-serif;
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
     color: #FFC233;
-    text-align: center;
-    padding: 10px 0;
-    width: 400px;
+    padding: 95px 0 10px 0;
 }
 #create_when_time{
-    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
     color: white;
-    text-align: center;
-    padding-top: 30px;
 }
 #create_when_duration{
-    font: bold 18px/32px Arial, Helvetica, sans-serif;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
     color: white;
-    text-align: center;
 }
 
 
@@ -582,7 +601,7 @@ END OF RESET
 #show_event_text{
     color: white;
 }
-#show_event_image{
+.show-event-image{
     float: left;
     margin: 0px 14px 0px 0px;
 }
@@ -590,13 +609,13 @@ END OF RESET
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
-    /*    cursor: pointer; */
 }
 #show_event_title_text{
 
 }
 #show_event_date{
-    padding-bottom: 5px;
+    padding-bottom: 0px;
+    font: 14px/14px Arial, Helvetica, sans-serif;
 }
 #show_event_tags{
     color: white;
@@ -605,7 +624,7 @@ END OF RESET
 }
 #show_event_description_holder{
     color: white;
-    margin: 10px 10px 5px 10px;
+    margin: 25px 10px 5px 10px;
     overflow-y: auto;
     max-height: 75px;
     width: 380px;
@@ -616,12 +635,12 @@ END OF RESET
 
 #edit_event_title_link{
     color: #FFFD8B;
-    font: italic 14px/14px Arial, Helvetica, sans-serif;
+    font: italic 11px/11px Arial, Helvetica, sans-serif;
     cursor: pointer;
 }
 #edit_event_description_link{
     color: #FFFD8B;
-    font: italic 14px/14px Arial, Helvetica, sans-serif;
+    font: italic 11px/11px Arial, Helvetica, sans-serif;
     cursor: pointer;
 }
 #edit_event_link{
@@ -642,10 +661,9 @@ END OF RESET
 }
 
 #join_btn_holder{
-    margin: 10px 20px 20px 0;
-    width: 180px;
-    height: 32px;
-    float: left;
+    float: right;
+    position: relative;
+    top: 13px;
 }
 #show_attendees_holder{
     /*height: 200px;*/
@@ -682,13 +700,24 @@ END OF RESET
     border-radius: 4px;
     border: 2px solid #4F4F4D
 }
+#edit_event_links{
+    margin: 0 auto;
+    text-align: center;
+}
 #event_wall_text_field_holder{
 }
 #event_wall_text_field{
     width:365px;
     height:24px;
     margin:10px;
-    border: 5px solid #4F4F4D;
+    border: 0;
+}
+#event_leave_message{
+    color:white;
+    margin: 0 auto;
+    text-align:center;
+    font: 18px/18px Arial, Helvetica, sans-serif;
+    padding: 0 10px;
 }
 .event-wall-comment{
     width: 370px;
@@ -740,21 +769,13 @@ END OF RESET
     right: 5px;
     font: italic 11px/26px Arial, Helvetica, sans-serif;
 }
-#submit_invitation_next_arrow{
-    position:absolute;
-    bottom: 15px;
-    right: 15px;
-    color: #010000;
-    background: #FFC233;
-    font: bold 14px/32px Arial, Helvetica, sans-serif;
-    padding: 3px 20px;
-    cursor: pointer;
-    text-align: center;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-
-}i
+#invite_friend_pretext{
+    padding: 5px 10px;
+    margin: 0 auto;
+    text-align:center;
+    color: white;
+    font: 14px/14px Arial, Helvetica, sans-serif;
+}
 #post_to_facebook_holder{
     color: black;
     margin: 0 auto 5px auto;
@@ -773,17 +794,23 @@ END OF RESET
 }
 .user-for-invitation{
     float: left;
-    padding: 0 5px;
-    width: 110px;
-    height: 110px;
+    width: 85px;
+    height: 90px;
+    margin: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;"
 }
 .user-image-for-invitation{
-    padding-left: 27px;
+    padding-top: 5px;
+    margin: 0 auto;
+    text-align: center;
 }
 .user-name-for-invitation{
+    margin: 0 auto;
     text-align: center;
     color: white;
     overflow: hidden;
+    font: 12px/12px Arial, Helvetica, sans-serif
 }
 #invited_user_list{
     width: 400px;
@@ -807,14 +834,6 @@ END OF RESET
     text-align: center;
     vertical-align: middle;
 }
-#invitation_list_title{
-    font: bold 24px/32px Arial, Helvetica, sans-serif;
-    color: white;
-    text-align: center;
-    padding: 5px 0;
-    width: 400px;
-}
-
 .nav-link {
     cursor: pointer;
 }
@@ -835,7 +854,6 @@ END OF RESET
     right: 12px;
     cursor: pointer;
 }
-<<<<<<< HEAD
 #explore_keyword_text_field{
     width:380px;
     height:35px;
@@ -925,7 +943,7 @@ END OF RESET
     padding: 18px 0 0 5px;
 }
 .create-keyword-tag-name{
-    font: bold 12px/12px Arial, Helvetica, sans-serif;
+    font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
     float: left;
     width: 65px;
@@ -937,9 +955,8 @@ END OF RESET
 }
 .create-keyword-tag-remove{
     float: right;
-    padding: 3px 2px 0 0;
+    padding: 5px 2px 0 0;
 }
-=======
 
 #how_it_works {
     position: absolute;

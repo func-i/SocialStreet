@@ -51,8 +51,6 @@ class EventsController < ApplicationController
   end
 
   def update
-
-    raise params.inspect
     event = Event.find params[:id]
 
     raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)

@@ -1,21 +1,4 @@
 <% content_for :center_pane do %>
-  <div id="invitation_list" class="event-invitation-view invisible <%="hidden" unless params[:invite]%>">
-    <div id="invitation_list_title">
-      Invitations
-    </div>
-    <ul id="invited_user_list">
-      <li id="invited_user_clone" class="already-invited-user hidden">
-        <div class="already-invited-user-image">
-        </div>
-      </li>
-    </ul>
-  </div>
-<% end %>
-
-<% content_for :bottom_pane do %>
-<% end %>
-
-<% content_for :left_side_pane do %>
   <div id="user_holder" class="event-invitation-view <%="hidden" unless params[:invite]%>">
     <div id="invite_user_text_field_holder">
       <%= form_tag load_connections_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
@@ -23,24 +6,42 @@
         <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
       <% end %>
     </div>
-    <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>
-      <% unless @event.event_rsvps.where(:user_id => current_user).first.try(:posted_to_facebook) %>
-        <div id="post_to_facebook_holder" class="btn-important-color">
-          <%= check_box_tag 'post_to_facebook', 'true', true%>
-          <span>Post this event to your facebook wall</span>
-        </div>
-      <% end %>
-    <% end %>
-
-    <div id="user_holder_for_invitation" class="expand-height scroll-pane" style="overflow: auto;">
+    <div id="user_holder_for_invitation" class="expand-height scroll-pane include-vertical-bar" style="overflow: auto;">
       <ul id="user_list_for_invitation" class="expand-height">
         <%=image_tag "loading.gif", :id=>'loading_invitation_image'%>
       </ul>
     </div>
   </div>
+<% end %>
 
-  <div id="submit_invitation_next_arrow" class="event-invitation-view <%="hidden" unless params[:invite]%>" style="float:left">
-    <span id="submit_invitation__text">Continue to StreetMeet</span>
+<% content_for :bottom_pane do %>
+<% end %>
+
+<% content_for :left_side_pane do %>
+  <div class="event-invitation-view <%="hidden" unless params[:invite]%>"
+  <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>
+    <% unless @event.event_rsvps.where(:user_id => current_user).first.try(:posted_to_facebook) %>
+           <div id="post_to_facebook_holder" class="btn-important-color">
+               <%= check_box_tag 'post_to_facebook', 'true', true%>
+          <span>Post this StreetMeet to your Facebook wall</span>
+        </div>
+      <% end %>
+    <% end %>
   </div>
+
+  <div id="invite_friend_pretext" class="event-invitation-view <%="hidden" unless params[:invite]%>">
+    <span style="font-weight: bold;font-size:18px;">Invite your friends!</span><br/><br/>Click their image or enter their email to let them know what you'll be doing!
+  </div>
+  <div id="invitation_list" class="event-invitation-view invisible <%="hidden" unless params[:invite]%>">
+    <ul id="invited_user_list">
+      <li id="invited_user_clone" class="already-invited-user hidden">
+        <div class="already-invited-user-image">
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <%= image_tag('continue-button.png', :id=>'continue_invitation_btn', :class=>"submit-invitation-next-arrow next-arrow event-invitation-view #{"hidden" unless params[:invite]}") %>
+  <%= image_tag('invite-friends-btn.png', :id=>'invite_friends_btn', :class=>"submit-invitation-next-arrow next-arrow hidden")%>
 <% end %>
 

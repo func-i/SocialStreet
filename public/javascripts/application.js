@@ -29,7 +29,7 @@ $(function() {
     });
 
     //Signin link
-    $('#log_button').click(function() {
+    $('#signin_button').click(function() {
         window.location = $(this).data('href');
     });
 

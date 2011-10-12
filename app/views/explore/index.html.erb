@@ -1,6 +1,6 @@
 <% content_for :left_side_pane do %>
   <div class="">
-    <div id="keyword_text_field_holder">
+    <div id="explore_keyword_text_field_holder" class="keyword-text-field-holder">
       <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "What do you want to do?", :id=>'explore_keyword_text_field', :class=>'keyword-text-field' %>
     </div>
     <div id="results_container" class="expand-height scroll-pane show-scroll-on-hover" style="overflow: auto;">
@@ -15,7 +15,7 @@
 <% end %>
 
 <% content_for :right_side_pane do %>
-  <div id="explore_keyword_header" class="important-color invisible">Keywords</div>
+  <div id="explore_keyword_header" class="important-color text-shadow invisible">Keywords</div>
   <div id="explore_keyword_tag_holder" class="keyword-tag-holder container">
     <ul id="keyword_tag_list">
       <li id="keyword_tag_stamp" class="keyword-tag explore-keyword-tag hidden">

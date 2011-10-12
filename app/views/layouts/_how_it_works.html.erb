@@ -4,17 +4,17 @@
 
     <% if user_signed_in? %>
       <div id="signed_in_button">
-        <span id="current_user_name">
+        <%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %>
+        <span id="current_user_name" class="text-shadow">
           <%=current_user.name%>
         </span>
-        <%= avatar(current_user, :size => "40x40", :class=>'drop-shadow') %>
         <ul class="drop-shadow">
           <!--<li><%#=link_to "Settings", '#' %></li>-->
           <li><%=link_to "Sign Out", destroy_user_session_path%></li>
         </ul>
       </div>
     <% else %>
-      <div id="log_button" style="margin-bottom: 9px; float: right; margin-right: 20%;" data-href='/auth/facebook'>
+      <div id="signin_button" style="margin-bottom: 9px; float: right; margin-right: 20%;" data-href='/auth/facebook'>
         <%= image_tag("sign-in-logo.png", :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -42px;") %>
       </div>
       <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>

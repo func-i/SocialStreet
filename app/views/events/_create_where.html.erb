@@ -1,31 +1,34 @@
 <% content_for :left_side_pane do %>
-  <div class="create-info-box create-where-view hidden">
-    <div id="create_where_title">
+  <div class="create-left-pane create-where-view hidden">
+    <div id="create_where_title" class="text-shadow">
       Where?
     </div>
-    <div id="create_where_subtitle">
+    <div id="create_what_subtitle" class="text-shadow">
       Drag the pin or enter an address in the text box...
     </div>
-  </div>
-
-  <div id="create_where_marker_info" class="create-info-box create-where-view hidden invisible">
-    <div id="create_where_name_location">
-      <span id="create_where_name_location_text"><%= event.location.text %></span>
-      <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create_where_name_location_input', :class => 'hidden' %>
+    <div id="create_where_text_field_holder">
+      <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create_where_text_field' %>
     </div>
-    <div id="create_where_address">
-      <%= event.location.geocoded_address %>
-    </div>
-  </div>
 
-  <div id="create_where_next_arrow" class="create-where-view next-arrow hidden invisible">
-    Continue
+    <div id="create_where_marker_info" class="invisible">
+      <div id="create_where_address_title" class="text-shadow">
+        <span style="float:left">
+        ADDRESS:
+        </span>
+        <div id="create_where_name_location" class="text-shadow">
+          <span id="create_where_name_location_text"><%= event.location.text %></span>
+          <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create_where_name_location_input', :class => 'hidden' %>
+        </div>
+      </div>
+      <div id="create_where_address" class="text-shadow">
+        <%= event.location.geocoded_address %>
+      </div>
+    </div>
+
+    <%= image_tag('continue-button.png', :id=>'create_where_next_arrow', :class=>"next-arrow drop-shadow invisible") %>
   </div>
 
 <% end %>
 
 <% content_for :top_pane do %>
-  <div id="create_where_text_field_holder" class="create-where-view hidden">
-    <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create_where_text_field' %>
-  </div>
 <% end %>

@@ -146,7 +146,7 @@ function createExploreMarker(lat, lng, resultID){
         for(var i = 0; i < this.clusteredMarkers_.length; i++) {
             var myMarker = this.clusteredMarkers_[i];            
             var myResult = $('#' + myMarker.resultID_);
-            myResult.css('background-color', '#333');
+            myResult.css('background-color', '#4f4f4d');
             //  myResult.find('.result-arrow').removeClass('hidden');
             $('#results_list').prepend(myResult);
             $('#results_container').data('jsp').scrollToY(0);

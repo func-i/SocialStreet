@@ -43,16 +43,6 @@ function resizeWhatTags(){
  */
 function initCreateEvent(){
     //Create What bindings
-    $('#create_what_text_field').keyup(function(e){
-        filter_what_icons(e.target.value);
-        $('#what_scroller').data('jsp').scrollToY(0);
-    });
-
-    $('.create-what-event-type').live('click', function(){
-        createEventTypeIsClicked(this);
-        resizeLayout();
-    });
-
     $('#create_what_next_arrow').click(function(){
         setupCreateWhere();
 
@@ -154,7 +144,7 @@ function selectMarker_createWhere(marker){
     $('#create_where_marker_info').removeClass('invisible');
     $('#create_where_address').text(marker.address_);
 
-    $('#create_where_name_location_text').text(marker.text_ ? marker.text_ : "Click here to name this pin...");
+    $('#create_where_name_location_text').text(marker.text_ ? marker.text_ : "Click here to name this location...");
     $('#create_where_name_location_text').removeClass('hidden');
     $('#create_where_name_location_input').addClass('hidden');
     $('#create_where_name_location_input').val('');

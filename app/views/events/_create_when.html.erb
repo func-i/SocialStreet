@@ -1,32 +1,31 @@
 <% content_for :left_side_pane do %>
-  <div class="create-info-box create-when-view hidden">
-    <div class="create-when-title">
+  <div class="create-left-pane create-when-view hidden">
+    <div id="create_when_title" class="text-shadow">
       When?
     </div>
-  </div>
-
-  <div id="create-when-info" class="create-info-box create-when-view hidden">
-    <div id="create_when_date">
-      <%= event.start_date.strftime("%B %e, %Y") %>
+    <div id="create_when_subtitle" class="text-shadow">
+      Select the date, start time and duration
     </div>
-    <div id="create_when_time">
-      Start Time:
-      <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime("%I")), :class => "create-when-time create-when-field"%>
-      <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime('%M')), :class => "create-when-time create-when-field"%>
-      <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], event.start_date.strftime('%p')), :class => "create-when-time create-when-field"%>
+    <div id="create-when-info">
+      <div id="create_when_date" class="text-shadow">
+        <%= event.start_date.strftime("%B %e, %Y") %>
+      </div>
+      <div id="create_when_time" class="text-shadow">
+        Start Time:
+        <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime("%I")), :class => "create-when-time create-when-field"%>
+        <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime('%M')), :class => "create-when-time create-when-field"%>
+        <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], event.start_date.strftime('%p')), :class => "create-when-time create-when-field"%>
+      </div>
+      <div id="create_when_duration" class="text-shadow">
+        Duration:
+        <% duration, duration_size = event.duration_array %>
+        <%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration", :class => "create-when-field"%>
+        <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size", :class => "create-when-field"%>
+      </div>
     </div>
-    <div id="create_when_duration">
-      Duration:
-      <% duration, duration_size = event.duration_array %>
-      <%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration", :class => "create-when-field"%>
-      <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size", :class => "create-when-field"%>
-    </div>
-  </div>
 
-  <div id="create_when_next_arrow" class="create-when-view next-arrow hidden">
-    <%=event.new_record? ? "Create" : "Update"%> StreetMeet
+    <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_when_next_arrow', :class=>"next-arrow drop-shadow") %>
   </div>
-
 <% end %>
 
 <% content_for :center_pane do %>
@@ -34,10 +33,6 @@
     <div id="create_when_calendar" class="drop-shadow" style="height: 100%; width: 100%;"></div>
   </div>
 <% end %>
-
-<% content_for :bottom_pane do %>
-<% end %>
-
 
 
 
