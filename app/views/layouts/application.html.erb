@@ -56,5 +56,30 @@
         </ul>
       </div>
     </div>
+
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <div id="fb-root"></div>
+    <script type='text/javascript'>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId  : '<%= FACEBOOK_APP_ID %>',
+          status : true, // check login status
+          cookie : true, // enable cookies to allow the server to access the session
+          xfbml  : true  // parse XFBML
+        });
+      };
+
+      function fbUI(){
+        FB.ui({
+          method: 'apprequests',
+          to: 122602498,
+          message: 'Come share your love for vodka, show off your dance moves, shoot some pool, and grab a bite to eat in the heart of downtown Toronto. Grab your friends and dress your best for this great opportunity to have fun and meet new people. (19+)',
+          title: 'StreetMeet of the Week - FREE OPEN BAR Vodka Party'
+        });
+      }
+
+
+    </script>
   </body>
 </html>
+

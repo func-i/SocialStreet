@@ -17,7 +17,7 @@ MarkerManager.prototype.init = function(opt_options)
 
     this._setValues(options);
 
-    this.projectionHelper_ = new _ProjectionHelperOverlay(this.map_);
+    this.projectionHelper_ = new ProjectionHelperOverlay(this.map_);
 };
 
 MarkerManager.prototype._setValues = function(options)
@@ -29,7 +29,8 @@ MarkerManager.prototype._setValues = function(options)
 
 MarkerManager.prototype.addMarker = function(lat, lng){
     var marker = new google.maps.Marker({
-        icon: '/images/map_pin.png',
+        icon: '/images/green-pin.png',
+//        shadow: new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)),
         position: new google.maps.LatLng(lat, lng)
     });
     
@@ -56,12 +57,14 @@ MarkerManager.prototype.showAllMarkers = function(){
         if(null != (ownerMarker = this._clusterWith(marker))){
             //Cluster with ownerMarker
             ownerMarker.clusteredMarkers_.push(marker);
+            marker.ownerMarker_ = ownerMarker;
             marker.setMap(null);
         }
         else{
             marker.setMap(this.map_);
             marker.clusteredMarkers_ = [];
             marker.clusteredMarkers_.push(marker);
+            marker.ownerMarker_ = marker;
 
             var bounds = new google.maps.LatLngBounds(marker.getPosition(), marker.getPosition());
             marker.extendedBounds_ = this._getExtendedBounds(bounds);
@@ -77,7 +80,7 @@ MarkerManager.prototype.showAllMarkers = function(){
 MarkerManager.prototype.deleteAllMarkers = function(){
     $.each(this.allMarkers_, function(index, marker){
         marker.setMap(null);
-        delete marker.clusteredWith_;
+        delete marker.clusteredMarkers_;
     });
     delete this.allMarkers_;
     this.allMarkers_ = [];
@@ -169,15 +172,17 @@ MarkerManager.prototype._getExtendedBounds = function(bounds){
  * This is a helper class
  * @param {google.maps.Map} map
  */
-function _ProjectionHelperOverlay(map) {
+function ProjectionHelperOverlay(map) {
     google.maps.OverlayView.call(this);
     this.setMap(map);
 }
 
-_ProjectionHelperOverlay.prototype = new google.maps.OverlayView();
-_ProjectionHelperOverlay.prototype.draw = function () {
+ProjectionHelperOverlay.prototype = new google.maps.OverlayView();
+ProjectionHelperOverlay.prototype.draw = function () {
     if (!this.ready) {
         this.ready = true;
         google.maps.event.trigger(this, 'ready');
     }
 };
+
+

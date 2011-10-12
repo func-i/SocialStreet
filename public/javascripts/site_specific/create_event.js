@@ -115,11 +115,14 @@ function setupCreateWhere(){
     var lng = $('#location-lng-field').val();
 
     if(lat && lng){
-        $('#create_where_next_arrow').removeClass('invisible');
-        $('#create_where_marker_info').removeClass('invisible');
-
         var marker = createCreateMarker(new google.maps.LatLng(lat, lng));
-        map.panTo(marker.getPosition());
+
+        var name = $('#location-name-field').val();
+        selectMarker_createWhere(marker);
+        if(name){
+            saveMarkerName(name);
+            selectMarker_createWhere(marker);
+        }
     }else{
         $('#create_where_next_arrow').addClass('invisible');
         $('#create_where_marker_info').addClass('invisible');
@@ -144,7 +147,7 @@ function selectMarker_createWhere(marker){
     $('#create_where_marker_info').removeClass('invisible');
     $('#create_where_address').text(marker.address_);
 
-    $('#create_where_name_location_text').text(marker.text_ ? marker.text_ : "Click here to name this location...");
+    $('#create_where_name_location_text').text((marker.text_ && marker.text_.length > 0) ? marker.text_ : "Click here to name this location...");
     $('#create_where_name_location_text').removeClass('hidden');
     $('#create_where_name_location_input').addClass('hidden');
     $('#create_where_name_location_input').val('');

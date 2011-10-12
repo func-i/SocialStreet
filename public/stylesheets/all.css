@@ -160,8 +160,8 @@ END OF RESET
 }
 #signin_button{
     color: white;
-    font: bold 12px/19px Arial, Helvetica, sans-serif;
-    margin: 9px 15px 0 5px;
+    font: bold 16px/19px Arial, Helvetica, sans-serif;
+    margin: 7px 15px 0 5px;
     cursor: pointer;
 }
 .header-right {
@@ -174,8 +174,8 @@ END OF RESET
 }
 #how_it_works_btn{
     color: white;
-    font: bold 12px/19px Arial, Helvetica, sans-serif;
-    margin: 9px 15px 0 5px;
+    font: italic 12px/19px Arial, Helvetica, sans-serif;
+    margin: 9px 25px 0 5px;
     cursor: pointer;
 }
 #signed_in_button{
@@ -234,8 +234,8 @@ END OF RESET
     position: relative;
 }
 .result-image{
-    float: right;
-    margin: 0px 0px 0px 14px;
+    float: left;
+    margin: 0px 14px 0px 0px;
 }
 .attending-info {
     background: #0981BE;
@@ -297,7 +297,7 @@ END OF RESET
     cursor: pointer;
     text-align: center;
     bottom: 9px;
-    right: 105px;
+    right: 15px;
 }
 
 .result-join-btn-holder .attending {
@@ -630,7 +630,7 @@ END OF RESET
 }
 #show_event_description_holder{
     color: white;
-    margin: 25px 10px 5px 10px;
+    margin: 25px 10px 5px 15px;
     overflow-y: auto;
     max-height: 75px;
     width: 380px;
@@ -737,7 +737,7 @@ END OF RESET
     width: 100px;
 }
 .event-wall-user-image{
-    padding: 0 27px 0 27px;
+    padding: 0 23px 0 23px;
 }
 .event-wall-user-name{
     text-align: center;
@@ -804,7 +804,7 @@ END OF RESET
     height: 90px;
     margin: 10px;
     -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;"
+    -moz-border-radius: 3px;
 }
 .user-image-for-invitation{
     padding-top: 5px;
@@ -989,4 +989,3 @@ END OF RESET
     font-family: JLEE;
     color: #FFFCD5;
 }
->>>>>>> dfe5a608cd85c824d8f5aa98e359181328990c24

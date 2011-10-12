@@ -8,10 +8,10 @@
       Select a keyword from the list or define your own...
     </div>
     <div id="create_keyword_text_field_holder" class="keyword-text-field-holder">
-      <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :id=>'create_keyword_text_field', :class=>'keyword-text-field drop-shadow' %>
+      <%= text_field_tag 'keywords', params[:q], :type => "text", :title => "What?", :placeholder => "Enter keywords here...", :id=>'create_keyword_text_field', :class=>'keyword-text-field' %>
     </div>
 
-    <div id="create_what_tags" class="text-shadow invisible">
+    <div id="create_what_tags" class="text-shadow <%="invisible" unless @event && !@event.event_keywords.empty?%>" >
       TAGS:
     </div>
 
