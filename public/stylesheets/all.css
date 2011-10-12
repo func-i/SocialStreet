@@ -159,22 +159,28 @@ END OF RESET
     font: bold 12px/19px Arial, Helvetica, sans-serif;
 }
 #signin_button{
-    float: right;
     color: white;
     font: bold 12px/19px Arial, Helvetica, sans-serif;
-    margin: 9px 50px 0 5px;
+    margin: 9px 15px 0 5px;
+    cursor: pointer;
+}
+.header-right {
+    float: right;
+    margin-right: 50px;
+}
+
+.header-right div {
+    float: left;
 }
 #how_it_works_btn{
-    float: right;
     color: white;
     font: bold 12px/19px Arial, Helvetica, sans-serif;
     margin: 9px 15px 0 5px;
     cursor: pointer;
 }
 #signed_in_button{
-    float:right;
     position: relative;
-    margin: 0px 50px 0 5px;
+    margin: 9px 15px 0 5px;
     cursor: pointer;
 }
 #signed_in_button ul{
@@ -228,8 +234,8 @@ END OF RESET
     position: relative;
 }
 .result-image{
-    float: left;
-    margin: 0px 14px 0px 0px;
+    float: right;
+    margin: 0px 0px 0px 14px;
 }
 .attending-info {
     background: #0981BE;
@@ -291,7 +297,7 @@ END OF RESET
     cursor: pointer;
     text-align: center;
     bottom: 9px;
-    right: 5px;
+    right: 105px;
 }
 
 .result-join-btn-holder .attending {

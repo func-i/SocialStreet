@@ -5,24 +5,29 @@
     <%= image_tag('find-btn.png', :class=>"nav-link", "data-ajax-href" => root_path) %>
     <%= image_tag('plan-streetmeet-btn.png', :class=>"nav-link", "data-ajax-href" => new_event_path) %>
 
-    <% if user_signed_in? %>
-      <div id="signed_in_button">
-        <%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %>
-        <span id="current_user_name">
-          <%=current_user.name%>
-        </span>
-        <ul class="drop-shadow">
-          <!--<li><%#=link_to "Settings", '#' %></li>-->
-          <li><%=link_to "Sign Out", destroy_user_session_path%></li>
-        </ul>
+    <div class="header-right">
+      <div id="how_it_works_btn">
+        How it Works
       </div>
-    <% else %>
-      <div id="signin_button" data-href='/auth/facebook'>
-        Sign In
-      </div>
-    <% end %>
-    <div id="how_it_works_btn">
-      How it Works
+
+      <% if user_signed_in? %>
+
+        <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %></div>
+        <div id="signed_in_button">
+          <span id="current_user_name">
+            <%=current_user.name%>
+          </span>
+          <ul class="drop-shadow">
+            <!--<li><%#=link_to "Settings", '#' %></li>-->
+            <li><%=link_to "Sign Out", destroy_user_session_path%></li>
+          </ul>
+        </div>
+      <% else %>
+        <div id="signin_button" data-href='/auth/facebook'>
+          Sign In
+        </div>
+      <% end %>
+
     </div>
   </div>
 </div>
