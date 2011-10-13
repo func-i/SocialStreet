@@ -22,7 +22,7 @@
   <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>
     <% unless @event.event_rsvps.where(:user_id => current_user).first.try(:posted_to_facebook) %>
            <div id="post_to_facebook_holder" class="btn-important-color">
-               <%= check_box_tag 'post_to_facebook', 'true', true%>
+               <%= check_box_tag 'post_to_facebook', 'true', true %>
           <span>Post this StreetMeet to your Facebook wall</span>
           <%= image_tag "authicons/facebook_32.png", :alt => "Facebook", :style => "vertical-align: middle;" %>
         </div>

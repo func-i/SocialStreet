@@ -78,11 +78,11 @@ Pageless.prototype.loading = function (bool) {
 Pageless.prototype.distanceToBottom = function () {
     if(this.container_ === window){
         return $('#end_of_body').offset().top
-            + $('#end_of_body').height()
-            - window.innerHeight
-            - document.body.scrollTop;
+        + $('#end_of_body').height()
+        - window.innerHeight
+        - document.body.scrollTop;
 
-/*        return $(document).height()
+    /*        return $(document).height()
         - this.container_dom_.scrollTop()
         - this.container_dom_.height();*/
     }
@@ -122,8 +122,7 @@ Pageless.prototype.watch = function(that){
         });
 
         $.get( that.url_, params, function (data) {
-            if(that.loader_){
-                that.loader_.before(data)
+            if(that.loader_){                
                 that.loading(false);
                 if(that.iScroller_){
                     that.iScroller_.refresh();
@@ -131,7 +130,7 @@ Pageless.prototype.watch = function(that){
             }
             else{
         }
-        });
+        }, 'script');
     }
 };
 

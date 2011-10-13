@@ -1,7 +1,7 @@
 <% if current_user %>
   <% if current_user.try(:facebook_friends_imports) %>
     <% if params[:page] %>
-      $('#user_list_for_invitation').append('<%= escape_javascript render 'invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections} %>');
+      $('#user_list_for_invitation').append('<%= escape_javascript(render('invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections})) %>');
     <% else %>
       var pageless = getInvitationPageless();
       if(null == pageless) {
