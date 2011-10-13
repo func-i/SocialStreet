@@ -123,7 +123,7 @@ Pageless.prototype.watch = function(that){
 
         $.get( that.url_, params, function (data) {
             if(that.loader_){
-                that.loader_.before(data)
+                //that.loader_.before(data)
                 that.loading(false);
                 if(that.iScroller_){
                     that.iScroller_.refresh();

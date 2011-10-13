@@ -257,7 +257,7 @@ END OF RESET
     color: white;
 }
 .result-title{
-    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    font: bold 18px/0px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
     width: 260px;
