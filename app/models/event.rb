@@ -122,6 +122,6 @@ class Event < ActiveRecord::Base
   end
 
   def save_default_name
-    self.name = title_from_parameters(false) unless self.name
+    #self.name = title_from_parameters(false) unless self.name
   end
 end

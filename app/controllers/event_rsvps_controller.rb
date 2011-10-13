@@ -6,6 +6,14 @@ class EventRsvpsController < ApplicationController
     if !attending_event_rsvp(params[:event_id].to_i)
       raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
     end
+
+    if(request.xhr?)
+      render :update do |page|
+        page.redirect_to event_path(@event, :invite => true)
+      end
+    else
+      redirect_to event_path(@event, :invite => true)
+    end
   end
 
   def edit

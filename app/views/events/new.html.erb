@@ -7,7 +7,7 @@
   <% end %>
 
   <% (@event.event_keywords || []).each do |keyword| %>
-    <input type="hidden" name="event[event_keywords_attributes][][name]" value="<%=keyword.name%>" />
+    <input type="hidden" name="event[event_keywords_attributes][][name]" value="<%=keyword.name%>" class="keyword-input" />
   <% end %>
 
   <%= hidden_field_tag "event[start_date]", @event.start_date.strftime('%Y/%m/%d %I:%M %p'), :id => 'start_date' %>
