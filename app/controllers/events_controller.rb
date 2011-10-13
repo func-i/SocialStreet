@@ -5,6 +5,9 @@ class EventsController < ApplicationController
  
   def show
     @event = Event.find params[:id]
+
+    @page_title = "StreetMeet - #{@event.title}"
+
     prepare_for_show
 
     if request.xhr?
@@ -13,6 +16,8 @@ class EventsController < ApplicationController
   end
 
   def new
+    @page_title = "Plan StreetMeet"
+
     @event_types = EventType.order('name').all
     @event = Event.new
 
@@ -43,9 +48,11 @@ class EventsController < ApplicationController
   end
 
   def edit
-    @event_types = EventType.order('name').all
-    
     @event = Event.find params[:id]
+
+    @page_title = "Edit StreetMeet - #{@event.title}"    
+
+    @event_types = EventType.order('name').all
 
     raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
   end

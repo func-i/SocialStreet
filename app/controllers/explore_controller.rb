@@ -2,10 +2,11 @@ class ExploreController < ApplicationController
   before_filter :store_current_path, :only => [:index]
 
   def index
+    @page_title = "Explore"
+
     #if !request.xhr?
     init_page
     #end
-    
     @events = find_events
 
     if request.xhr?
