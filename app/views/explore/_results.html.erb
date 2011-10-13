@@ -8,7 +8,7 @@
       <span class="result-title result-event-link text-shadow">
         <%= truncate_html(event.title, :length => 50) %>
       </span>
-      <%= image_tag('locate.png')%>
+      <%#= image_tag('locate.png')%>
       <div class="result-date">
         <%= ss_time_ago_in_words(event.start_date, event.end_date) -%>
       </div>

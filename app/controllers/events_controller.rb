@@ -55,6 +55,10 @@ class EventsController < ApplicationController
     @event_types = EventType.order('name').all
 
     raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
+
+    if request.xhr?
+      render "shared/ajax_load.js", :locals => {:file_name_var => 'events/edit.html.erb'}
+    end
   end
 
   def update
