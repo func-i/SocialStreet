@@ -932,7 +932,7 @@ END OF RESET
 .create-keyword-tag{
     float: left;
     width: 80px;
-    height: 104px;
+    height: 108px;
     padding: 2px 10px 2px 0px;
 }
 .explore-keyword-tag-icon{
@@ -952,11 +952,12 @@ END OF RESET
     padding: 18px 0 0 5px;
 }
 .create-keyword-tag-name{
-    font: bold 12px/18px Arial, Helvetica, sans-serif;
+    font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
     float: left;
     width: 65px;
-    text-align: center;    
+    text-align: center;
+    padding-top: 2px;
 }
 .explore-keyword-tag-remove{
     float: right;
@@ -964,7 +965,7 @@ END OF RESET
 }
 .create-keyword-tag-remove{
     float: right;
-    padding: 5px 2px 0 0;
+    padding: 4px 2px 0 0;
 }
 
 #how_it_works {

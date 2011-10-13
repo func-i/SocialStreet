@@ -222,6 +222,7 @@ function createCreateMarker(latlng, address){
     var marker = markerManager.addMarker(latlng.lat(), latlng.lng());
     marker.setDraggable(true);
     marker.text_ = null;
+    marker.setIcon('/images/create-event-marker.png');
 
     if(undefined == address){
         address = "";
