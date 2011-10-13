@@ -3,6 +3,7 @@ var refreshInviteListTimer = null;
 var invitationView = false;
 var invitationCounter = 0;
 var invitationPageless = null;
+var eventImageInterval = null;
 
 $(function(){
 
@@ -13,7 +14,9 @@ $(function(){
             showMarker = null;
         }
 
-        clearTimeout(myTimout);
+        if(eventImageInterval){
+            clearTimeout(eventImageInterval);
+        }
     }
 
     resizeSelf = function(){
@@ -183,7 +186,7 @@ function setupShowEventPage(){
     getInvitationUsers();//Load invitation users on delay
 
     if($('.show-event-image').length > 1){
-        myTimout = setInterval(function(){
+        eventImageInterval = setInterval(function(){
             $('.show-event-image').addClass('hidden');
             $('.show-event-image').eq(Math.floor(Math.random() * $('.show-event-image').length)).removeClass('hidden');
         }, 5000);
