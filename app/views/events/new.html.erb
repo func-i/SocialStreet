@@ -18,7 +18,7 @@
       <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="create_keywords_list">
         <% @event_types.each do |event|%>
           <li>
-            <%= link_to image_tag(event.image_path) + event.name, "#create_where" %>
+            <%= link_to image_tag(event.image_path, :size => "50x50") + event.name, "#create_where" %>
           </li>
 
         <% end %>
@@ -165,17 +165,17 @@
       <input type="text" name ="enddate" id="enddate" class="mobiscroll" />
     </div>
 
-    <div data-role="fieldcontain">
-      <%= link_to "Add Title/Description (optional)", "#create_when", {"id" => 'toggle_title_desc'} %>
+    <!--div data-role="fieldcontain">
+      <#%= link_to "Add Title/Description (optional)", "#create_when", {"id" => 'toggle_title_desc'} %>
     </div>
 
     <div data-role="fieldcontain" id="create_title_description">
       <label for="create_title">Title: </label>
-      <input type="text" name="create_title" id="create_title" />
+      <#%= form.text_field :name, :rows => 10, :cols => 80 %>
 
       <label for="create_description">Description: </label>
-      <textarea name="create_description" id="create_description"></textarea>
-    </div>
+      <#%= form.text_area :description, :rows => 1, :cols => 80 %>
+    </div-->
 
 
     <%= form_for @event_for_create do |form|%>
@@ -206,6 +206,8 @@
     
     var currentLocation = '<%=users_current_location_string()%>';
     var createMap;
+    var initMarker;
+    var geocoder = new google.maps.Geocoder();
 
 
     $('#create_where').live("pageshow",function() {
@@ -215,7 +217,7 @@
         'navigationControl' : false,
         'streetViewControl' : false
       }).bind('init', function(event, map) {
-        $('#map-canvas').gmap('addMarker', {'position': currentLocation, 'draggable': true, 'bounds': false}, function(map, marker) {
+        initMarker = $('#map-canvas').gmap('addMarker', {'position': currentLocation, 'draggable': true, 'bounds': false, 'id': 'init-marker'}, function(map, marker) {
           findLocation(marker.getPosition(), marker);
           createMap = $('#map-canvas').gmap('get', 'map');
         }).dragend( function(event) {
@@ -228,7 +230,35 @@
         
       });
 
-      function findLocation(location, marker) {
+      /*function findLocation(location, marker) {
+        $('#map-canvas').gmap('search', {'location': location}, function(results, status) {
+          if ( status === 'OK' ) {
+            $.each(results[0].address_components, function(i,v) {
+              if ( v.types[0] == "administrative_area_level_1" || v.types[0] == "administrative_area_level_2" ) {
+                $('#state'+marker.__gm_id).val(v.long_name);
+              } else if ( v.types[0] == "country") {
+                $('#country'+marker.__gm_id).val(v.long_name);
+              }
+            });
+            marker.setTitle(results[0].formatted_address);
+            $('#map-location').val(results[0].formatted_address);
+            updateLocationParams();
+          }
+        });
+      }
+
+      function updateLocationParams() {
+        bounds =  createMap.getBounds();
+        c = bounds.getCenter();
+        console.log(c);
+
+        $('#create_map_lat').val(c.lat());
+        $('#create_map_lng').val(c.lng());
+      }*/
+
+    });
+
+    function findLocation(location, marker) {
         $('#map-canvas').gmap('search', {'location': location}, function(results, status) {
           if ( status === 'OK' ) {
             $.each(results[0].address_components, function(i,v) {
@@ -254,7 +284,34 @@
         $('#create_map_lng').val(c.lng());
       }
 
+    $('#map-location').live("keydown", function(e) {
+    if (e.keyCode == 13) {
+      e.stopPropagation();
+      searchLocation(e);
+      $(this).blur();
+      return false;
+    }
+    return true;
+  });
+
+  function searchLocation(e) {
+    var loc = e.target.value;
+    $('#map-canvas').gmap('clear', 'markers');
+    geocoder.geocode({address: loc}, function(results, status) {
+      if(status == google.maps.GeocoderStatus.OK) {
+        createMap.setCenter(results[0].geometry.location);
+        $('#map-canvas').gmap('addMarker', {'position': results[0].geometry.location, 'draggable': true, 'bounds': false}).dragend( function(event) {
+          var self = this;
+          findLocation(event.latLng, this);
+        }).click( function() {
+          $('#map-location').val(this.title);
+        });
+      }
+      else if(status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+        alert('No Location Found!');
+      }
     });
+  }
     
 
   </script>

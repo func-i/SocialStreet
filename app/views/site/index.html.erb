@@ -1,4 +1,4 @@
-<div data-role="page" class="wallpaper_page">
+<div data-role="page" class="wallpaper_page" id="home-page">
   <% if user_signed_in? %>
     <div data-role="header" data-position="inline" data-theme="a">
       <!--%= link_to 'Searches', profiles_path, {"data-icon" => "star", "data-theme" => "d"}%-->
@@ -29,9 +29,11 @@
   </div>
 
   <script type='text/javascript'>
-    //document.ontouchmove = function(e){
-    //e.preventDefault();
-    //}
+    $('#home-page').live("pagecreate", function() {
+        navigator.geolocation.getCurrentPosition(function(e){
+                updateUserLocation(e.coords.latitude, e.coords.longitude, true);
+            });
+    })
   </script>
 
 </div>

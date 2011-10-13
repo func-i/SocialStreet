@@ -19,7 +19,7 @@ class InvitationsController < ApplicationController
           @rsvp.invitations.build :event => @event, :user => current_user, :to_user => user
         end
       end unless @event.action.blank?
-    
+
       @invitations = @rsvp.invitations
 
       render :partial => 'new_page' if request.xhr? && params[:page] # pagination request
@@ -30,6 +30,7 @@ class InvitationsController < ApplicationController
   end
 
   def load_modal
+    puts "loading modal"
     if current_user.nil?
       render :nothing => true
       return
@@ -72,7 +73,7 @@ class InvitationsController < ApplicationController
         create_invitation(@event, @rsvp, current_user, nil, email)
       end
     end unless params[:emails].blank?
-    
+
     params[:user_ids].each do |user_id|
       if user = User.find_by_id(user_id)
         create_invitation(@event, @rsvp, current_user, user)
@@ -106,7 +107,7 @@ class InvitationsController < ApplicationController
         @rsvp.update_attribute("posted_to_facebook", true)
       end
     end
- 
+
     redirect_to @event
   end
 
@@ -119,11 +120,13 @@ class InvitationsController < ApplicationController
 
   def load_connections
 
+    puts "loading connections"
+
     ActiveRecord::Base.connection.execute('SET enable_nestloop TO off;')
 
     @per_page = 36
     @offset = ((params[:page] || 1).to_i * @per_page) - @per_page
-    
+
     # => TODO: see if you can take that inline string notation out
     @users = User.select("users.id, users.first_name, users.last_name, users.sign_in_count, users.facebook_profile_picture_url, users.twitter_profile_picture_url").
       joins("LEFT OUTER JOIN connections ON users.id=connections.to_user_id AND connections.user_id=#{current_user.id}").
@@ -134,13 +137,14 @@ class InvitationsController < ApplicationController
 
     @users = @users.with_keywords(params[:user_search]) unless params[:user_search].blank?
     @total_count = User.find_by_sql("SELECT COUNT(*) as total_count FROM (#{@users.to_sql}) as tableA").first.total_count.to_i
-    
-    @users = @users.
-      limit(@per_page).
-      offset(@offset)
+
+    ## removed the limit on user load since pageless is currently not working
+    #@users = @users.
+      #limit(@per_page).
+      #offset(@offset)
 
     @users = @users.all
-       
+
     @num_pages_invitations = (@total_count.to_f / @per_page.to_f).ceil
 
     ActiveRecord::Base.connection.execute('SET enable_nestloop TO on;')
@@ -149,7 +153,7 @@ class InvitationsController < ApplicationController
   def create_invitation(event, rsvp, from_user, to_user, email = nil)
     invitation = from_user.invitations.create :event => event, :rsvp => rsvp, :to_user => to_user, :email => email
     invitation.save
-    
+
     if to_user
       #Todo - handle when only have email
       Connection.connect_users_from_invitations(from_user, to_user)
@@ -166,7 +170,7 @@ class InvitationsController < ApplicationController
       else
         photo_url = 'images/event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
       end
-        
+
       options = {
         :picture => "http://www.socialstreet.com/#{photo_url}",
         :link => "http://www.socialstreet.com/events/#{@event.id}",
@@ -176,7 +180,7 @@ class InvitationsController < ApplicationController
         :message => "I want to invite you to join this StreetMeet on SocialStreet!",
         :type => "link"
       }
-        
+
       Resque.enqueue_in(10.minutes, Jobs::Facebook::PostToFriendsFbWall, from_user.id, to_user.id, options)
     end
   end

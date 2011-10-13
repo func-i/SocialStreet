@@ -1,66 +1,15 @@
-$('#events-offset').val('<%=@events_offset%>');
-$('#messages-offset').val('<%=@messages_offset%>');
-$('#filter-level').val('<%=@filter_level%>');
-$('#explore-id').val('<%=@explore_id%>');
+$('#list-view-explore-content').html('<%= escape_javascript(render(:partial => 'list_view', :locals => {:searchable_results => (@searchables || []), :hidden => params[:view].eql?("list")} )) %>');
 
-$('#action-list').html('<%= escape_javascript(render(:partial => "results", :locals => {:searchable_results => (@searchables || []), :hidden => params[:view].eql?("map")} )) %>');
-$('#community-bar').html('<%= escape_javascript render('community_bar')%>');
-
-<% if @searchable_total_count == 0 %>
-  $('#searchable-count').html("<p>Unfortunately, no results were found. Why don't you:</p>");
-<% elsif @searchable_total_count == 1 %>
-  $('#searchable-count').html("<p>Unfortunately, only 1 result was found. Why don't you:</p>");
-<% else %>
-  $('#searchable-count').html("<p>Unfortunately, only <strong><%=@searchable_total_count%></strong> results were found. Why don't you:</p>");
-<% end %>
-
-
-<% if @filter_level && @filter_level >= 0 && (true || (!params[:view].eql?("map") || @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT)) %>
-  if($('#end-of-results-message').data('closed') != true){
-  $('#end-of-results-message').show();
-  }
-<% else %>
-  $('#end-of-results-message').hide();
-<% end %>
-
-<% unless @similar_results.blank? %>
-  <% if !params[:view].eql?("map") || (false && @searchable_total_count < ExploreController.MORE_RESULTS_LIMIT) %>
-    $('#more-results-message').show();
-  <% end %>
-  $('#similar-results-list').html('<%= escape_javascript(render("results", :searchable_results => @similar_results, :hidden => params[:view].eql?("map"))) %>');
-<% else %>
-  $('#more-results-message').hide();
-  $('#similar-results-list').html('');
-<% end %>
-
-//Place pins on map
 var myMarkerManager = getMarkerManager();
 myMarkerManager.clearMarkers();
+var myMarker;
 
 <% (@searchables || []).each do |searchable| %>
   <% if searchable.geo_located? %>
-    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
+    myMarker = myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
+    google.maps.event.addListener(myMarker, 'click', selectedMarker);
   <% end %>
 <% end %>
 
-<% (@similar_results || []).each do |searchable| %>
-  <% if searchable.geo_located? %>
-    myMarkerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
-  <% end %>
-<% end %>
-
-//Draw all the markers
 myMarkerManager.placeAllMarkers();
-
-
-<% if !params[:view].eql?("map") %>
-  getExplorePageless().reset(
-  {
-  totalPages: <%=@num_pages%>,
-  currentPage: 1
-  });
-<% end %>
-
-if(typeof checkMapPageSize == 'function')
-checkMapPageSize();
 

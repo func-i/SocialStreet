@@ -1,20 +1,9 @@
-<% if searchable_results %>
-  <% searchable_results.each do |searchable|%>
-    <% if searchable.event %>
-      <% type = RecordType.types[:event] %>
-      <% record = searchable.event %>
-    <% elsif searchable.comment %>
-      <% type = RecordType.types[:search_comment] %>
-      <% record = searchable.comment.action %>
-    <% else %>
-      <% unless Rails.env.production? || Rails.env.staging?  %>
-        <p>YOU SHOULD NOT SEE THIS (DEBUG MESSAGE)</p>
-      <% end %>
-    <% end %>
-
-
-    <div id="result_for_searchable_<%= searchable.id -%>" class="post result-list-item <%= "hidden" if defined?(hidden) && hidden -%>">
-      <%= render "shared/records", :record_type => type, :record => record %>
-    </div>
-  <% end %>
-<% end %> 
+<ul data-role="listview" data-theme="a" data-inset="true" id="results_list">
+        <% @searchables.each do |searchable| %>
+            <li >
+              <%= link_to image_tag(url_for_event_image(searchable.event), :size => "60x60") + searchable.event.title, event_path(searchable.event) %>
+              <span id="explore-list-address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></span>
+            </li>
+            
+          <% end %>
+      </ul>

@@ -1,17 +1,40 @@
-<%= render 'invitations/invitation_tool' %>
+<div data-role="page" id="invite-users-page">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+  </div>
 
-<% content_for :end_of_body do %>
-  <%= include_javascripts :ss_pageless -%>
-  <script type='text/javascript'>
-    $(function() {
-/*)    $('#empty_modal_sidebar').find('.content').pageless({
-        container: '#empty_modal_sidebar .content',
-        totalPages: <%= @num_pages_invitations -%>,
-        url: '<%= new_event_rsvp_invitation_path(@event, @rsvp) %>',
-        loaderMsg: 'Loading more results',
-        params: $('form.search-params-invitations').serializeObject(),
-        currentPage: <%= params[:page] || 1 %>
-      });*/
-    });
-  </script>
-<%- end -%>
+  <div data-role="content">
+    <%= link_to 'Send Invites', '#', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "invite-submit"} %>
+    <div data-role="fieldcontain">
+
+      <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :id => "invite-form" do %>
+        <fieldset data-role="controlgroup" id="invite-users-list">
+          <% @users.each do |u| %>
+            <%= check_box_tag "user_ids[]", u.id, @event.invitations.collect(&:user).include?(u), :class => "custom", :id => "user_#{u.id}"  %>
+            <label for="user_<%=u.id%>"><%= avatar(u, :exclude_link => true, :size => "40x40") %> <%= u.name %></label>              
+          <% end %>
+        <% end %>
+      </fieldset>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  //pageless not currently working
+
+  var timeout = null;
+  var invitationPageless = null;
+  var checked_array = [];
+  var c;
+  var s;
+
+  $('#invite-submit').live('click', function() {
+    $('#invite-form').submit();
+  })
+
+  /*$('#invite-users-list').bind( "change", function(event, ui) {
+    console.log(event)
+});*/
+
+</script>

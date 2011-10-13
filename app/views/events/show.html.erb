@@ -23,7 +23,7 @@
         <div class="ui-block-a"><%= link_to "Attend", [:new, @event, :rsvp], {'data-role' => 'button', 'data-theme' => 'e', 'data-ajax' => false} %></div>
       <% end %>
 
-      <div class="ui-block-b" style="margin: -38px 10px 10px 200px"><%= link_to "Invite People" %></div>
+      <div class="ui-block-b" style="margin: -38px 10px 10px 190px"><%= link_to "Invite People", new_event_rsvp_invitation_path(@event, @rsvp) %></div>
     </fieldset>
 
 
@@ -82,17 +82,18 @@
 
   var latlng = '<%= @event.latitude %>,<%= @event.longitude %>'
 
-  $('#event_main').live("pageshow", function() {
+  $('#event_main').live("pagebeforeshow", function() {
     $('#event_map_canvas').gmap('refresh');
   });
 
-  $('#event_main').live("pagecreate",function() {
+  $('#event_main').live("pageinit",function() {
 
     $('#event_map_canvas').gmap(
     {'center': latlng, 'zoom': 15, 'disableDefaultUI': true
     }).bind('init', function(event, map) {
       $('#event_map_canvas').gmap('addMarker', {'position': latlng, 'draggable': false, 'bounds': false
       });
+        $('#event_map_canvas').gmap('refresh');
     });
       
   });

@@ -27,11 +27,11 @@ class ExploreController < ApplicationController
 
     get_searchables
 
-    if request.xhr? && params[:page] # pagination request
-      render :partial => 'new_page'
-    else
-      find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
-    end
+    #if request.xhr? && params[:page] # pagination request
+      #render :partial => 'new_page'
+    #else
+      #find_overlapping_subscriptions # not needed for pagination request, hence in here - KV
+    #end
 
     @page_title = "Explore - #{params[:view].eql?('map') ? 'Map' : 'List'} View"
   end

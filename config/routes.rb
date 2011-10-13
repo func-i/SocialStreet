@@ -72,6 +72,10 @@ SocialStreet::Application.routes.draw do
       get "show_attendees"
     end
 
+    member do
+      get "invite_people"
+    end
+
     collection do
       match "load_events"
     end

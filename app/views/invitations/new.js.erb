@@ -1,4 +1,3 @@
-$('#invitation-user-list').html('<%= escape_javascript render(:partial => 'invitations/user_results') %>');
 getInvitationPageless().reset({
   currentPage: 1,
   totalPages: <%= @num_pages_invitations -%>

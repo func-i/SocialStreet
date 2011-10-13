@@ -9,7 +9,7 @@ echo ">>>Starting Resque Worker"
 QUEUE=* bundle exec rake environment resque:work&
 
 echo ">>>Starting Resque Web Server"
-bundle exec resque-web&
+bundle exec resque-web ~/SocialStreet/config/resque_config.rb&
 
 echo ">>>Starting Rails Server"
 rails server&

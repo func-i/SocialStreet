@@ -9,15 +9,6 @@ if(!Array.indexOf) {
     }
 }
 
-var isTouchEnabled_;
-function isTouchEnabled(){
-    if(isTouchEnabled_ == undefined){
-        isTouchEnabled_ = 'ontouchstart' in window;
-    //isTouchEnabled_ = true;
-    }
-    return isTouchEnabled_;
-}
-
 
 $.fn.serializeObject = function()
 {

@@ -200,6 +200,11 @@ class EventsController < ApplicationController
     
   end
 
+  def invite_people
+    @event = Event.find params[:id]
+    
+  end
+
 
   protected
 
