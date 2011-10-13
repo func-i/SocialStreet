@@ -34,6 +34,14 @@ $(function() {
         window.location = $(this).data('href');
     });
 
+    $('#header_signin_button').click(function() {
+        window.location = $(this).data('href');
+    });
+
+    $('#how_it_works_find').click(function() {
+        closeHowItWorks();
+    });
+
     //Ajax Link
     $('.ajax-link').live('click', function(e){
         var href;
