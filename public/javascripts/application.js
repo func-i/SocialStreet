@@ -25,6 +25,7 @@ $(function() {
                 window.location = href;
             }
             e.preventDefault();
+            e.stopPropagation();
         }
     });
 
