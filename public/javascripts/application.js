@@ -33,6 +33,10 @@ $(function() {
         window.location = $(this).data('href');
     });
 
+    $('#header_signin_button').click(function() {
+        window.location = $(this).data('href');
+    });
+
     //Ajax Link
     $('.ajax-link').live('click', function(e){
         var href;

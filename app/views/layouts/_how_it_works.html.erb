@@ -3,19 +3,21 @@
     <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
 
     <% if user_signed_in? %>
-      <div id="signed_in_button">
-        <%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %>
-        <span id="current_user_name" class="text-shadow">
-          <%=current_user.name%>
-        </span>
-        <ul class="drop-shadow">
-          <!--<li><%#=link_to "Settings", '#' %></li>-->
-          <li><%=link_to "Sign Out", destroy_user_session_path%></li>
-        </ul>
+      <div class="header-right">
+        <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %></div>
+        <div id="signed_in_button">
+          <span id="current_user_name">
+            <%=current_user.name%>
+          </span>
+          <ul class="drop-shadow">
+            <!--<li><%#=link_to "Settings", '#' %></li>-->
+            <li><%=link_to "Sign Out", destroy_user_session_path%></li>
+          </ul>
+        </div>
       </div>
     <% else %>
-      <div id="signin_button" style="margin-bottom: 9px; float: right; margin-right: 20%;" data-href='/auth/facebook'>
-        <%= image_tag("sign-in-logo.png", :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -42px;") %>
+      <div style="margin-bottom: 9px; float: right; margin-right: 20%;">
+        <%= image_tag("sign-in-logo.png", :id =>"header_signin_button" , :class => "sign-in-ribbon nav-link", :style => "float: right; position: absolute; top: -42px;", "data-href" => '/auth/facebook') %>
       </div>
       <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
       <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
