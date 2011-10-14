@@ -144,6 +144,9 @@ function resizePageElements() {
 }
 
 function resizeLayout(){
+
+    var ver = getInternetExplorerVersion();
+
     //var docHeight = $(window).height();
     var docWidth = $(window).width();
     //var leftPaneTopOffset = $('#left_side_pane').offset().top;
@@ -163,8 +166,12 @@ function resizeLayout(){
     //    $('#top_pane').width(docWidth - topPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
     //  $('#bottom_pane').width(docWidth - bottomPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
 
-    $('#right_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0))
-    $('#center_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0));//20 is fo 20px gutters
+    if ( ver == -1 )
+        $('#right_side_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0))
+    
+    if ( ver == -1 )
+        $('#center_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0));//20 is fo 20px gutters
+
     $('#center_pane').css('left', leftPaneWidth + 40);//40 is for 2x20px gutters
     $('#center_pane').width(docWidth - leftPaneWidth - 40 - rightPaneWidth - 40);//20 is for 20px gutters
     $('#center_pane').height(bottomPaneTopOffset - topPaneTopOffset - topPaneHeight - 40);//40 is for 2x20px gutters
@@ -316,5 +323,20 @@ function closeHowItWorks() {
     $('#header').removeClass('invisible');
 
     
+}
+
+function getInternetExplorerVersion()
+// Returns the version of Windows Internet Explorer or a -1
+// (indicating the use of another browser).
+{
+    var rv = -1; // Return value assumes failure.
+    if (navigator.appName == 'Microsoft Internet Explorer')
+    {
+        var ua = navigator.userAgent;
+        var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if (re.exec(ua) != null)
+            rv = parseFloat( RegExp.$1 );
+    }
+    return rv;
 }
 
