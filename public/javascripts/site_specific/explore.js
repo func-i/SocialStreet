@@ -165,10 +165,20 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
     google.maps.event.addListener(marker, 'mouseover', function() {
         clickMarker(this);
     });
-
-
+    google.maps.event.addListener(map, 'click', function(){
+        removeSelectedPinState();
+    })
 }
 
+function removeSelectedPinState(){
+    if(selectedMarker != null){
+        selectedMarker.setIcon("/images/green-pin.png");
+        selectedMarker.label_.setMap(null);
+    }
+    selectedMarker = null;
+
+    $('.selected-result').removeClass('selected-result');    
+}
 function clickMarker(marker){
     if(selectedMarker != null && selectedMarker != marker) {
         selectedMarker.setIcon("/images/green-pin.png");
