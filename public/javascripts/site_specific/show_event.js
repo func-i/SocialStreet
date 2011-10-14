@@ -21,6 +21,7 @@ $(function(){
 
     resizeSelf = function(){
         resizeCenterPaneContent();
+        resizeDate(); // Resize the date to wrap when the title is too long
     }
 
     resizePageElements();
@@ -103,8 +104,9 @@ $(function(){
     
     function submitEventTitle() {
         if($('#edit_event_title_field').val().length > 0){
-            $('#show_event_title_text').text($('#edit_event_title_field').val().substring(0, 25));
+            $('#show_event_title_text').text($('#edit_event_title_field').val());
             $('#event_edit_form').submit();
+            resizeDate();
         }
         $('#show_event_title_text').removeClass('hidden');
         $('#edit_event_title_link').removeClass('hidden');
@@ -197,8 +199,6 @@ function setupShowEventPage(){
             $('.show-event-image').eq(Math.floor(Math.random() * $('.show-event-image').length)).removeClass('hidden');
         }, 5000);
     }
-
-    resizeDate(); // Resize the date to wrap when the title is too long
 }
 
 function showInvitationView(){
@@ -378,4 +378,6 @@ function showMarkers(){
 function resizeDate() {
     if($('#show_event_title_text').height() > 30)
         $('#show_event_date').width(150);
+    else
+        $('#show_event_date').css('width', '');
 }

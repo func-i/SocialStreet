@@ -24,12 +24,10 @@
           <div id="show_event_title">
             <% if can_edit %>
               <span id="edit_event_title_link">Edit Title</span>
-              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>" />
-      <%#= form.text_field :name, :id=> "edit_event_title_field", :class=>"hidden", :style=>"width:270px;" %>
+              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>" style="border:0;height:18px;margin:0;padding:0;" />
             <% end %>
             <span id="show_event_title_text" class="text-shadow <%= "short" if can_edit -%>">
-    <%#= truncate_html(@event.title, :length => (can_edit ? 27 : 31)) %>
-              <%= truncate_html(@event.title, :length => (can_edit ? 100 : 100)) %>
+              <%= @event.title %>
             </span>
 
           </div>
