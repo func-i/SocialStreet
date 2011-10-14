@@ -8,19 +8,23 @@
       <span class="result-title result-event-link text-shadow">
         <%= truncate_html(event.title, :length => 50) %>
       </span>
-      <%#= image_tag('locate.png')%>
+  <%#= image_tag('locate.png')%>
       <div class="result-date">
         <%= event_time_in_words(event) -%>
       </div>
     </div>
     <div class="result-attendees">
-      <% attendees = User.attending_event(event)%>
-      <% unless attendees.count.zero? %>
-        <!--<span class="attending-info"><%= attendees.count%></span>-->
+      <% attendees = User.attending_event(event).excluding(current_user)%>
+      <% attendees_count = attendees.count %>
+      <% attendees.order_by_rank_to_user(current_user).limit(5).each do |attendee| %>
+        <%= avatar attendee, :size => "22x22", :class=>"result-attendees-image"%>
       <% end %>
-      <% attendees.order_by_rank_to_user(current_user).excluding(current_user).limit(6).each do |attendee| %>
-        <%= avatar attendee, :size => "22x22" %>
+      <% if attendees_count > 5%>
+        <span class="result-attendee-more-text text-shadow">
+          <%=attendees_count - 5 %> more
+        </span>
       <% end %>
+
     </div>
 
     <div class="result-join-btn-holder">

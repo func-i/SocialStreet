@@ -78,7 +78,7 @@ $(function() {
     {
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(function(e){
-                updateUserLocation(e.coords.latitude, e.coords.longitude, true);
+                updateUserLocation(e.coords.latitude, e.coords.longitude, null, true);
             }, function(e){
                 },{
                     maximumAge: 600000,
@@ -127,8 +127,8 @@ function cleanup(){
     $('.content-group').html(' ');
 }
 
-function updateUserLocation(latitude, longitude, updateDB){
-    $.getScript('/locations/update_user_location?latitude=' + latitude + '&longitude=' + longitude + '&=update_db=' + updateDB, function(data, textStatus){});
+function updateUserLocation(latitude, longitude, zoomLevel, updateDB){
+    $.getScript('/locations/update_user_location?latitude=' + latitude + '&longitude=' + longitude + '&zoom_level=' + zoomLevel + '&update_db=' + updateDB, function(data, textStatus){});
 }
 
 function resizePageElements() {
