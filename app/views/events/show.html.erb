@@ -16,7 +16,7 @@
           <% @event.event_keywords.each_with_index do |ek, index| %>
             <div class="show-event-image <%= 'hidden' if index > 0 %>">
               <%= image_tag(url_for_event_keyword(ek))%>
-              <div style="text-align:center;font:11px/11px Arial, Helvetica, sans-serif;">
+              <div style="text-align:center;font:11px/11px Arial, Helvetica, sans-serif;width:80px;">
                 <%= ek.name %>
               </div>
             </div>
