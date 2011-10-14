@@ -149,7 +149,11 @@
 <script>
   $(function(){
     $('#center_pane').removeClass('invisible');
+    $('#left_side_pane').addClass('hidden');
 
+    cleanUpSelf = function(){
+      $('#left_side_pane').removeClass('hidden');
+    }
     resizeSelf = function(){
       var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
       var scrollerTop = $('#scroller').offset().top;

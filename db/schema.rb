@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111014151322) do
+ActiveRecord::Schema.define(:version => 20111014190553) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -127,6 +127,10 @@ ActiveRecord::Schema.define(:version => 20111014151322) do
     t.datetime "updated_at"
     t.boolean  "facebook_friends_imports"
     t.integer  "last_known_zoom_level"
+    t.integer  "last_known_bounds_sw_lat"
+    t.integer  "last_known_bounds_sw_lng"
+    t.integer  "last_known_bounds_ne_lat"
+    t.integer  "last_known_bounds_ne_lng"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

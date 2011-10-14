@@ -855,6 +855,7 @@ END OF RESET
     text-align: center;
     color: white;
     overflow: hidden;
+    height: 24px;
     font: 12px/12px Arial, Helvetica, sans-serif
 }
 #invited_user_list{

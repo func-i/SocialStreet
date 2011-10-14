@@ -75,7 +75,7 @@ $(function() {
 
 
     //Get users current Location
-    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
+/*    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(function(e){
@@ -86,7 +86,7 @@ $(function() {
                     timeout: 20000
                 });
         }
-    }
+    }*/
 
     //Initialize the size elements to match page size and initialize scrollbars
     resizePageElements();
@@ -128,8 +128,16 @@ function cleanup(){
     $('.content-group').html(' ');
 }
 
-function updateUserLocation(latitude, longitude, zoomLevel, updateDB){
-    $.getScript('/locations/update_user_location?latitude=' + latitude + '&longitude=' + longitude + '&zoom_level=' + zoomLevel + '&update_db=' + updateDB, function(data, textStatus){});
+function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat, neLng, updateDB){
+    $.getScript('/locations/update_user_location?' +
+    'latitude=' + latitude +
+    '&longitude=' + longitude +
+    '&zoom_level=' + zoomLevel +
+    '&sw_lat=' + swLat +
+    '&sw_lng=' + swLng +
+    '&ne_lat=' + neLat + 
+    '&ne_lng=' + neLng + 
+    '&update_db=' + updateDB, function(data, textStatus){});
 }
 
 function resizePageElements() {

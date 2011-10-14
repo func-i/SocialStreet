@@ -76,14 +76,14 @@ module ApplicationHelper
   end
 
   def users_current_location_string
-    if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
+    if cookies[:c_lng].blank? || cookies[:c_lat].blank?
       if current_user
         latitude = current_user.last_known_latitude
         longitude = current_user.last_known_longitude
       end
     else
-      latitude = cookies[:current_location_latitude].to_f
-      longitude = cookies[:current_location_longitude].to_f
+      latitude = cookies[:c_lat].to_f
+      longitude = cookies[:c_lng].to_f
     end
 
     latitude ||= 43.66061599944655
