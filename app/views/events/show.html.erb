@@ -23,17 +23,17 @@
           <% end %>
           <div id="show_event_title">
             <% if can_edit %>
-              <span id="edit_event_title_link" style="float:right;">Edit Title</span>
-              <input id="edit_event_title_field" class="hidden" style="width:270px;" name="event[name]" value="<%=@event.name%>" />
+              <span id="edit_event_title_link">Edit Title</span>
+              <input id="edit_event_title_field" class="hidden" style="width:270px;" name="event[name]" value="<%= @event.title %>" />
       <%#= form.text_field :name, :id=> "edit_event_title_field", :class=>"hidden", :style=>"width:270px;" %>
             <% end %>
-            <span id="show_event_title_text" class="text-shadow" style="float:right; width: 240px;">
+            <span id="show_event_title_text" class="text-shadow">
     <%#= truncate_html(@event.title, :length => (can_edit ? 27 : 31)) %>
               <%= truncate_html(@event.title, :length => (can_edit ? 100 : 100)) %>
             </span>
 
           </div>
-          <div id="show_event_date" style="clear:right; padding-top: 5px;">
+          <div id="show_event_date">
             <%= @event.date_range_as_sentence %>
           </div>
         </div>
