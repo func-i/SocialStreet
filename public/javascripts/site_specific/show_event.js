@@ -177,9 +177,9 @@ function setupShowEventPage(){
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
 
-    var xOffset = $('#location-map').width() / 5;
+/*    var xOffset = $('#location-map').width() / 5;
     var yOffset = $('#location-map').height() / 5;
-    map.panBy(-xOffset, -yOffset);
+    map.panBy(-xOffset, -yOffset);*/
 
     google.maps.event.addListenerOnce(map, 'idle', function() {
         createShowMarker(lat, lng, address, loc_text);
@@ -356,20 +356,6 @@ function createShowMarker(lat, lng, address, location_text) {
     showMarker.label_ = new ShowEventLabel(location_text, address);
     showMarker.label_.bindTo('position', showMarker, 'position');
 
-    /*var content;
-    if(location_text == undefined || location_text.length <= 0)
-        content = '<div class="marker-label">' + address + '</div>'
-    else
-        content = '<div class="marker-label">' + location_text + '<br/>' + address + '</div>'
-
-    showMarker.infoBubble_ = new InfoBubble({
-        hideCloseButton: true,
-        disableAutoPan: true,
-        content: content,
-        padding: 0,
-        arrowSize: 0,
-        borderWidth: 0
-    });    */
     markerManager.showAllMarkers();
     
     if(!invitationView)
