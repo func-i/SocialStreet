@@ -44,9 +44,9 @@ module ApplicationHelper
       when 1
         text = "#{text}#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
       when 2..6
-        text = "#{text}#{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
-      when 7..13
-        text = "#{text}#{upcoming ? 'next ' : 'last '}#{time.strftime("%A")} #{time_of_day}"
+        text = "#{text}this #{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
+      #when 7..13
+        #text = "#{text}#{upcoming ? 'next  ' : 'last '}#{time.strftime("%A")} #{time_of_day}"
       else
         text = "#{text}#{time.strftime("%A, %b %e %l:%M %p")}"
       end
