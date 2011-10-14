@@ -1,0 +1,16 @@
+/* 
+    Document   : ie7
+    Created on : 14-Oct-2011, 3:08:07 PM
+    Author     : jonathan
+    Description:
+        Purpose of the stylesheet follows.
+
+        To provide styles for IE7 compatibility only.  This will have to overwrites
+        IE styles from ie.css
+*/
+
+.header-right {
+    position: relative;
+    top: -30px;
+}
+
