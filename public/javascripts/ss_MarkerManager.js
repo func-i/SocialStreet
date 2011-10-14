@@ -209,10 +209,6 @@ IconLabel.prototype.onAdd = function() {
         function() {
             me.draw();
         }),
-    google.maps.event.addListener(this, 'text_changed',
-        function() {
-            me.draw();
-        }),
     google.maps.event.addListener(this, 'zindex_changed',
         function() {
             me.draw();
