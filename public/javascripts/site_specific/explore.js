@@ -169,10 +169,10 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         selectMarker(this);
         lockMouseOver = true;
     });
-    google.maps.event.addListener(marker, 'mouseover', function() {
+/*    google.maps.event.addListener(marker, 'mouseover', function() {
         if(!lockMouseOver)
             selectMarker(this);
-    });
+    });*/
     google.maps.event.addListener(map, 'click', function(){
         removeSelectedPinState();
         lockMouseOver = false;

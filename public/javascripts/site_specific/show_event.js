@@ -57,7 +57,7 @@ $(function(){
         showInvitationView();
     });
     $('#invite_user_text_field').keydown(function(e){
-        if(e.keyCode == 13){
+        if(e.keyCode == 13 && e.target.value.length > 0){
             addEmail(e.target.value);
             $(this).val('');
             refreshInviteUserList('');            
@@ -67,9 +67,6 @@ $(function(){
             refreshInviteUserList(e.target.value);
             $('#user_search_value').val(e.target.value);           
         }
-
-        var api = $('#user_holder_for_invitation').data('jsp');
-        api.scrollTo(0,0);
     });
     $('.user-for-invitation').live('click', function(){
         add_invitation(this);
@@ -104,19 +101,7 @@ $(function(){
 
     $('#edit_event_title_field').blur(function() {
         submitEventTitle();
-    });
-    
-    function submitEventTitle() {
-        if($('#edit_event_title_field').val().length > 0){
-            $('#show_event_title_text').text($('#edit_event_title_field').val());
-            $('#event_edit_form').submit();
-            resizeDate();
-        }
-        $('#show_event_title_text').removeClass('hidden');
-        $('#edit_event_title_link').removeClass('hidden');
-        $('#edit_event_title_field').addClass('hidden');
-        
-    }
+    });     
 
     $('#edit_event_description_link').click(function(){
         $('#show_event_description_text').addClass('hidden');
@@ -146,6 +131,18 @@ $(function(){
         }
     });
 });
+
+function submitEventTitle() {
+    if($('#edit_event_title_field').val().length > 0){
+        $('#show_event_title_text').text($('#edit_event_title_field').val());
+        $('#event_edit_form').submit();
+        resizeDate();
+    }
+    $('#show_event_title_text').removeClass('hidden');
+    $('#edit_event_title_link').removeClass('hidden');
+    $('#edit_event_title_field').addClass('hidden');
+
+}
 
 function resizeCenterPaneContent(){
     if($('#user_holder_for_invitation').length > 0){
@@ -177,7 +174,7 @@ function setupShowEventPage(){
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
 
-/*    var xOffset = $('#location-map').width() / 5;
+    /*    var xOffset = $('#location-map').width() / 5;
     var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);*/
 
@@ -401,7 +398,7 @@ function ShowEventLabel(locationName, address) {
         locationDiv.className = 'marker-label-location text-shadow';
         locationDiv.innerText = locationName;
         this.div_.appendChild(locationDiv);
-        //this.div_.innerHTML = locationName + "<br/><br/>" + address
+    //this.div_.innerHTML = locationName + "<br/><br/>" + address
     }
 
     var addressDiv = document.createElement('div');
