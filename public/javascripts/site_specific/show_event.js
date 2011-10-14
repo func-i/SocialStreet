@@ -55,12 +55,16 @@ $(function(){
         if(e.keyCode == 13){
             addEmail(e.target.value);
             $(this).val('');
-            refreshInviteUserList('');
+            refreshInviteUserList('');            
+            
         }
         else if($('#user_search_value').val() != e.target.value){
             refreshInviteUserList(e.target.value);
-            $('#user_search_value').val(e.target.value);
+            $('#user_search_value').val(e.target.value);           
         }
+
+        var api = $('#user_holder_for_invitation').data('jsp');
+        api.scrollTo(0,0);
     });
     $('.user-for-invitation').live('click', function(){
         add_invitation(this);
