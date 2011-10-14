@@ -197,6 +197,8 @@ function setupShowEventPage(){
             $('.show-event-image').eq(Math.floor(Math.random() * $('.show-event-image').length)).removeClass('hidden');
         }, 5000);
     }
+
+    resizeDate(); // Resize the date to wrap when the title is too long
 }
 
 function showInvitationView(){
@@ -371,4 +373,9 @@ function showMarkers(){
     if(showMarker){
         showMarker.infoBubble_.open(map, showMarker);
     }
+}
+
+function resizeDate() {
+    if($('#show_event_title_text').height() > 30)
+        $('#show_event_date').width(150);
 }
