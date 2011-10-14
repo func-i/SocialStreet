@@ -28,7 +28,8 @@ set :use_sudo, false
 after "deploy:update_code", "db:symlink"
 after "deploy:update_code", "secrets:symlink"
 after "deploy:update_code", "environment:symlink"
-after "deploy:update_code", "deploy:generate_assets" unless fetch(:quick_update, false)
+before "deploy:update", "god:stop_resque" unless fetch(:quick_update, false)
+after "deploy:update", "god:start_resque" unless fetch(:quick_update, false)
 
 # Passenger restart hook
 namespace :deploy do
