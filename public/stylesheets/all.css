@@ -634,7 +634,9 @@ END OF RESET
 }
 #show_event_title_text{
     float:left;
-    width: 270px
+    width: 270px;
+    max-height: 37px;
+    overflow: hidden;
 }
 
 #show_event_title_text.short {
