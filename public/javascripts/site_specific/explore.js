@@ -131,7 +131,8 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         if($(this).hasClass('selected-result'))
             return;
 
-        $('.selected-result').removeClass('selected-result');
+        $('.selected-result').removeClass('container').removeClass('selected-result');
+        $(this).addClass('container').addClass('selected-result');
 
         if(selectedMarker != null && selectedMarker != marker.ownerMarker_){
             selectedMarker.setIcon("/images/green-pin.png");
@@ -190,7 +191,7 @@ function removeSelectedPinState(){
         clearTimeout(markerSlideShowInterval);
     }
 
-    $('.selected-result').removeClass('selected-result');    
+    $('.selected-result').removeClass('container').removeClass('selected-result');
 }
 function selectMarker(marker){
     if(selectedMarker != null && selectedMarker != marker) {
@@ -215,12 +216,12 @@ function selectMarker(marker){
         }, 1000);
     }
 
-    $('.selected-result').removeClass('selected-result');
+    $('.selected-result').removeClass('container').removeClass('selected-result');
 
     for(var i = 0; i < selectedMarker.clusteredMarkers_.length; i++) {
         var myMarker = selectedMarker.clusteredMarkers_[i];
         var myResult = $('#' + myMarker.resultID_);
-        myResult.addClass('selected-result');
+        myResult.addClass('selected-result').addClass('container');
         $('#results_list').prepend(myResult);
         $('#results_container').data('jsp').scrollToY(0);
     }

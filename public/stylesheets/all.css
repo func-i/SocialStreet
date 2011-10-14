@@ -234,7 +234,7 @@ END OF RESET
     position: relative;
 }
 .selected-result{
-    background-color: #4f4f4d;
+    /*background-color: #4f4f4d;*/
 }
 .result-image{
     float: left;
