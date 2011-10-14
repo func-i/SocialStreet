@@ -60,6 +60,14 @@ class User < ActiveRecord::Base
     FbGraph::User.me(myToken) if myToken
   end
 
+  def update_users_location(latitude, longitude, zoom_level)
+    self.last_known_latitude = latitude if latitude
+    self.last_known_longitude = longitude if longitude
+    self.last_known_zoom_level = zoom_level if zoom_level
+    self.last_known_location_datetime = Time.zone.now
+  end
+
+
   def attending?(event)
     return self.event_rsvps.for_event(event).count > 0
   end

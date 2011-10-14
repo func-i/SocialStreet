@@ -86,7 +86,22 @@ class ExploreController < ApplicationController
     bounds = map_bounds.split(",").collect { |point| point.to_f }
 
     params[:map_center] = "#{(bounds[0].to_f + bounds[2].to_f)/2},#{(bounds[1].to_f + bounds[3].to_f)/2}" unless params[:map_center]
-    params[:map_zoom] = 12 unless params[:map_zoom]
+
+    if params[:map_zoom].blank?
+      if cookies[:current_location_zoom].blank?
+        if current_user
+          zoom_level = current_user.last_known_zoom_level
+          puts "db"
+          puts zoom_level
+        end
+      else
+        zoom_level = cookies[:current_location_zoom]
+        puts "cookie"
+        puts zoom_level
+      end
+
+      params[:map_zoom] = zoom_level ||= 12
+    end
 
     events = events.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
   end

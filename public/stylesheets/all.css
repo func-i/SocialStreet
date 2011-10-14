@@ -274,6 +274,19 @@ END OF RESET
 .result-attendees{
     padding-bottom: 5px;
 }
+.result-attendees-image{
+    float:left;
+    margin-right:2px;
+}
+.result-attendee-more-text{
+    float:left;
+    height:22px;
+    width:29px;
+    overflow:hidden;
+    font:italic 12px/12px Arial, Helvetica, sans-serif;
+    color:black;
+    text-align: center;
+}
 .result-description{
     color: white;
     margin: 10px 10px 5px 10px;

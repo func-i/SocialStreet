@@ -66,7 +66,8 @@ function toggle_suggested_actions(){
 }
 
 function updateExploreLocationParams(){
-    $('#map_zoom').val(map.getZoom());
+    var zoom = map.getZoom();
+    $('#map_zoom').val(zoom);
     var bounds = map.getBounds();
 
     var projection = markerManager.projectionHelper_.getProjection();
@@ -85,7 +86,7 @@ function updateExploreLocationParams(){
     $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
     $('#map_center').val(map.getCenter().lat() + "," + map.getCenter().lng());
 
-    updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), true);
+    updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), zoom, true);
     
     refreshExploreResults();
 }
@@ -158,40 +159,48 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         selectedMarker = null;
     });
 
-    google.maps.event.addListener(marker, 'click', function() {
-        if(selectedMarker != null && selectedMarker != this) {
-            selectedMarker.setIcon("/images/green-pin.png");
-            selectedMarker.label_.setMap(null);
-        }
-
-        selectedMarker = this;
-        this.setIcon("/images/marker-base.png");
-        this.label_.setMap(map);
-
-        if(markerSlideShowInterval != null){
-            clearTimeout(markerSlideShowInterval);
-        }
-        if(selectedMarker.clusteredMarkers_ != null){
-            var count = 0;
-            markerSlideShowInterval = setInterval(function(){
-                selectedMarker.label_.setIcon(selectedMarker.clusteredMarkers_[count].iconSrc_);
-                count += 1;
-                if(count >= selectedMarker.clusteredMarkers_.length)
-                    count = 0;
-            }, 1000);
-        }
-
-        $('.selected-result').removeClass('selected-result');
-
-        for(var i = 0; i < this.clusteredMarkers_.length; i++) {
-            var myMarker = this.clusteredMarkers_[i];            
-            var myResult = $('#' + myMarker.resultID_);
-            myResult.addClass('selected-result');
-            $('#results_list').prepend(myResult);
-            $('#results_container').data('jsp').scrollToY(0);
-        }
+    /*google.maps.event.addListener(marker, 'click', function() {
+        clickMarker(this);
+    });*/
+    google.maps.event.addListener(marker, 'mouseover', function() {
+        clickMarker(this);
     });
 
+
+}
+
+function clickMarker(marker){
+    if(selectedMarker != null && selectedMarker != marker) {
+        selectedMarker.setIcon("/images/green-pin.png");
+        selectedMarker.label_.setMap(null);
+    }
+
+    selectedMarker = marker;
+    selectedMarker.setIcon("/images/marker-base.png");
+    selectedMarker.label_.setMap(map);
+
+    if(markerSlideShowInterval != null){
+        clearTimeout(markerSlideShowInterval);
+    }
+    if(selectedMarker.clusteredMarkers_ != null){
+        var count = 0;
+        markerSlideShowInterval = setInterval(function(){
+            selectedMarker.label_.setIcon(selectedMarker.clusteredMarkers_[count].iconSrc_);
+            count += 1;
+            if(count >= selectedMarker.clusteredMarkers_.length)
+                count = 0;
+        }, 1000);
+    }
+
+    $('.selected-result').removeClass('selected-result');
+
+    for(var i = 0; i < selectedMarker.clusteredMarkers_.length; i++) {
+        var myMarker = selectedMarker.clusteredMarkers_[i];
+        var myResult = $('#' + myMarker.resultID_);
+        myResult.addClass('selected-result');
+        $('#results_list').prepend(myResult);
+        $('#results_container').data('jsp').scrollToY(0);
+    }
 }
 function clearExploreMarkers(){
     if(selectedMarker != null)
