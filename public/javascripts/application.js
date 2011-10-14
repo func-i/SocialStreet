@@ -6,12 +6,13 @@ $(function() {
         cleanup();
 
         var href;
-        if(this.href != undefined) {
-            href = this.href;
-        }
-        else if($(this).data('ajax-href') != '') {
+        if($(this).data('ajax-href') != '') {
             href = $(this).data('ajax-href');
         }
+        else if(this.href != undefined) {
+            href = this.href;
+        }
+
             
         if(href != undefined) {
             if(history && history.pushState) {
@@ -26,7 +27,7 @@ $(function() {
             }
             e.preventDefault();
             e.stopPropagation();
-        }
+        }       
     });
 
     //Signin link

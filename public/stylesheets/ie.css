@@ -2,3 +2,15 @@
     font-family: JLEE;
     src: url('/fonts/JLEE.eot');
 }
+
+body, html {
+    overflow: hidden;
+}
+
+#content {
+    display: table-row;
+}
+
+#left_side_pane {
+    top: auto;
+}
