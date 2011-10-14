@@ -60,10 +60,14 @@ class User < ActiveRecord::Base
     FbGraph::User.me(myToken) if myToken
   end
 
-  def update_users_location(latitude, longitude, zoom_level)
+  def update_users_location(latitude, longitude, zoom_level, sw_lat, sw_lng, ne_lat, ne_lng)
     self.last_known_latitude = latitude if latitude
     self.last_known_longitude = longitude if longitude
     self.last_known_zoom_level = zoom_level if zoom_level
+    self.last_known_bounds_sw_lat = sw_lat
+    self.last_known_bounds_sw_lng = sw_lng
+    self.last_known_bounds_ne_lat = ne_lat
+    self.last_known_bounds_ne_lng = ne_lng
     self.last_known_location_datetime = Time.zone.now
   end
 

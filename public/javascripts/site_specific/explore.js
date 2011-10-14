@@ -5,6 +5,7 @@ var exploreUpdateTimer;
 var selectedResult;
 var selectedMarker;
 var markerSlideShowInterval;
+var lockMouseOver = false;
 
 $(function(){
     //Cleanup function on leaving the page
@@ -86,7 +87,7 @@ function updateExploreLocationParams(){
     $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
     $('#map_center').val(map.getCenter().lat() + "," + map.getCenter().lng());
 
-    updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), zoom, true);
+    updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), zoom, sw.lat(), sw.lng(), ne.lat(), ne.lng(), true);
     
     refreshExploreResults();
 }
@@ -157,16 +158,24 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
             selectedMarker.label_.setMap(null);
         }
         selectedMarker = null;
+
+        if(markerSlideShowInterval != null){
+            clearTimeout(markerSlideShowInterval);
+        }
+
     });
 
-    /*google.maps.event.addListener(marker, 'click', function() {
-        clickMarker(this);
-    });*/
+    google.maps.event.addListener(marker, 'click', function() {
+        selectMarker(this);
+        lockMouseOver = true;
+    });
     google.maps.event.addListener(marker, 'mouseover', function() {
-        clickMarker(this);
+        if(!lockMouseOver)
+            selectMarker(this);
     });
     google.maps.event.addListener(map, 'click', function(){
         removeSelectedPinState();
+        lockMouseOver = false;
     })
 }
 
@@ -177,9 +186,13 @@ function removeSelectedPinState(){
     }
     selectedMarker = null;
 
+    if(markerSlideShowInterval != null){
+        clearTimeout(markerSlideShowInterval);
+    }
+
     $('.selected-result').removeClass('selected-result');    
 }
-function clickMarker(marker){
+function selectMarker(marker){
     if(selectedMarker != null && selectedMarker != marker) {
         selectedMarker.setIcon("/images/green-pin.png");
         selectedMarker.label_.setMap(null);
@@ -217,6 +230,10 @@ function clearExploreMarkers(){
         selectedMarker.label_.setMap(null);
 
     markerManager.deleteAllMarkers();
+
+    if(markerSlideShowInterval != null){
+        clearTimeout(markerSlideShowInterval);
+    }
 }
 function showExploreMarkers(){
     markerManager.showAllMarkers();

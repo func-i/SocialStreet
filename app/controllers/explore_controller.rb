@@ -60,50 +60,65 @@ class ExploreController < ApplicationController
   end
 
   def within_bounds(events, map_bounds)
-    if map_bounds.blank?
-      if params[:map_center]
-        center = params[:map_center].split(",").collect { |point| point.to_f }
-        latitude = center[0]
-        longitude = center[1]
-      else
-        if cookies[:current_location_longitude].blank? || cookies[:current_location_latitude].blank?
-          if current_user
-            latitude = current_user.last_known_latitude
-            longitude = current_user.last_known_longitude
-          end
-        else
-          latitude = cookies[:current_location_latitude].to_f
-          longitude = cookies[:current_location_longitude].to_f
-        end
-      end
-
-      latitude ||= 43.66061599944655
-      longitude ||= -79.3938175316406
-
-      map_bounds = params[:map_bounds] = "#{latitude + 0.027},#{longitude + 0.054},#{latitude - 0.027},#{longitude - 0.054}"
-    end
-
-    bounds = map_bounds.split(",").collect { |point| point.to_f }
-
-    params[:map_center] = "#{(bounds[0].to_f + bounds[2].to_f)/2},#{(bounds[1].to_f + bounds[3].to_f)/2}" unless params[:map_center]
-
     if params[:map_zoom].blank?
-      if cookies[:current_location_zoom].blank?
+      if cookies[:c_zoom].blank?
         if current_user
           zoom_level = current_user.last_known_zoom_level
-          puts "db"
-          puts zoom_level
         end
       else
-        zoom_level = cookies[:current_location_zoom]
-        puts "cookie"
-        puts zoom_level
+        zoom_level = cookies[:c_zoom]
       end
 
       params[:map_zoom] = zoom_level ||= 12
     end
 
-    events = events.in_bounds(bounds[0],bounds[1],bounds[2],bounds[3])
-  end
+    if params[:map_center]
+      center = params[:map_center].split(",").collect { |point| point.to_f }
+      latitude = center[0]
+      longitude = center[1]
+    else
+      if cookies[:c_lng].blank? || cookies[:c_lat].blank?
+        if current_user
+          latitude = current_user.last_known_latitude
+          longitude = current_user.last_known_longitude
+        end
+      else
+        latitude = cookies[:c_lat].to_f
+        longitude = cookies[:c_lng].to_f
+      end
+    end
 
+    latitude ||= 43.66061599944655
+    longitude ||= -79.3938175316406
+
+    params[:map_center] = "#{latitude},#{longitude}"
+
+    if map_bounds
+      ne_lat, ne_lng, sw_lat, sw_lng = map_bounds.split(",").collect { |point| point.to_f }
+    else
+      if cookies[:c_sw_lng].blank? || cookies[:c_sw_lat].blank? || cookies[:c_ne_lng].blank? || cookies[:c_ne_lat].blank?
+        if current_user
+          sw_lng = current_user.last_known_bounds_sw_lng
+          sw_lat = current_user.last_known_bounds_sw_lat
+          ne_lng = current_user.last_known_bounds_ne_lng
+          ne_lat = current_user.last_known_bounds_ne_lat
+        end
+      else
+        sw_lng = cookies[:c_sw_lng]
+        sw_lat = cookies[:c_sw_lat]
+        ne_lng = cookies[:c_ne_lng]
+        ne_lat = cookies[:c_ne_lat]
+      end
+    end
+
+    sw_lng ||= longitude - 0.054
+    sw_lat ||= latitude - 0.027
+    ne_lng ||= longitude + 0.054
+    ne_lat ||= latitude + 0.027
+
+    params[:map_bounds] = "#{ne_lat},#{ne_lng},#{sw_lat},#{sw_lng}"
+
+    #SEARCH FOR EVENTS IN BOUNDS
+    events = events.in_bounds(ne_lat,ne_lng,sw_lat,sw_lng)
+  end
 end
