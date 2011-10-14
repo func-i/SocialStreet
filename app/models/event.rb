@@ -23,6 +23,7 @@ class Event < ActiveRecord::Base
   scope :matching_keywords, lambda { |keywords, include_searchables_with_no_keywords|
     unless keywords.blank?
       chain = joins("LEFT OUTER JOIN event_keywords ON event_keywords.event_id = events.id")
+      #chain = chain.joins("LEFT OUTER JOIN event_types AS synonyms ON synonyms.synonym_id = event_keywords.event_type_id AND event_keywords.event_id = events.id")
       query = []
       args = {}
 
@@ -31,9 +32,10 @@ class Event < ActiveRecord::Base
           query << "events.name ~* :key#{i}
           OR events.description ~* :key#{i}
           OR event_keywords.id IS NULL
-          OR event_keywords.name ~* :key#{i}
+          OR event_keywords.name ~* :key#{i}          
           "
-          args["key#{i}".to_sym] = "#{k}"
+          #OR synonyms.name ~* :key#{i}
+          args["key#{i}".to_sym] = "[[:<:]]#{k}"
         end
       end
       chain.where(query.join(" OR "), args)
@@ -122,6 +124,6 @@ class Event < ActiveRecord::Base
   end
 
   def save_default_name
-    self.name = title_from_parameters(false) unless self.name
+    #self.name = title_from_parameters(false) unless self.name
   end
 end

@@ -14,24 +14,42 @@ module ApplicationHelper
 
   end
 
+  def event_time_in_words(event)
+    start_time = event.start_date
+    end_time = event.end_date
+
+    ss_time_ago_in_words(start_time, end_time)
+  end
+
   def ss_time_ago_in_words(start_time, end_time = nil)
-    compare_time = start_time.is_a?(Date) ? Date.today : Time.now
+    started = (start_time < Time.now)
+    ended = (end_time.nil? ? false : (end_time < Time.now))
+    upcoming = !(started || ended)
+    time = (ended ? end_time : start_time)
+    distance_in_minutes = ((time - Time.now).abs/60).round
+    distance_in_hours = (distance_in_minutes / 60).floor
+    distance_in_days = (distance_in_hours / 24).floor
 
-    if(end_time)
-      if( start_time < compare_time )
-        if( end_time > compare_time )
-          #return 'started ' + time_ago_in_words(start_time) + ' ago - ' + time_ago_in_words(end_time) + ' remaining'
-          return 'started ' + time_ago_in_words(start_time) + ' ago'
-        else
-          return 'ended ' + time_ago_in_words(end_time) + ' ago'
-        end
-      end
-    end
+    time_of_day = (time.hour() > 21 ? 'Night' : (time.hour() > 17 ? 'Evening' : (time.hour() > 12 ? 'Afternoon' : 'Morning')))
+    
+    text = "#{ended ? 'Ended ' : (started ? 'Started ' : 'Starts ')}"
 
-    if( start_time > compare_time)
-      return 'in ' + time_ago_in_words(start_time)
+    case distance_in_hours
+    when 0
+      text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
+    when 1..23
+      text = "#{text}#{'in ' if upcoming}#{distance_in_hours} hours#{' ago' unless upcoming}"
     else
-      return time_ago_in_words(start_time) + ' ago'
+      case distance_in_days
+      when 1
+        text = "#{text}#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
+      when 2..6
+        text = "#{text}#{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
+      when 7..13
+        text = "#{text}#{upcoming ? 'next ' : 'last '}#{time.strftime("%A")} #{time_of_day}"
+      else
+        text = "#{text}#{time.strftime("%A, %b %e %l:%M %p")}"
+      end
     end
   end
 

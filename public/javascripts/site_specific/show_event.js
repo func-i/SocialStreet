@@ -89,11 +89,11 @@ $(function(){
         var $textField = $('#edit_event_title_field');
 
         $textField.removeClass('hidden');
-    //$textField.focus().val($textField.val());
+        $textField.focus();
     });
     $('#edit_event_title_field').keydown(function(e){
         if(e.keyCode == 13){
-            submitEventTitle();
+            $('#edit_event_title_field').blur();//causes submit
         }
     });
 
@@ -101,12 +101,14 @@ $(function(){
         submitEventTitle();
     });
     
-    function submitEventTitle() {        
-        $('#show_event_title_text').text($('#edit_event_title_field').val().substring(0, 25));
+    function submitEventTitle() {
+        if($('#edit_event_title_field').val().length > 0){
+            $('#show_event_title_text').text($('#edit_event_title_field').val().substring(0, 25));
+            $('#event_edit_form').submit();
+        }
         $('#show_event_title_text').removeClass('hidden');
         $('#edit_event_title_link').removeClass('hidden');
         $('#edit_event_title_field').addClass('hidden');
-        $('#event_edit_form').submit();
         
     }
 

@@ -38,9 +38,17 @@ class ExploreController < ApplicationController
 
   def with_keywords(event, keywords)
     return event.includes({:event_keywords => {:event_type => :synonym}}) if (keywords.blank? || keywords.empty?)
+    
+    enhanced_keywords = []
+    keywords.each do |keyword|
+      unless keyword.blank?
+        enhanced_keywords << keyword
+        enhanced_keywords.concat(EventType.with_name(keyword).joins(:synonym).all.collect(&:synonym).map(&:name))
+      end
+    end
 
     all_keywords = []
-    keywords.each do |keyword|
+    enhanced_keywords.each do |keyword|
       unless keyword.blank?
         all_keywords << keyword
         all_keywords.concat(EventType.with_parent_name(keyword).all.map(&:name))

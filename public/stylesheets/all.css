@@ -257,7 +257,7 @@ END OF RESET
     color: white;
 }
 .result-title{
-    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    font: bold 18px/0px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
     width: 260px;
@@ -674,29 +674,34 @@ END OF RESET
     position: relative;
     top: 13px;
 }
-#show_attendees_holder{
-    /*height: 200px;*/
-    width: 240px;
-    padding-top: 9px;
-    float: right;
-}
 #show_attendees_title{
-    color: white;
+    background-color: #4F4F4D;
+    padding-top: 2px;
+    width: 200px;
+    font-size: 16px;
+    font-weight: bold;
     text-align: center;
-    font: bold 22px/32px Arial, Helvetica, sans-serif;
 }
-#show_attendees_list_holder{
-    max-height: 120px;
-    overflow: auto;
-    padding-top: 5px;
-    min-height: 65px;
+#show_attendees_holder{
+    width: 200px;
+    max-height: 180px;
+    overflow-y: auto;
 }
-.show-attendee-holder{
+.show-attendee{
+    padding: 2px 2px 2px 5px;
     float: left;
-    padding: 0 5px;
+    width: 178px;
 }
-.attendee-name{
+.show-attendee-icon{
+    float:left;
+}
+.show-attendee-name{
     text-align: center;
+    font: bold 12px/18px Arial, Helvetica, sans-serif;
+    color: white;
+    float: left;
+    width: 92px;
+    padding: 18px 0 0 5px;
 }
 .marker-label{
     background: #FFC233;
