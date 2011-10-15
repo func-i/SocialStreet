@@ -4,8 +4,20 @@
     Author     : jonathan
     Description:
         Purpose of the stylesheet follows.
+
+        Provide IE css styles for the SMOW html email
 */
 
 .header-text {
-    margin-top: 10px;
+    top: 25px;
+}
+
+.table-bg {
+    background-image: none !important;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.blue-td {
+  border: none !important;
 }

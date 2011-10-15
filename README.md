@@ -169,3 +169,7 @@ Production Servers
 - URL: http://www.socialstreet.com/sim_error
 - Causes a string exception to be thrown
 
+### GOD
+
+- Starting GOD
+/usr/local/rvm/rubies/ruby-1.9.2-p180-patched/bin/ruby /usr/local/rvm/gems/ruby-1.9.2-p180-patched/bin/god -P /var/run/god/god.pid -l /var/log/god/god.log
