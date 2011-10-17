@@ -16,7 +16,8 @@
     <div class="result-attendees">
       <% attendees = User.attending_event(event).excluding(current_user)%>
       <% attendees_count = attendees.count %>
-      <% attendees.order_by_rank_to_user(current_user).limit(5).each do |attendee| %>
+      <% number_attendees_to_show = (attendees_count == 5 ? 5 : 4)%>
+      <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
         <%= avatar attendee, :size => "22x22", :class=>"result-attendees-image"%>
       <% end %>
       <% if attendees_count > 5%>

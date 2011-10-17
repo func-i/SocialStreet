@@ -344,6 +344,7 @@ function createShowMarker(lat, lng, address, location_text) {
     showMarker = markerManager.addMarker(lat, lng);
 
     showMarker.setIcon("/images/marker-base.png");
+    showMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
 
     showMarker.iconLabel_ = new IconLabel();
     showMarker.iconLabel_.bindTo('position', showMarker, 'position');
@@ -364,7 +365,6 @@ function createShowMarker(lat, lng, address, location_text) {
 function hideMarkers(){
     markerManager.hideAllMarkers();
     if(showMarker){
-        //showMarker.infoBubble_.close();
         showMarker.iconLabel_.setMap(null);
         showMarker.label_.setMap(null);
     }
@@ -374,10 +374,8 @@ function showMarkers(){
     markerManager.showAllMarkers();
 
     if(showMarker){
-        //showMarker.infoBubble_.open(map, showMarker);
         showMarker.iconLabel_.setMap(map);
-        showMarker.label_.setMap(map);
-
+        showMarker.label_.setMap(map);        
     }
 }
 

@@ -135,7 +135,8 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         $(this).addClass('container').addClass('selected-result');
 
         if(selectedMarker != null && selectedMarker != marker.ownerMarker_){
-            selectedMarker.setIcon("/images/green-pin.png");
+            selectedMarker.setIcon("/images/grey-pin.png");
+            selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
             selectedMarker.label_.setMap(null);
         }
 
@@ -144,6 +145,7 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         selectedMarker.setIcon("/images/marker-base.png");
         selectedMarker.label_.setIcon(marker.iconSrc_);
         selectedMarker.label_.setMap(map);
+        selectedMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
 
         if(markerSlideShowInterval != null){
             clearTimeout(markerSlideShowInterval);
@@ -155,7 +157,8 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
             return;
 
         if(selectedMarker != null){
-            selectedMarker.setIcon("/images/green-pin.png");
+            selectedMarker.setIcon("/images/grey-pin.png");
+            selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
             selectedMarker.label_.setMap(null);
         }
         selectedMarker = null;
@@ -170,7 +173,7 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         selectMarker(this);
         lockMouseOver = true;
     });
-/*    google.maps.event.addListener(marker, 'mouseover', function() {
+    /*    google.maps.event.addListener(marker, 'mouseover', function() {
         if(!lockMouseOver)
             selectMarker(this);
     });*/
@@ -182,7 +185,8 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
 
 function removeSelectedPinState(){
     if(selectedMarker != null){
-        selectedMarker.setIcon("/images/green-pin.png");
+        selectedMarker.setIcon("/images/grey-pin.png");
+        selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
         selectedMarker.label_.setMap(null);
     }
     selectedMarker = null;
@@ -195,12 +199,14 @@ function removeSelectedPinState(){
 }
 function selectMarker(marker){
     if(selectedMarker != null && selectedMarker != marker) {
-        selectedMarker.setIcon("/images/green-pin.png");
+        selectedMarker.setIcon("/images/grey-pin.png");
+        selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
         selectedMarker.label_.setMap(null);
     }
 
     selectedMarker = marker;
     selectedMarker.setIcon("/images/marker-base.png");
+    selectedMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
     selectedMarker.label_.setMap(map);
 
     if(markerSlideShowInterval != null){
@@ -209,6 +215,10 @@ function selectMarker(marker){
     if(selectedMarker.clusteredMarkers_ != null){
         var count = 0;
         markerSlideShowInterval = setInterval(function(){
+            if(!selectedMarker){
+                clearTimeout(markerSlideShowInterval);
+                return;
+            }
             selectedMarker.label_.setIcon(selectedMarker.clusteredMarkers_[count].iconSrc_);
             count += 1;
             if(count >= selectedMarker.clusteredMarkers_.length)

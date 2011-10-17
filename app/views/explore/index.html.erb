@@ -32,7 +32,7 @@
     <div id="event_types_scroller" class="scroll-pane include-vertical-bar">
       <ul>
         <li id="custom_event_type" class="event-type explore-event-type hidden">
-          <div class="container">
+          <div class="container rounded-corners">
             <%= image_tag('/images/event_types/streetmeet2.png', :class=>'event-type-image explore-event-type-image drop-shadow') %>
             <div class="event-type-name explore-event-type-name"></div>
           </div>
@@ -40,7 +40,7 @@
 
         <% @event_types.each do |et| %>
           <li class="event-type explore-event-type">
-            <div class="container">
+            <div class="container rounded-corners">
               <%= image_tag(et.image_path, :class=>'event-type-image explore-event-type-image drop-shadow') %>
               <div class="event-type-name explore-event-type-name">
                 <%= et.name %>

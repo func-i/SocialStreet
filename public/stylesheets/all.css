@@ -217,7 +217,7 @@ END OF RESET
     background: url("../images/ss_site_logo.png") no-repeat;
     float: left;
     height: 43px;
-    margin: -9px 30px 0 50px;
+    margin: -9px 24px 0 20px;
     overflow: hidden;
     text-indent: -9999px;
     width: 90px;
@@ -229,7 +229,7 @@ END OF RESET
 
 /*Results list*/
 .result{
-    padding:15px 10px 10px 15px;
+    padding:15px 20px 10px 20px;
     height: 80px;
     position: relative;
 }
@@ -313,7 +313,7 @@ END OF RESET
     cursor: pointer;
     text-align: center;
     bottom: 9px;
-    right: 15px;
+    right: 20px;
 }
 
 .result-join-btn-holder .attending {
@@ -892,6 +892,10 @@ END OF RESET
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
 }
+.rounded-corners{
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
 
 /*KEYWORDS*/
 .event-type-selected {
@@ -901,9 +905,11 @@ END OF RESET
     cursor: pointer;
 }
 #explore_keyword_text_field{
-    width:380px;
+    width:360px;
     height:35px;
     border: 0;
+    padding: 0;
+    margin: 0;
 }
 #create_keyword_text_field{
     width:360px;
@@ -921,6 +927,7 @@ END OF RESET
 }
 #event_types_holder{
     width: 100%;
+    max-width: 550px;
     height: 100%;
 }
 .event-type{

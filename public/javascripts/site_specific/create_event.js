@@ -223,6 +223,7 @@ function createCreateMarker(latlng, address){
     marker.setDraggable(true);
     marker.text_ = null;
     marker.setIcon('/images/create-event-marker.png');
+    marker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
 
     if(undefined == address){
         address = "";
