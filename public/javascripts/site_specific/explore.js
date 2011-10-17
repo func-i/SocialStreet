@@ -17,6 +17,7 @@ $(function(){
 
     resizeSelf = function(){
         resizeCenterPaneContent();
+        resizeResultButtons();
     }
     
     //Setup the explore page
@@ -27,6 +28,14 @@ function resizeCenterPaneContent(){
     var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
     var scrollerTop = $('#event_types_scroller').offset().top;
     $('#event_types_scroller').height(centerPaneBottom - scrollerTop);
+}
+function resizeResultButtons(){    
+    if($('.jspVerticalBar').length > 0){
+        $('.result-join-btn-holder').css('right', '5px');
+    }
+    else{
+        $('.result-join-btn-holder').css('right', '20px');
+    }
 }
 
 function setupExplorePage(){
@@ -233,7 +242,9 @@ function selectMarker(marker){
         var myResult = $('#' + myMarker.resultID_);
         myResult.addClass('selected-result').addClass('container');
         $('#results_list').prepend(myResult);
-        $('#results_container').data('jsp').scrollToY(0);
+        var api = $('#results_container').data('jsp');
+        if(api)
+            api.scrollToY(0);
     }
 }
 function clearExploreMarkers(){
