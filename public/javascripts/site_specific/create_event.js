@@ -9,6 +9,7 @@ $(function(){
     resizeSelf = function(){
         resizeCenterPaneContent();
         resizeWhatTags();
+        resizeCalendar();
     }
 
     setupCreateWhat();
@@ -36,6 +37,20 @@ function resizeWhatTags(){
         $('.keyword-tag-holder').height(docHeight - keywordTopOffset - continueHeight);
         initScrollPane($('.keyword-tag-holder'));
     }
+}
+function resizeCalendar(){
+    $('#create_when_calendar_holder').height('100%');
+    $('#create_when_calendar_holder').width('100%');
+
+    var maxWidth = $('#center_pane').width();
+    var calWidth = $('#create_when_calendar_holder').height() * 1.35;
+    if(calWidth > maxWidth)
+        calWidth = maxWidth;
+
+    $('#create_when_calendar_holder').width(calWidth);//1.35 default aspect ratio
+    $('#create_when_calendar_holder').height(calWidth / 1.35);
+
+    $('#create_when_calendar').fullCalendar('option', 'height', calWidth/1.35);
 }
 
 /*
@@ -314,16 +329,15 @@ function setupCreateWhen(){
     $('.create-when-view').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
 
-    $('#create_when_calendar_holder').width($('#create_when_calendar_holder').height() * 1.35);//1.35 default aspect ratio
-
     $('#create_when_calendar').fullCalendar({
         defaultView: 'month',
-        height: $('#create_when_calendar_holder').height(),
         dayClick: function(date, allDay, jsEvent, view) {
             setWhenDate(date);
         }
     });
 
+    resizeCalendar();
+    
     var myStartDate = $('#start_date').val();
     var myDate = new Date(myStartDate);
     setWhenDate(myDate);

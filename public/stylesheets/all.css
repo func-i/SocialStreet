@@ -718,6 +718,7 @@ END OF RESET
     font-size: 16px;
     font-weight: bold;
     text-align: center;
+    margin-top:17px;
 }
 #show_attendees_holder{
     width: 200px;

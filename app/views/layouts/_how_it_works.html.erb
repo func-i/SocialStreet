@@ -1,28 +1,3 @@
-<!--<div id="how_it_works_header">
-  <div class="holder">
-    <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
-
-    <% if user_signed_in? %>
-      <div class="header-right">
-        <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %></div>
-        <div id="signed_in_button">
-          <span id="current_user_name">
-            <%=current_user.name%>
-          </span>
-          <ul class="drop-shadow">
-            <li><%=link_to "Sign Out", destroy_user_session_path%></li>
-          </ul>
-        </div>
-      </div>
-    <% else %>
-      <div style="margin-bottom: 9px; float: right; margin-right: 20%;">
-        <%= image_tag("sign-in-logo.png", :id =>"header_signin_button" , :class => "sign-in-ribbon nav-link", :style => "float: right; position: absolute; top: -42px;", "data-href" => '/auth/facebook') %>
-      </div>
-      <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
-      <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
-    <% end %>
-  </div>
-</div>-->
 <div class="container" style="z-index: 3; width: 75%; margin: 0 auto; min-height: 350px; padding: 10px 75px 10px 10px;">
   <%= image_tag "icons.png", :alt => "SocialStreet", :style => "float: left; margin: 5px;" %>
   <%= image_tag "btn-close5.png", :alt => "X", :id => "close_how_it_works", :style => "float: right; margin-top: 40px;" %>

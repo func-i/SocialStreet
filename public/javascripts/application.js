@@ -317,7 +317,7 @@ $.fn.serializeObject = function()
 
 function openHowItWorks() {
     $('.content-group').addClass('hidden');
-    markerManager.hideAllMarkers();
+    //markerManager.hideAllMarkers();
     
     $('#how_it_works').removeClass('hidden');
     $('.how-it-works').removeClass('hidden');
@@ -329,7 +329,7 @@ function closeHowItWorks() {
     $('.how-it-works').addClass('hidden');
     $('.remove-how-it-works').removeClass('hidden');
 
-    markerManager.showAllMarkers();
+    //markerManager.showAllMarkers();
     $('.content-group').removeClass('hidden');
 }
 
