@@ -963,6 +963,8 @@ END OF RESET
     text-align: center;
     font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
+    width: 62px;
+    margin: 0 auto;
 }
 #explore_keyword_header{
     background-color: #4F4F4D;

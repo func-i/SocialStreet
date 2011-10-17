@@ -77,6 +77,8 @@ class User < ActiveRecord::Base
   end
 
   def apply_omniauth(omniauth)
+    self.first_sign_in_date = Time.now if self.first_sign_in_date.blank?    
+
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
     if omniauth['extra'] && user_info = omniauth['extra']['user_hash']
       self.username = user_info['screen_name'] if !user_info['screen_name'].blank? && self.username.blank?
@@ -97,10 +99,5 @@ class User < ActiveRecord::Base
     end
     
     self.facebook_profile_picture_url = omniauth['user_info']['image'] if omniauth['user_info'] && self.facebook_profile_picture_url.blank?
-    
-  end
-
-
-
-
+  end 
 end

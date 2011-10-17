@@ -7,7 +7,7 @@ $(function(){
     $('.keyword-text-field').live('focus', function(){
         //Clear any value in the text field
         $(this).val('');
-        keywordTyped('');
+        reset();
 
         //show event type holder
         showEventTypeHolder();
@@ -30,8 +30,12 @@ $(function(){
     $('.event-type').live('click', function(){
         eventTypeClicked(this);
 
+        if($('#on_explore').length > 0){
+            hideEventTypeHolder();
+        }
+
         $(this).val('');
-        keywordTyped('');
+        reset();
     });
 
     //User types into the text field
@@ -42,13 +46,27 @@ $(function(){
             delete eventTypeTimer;
         }
 
-        if(e.keyCode == 13){
-            addKeyword(e.target.value);
+        if(e.target.value.length < 1){
+            reset();
+            return;
+        }
+        
+        var keyword_arr = e.target.value.split(',');
+
+        if(e.keyCode == 13){//Enter
+            addKeyword(keyword_arr[keyword_arr.length - 1]);
+
+            if($('#on_explore').length > 0){
+                hideEventTypeHolder();
+            }
+        }
+        else if(e.keyCode == 188){//comma
+            addKeyword(keyword_arr[keyword_arr.length - 2])
         }
         else{
             eventTypeTimer = setTimeout(function()
             {
-                keywordTyped(e.target.value);
+                keywordTyped(keyword_arr[keyword_arr.length - 1]);
             }, 250);
         }
     });
@@ -78,6 +96,20 @@ function hideEventTypeHolder(){
     isOpen = false;
 }
 
+function reset(){
+    $.each($('.event-type'), function(index, et){
+        var $et = $(et);
+        if($et.hasClass('synonym'))
+            $et.addClass('hidden');
+        else
+            $et.removeClass('hidden');
+    });
+
+    $('#custom_event_type').val('');
+    $('#custom_event_type').addClass('hidden');
+    resizePageElements();
+}
+
 function eventTypeClicked(eventType, refreshResults){
     $eventType = $(eventType);
     keywordName = $.trim($eventType.find('.event-type-name').text());
@@ -103,8 +135,6 @@ function eventTypeClicked(eventType, refreshResults){
             if(undefined == refreshResults || refreshResults){
                 refreshExploreResults();
             }
-
-            hideEventTypeHolder();
         }
         else{
             $('#event_create_form').append(
@@ -140,33 +170,41 @@ function addKeyword(keyword, refreshResults){
         refreshResults = true;
 
     keywordTyped(keyword);
-    eventTypeClicked($('.event-type').not('.hidden')[0], refreshResults);
+
+    var addType = $('.exact-match').first();
+    if(addType.length < 1)
+        addType = $('.event-type').not('.hidden').first();
+
+    eventTypeClicked(addType, refreshResults);
 }
 
 function keywordTyped(text){
-    //filter the event type list for the text - TODO
-    var regEx = new RegExp(text, "i");
+    var trimmedText = $.trim(text);
+    var regEx = new RegExp(trimmedText, "i");
     var exact_match = false;
-    var lowerCaseText = text.toLowerCase();
+    var lowerCaseText = trimmedText.toLowerCase();
         
     $.each($('.event-type').not('#custom_event_type').find('.event-type-name'), function(index, name){
         var $name = $(name);
 
         if($.trim($name.text()).match(regEx) == null){
-            $name.closest('.event-type').addClass('hidden');//Hide event type if no match
+            $name.closest('.event-type').removeClass('exact-match').addClass('hidden');//Hide event type if no match
         }
         else{
             $name.closest('.event-type').removeClass('hidden');//Show event type if match
 
-            exact_match = exact_match || $.trim($name.text()).toLowerCase() == lowerCaseText;
+            if($.trim($name.text()).toLowerCase() == lowerCaseText){
+                $name.closest('.event-type').addClass('exact-match');
+                exact_match = true;
+            }
         }
     });
 
-    if(text.length < 1 || exact_match){
+    if(trimmedText.length < 1 || exact_match){
         $('#custom_event_type').addClass('hidden');
     }
     else{
-        $('#custom_event_type .event-type-name').text(text);
+        $('#custom_event_type .event-type-name').text(trimmedText);
         $('#custom_event_type').removeClass('hidden');
     }
 

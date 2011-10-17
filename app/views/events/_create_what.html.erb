@@ -52,7 +52,7 @@
         </li>
 
         <% @event_types.each do |et| %>
-          <li class="event-type create-event-type">
+          <li class="event-type create-event-type <%="hidden synonym" if et.synonym_id != et.id%>">
             <div class="container rounded-corners">
               <%= image_tag(et.image_path, :class=>"event-type-image create-event-type-image drop-shadow") %>
               <div class="event-type-name create-event-type-name text-shadow">

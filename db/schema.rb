@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111014190553) do
+ActiveRecord::Schema.define(:version => 20111017170109) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20111014190553) do
     t.integer  "last_known_bounds_sw_lng"
     t.integer  "last_known_bounds_ne_lat"
     t.integer  "last_known_bounds_ne_lng"
+    t.datetime "first_sign_in_date"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
