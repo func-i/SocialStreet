@@ -61,7 +61,7 @@
     <div class="">
       <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
         <div id="event_wall_text_field_holder">
-          <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => "Leave a Message", :rows => 1-%>
+          <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => " Leave a Message", :rows => 1-%>
         </div>
       <% end %>
       <div id="event_wall" class="cap-height scroll-pane show-scroll-on-hover" data-expandBottomOffset="10" style="overflow:auto;">

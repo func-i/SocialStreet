@@ -34,7 +34,7 @@ $(function(){
 
     $('#event_wall_text_field').keyup(function(e){
         if (!e.shiftKey && e.keyCode == 13) {
-            submit_event_wall_comment();
+            submitEventWallComment();
             e.stopPropagation();
             return false;
         }
@@ -69,7 +69,7 @@ $(function(){
         }
     });
     $('.user-for-invitation').live('click', function(){
-        add_invitation(this);
+        addInvitation(this);
     });
     $('.already-invited-user').live('click', function(){
         remove_invitation(this);
@@ -252,15 +252,21 @@ function invitationPagelessFunction(){
 }
 
 
-function add_invitation(that){
+function addInvitation(that){
+    //Check if user already added to list
     if(!does_invitation_already_exist(that.id)){
-        //Check if user already added to list
+        var scrollApi = $('#invited_user_list').data('jsp');
+        if(scrollApi){
+            $('#invited_user_list').data('jsp').destroy();
+        }
+        $('#invited_user_list').height('auto');
+
         //Add to list
         var userClone = $('#invited_user_clone').clone();
         userClone[0].id = invitationCounter;
         userClone.children('.already-invited-user-image').html($(that).find('img').clone());
         userClone.removeClass('hidden');
-        $('#invited_user_list').append(userClone);
+        $('#invited_user_list').prepend(userClone);
 
         $('#invite_form').append(
             '<input type="hidden" name="invited_users[]" value="' + that.id + '" id="' + invitationCounter + '"/>'
@@ -270,8 +276,11 @@ function add_invitation(that){
         $('#invitation_list').removeClass('invisible');
         $('#invite_friend_pretext').addClass('hidden');
 
-        $('#invite_friends_btn').removeClass('hidden');
+        $('#invite_friends_btn').removeClass('invisible');
         $('#continue_invitation_btn').addClass('hidden');
+
+        capHeightContainer();
+        initScrollPane($('#invited_user_list'));
     }
 }
 function remove_invitation(that){
@@ -282,7 +291,7 @@ function remove_invitation(that){
         $('#invitation_list').addClass('invisible');
         $('#invite_friend_pretext').removeClass('hidden');
 
-        $('#invite_friends_btn').addClass('hidden');
+        $('#invite_friends_btn').addClass('invisible');
         $('#continue_invitation_btn').removeClass('hidden');
     }
 }
@@ -303,6 +312,12 @@ function refreshInviteUserList() {
 function addEmail(email_address){
     // make sure it's a valid email that was not already included in the list
     if (isEmail(email_address))  {
+        var scrollApi = $('#invited_user_list').data('jsp');
+        if(scrollApi){
+            $('#invited_user_list').data('jsp').destroy();
+        }
+        $('#invited_user_list').height('auto');
+
         //email_address = email_address.replace("@", "_at_").replace(".","_");
         email_address = email_address.replace(".","\.");
         $('#invite_form').append(
@@ -313,11 +328,18 @@ function addEmail(email_address){
         emailElem.addClass('already-invited-email');
         emailElem[0].id = invitationCounter;
         emailElem.text(email_address.replace("@", " '@' "));
-        $('#invited_user_list').append(emailElem);
+        $('#invited_user_list').prepend(emailElem);
 
         invitationCounter++;
 
         $('#invitation_list').removeClass('invisible');
+        $('#invite_friend_pretext').addClass('hidden');
+
+        $('#invite_friends_btn').removeClass('invisible');
+        $('#continue_invitation_btn').addClass('hidden');
+
+        capHeightContainer();
+        initScrollPane($('#invited_user_list'));
     }
 }
 
@@ -327,7 +349,7 @@ function isEmail(string) {
 }
 
 
-function submit_event_wall_comment(){
+function submitEventWallComment(){
     if($('#event_wall_text_field').val().length > 0){
         $('#event_wall_form').submit();
         $('#event_wall_text_field').val('');

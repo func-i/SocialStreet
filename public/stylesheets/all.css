@@ -372,6 +372,7 @@ END OF RESET
 .drop-shadow{
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
+    box-shadow: 3px 3px 3px #4F4F4D;
 }
 
 .text-shadow{
@@ -522,6 +523,7 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
+    box-shadow: 3px 3px 3px #4F4F4D;
 }
 .next-arrow{
     float: right;
@@ -903,6 +905,7 @@ END OF RESET
     background: url("../images/overlay_box_bg.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
+    box-shadow: 3px 3px 3px #4F4F4D;
 }
 .rounded-corners{
     -webkit-border-radius: 4px;

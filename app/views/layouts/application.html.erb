@@ -29,7 +29,7 @@
           <div id="right_side_pane" class="content-group">
             <%= yield :right_side_pane%>
           </div>
-          <div id="left_side_pane" class="container content-group">
+          <div id="left_side_pane" class="container content-group" style="-webkit-box-shadow: 3px 0px 3px #4F4F4D;-moz-box-shadow: 3px 0px 3px #4f4f4d;box-shadow: 3px 0px 3px #4F4F4D;">
             <%= yield :left_side_pane%>
           </div>
           <div id="top_pane" class="content-group">
@@ -48,12 +48,12 @@
       </div>
       <div id="footer">
         <ul style="float:left">
-          <!--<li><%#= link_to "About", '#' -%></li>-->
-          <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%> | </li>
+          <!--<li><%#= link_to "About", '#' -%></li>
+          <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%> | </li>-->
           <li><span class="nav-link" data-ajax-href="<%= show_tnc_authentications_path %>">Terms</span> | </li>
           <li><span class="nav-link" data-ajax-href="<%= show_privacy_authentications_path %>">Privacy</span> | </li>
-          <li><%= mail_to 'pr@SocialStreet.com', "Media" -%> | </li>
-          <li><span style="font: normal normal bold 12px/14px Arial, Helvetica, sans-serif;">SocialStreet &#169; 2011</span></li>
+          <li><%= mail_to 'josh@SocialStreet.com', "Contact" -%> | </li>
+          <li><span>SocialStreet &#169; 2011</span></li>
         </ul>
       </div>
     </div>

@@ -7,7 +7,7 @@
       Drag the pin or enter an address in the text box...
     </div>
     <div id="create_where_text_field_holder">
-      <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => "Enter address here...", :id=>'create_where_text_field' %>
+      <%= text_field_tag 'where', params[:q], :type => "text", :title => "Where?", :placeholder => " Enter address here...", :id=>'create_where_text_field' %>
     </div>
 
     <div id="create_where_marker_info" class="invisible">
@@ -17,7 +17,7 @@
         </span>
         <div id="create_where_name_location" class="text-shadow">
           <span id="create_where_name_location_text"><%= event.location.text %></span>
-          <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => "Name this pin...", :id => 'create_where_name_location_input', :class => 'hidden' %>
+          <%= text_field_tag 'name', event.location.text, :type=> "text", :title => "Name this pin", :placeholder => " Name this pin...", :id => 'create_where_name_location_input', :class => 'hidden' %>
         </div>
       </div>
       <div id="create_where_address" class="text-shadow">
