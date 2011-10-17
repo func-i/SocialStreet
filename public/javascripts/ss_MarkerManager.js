@@ -189,7 +189,7 @@ ProjectionHelperOverlay.prototype.draw = function () {
 function IconLabel() {
     // Here go the label styles
     this.div_ = document.createElement('div');
-    this.div_.style.cssText = 'position: absolute;z-index:100;';
+    this.div_.style.cssText = 'position: absolute;z-index:1000;';
 
     this.image_ = document.createElement('img');
     this.image_.style.cssText = "width:50px;height:50px";

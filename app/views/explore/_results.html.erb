@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="result-attendees">
-      <% attendees = User.attending_event(event).excluding(current_user)%>
+      <% attendees = User.attending_event(event)%>
       <% attendees_count = attendees.count %>
       <% number_attendees_to_show = (attendees_count == 5 ? 5 : 4)%>
       <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
