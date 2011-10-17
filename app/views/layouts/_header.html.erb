@@ -1,6 +1,6 @@
 <div class="holder">
   <div style="float:left;width:100%;">
-    <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
+    <%= image_tag('/images/ss_site_logo.png', :class=>"logo nav-link", "data-ajax-href"=>root_path) %>
 
     <%= image_tag('explore-btn.png', :class=>"nav-link remove-how-it-works", "data-ajax-href" => root_path, :style=>"margin-right:10px;") %>
     <%= image_tag('plan-btn.png', :class=>"nav-link remove-how-it-works", "data-ajax-href" => new_event_path) %>
@@ -27,8 +27,8 @@
           <%= image_tag("sign-in-logo.png", :id =>"header_signin_button" , :class => "sign-in-ribbon nav-link", :style => "float: right; position: absolute; top: -38px;", "data-href" => '/auth/facebook') %>
         </div>
         <div class="how-it-works hidden" style="margin-top:7px;">
-        <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
-        <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
+          <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
+          <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
         </div>
       <% end %>
     </div>

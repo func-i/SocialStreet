@@ -216,14 +216,17 @@ END OF RESET
 
 /*Logo in the header*/
 .logo {
-    background: url("../images/ss_site_logo.png") no-repeat;
-    float: left;
-    height: 43px;
+    height: 46px;
+    width: 83px;
     margin: -9px 14px 0 20px;
+/*    height: 36px;
+    width: 65px;
+    margin: -5px 14px 0 20px;*/
+    float: left;
     overflow: hidden;
     text-indent: -9999px;
-    width: 90px;
 }
+
 .logo a {
     display: block;
     height: 100%;
@@ -269,7 +272,7 @@ END OF RESET
     float:left;
 }
 .result-date{
-    padding: 1px 0 5px 0;
+    padding: 1px 0 6px 0;
 }
 .result-tags{
     color: white;
@@ -285,7 +288,7 @@ END OF RESET
 }
 .result-attendee-more-text{
     float:left;
-    height:22px;
+    height:24px;
     width:29px;
     overflow:hidden;
     font:italic 12px/12px Arial, Helvetica, sans-serif;
@@ -317,7 +320,7 @@ END OF RESET
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
-    bottom: 7px;
+    bottom: 5px;
     right: 20px;
 }
 
