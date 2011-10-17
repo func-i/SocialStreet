@@ -1,4 +1,4 @@
-<div id="how_it_works_header">
+<!--<div id="how_it_works_header">
   <div class="holder">
     <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
 
@@ -10,7 +10,6 @@
             <%=current_user.name%>
           </span>
           <ul class="drop-shadow">
-            <!--<li><%#=link_to "Settings", '#' %></li>-->
             <li><%=link_to "Sign Out", destroy_user_session_path%></li>
           </ul>
         </div>
@@ -23,7 +22,7 @@
       <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
     <% end %>
   </div>
-</div>
+</div>-->
 <div class="container" style="z-index: 3; width: 75%; margin: 0 auto; min-height: 350px; padding: 10px 75px 10px 10px;">
   <%= image_tag "icons.png", :alt => "SocialStreet", :style => "float: left; margin: 5px;" %>
   <%= image_tag "btn-close5.png", :alt => "X", :id => "close_how_it_works", :style => "float: right; margin-top: 40px;" %>

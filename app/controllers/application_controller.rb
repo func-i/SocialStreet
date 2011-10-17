@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
     session[:stored_redirect][:action] = options[:action] if options[:action]
     session[:stored_redirect][:params] = options[:params].clone if options[:params]
   end
+
+  def clear_redirect
+    session[:stored_redirect] = nil
+  end
   
   def store_current_path
     session[:stored_current_path] = request.fullpath
@@ -58,8 +62,8 @@ class ApplicationController < ActionController::Base
 
       return return_path if return_path
 
-      curren_path = get_current_path
-      return curren_path if curren_path
+      current_path = get_current_path
+      return current_path if current_path
     end
 
     super

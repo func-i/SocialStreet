@@ -128,7 +128,7 @@ function eventTypeClicked(eventType, refreshResults){
                 '<input type="hidden" name="keywords[]" class="keyword-input" value="' + keywordName + '" />'
                 );
 
-            $('#explore_keyword_header').removeClass('invisible');
+            $('#explore_keyword_header').removeClass('hidden').removeClass('invisible');
             if($('.keyword-tag-holder').height() > 150)
                 initScrollPane($('.keyword-tag-holder'));
 
@@ -232,7 +232,7 @@ function removeKeyword(keywordCloseDom){
         refreshExploreResults();
 
         if($('.keyword-tag').not('#keyword_tag_stamp').length < 1){
-            $('#explore_keyword_header').addClass('invisible');
+            $('#explore_keyword_header').addClass('hidden').addClass('invisible');
         }
 
         if($('.keyword-input').length==3) {

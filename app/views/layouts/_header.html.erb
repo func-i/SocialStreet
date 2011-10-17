@@ -2,12 +2,12 @@
   <div style="float:left;width:100%;">
     <h1 class="logo nav-link" data-ajax-href="<%= root_path %>"></h1>
 
-    <%= image_tag('explore-btn.png', :class=>"nav-link", "data-ajax-href" => root_path, :style=>"margin-right:10px;") %>
-    <%= image_tag('plan-btn.png', :class=>"nav-link", "data-ajax-href" => new_event_path) %>
+    <%= image_tag('explore-btn.png', :class=>"nav-link remove-how-it-works", "data-ajax-href" => root_path, :style=>"margin-right:10px;") %>
+    <%= image_tag('plan-btn.png', :class=>"nav-link remove-how-it-works", "data-ajax-href" => new_event_path) %>
 
     <div class="header-right">
-      <div id="how_it_works_btn">
-        How it Works
+      <div id="how_it_works_btn" class="remove-how-it-works">
+        What is SocialStreet?
       </div>
 
       <% if user_signed_in? %>
@@ -24,10 +24,13 @@
         </div>
       <% else %>
         <div id="signin_button" data-href='/auth/facebook'>
-          Sign In
+          <%= image_tag("sign-in-logo.png", :id =>"header_signin_button" , :class => "sign-in-ribbon nav-link", :style => "float: right; position: absolute; top: -38px;", "data-href" => '/auth/facebook') %>
+        </div>
+        <div class="how-it-works hidden" style="margin-top:7px;">
+        <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
+        <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
         </div>
       <% end %>
-
     </div>
   </div>
 </div>

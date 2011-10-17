@@ -155,32 +155,33 @@ END OF RESET
     display: block;
 }
 #current_user_name{
-    color: white;
+    color: #FFC233;
     font: bold 12px/19px Arial, Helvetica, sans-serif;
 }
 #signin_button{
-    color: white;
+    color: #FFC233;
     font: bold 16px/19px Arial, Helvetica, sans-serif;
-    margin: 7px 15px 0 5px;
+    margin: 7px 87px 0 5px;
     cursor: pointer;
+    float: right;
 }
 .header-right {
     float: right;
-    margin-right: 50px;
+    margin-right: 20px;
 }
 
 .header-right div {
     float: left;
 }
 #how_it_works_btn{
-    color: white;
+    color: #FFC233;
     font: italic 12px/19px Arial, Helvetica, sans-serif;
     margin: 9px 25px 0 5px;
     cursor: pointer;
 }
 #signed_in_button{
     position: relative;
-    margin: 9px 15px 0 5px;
+    margin: 9px 0px 0 5px;
     cursor: pointer;
 }
 #signed_in_button ul{
@@ -190,7 +191,8 @@ END OF RESET
     right: 0px;
     width: 60px;
     position:absolute;
-    background: #d2e9f3;
+    /*background: #d2e9f3;*/
+    background: #FFFCD5;
     padding: 10px 20px 10px 20px;
 }
 #signed_in_button:hover ul{
@@ -969,6 +971,7 @@ END OF RESET
 #explore_keyword_header{
     background-color: #4F4F4D;
     padding-top: 2px;
+    margin-top: 17px;
     width: 200px;
     font-size: 16px;
     text-align: center;

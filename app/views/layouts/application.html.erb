@@ -20,12 +20,13 @@
       <div id="header">
         <%= render 'layouts/header' %>
       </div>
-      <div id="how_it_works" class="hidden">
-        <%= render "layouts/how_it_works" %>
-      </div>
       <div style="display:table-row;width:100%;height: 100%;">
         <div id="content">
           <div id="location-map" class="map-frame" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index: 0;"></div>
+          <div id="how_it_works" class="hidden">
+            <%= render "layouts/how_it_works" %>
+          </div>
+
           <div id="right_side_pane" class="content-group">
             <%= yield :right_side_pane%>
           </div>

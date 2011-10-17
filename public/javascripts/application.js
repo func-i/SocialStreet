@@ -317,20 +317,20 @@ $.fn.serializeObject = function()
 
 function openHowItWorks() {
     $('.content-group').addClass('hidden');
-    $('#header').addClass('invisible');
     markerManager.hideAllMarkers();
     
     $('#how_it_works').removeClass('hidden');
+    $('.how-it-works').removeClass('hidden');
+    $('.remove-how-it-works').addClass('hidden');
 }
 
 function closeHowItWorks() {
     $('#how_it_works').addClass('hidden');
+    $('.how-it-works').addClass('hidden');
+    $('.remove-how-it-works').removeClass('hidden');
 
     markerManager.showAllMarkers();
     $('.content-group').removeClass('hidden');
-    $('#header').removeClass('invisible');
-
-    
 }
 
 function getInternetExplorerVersion()
