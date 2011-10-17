@@ -39,6 +39,9 @@ function resizeWhatTags(){
     }
 }
 function resizeCalendar(){
+    if($('#create_when_calendar_holder').hasClass('hidden'))
+        return;
+    
     $('#create_when_calendar_holder').height('100%');
     $('#create_when_calendar_holder').width('100%');
 
