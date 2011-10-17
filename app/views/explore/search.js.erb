@@ -1,4 +1,4 @@
 clearExploreMarkers();
-$('#results_list').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @events })%>');
+$('#search_results').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @events })%>');
 addExploreMarkers();
 toggle_suggested_actions();

@@ -4,10 +4,13 @@ class ExploreController < ApplicationController
   def index
     @page_title = "Explore"
 
-    #if !request.xhr?
     init_page
-    #end
+
+    @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
+
     @events = find_events
+    @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
+    
 
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'explore/index.html.erb'}

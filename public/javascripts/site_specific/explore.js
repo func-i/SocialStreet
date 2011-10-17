@@ -241,7 +241,10 @@ function selectMarker(marker){
         var myMarker = selectedMarker.clusteredMarkers_[i];
         var myResult = $('#' + myMarker.resultID_);
         myResult.addClass('selected-result').addClass('container');
-        $('#results_list').prepend(myResult);
+
+        if(myResult.closest('#promoted_events').length < 1)
+            $('#search_results').prepend(myResult);
+
         var api = $('#results_container').data('jsp');
         if(api)
             api.scrollToY(0);
