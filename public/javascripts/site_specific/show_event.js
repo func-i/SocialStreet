@@ -174,9 +174,11 @@ function setupShowEventPage(){
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(15);
 
-    /*    var xOffset = $('#location-map').width() / 5;
+    var offsetFromCenter = $('#location-map').width()/2 - $('#left_side_pane').width();
+    var xOffset = (offsetFromCenter > 0 ? 0 : -offsetFromCenter);
+    xOffset = xOffset + 40;
     var yOffset = $('#location-map').height() / 5;
-    map.panBy(-xOffset, -yOffset);*/
+    map.panBy(-xOffset, -yOffset);
 
     google.maps.event.addListenerOnce(map, 'idle', function() {
         createShowMarker(lat, lng, address, loc_text);
