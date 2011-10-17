@@ -2,11 +2,11 @@
   <% event = result %>
   <div id="event_<%=result.id%>" class="result nav-link" data-ajax-href='<%= event_path(event)%>'>
     <div class="result-image">
-      <%= image_tag(url_for_event_image(event))%>
+      <%= image_tag(url_for_event_image(event), :size=>'65x65')%>
     </div>
     <div class="result-text">
       <span class="result-title result-event-link text-shadow">
-        <%= truncate_html(event.title, :length => 50) %>
+        <%= event.title %>
       </span>
   <%#= image_tag('locate.png')%>
       <div class="result-date">
@@ -16,13 +16,13 @@
     <div class="result-attendees">
       <% attendees = User.attending_event(event)%>
       <% attendees_count = attendees.count %>
-      <% number_attendees_to_show = (attendees_count == 5 ? 5 : 4)%>
+      <% number_attendees_to_show = (attendees_count == 6 ? 6 : 5)%>
       <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
         <%= avatar attendee, :size => "22x22", :class=>"result-attendees-image"%>
-      <% end %>
-      <% if attendees_count > 5%>
+      <% end %> 
+      <% if attendees_count > 6%>
         <span class="result-attendee-more-text text-shadow">
-          <%=attendees_count - 5 %> more
+          <%=attendees_count - 6 %> more
         </span>
       <% end %>
 

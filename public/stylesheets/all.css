@@ -232,15 +232,16 @@ END OF RESET
 /*Results list*/
 .result{
     padding:15px 20px 10px 20px;
-    height: 80px;
+    height: 65px;
     position: relative;
+    cursor: pointer;
 }
 .selected-result{
     /*background-color: #4f4f4d;*/
 }
 .result-image{
     float: left;
-    margin: 0px 14px 0px 0px;
+    margin-right: 10px;
 }
 .attending-info {
     background: #0981BE;
@@ -259,14 +260,16 @@ END OF RESET
     color: white;
 }
 .result-title{
-    font: bold 18px/0px Arial, Helvetica, sans-serif;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
     width: 260px;
-    cursor: pointer;
+    height: 14px;
+    overflow: hidden;
+    float:left;
 }
 .result-date{
-    padding-bottom: 5px;
+    padding: 1px 0 5px 0;
 }
 .result-tags{
     color: white;
@@ -314,7 +317,7 @@ END OF RESET
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
-    bottom: 9px;
+    bottom: 7px;
     right: 20px;
 }
 
