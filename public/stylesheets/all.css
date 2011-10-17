@@ -121,11 +121,11 @@ END OF RESET
 
 #footer{
     position: absolute;
-    bottom: 0px;
-    left: 450px;
+    bottom: 5px;
+    left: 410px;
     z-index: 200;
     color: black;
-    font-weight: bold;
+    font: bold 11px/18px Arial, Helvetica, sans-serif;
 }
 #footer li{
     float: left;
