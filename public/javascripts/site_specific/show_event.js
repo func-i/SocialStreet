@@ -201,8 +201,8 @@ function setupShowEventPage(){
             newImage.removeClass('hidden');
 
             if(showMarker)
-                showMarker.label_.setIcon(newImage.children('img').attr('src'));
-        }, 5000);
+                showMarker.iconLabel_.setIcon(newImage.children('img').attr('src'));
+        }, 3000);
     }
 }
 
@@ -381,7 +381,7 @@ function showMarkers(){
 
 function resizeDate() {
     if($('#show_event_title_text').height() > 30)
-        $('#show_event_date').width(150);
+        $('#show_event_date').width(140);
     else
         $('#show_event_date').css('width', '');
 }

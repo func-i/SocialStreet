@@ -24,7 +24,7 @@
           <div id="show_event_title">
             <% if can_edit %>
               <span id="edit_event_title_link">Edit Title</span>
-              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>" style="border:0;height:18px;margin:0;padding:0;" />
+              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>"/>
             <% end %>
             <span id="show_event_title_text" class="text-shadow <%= "short" if can_edit -%>">
               <%= @event.title %>
