@@ -149,6 +149,9 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         if($(this).hasClass('selected-result'))
             return;
 
+        $(this).find('.result-join-btn-holder').removeClass('hidden');
+        $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
+        
         $('.selected-result').removeClass('container').removeClass('selected-result');
         $(this).addClass('container').addClass('selected-result');
 
@@ -172,7 +175,7 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
 
     $('#' + resultID).mouseleave(function() {
         if($(this).hasClass('selected-result'))
-            return;
+            return;        
 
         if(selectedMarker != null){
             selectedMarker.setIcon("/images/grey-pin.png");
@@ -213,6 +216,7 @@ function removeSelectedPinState(){
         clearTimeout(markerSlideShowInterval);
     }
 
+    $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
     $('.selected-result').removeClass('container').removeClass('selected-result');
 }
 function selectMarker(marker){
@@ -244,12 +248,14 @@ function selectMarker(marker){
         }, 1000);
     }
 
+    $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
     $('.selected-result').removeClass('container').removeClass('selected-result');
 
     for(var i = 0; i < selectedMarker.clusteredMarkers_.length; i++) {
         var myMarker = selectedMarker.clusteredMarkers_[i];
         var myResult = $('#' + myMarker.resultID_);
         myResult.addClass('selected-result').addClass('container');
+        $('.selected-result').find('.result-join-btn-holder').removeClass('hidden');
 
         if(myResult.closest('#promoted_events').length < 1)
             $('#search_results').prepend(myResult);
