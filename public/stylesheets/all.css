@@ -279,13 +279,13 @@ END OF RESET
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
-    width: 260px;
+    width: 280px;
     height: 14px;
     overflow: hidden;
     float:left;
 }
 .result-date{
-    padding: 1px 0 6px 0;
+    padding: 1px 0 5px 0;
 }
 .result-tags{
     color: white;
@@ -294,6 +294,7 @@ END OF RESET
 }
 .result-attendees{
     padding-bottom: 5px;
+    float:left;
 }
 .result-attendees-image{
     float:left;
@@ -301,12 +302,13 @@ END OF RESET
 }
 .result-attendee-more-text{
     float:left;
-    height:24px;
+    height:29px;
     width:29px;
     overflow:hidden;
     font:italic 12px/12px Arial, Helvetica, sans-serif;
-    color:black;
+    color:white;/*black*/
     text-align: center;
+    margin: 5px 0 0 2px;
 }
 .result-description{
     color: white;
@@ -333,7 +335,7 @@ END OF RESET
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
-    bottom: 5px;
+    bottom: 2px;
     right: 20px;
 }
 .result-join-btn-holder .attending {

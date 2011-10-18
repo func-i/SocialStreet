@@ -19,6 +19,13 @@ $(function(){
         resizeCenterPaneContent();
         resizeResultButtons();
     }
+
+    $('.result-attendees-image').live('mouseenter', function(){
+        $(this).siblings('div').removeClass('hidden');
+    }
+    ).live('mouseleave', function(){
+        $(this).siblings('div').addClass('hidden');
+    });
     
     //Setup the explore page
     setupExplorePage();    
