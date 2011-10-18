@@ -64,6 +64,8 @@ function setupExplorePage(){
 
     addExploreMarkers();
     toggle_suggested_actions();
+
+    resizePageElements();
 }
 
 function toggle_suggested_actions(){

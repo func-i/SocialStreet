@@ -17,7 +17,7 @@
       <% attendees_count = attendees.count %>
       <% number_attendees_to_show = (attendees_count == 5 ? 5 : 4)%>
       <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
-        <div style="position:relative;">
+        <div style="float:left;position:relative;">
           <%= avatar attendee, :size => "29x29", :class=>"result-attendees-image"%>
           <div class="hidden" style="position:absolute;z-index:200;background-color: #4f4f4d; color: white;border: 1px solid black;padding:1px 5px;top:30px;left:-37px;width:90px;text-align:center;">
             <%=attendee.try(:name)%>
