@@ -235,7 +235,7 @@ END OF RESET
 /*Results list*/
 .result{
     padding:10px 20px;
-    height: 65px;
+    height: 70px;
     position: relative;
     cursor: pointer;
 }
@@ -279,7 +279,7 @@ END OF RESET
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
     padding-bottom: 5px;
-    width: 280px;
+    width: 265px;
     height: 14px;
     overflow: hidden;
     display: block;
