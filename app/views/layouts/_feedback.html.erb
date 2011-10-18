@@ -1,0 +1,24 @@
+<div class="container" style="z-index: 3; min-width: 683px; max-width:800px; margin: 0 auto; min-height: 350px; padding: 10px 75px 10px 10px;">
+  <%= image_tag "icons.png", :alt => "SocialStreet", :style => "float: left; margin: 5px;" %>
+  <%= image_tag "btn-close5.png", :alt => "X", :id => "close_feedback", :style => "float: right; margin-top: 20px;" %>
+
+  <div style="clear: right;">
+    <strong style="color: #FFC233;font-size: 30px;">
+      <span>Send Us Your Thoughts!</span>
+    </strong>
+
+    <br/><br/>
+    <%= form_for :email, :url => '/contact', :html => {:id=>"feedback_form"}, :remote => true do |f| %>
+      <span style="color:white;">Name:</span>
+      <%= f.text_field :name, :size => 60, :class=>"text dismiss-onscreenkeyboard" %>
+      <br/>
+      <span style="vertical-align: top;color:white;">Feedback:</span>
+      <%= f.text_area :body, :rows => 10, :cols => 59, :class=>"text" %>
+    <% end %>
+  </div>
+
+  <%= image_tag('continue-button.png', :id=>'submit_feedback', :style=>"float:right; padding-top:10px;")%>
+
+  <div style="clear:both">&nbsp;</div>
+
+</div>

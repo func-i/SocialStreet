@@ -60,6 +60,11 @@ class User < ActiveRecord::Base
     FbGraph::User.me(myToken) if myToken
   end
 
+  def post_to_facebook_wall(args = {})
+    Resque.enqueue_in(10.minutes, Jobs::Facebook::PostToFbWall, self.id, args) if facebook_user && facebook_user.permissions.include?(:publish_stream) && !args[:message].blank?
+  end
+
+
   def update_users_location(latitude, longitude, zoom_level, sw_lat, sw_lng, ne_lat, ne_lng)
     self.last_known_latitude = latitude if latitude
     self.last_known_longitude = longitude if longitude

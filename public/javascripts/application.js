@@ -75,7 +75,7 @@ $(function() {
 
 
     //Get users current Location
-/*    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
+    /*    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
     {
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(function(e){
@@ -114,6 +114,18 @@ $(function() {
     $('#how_it_works_explore').click(function() {
         closeHowItWorks();
     });
+
+    $('#feedback_btn').click(function(){
+        openFeedback();
+    });
+    $('#close_feedback').click(function(){
+       closeFeedback();
+    });
+    $('#submit_feedback').click(function(){
+       $('#feedback_form').submit();
+       closeFeedback();
+    });
+
 });
 
 function cleanup(){
@@ -130,14 +142,14 @@ function cleanup(){
 
 function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat, neLng, updateDB){
     $.getScript('/locations/update_user_location?' +
-    'latitude=' + latitude +
-    '&longitude=' + longitude +
-    '&zoom_level=' + zoomLevel +
-    '&sw_lat=' + swLat +
-    '&sw_lng=' + swLng +
-    '&ne_lat=' + neLat + 
-    '&ne_lng=' + neLng + 
-    '&update_db=' + updateDB, function(data, textStatus){});
+        'latitude=' + latitude +
+        '&longitude=' + longitude +
+        '&zoom_level=' + zoomLevel +
+        '&sw_lat=' + swLat +
+        '&sw_lng=' + swLng +
+        '&ne_lat=' + neLat +
+        '&ne_lng=' + neLng +
+        '&update_db=' + updateDB, function(data, textStatus){});
 }
 
 function resizePageElements() {
@@ -327,6 +339,24 @@ function openHowItWorks() {
 function closeHowItWorks() {
     $('#how_it_works').addClass('hidden');
     $('.how-it-works').addClass('hidden');
+    $('.remove-how-it-works').removeClass('hidden');
+
+    //markerManager.showAllMarkers();
+    $('.content-group').removeClass('hidden');
+}
+
+function openFeedback() {
+    $('.content-group').addClass('hidden');
+    //markerManager.hideAllMarkers();
+
+    $('#feedback').removeClass('hidden');
+    $('.feedback').removeClass('hidden');
+    $('.remove-how-it-works').addClass('hidden');
+}
+
+function closeFeedback() {
+    $('#feedback').addClass('hidden');
+    $('.feedback').addClass('hidden');
     $('.remove-how-it-works').removeClass('hidden');
 
     //markerManager.showAllMarkers();

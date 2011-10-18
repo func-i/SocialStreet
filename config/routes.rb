@@ -24,6 +24,8 @@ SocialStreetReborn::Application.routes.draw do
     end
   end
 
+  match '/contact' => 'contact#create'
+
   match '/locations/update_user_location' => 'locations#update_user_location'
 
   devise_for :users, :controllers => { :sessions => "sessions", :registrations => "registrations" }
