@@ -294,7 +294,7 @@ END OF RESET
 }
 .result-attendees{
     padding-bottom: 5px;
-    float:left;
+/*    float:left;*/
 }
 .result-attendees-image{
     float:left;
