@@ -282,6 +282,7 @@ END OF RESET
     width: 280px;
     height: 14px;
     overflow: hidden;
+    display: block;
 }
 .result-date{
     padding: 1px 0 5px 0;
