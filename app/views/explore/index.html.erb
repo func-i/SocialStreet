@@ -7,7 +7,7 @@
       <div>
         <div id="results_list">
           <% unless @promoted_events.blank? %>
-            <div style="background-color: #4F4F4D; padding: 2px 2px 2px 20px; margin-top: 5px; font-size: 18px; color: #FFC233; font-weight: 900; text-shadow: 2px 2px #333;">StreetMeet of the Week</div>
+            <div id="smow_heading">StreetMeet of the Week</div>
             <div id="promoted_events" style="padding-top: 0px; border-bottom: 5px solid #4F4F4D;">
               <%= render(:partial => "results", :locals => {:results => @promoted_events}) %>
             </div>
