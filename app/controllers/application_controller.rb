@@ -26,26 +26,7 @@ class ApplicationController < ActionController::Base
     return null;
   end
 
-  def after_sign_in_path_for(resource_or_scope)
-    unless current_user.accepted_tncs
-      current_user.update_attribute("accepted_tncs", true)
-
-      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, current_user.id)
-
-      if params[:facebook] == '1'
-        current_user.post_to_facebook_wall(
-          :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
-          :link => "http://www.socialstreet.com/",
-          :name => "SocialStreet.com",
-          :caption => "Explore real life!",
-          :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
-          :message => "I just joined SocialStreet!",
-          :type => "link"
-        )
-      end
-    end
-
-    
+  def after_sign_in_path_for(resource_or_scope)   
     if session[:stored_redirect]
       if session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
 
