@@ -3,16 +3,15 @@ var exploreMarkerArr = [];
 var exploreEventTypeTimer;
 var exploreUpdateTimer;
 var selectedResult;
-var selectedMarker;
+var selectedMarkerArr = [];
 var markerSlideShowInterval;
-var lockMouseOver = false;
 
 $(function(){
     //Cleanup function on leaving the page
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');
-        if(selectedMarker != null)
-            selectedMarker.label_.setMap(null);
+        for(var i = 0; i < selectedMarkerArr.length; i++)
+            selectedMarkerArr[i].label_.setMap(null);
     }
 
     resizeSelf = function(){
@@ -114,7 +113,7 @@ function updateExploreLocationParams(){
         updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), zoom, sw.lat(), sw.lng(), ne.lat(), ne.lng(), true);
     
         refreshExploreResults();
-    }, 500);
+    }, 300);
 }
 
 
@@ -126,13 +125,70 @@ function refreshExploreResults(){
 }
 
 function addExploreMarkers(){
+    var selectedResults = $('#selected_results').val();
+    var selectedResultsArr = selectedResults.split(',');
+    $('#selected_results').val('');
+
+    var newSelectedMarkerArr = [];
+
     $.each($('#results_list .result'), function(index, result){
         var lat = $(result).children('#result_lat');
         var lng = $(result).children('#result_lng');
         var iconSrc = $(result).children('.result-image').children('img').attr('src');
-        createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()), iconSrc, result.id);
+        
+        var marker = createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()), iconSrc, result.id);
+
+
+        for(var i = 0; i < selectedResultsArr.length; i++){
+            if(selectedResultsArr[i] == result.id){
+                selectResult($(result));
+
+                newSelectedMarkerArr.push(marker);
+            }
+        }
     });
-    showExploreMarkers();
+
+    removeSelectedPinState();
+
+    showExploreMarkers(function(){
+        var startTimer = false;
+
+        for(var i = 0; i < newSelectedMarkerArr.length; i++){
+            var myMarker = newSelectedMarkerArr[i].ownerMarker_;
+            
+            if($.inArray(myMarker, selectedMarkerArr) < 0){
+                selectedMarkerArr.push(myMarker);
+                myMarker.setIcon("/images/marker-base.png");
+                myMarker.label_.setIcon(newSelectedMarkerArr[i].iconSrc_);
+                myMarker.label_.setMap(map);
+                myMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
+            }
+            else{
+                if(null == myMarker.clusteredIcons_){
+                    myMarker.clusteredIcons_ = [];
+                    myMarker.clusteredIcons_.push(myMarker.iconSrc_);
+                    myMarker.slideShowCount_ = 0;
+                }
+                myMarker.clusteredIcons_.push(newSelectedMarkerArr[i].iconSrc_);
+
+                startTimer = true;
+            }
+        }
+
+        if(startTimer){
+            markerSlideShowInterval = setInterval(function(){
+                for(var i = 0; i < selectedMarkerArr.length; i++){
+                    var myMarker = selectedMarkerArr[i];
+                    if(null != myMarker.clusteredIcons_){
+                        myMarker.label_.setIcon(myMarker.clusteredIcons_[myMarker.slideShowCount_]);
+                        myMarker.slideShowCount_ += 1;
+                        if(myMarker.slideShowCount_ >= myMarker.clusteredIcons_.length)
+                            myMarker.slideShowCount_ = 0;
+                    }
+                }
+            }, 1000);
+        }
+    });
 }
 
 function createExploreMarker(lat, lng, iconSrc, resultID){
@@ -149,125 +205,125 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         if($(this).hasClass('selected-result'))
             return;
 
-        $(this).find('.result-join-btn-holder').removeClass('hidden');
-        $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
+        removeSelectedPinState();
+        unselectResults();
+
+        selectResult($(this));
+
+        var myMarker = marker.ownerMarker_;
+        selectedMarkerArr.push(myMarker);
         
-        $('.selected-result').removeClass('container').removeClass('selected-result');
-        $(this).addClass('container').addClass('selected-result');
-
-        if(selectedMarker != null && selectedMarker != marker.ownerMarker_){
-            selectedMarker.setIcon("/images/grey-pin.png");
-            selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
-            selectedMarker.label_.setMap(null);
-        }
-
-        selectedMarker = marker.ownerMarker_;
-        
-        selectedMarker.setIcon("/images/marker-base.png");
-        selectedMarker.label_.setIcon(marker.iconSrc_);
-        selectedMarker.label_.setMap(map);
-        selectedMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
-
-        if(markerSlideShowInterval != null){
-            clearTimeout(markerSlideShowInterval);
-        }
+        myMarker.setIcon("/images/marker-base.png");
+        myMarker.label_.setIcon(marker.iconSrc_);
+        myMarker.label_.setMap(map);
+        myMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
     });
 
     $('#' + resultID).mouseleave(function() {
         if($(this).hasClass('selected-result'))
-            return;        
+            return;
 
-        if(selectedMarker != null){
-            selectedMarker.setIcon("/images/grey-pin.png");
-            selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
-            selectedMarker.label_.setMap(null);
-        }
-        selectedMarker = null;
-
-        if(markerSlideShowInterval != null){
-            clearTimeout(markerSlideShowInterval);
-        }
-
+        removeSelectedPinState();
+        unselectResults();
     });
 
     google.maps.event.addListener(marker, 'click', function() {
+        removeSelectedPinState();
+        unselectResults();
         selectMarker(this);
-        lockMouseOver = true;
     });
-    /*    google.maps.event.addListener(marker, 'mouseover', function() {
-        if(!lockMouseOver)
-            selectMarker(this);
-    });*/
     google.maps.event.addListener(map, 'click', function(){
         removeSelectedPinState();
-        lockMouseOver = false;
-    })
+        unselectResults();
+    });
+
+    return marker;
 }
 
 function removeSelectedPinState(){
-    if(selectedMarker != null){
-        selectedMarker.setIcon("/images/grey-pin.png");
-        selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
-        selectedMarker.label_.setMap(null);
+    for(var i = 0; i < selectedMarkerArr.length; i++){
+        selectedMarkerArr[i].setIcon("/images/grey-pin.png");
+        selectedMarkerArr[i].setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
+        selectedMarkerArr[i].label_.setMap(null);
+        delete selectedMarkerArr[i].clusteredIcons_
     }
-    selectedMarker = null;
+    delete selectedMarkerArr;
+    selectedMarkerArr = [];
 
     if(markerSlideShowInterval != null){
         clearTimeout(markerSlideShowInterval);
     }
-
-    $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
-    $('.selected-result').removeClass('container').removeClass('selected-result');
 }
 function selectMarker(marker){
-    if(selectedMarker != null && selectedMarker != marker) {
-        selectedMarker.setIcon("/images/grey-pin.png");
-        selectedMarker.setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
-        selectedMarker.label_.setMap(null);
-    }
+    //Set icon of selected marker
+    selectedMarkerArr.push(marker);
+    marker.setIcon("/images/marker-base.png");
+    marker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
+    marker.label_.setMap(map);
 
-    selectedMarker = marker;
-    selectedMarker.setIcon("/images/marker-base.png");
-    selectedMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
-    selectedMarker.label_.setMap(map);
-
+    //Clear any existing timer
     if(markerSlideShowInterval != null){
         clearTimeout(markerSlideShowInterval);
     }
-    if(selectedMarker.clusteredMarkers_ != null){
+    //If marker is clustered, start timer to loop through icons
+    if(marker.clusteredMarkers_.length > 1){
         var count = 0;
         markerSlideShowInterval = setInterval(function(){
-            if(!selectedMarker){
+            if($.inArray(marker, selectedMarkerArr) < 0){
                 clearTimeout(markerSlideShowInterval);
                 return;
             }
-            selectedMarker.label_.setIcon(selectedMarker.clusteredMarkers_[count].iconSrc_);
+            marker.label_.setIcon(marker.clusteredMarkers_[count].iconSrc_);
             count += 1;
-            if(count >= selectedMarker.clusteredMarkers_.length)
+            if(count >= marker.clusteredMarkers_.length)
                 count = 0;
         }, 1000);
     }
 
-    $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
-    $('.selected-result').removeClass('container').removeClass('selected-result');
-
-    for(var i = 0; i < selectedMarker.clusteredMarkers_.length; i++) {
-        var myMarker = selectedMarker.clusteredMarkers_[i];
+    //Select any results clustered in this pin, reorder to top, show invite/join btn, scroll to top of list
+    for(var i = 0; i < marker.clusteredMarkers_.length; i++) {
+        var myMarker = marker.clusteredMarkers_[i];
         var myResult = $('#' + myMarker.resultID_);
-        myResult.addClass('selected-result').addClass('container');
-        $('.selected-result').find('.result-join-btn-holder').removeClass('hidden');
+
+        selectResult(myResult);
 
         if(myResult.closest('#promoted_events').length < 1)
             $('#search_results').prepend(myResult);
+    }
 
-        var api = $('#results_container').data('jsp');
-        if(api)
-            api.scrollToY(0);
+    var api = $('#results_container').data('jsp');
+    if(api)
+        api.scrollToY(0);
+}
+
+function selectResult(result){
+    result.addClass('selected-result').addClass('container');
+    result.find('.result-join-btn-holder').removeClass('hidden');
+
+    var resultID = result[0].id;//.split('_')[1];
+    var selected_results = $('#selected_results').val();
+    $('#selected_results').val((selected_results.length > 0 ? (selected_results + ',') : '') + resultID);
+
+    if(history && history.pushState) {
+        history.pushState(null, "", '?' + $('#explore_search_params').serialize());
     }
 }
+
+function unselectResults(){
+    //Remove highlight result and invite/join btn of previously selected result
+    $('.selected-result').find('.result-join-btn-holder').addClass('hidden');
+    $('.selected-result').removeClass('container').removeClass('selected-result');
+
+    $('#selected_results').val('');
+
+    if(history && history.pushState) {
+        history.pushState(null, "", '?' + $('#explore_search_params').serialize());
+    }
+}
+
 function clearExploreMarkers(){
-    if(selectedMarker != null)
-        selectedMarker.label_.setMap(null);
+    for(var i = 0; i < selectedMarkerArr.length; i++)
+        selectedMarkerArr[i].label_.setMap(null);
 
     markerManager.deleteAllMarkers();
 
@@ -275,6 +331,6 @@ function clearExploreMarkers(){
         clearTimeout(markerSlideShowInterval);
     }
 }
-function showExploreMarkers(){
-    markerManager.showAllMarkers();
+function showExploreMarkers(callbackFunction){
+    markerManager.showAllMarkers(callbackFunction);
 }

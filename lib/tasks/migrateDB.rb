@@ -37,9 +37,11 @@ def migrate
   migrate_comments(srcDB, sinkDB)
 end
 
+#TODO - This doesnt work for non-top level comments
 def migrate_comments(srcDB, sinkDB)
-  comments = srcDB.connection.query("SELECT *, events.id AS event_id FROM comments INNER JOIN events ON comments.searchable_id = events.searchable_id")
   comment_inserts = []
+
+  comments = srcDB.connection.query("SELECT *, events.id AS event_id FROM comments INNER JOIN events ON comments.searchable_id = events.searchable_id")
   comments.each do |comment|
     comment_inserts.push(
       "(

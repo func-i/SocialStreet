@@ -59,15 +59,21 @@ function init_map(){
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
     //ADD LISTENERS
+    var dragOff = true;
     google.maps.event.addListenerOnce(map, 'idle', function() {
-        google.maps.event.addListener(map, 'dragend', function(){
-            if($('#on_explore').length > 0)
-                updateExploreLocationParams();
+        google.maps.event.addListener(map, 'dragstart', function(){
+            dragOff = false;
         });
-        google.maps.event.addListener(map, 'zoom_changed', function(){
+        google.maps.event.addListener(map, 'dragend', function(){
+            dragOff = true;
+
             if($('#on_explore').length > 0) {
                 updateExploreLocationParams();
-
+            }
+        });
+        google.maps.event.addListener(map, 'bounds_changed', function(){
+            if(dragOff && $('#on_explore').length > 0) {
+                updateExploreLocationParams();
             }
         });
     });
@@ -97,11 +103,10 @@ function init_map(){
 
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
 
-    $('#zoom_in_btn').click(function(){
+    google.maps.event.addDomListener(plusBtn, 'click', function() {
         map.setZoom(map.getZoom() + 1);
     });
-
-    $('#zoom_out_btn').click(function(){
+    google.maps.event.addDomListener(minusBtn, 'click', function() {
         map.setZoom(map.getZoom() - 1);
     });
 }

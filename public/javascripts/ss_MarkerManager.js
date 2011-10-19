@@ -39,11 +39,11 @@ MarkerManager.prototype.addMarker = function(lat, lng){
     return marker;
 };
 
-MarkerManager.prototype.showAllMarkers = function(){
+MarkerManager.prototype.showAllMarkers = function(callbackFunction){
     if(undefined == this.map_.mapTypes[this.map_.mapTypeId]){
         that = this;
         google.maps.event.addListenerOnce(this.map_, 'idle', function() {
-            that.showAllMarkers();
+            that.showAllMarkers(callbackFunction);
         });
         return;
     }
@@ -75,6 +75,9 @@ MarkerManager.prototype.showAllMarkers = function(){
 
     delete markerArr;
     markerArr = null;
+
+    if(typeof callbackFunction == 'function')
+        callbackFunction();
 };
 
 MarkerManager.prototype.deleteAllMarkers = function(){
