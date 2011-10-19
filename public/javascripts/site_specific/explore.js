@@ -139,7 +139,11 @@ function addExploreMarkers(){
 
         for(var i = 0; i < selectedResultsArr.length; i++){
             if(selectedResultsArr[i] == result.id){
-                selectResult($(result));
+                $result = $(result);
+                selectResult($result);
+
+                if($result.closest('#promoted_events').length < 1)
+                    $('#search_results').prepend($result);
 
                 newSelectedMarkerArr.push(marker);
             }
@@ -300,7 +304,6 @@ function selectResult(result){
 
     var resultID = result[0].id;//.split('_')[1];
     var selected_results = $('#selected_results').val();
-
     if(selected_results.indexOf(resultID) < 0)
         $('#selected_results').val((selected_results.length > 0 ? (selected_results + ',') : '') + resultID);
 
