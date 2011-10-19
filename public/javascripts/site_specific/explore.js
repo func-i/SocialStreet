@@ -126,8 +126,7 @@ function refreshExploreResults(){
 
 function addExploreMarkers(){
     var selectedResults = $('#selected_results').val();
-    var selectedResultsArr = selectedResults.split(',');
-    $('#selected_results').val('');
+    var selectedResultsArr = selectedResults.split(',');    
 
     var newSelectedMarkerArr = [];
 
@@ -137,7 +136,6 @@ function addExploreMarkers(){
         var iconSrc = $(result).children('.result-image').children('img').attr('src');
         
         var marker = createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()), iconSrc, result.id);
-
 
         for(var i = 0; i < selectedResultsArr.length; i++){
             if(selectedResultsArr[i] == result.id){
@@ -302,7 +300,9 @@ function selectResult(result){
 
     var resultID = result[0].id;//.split('_')[1];
     var selected_results = $('#selected_results').val();
-    $('#selected_results').val((selected_results.length > 0 ? (selected_results + ',') : '') + resultID);
+
+    if(selected_results.indexOf(resultID) < 0)
+        $('#selected_results').val((selected_results.length > 0 ? (selected_results + ',') : '') + resultID);
 
     if(history && history.pushState) {
         history.pushState(null, "", '?' + $('#explore_search_params').serialize());
