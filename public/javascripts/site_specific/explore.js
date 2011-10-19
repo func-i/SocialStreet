@@ -5,13 +5,19 @@ var exploreUpdateTimer;
 var selectedResult;
 var selectedMarkerArr = [];
 var markerSlideShowInterval;
+var dragOff = true;
 
 $(function(){
     //Cleanup function on leaving the page
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');
-        for(var i = 0; i < selectedMarkerArr.length; i++)
+        for(var i = 0; i < selectedMarkerArr.length; i++){
             selectedMarkerArr[i].label_.setMap(null);
+        }
+
+        google.maps.event.clearListeners(map, 'dragstart');
+        google.maps.event.clearListeners(map, 'dragend');
+        google.maps.event.clearListeners(map, 'bounds_changed');
     }
 
     resizeSelf = function(){
@@ -60,6 +66,25 @@ function setupExplorePage(){
     if(map.getCenter().lat() != parseFloat(mapCenterArr[0]) || map.getCenter().lng() != parseFloat(mapCenterArr[1])){
         map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
     }
+
+    //Add map listeners
+    google.maps.event.addListenerOnce(map, 'idle', function() {
+        google.maps.event.addListener(map, 'dragstart', function(){
+            dragOff = false;
+        });
+        google.maps.event.addListener(map, 'dragend', function(){
+            dragOff = true;
+
+            if($('#on_explore').length > 0) {
+                updateExploreLocationParams();
+            }
+        });
+        google.maps.event.addListener(map, 'bounds_changed', function(){
+            if(dragOff && $('#on_explore').length > 0) {
+                updateExploreLocationParams();
+            }
+        });
+    });
 
     addExploreMarkers();
     toggle_suggested_actions();

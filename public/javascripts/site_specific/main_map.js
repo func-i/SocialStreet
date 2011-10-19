@@ -58,26 +58,6 @@ function init_map(){
     };
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
-    //ADD LISTENERS
-    var dragOff = true;
-    google.maps.event.addListenerOnce(map, 'idle', function() {
-        google.maps.event.addListener(map, 'dragstart', function(){
-            dragOff = false;
-        });
-        google.maps.event.addListener(map, 'dragend', function(){
-            dragOff = true;
-
-            if($('#on_explore').length > 0) {
-                updateExploreLocationParams();
-            }
-        });
-        google.maps.event.addListener(map, 'bounds_changed', function(){
-            if(dragOff && $('#on_explore').length > 0) {
-                updateExploreLocationParams();
-            }
-        });
-    });
-
     //ADD ZOOM CONTROL
     var controlDiv = document.createElement("div");
     controlDiv.style.padding = '10px 0 0 420px';
