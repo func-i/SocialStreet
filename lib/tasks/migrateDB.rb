@@ -33,11 +33,66 @@ def migrate
 
   migrate_events(srcDB, sinkDB)
   migrate_rsvps(srcDB, sinkDB)
+  migrate_keywords(srcDB, sinkDB)
+  migrate_comments(srcDB, sinkDB)
+end
+
+def migrate_comments(srcDB, sinkDB)
+  comments = srcDB.connection.query("SELECT *, events.id AS event_id FROM comments INNER JOIN events ON comments.searchable_id = events.searchable_id")
+  comment_inserts = []
+  comments.each do |comment|
+    comment_inserts.push(
+      "(
+      #{comment.user_id},
+      #{comment.body},
+      #{comment.event_id},
+      #{comment.created_at},
+      #{comment.updated_at}
+      )"
+    )
+  end
+
+  sql = "INSERT INTO comments (
+user_id,
+body,
+event_id,
+created_at,
+updated_at
+) VALUES #{comment_inserts.join(", ")}"
+
+  sinkDB.connection.insert(sql)
+end
+
+def migrate_keyword(srcDB, sinkDB)
+  keywords = srcDB.connection.query("SELECT *, events.id AS event_id FROM searchable_event_types INNER JOIN events ON searchable_event_types.searchable_id = events.searchable_id")
+  keyword_inserts = []
+  keywords.each do |keyword|
+    keyword_inserts.push(
+      "(
+      #{keyword.name},
+      #{keyword.event_type_id},
+      #{keyword.event_id}
+      #{keyword.created_at},
+      #{keyword.updated_at}
+      )"
+    )
+  end
+
+  sql = "INSERT INTO event_keywords (
+name,
+event_type_id,
+event_id,
+created_at,
+updated_at
+) VALUES #{keyword_inserts.join(", ")}"
+
+  sinkDB.connection.insert(sql)
 end
 
 def migrate_rsvps(srcDB, sinkDB)
-  rsvps = srcDB.connection.query("SELECT * FROM rsvps LEFT OUTER JOIN invitations ON rsvps.id = invitations.rsvp_id")
   rsvp_inserts = []
+
+  rsvps = srcDB.connection.query("SELECT * FROM rsvps")
   rsvps.each do |rsvp|
     rsvp_inserts.push(
       "(
@@ -46,10 +101,27 @@ def migrate_rsvps(srcDB, sinkDB)
       #{rsvp.posted_to_facebook},
       #{rsvp.status},
       #{rsvp.administrator},
-      #{rsvp.email},
-
       #{rsvp.created_at},
-      #{rsvp.updated_at}
+      #{rsvp.updated_at},
+      '',
+      ''
+      )"
+    )
+  end
+
+  invitations = srcDB.connection.query("SELECT * FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL")
+  invitations.each do |invite|
+    rsvp_inserts.push(
+      "(
+        #{invite.to_user_id},
+        #{invite.event_id},
+        false,
+        #{invite.status},
+        false,
+        #{invite.created_at},
+        #{invite.updated_at},
+        #{invite.email},
+        #{invite.user_id}
       )"
     )
   end
@@ -60,21 +132,22 @@ event_id,
 posted_to_facebook,
 status,
 organizer,
-email,
 created_at,
-updated_at
-) VALUES #{event_inserts.join(", ")}"
+updated_at,
+email,
+invitor_id
+) VALUES #{rsvp_inserts.join(", ")}"
 
   sinkDB.connection.insert(sql)
 end
 
 def migrate_events(srcDB, sinkDB)
-  events = srcDB.connection.query("SELECT * FROM events LEFT OUTER JOIN searchable_date_ranges ON events.searchable_id = searchable_date_ranges.searchable_id")
+  events = srcDB.connection.query("SELECT *, events.id AS event_id FROM events LEFT OUTER JOIN searchable_date_ranges ON events.searchable_id = searchable_date_ranges.searchable_id")
   event_inserts = []
   events.each do |event|
     event_inserts.push(
       "(
-      #{event.id},
+      #{event.event_id},
       #{event.name},
       #{event.description},
       #{event.user_id},
