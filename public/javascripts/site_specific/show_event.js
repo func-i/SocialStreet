@@ -30,7 +30,7 @@ $(function(){
 
     resizePageElements();
         
-    setupShowEventPage();
+    setupShowEventPage();    
 
     $('#event_wall_text_field').keyup(function(e){
         if (!e.shiftKey && e.keyCode == 13) {
@@ -404,10 +404,14 @@ function showMarkers(){
 }
 
 function resizeDate() {
-    if($('#show_event_title_text').height() > 30)
+    if($('#show_event_title_text').height() > 30){
         $('#show_event_date').width(140);
-    else
+        $('#show_event_date').css('padding-top', '15px');
+    }
+    else{
         $('#show_event_date').css('width', '');
+        $('#show_event_date').css('padding-top', '5px');
+    }
 }
 
 function ShowEventLabel(locationName, address) {

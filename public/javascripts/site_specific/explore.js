@@ -85,44 +85,44 @@ function toggle_suggested_actions(){
 }
 
 function updateExploreLocationParams(){
-    var zoom = map.getZoom();
-    $('#map_zoom').val(zoom);
-    var bounds = map.getBounds();
-
-    var projection = markerManager.projectionHelper_.getProjection();
-
-    var bl = bounds.getSouthWest();
-    var blPix = projection.fromLatLngToDivPixel(bl);
-    blPix.x += $('#left_side_pane').offset().left + $('#left_side_pane').width();
-
-    var tr = bounds.getNorthEast();
-    var trPix = projection.fromLatLngToDivPixel(tr);
-    trPix.y += 76;//Selected Marker height
-
-    var sw = projection.fromDivPixelToLatLng(blPix);
-    var ne = projection.fromDivPixelToLatLng(trPix);
-
-    $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
-    $('#map_center').val(map.getCenter().lat() + "," + map.getCenter().lng());
-
-    updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), zoom, sw.lat(), sw.lng(), ne.lat(), ne.lng(), true);
-    
-    refreshExploreResults();
-}
-
-
-function refreshExploreResults(){
     if(exploreUpdateTimer){
         clearTimeout(exploreUpdateTimer);
         delete exploreUpdateTimer
     }
 
     exploreUpdateTimer = setTimeout(function(){
-        $('#explore_search_params').submit();
-        if(history && history.pushState) {
-            history.pushState(null, "", '?' + $('#explore_search_params').serialize());
-        }
-    }, 100);
+        var zoom = map.getZoom();
+        $('#map_zoom').val(zoom);
+        var bounds = map.getBounds();
+
+        var projection = markerManager.projectionHelper_.getProjection();
+
+        var bl = bounds.getSouthWest();
+        var blPix = projection.fromLatLngToDivPixel(bl);
+        blPix.x += $('#left_side_pane').offset().left + $('#left_side_pane').width();
+
+        var tr = bounds.getNorthEast();
+        var trPix = projection.fromLatLngToDivPixel(tr);
+        trPix.y += 76;//Selected Marker height
+
+        var sw = projection.fromDivPixelToLatLng(blPix);
+        var ne = projection.fromDivPixelToLatLng(trPix);
+
+        $('#map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
+        $('#map_center').val(map.getCenter().lat() + "," + map.getCenter().lng());
+
+        updateUserLocation(map.getCenter().lat(), map.getCenter().lng(), zoom, sw.lat(), sw.lng(), ne.lat(), ne.lng(), true);
+    
+        refreshExploreResults();
+    }, 500);
+}
+
+
+function refreshExploreResults(){
+    $('#explore_search_params').submit();
+    if(history && history.pushState) {
+        history.pushState(null, "", '?' + $('#explore_search_params').serialize());
+    }
 }
 
 function addExploreMarkers(){

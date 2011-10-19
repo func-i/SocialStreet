@@ -5,9 +5,9 @@
       <%= image_tag(url_for_event_image(event), :size=>'70x70')%>
     </div>
     <div class="result-text">
-      <span class="result-title result-event-link text-shadow">
+      <div class="result-title result-event-link text-shadow">
         <%= event.title %>
-      </span>
+      </div>
       <div class="result-date">
         <%= event_time_in_words(event) -%>
       </div>
@@ -19,7 +19,7 @@
       <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
         <div style="float:left;position:relative;">
           <%= avatar attendee, :size => "29x29", :class=>"result-attendees-image"%>
-          <div class="hidden rounded-corners" style="position:absolute;z-index:200;background-color: #FFFCD5; color: #4f4f4d;font: bold 14px/19px Arial, Helvetica, sans-serif;border: 1px solid black;padding:1px 5px;top:30px;left:-37px;width:90px;text-align:center;">
+          <div class="hidden drop-shadow rounded-corners" style="position:absolute;z-index:200;background-color: #FFFCD5; color: #4f4f4d;font: bold 14px/19px Arial, Helvetica, sans-serif;padding:1px 5px;top:30px;left:-37px;width:90px;text-align:center;">
             <%=attendee.try(:name)%>
           </div>
         </div>

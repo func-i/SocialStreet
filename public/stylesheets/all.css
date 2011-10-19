@@ -275,9 +275,11 @@ END OF RESET
 .result-title{
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     color: #FFC233;
-    padding-bottom: 5px;
+    margin-bottom: 0px;
     width: 265px;
-    height: 14px;
+    height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
     display: block;
 }
@@ -291,7 +293,7 @@ END OF RESET
 }
 .result-attendees{
     padding-bottom: 5px;
-/*    float:left;*/
+    /*    float:left;*/
 }
 .result-attendees-image{
     float:left;
@@ -637,7 +639,7 @@ END OF RESET
     padding-bottom: 3px;
 }
 #show_event_details_holder{
-    padding:15px 20px 0px 20px;
+    padding:15px 20px 25px 20px;
     height: 80px;
     position: relative;
 }
@@ -655,20 +657,20 @@ END OF RESET
 }
 #show_event_title_text{
     float:left;
-    width: 255px;
+    width: 264px;
     max-height: 37px;
     overflow: hidden;
 }
 
 #show_event_title_text.short {
-    width: 225px;
+    width: 223px;
 }
 
 #show_event_date{
     clear:right;
     float: left;
     padding-top: 5px;
-    padding-bottom: 0px;
+    text-align:center;
     font: 14px/14px Arial, Helvetica, sans-serif;
 }
 #show_event_tags{
@@ -678,7 +680,7 @@ END OF RESET
 }
 #show_event_description_holder{
     color: white;
-    margin: 25px 20px 5px 20px;
+    margin: 0px 20px 5px 20px;
     overflow-y: auto;
     max-height: 75px;
     width: 365px;
@@ -739,7 +741,7 @@ END OF RESET
 }
 #show_attendees_holder{
     width: 200px;
-    max-height: 180px;
+    max-height: 162px;
     overflow-y: auto;
 }
 .show-attendee{
@@ -794,7 +796,7 @@ END OF RESET
     color:white;
     margin: 0 auto;
     text-align:center;
-    font: 18px/18px Arial, Helvetica, sans-serif;
+    font: 18px/24px Arial, Helvetica, sans-serif;
     padding: 0 10px;
 }
 .event-wall-comment{
@@ -806,10 +808,10 @@ END OF RESET
 }
 .event-wall-user-holder{
     float: left;
-    width: 100px;
+    width: 90px;
 }
 .event-wall-user-image{
-    padding: 0 23px 0 23px;
+    padding: 0 18px 0 18px;
 }
 .event-wall-user-name{
     text-align: center;
@@ -818,7 +820,7 @@ END OF RESET
     float: left;
     height: auto;
     overflow: visible;
-    width: 240px;
+    width: 250px;
     background: url("../images/overlay_box_bg.png");
     overflow: hidden;
     margin-bottom: 0px;

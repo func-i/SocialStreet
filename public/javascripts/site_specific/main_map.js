@@ -49,12 +49,12 @@ function init_map(){
         panControl: false,
         rotateControl: false,
         scaleContol: false,
-        zoomControl: true,
+        zoomControl: false/*,
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_CENTER,
             style: google.maps.ZoomControlStyle.SMALL
 
-        }
+        }*/
     };
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
 
@@ -64,11 +64,44 @@ function init_map(){
             if($('#on_explore').length > 0)
                 updateExploreLocationParams();
         });
-        google.maps.event.addListener(map, 'bounds_changed', function(){
+        google.maps.event.addListener(map, 'zoom_changed', function(){
             if($('#on_explore').length > 0) {
                 updateExploreLocationParams();
 
             }
+        });
+
+        //ADD ZOOM CONTROL
+        var controlDiv = document.createElement("div");
+        controlDiv.style.padding = '10px 0 0 420px';
+        controlDiv.style.position = 'relative';
+        controlDiv.index = 1;
+
+        var zoomBtn = document.createElement('img');
+        zoomBtn.style.cursor = "pointer"
+        zoomBtn.src = '/images/zoom_btns.png';
+        controlDiv.appendChild(zoomBtn);
+
+        var plusBtn = document.createElement('div');
+        plusBtn.style.cssText = 'position: absolute; top: 10px; left: 420px; width: 19px; height: 21px;cursor: pointer;'
+        plusBtn.title = "Zoom in";
+        plusBtn.id = "zoom_in_btn";
+        controlDiv.appendChild(plusBtn);
+
+        var minusBtn = document.createElement('div');
+        minusBtn.style.cssText = 'position: absolute; top: 31px; left: 420px; width: 19px; height: 21px;cursor: pointer;'
+        minusBtn.title = "Zoom out";
+        minusBtn.id = "zoom_out_btn";
+        controlDiv.appendChild(minusBtn);
+
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
+
+        $('#zoom_in_btn').click(function(){
+           map.setZoom(map.getZoom() + 1);
+        });
+
+        $('#zoom_out_btn').click(function(){
+           map.setZoom(map.getZoom() - 1);
         });
     });
 }

@@ -1,3 +1,30 @@
+<% content_for :head do %>
+  <meta property="og:title" content="<%= @event.title %>" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="<%=request.url %>" />
+  <meta property="og:image" content="<%= url_for_event_image(@event) %>" />
+  <meta property="og:site_name" content="SocialStreet" />
+  <meta property="og:description" content="<%= 'SocialStreet mission is to make it easy to discover friends (new or old) that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!'%>" />
+  <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
+<% end %>
+
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function()
+  {
+    FB.init({appId: <%=FACEBOOK_APP_ID%>, status: true, cookie: true, xfbml: true});
+    FB.XFBML.parse( $('#fb_like_btn')[0] );
+  };
+
+  (function() {
+    var e = document.createElement('script');
+    e.async = true;
+    e.src = document.location.protocol +  '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+</script>
+
+
 <% can_edit = @event.can_edit?(current_user) %>
 
 <% content_for :left_side_pane do %>
@@ -8,7 +35,6 @@
         <%= link_to "Cancel", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
       </div>
     <% end %>
-
     <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
       <div id="show_event_details_holder">
 
@@ -24,7 +50,7 @@
           <div id="show_event_title">
             <% if can_edit %>
               <span id="edit_event_title_link">Edit Title</span>
-              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>"/>
+              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>" maxlength="30"/>
             <% end %>
             <span id="show_event_title_text" class="text-shadow <%= "short" if can_edit -%>">
               <%= @event.title %>
@@ -39,8 +65,8 @@
         <div id="join_btn_holder" class="event-details-view">
           <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => @event}) %>
         </div>
-
       </div>
+
       <div id="show_event_description_holder" class="scroll-pane show-scroll-on-hover">
         <% if can_edit %>
           <span id="edit_event_description_link">
@@ -64,7 +90,7 @@
           <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => " Leave a Message", :rows => 1-%>
         </div>
       <% end %>
-      <div id="event_wall" class="cap-height scroll-pane show-scroll-on-hover" data-expandBottomOffset="10" style="overflow:auto;">
+      <div id="event_wall" class="cap-height scroll-pane show-scroll-on-hover" data-expandBottomOffset="40" style="overflow:auto;">
         <%@comments.each do |comment|%>
           <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
         <% end %>
@@ -76,6 +102,11 @@
       </div>
     </div>
   </div>
+  <!--<div style="font-size:2px;background-color:#4F4F4D;position:absolute;bottom:30px;left:0px;width:400px;height:2px;">&nbsp;</div>-->
+  <div id="fb_like_btn" style="width:50px;height:20px;overflow:hidden;position:absolute;bottom:5px; left:330px;">
+    <div class="fb-like" data-href="<%=event_path(@event)%>" data-send="false" data-layout="button_count" data-width="30" data-show-faces="false"></div>
+  </div>
+
 <% end %>
 
 <% content_for :right_side_pane do %>
