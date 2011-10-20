@@ -370,7 +370,7 @@ function createShowMarker(lat, lng, address, location_text) {
     showMarker.setIcon("/images/marker-base.png");
     showMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
 
-    showMarker.iconLabel_ = new IconLabel();
+    showMarker.iconLabel_ = new IconLabel(showMarker);
     showMarker.iconLabel_.bindTo('position', showMarker, 'position');
     showMarker.iconLabel_.setIcon($('.show-event-image img').first().attr('src'));
 

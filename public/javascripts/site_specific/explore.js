@@ -222,7 +222,7 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
     var marker = markerManager.addMarker(lat, lng);
 
     marker.iconSrc_ = iconSrc;
-    marker.label_ = new IconLabel();
+    marker.label_ = new IconLabel(marker);
     marker.label_.bindTo('position', marker, 'position');
     marker.label_.setIcon(iconSrc);
 
