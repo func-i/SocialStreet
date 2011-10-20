@@ -1085,3 +1085,22 @@ END OF RESET
     font-family: JLEE;
     color: #FFFCD5;
 }
+
+.how-it-works-wrapper {
+    z-index: 3;
+    min-width: 683px;
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 350px;
+    padding: 10px 75px 10px 10px;
+}
+
+.how-it-works-icons {
+    float: left;
+    margin: 5px;
+}
+
+.how-it-works-btn-close {
+    float: right;
+    margin-top: 20px;
+}

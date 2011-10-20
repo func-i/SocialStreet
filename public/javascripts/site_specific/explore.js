@@ -12,7 +12,8 @@ $(function(){
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');
         for(var i = 0; i < selectedMarkerArr.length; i++){
-            selectedMarkerArr[i].label_.setMap(null);
+            if(selectedMarkerArr[i] != undefined)
+                selectedMarkerArr[i].label_.setMap(null);
         }
 
         google.maps.event.clearListeners(map, 'dragstart');
@@ -205,12 +206,14 @@ function addExploreMarkers(){
         if(startTimer){
             markerSlideShowInterval = setInterval(function(){
                 for(var i = 0; i < selectedMarkerArr.length; i++){
-                    var myMarker = selectedMarkerArr[i];
-                    if(null != myMarker.clusteredIcons_){
-                        myMarker.label_.setIcon(myMarker.clusteredIcons_[myMarker.slideShowCount_]);
-                        myMarker.slideShowCount_ += 1;
-                        if(myMarker.slideShowCount_ >= myMarker.clusteredIcons_.length)
-                            myMarker.slideShowCount_ = 0;
+                    if(selectedMarkerArr[i] != undefined) {
+                        var myMarker = selectedMarkerArr[i];
+                        if(null != myMarker.clusteredIcons_){
+                            myMarker.label_.setIcon(myMarker.clusteredIcons_[myMarker.slideShowCount_]);
+                            myMarker.slideShowCount_ += 1;
+                            if(myMarker.slideShowCount_ >= myMarker.clusteredIcons_.length)
+                                myMarker.slideShowCount_ = 0;
+                        }
                     }
                 }
             }, 1000);
@@ -269,10 +272,12 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
 
 function removeSelectedPinState(){
     for(var i = 0; i < selectedMarkerArr.length; i++){
-        selectedMarkerArr[i].setIcon("/images/grey-pin.png");
-        selectedMarkerArr[i].setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
-        selectedMarkerArr[i].label_.setMap(null);
-        delete selectedMarkerArr[i].clusteredIcons_
+        if(selectedMarkerArr[i] != undefined) {
+            selectedMarkerArr[i].setIcon("/images/grey-pin.png");
+            selectedMarkerArr[i].setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
+            selectedMarkerArr[i].label_.setMap(null);
+            delete selectedMarkerArr[i].clusteredIcons_
+        }
     }
     delete selectedMarkerArr;
     selectedMarkerArr = [];
@@ -351,7 +356,8 @@ function unselectResults(){
 
 function clearExploreMarkers(){
     for(var i = 0; i < selectedMarkerArr.length; i++)
-        selectedMarkerArr[i].label_.setMap(null);
+        if(selectedMarkerArr[i] != undefined)
+            selectedMarkerArr[i].label_.setMap(null);
 
     markerManager.deleteAllMarkers();
 

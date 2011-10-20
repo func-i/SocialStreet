@@ -85,19 +85,19 @@ class User < ActiveRecord::Base
     if self.first_sign_in_date.blank?
       self.first_sign_in_date = Time.now
 
-      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, current_user.id)
+      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, self.id)
 
-      if params[:facebook] == '1'
-        current_user.post_to_facebook_wall(
-          :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
-          :link => "http://www.socialstreet.com/",
-          :name => "SocialStreet.com",
-          :caption => "Explore real life!",
-          :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
-          :message => "I just joined SocialStreet!",
-          :type => "link"
-        )
-      end
+      #      if params[:facebook] == '1'
+      post_to_facebook_wall(
+        :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
+        :link => "http://www.socialstreet.com/",
+        :name => "SocialStreet.com",
+        :caption => "Explore real life!",
+        :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
+        :message => "I just joined SocialStreet!",
+        :type => "link"
+      )
+      #      end
     end
 
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
