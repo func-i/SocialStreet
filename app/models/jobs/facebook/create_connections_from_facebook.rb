@@ -1,7 +1,7 @@
 # Create the initial connections via facebook
 class Jobs::Facebook::CreateConnectionsFromFacebook
 
-  @queue = :connections
+  @queue = :staging_connections
 
   def self.perform(user_id)
 

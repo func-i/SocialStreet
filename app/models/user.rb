@@ -85,10 +85,10 @@ class User < ActiveRecord::Base
     if self.first_sign_in_date.blank?
       self.first_sign_in_date = Time.now
 
-      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, current_user.id)
+      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, self.id)
 
       if params[:facebook] == '1'
-        current_user.post_to_facebook_wall(
+        post_to_facebook_wall(
           :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
           :link => "http://www.socialstreet.com/",
           :name => "SocialStreet.com",
