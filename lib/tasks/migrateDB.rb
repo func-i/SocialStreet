@@ -40,7 +40,7 @@ end
 def migrate_comments(srcDB, sinkDB)
   comment_inserts = []
 
-  comments = srcDB.connection.query("SELECT comments.*, events.id AS event_id FROM comments LEFT OUTER JOIN events ON comments.searchable_id = events.searchable_id LEFT OUTER JOIN comments AS joined_comments ON joined_comments.id = comments.id WHERE events.id IS NOT NULL;")
+  comments = srcDB.connection.query("SELECT comments.*, events.id AS event_id FROM comments LEFT OUTER JOIN events ON comments.searchable_id = events.searchable_id WHERE events.id IS NOT NULL;")
   comments.each do |comment|
     comment_inserts.push(
       "(
@@ -53,7 +53,7 @@ def migrate_comments(srcDB, sinkDB)
     )
   end
 
-  comments = srcDB.connection.query("select comments.*, events.id AS event_id from actions LEFT OUTER JOIN actions AS ref_actions ON actions.id = ref_actions.action_id INNER JOIN comments ON comments.id = ref_actions.reference_id INNER JOIN events ON actions.event_id = events.id WHERE actions.action_type = 'Event Comment' AND ref_actions.action_type = 'Action Comment';")
+  comments = srcDB.connection.query("SELECT comments.*, events.id AS event_id FROM actions LEFT OUTER JOIN actions AS ref_actions ON actions.id = ref_actions.action_id INNER JOIN comments ON comments.id = ref_actions.reference_id INNER JOIN events ON actions.event_id = events.id WHERE actions.action_type = 'Event Comment' AND ref_actions.action_type = 'Action Comment';")
   comments.each do |comment|
     comment_inserts.push(
       "(
@@ -123,14 +123,14 @@ def migrate_rsvps(srcDB, sinkDB)
     )
   end
 
-  invitations = srcDB.connection.query("SELECT invitations.* FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL")
+  invitations = srcDB.connection.query("SELECT invitations.*, rsvp.status FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL")
   invitations.each do |invite|
     rsvp_inserts.push(
       "(
         #{invite.to_user_id},
         #{invite.event_id},
         false,
-        #{invite.status},
+        'Invited',
         false,
         #{invite.created_at},
         #{invite.updated_at},
