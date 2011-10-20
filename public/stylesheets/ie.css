@@ -12,14 +12,28 @@ body, html {
 }
 
 #left_side_pane {
-    top: auto;
+    top: 65px;
+}
+/*
+#right_side_pane {
+    top: 85px;
 }
 
-#right_side_pane {
-    top: auto;
+#center_pane {
+    top: 85px;
+}
+*/
+
+#top_pane {
+    top: 85px;
 }
 
 #how_it_works {
-    top: auto;
+    top: 65px;
 }
+
+#show_attendees_list {
+    width: 197px;
+}
+
 

@@ -26,6 +26,7 @@ $(function(){
     resizeSelf = function(){
         resizeCenterPaneContent();
         resizeDate(); // Resize the date to wrap when the title is too long
+        resizeAttendees(); //Resize the attendees so that the scroller doesn't happen unless necessary
     }
 
     resizePageElements();
@@ -162,6 +163,14 @@ function removeComment(comment){
     capHeightContainer();
 
     initScrollPane($('#event_wall'));
+}
+
+function resizeAttendees() {
+
+    if($('#show_attendees_holder').height() > 150){
+        initScrollPane($('#show_attendees_holder'));
+    }
+
 }
 
 function setupShowEventPage(){

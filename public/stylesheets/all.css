@@ -741,7 +741,7 @@ END OF RESET
 }
 #show_attendees_holder{
     width: 200px;
-    max-height: 162px;
+    max-height: 165px;
     overflow-y: auto;
 }
 .show-attendee{
