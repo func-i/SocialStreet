@@ -37,11 +37,23 @@ def migrate
   migrate_comments(srcDB, sinkDB)
 end
 
-#TODO - This doesnt work for non-top level comments
 def migrate_comments(srcDB, sinkDB)
   comment_inserts = []
 
-  comments = srcDB.connection.query("SELECT *, events.id AS event_id FROM comments INNER JOIN events ON comments.searchable_id = events.searchable_id")
+  comments = srcDB.connection.query("SELECT comments.*, events.id AS event_id FROM comments LEFT OUTER JOIN events ON comments.searchable_id = events.searchable_id LEFT OUTER JOIN comments AS joined_comments ON joined_comments.id = comments.id WHERE events.id IS NOT NULL;")
+  comments.each do |comment|
+    comment_inserts.push(
+      "(
+      #{comment.user_id},
+      #{comment.body},
+      #{comment.event_id},
+      #{comment.created_at},
+      #{comment.updated_at}
+      )"
+    )
+  end
+
+  comments = srcDB.connection.query("select comments.*, events.id AS event_id from actions LEFT OUTER JOIN actions AS ref_actions ON actions.id = ref_actions.action_id INNER JOIN comments ON comments.id = ref_actions.reference_id INNER JOIN events ON actions.event_id = events.id WHERE actions.action_type = 'Event Comment' AND ref_actions.action_type = 'Action Comment';")
   comments.each do |comment|
     comment_inserts.push(
       "(
@@ -66,7 +78,7 @@ updated_at
 end
 
 def migrate_keyword(srcDB, sinkDB)
-  keywords = srcDB.connection.query("SELECT *, events.id AS event_id FROM searchable_event_types INNER JOIN events ON searchable_event_types.searchable_id = events.searchable_id")
+  keywords = srcDB.connection.query("SELECT searchable_event_types.*, events.id AS event_id FROM searchable_event_types INNER JOIN events ON searchable_event_types.searchable_id = events.searchable_id")
   keyword_inserts = []
   keywords.each do |keyword|
     keyword_inserts.push(
@@ -111,7 +123,7 @@ def migrate_rsvps(srcDB, sinkDB)
     )
   end
 
-  invitations = srcDB.connection.query("SELECT * FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL")
+  invitations = srcDB.connection.query("SELECT invitations.* FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL")
   invitations.each do |invite|
     rsvp_inserts.push(
       "(
@@ -144,12 +156,12 @@ invitor_id
 end
 
 def migrate_events(srcDB, sinkDB)
-  events = srcDB.connection.query("SELECT *, events.id AS event_id FROM events LEFT OUTER JOIN searchable_date_ranges ON events.searchable_id = searchable_date_ranges.searchable_id")
+  events = srcDB.connection.query("SELECT events.*, searchable_date_ranges.starts_at, searchable_date_ranges.ends_at FROM events LEFT OUTER JOIN searchable_date_ranges ON events.searchable_id = searchable_date_ranges.searchable_id")
   event_inserts = []
   events.each do |event|
     event_inserts.push(
       "(
-      #{event.event_id},
+      #{event.id},
       #{event.name},
       #{event.description},
       #{event.user_id},
