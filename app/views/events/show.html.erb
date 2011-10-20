@@ -113,14 +113,14 @@
   <div id="show_attendees_title" class="important-color text-shadow">
     <%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>
   </div>
-  <div id="show_attendees_holder" class="scroll-pane container">
+  <div id="show_attendees_holder" class="container">
     <ul id="show_attendees_list" class="">
-      <%@event.event_rsvps.attending.each do |attendee|%>
+      <% @event.event_rsvps.attending.each do |attendee| %>
         <li class="show-attendee">
           <%=avatar(attendee.user, :size => "50x50", :class=> "show-attendee-icon")%>
           <span class="show-attendee-name"><%=attendee.user.name%></span>
         </li>
-      <%end%>
+      <% end %>
     </ul>
   </div>
 <% end %>

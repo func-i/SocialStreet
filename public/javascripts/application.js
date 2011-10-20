@@ -119,11 +119,11 @@ $(function() {
         openFeedback();
     });
     $('#close_feedback').click(function(){
-       closeFeedback();
+        closeFeedback();
     });
     $('#submit_feedback').click(function(){
-       $('#feedback_form').submit();
-       closeFeedback();
+        $('#feedback_form').submit();
+        closeFeedback();
     });
 
 });
@@ -156,11 +156,12 @@ function resizePageElements() {
     resizeLayout();
     resizeExpandHeightContainer();
     capHeightContainer();
-    initializeScrollPanes();
 
     if(typeof resizeSelf == 'function'){
         resizeSelf();
     }
+
+    initializeScrollPanes();
 }
 
 function resizeLayout(){
@@ -186,11 +187,11 @@ function resizeLayout(){
     //    $('#top_pane').width(docWidth - topPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
     //  $('#bottom_pane').width(docWidth - bottomPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
 
-    if ( ver == -1 )
-        $('#right_side_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0))
+    //if ( ver == -1 )
+    $('#right_side_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0))
     
-    if ( ver == -1 )
-        $('#center_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0));//20 is fo 20px gutters
+    //if ( ver == -1 )
+    $('#center_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0));//20 is fo 20px gutters
 
     $('#center_pane').css('left', leftPaneWidth + 40);//40 is for 2x20px gutters
     $('#center_pane').width(docWidth - leftPaneWidth - 40 - rightPaneWidth - 40);//20 is for 20px gutters
