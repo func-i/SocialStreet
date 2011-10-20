@@ -497,3 +497,4 @@ accepted_tncs
       records = ActiveRecord::Base.connection.query(new_sql)
     end
   end
+end
