@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111017170109) do
+ActiveRecord::Schema.define(:version => 20111020024526) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20111017170109) do
     t.datetime "updated_at"
   end
 
+  add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
+
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "event_id"
@@ -28,6 +30,9 @@ ActiveRecord::Schema.define(:version => 20111017170109) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "comments", ["event_id"], :name => "index_comments_on_event_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "connections", :force => true do |t|
     t.integer  "user_id"
@@ -39,6 +44,9 @@ ActiveRecord::Schema.define(:version => 20111017170109) do
     t.datetime "updated_at"
   end
 
+  add_index "connections", ["to_user_id"], :name => "index_connections_on_to_user_id"
+  add_index "connections", ["user_id"], :name => "index_connections_on_user_id"
+
   create_table "event_keywords", :force => true do |t|
     t.string   "name"
     t.integer  "event_type_id"
@@ -46,6 +54,9 @@ ActiveRecord::Schema.define(:version => 20111017170109) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "event_keywords", ["event_id"], :name => "index_event_keywords_on_event_id"
+  add_index "event_keywords", ["event_type_id"], :name => "index_event_keywords_on_event_type_id"
 
   create_table "event_rsvps", :force => true do |t|
     t.integer  "user_id"
@@ -59,6 +70,10 @@ ActiveRecord::Schema.define(:version => 20111017170109) do
     t.string   "email"
   end
 
+  add_index "event_rsvps", ["event_id"], :name => "index_event_rsvps_on_event_id"
+  add_index "event_rsvps", ["invitor_id"], :name => "index_event_rsvps_on_invitor_id"
+  add_index "event_rsvps", ["user_id"], :name => "index_event_rsvps_on_user_id"
+
   create_table "event_types", :force => true do |t|
     t.string   "name"
     t.string   "image_path"
@@ -67,6 +82,9 @@ ActiveRecord::Schema.define(:version => 20111017170109) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "event_types", ["parent_id"], :name => "index_event_types_on_parent_id"
+  add_index "event_types", ["synonym_id"], :name => "index_event_types_on_synonym_id"
 
   create_table "events", :force => true do |t|
     t.string   "name"
