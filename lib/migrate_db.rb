@@ -9,30 +9,40 @@ class MigrateDb
   end
   
   def migrate
-    srcDB = SourceDB.new
-    sinkDB = SinkDB.new
+    migrate_users()
+    migrate_connections()
+    migrate_authentications()
 
-    migrate_users(srcDB, sinkDB)
-    migrate_connections(srcDB, sinkDB)
-    migrate_authentications(srcDB, sinkDB)
+    migrate_event_types()
 
-    migrate_event_types(srcDB, sinkDB)
+    migrate_locations()
 
-    migrate_locations(srcDB, sinkDB)
-
-    migrate_events(srcDB, sinkDB)
-    migrate_rsvps(srcDB, sinkDB)
-    migrate_keywords(srcDB, sinkDB)
-    migrate_comments(srcDB, sinkDB)
+    migrate_events()
+    migrate_rsvps()
+    migrate_keywords()
+    migrate_comments()
   end
 
   #TODO - This doesnt work for non-top level comments
-  def migrate_comments(srcDB, sinkDB)
+  def migrate_comments()
     comment_inserts = []
 
     switch_to_legacy
 
-    comments = ActiveRecord::Base.connection.query("SELECT *, events.id AS event_id FROM comments INNER JOIN events ON comments.searchable_id = events.searchable_id")
+    comments = ActiveRecord::Base.connection.query("SELECT comments.*, events.id AS event_id FROM comments LEFT OUTER JOIN events ON comments.searchable_id = events.searchable_id WHERE events.id IS NOT NULL;")
+    comments.each do |comment|
+      comment_inserts.push(
+        "(
+      #{comment.user_id},
+      #{comment.body},
+      #{comment.event_id},
+      #{comment.created_at},
+      #{comment.updated_at}
+      )"
+      )
+    end
+
+    comments = ActiveRecord::Base.connection.query("SELECT comments.*, events.id AS event_id FROM actions LEFT OUTER JOIN actions AS ref_actions ON actions.id = ref_actions.action_id INNER JOIN comments ON comments.id = ref_actions.reference_id INNER JOIN events ON actions.event_id = events.id WHERE actions.action_type = 'Event Comment' AND ref_actions.action_type = 'Action Comment';")
     comments.each do |comment|
       comment_inserts.push(
         "(
@@ -55,12 +65,15 @@ created_at,
 updated_at
 ) VALUES #{comment_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_keyword(srcDB, sinkDB)
-    keywords = srcDB.connection.query("SELECT *, events.id AS event_id FROM searchable_event_types INNER JOIN events ON searchable_event_types.searchable_id = events.searchable_id")
+  def migrate_keyword()
     keyword_inserts = []
+
+    switch_to_legacy
+
+    keywords = ActiveRecord::Base.connection.query("SELECT searchable_event_types.*, events.id AS event_id FROM searchable_event_types INNER JOIN events ON searchable_event_types.searchable_id = events.searchable_id")
     keywords.each do |keyword|
       keyword_inserts.push(
         "(
@@ -73,6 +86,8 @@ updated_at
       )
     end
 
+    switch_to_current
+
     sql = "INSERT INTO event_keywords (
 name,
 event_type_id,
@@ -81,13 +96,15 @@ created_at,
 updated_at
 ) VALUES #{keyword_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_rsvps(srcDB, sinkDB)
+  def migrate_rsvps()
     rsvp_inserts = []
 
-    rsvps = srcDB.connection.query("SELECT * FROM rsvps")
+    switch_to_legacy
+
+    rsvps = ÅctiveRecord::Base.connection.query("SELECT * FROM rsvps")
     rsvps.each do |rsvp|
       rsvp_inserts.push(
         "(
@@ -104,14 +121,14 @@ updated_at
       )
     end
 
-    invitations = srcDB.connection.query("SELECT * FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL")
+    invitations = ActiveRecord::Base.connection.query("SELECT invitations.*, rsvp.status FROM invitations LEFT OUTER JOIN rsvps ON invitations.to_user_id = rsvps.user_id AND invitations.event_id = rsvps.event_id WHERE rsvps.id IS NULL;")
     invitations.each do |invite|
       rsvp_inserts.push(
         "(
         #{invite.to_user_id},
         #{invite.event_id},
         false,
-        #{invite.status},
+        'Invited',
         false,
         #{invite.created_at},
         #{invite.updated_at},
@@ -120,6 +137,8 @@ updated_at
       )"
       )
     end
+
+    switch_to_current
 
     sql = "INSERT INTO event_rsvps (
 user_id,
@@ -133,12 +152,15 @@ email,
 invitor_id
 ) VALUES #{rsvp_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_events(srcDB, sinkDB)
-    events = srcDB.connection.query("SELECT *, events.id AS event_id FROM events LEFT OUTER JOIN searchable_date_ranges ON events.searchable_id = searchable_date_ranges.searchable_id")
+  def migrate_events()
     event_inserts = []
+
+    switch_to_legacy
+
+    events = ActiveRecord::Base.connection.query("SELECT events.*, searchable_date_ranges.starts_at, searchable_date_ranges.ends_at FROM events LEFT OUTER JOIN searchable_date_ranges ON events.searchable_id = searchable_date_ranges.searchable_id;")
     events.each do |event|
       event_inserts.push(
         "(
@@ -157,6 +179,8 @@ invitor_id
       )
     end
 
+    switch_to_current
+
     sql = "INSERT INTO events (
 id,
 name,
@@ -171,12 +195,15 @@ created_at,
 updated_at
 ) VALUES #{event_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_locations(srcDB, sinkDB)
-    locations = srcDB.connection.query("SELECT * FROM locations")
+  def migrate_locations()
     location_inserts = []
+
+    switch_to_legacy
+
+    locations = ActiveRecord::Base.connection.query("SELECT * FROM locations")
     locations.each do |loc|
       location_inserts.push(
         "(
@@ -198,6 +225,8 @@ updated_at
       )
     end
 
+    switch_to_current
+
     sql = "INSERT INTO locations (
 id,
 latitude,
@@ -215,12 +244,15 @@ created_at,
 updated_at,
 ) VALUES #{location_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_event_types(srcDB, sinkDB)
-    event_types = srcDB.connection.query("SELECT * FROM event_types")
+  def migrate_event_types()
     et_inserts = []
+
+    switch_to_legacy
+
+    event_types = ActiveRecord::Base.connection.query("SELECT * FROM event_types")
     event_types.each do |et|
       et_inserts.push(
         "(
@@ -235,6 +267,8 @@ updated_at,
       )
     end
 
+    switch_to_current
+
     sql = "INSERT INTO event_types (
 id,
 name,
@@ -245,12 +279,15 @@ created_at,
 updated_at
 ) VALUES #{et_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_authentications(srcDB, sinkDB)
-    authentications = srcDB.connection.query("SELECT * FROM authentications")
+  def migrate_authentications()
     authentication_inserts = []
+
+    switch_to_legacy
+
+    authentications = ActiveRecord::Base.connection.query("SELECT * FROM authentications")
     authentications.each do |authentication|
       authentication_inserts.push(
         "(
@@ -264,6 +301,8 @@ updated_at
       )
     end
 
+    switch_to_current
+
     sql = "INSERT INTO authentications (
 user_id,
 provider,
@@ -273,12 +312,15 @@ updated_at,
 auth_response
 ) VALUES #{authentication_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_connections(srcDB, sinkDB)
-    connections = srcDB.connection.query("SELECT * FROM connections")
+  def migrate_connections()
     connection_inserts = []
+
+    switch_to_legacy
+
+    connections = ActiveRecord::Base.connection.query("SELECT * FROM connections")
     connections.each do |connection|
       connection_inserts.push(
         "(
@@ -293,6 +335,8 @@ auth_response
       )
     end
 
+    switch_to_current
+
     sql = "INSERT INTO connections (
 user_id,
 to_user_id,
@@ -303,12 +347,15 @@ created_at,
 updated_at
 ) VALUES #{connection_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 
-  def migrate_users(srcDB, sinkDB)
-    users = srcDB.connection.query("SELECT * FROM users")
+  def migrate_users()
     user_inserts = []
+
+    switch_to_legacy
+
+    users = ActiveRecord::Base.connection.query("SELECT * FROM users")
     users.each do |user|
       user_inserts.push(
         "(
@@ -332,6 +379,8 @@ updated_at
     )")
     end
 
+    switch_to_current
+
     sql = "INSERT INTO users (
 id,
 email,
@@ -352,6 +401,6 @@ facebook_friends_imports,
 accepted_tncs
 ) VALUES #{user_inserts.join(", ")}"
 
-    sinkDB.connection.insert(sql)
+    ActiveRecord::Base.connection.insert(sql)
   end
 end
