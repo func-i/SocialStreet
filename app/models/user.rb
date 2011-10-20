@@ -88,15 +88,15 @@ class User < ActiveRecord::Base
       Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, self.id)
 
       #      if params[:facebook] == '1'
-      #        post_to_facebook_wall(
-      #          :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
-      #          :link => "http://www.socialstreet.com/",
-      #          :name => "SocialStreet.com",
-      #          :caption => "Explore real life!",
-      #          :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
-      #          :message => "I just joined SocialStreet!",
-      #          :type => "link"
-      #        )
+      post_to_facebook_wall(
+        :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
+        :link => "http://www.socialstreet.com/",
+        :name => "SocialStreet.com",
+        :caption => "Explore real life!",
+        :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
+        :message => "I just joined SocialStreet!",
+        :type => "link"
+      )
       #      end
     end
 
