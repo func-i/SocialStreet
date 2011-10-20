@@ -189,10 +189,11 @@ ProjectionHelperOverlay.prototype.draw = function () {
 };
 
 // Define the overlay, derived from google.maps.OverlayView
-function IconLabel() {
+function IconLabel(marker) {
     // Here go the label styles
     this.div_ = document.createElement('div');
-    this.div_.style.cssText = 'position: absolute;z-index:1000;';
+    this.div_.style.cssText = 'position: absolute;';
+    this.div_.style.zIndex = parseInt((90 - marker.getPosition().lat())*10000, 10);
 
     this.image_ = document.createElement('img');
     this.image_.style.cssText = "width:50px;height:50px";
