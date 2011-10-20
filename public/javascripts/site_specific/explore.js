@@ -12,7 +12,8 @@ $(function(){
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');
         for(var i = 0; i < selectedMarkerArr.length; i++){
-            selectedMarkerArr[i].label_.setMap(null);
+            if(selectedMarkerArr[i] != undefined)
+                selectedMarkerArr[i].label_.setMap(null);
         }
 
         google.maps.event.clearListeners(map, 'dragstart');
@@ -351,7 +352,8 @@ function unselectResults(){
 
 function clearExploreMarkers(){
     for(var i = 0; i < selectedMarkerArr.length; i++)
-        selectedMarkerArr[i].label_.setMap(null);
+        if(selectedMarkerArr[i] != undefined)
+            selectedMarkerArr[i].label_.setMap(null);
 
     markerManager.deleteAllMarkers();
 
