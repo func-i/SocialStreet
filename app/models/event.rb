@@ -59,7 +59,7 @@ class Event < ActiveRecord::Base
   end
 
   def upcoming
-    Time.zone.now < start_date
+    Time.now < start_date
   end
   
   def event_types
