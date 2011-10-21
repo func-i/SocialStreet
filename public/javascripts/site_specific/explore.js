@@ -69,22 +69,20 @@ function setupExplorePage(){
     }
 
     //Add map listeners
-    google.maps.event.addListenerOnce(map, 'idle', function() {
-        google.maps.event.addListener(map, 'dragstart', function(){
-            dragOff = false;
-        });
-        google.maps.event.addListener(map, 'dragend', function(){
-            dragOff = true;
+    google.maps.event.addListener(map, 'dragstart', function(){
+        dragOff = false;
+    });
+    google.maps.event.addListener(map, 'dragend', function(){
+        dragOff = true;
 
-            if($('#on_explore').length > 0) {
-                updateExploreLocationParams();
-            }
-        });
-        google.maps.event.addListener(map, 'bounds_changed', function(){
-            if(dragOff && $('#on_explore').length > 0) {
-                updateExploreLocationParams();
-            }
-        });
+        if($('#on_explore').length > 0) {
+            updateExploreLocationParams();
+        }
+    });
+    google.maps.event.addListener(map, 'bounds_changed', function(){
+        if(dragOff && $('#on_explore').length > 0) {
+            updateExploreLocationParams();
+        }
     });
 
     addExploreMarkers();
