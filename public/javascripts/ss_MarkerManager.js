@@ -244,3 +244,63 @@ IconLabel.prototype.draw = function() {
 IconLabel.prototype.setIcon = function(iconSrc){
     this.image_.src = iconSrc;
 };
+
+function ShowEventLabel(locationName, address) {
+    // Here go the label styles
+    this.div_ = document.createElement('div');
+    this.div_.className = 'marker-label container';
+    this.div_.style.cssText = 'position: absolute;z-index:100;';
+    if(locationName){
+        var locationDiv = document.createElement('div');
+        locationDiv.className = 'marker-label-location text-shadow';
+        locationDiv.innerText = locationName;
+        this.div_.appendChild(locationDiv);
+    //this.div_.innerHTML = locationName + "<br/><br/>" + address
+    }
+
+    var addressDiv = document.createElement('div');
+    addressDiv.className = 'marker-label-address text-shadow';
+    addressDiv.innerText = address;
+    this.div_.appendChild(addressDiv);
+};
+
+ShowEventLabel.prototype = new google.maps.OverlayView;
+
+ShowEventLabel.prototype.onAdd = function() {
+    var pane = this.getPanes().overlayImage;
+    pane.appendChild(this.div_);
+
+    // Ensures the label is redrawn if the text or position is changed.
+    var me = this;
+    this.listeners_ = [
+    google.maps.event.addListener(this, 'position_changed',
+        function() {
+            me.draw();
+        }),
+    google.maps.event.addListener(this, 'zindex_changed',
+        function() {
+            me.draw();
+        })
+    ];
+};
+
+ShowEventLabel.prototype.onRemove = function() {
+    this.div_.parentNode.removeChild(this.div_);
+
+    // Label is removed from the map, stop updating its position/text.
+    for (var i = 0, I = this.listeners_.length; i < I; ++i) {
+        google.maps.event.removeListener(this.listeners_[i]);
+    }
+};
+
+// Implement draw
+ShowEventLabel.prototype.draw = function() {
+    var projection = this.getProjection();
+
+    var position = projection.fromLatLngToDivPixel(this.get('position'));
+    var div = this.div_;
+    div.style.display = 'block';
+
+    div.style.left = (position.x + 30) + 'px';//25 for half the width of the icon
+    div.style.top = (position.y - 78) + 'px';//50 for height of icon, 34 for height of base, -6 to get it to sit on base
+};

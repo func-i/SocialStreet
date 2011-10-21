@@ -189,9 +189,7 @@ function setupShowEventPage(){
     var yOffset = $('#location-map').height() / 5;
     map.panBy(-xOffset, -yOffset);
 
-    google.maps.event.addListenerOnce(map, 'idle', function() {
-        createShowMarker(lat, lng, address, loc_text);
-    });
+    createShowMarker(lat, lng, address, loc_text);
     
     initializeScrollPanes();
 
@@ -373,7 +371,8 @@ function submitEventWallComment(){
 function createShowMarker(lat, lng, address, location_text) {
     if(undefined === address)
         address = "";
-    
+
+    console.log("Create");
     showMarker = markerManager.addMarker(lat, lng);
 
     showMarker.setIcon("/images/marker-base.png");
@@ -422,63 +421,3 @@ function resizeDate() {
         $('#show_event_date').css('padding-top', '5px');
     }
 }
-
-function ShowEventLabel(locationName, address) {
-    // Here go the label styles
-    this.div_ = document.createElement('div');
-    this.div_.className = 'marker-label container';
-    this.div_.style.cssText = 'position: absolute;z-index:100;';
-    if(locationName){
-        var locationDiv = document.createElement('div');
-        locationDiv.className = 'marker-label-location text-shadow';
-        locationDiv.innerText = locationName;
-        this.div_.appendChild(locationDiv);
-    //this.div_.innerHTML = locationName + "<br/><br/>" + address
-    }
-
-    var addressDiv = document.createElement('div');
-    addressDiv.className = 'marker-label-address text-shadow';
-    addressDiv.innerText = address;
-    this.div_.appendChild(addressDiv);
-};
-
-ShowEventLabel.prototype = new google.maps.OverlayView;
-
-ShowEventLabel.prototype.onAdd = function() {
-    var pane = this.getPanes().overlayImage;
-    pane.appendChild(this.div_);
-
-    // Ensures the label is redrawn if the text or position is changed.
-    var me = this;
-    this.listeners_ = [
-    google.maps.event.addListener(this, 'position_changed',
-        function() {
-            me.draw();
-        }),
-    google.maps.event.addListener(this, 'zindex_changed',
-        function() {
-            me.draw();
-        })
-    ];
-};
-
-ShowEventLabel.prototype.onRemove = function() {
-    this.div_.parentNode.removeChild(this.div_);
-
-    // Label is removed from the map, stop updating its position/text.
-    for (var i = 0, I = this.listeners_.length; i < I; ++i) {
-        google.maps.event.removeListener(this.listeners_[i]);
-    }
-};
-
-// Implement draw
-ShowEventLabel.prototype.draw = function() {
-    var projection = this.getProjection();
-
-    var position = projection.fromLatLngToDivPixel(this.get('position'));
-    var div = this.div_;
-    div.style.display = 'block';
-
-    div.style.left = (position.x + 30) + 'px';//25 for half the width of the icon
-    div.style.top = (position.y - 78) + 'px';//50 for height of icon, 34 for height of base, -6 to get it to sit on base
-};
