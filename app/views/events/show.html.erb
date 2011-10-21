@@ -72,7 +72,7 @@
           <span id="edit_event_description_link">
             <%=(@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."%>
           </span>
-          <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:360px;height:70px;" %>
+          <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:359px; height:70px;" %>
         <% end %>
         <span id="show_event_description_text">
           <%= raw @event.description %>
