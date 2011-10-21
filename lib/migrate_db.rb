@@ -40,6 +40,7 @@ class MigrateDb
 
     find_in_batches("SELECT comments.user_id, comments.body, events.id, comments.created_at, comments.updated_at FROM comments LEFT OUTER JOIN events ON comments.searchable_id = events.searchable_id WHERE events.id IS NOT NULL") do |comments|
       comment_inserts = []
+      
       comments.each do |comment|
         comment_inserts.push(
           "(
@@ -314,9 +315,9 @@ updated_at
     switch_to_legacy
 
     find_in_batches("SELECT id, name, image_path, synonym_id, parent_id, created_at, updated_at FROM event_types") do |ets|
-      ets.each do |et|
-        et_inserts = []
-
+      et_inserts = []
+      
+      ets.each do |et|        
         et_inserts.push(
           "(
       '#{et[0]}',

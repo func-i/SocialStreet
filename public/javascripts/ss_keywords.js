@@ -235,7 +235,7 @@ function removeKeyword(keywordCloseDom){
             $('#explore_keyword_header').addClass('hidden').addClass('invisible');
         }
 
-        if($('.keyword-input').length==3) {
+        if($('.keyword-input').length==2) {
             $('.keyword-tag-holder').data('jsp').destroy();
             $('.keyword-tag-holder').height('auto');
         }
