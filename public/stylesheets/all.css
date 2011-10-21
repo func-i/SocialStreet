@@ -572,10 +572,13 @@ END OF RESET
     padding-left: 5px;
 }
 #create_where_name_location_input{
-    width: 300px;
+    width: 295px;
     border: 0px;
     margin: 0px;
     vertical-align: baseline;
+    position: relative;
+    top: -5px;
+    height: 20px;
 }
 #create_when_calendar_holder{
     width: 100%;

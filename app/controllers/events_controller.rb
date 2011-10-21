@@ -31,9 +31,12 @@ class EventsController < ApplicationController
     end
   end
 
-  def create 
-    if create_or_edit_event(params, :create)
+  def create
+
+    if create_or_edit_event(params, :create)     
+
       @event.reload
+      
       prepare_for_show
 
       if request.xhr?
