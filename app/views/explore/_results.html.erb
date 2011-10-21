@@ -19,7 +19,7 @@
       <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
         <div style="float:left;position:relative;">
           <%= avatar attendee, :size => "29x29", :class=>"result-attendees-image"%>
-          <div class="hidden drop-shadow rounded-corners" style="position:absolute;z-index:200;background-color: #FFFCD5; color: #4f4f4d;font: bold 14px/19px Arial, Helvetica, sans-serif;padding:1px 5px;top:30px;left:-37px;width:90px;text-align:center;">
+          <div class="hidden drop-shadow rounded-corners-four" style="position:absolute;z-index:200;background-color: #FFFCD5; color: #4f4f4d;font: bold 14px/19px Arial, Helvetica, sans-serif;padding:1px 5px;top:30px;left:-37px;width:90px;text-align:center;">
             <%=attendee.try(:name)%>
           </div>
         </div>
@@ -32,7 +32,7 @@
 
     </div>
 
-    <div class="result-join-btn-holder hidden">
+    <div class="result-join-btn-holder rounded-corners-four hidden">
       <% if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
         <%= image_tag('invite-friends-btn.png', :class=>"nav-link", "data-ajax-href" => event_path(event, :invite => true)) %>
       <% else %>

@@ -329,9 +329,6 @@ END OF RESET
 }
 .result-join-btn-holder{
     position: absolute;    
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     cursor: pointer;
     text-align: center;
     bottom: 5px;
@@ -405,9 +402,6 @@ END OF RESET
     font: bold 14px/32px Arial, Helvetica, sans-serif;
     margin: 2px 20px 0 0;
     padding: 3px 20px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     cursor: pointer;
     box-shadow: 4px 4px 3px #eee;
     -webkit-box-shadow: 4px 4px 3px #eee;
@@ -437,9 +431,6 @@ END OF RESET
     background: #FFC233;
     font: bold 22px/32px Arial, Helvetica, sans-serif;
     padding: 3px 50px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     cursor: pointer;
     width: 80px;
     text-align: center;
@@ -450,9 +441,6 @@ END OF RESET
     font: bold 18px/32px Arial, Helvetica, sans-serif;
     padding: 3px 10px;
     margin: 2px 10px 0px 0px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     cursor: pointer;
     text-align: center;
 }
@@ -461,9 +449,6 @@ END OF RESET
     background: #c41a30;
     font: bold 16px/32px Arial, Helvetica, sans-serif;
     padding: 10px 30px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     width: 120px;
     text-align: center;
 }
@@ -533,9 +518,6 @@ END OF RESET
     height: 110px;
 }
 .create-what-event-type-image{
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    /*background-color: #4f4f4d;*/
 }
 .create-what-event-type-name{
     text-align: center;
@@ -826,9 +808,6 @@ END OF RESET
     margin-bottom: 0px;
     min-height: 30px;
     padding: 5px 10px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     position: relative;
     font-style: italic;
 }
@@ -877,8 +856,6 @@ END OF RESET
     width: 85px;
     height: 90px;
     margin: 10px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
 }
 .user-image-for-invitation{
     padding-top: 5px;
@@ -929,9 +906,15 @@ END OF RESET
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
     box-shadow: 3px 3px 3px #4F4F4D;
 }
-.rounded-corners{
+.rounded-corners-four{
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.rounded-corners-fifteen{
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
 }
 
 /*KEYWORDS*/
@@ -974,8 +957,6 @@ END OF RESET
     margin:10px;
 }
 .event-type-image{
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
     width: 55px;
     height: 55px;
     margin: 5px 5px 0 5px;
@@ -1025,8 +1006,6 @@ END OF RESET
 }
 .create-keyword-tag-icon{
     float:left;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
 }
 .explore-keyword-tag-name{
     text-align: center;

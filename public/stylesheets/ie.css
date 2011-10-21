@@ -47,4 +47,11 @@ body, html {
     position:absolute;
 }
 
+.rounded-corners-four{
+    behavior: url(PIE.htc);
+}
+.rounded-corners-fifteen{
+    behavior: url(PIE.htc);
+}
+
 

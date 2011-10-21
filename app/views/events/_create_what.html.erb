@@ -18,14 +18,14 @@
     <div id="create_keyword_tag_holder" class="keyword-tag-holder">
       <ul id="keyword_tag_list">
         <li id="keyword_tag_stamp" class="keyword-tag create-keyword-tag remove-keyword-tag hidden">
-          <%= image_tag('/images/event_types/streetmeet2.png', :size=>'80x80', :class=>"keyword-tag-icon create-keyword-tag-icon drop-shadow") %>
+          <%= image_tag('/images/event_types/streetmeet2.png', :size=>'80x80', :class=>"keyword-tag-icon create-keyword-tag-icon rounded-corners-fifteen drop-shadow") %>
           <span class="keyword-tag-name create-keyword-tag-name text-shadow"></span>
           <%= image_tag('remove-keyword.png', :class => 'remove-keyword-tag keyword-tag-remove create-keyword-tag-remove') %>
         </li>
 
         <% (event.event_keywords || []).each do |keyword| %>
           <li class="keyword-tag create-keyword-tag remove-keyword-tag">
-            <%= image_tag(url_for_event_keyword(keyword), :size=>'80x80', :class=>"keyword-tag-icon create-keyword-tag-icon drop-shadow") %>
+            <%= image_tag(url_for_event_keyword(keyword), :size=>'80x80', :class=>"keyword-tag-icon create-keyword-tag-icon rounded-corners-fifteen drop-shadow") %>
             <span class="keyword-tag-name create-keyword-tag-name text-shadow">
               <%=keyword.name%>
             </span>
@@ -45,16 +45,16 @@
     <div id="event_types_scroller" class="scroll-pane include-vertical-bar">
       <ul>
         <li id="custom_event_type" class="event-type create-event-type hidden">
-          <div class="container rounded-corners">
-            <%= image_tag('/images/event_types/streetmeet1.png', :class=>"event-type-image create-event-type-image drop-shadow") %>
+          <div class="container rounded-corners-four">
+            <%= image_tag('/images/event_types/streetmeet1.png', :class=>"event-type-image create-event-type-image rounded-corners-fifteen drop-shadow") %>
             <div class="event-type-name create-event-type-name text-shadow"></div>
           </div>
         </li>
 
         <% @event_types.each do |et| %>
           <li class="event-type create-event-type <%="hidden synonym" if et.synonym_id != et.id%>">
-            <div class="container rounded-corners">
-              <%= image_tag(et.image_path, :class=>"event-type-image create-event-type-image drop-shadow") %>
+            <div class="container rounded-corners-four">
+              <%= image_tag(et.image_path, :class=>"event-type-image create-event-type-image rounded-corners-fifteen drop-shadow") %>
               <div class="event-type-name create-event-type-name text-shadow">
                 <%= et.name %>
               </div>
