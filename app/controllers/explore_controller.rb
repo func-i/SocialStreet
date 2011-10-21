@@ -9,6 +9,10 @@ class ExploreController < ApplicationController
     @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
 
     @events = find_events
+
+    @events = @events.order("events.start_date ASC");
+    @events = @events.all
+
     @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
 
     if request.xhr?
@@ -38,7 +42,7 @@ class ExploreController < ApplicationController
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
     events = within_bounds(events, map_bounds)
 
-    return events.all;
+    return events;
   end
 
   def with_keywords(event, keywords)
