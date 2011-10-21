@@ -60,23 +60,20 @@ function init_map(){
 
     //ADD ZOOM CONTROL
     var controlDiv = document.createElement("div");
-    controlDiv.style.padding = '10px 0 0 420px';
-    controlDiv.style.position = 'relative';
-    controlDiv.index = 1;
+    controlDiv.id = "zoom_btns"
 
     var zoomBtn = document.createElement('img');
+    zoomBtn.id = "zoom_btn_img"
     zoomBtn.style.cursor = "pointer"
     zoomBtn.src = '/images/zoom_btns.png';
     controlDiv.appendChild(zoomBtn);
 
     var plusBtn = document.createElement('div');
-    plusBtn.style.cssText = 'position: absolute; top: 10px; left: 420px; width: 19px; height: 21px;cursor: pointer;'
     plusBtn.title = "Zoom in";
     plusBtn.id = "zoom_in_btn";
     controlDiv.appendChild(plusBtn);
 
     var minusBtn = document.createElement('div');
-    minusBtn.style.cssText = 'position: absolute; top: 31px; left: 420px; width: 19px; height: 21px;cursor: pointer;'
     minusBtn.title = "Zoom out";
     minusBtn.id = "zoom_out_btn";
     controlDiv.appendChild(minusBtn);

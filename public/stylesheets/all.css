@@ -1104,3 +1104,25 @@ END OF RESET
     float: right;
     margin-top: 20px;
 }
+
+#zoom_btns{
+    position:relative;
+    padding: 10px 0 0 420px;
+    z-index: 1;
+}
+#zoom_in_btn{
+    position: absolute;
+    top: 10px;
+    left: 420px;
+    width: 19px;
+    height: 21px;
+    cursor: pointer;
+}
+#zoom_out_btn{
+    position: absolute;
+    top: 31px;
+    left: 420px;
+    width: 19px;
+    height: 21px;
+    cursor: pointer;
+}

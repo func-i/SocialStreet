@@ -372,7 +372,6 @@ function createShowMarker(lat, lng, address, location_text) {
     if(undefined === address)
         address = "";
 
-    console.log("Create");
     showMarker = markerManager.addMarker(lat, lng);
 
     showMarker.setIcon("/images/marker-base.png");

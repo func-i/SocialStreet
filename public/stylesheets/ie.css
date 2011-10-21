@@ -36,4 +36,15 @@ body, html {
     width: 197px;
 }
 
+#zoom_in_btn{
+    top:75px;
+}
+#zoom_out_btn{
+    top:95px;
+}
+#zoom_btn_img{
+    top: 75px;
+    position:absolute;
+}
+
 
