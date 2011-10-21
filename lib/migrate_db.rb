@@ -482,7 +482,7 @@ accepted_tncs
     end
   end
 
-  BATCH_SIZE = 1000
+  BATCH_SIZE = 10000
   def find_in_batches(sql)
     offset = 0
     new_sql = sql + " LIMIT #{BATCH_SIZE} OFFSET #{offset}"
