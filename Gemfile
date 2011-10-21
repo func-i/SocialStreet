@@ -23,7 +23,7 @@ gem 'resque', :git => "git://github.com/defunkt/resque.git"
 gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 
-#gem 'jammit'
+gem 'jammit'
 gem 'airbrake'
 #gem 'rpm_contrib'
 #gem 'newrelic_rpm'
