@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  before_filter :down
   before_filter :nav_state
   before_filter :restricted
   #before_filter :prepare_create_event_event
@@ -25,6 +26,10 @@ class ApplicationController < ActionController::Base
   #  end
 
   protected
+
+  def down
+    render :file => "site/down.html", :layout => false
+  end
 
   def store_current_path
     session[:stored_current_path] = request.fullpath
