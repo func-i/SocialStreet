@@ -75,14 +75,10 @@ function setupExplorePage(){
     google.maps.event.addListener(map, 'dragend', function(){
         dragOff = true;
 
-        if($('#on_explore').length > 0) {
-            updateExploreLocationParams();
-        }
+        updateExploreLocationParams();
     });
     google.maps.event.addListener(map, 'bounds_changed', function(){
-        if(dragOff && $('#on_explore').length > 0) {
-            updateExploreLocationParams();
-        }
+        updateExploreLocationParams();
     });
 
     addExploreMarkers();
@@ -150,7 +146,7 @@ function refreshExploreResults(){
 
 function addExploreMarkers(){
     var selectedResults = $('#selected_results').val();
-    var selectedResultsArr = selectedResults.split(',');    
+    var selectedResultsArr = selectedResults.split(',');
 
     var newSelectedMarkerArr = [];
 
