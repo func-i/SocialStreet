@@ -78,12 +78,17 @@ function initCreateEvent(){
     $('#create_where_name_location').click(function(){
         $('#create_where_name_location_text').addClass('hidden');
         $('#create_where_name_location_input').removeClass('hidden');
+        $('#create_where_name_location_input').focus();
     });
 
     $('#create_where_name_location_input').keydown(function(e){
         if(e.keyCode == 13){//Enter pressed
             saveMarkerName(e.target.value);
         }
+    });
+
+    $('#create_where_name_location_input').blur(function(e) {
+        saveMarkerName(e.target.value);
     });
 
     $('#create_where_next_arrow').click(function(){
