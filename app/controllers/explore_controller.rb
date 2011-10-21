@@ -27,7 +27,6 @@ class ExploreController < ApplicationController
     @events = @events.order("events.start_date ASC");
     @events = @events.all
 
-
     @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
   end
 
