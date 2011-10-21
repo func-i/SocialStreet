@@ -1,4 +1,4 @@
-set :deploy_to, "/home/ubuntu/rails/staging.socialstreet.com"
+set :deploy_to, "/home/ubuntu/rails/reborn.socialstreet.com"
 set :branch, "reborn"
 server "50.19.254.128", :app, :web, :db, :primary => true
 
