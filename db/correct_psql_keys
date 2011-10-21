@@ -1,0 +1,8 @@
+SELECT setval('events_id_seq', (SELECT MAX(id) FROM events)+1);
+SELECT setval('event_types_id_seq', (SELECT MAX(id) FROM event_types)+1);
+SELECT setval('connections_id_seq', (SELECT MAX(id) FROM connections)+1);
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users)+1);
+SELECT setval('event_keywords_id_seq', (SELECT MAX(id) FROM event_keywords)+1);
+SELECT setval('event_rsvps_id_seq', (SELECT MAX(id) FROM event_rsvps)+1);
+SELECT setval('locations_id_seq', (SELECT MAX(id) FROM locations)+1);
+SELECT setval('comments_id_seq', (SELECT MAX(id) FROM comments)+1);
