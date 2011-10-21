@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
 
   validates :email, :uniqueness => { :allow_blank => true }
 
+  after_save :email_user
+
   scope :matching_keyword, lambda{ |keyword|
     where("users.last_name ~* ? OR users.first_name ~* ?", keyword, keyword)
   }
@@ -81,24 +83,7 @@ class User < ActiveRecord::Base
     return self.event_rsvps.for_event(event).count > 0
   end
 
-  def apply_omniauth(omniauth)
-    if self.first_sign_in_date.blank?
-      self.first_sign_in_date = Time.now
-
-      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, self.id)
-
-      #      if params[:facebook] == '1'
-      post_to_facebook_wall(
-        :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
-        :link => "http://www.socialstreet.com/",
-        :name => "SocialStreet.com",
-        :caption => "Explore real life!",
-        :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
-        :message => "I just joined SocialStreet!",
-        :type => "link"
-      )
-      #      end
-    end
+  def apply_omniauth(omniauth)    
 
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
     if omniauth['extra'] && user_info = omniauth['extra']['user_hash']
@@ -120,5 +105,30 @@ class User < ActiveRecord::Base
     end
     
     self.facebook_profile_picture_url = omniauth['user_info']['image'] if omniauth['user_info'] && self.facebook_profile_picture_url.blank?
-  end 
+    
+    if self.first_sign_in_date.blank?
+      self.first_sign_in_date = Time.now
+    end
+
+    
+    #      end
+  end
+
+  protected
+
+  def email_user
+    if self.sign_in_count_changed? && self.sign_in_count_was.zero?
+      Resque.enqueue(Jobs::Email::EmailUserWelcomeNotice, self.id)
+      post_to_facebook_wall(
+        :picture => 'http://www.socialstreet.com/images/app_icon_facebook.png',
+        :link => "http://www.socialstreet.com/",
+        :name => "SocialStreet.com",
+        :caption => "Explore real life!",
+        :description => 'SocialStreet\'s mission is to make it easy to discover friends that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!',
+        :message => "I just joined SocialStreet!",
+        :type => "link"
+      )
+    end
+  end
+
 end
