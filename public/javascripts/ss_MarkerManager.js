@@ -253,16 +253,16 @@ function ShowEventLabel(locationName, address) {
     if(locationName){
         var locationDiv = document.createElement('div');
         locationDiv.className = 'marker-label-location text-shadow';
-        locationDiv.innerText = locationName;
+        $(locationDiv).text(locationName);
         this.div_.appendChild(locationDiv);
     //this.div_.innerHTML = locationName + "<br/><br/>" + address
     }
 
     var addressDiv = document.createElement('div');
     addressDiv.className = 'marker-label-address text-shadow';
-    addressDiv.innerText = address;
+    $(addressDiv).text(address);
     this.div_.appendChild(addressDiv);
-};
+}
 
 ShowEventLabel.prototype = new google.maps.OverlayView;
 
@@ -282,7 +282,7 @@ ShowEventLabel.prototype.onAdd = function() {
             me.draw();
         })
     ];
-};
+}
 
 ShowEventLabel.prototype.onRemove = function() {
     this.div_.parentNode.removeChild(this.div_);
@@ -291,7 +291,7 @@ ShowEventLabel.prototype.onRemove = function() {
     for (var i = 0, I = this.listeners_.length; i < I; ++i) {
         google.maps.event.removeListener(this.listeners_[i]);
     }
-};
+}
 
 // Implement draw
 ShowEventLabel.prototype.draw = function() {
@@ -303,4 +303,4 @@ ShowEventLabel.prototype.draw = function() {
 
     div.style.left = (position.x + 30) + 'px';//25 for half the width of the icon
     div.style.top = (position.y - 78) + 'px';//50 for height of icon, 34 for height of base, -6 to get it to sit on base
-};
+}

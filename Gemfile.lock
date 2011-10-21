@@ -11,6 +11,10 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    POpen4 (0.1.4)
+      Platform (>= 0.4.0)
+      open4
+    Platform (0.4.0)
     XMLCanonicalizer (1.0.1)
       log4r (>= 1.0.4)
     abstract (1.0.0)
@@ -77,6 +81,8 @@ GEM
     hiredis (0.3.2)
     httpclient (2.2.1)
     i18n (0.5.0)
+    jammit (0.6.3)
+      yui-compressor (>= 0.9.3)
     jquery-rails (1.0.14)
       railties (~> 3.0)
       thor (~> 0.14)
@@ -134,6 +140,7 @@ GEM
       oa-more (= 0.3.0)
       oa-oauth (= 0.3.0)
       oa-openid (= 0.3.0)
+    open4 (1.1.0)
     orm_adapter (0.0.5)
     pg (0.11.0)
     polyglot (0.3.2)
@@ -216,6 +223,8 @@ GEM
     warden (1.0.5)
       rack (>= 1.0)
     xml-simple (1.1.0)
+    yui-compressor (0.9.6)
+      POpen4 (>= 0.1.4)
 
 PLATFORMS
   ruby
@@ -229,6 +238,7 @@ DEPENDENCIES
   fb_graph
   geocoder
   hiredis (~> 0.3.1)
+  jammit
   jquery-rails (>= 0.2.6)
   json
   omniauth

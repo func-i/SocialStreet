@@ -6,33 +6,24 @@ package_assets: on
 javascripts:
   common:
     - public/javascripts/jquery-1.5.1.js
-    - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
-    - public/javascripts/jquery.mousewheel.js
+    - public/javascripts/application.js
     - public/javascripts/rails.js
-    - public/javascripts/ss.js
-    - public/javascripts/autoresize.jquery.min.js
-    - public/javascripts/jquery.ui.autocomplete.html.js
-    - public/javascripts/infobubble.js
-  events:
-    - public/javascripts/ss_markerManager.js
-    - public/javascripts/events/organizer_map.js
-    - public/javascripts/gmaps/shared.js
-    - public/javascripts/events/form.js
-    - public/javascripts/keywords_field.js
-    - public/javascripts/date.format.js
-  sidebar:
-    - public/javascripts/ss_markerManager.js
+    - public/javascripts/mobiscroll-1.5.js
+    - public/javascripts/autoresize.jquery.js
+    - public/javascripts/site_specific/main_map.js
+    - public/javascripts/ss_MarkerManager.js
+    - public/javascripts/ss_keywords.js
     - public/javascripts/ss_pageless.js
-    - public/javascripts/keywords_field.js
-    - public/javascripts/jquery.getUrlParam.js
-  ss_pageless:
-    - public/javascripts/ss_pageless.js
+    - public/javascripts/jScrollPane/jquery.jscrollpane.js
+    - public/javascripts/jScrollPane/jquery.mousewheel.js
+    - public/javascripts/jScrollPane/mwheelIntent.js
+    - public/javascripts/autoresize.jquery.js
 stylesheets:
   common:
     - public/stylesheets/all.css
-    - public/jquery-ui-1.8.11.custom/css/smoothness/jquery-ui-1.8.11.custom.css
-  authentications:
-    - public/stylesheets/authentications.css
+    - public/stylesheets/mobiscroll-1.5.css
+    - public/stylesheets/jquery.jscrollpane.css
+    - public/stylesheets/fullcalendar.css
   ie:
     - public/stylesheets/ie.css
   ie7: 
