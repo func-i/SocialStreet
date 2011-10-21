@@ -107,7 +107,6 @@ function addMapListeners(){
     });
     google.maps.event.addListener(map, 'bounds_changed', function(){
         if(mapInit && dragOff){
-            console.log("Bounds changed");
             updateExploreLocationParams();
         }
     });
