@@ -389,7 +389,7 @@ auth_response
 
     switch_to_legacy
 
-    find_in_batches("SELECT user_id, to_user_id, strength, rank, facebook_friend, created_at, updated_at FROM connections") do |connections|
+    find_in_batches("SELECT id, user_id, to_user_id, strength, rank, facebook_friend, created_at, updated_at FROM connections ORDER BY id") do |connections|
       connection_inserts = []
 
       connections.each do |connection|
@@ -400,8 +400,9 @@ auth_response
       '#{connection[2]}',
       '#{connection[3]}',
       '#{connection[4]}',
-      '#{connection[5] || Time.now}',
-      '#{connection[6] || Time.now}'
+      '#{connection[5]}',
+      '#{connection[6] || Time.now}',
+      '#{connection[7] || Time.now}'
       )"
         )
       end
@@ -409,6 +410,7 @@ auth_response
       switch_to_current
 
       sql = "INSERT INTO connections (
+id,
 user_id,
 to_user_id,
 strength,
@@ -427,10 +429,10 @@ updated_at
   def migrate_users()
     switch_to_legacy
 
-    find_in_batches("SELECT id, email, sign_in_count, created_at, updated_at, first_name, last_name, username, facebook_profile_picture_url, fb_uid, gender, location, last_known_longitude, last_known_longitude, last_known_location_datetime, fb_friends_imported, accepted_tncs FROM users") do |users|
+    find_in_batches("SELECT id, email, sign_in_count, created_at, updated_at, first_name, last_name, username, facebook_profile_picture_url, fb_uid, gender, location, last_known_longitude, last_known_longitude, last_known_location_datetime, fb_friends_imported, accepted_tncs FROM users ORDER BY id") do |users|
       user_inserts = []
 
-      user.each do |user|
+      users.each do |user|
         user_inserts.push(
           "(
       '#{user[0]}',
