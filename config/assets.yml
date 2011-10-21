@@ -14,16 +14,16 @@ javascripts:
     - public/javascripts/ss_MarkerManager.js
     - public/javascripts/ss_keywords.js
     - public/javascripts/ss_pageless.js
-    - public/javascripts/jScrollPane/jquery.jscrollpane.js
-    - public/javascripts/jScrollPane/jquery.mousewheel.js
-    - public/javascripts/jScrollPane/mwheelIntent
-    - public/javascripts/autoresize.jquery  
+    - public/javascripts/jquery.jscrollpane.js
+    - public/javascripts/jquery.mousewheel.js
+    - public/javascripts/mwheelIntent.js
+    - public/javascripts/autoresize.jquery.js
 stylesheets:
   common:
     - public/stylesheets/all.css
     - public/stylesheets/mobiscroll-1.5.css
-    - public/stylesheetsjquery.jscrollpane
-    - public/stylesheetsfullcalendar  
+    - public/stylesheets/jquery.jscrollpane
+    - public/stylesheets/fullcalendar
   ie:
     - public/stylesheets/ie.css
   ie7: 
