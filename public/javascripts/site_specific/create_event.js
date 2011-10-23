@@ -276,7 +276,27 @@ function reverse_geocode(marker){
     },
     function(results, status){
         if (status == google.maps.GeocoderStatus.OK) {
-            marker.address_ = results[0].formatted_address;
+            var street_number = null;
+            var route = null;
+            var street_address = null;
+            var locality = null;
+            var components = results[0].address_components;
+            for(var i = 0; i < components.length; i++){
+                if(components[i].types[0] == 'street_number')
+                    street_number = components[i].long_name;
+                if(components[i].types[0] == 'route')
+                    route = components[i].long_name;
+                if(components[i].types[0] == 'street_address')
+                    street_address = components[i].long_name;
+                if(components[i].types[0] == 'locality')
+                    locality = components[i].long_name;
+            }
+            if(null == street_address)
+                street_address = street_number + ' ' + route;
+            if(null != locality)
+                locality = ', ' + locality;            
+            marker.address_ = street_address + locality;
+
             if(createEventSelectedMarker == marker){
                 selectMarker_createWhere(marker);
             }
