@@ -5,7 +5,7 @@ require 'airbrake/capistrano'
 require 'new_relic/recipes'
 
 # => Enable multistage deployment
-set :stages, %w(staging reborn production)
+set :stages, %w(dev reborn production)
 set :default_stage, "production"
 require 'capistrano/ext/multistage'
 

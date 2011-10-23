@@ -104,7 +104,7 @@ class Event < ActiveRecord::Base
       end
     end
 
-    title << (" - " + (self.starts_at ? self.starts_at.to_s(:date_with_time) : "Sometime")) if include_date
+    title << (" - " + (self.starts_date ? self.starts_date.to_s(:date_with_time) : "Sometime")) if include_date
 
     return title
   end
