@@ -236,7 +236,8 @@ function removeKeyword(keywordCloseDom){
         }
 
         if($('.keyword-input').length==2) {
-            $('.keyword-tag-holder').data('jsp').destroy();
+            if($('.keyword-tag-holder').data('jsp'))
+                $('.keyword-tag-holder').data('jsp').destroy();
             $('.keyword-tag-holder').height('auto');
         }
     }
@@ -246,7 +247,8 @@ function removeKeyword(keywordCloseDom){
             $('#create_what_tags').addClass('invisible');
         }
 
-        $('.keyword-tag-holder').data('jsp').destroy();
+        if($('.keyword-tag-holder').data('jsp'))
+            $('.keyword-tag-holder').data('jsp').destroy();
         $('.keyword-tag-holder').height('auto');
 
         resizeWhatTags();
