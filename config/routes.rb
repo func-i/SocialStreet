@@ -35,4 +35,6 @@ SocialStreetReborn::Application.routes.draw do
 
   match '/auth/:provider/callback' => 'authentications#create'
 
+  get 'hb' => 'heartbeat#index'
+  get 'sim_error' => 'heartbeat#error'
 end
