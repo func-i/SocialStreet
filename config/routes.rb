@@ -5,6 +5,9 @@ SocialStreetReborn::Application.routes.draw do
 
   resources :event_types, :only => [:index]
   resources :events do
+    collection do
+      match 'streetmeet_of_the_week'
+    end
     resources :event_rsvps, :only => [:new, :edit]
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
