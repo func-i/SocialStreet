@@ -125,6 +125,19 @@ $(function() {
         $('#feedback_form').submit();
         closeFeedback();
     });
+    $('.how-it-works-wrapper').click(function(e){
+        e.stopPropagation();
+    });
+    $('#feedback_container').click(function(e){
+        e.stopPropagation();
+    });
+
+    $('#how_it_works').click(function(){
+        closeHowItWorks();
+    });
+    $('#feedback').click(function(){
+        closeFeedback();
+    });
 
 });
 

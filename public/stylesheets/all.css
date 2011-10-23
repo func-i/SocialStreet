@@ -967,10 +967,11 @@ END OF RESET
 }
 .event-type-name{
     text-align: center;
-    font: bold 12px/12px Arial, Helvetica, sans-serif;
+    font: bold 11px/11px Arial, Helvetica, sans-serif;
     color: white;
-    width: 62px;
+    width: 67px;
     margin: 0 auto;
+    word-wrap: break-word;
 }
 #explore_keyword_header{
     background-color: #4F4F4D;
@@ -1015,8 +1016,11 @@ END OF RESET
     font: bold 12px/18px Arial, Helvetica, sans-serif;
     color: white;
     float: left;
-    width: 92px;
+    width: 100px;
+    overflow:hidden;
     padding: 18px 0 0 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .create-keyword-tag-name{
     font: bold 12px/12px Arial, Helvetica, sans-serif;
@@ -1028,7 +1032,7 @@ END OF RESET
 }
 .explore-keyword-tag-remove{
     float: right;
-    padding: 19px 0 0 15px;
+    padding: 19px 0 0 7px;
 }
 .create-keyword-tag-remove{
     float: right;

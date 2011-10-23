@@ -256,6 +256,7 @@
     cleanUpSelf = function(){
       $('#left_side_pane').removeClass('hidden');
       $('#zoom_btns').removeClass('hidden');
+      google.maps.event.removeListener(mapListener);    
     }
     resizeSelf = function(){
       var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
@@ -264,5 +265,11 @@
       initializeScrollPanes();
     }
     resizePageElements();
+
+
+    var mapListener = google.maps.event.addListener(map, 'click', function(){
+      $('.logo').click();
+    });
+
   });
 </script>
