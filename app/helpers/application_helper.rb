@@ -30,14 +30,21 @@ module ApplicationHelper
     distance_in_hours = (distance_in_minutes / 60).floor
     distance_in_days = (distance_in_hours / 24).floor
 
-    time_of_day = (time.hour() > 21 ? 'Night' : (time.hour() > 17 ? 'Evening' : (time.hour() > 12 ? 'Afternoon' : 'Morning')))
+    #time_of_day = (time.hour() > 21 ? 'Night' : (time.hour() > 17 ? 'Evening' : (time.hour() > 12 ? 'Afternoon' : 'Morning')))
     
     text = "#{ended ? 'Ended ' : (started ? 'Started ' : 'Starts ')}"
 
     case distance_in_hours
     when 0
-      text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
-    when 1..23
+      case distance_in_minutes
+      when 0..5
+        text = "#{'just ' unless upcoming}#{text}#{'in a couple of minutes ' if upcoming}"
+      else
+        text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
+      end
+    when 1
+      text = "#{text}#{'in ' if upcoming}#{distance_in_hours} hour#{' ago' unless upcoming}"
+    when 2..23
       text = "#{text}#{'in ' if upcoming}#{distance_in_hours} hours#{' ago' unless upcoming}"
     else
       case distance_in_days
@@ -45,7 +52,7 @@ module ApplicationHelper
         text = "#{text}#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
       when 2..6
         text = "#{text}this #{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
-      #when 7..13
+        #when 7..13
         #text = "#{text}#{upcoming ? 'next  ' : 'last '}#{time.strftime("%A")} #{time_of_day}"
       else
         text = "#{text}#{time.strftime("%A, %b %e %l:%M %p")}"

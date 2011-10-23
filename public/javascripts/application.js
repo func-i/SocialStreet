@@ -134,6 +134,8 @@ function cleanup(){
         cleanUpSelf = function(){};
     }
     markerManager.deleteAllMarkers();
+    closeFeedback();
+    closeHowItWorks();
 
     resizeSelf = function(){};
 
@@ -330,6 +332,7 @@ $.fn.serializeObject = function()
 
 function openHowItWorks() {
     $('.content-group').addClass('hidden');
+    $('#zoom_btns').addClass('hidden');
     //markerManager.hideAllMarkers();
     
     $('#how_it_works').removeClass('hidden');
@@ -344,10 +347,12 @@ function closeHowItWorks() {
 
     //markerManager.showAllMarkers();
     $('.content-group').removeClass('hidden');
+    $('#zoom_btns').removeClass('hidden');
 }
 
 function openFeedback() {
     $('.content-group').addClass('hidden');
+    $('#zoom_btns').addClass('hidden');
     //markerManager.hideAllMarkers();
 
     $('#feedback').removeClass('hidden');
@@ -362,6 +367,7 @@ function closeFeedback() {
 
     //markerManager.showAllMarkers();
     $('.content-group').removeClass('hidden');
+    $('#zoom_btns').removeClass('hidden');
 }
 
 function getInternetExplorerVersion()
