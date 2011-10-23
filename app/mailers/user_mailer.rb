@@ -113,7 +113,7 @@ class UserMailer < ActionMailer::Base
   end
 
   def streetmeet_of_the_week_summary(body)
-    mail(:to => ["jon.salis@railias.ca"], :subject => "Streetmeet #{Date.today.to_s} Stats") do |format|
+    mail(:to => ["jon.salis@railias.ca", "sailias@railias.ca"], :subject => "Streetmeet #{Date.today.to_s} Stats") do |format|
       format.html {render :text => body}
     end
   end

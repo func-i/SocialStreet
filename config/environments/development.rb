@@ -23,3 +23,12 @@ SocialStreetReborn::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 end
+
+ActionMailer::Base.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :user_name            => 'jtsalis83@gmail.com',
+  :password             => 'aliciag0522',
+  :authentication       => 'plain',
+  :enable_starttls_auto => true  
+}
