@@ -27,6 +27,7 @@
 #types[:golf] = EventType.create!(:name => 'Golf', :image_path => "/images/event_types/golf.png", :parent => types[:sports])
 #types[:tennis] = EventType.create!(:name => 'Tennis', :image_path => "/images/event_types/tennis.png", :parent => types[:sports])
 #types[:table_tennis] = EventType.create!(:name => 'Table Tennis', :image_path => "/images/event_types/table_tennis.png", :parent => types[:sports])
+#types[:skateboard] = EventType.create!(:name => 'Skateboard', :image_path => "/images/event_types/skateboard.png", :parent => types[:sports])
 #
 #types[:run] = EventType.create!(:name => 'Run', :image_path => "/images/event_types/run.png", :parent => types[:fitness])
 #types[:swim] = EventType.create!(:name => 'Swim', :image_path => "/images/event_types/swimming.png", :parent => types[:fitness])
@@ -46,6 +47,9 @@
 #types[:cards] = EventType.create!(:name => 'Cards', :image_path => "/images/event_types/cards.png", :parent => types[:recreation])
 #types[:water_balloon] = EventType.create!(:name => 'Water Balloon Fight', :image_path => "/images/event_types/water_balloon.png", :parent => types[:recreation])
 #types[:video_games] = EventType.create!(:name => 'Video Games', :image_path => "/images/event_types/video_games.png", :parent => types[:recreation])
+#types[:hookah] = EventType.create!(:name => 'Hookah', :image_path => "/images/event_types/hookah.png", :parent => types[:recreation])
+#types[:hottub] = EventType.create!(:name => 'Hot Tub', :image_path => "/images/event_types/hottub.png", :parent => types[:recreation])
+#types[:shopping] = EventType.create!(:name => 'Shopping', :image_path => "/images/event_types/shopping.png", :parent => types[:recreation])
 #
 #types[:french] = EventType.create!(:name => 'French', :image_path => "/images/event_types/francais.png", :parent => types[:language_exchange])
 #types[:spanish] = EventType.create!(:name => 'Spanish', :image_path => "/images/event_types/espanol.png", :parent => types[:language_exchange])
@@ -59,12 +63,17 @@
 #types[:coffee] = EventType.create!(:name => 'Coffee', :image_path => "/images/event_types/coffee.png", :parent => types[:eating])
 #types[:ice_cream] = EventType.create!(:name => 'Ice Cream', :image_path => "/images/event_types/icecream.png", :parent => types[:eating])
 #types[:bbq] = EventType.create!(:name => 'BBQ', :image_path => "/images/event_types/bbq.png", :parent => types[:eating])
+#types[:picnic] = EventType.create!(:name => 'Picnic', :image_path => "/images/event_types/picnic.png", :parent => types[:eating])
+#types[:potluck] = EventType.create!(:name => 'Potluck', :image_path => "/images/event_types/potluck.png", :parent => types[:eating])
+#types[:wine_cheese] = EventType.create!(:name => 'Wine & Cheese', :image_path => "/images/event_types/wine_cheese.png", :parent => types[:eating])
 #
 #types[:beer] = EventType.create!(:name => 'Beer', :image_path => "/images/event_types/beer.png", :parent => types[:drinking])
 #types[:house_party] = EventType.create!(:name => 'House Party', :image_path => "/images/event_types/house_party.png", :parent => types[:drinking])
 #types[:clubbing] = EventType.create!(:name => 'Clubbing', :image_path => "/images/event_types/clubbing.png", :parent => types[:drinking])
 #types[:pre_drink] = EventType.create!(:name => 'Pre-Drink', :image_path => "/images/event_types/predrinking.png", :parent => types[:drinking])
 #types[:bottle_service] = EventType.create!(:name => 'Bottle Service', :image_path => "/images/event_types/bottle_service.png", :parent => types[:drinking])
+#
+#types[:girls_night] = EventType.create!(:name => 'Girls Night', :image_path => "/images/event_types/girlsnight.png", :parent => types[:drinking])
 #
 #types[:jam_session] = EventType.create!(:name => 'Jam Session', :image_path => "/images/event_types/jam_session.png", :parent => types[:arts_and_culture])
 #types[:sight_seeing] = EventType.create!(:name => 'Sight Seeing', :image_path => "/images/event_types/sight_seeing.png", :parent => types[:arts_and_culture])
