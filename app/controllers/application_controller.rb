@@ -98,6 +98,7 @@ class ApplicationController < ActionController::Base
       @comment.user = current_user
 
       if @comment.save
+        Resque.enqueue(Jobs::Email::EmailEventAdminForAction, @comment.id, event.id)
         #TODO - email event admin
         #TODO - connect users (does this apply since to threading?)
         return true

@@ -117,6 +117,10 @@ class Event < ActiveRecord::Base
     user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end
 
+  def organizers_rsvps_list
+    event_rsvps.organizers
+  end 
+
   protected
 
   def build_initial_rsvp

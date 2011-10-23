@@ -18,4 +18,5 @@ class EventRsvp < ActiveRecord::Base
 
   scope :attending, where(:status => @@statuses[:attending])
   scope :attending_or_maybe_attending, where("event_rsvps.status IN (?)", @@statuses.except(:not_attending).except(:invited).values)
+  scope :organizers, where(:organizer => true)
 end

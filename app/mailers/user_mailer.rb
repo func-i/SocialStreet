@@ -103,4 +103,13 @@ class UserMailer < ActionMailer::Base
     end
   end
 
+  #Send when a new comment thread is created in an event
+  def event_admin_message_notice(comment, organizer, event)
+    @comment = comment
+    @organizer = organizer
+    @event = event
+
+    mail(:to => @organizer.email, :subject => "#{@comment.user.name} posted on your StreetMeet - #{event.title}")
+  end
+
 end

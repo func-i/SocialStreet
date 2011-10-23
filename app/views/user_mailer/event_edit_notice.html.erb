@@ -1,0 +1,48 @@
+<div style="margin-bottom:15px;font-size:12px">
+  Hi <%= @user.first_name%>,
+</div>
+<div style="margin-bottom:15px">
+  <p>The
+    <%=link_to @event.title, event_url(@event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
+    has changed.</p>
+  <p>Please make sure you will still be able to attend</p>
+</div>
+<div style="margin-bottom:15px">
+  <div style="border-bottom:1px solid #ccc;line-height:5px;">
+    &nbsp;
+  </div>
+  <table style="cellspacing:0;cellpadding:0;border-collapse:collapse;margin-top:5px;">
+    <tbody>
+      <%event_what = @event.event_keywords_as_sentence %>
+      <tr style="vertical-align:top">
+        <td style="padding-right:5px">
+          <% event_image = url_for_event_image(@event) %>
+          <% event_image.slice!(0) if event_image.match(%r|^/|)%>
+          <%= image_tag('http://www.socialstreet.com/' + (event_image.match(/^images/) ? event_image : 'images/' + event_image), :size => "44x44", :title => event_what) %>
+        </td>
+        <td>
+          <%= link_to @event.title, event_url(@event), :style=>"color:#0981BE;text-decoration:none;font-weight:bold"%>
+          <br/>
+          What: <%= event_what%>
+          <br/>
+          <% event_when = @event.start_date.strftime("%B %d %l:%M %p")%>
+
+          <% if @event.end_date != @event.start_date%>
+            <% event_when += ' - ' + @event.end_date.strftime("%B %d %l:%M %p")%>
+          <% else %>
+            <% event_when += ' - ' + @event.end_date.strftime("%l:%M %p")%>
+          <% end %>
+
+          When: <%= event_when%>
+          <br/>
+          Where: <%= address_for(@event.location)%>
+          <br/>
+          <br/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="border-bottom:1px solid #ccc;line-height:5px">
+    &nbsp;
+  </div>
+</div>
