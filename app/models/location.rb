@@ -35,7 +35,7 @@ class Location < ActiveRecord::Base
 
   scope :in_bounds, lambda { |ne_lat, ne_lng, sw_lat, sw_lng|
     # The lng_sql checks if the bounds crosses the meridian. Taken from GeoKit / GeoKit Rails bounds logic
-    lng_sql = sw_lng > ne_lng ? "(locations.longitude<#{ne_lng} OR locations.longitude>#{sw_lng})" : "locations.longitude>#{sw_lng} AND locations.longitude<#{ne_lng}"
+    lng_sql = sw_lng > ne_lng ? "(locations.longitude<#{ne_lng} AND locations.longitude>#{sw_lng})" : "locations.longitude>#{sw_lng} AND locations.longitude<#{ne_lng}"
     final_sql = "locations.latitude>#{sw_lat} AND locations.latitude<#{ne_lat} AND #{lng_sql}"
     where(final_sql)
   }

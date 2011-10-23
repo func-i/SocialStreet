@@ -1,4 +1,5 @@
 var map;
+var mapInit = false;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 var markerManager;
 
@@ -41,8 +42,6 @@ function init_map(){
 
     //CREATE MAP
     var myOptions = {
-        zoom: zoom,
-        center: loc,
         mapTypeControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
@@ -57,6 +56,13 @@ function init_map(){
         }*/
     };
     map = new google.maps.Map(document.getElementById('location-map'), myOptions);
+    google.maps.event.addListenerOnce(map, 'idle', function(){
+        mapInit = true;
+    });
+    map.setOptions({
+        zoom: zoom,
+        center: loc
+    });
 
     //ADD ZOOM CONTROL
     var controlDiv = document.createElement("div");

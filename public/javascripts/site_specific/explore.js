@@ -61,34 +61,55 @@ function setupExplorePage(){
     var mapCenter = $('#map_center').val();
     var mapCenterArr = mapCenter.split(",");
 
-    if(map.getZoom() != parseInt($('#map_zoom').val(), 10)){
-        map.setZoom(parseInt($('#map_zoom').val(), 10));
+    var mapMoved = 0;//THIS IS AN UGLY UGLY HACKITY HACK
+    var zoom = map.getZoom();
+    var loc = map.getCenter();
+    if(zoom != parseInt($('#map_zoom').val(), 10)){
+        zoom = parseInt($('#map_zoom').val(),10);
+        mapMoved += 1;
     }
-    if(map.getCenter().lat() != parseFloat(mapCenterArr[0]) || map.getCenter().lng() != parseFloat(mapCenterArr[1])){
-        map.panTo(new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1])));
+    if(parseInt(map.getCenter().lat()*10000000,10) != parseInt(mapCenterArr[0]*10000000,10) || parseInt(map.getCenter().lng()*10000000,10) != parseInt(mapCenterArr[1]*10000000,10)){
+        loc = new google.maps.LatLng(parseFloat(mapCenterArr[0]), parseFloat(mapCenterArr[1]));
+        mapMoved += 1;
     }
 
-    //Add map listeners
+    if(mapMoved){
+        map.setOptions({
+            zoom: zoom,
+            center: loc
+        });
+        google.maps.event.addListener(map, 'bounds_changed', function(){
+            mapMoved--;
+            if(mapMoved < 1){
+                google.maps.event.clearListeners(map, 'bounds_changed');
+                addMapListeners();
+            }
+        });
+    }
+    else{
+        addMapListeners();
+    }
+
+    addExploreMarkers();
+    toggle_suggested_actions();
+
+    resizePageElements();
+}
+
+function addMapListeners(){
     google.maps.event.addListener(map, 'dragstart', function(){
         dragOff = false;
     });
     google.maps.event.addListener(map, 'dragend', function(){
         dragOff = true;
 
-        if($('#on_explore').length > 0) {
-            updateExploreLocationParams();
-        }
+        updateExploreLocationParams();
     });
     google.maps.event.addListener(map, 'bounds_changed', function(){
-        if(dragOff && $('#on_explore').length > 0) {
+        if(mapInit && dragOff){
             updateExploreLocationParams();
         }
     });
-
-    addExploreMarkers();
-    toggle_suggested_actions();
-
-    resizePageElements();
 }
 
 function toggle_suggested_actions(){
@@ -150,7 +171,9 @@ function refreshExploreResults(){
 
 function addExploreMarkers(){
     var selectedResults = $('#selected_results').val();
-    var selectedResultsArr = selectedResults.split(',');    
+    var selectedResultsArr = []
+    if(selectedResults)
+        selectedResultsArr = selectedResults.split(',');
 
     var newSelectedMarkerArr = [];
 
