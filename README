@@ -1,256 +1,197 @@
-== Welcome to Rails
+SocialStreet
+================
 
-Rails is a web-application framework that includes everything needed to create
-database-backed web applications according to the Model-View-Control pattern.
+### Description
 
-This pattern splits the view (also called the presentation) into "dumb"
-templates that are primarily responsible for inserting pre-built data in between
-HTML tags. The model contains the "smart" domain objects (such as Account,
-Product, Person, Post) that holds all the business logic and knows how to
-persist themselves to a database. The controller handles the incoming requests
-(such as Save New Account, Update Product, Show Post) by manipulating the model
-and directing data to the view.
+SocialStreet is a web app that makes it easy for people to plan/find and attend local events.
 
-In Rails, the model is handled by what's called an object-relational mapping
-layer entitled Active Record. This layer allows you to present the data from
-database rows as objects and embellish these data objects with business logic
-methods. You can read more about Active Record in
-link:files/vendor/rails/activerecord/README.html.
+### Initial Setup for Development:
 
-The controller and view are handled by the Action Pack, which handles both
-layers by its two parts: Action View and Action Controller. These two layers
-are bundled in a single package due to their heavy interdependence. This is
-unlike the relationship between the Active Record and Action Pack that is much
-more separate. Each of these packages can be used independently outside of
-Rails. You can read more about Action Pack in
-link:files/vendor/rails/actionpack/README.html.
+- Download the source
+- Setup a new config/database.yml file based on config/database.example.yml
+- Setup a new config/secrets.yml file based on config/secrets.example.yml
+  - For the secret keys, setup a Facebook app under your real/developer account: http://www.facebook.com/developers
+  - Set the site URL to: http://localhost:3000/ (Site Domain can be left blank)
+  - You can call it something like: SocialStreet-dev
+  - You do not need to give other developers access to this app, since its just for your development sandbox
+- Install PostgreSQL 8.3, 8.4 or 9
+- Install the pg gem (might be a bit of a pain on OSX)
+- Download and install Redis: http://redis.io/download
+- Start Redis Server:
+  - Open a terminal tab to the [REDIS_ROOT (where you extracted and installed it) dir, and run: ./src/redis-server
+- Run 1 Resque Worker:
+  - Open a terminal tab to the [APP_ROOT] dir, and run: QUEUE=* rake environment resque:work
+- Run 1 Resque Scheduler:
+  - Open a terminal tab to the [APP_ROOT] dir, and run: rake resque:scheduler
+- Start Resque Web Server (optional, for debugging):
+  - Open a terminal tab to the [APP_ROOT] dir, and run: bundle exec resque-web ~/yourapp/config/resque_config.rb
+  - This will start another web server here: http://localhost:5678/
+  - This page should show 1 worker waiting for a job: http://0.0.0.0:5678/workers
+- Start the SocialStreet App Server (duh):
+  - Open a terminal tab to the [APP_ROOT] dir, and run: rails server
+
+### Running Tests (RSpec specs)
+
+For all tests, from the [APP_ROOT], run the command:
+
+    rspec spec
+
+If that doesn't work, try running:
+
+    bundle exec rake spec
+
+For a single test based on its line number, run the command:
+
+    rspec spec/models/searchable_date_range_spec.rb:69
+
+In this example, it runs the first spec ("it" statement) that it can find at or above line 69 in searchable_date_range
+
+### Using Facebook (IMPORTANT)
+
+You should create and use facebook "test" users to test in development mode, using the following steps:
+
+    rails c # go into rails console (development mode)
+    app = FbGraph::Application.new(FACEBOOK_APP_ID, :secret=>FACEBOOK_APP_SECRET) # Create an fb_graph app instance
+    user1 = app.test_user!(:installed => true, :permissions => :read_stream) # Create a 1st test user
+    user2 = app.test_user!(:installed => true, :permissions => :read_stream) # Create a 2nd test user
+    user1.friend!(user2) # Friend the 2 users
+    user1.login_url # Get user1's login_url (so you can login into SS w/ that user)
+
+Now, assuming you are not signed into Facrbook, Paste the login URL into your browser
+Goto your local SS instance (http://localhost:3000) and click Sign-in
+Facebook info on Test Users: https://developers.facebook.com/docs/test_users/
+
+### Background jobs (For SearchSubscription Email Digests)
+
+On our Staging/Production server(s)... Daily and Weekly search subscription email digests are sent by leveraging Crontab + Rake + Redis + Resque
+On the server, a cron task executes a sh script which runs our rake commands located in lib/tasks/crons.rake
+
+These rake tasks go through Redis looking for any subscriptions that have items that need to be emailed out
+Each subscription has its own key ("digest_actions:#{subscription.id}") and is an ordered set of ActionIDs in Redis
+For each SearchSubscription that needs to be emailed, a Resque Job is enqueued to send out that 1 email to the owner of the subscription
+
+To test the daily/weekly tasks locally (in development mode), we simulate the end-of-day/week triggers:
+
+For Daily Rake, run the command:
+
+    bundle exec rake ss:crons:email_daily_digests RAILS_ENV=development
+
+For Weekly Rake, run the command:
+
+    bundle exec rake ss:crons:email_weekly_digests RAILS_ENV=development
+
+Other helpful tips:
+
+To see what's pending in the Redis (queues) order sets for email digests, run:
+
+    rails c # go into rails console (development mode)
+    r = Redis.new
+    r.keys 'digest_actions:*' # returns list of subscriptions that have ActionIds to be emailed in the next digest email
+    key = r.keys 'digest_actions:*'.first # as an example, lets use the first key ...
+    r.zcard key # returns size of bucket (# of actions to email)
+    r.zrevrange(key, 0, 999) # returns up to 1000 ActionIDs that need to be sent to the subscription associated with this 'key'
+    r.quit # disconnect from Redis
+
+### Docs:
+
+- http://redis.io/download
+- https://github.com/defunkt/resque
+- http://redis.io/topics/data-types#sorted-sets
+- https://github.com/ezmobius/redis-rb
+- http://blog.waxman.me/how-to-build-a-fast-news-feed-in-redis
+- https://developers.facebook.com/docs/test_users/
+
+### Article used for Slicehost Server setup:
+
+- http://library.linode.com/databases/redis/ubuntu-10.04-lucid
 
 
-== Getting Started
+Production Servers
+================
 
-1. At the command prompt, create a new Rails application:
-       <tt>rails new myapp</tt> (where <tt>myapp</tt> is the application name)
+### Production Server Layout / Access
 
-2. Change directory to <tt>myapp</tt> and start the web server:
-       <tt>cd myapp; rails server</tt> (run with --help for options)
+ - There are 2 servers, a small instance for Web/Redis/BG Tasks and a micro instance for 'DB'
+ - Both servers allow SSH access but only the Web one has a static (Elastic IP) assigned
+ - There will only be one user 'ubuntu' on the host servers
+ - Every developer will have their own key pair generated via AWS, and the public key will be added to the web/db server
+ - The Postgres server (on the 'DB' instance) accepts TCP/IP connects only from the EC2 Web instance's PRIVATE IP address
 
-3. Go to http://localhost:3000/ and you'll see:
-       "Welcome aboard: You're riding Ruby on Rails!"
+### Deployment (Capistrano)
 
-4. Follow the guidelines to start developing your application. You can find
-the following resources handy:
+- There are various deployment related commands, but the 2 main ones you should know about are:
 
-* The Getting Started Guide: http://guides.rubyonrails.org/getting_started.html
-* Ruby on Rails Tutorial Book: http://www.railstutorial.org/
+    cap deploy # run when deploying code changes that do not have any migrations
+    cap deploy:migrations # run instead of cap deploy when you have migrations to run as well
+    cap deploy -S quick_update=true  # use if you just want to update the git, create the current and all symlinks
+                                     # but want to skip restarting god, running jammit, notifying newrelic and hb
+
+- Before running capistrano, make sure you install capistrano gem (not managed by bundler):  gem install capistrano
+- Capistrano deploy code is located in config/deploy.rb
+- Only deploy from 'master' branch (see Git Flow for release workflow)
+
+### Adding a new developer (for Josh)
+
+- Generate new keypair from AWS Management Console
+- Generate public key as per instructions here: http://seabourneinc.com/2011/01/19/change-key-pairs-on-aws-ec2-instance/
+- Provide developer private key and public key
+- Developer should save the private key as ~/.ssh/socialstreet-web.pem
+- Josh should append the public key contents to the /home/ubuntu/.ssh/authorized_keys file
+- Developer should add the following two aliases to their ~/.bash_profile or ~/.bash_aliases file:
+
+    alias sswebssh='ssh -i ~/.ssh/socialstreet-web.pem ubuntu@50.19.254.128'
+    alias ssdbssh='ssh -i ~/.ssh/socialstreet-web.pem ubuntu@ec2-184-72-194-208.compute-1.amazonaws.com'
+
+- Open a new Terminal tab/window and try running sswebssh to make sure you can connect to the Web server. Ditto for the DB server
+
+### Removing a developer from the servers (for Josh)
+
+- Remove their public key from authorized_keys
+- Remove their key pair from AWS Management Console
+- If they were given access to the management console / AWS Account API, remove that access via the management console
+
+### Git Flow usage / Release workflow
+
+- Git Flow is being used on top of Git
+- Please watch the screencast and ALWAYS use gitflow (for creating feature branches, performing hot fixes, releases, etc.)
+- Code: https://github.com/nvie/gitflow
+- Screencast: http://codesherpas.com/screencasts/on_the_path_gitflow.mov
+
+### Heartbeat monitoring (NewRelic)
+
+- URL: http://www.socialstreet.com/hb
+- Controller: HeartbeatController
+- Excluded from new relic performance calculations
+- Using SmartRackLogger to exclude any .log entries for URL /hb (See application.rb) otherwise production.log will be too noisy
+
+### Error simulation (Airbrake)
+
+- URL: http://www.socialstreet.com/sim_error
+- Causes a string exception to be thrown
+
+### GOD
+
+- Starting GOD
+/usr/local/rvm/rubies/ruby-1.9.2-p180-patched/bin/ruby /usr/local/rvm/gems/ruby-1.9.2-p180-patched/bin/god -P /var/run/god/god.pid -l /var/log/god/god.log
 
 
-== Debugging Rails
+### Streetmeet of the week
 
-Sometimes your application goes wrong. Fortunately there are a lot of tools that
-will help you debug it and get it back on the rails.
+- There has to be a public page at http://socialstreet.com/events/streetmeet_of_the_week
+- This page should have the action
 
-First area to check is the application log files. Have "tail -f" commands
-running on the server.log and development.log. Rails will automatically display
-debugging and runtime information to these files. Debugging info will also be
-shown in the browser on requests from 127.0.0.1.
-
-You can also log your own messages directly into the log file from your code
-using the Ruby logger class from inside your controllers. Example:
-
-  class WeblogController < ActionController::Base
-    def destroy
-      @weblog = Weblog.find(params[:id])
-      @weblog.destroy
-      logger.info("#{Time.now} Destroyed Weblog ID ##{@weblog.id}!")
+    def streetmeet_of_the_week
+      render "user_mailer/streetmeet_of_the_week.html.erb", :layout => false
     end
-  end
 
-The result will be a message in your log file along the lines of:
-
-  Mon Oct 08 14:22:29 +1000 2007 Destroyed Weblog ID #1!
-
-More information on how to use the logger is at http://www.ruby-doc.org/core/
-
-Also, Ruby documentation can be found at http://www.ruby-lang.org/. There are
-several books available online as well:
-
-* Programming Ruby: http://www.ruby-doc.org/docs/ProgrammingRuby/ (Pickaxe)
-* Learn to Program: http://pine.fm/LearnToProgram/ (a beginners guide)
-
-These two books will bring you up to speed on the Ruby language and also on
-programming in general.
-
-
-== Debugger
-
-Debugger support is available through the debugger command when you start your
-Mongrel or WEBrick server with --debugger. This means that you can break out of
-execution at any point in the code, investigate and change the model, and then,
-resume execution! You need to install ruby-debug to run the server in debugging
-mode. With gems, use <tt>sudo gem install ruby-debug</tt>. Example:
-
-  class WeblogController < ActionController::Base
-    def index
-      @posts = Post.find(:all)
-      debugger
-    end
-  end
-
-So the controller will accept the action, run the first line, then present you
-with a IRB prompt in the server window. Here you can do things like:
-
-  >> @posts.inspect
-  => "[#<Post:0x14a6be8
-          @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>,
-       #<Post:0x14a6620
-          @attributes={"title"=>"Rails", "body"=>"Only ten..", "id"=>"2"}>]"
-  >> @posts.first.title = "hello from a debugger"
-  => "hello from a debugger"
-
-...and even better, you can examine how your runtime objects actually work:
-
-  >> f = @posts.first
-  => #<Post:0x13630c4 @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>
-  >> f.
-  Display all 152 possibilities? (y or n)
-
-Finally, when you're ready to resume execution, you can enter "cont".
-
-
-== Console
-
-The console is a Ruby shell, which allows you to interact with your
-application's domain model. Here you'll have all parts of the application
-configured, just like it is when the application is running. You can inspect
-domain models, change values, and save to the database. Starting the script
-without arguments will launch it in the development environment.
-
-To start the console, run <tt>rails console</tt> from the application
-directory.
-
-Options:
-
-* Passing the <tt>-s, --sandbox</tt> argument will rollback any modifications
-  made to the database.
-* Passing an environment name as an argument will load the corresponding
-  environment. Example: <tt>rails console production</tt>.
-
-To reload your controllers and models after launching the console run
-<tt>reload!</tt>
-
-More information about irb can be found at:
-link:http://www.rubycentral.com/pickaxe/irb.html
-
-
-== dbconsole
-
-You can go to the command line of your database directly through <tt>rails
-dbconsole</tt>. You would be connected to the database with the credentials
-defined in database.yml. Starting the script without arguments will connect you
-to the development database. Passing an argument will connect you to a different
-database, like <tt>rails dbconsole production</tt>. Currently works for MySQL,
-PostgreSQL and SQLite 3.
-
-== Description of Contents
-
-The default directory structure of a generated Ruby on Rails application:
-
-  |-- app
-  |   |-- controllers
-  |   |-- helpers
-  |   |-- mailers
-  |   |-- models
-  |   `-- views
-  |       `-- layouts
-  |-- config
-  |   |-- environments
-  |   |-- initializers
-  |   `-- locales
-  |-- db
-  |-- doc
-  |-- lib
-  |   `-- tasks
-  |-- log
-  |-- public
-  |   |-- images
-  |   |-- javascripts
-  |   `-- stylesheets
-  |-- script
-  |-- test
-  |   |-- fixtures
-  |   |-- functional
-  |   |-- integration
-  |   |-- performance
-  |   `-- unit
-  |-- tmp
-  |   |-- cache
-  |   |-- pids
-  |   |-- sessions
-  |   `-- sockets
-  `-- vendor
-      `-- plugins
-
-app
-  Holds all the code that's specific to this particular application.
-
-app/controllers
-  Holds controllers that should be named like weblogs_controller.rb for
-  automated URL mapping. All controllers should descend from
-  ApplicationController which itself descends from ActionController::Base.
-
-app/models
-  Holds models that should be named like post.rb. Models descend from
-  ActiveRecord::Base by default.
-
-app/views
-  Holds the template files for the view that should be named like
-  weblogs/index.html.erb for the WeblogsController#index action. All views use
-  eRuby syntax by default.
-
-app/views/layouts
-  Holds the template files for layouts to be used with views. This models the
-  common header/footer method of wrapping views. In your views, define a layout
-  using the <tt>layout :default</tt> and create a file named default.html.erb.
-  Inside default.html.erb, call <% yield %> to render the view using this
-  layout.
-
-app/helpers
-  Holds view helpers that should be named like weblogs_helper.rb. These are
-  generated for you automatically when using generators for controllers.
-  Helpers can be used to wrap functionality for your views into methods.
-
-config
-  Configuration files for the Rails environment, the routing map, the database,
-  and other dependencies.
-
-db
-  Contains the database schema in schema.rb. db/migrate contains all the
-  sequence of Migrations for your schema.
-
-doc
-  This directory is where your application documentation will be stored when
-  generated using <tt>rake doc:app</tt>
-
-lib
-  Application specific libraries. Basically, any kind of custom code that
-  doesn't belong under controllers, models, or helpers. This directory is in
-  the load path.
-
-public
-  The directory available for the web server. Contains subdirectories for
-  images, stylesheets, and javascripts. Also contains the dispatchers and the
-  default HTML files. This should be set as the DOCUMENT_ROOT of your web
-  server.
-
-script
-  Helper scripts for automation and generation.
-
-test
-  Unit and functional tests along with fixtures. When using the rails generate
-  command, template test files will be generated for you and placed in this
-  directory.
-
-vendor
-  External libraries that the application depends on. Also includes the plugins
-  subdirectory. If the app has frozen rails, those gems also go here, under
-  vendor/rails/. This directory is in the load path.
+- The above file will be what is emailed out.
+  -  This html file should have all the images files uploaded to the public/images directory
+  -  all the <img> tags should use the full path.  src = http://socialstreet.com/images/.....
+  -  The event needs to be created and the db needs to be updated and the "promoted" column needs to be set to true
+  -  the attend button should ref the event on the site.
+  -  To send a test email:  UserMailer.deliver_streetmeet_of_the_week("YOUR EMAIL ADDRESS")
+  -  once you are happy with it,
+     -  Jobs::Email::EmailStreetmeetOfTheWeek.perform
+     -  This will print the total users to be emailed
+     -  And will print a count for each email that is successful.
+     -  TODO:  summarize this into an email that can be sent to Paul, Jon and Josh.

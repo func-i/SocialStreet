@@ -76,7 +76,11 @@ class EventsController < ApplicationController
     end
 
     event.attributes = params[:event]
+
+    # => TODO, what happens if the save fails?s
     event.save
+
+    Resque.enqueue(Jobs::Email::EmailUserEditEvent, event.id)
 
     if params[:event][:event_keywords_attributes] #HACK HACK HACKITY HACK
       redirect_to event

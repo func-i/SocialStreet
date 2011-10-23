@@ -104,7 +104,7 @@ class Event < ActiveRecord::Base
       end
     end
 
-    title << (" - " + (self.starts_at ? self.starts_at.to_s(:date_with_time) : "Sometime")) if include_date
+    title << (" - " + (self.start_date ? self.start_date.to_s(:date_with_time) : "Sometime")) if include_date
 
     return title
   end
@@ -116,6 +116,10 @@ class Event < ActiveRecord::Base
   def can_edit?(user)
     user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end
+
+  def organizers_rsvps_list
+    event_rsvps.organizers
+  end 
 
   protected
 
