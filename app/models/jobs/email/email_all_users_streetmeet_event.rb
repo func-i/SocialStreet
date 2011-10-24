@@ -1,4 +1,4 @@
-class Jobs::Email::EmailStreetmeetOfTheWeek
+class Jobs::Email::EmailAllUsersStreetmeetEvent
 
   @queue = :emails
 
