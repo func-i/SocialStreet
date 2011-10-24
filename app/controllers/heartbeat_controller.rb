@@ -1,6 +1,6 @@
 class HeartbeatController < ApplicationController
 
-  #newrelic_ignore # Don't want this affecting apdex score on newrelic
+  newrelic_ignore # Don't want this affecting apdex score on newrelic
 
   # /hb
   def index

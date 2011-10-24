@@ -1,1 +1,10 @@
 $('#join_btn_holder').html('<%=escape_javascript render(:partial => 'events/rsvp_buttons', :locals => {:event => @event})%>');
+$('#attendee_<%=current_user.id%>').remove();
+var scrollApi = $('#show_attendees_holder').data('jsp');
+if(scrollApi){
+  $('#show_attendees_holder').data('jsp').destroy();
+}
+$('#show_attendees_holder').height('auto');
+resizeAttendees();
+
+$('#show_attendees_title').text('<%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>');
