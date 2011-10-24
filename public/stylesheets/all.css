@@ -739,7 +739,7 @@ END OF RESET
 }
 .show-attendee-name{
     text-align: center;
-    font: bold 12px/18px Arial, Helvetica, sans-serif;
+    font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
     float: left;
     width: 92px;
