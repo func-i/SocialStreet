@@ -58,10 +58,10 @@ class InvitationsController < ApplicationController
     invitation = event.event_rsvps.create :user => to_user, :invitor => from_user, :status => EventRsvp.statuses[:invited], :email => email
     invitation.save
 
-    if (!to_user || !to_user.sign_in_count.zero?) && (email || to_user.email)
-      Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
-    elsif to_user
+#    if (!to_user || !to_user.sign_in_count.zero?) && (email || to_user.email)
+ #     Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
+ #   elsif to_user
       Resque.enqueue(Jobs::Facebook::PostEventInvitation, from_user.id, to_user.id, @event.id)
-    end
+#    end
   end
 end
