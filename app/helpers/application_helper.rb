@@ -26,38 +26,40 @@ module ApplicationHelper
     ended = (end_time.nil? ? false : (end_time < Time.now))
     upcoming = !(started || ended)
     time = (ended ? end_time : start_time)
-    distance_in_minutes = ((time - Time.now).abs/60).round
-    distance_in_hours = (distance_in_minutes / 60).floor
-    distance_in_days = (distance_in_hours / 24).floor
+    distance_in_minutes = ((time - Time.zone.now).abs/60.0).round
+    distance_in_hours = (distance_in_minutes / 60.0)
+    distance_in_days = ((time.beginning_of_day - Time.zone.now.beginning_of_day).abs / (24.0 * 60.0 * 60.0)).round
 
-    #time_of_day = (time.hour() > 21 ? 'Night' : (time.hour() > 17 ? 'Evening' : (time.hour() > 12 ? 'Afternoon' : 'Morning')))
-    
     text = "#{ended ? 'Ended ' : (started ? 'Started ' : 'Starts ')}"
 
-    case distance_in_hours
+    case distance_in_days
     when 0
-      case distance_in_minutes
-      when 0..5
-        text = "#{'just ' unless upcoming}#{text}#{'in a couple of minutes ' if upcoming}"
-      else
-        text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
+      case distance_in_hours.floor
+      when 0..1
+        case distance_in_minutes
+        when 0..5
+          text = "#{'just ' unless upcoming}#{text}#{'in a couple of minutes ' if upcoming}"
+        when 6..59
+          text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
+        when 60..100
+          text = "#{text}#{'in ' if upcoming}more than 1 hour #{' ago' unless upcoming}"
+        when 101..120
+          text = "#{text}#{'in ' if upcoming}almost 2 hours #{' ago' unless upcoming}"
+        end
+      when 2..23
+        minutes_ratio = (distance_in_hours - distance_in_hours.floor)
+        text = "#{text}#{'in ' if upcoming}more than #{distance_in_hours.floor} hours#{' ago' unless upcoming}" if minutes_ratio < 0.66
+        text = "#{text}#{'in ' if upcoming}almost #{distance_in_hours.floor + 1} hours#{' ago' unless upcoming}" if minutes_ratio >= 0.66
       end
     when 1
-      text = "#{text}#{'in ' if upcoming}#{distance_in_hours} hour#{' ago' unless upcoming}"
-    when 2..23
-      text = "#{text}#{'in ' if upcoming}#{distance_in_hours} hours#{' ago' unless upcoming}"
+      text = "#{text}#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
+    when 2..6
+      text = "#{text}this #{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
     else
-      case distance_in_days
-      when 1
-        text = "#{text}#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
-      when 2..6
-        text = "#{text}this #{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
-        #when 7..13
-        #text = "#{text}#{upcoming ? 'next  ' : 'last '}#{time.strftime("%A")} #{time_of_day}"
-      else
-        text = "#{text}#{time.strftime("%A, %b %e %l:%M %p")}"
-      end
+      text = "#{text}#{time.strftime("%A, %b %e %l:%M %p")}"
     end
+
+    return text
   end
 
   def url_for_avatar(user, options={})
