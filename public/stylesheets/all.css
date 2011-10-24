@@ -745,6 +745,18 @@ END OF RESET
     width: 92px;
     padding: 18px 0 0 5px;
 }
+.attendee-name-popup{
+    position:absolute;
+    z-index:200;
+    background-color: #FFFCD5;
+    color: #4f4f4d;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
+    padding:1px 5px;
+    top:30px;
+    left:-37px;
+    width:90px;
+    text-align:center;
+}
 .marker-label{
     /*padding: 4px 25px 4px 25px;*/
     text-align: center;
