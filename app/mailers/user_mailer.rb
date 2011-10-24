@@ -112,4 +112,10 @@ class UserMailer < ActionMailer::Base
     mail(:to => @organizer.email, :subject => "#{@comment.user.name} posted on your StreetMeet - #{event.title}")
   end
 
+  def streetmeet_of_the_week_summary(body)
+    mail(:to => ["jon.salis@railias.ca", "jborts@gmail.com", "paul@socialstreet.com", "unclemike@socialstreet.com"], :subject => "Streetmeet #{Date.today.to_s} Stats") do |format|
+      format.html {render :text => body}
+    end
+  end
+
 end

@@ -1,4 +1,4 @@
-class Jobs::Email::EmailStreetmeetOfTheWeek
+class Jobs::Email::EmailAllUsersStreetmeetEvent
 
   @queue = :emails
 
@@ -6,7 +6,6 @@ class Jobs::Email::EmailStreetmeetOfTheWeek
   def self.perform
     users = User.where("email <> ''")
 
-    puts users.size
     i=0
     users.each do |user|
       begin
@@ -14,12 +13,14 @@ class Jobs::Email::EmailStreetmeetOfTheWeek
 
         if email
           email.deliver
-          puts i+=1
+          i += 1
         end
       rescue Exception => e
-        puts "error => #{e.message}"
         next
       end
     end
+    
+    UserMailer.deliver_streetmeet_of_the_week_summary("Total users: #{users.size}<br/>Total successful emails: #{i}")
+
   end
 end
