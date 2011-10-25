@@ -113,13 +113,13 @@ function reset(){
 function eventTypeClicked(eventType, refreshResults){
     $eventType = $(eventType);
     keywordName = $.trim($eventType.find('.event-type-name').text());
-    keywordIconSrc = $eventType.find('.event-type-image').attr('src');
+    keywordIconClass = 'event-type-' + $eventType.find('.event-type-image').data('event-type') + ($('#on_explore').length > 0 ? '-small-sprite' : '-medium-sprite');
 
     if(!keywordAlreadyExists(keywordName)){
         var $newKeyword = $($('#keyword_tag_stamp').clone());
         $newKeyword[0].id = "";
         $newKeyword.find('.keyword-tag-name').text(keywordName);
-        $newKeyword.find('.keyword-tag-icon').attr('src', keywordIconSrc);
+        $newKeyword.find('.keyword-tag-icon').addClass(keywordIconClass);
         $('#keyword_tag_list').append($newKeyword);
         $newKeyword.removeClass('hidden');
 

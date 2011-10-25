@@ -27,7 +27,7 @@
   <div id="explore_keyword_tag_holder" class="keyword-tag-holder container">
     <ul id="keyword_tag_list">
       <li id="keyword_tag_stamp" class="keyword-tag explore-keyword-tag hidden">
-        <%= image_tag('/images/event_types/streetmeet2.png', :size=>'50x50', :class=>"keyword-tag-icon explore-keyword-tag-icon") %>
+        <div class="keyword-tag-icon explore-keyword-tag-icon"></div>
         <span class="keyword-tag-name explore-keyword-tag-name"></span>
         <%= image_tag('header-close.png', :class => 'remove-keyword-tag keyword-tag-remove explore-keyword-tag-remove') %>
       </li>
@@ -41,7 +41,7 @@
       <ul>
         <li id="custom_event_type" class="event-type explore-event-type hidden">
           <div class="container rounded-corners-four">
-            <%= image_tag('/images/event_types/streetmeet2.png', :class=>'event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow') %>
+            <div class="event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow event-type-streetmeet2-small-sprite" data-event-type="streetmeet2"></div>
             <div class="event-type-name explore-event-type-name"></div>
           </div>
         </li>
@@ -49,8 +49,8 @@
         <% @event_types.each do |et| %>
           <li class="event-type explore-event-type <%="hidden synonym" if et.synonym_id != et.id%>">
             <div class="container rounded-corners-four">
-              <!--div class="event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow event-type-<%="#{event_type_sprite_class(et)}"%>"></div-->
-              <%= image_tag(et.image_path, :class=>'event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow') %>
+              <%et_class = "#{event_type_sprite_class(et)}"%>
+              <div class="event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow event-type-<%=et_class%>-small-sprite" data-event-type="<%=et_class%>"></div>
               <div class="event-type-name explore-event-type-name">
                 <%= et.name %>
               </div>
