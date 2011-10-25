@@ -1126,3 +1126,89 @@ END OF RESET
     cursor: pointer;
     z-index:100;
 }
+#edit_user_name_holder{
+    height: 60px;
+    margin: 10px auto 40px auto;
+    text-align: center;
+}
+#edit_user_name_field{
+    width:280px;
+    height:35px;
+    border: 0;
+    padding: 0;
+    margin: 12px 0 0 0;
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    /*    text-align: center;*/
+    background: transparent;
+}
+#edit_user_email_holder{
+    padding: 3px 20px;
+    height: 20px;
+}
+#edit_user_email_label{
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    float:left;
+    padding-right:5px;
+}
+#edit_user_email_field{
+    width:300px;
+    height:20px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    background: transparent;
+    float:left;
+    vertical-align: baseline;
+}
+#edit_user_gender_holder{
+    padding: 3px 20px;
+    height: 20px;
+}
+#edit_user_gender_label{
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    float:left;
+    padding-right:5px;
+}
+#edit_user_gender_holder label{
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    padding-right: 5px;
+    vertical-align: baseline;
+}
+#edit_user_gender_holder input{
+    vertical-align: baseline;
+}
+#edit_user_location_holder{
+    padding: 3px 20px;
+    height: 20px;
+}
+#edit_user_location_label{
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    float:left;
+    padding-right:5px;
+}
+#edit_user_location_field{
+    width:270px;
+    height:20px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    background: transparent;
+    float:left;
+    vertical-align: baseline;
+}
+
+#edit_membership_title{
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    padding: 80px 0 20px 20px;
+    /*text-decoration: underline;*/
+}

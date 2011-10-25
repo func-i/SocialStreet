@@ -13,6 +13,8 @@ SocialStreetReborn::Application.routes.draw do
     resources :comments, :only => [:create, :destroy]
   end
 
+  resources :profiles
+
   resources :invitations, :only => [] do
     collection do
       get "load_connections"
