@@ -58,4 +58,8 @@ body, html {
     background-color: #4f4f4d;
 }
 
+.event-type-name{
+    font: 11px/11px Arial, Helvetica, sans-serif;
+}
+
 
