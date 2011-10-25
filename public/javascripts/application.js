@@ -15,7 +15,7 @@ $(function() {
 
             
         if(href != undefined) {
-            if(history && history.pushState) {
+            if(getInternetExplorerVersion() < 0 && history && history.pushState) {
 
                 $.getScript(href, function() {
                     resizePageElements();
