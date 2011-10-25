@@ -49,6 +49,7 @@
         <% @event_types.each do |et| %>
           <li class="event-type explore-event-type <%="hidden synonym" if et.synonym_id != et.id%>">
             <div class="container rounded-corners-four">
+              <!--div class="event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow event-type-<%="#{event_type_sprite_class(et)}"%>"></div-->
               <%= image_tag(et.image_path, :class=>'event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow') %>
               <div class="event-type-name explore-event-type-name">
                 <%= et.name %>

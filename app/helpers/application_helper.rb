@@ -11,7 +11,13 @@ module ApplicationHelper
     else
       'event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
     end
+  end
 
+  def event_type_sprite_class(event_type)
+    image_path = event_type.image_path
+    start_index = image_path.index("event_types/") + "event_types/".length
+    length = image_path.index(".png") - start_index
+    image_path[start_index, length].gsub(/[_]/, '-')
   end
 
   def event_time_in_words(event)

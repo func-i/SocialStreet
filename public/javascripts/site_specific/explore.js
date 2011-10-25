@@ -43,7 +43,7 @@ function resizeCenterPaneContent(){
     $('#event_types_scroller').height(centerPaneBottom - scrollerTop);
 }
 function resizeResultButtons(){    
-    if($('.jspVerticalBar').length > 0){
+    if($('#results_container .jspVerticalBar').length > 0){
         $('.result-join-btn-holder').css('right', '5px');
     }
     else{

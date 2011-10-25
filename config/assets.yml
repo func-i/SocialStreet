@@ -21,6 +21,7 @@ javascripts:
 stylesheets:
   common:
     - public/stylesheets/all.css
+    - public/stylesheets/event_type_sprite.css
     - public/stylesheets/mobiscroll-1.5.css
     - public/stylesheets/jquery.jscrollpane.css
     - public/stylesheets/fullcalendar.css
