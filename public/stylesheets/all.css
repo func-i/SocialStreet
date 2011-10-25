@@ -168,6 +168,7 @@ END OF RESET
 .header-right {
     float: right;
     margin-right: 20px;
+    width:244px;
 }
 
 .header-right div {
