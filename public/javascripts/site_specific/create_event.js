@@ -276,8 +276,8 @@ function reverse_geocode(marker){
     },
     function(results, status){
         if (status == google.maps.GeocoderStatus.OK) {
-            var street_number = null;
-            var route = null;
+            var street_number = "";
+            var route = "";
             var street_address = null;
             var locality = null;
             var components = results[0].address_components;
@@ -294,7 +294,9 @@ function reverse_geocode(marker){
             if(null == street_address)
                 street_address = street_number + ' ' + route;
             if(null != locality)
-                locality = ', ' + locality;            
+                locality = ', ' + locality;
+            else
+                locality = '';
             marker.address_ = street_address + locality;
 
             if(createEventSelectedMarker == marker){
