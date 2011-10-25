@@ -176,6 +176,8 @@ function addExploreMarkers(){
     if(selectedResults)
         selectedResultsArr = selectedResults.split(',');
 
+    var reorderResults = $('#reorder_results').val() ? true : false;
+
     var newSelectedMarkerArr = [];
 
     $.each($('#results_list .result'), function(index, result){
@@ -190,7 +192,7 @@ function addExploreMarkers(){
                 $result = $(result);
                 selectResult($result);
 
-                if($result.closest('#promoted_events').length < 1)
+                if(reorderResults && $result.closest('#promoted_events').length < 1)
                     $('#search_results').prepend($result);
 
                 newSelectedMarkerArr.push(marker);
@@ -304,6 +306,8 @@ function removeSelectedPinState(){
     delete selectedMarkerArr;
     selectedMarkerArr = [];
 
+    $('#reorder_results').val(null);
+
     if(markerSlideShowInterval != null){
         clearTimeout(markerSlideShowInterval);
     }
@@ -344,6 +348,8 @@ function selectMarker(marker){
         if(myResult.closest('#promoted_events').length < 1)
             $('#search_results').prepend(myResult);
     }
+
+    $('#reorder_results').val('true');
 
     var api = $('#results_container').data('jsp');
     if(api)
