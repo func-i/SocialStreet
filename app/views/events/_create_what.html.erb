@@ -54,7 +54,7 @@
         <% @event_types.each do |et| %>
           <li class="event-type create-event-type <%="hidden synonym" if et.synonym_id != et.id%>">
             <div class="container rounded-corners-four">
-              <%et_class = "#{event_type_sprite_class(et)}"%>
+              <%et_class = "#{sprite_class_name_for_event_type(et)}"%>
               <div class="event-type-image create-event-type-image rounded-corners-fifteen drop-shadow event-type-<%=et_class%>-small-sprite" data-event-type="<%=et_class%>"></div>
               <div class="event-type-name create-event-type-name text-shadow">
                 <%= et.name %>

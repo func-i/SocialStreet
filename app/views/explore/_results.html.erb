@@ -1,9 +1,7 @@
 <% results.each do |result| %>
   <% event = result %>
   <div id="event_<%=result.id%>" class="result nav-link" data-ajax-href='<%= event_path(event)%>'>
-    <div class="result-image">
-      <%= image_tag(url_for_event_image(event), :size=>'70x70')%>
-    </div>
+    <div class="result-image event-type-<%=sprite_class_name_for_event(event)%>-medium-sprite"></div>
     <div class="result-text">
       <div class="result-title result-event-link text-shadow">
         <%= event.title %>

@@ -13,11 +13,19 @@ module ApplicationHelper
     end
   end
 
-  def event_type_sprite_class(event_type)
-    image_path = event_type.image_path
+  def sprite_class_name_for_event(event)
+    sprite_class_name_for_path(url_for_event_image(event))
+  end
+
+  def sprite_class_name_for_path(image_path)
     start_index = image_path.index("event_types/") + "event_types/".length
     length = image_path.index(".png") - start_index
     image_path[start_index, length].gsub(/[_]/, '-')
+
+  end
+
+  def sprite_class_name_for_event_type(event_type)
+    sprite_class_name_for_path(event_type.image_path)
   end
 
   def event_time_in_words(event)
