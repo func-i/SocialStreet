@@ -56,6 +56,7 @@ function setupExplorePage(){
 
     $('#explore_search_params').ajaxComplete(function() {
         resizePageElements();
+        resizeResultButtons();
     });
 
     var mapCenter = $('#map_center').val();
