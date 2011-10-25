@@ -87,7 +87,7 @@
     <div class="">
       <%= form_for [@event, @comment], :remote => true, :html => {:id => "event_wall_form"} do |form| %>
         <div id="event_wall_text_field_holder">
-          <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => " Leave a Message", :rows => 1-%>
+          <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => " Leave a Message"-%>
         </div>
       <% end %>
       <div id="event_wall" class="cap-height scroll-pane show-scroll-on-hover" data-expandBottomOffset="40" style="overflow:auto;">
@@ -114,9 +114,9 @@
     <%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>
   </div>
   <div id="show_attendees_holder" class="container">
-    <ul id="show_attendees_list" class="">
+    <ul id="show_attendees_list">
       <% @event.event_rsvps.attending.each do |attendee| %>
-        <li class="show-attendee">
+        <li class="show-attendee" id="attendee_<%=attendee.user_id%>">
           <%=avatar(attendee.user, :size => "50x50", :class=> "show-attendee-icon")%>
           <span class="show-attendee-name"><%=attendee.user.name%></span>
         </li>

@@ -100,6 +100,7 @@ GEM
     multi_xml (0.4.1)
     multipart-post (1.1.3)
     net-ldap (0.2.2)
+    newrelic_rpm (3.1.1)
     nokogiri (1.5.0)
     oa-basic (0.3.0)
       oa-core (= 0.3.0)
@@ -185,6 +186,8 @@ GEM
       rufus-scheduler
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rpm_contrib (2.1.4)
+      newrelic_rpm (>= 3.1.1)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -241,6 +244,7 @@ DEPENDENCIES
   jammit
   jquery-rails (>= 0.2.6)
   json
+  newrelic_rpm
   omniauth
   pg
   rails (= 3.0.9)
@@ -248,6 +252,7 @@ DEPENDENCIES
   redis (~> 2.2.0)
   resque!
   resque-scheduler
+  rpm_contrib
   rspec-rails (~> 2.6)
   silent-postgres
   truncate_html
