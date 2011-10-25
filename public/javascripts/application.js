@@ -15,7 +15,7 @@ $(function() {
 
             
         if(href != undefined) {
-            if(getInternetExplorerVersion() < 0 && history && history.pushState) {
+            if(history && history.pushState) {
 
                 $.getScript(href, function() {
                     resizePageElements();
@@ -46,14 +46,15 @@ $(function() {
     //Ajax Link
     $('.ajax-link').live('click', function(e){
         var href;
-        if(this.href != undefined) {
-            href = this.href;
-        }
-        else{
+        if($(this).data('ajax-href') != '') {
             href = $(this).data('ajax-href');
         }
+        else if(this.href != undefined) {
+            href = this.href;
+        }
 
-        $.getScript(href);
+        if(href != undefined)
+            $.getScript(href);
     });
 
 

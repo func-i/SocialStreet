@@ -68,12 +68,6 @@ function init_map(){
     var controlDiv = document.createElement("div");
     controlDiv.id = "zoom_btns"
 
-    var zoomBtn = document.createElement('img');
-    zoomBtn.id = "zoom_btn_img"
-    zoomBtn.style.cursor = "pointer"
-    zoomBtn.src = '/images/zoom_btns.png';
-    controlDiv.appendChild(zoomBtn);
-
     var plusBtn = document.createElement('div');
     plusBtn.title = "Zoom in";
     plusBtn.id = "zoom_in_btn";
@@ -83,6 +77,13 @@ function init_map(){
     minusBtn.title = "Zoom out";
     minusBtn.id = "zoom_out_btn";
     controlDiv.appendChild(minusBtn);
+
+    var zoomBtn = document.createElement('img');
+    zoomBtn.id = "zoom_btn_img"
+    zoomBtn.style.cssText = "cursor: pointer; z-index=50;"
+    zoomBtn.src = '/images/zoom_btns.png';
+    controlDiv.appendChild(zoomBtn);
+
 
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
 

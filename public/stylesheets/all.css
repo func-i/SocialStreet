@@ -1115,6 +1115,7 @@ END OF RESET
     width: 19px;
     height: 21px;
     cursor: pointer;
+    z-index:100;
 }
 #zoom_out_btn{
     position: absolute;
@@ -1123,4 +1124,5 @@ END OF RESET
     width: 19px;
     height: 21px;
     cursor: pointer;
+    z-index:100;
 }
