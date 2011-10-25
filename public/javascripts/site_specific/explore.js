@@ -183,9 +183,9 @@ function addExploreMarkers(){
     $.each($('#results_list .result'), function(index, result){
         var lat = $(result).children('#result_lat');
         var lng = $(result).children('#result_lng');
-        var iconSrc = $(result).children('.result-image').children('img').attr('src');
+        var iconClass = 'event-type-' + $(result).children('.result-image').data('event-type') + '-small-sprite';
         
-        var marker = createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()), iconSrc, result.id);
+        var marker = createExploreMarker(parseFloat(lat.val()), parseFloat(lng.val()), iconClass, result.id);
 
         for(var i = 0; i < selectedResultsArr.length; i++){
             if(selectedResultsArr[i] == result.id){
@@ -211,17 +211,17 @@ function addExploreMarkers(){
             if($.inArray(myMarker, selectedMarkerArr) < 0){
                 selectedMarkerArr.push(myMarker);
                 myMarker.setIcon("/images/marker-base.png");
-                myMarker.label_.setIcon(newSelectedMarkerArr[i].iconSrc_);
+                myMarker.label_.setIconClass(newSelectedMarkerArr[i].iconClass_);
                 myMarker.label_.setMap(map);
                 myMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
             }
             else{
                 if(null == myMarker.clusteredIcons_){
                     myMarker.clusteredIcons_ = [];
-                    myMarker.clusteredIcons_.push(myMarker.iconSrc_);
+                    myMarker.clusteredIcons_.push(myMarker.iconClass_);
                     myMarker.slideShowCount_ = 0;
                 }
-                myMarker.clusteredIcons_.push(newSelectedMarkerArr[i].iconSrc_);
+                myMarker.clusteredIcons_.push(newSelectedMarkerArr[i].iconClass_);
 
                 startTimer = true;
             }
@@ -233,7 +233,7 @@ function addExploreMarkers(){
                     if(selectedMarkerArr[i] != undefined) {
                         var myMarker = selectedMarkerArr[i];
                         if(null != myMarker.clusteredIcons_){
-                            myMarker.label_.setIcon(myMarker.clusteredIcons_[myMarker.slideShowCount_]);
+                            myMarker.label_.setIconClass(myMarker.clusteredIcons_[myMarker.slideShowCount_]);
                             myMarker.slideShowCount_ += 1;
                             if(myMarker.slideShowCount_ >= myMarker.clusteredIcons_.length)
                                 myMarker.slideShowCount_ = 0;
@@ -245,13 +245,13 @@ function addExploreMarkers(){
     });
 }
 
-function createExploreMarker(lat, lng, iconSrc, resultID){
+function createExploreMarker(lat, lng, iconClass, resultID){
     var marker = markerManager.addMarker(lat, lng);
 
-    marker.iconSrc_ = iconSrc;
+    marker.iconClass_ = iconClass;
     marker.label_ = new IconLabel(marker);
     marker.label_.bindTo('position', marker, 'position');
-    marker.label_.setIcon(iconSrc);
+    marker.label_.setIconClass(iconClass);
 
     marker.resultID_ = resultID;
 
@@ -268,7 +268,7 @@ function createExploreMarker(lat, lng, iconSrc, resultID){
         selectedMarkerArr.push(myMarker);
         
         myMarker.setIcon("/images/marker-base.png");
-        myMarker.label_.setIcon(marker.iconSrc_);
+        myMarker.label_.setIconClass(marker.iconClass_);
         myMarker.label_.setMap(map);
         myMarker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
     });
@@ -331,7 +331,7 @@ function selectMarker(marker){
                 clearTimeout(markerSlideShowInterval);
                 return;
             }
-            marker.label_.setIcon(marker.clusteredMarkers_[count].iconSrc_);
+            marker.label_.setIconClass(marker.clusteredMarkers_[count].iconClass_);
             count += 1;
             if(count >= marker.clusteredMarkers_.length)
                 count = 0;

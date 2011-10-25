@@ -195,8 +195,8 @@ function IconLabel(marker) {
     this.div_.style.cssText = 'position: absolute;';
     this.div_.style.zIndex = parseInt((90 - marker.getPosition().lat())*10000, 10);
 
-    this.image_ = document.createElement('img');
-    this.image_.style.cssText = "width:50px;height:50px";
+    this.image_ = document.createElement('div');
+    //this.image_.style.cssText = "width:50px;height:50px";
     this.div_.appendChild(this.image_);
 };
 
@@ -237,12 +237,13 @@ IconLabel.prototype.draw = function() {
     var div = this.div_;
     div.style.display = 'block';
 
-    div.style.left = (position.x - 25) + 'px';//25 for half the width of the icon
-    div.style.top = (position.y - 78) + 'px';//50 for height of icon, 34 for height of base, -6 to get it to sit on base
+    div.style.left = (position.x - 27.5) + 'px';//27.5 for half the width of the icon
+    div.style.top = (position.y - 83) + 'px';//55 for height of icon, 34 for height of base, -6 to get it to sit on base
 };
 
-IconLabel.prototype.setIcon = function(iconSrc){
-    this.image_.src = iconSrc;
+IconLabel.prototype.setIconClass = function(iconClass){
+    $(this.image_).removeClass();
+    $(this.image_).addClass(iconClass);
 };
 
 function ShowEventLabel(locationName, address) {
