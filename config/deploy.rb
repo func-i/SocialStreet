@@ -30,6 +30,7 @@ after "deploy:update_code", "secrets:symlink"
 after "deploy:update_code", "environment:symlink"
 before "deploy:update", "god:stop_resque" unless fetch(:quick_update, false)
 after "deploy:update", "god:start_resque" unless fetch(:quick_update, false)
+after "deploy", "deploy:cleanup"
 
 # Passenger restart hook
 namespace :deploy do

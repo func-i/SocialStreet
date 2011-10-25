@@ -40,7 +40,7 @@
 
         <div id="show_event_text">
           <% @event.event_keywords.each_with_index do |ek, index| %>
-            <div class="show-event-image <%= 'hidden' if index > 0 %>">
+            <div class="show-event-image <%= 'hidden' if index > 0 %>" data-event-type="<%=sprite_class_name_for_path(url_for_event_keyword(ek))%>">
               <%= image_tag(url_for_event_keyword(ek))%>
               <div style="text-align:center;font:11px/11px Arial, Helvetica, sans-serif;width:80px;">
                 <%= ek.name %>

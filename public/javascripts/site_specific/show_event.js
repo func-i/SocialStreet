@@ -209,8 +209,9 @@ function setupShowEventPage(){
             var newImage = $('.show-event-image').eq(Math.floor(Math.random() * $('.show-event-image').length));
             newImage.removeClass('hidden');
 
-            if(showMarker)
-                showMarker.iconLabel_.setIcon(newImage.children('img').attr('src'));
+            if(showMarker){
+                showMarker.iconLabel_.setIconClass("event-type-" + newImage.data("event-type") + "-small-sprite");
+            }
         }, 3000);
     }
 }
@@ -379,7 +380,7 @@ function createShowMarker(lat, lng, address, location_text) {
 
     showMarker.iconLabel_ = new IconLabel(showMarker);
     showMarker.iconLabel_.bindTo('position', showMarker, 'position');
-    showMarker.iconLabel_.setIcon($('.show-event-image img').first().attr('src'));
+    showMarker.iconLabel_.setIconClass("event-type-" + $('.show-event-image').first().data("event-type") + "-small-sprite");
 
 
     showMarker.label_ = new ShowEventLabel(location_text, address);

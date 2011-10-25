@@ -1004,6 +1004,7 @@ END OF RESET
 }
 #create_keyword_tag_holder{
     width: 375px;
+    height:auto;
     overflow-y: auto;
     padding: 0 5px 0 0px;
 }
