@@ -25,7 +25,7 @@
 
         <% (event.event_keywords || []).each do |keyword| %>
           <li class="keyword-tag create-keyword-tag remove-keyword-tag">
-            <div class="keyword-tag-icon create-keyword-tag-icon rounded-corners-fifteen drop-shadow"></div>
+            <div class="keyword-tag-icon create-keyword-tag-icon rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_path(url_for_event_keyword(keyword))%>-medium-sprite"></div>
             <span class="keyword-tag-name create-keyword-tag-name text-shadow">
               <%=keyword.name%>
             </span>
