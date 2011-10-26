@@ -168,7 +168,7 @@ END OF RESET
 .header-right {
     float: right;
     margin-right: 20px;
-    width:244px;
+    width:315px;
 }
 
 .header-right div {
@@ -177,7 +177,7 @@ END OF RESET
 #how_it_works_btn{
     color: #FFC233;
     font: italic 12px/19px Arial, Helvetica, sans-serif;
-    margin: 9px 25px 0 5px;
+    margin: 9px 25px 0 76px;
     cursor: pointer;
 }
 #signed_in_button{
