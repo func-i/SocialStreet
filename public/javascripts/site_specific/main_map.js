@@ -77,14 +77,7 @@ function init_map(){
     minusBtn.title = "Zoom out";
     minusBtn.id = "zoom_out_btn";
     controlDiv.appendChild(minusBtn);
-
-    var zoomBtn = document.createElement('img');
-    zoomBtn.id = "zoom_btn_img"
-    zoomBtn.style.cssText = "cursor: pointer; z-index=50;"
-    zoomBtn.src = '/images/zoom_btns.png';
-    controlDiv.appendChild(zoomBtn);
-
-
+    
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
 
     google.maps.event.addDomListener(plusBtn, 'click', function() {

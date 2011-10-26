@@ -1117,7 +1117,7 @@ END OF RESET
     width: 19px;
     height: 21px;
     cursor: pointer;
-    z-index:100;
+    background-image: url('../images/zoom_btns.png');
 }
 #zoom_out_btn{
     position: absolute;
@@ -1126,8 +1126,10 @@ END OF RESET
     width: 19px;
     height: 21px;
     cursor: pointer;
-    z-index:100;
+    background-image: url('../images/zoom_btns.png');
+    background-position: 0px -20px;
 }
+
 #edit_user_name_holder{
     height: 60px;
     margin: 10px auto 40px auto;

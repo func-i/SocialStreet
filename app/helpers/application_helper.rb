@@ -52,7 +52,7 @@ module ApplicationHelper
       when 0..1
         case distance_in_minutes
         when 0..5
-          text = "#{'just ' unless upcoming}#{text}#{'in a couple of minutes ' if upcoming}"
+          text = "#{'Just ' unless upcoming}#{text}#{'in a couple of minutes ' if upcoming}"
         when 6..59
           text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
         when 60..100
