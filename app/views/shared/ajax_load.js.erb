@@ -10,4 +10,4 @@ $('#bottom_pane').html('<%= escape_javascript content_for :bottom_pane %>');
 $('#top_pane').html('<%= escape_javascript content_for :top_pane %>');
 $('#other_content').html(myContent);//Make sure this is last so the content has been loaded before any inline scripts are run
 
-document.title = 'SocialStreet' + '<%= " - #{truncate(@page_title, :length => 30)}" if @page_title %>'
+document.title = 'SocialStreet' + '<%= " - #{truncate(escape_javascript(@page_title), :length => 30)}" if @page_title %>'
