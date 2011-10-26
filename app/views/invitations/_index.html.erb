@@ -2,7 +2,7 @@
   <div id="user_holder" class="event-invitation-view <%="hidden" unless params[:invite]%>">
     <div id="invite_user_text_field_holder">
       <%= form_tag load_connections_invitations_path, :method => :get, :id=>'invite_user_form', :remote => true do %>
-        <%= text_field_tag "user_search", params[:user_search], :class=>'drop-shadow', :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
+        <%= text_field_tag "user_search", params[:user_search], :class=>'drop-shadow ie-placeholder', :id => "invite_user_text_field", :placeholder => "Enter a name or email address (press enter)" %>
         <%= hidden_field 'user_search_value', '', :id => 'user_search_value' %>
       <% end %>
     </div>

@@ -30,12 +30,14 @@ $(function(){
     $('.event-type').live('click', function(){
         eventTypeClicked(this);
 
+        $('.keyword-text-field').val('');
+
         if($('#on_explore').length > 0){
             hideEventTypeHolder();
         }
 
-        $(this).val('');
         reset();
+        $('.keyword-text-field').blur();
     });
 
     //User types into the text field
@@ -59,6 +61,9 @@ $(function(){
             if($('#on_explore').length > 0){
                 hideEventTypeHolder();
             }
+            reset();
+            $('.keyword-text-field').blur();
+
         }
         else if(e.keyCode == 188){//comma
             addKeyword(keyword_arr[keyword_arr.length - 2])
@@ -90,8 +95,6 @@ function showEventTypeHolder(){
 function hideEventTypeHolder(){
     $('#event_types_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
-    $('.keyword-text-field').blur();
-    $('.keyword-text-field').val('');
 
     isOpen = false;
 }
@@ -105,7 +108,9 @@ function reset(){
             $et.removeClass('hidden');
     });
 
-    $('#custom_event_type').val('');
+    $('.keyword-text-field').val('');    
+
+    $('#custom_event_type .event-type-name').text('');
     $('#custom_event_type').addClass('hidden');
     resizePageElements();
 }

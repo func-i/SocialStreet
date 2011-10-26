@@ -19,6 +19,7 @@ $(function() {
 
                 $.getScript(href, function() {
                     resizePageElements();
+                    setPlaceholdersInInternetExplorer();
                 });
                 history.pushState({}, "", href);
             }
@@ -71,6 +72,7 @@ $(function() {
             
         $.getScript(location.href, function() {
             resizePageElements();
+            setPlaceholdersInInternetExplorer();
         });
     });
 
@@ -95,6 +97,7 @@ $(function() {
         resizePageElements();
     });
 
+    setPlaceholdersInInternetExplorer();
 
     //Scrollbar behaviour on mouseover
     $('.show-scroll-on-hover').live('mouseenter', function(){
@@ -139,8 +142,31 @@ $(function() {
     $('#feedback').click(function(){
         closeFeedback();
     });
-
 });
+
+function setPlaceholdersInInternetExplorer(){
+    if(getInternetExplorerVersion() != -1){
+        $.each($('.ie-placeholder'), function(index, input){
+            $input = $(input);
+            if($input.attr("placeholder") && $input.attr("placeholder").length > 0){
+                $input.val($input.attr('placeholder'));
+                $input.click(function(){
+                    $this = $(this);
+                    if($this.val() == $this.attr("placeholder")){
+                        $this.val('');
+                    }
+                    return false;
+                });
+                $input.blur(function(){
+                    $this = $(this);
+                    if($this.val().length < 1){
+                        $this.val($this.attr('placeholder'));
+                    }
+                });
+            }
+        });
+    }
+}
 
 function cleanup(){
     if(typeof cleanUpSelf == 'function') {

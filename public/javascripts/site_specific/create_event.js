@@ -151,8 +151,6 @@ function setupCreateWhere(){
         $('#create_where_marker_info').addClass('invisible');
         $('#create_where_name_location-text').text('');
         $('#create_where_address').text('');
-        $('#create_where_text_field').val('');
-        $('#create_where_name_location_input').val('');
 
         createCreateMarker(map.getCenter());
     }
