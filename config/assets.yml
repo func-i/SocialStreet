@@ -6,11 +6,11 @@ package_assets: on
 javascripts:
   common:
     - public/javascripts/jquery-1.5.1.js
+    - public/javascripts/site_specific/main_map.js
     - public/javascripts/application.js
     - public/javascripts/rails.js
     - public/javascripts/mobiscroll-1.5.js
     - public/javascripts/autoresize.jquery.js
-    - public/javascripts/site_specific/main_map.js
     - public/javascripts/ss_MarkerManager.js
     - public/javascripts/ss_keywords.js
     - public/javascripts/ss_pageless.js
