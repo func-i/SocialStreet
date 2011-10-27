@@ -63,3 +63,14 @@ body, html {
 }
 
 
+.header-right.not-signed #how_it_works_btn {
+    margin-right: 125px;
+}
+
+.header-right.not-signed .how-it-works {
+    margin-right: 125px;
+}
+
+
+
+
