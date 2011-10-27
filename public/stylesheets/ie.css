@@ -48,10 +48,10 @@ body, html {
 }
 
 .rounded-corners-four{
-    behavior: url(PIE.htc);
+/*    behavior: url(PIE.htc);*/
 }
 .rounded-corners-fifteen{
-    behavior: url(PIE.htc);
+/*    behavior: url(PIE.htc);*/
 }
 
 .fc-header{
