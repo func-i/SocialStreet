@@ -50,6 +50,18 @@ class User < ActiveRecord::Base
       "Sir/Madam" # for now, should have more conditions before this
     end
   end
+  
+  def name=(n)
+    names = n.split( );
+
+    self.first_name = names[0]
+
+    if(names.length > 1)
+      self.last_name = names[1...names.length].join(' ')
+    else
+      self.last_name = ""
+    end
+  end
 
   def avatar_url(options={})
     self.facebook_profile_picture_url.gsub(facebook_profile_picture_url[facebook_profile_picture_url.rindex('/')+1..facebook_profile_picture_url.length], "picture?type=#{options[:fb_size] || 'square'}") if facebook_profile_picture_url
@@ -86,7 +98,7 @@ class User < ActiveRecord::Base
     return self.event_rsvps.for_event(event).count > 0
   end
 
-  def apply_omniauth(omniauth)    
+  def apply_omniauth(omniauth)
 
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
     if omniauth['extra'] && user_info = omniauth['extra']['user_hash']
