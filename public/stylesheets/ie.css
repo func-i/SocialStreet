@@ -48,14 +48,10 @@ body, html {
 }
 
 .rounded-corners-four{
-    behavior: url(PIE.htc);
-    -pie-lazy-init:true;
-/*    -pie-poll: false;*/
+/*    behavior: url(PIE.htc);*/
 }
 .rounded-corners-fifteen{
-    behavior: url(PIE.htc);
-    -pie-lazy-init:true;
-/*    -pie-poll: false;*/
+/*    behavior: url(PIE.htc);*/
 }
 
 .fc-header{
