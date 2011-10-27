@@ -1132,7 +1132,7 @@ END OF RESET
 
 #edit_user_name_holder{
     height: 60px;
-    margin: 10px auto 40px auto;
+    margin: 10px auto 30px auto;
     text-align: center;
 }
 #edit_user_name_field{
@@ -1147,7 +1147,7 @@ END OF RESET
     background: transparent;
 }
 #edit_user_email_holder{
-    padding: 3px 20px;
+    padding: 3px 0px;
     height: 20px;
 }
 #edit_user_email_label{
@@ -1169,7 +1169,7 @@ END OF RESET
     vertical-align: baseline;
 }
 #edit_user_gender_holder{
-    padding: 3px 20px;
+    padding: 3px 0px;
     height: 20px;
 }
 #edit_user_gender_label{
@@ -1188,7 +1188,7 @@ END OF RESET
     vertical-align: baseline;
 }
 #edit_user_location_holder{
-    padding: 3px 20px;
+    padding: 3px 0px;
     height: 20px;
 }
 #edit_user_location_label{
@@ -1209,10 +1209,29 @@ END OF RESET
     float:left;
     vertical-align: baseline;
 }
-
 #edit_membership_title{
     font: bold 24px/24px Arial, Helvetica, sans-serif;
     color: #FFFCD5;
     padding: 80px 0 20px 20px;
     /*text-decoration: underline;*/
+}
+#edit_user_details{
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+#edit_group{
+    padding: 20px 20px;
+}
+#edit_group_title{
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    padding-bottom: 5px;
+    /*text-decoration: underline;*/
+}
+#edit_group_text{
+    font: normal 14px/14px Arial, Helvetica, sans-serif;
+    color: white;
+}
+.edit-inline-mouseover{
+    text-decoration: underline;
 }
