@@ -50,12 +50,12 @@ body, html {
 .rounded-corners-four{
     behavior: url(PIE.htc);
     -pie-lazy-init:true;
-    -pie-poll: false;
+/*    -pie-poll: false;*/
 }
 .rounded-corners-fifteen{
     behavior: url(PIE.htc);
     -pie-lazy-init:true;
-    -pie-poll: false;
+/*    -pie-poll: false;*/
 }
 
 .fc-header{
