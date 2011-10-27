@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  
   before_create :build_initial_rsvp
   before_save :save_default_name
 
@@ -11,6 +12,9 @@ class Event < ActiveRecord::Base
   belongs_to :user
   belongs_to :location
 
+  has_many :event_groups
+  has_many :groups, :through => :event_groups
+
   accepts_nested_attributes_for :event_keywords, :location
 
   scope :valid, where(:canceled => false);
@@ -22,7 +26,7 @@ class Event < ActiveRecord::Base
 
   scope :matching_keywords, lambda { |keywords, include_searchables_with_no_keywords|
     unless keywords.blank?
-      chain = joins("LEFT OUTER JOIN event_keywords ON event_keywords.event_id = events.id")
+      chain = joins("LEFT OUTER JOIN event_keywords ON event_keywords.event_id = events.id LEFT OUTER JOIN event_groups ON event_groups.event_id = events.id")
       #chain = chain.joins("LEFT OUTER JOIN event_types AS synonyms ON synonyms.synonym_id = event_keywords.event_type_id AND event_keywords.event_id = events.id")
       query = []
       args = {}
@@ -32,7 +36,8 @@ class Event < ActiveRecord::Base
           query << "events.name ~* :key#{i}
           OR events.description ~* :key#{i}
           OR event_keywords.id IS NULL
-          OR event_keywords.name ~* :key#{i}          
+          OR event_keywords.name ~* :key#{i}
+          OR (event_groups.name ~* :key#{i} AND NOT events.private)
           "
           #OR synonyms.name ~* :key#{i}
           args["key#{i}".to_sym] = "[[:<:]]#{k}"

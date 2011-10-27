@@ -1216,3 +1216,9 @@ END OF RESET
     padding: 80px 0 20px 20px;
     /*text-decoration: underline;*/
 }
+
+.content-left-holder .clh-content {
+    padding: 20px;
+}
+
+

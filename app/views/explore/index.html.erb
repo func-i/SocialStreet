@@ -9,14 +9,14 @@
           <% unless @promoted_events.blank? %>
             <div id="smow_heading">StreetMeet of the Week</div>
             <div id="promoted_events" style="padding-top: 0px; border-bottom: 5px solid #4F4F4D;">
-              <%= render(:partial => "results", :locals => {:results => @promoted_events}) %>
+              <%= render(:partial => "/explore/results", :locals => {:results => @promoted_events}) %>
             </div>
           <% end %>
           <div id="search_results">
-            <%= render :partial => "results", :locals => { :results => @events } %>
+            <%= render :partial => "/explore/results", :locals => { :results => @events } %>
           </div>
         </div>
-        <%= render :partial => "suggested_explore_actions" %>
+        <%= render :partial => "/explore/suggested_explore_actions" %>
       </div>
     </div>
   </div>

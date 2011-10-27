@@ -1,0 +1,2 @@
+module ExploreBaseHelper
+end

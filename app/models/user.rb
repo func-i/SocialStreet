@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   has_many :incoming_connections, :class_name => "Connection", :foreign_key => "to_user_id"
   has_many :connected_users, :through => :connections, :source => :to_user
 
+  has_many :user_groups
+  has_many :groups, :through => :user_groups
+
   validates :email, :uniqueness => { :allow_blank => true }
 
   after_save :email_user
