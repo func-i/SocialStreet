@@ -26,4 +26,6 @@
   <%= render :partial => "create_when.html", :locals => {:event => @event} %>
 </div>
 
+<%= hidden_field_tag "on_create", "true" %>
+
 <%= javascript_include_tag "site_specific/create_event", 'fullcalendar.js' %>

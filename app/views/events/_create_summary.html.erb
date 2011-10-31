@@ -1,0 +1,16 @@
+<% content_for :left_side_pane do %>
+
+  <div class="create-left-pane create-what-view">
+    <div id="create_keyword_tag_holder" class="keyword-tag-holder">
+      <ul id="keyword_tag_list">
+        <li id="keyword_tag_stamp" class="keyword-tag create-keyword-tag remove-keyword-tag hidden">
+          <div class="keyword-tag-icon create-keyword-tag-icon rounded-corners-fifteen drop-shadow"></div>
+          <span class="keyword-tag-name create-keyword-tag-name text-shadow"></span>
+          <%= image_tag('remove-keyword.png', :class => 'remove-keyword-tag keyword-tag-remove create-keyword-tag-remove') %>
+        </li>
+      </ul>
+    </div>
+
+    <%= image_tag('continue-button.png', :id=>'create_what_next_arrow', :class=>"next-arrow drop-shadow #{'invisible' unless @event && !@event.event_keywords.empty?}") %>
+  </div>
+<% end %>

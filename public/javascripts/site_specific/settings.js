@@ -1,4 +1,11 @@
 $(function(){
+    cleanUpSelf = function(){
+    }
+
+    resizeSelf = function(){
+        resizeCenterPaneContent();
+    }
+
     $('.edit-inline').live('mouseenter', function(){
         $(this).addClass('edit-inline-mouseover');
     });
@@ -16,6 +23,16 @@ $(function(){
         }
     });
     $('.submit-on-change').live('change', function(){
-       $('#settings_form').submit();
+        $('#settings_form').submit();
+    });
+
+    $('#add_group_button').live('click', function(){
+       showGroups();
     });
 });
+
+function resizeCenterPaneContent(){
+    var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
+    var scrollerTop = $('#groups_scroller').offset().top;
+    $('#groups_scroller').height(centerPaneBottom - scrollerTop);
+}

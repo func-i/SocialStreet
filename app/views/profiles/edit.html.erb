@@ -26,20 +26,74 @@
   <div id="edit_group">
     <div id="edit_group_title" class="text-shadow">
       Groups:
-      <span style="padding: 10px 20px 0 0;float:right;color:#FFC233;font: bold 14px/14px Arial, Helvetica, sans-serif;">+Add</span>
+      <span id="add_group_button">+Add</span>
     </div>
-    <% if @groups.blank? %>
-      <div id="edit_group_text">
-        Add a membership to your account to join events and receive discounts
-      </div>
-    <% else %>
-      <% @groups.each do |group| %>
-      
-      <%end%>
-    <% end %>
+    <div id="group_tag_holder" class="keyword-tag-holder">
+      <ul id="keyword_tag_list">
+        <li id="keyword_tag_stamp" class="keyword-tag group-tag /*remove-keyword-tag*/ hidden">
+          <div class="keyword-tag-icon group-tag-icon rounded-corners-fifteen drop-shadow"></div>
+          <span class="keyword-tag-name group-tag-name text-shadow"></span>
+          <%#= image_tag('remove-keyword.png', :class => 'keyword-tag-remove group-tag-remove') %>
+        </li>
+        <% if @user.groups.blank? %>
+          <!--          <div id="edit_group_text">
+                      Add a membership to your account to join events and receive discounts
+                    </div>-->
+        <% else %>
+          <% @user.groups.each do |group| %>
+            <li class="keyword-tag group-tag /*remove-keyword-tag*/">
+              <div class="keyword-tag-icon group-tag-icon rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(group)%>-medium-sprite"></div>
+              <span class="keyword-tag-name group-tag-name text-shadow">
+                <%=group.name%>
+              </span>
+      <%#= image_tag('remove-keyword.png', :class => 'keyword-tag-remove group-tag-remove') %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
   </div>
 
   <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
 <% end %>
+
+<% content_for :center_pane do %>
+  <div id="groups_holder" class="hidden">
+    <div id="groups_scroller" class="scroll-pane include-vertical-bar">
+      <ul>
+        <% @groups.each do |group| %>
+          <li class="event-type group-type">
+            <div class="container rounded-corners-four">
+              <%group_class = "#{sprite_class_name_for_group(group)}"%>
+              <div class="event-type-image group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+              <div class="event-type-name group-type-name">
+                <%= group.name %>
+              </div>
+              <%= hidden_field_tag "group_id", group.id %>
+              <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
+              <%= hidden_field_tag "join_code_description", group.join_code_description  %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div id="group_permission_holder" class="container hidden">
+    <div id="group_permission_icon" class="event-type-image rounded-corners-fifteen drop-shadow"></div>
+    <div id="group_permission_text" class="text-shadow">
+      To add this group, please enter your <span class="join-code-text">Join Code</span>:
+    </div>
+    <div id="group_permission_text_field_holder">
+      <%= text_field_tag 'group_permission_code', '', :type => "text", :title => "permission_code", :placeholder => " Enter Code Here....", :id=>'group_permission_text_field', :class=>'ie-placeholder' %>
+    </div>
+    <%= hidden_field_tag 'group_permission_id', ''%>
+    <%= hidden_field_tag 'group_permission_name', ''%>
+    <%= hidden_field_tag 'group_permission_icon_class', ''%>
+    <%= image_tag('continue-button.png', :id=>'group_permission_next_arrow', :class=>"next-arrow drop-shadow") %>
+    <div id="group_permission_error" class="hidden text-shadow">Sorry, the <span class="join-code-text">Join Code</span> you entered does not match any of our records</div>
+  </div>
+<% end %>
+
+<%= hidden_field_tag "on_settings", "true" %>
 
 <%= javascript_include_tag "site_specific/settings"%>

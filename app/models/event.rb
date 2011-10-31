@@ -33,11 +33,11 @@ class Event < ActiveRecord::Base
 
       keywords.each_with_index do |k,i|
         unless k.blank?
-          query << "events.name ~* :key#{i}
+          query << "(events.name ~* :key#{i}
           OR events.description ~* :key#{i}
           OR event_keywords.id IS NULL
           OR event_keywords.name ~* :key#{i}
-          OR (event_groups.name ~* :key#{i} AND NOT events.private)
+          OR (event_groups.name ~* :key#{i} AND NOT events.private))
           "
           #OR synonyms.name ~* :key#{i}
           args["key#{i}".to_sym] = "[[:<:]]#{k}"

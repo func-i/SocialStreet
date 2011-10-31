@@ -13,6 +13,10 @@ module ApplicationHelper
     end
   end
 
+  def sprite_class_name_for_group(group)
+    sprite_class_name_for_path(group.icon_url || ('event_types/streetmeet' + (rand(8) + 1).to_s + '.png'))
+  end
+
   def sprite_class_name_for_event(event)
     sprite_class_name_for_path(url_for_event_image(event))
   end

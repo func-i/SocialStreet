@@ -15,7 +15,11 @@ SocialStreetReborn::Application.routes.draw do
     resources :comments, :only => [:create, :destroy]
   end
 
-  resources :profiles
+  resources :profiles do
+    collection do
+      get 'add_group'
+    end
+  end
 
   resources :invitations, :only => [] do
     collection do

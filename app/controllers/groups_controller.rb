@@ -3,5 +3,4 @@ class GroupsController < ExploreBaseController
     @group = Group.find params[:id]
     super_index
   end
-
 end

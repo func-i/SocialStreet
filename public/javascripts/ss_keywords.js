@@ -16,12 +16,19 @@ $(function(){
     //User clicks on doc away from event type or text field, hide
     $(document).bind("click", function(e){
         if(isOpen &&
-            $('#on_explore').length > 0 &&
+            isOnExplore() &&
             $(e.target).closest('.keyword-text-field-holder').length < 1 &&
             $(e.target).closest('#event_types_holder').length < 1)
             {
-
             hideEventTypeHolder();
+        }
+        else if(isOpen &&
+            isOnSettings() &&
+            $(e.target).closest('#groups_holder').length < 1 &&
+            $(e.target).closest('#group_permission_holder').length < 1 &&
+            $(e.target).closest('#add_group_button').length < 1)
+            {
+            hideGroups();
         }
     });
 
@@ -32,7 +39,7 @@ $(function(){
 
         $('.keyword-text-field').val('');
 
-        if($('#on_explore').length > 0){
+        if(isOnExplore()){
             hideEventTypeHolder();
         }
 
@@ -58,7 +65,7 @@ $(function(){
         if(e.keyCode == 13){//Enter
             addKeyword(keyword_arr[keyword_arr.length - 1]);
 
-            if($('#on_explore').length > 0){
+            if(isOnExplore()){
                 hideEventTypeHolder();
             }
             reset();
@@ -80,8 +87,23 @@ $(function(){
     $('.remove-keyword-tag').live('click', function(){
         removeKeyword(this);
     });
+
+    //User submits group code
+    $('#group_permission_next_arrow').live('click', function(){
+        var $groupHolder = $(this).closest('#group_permission_holder');
+        var groupID = $groupHolder.find('#group_permission_id').val();
+        var groupCode = $groupHolder.find('#group_permission_text_field').val();
+
+        addGroup(groupID, groupCode);
+    });
 });
 
+function addGroup(groupID, groupCode){
+    $.getScript('/profiles/add_group?' +
+        'group_id=' + groupID +
+        '&group_code=' + groupCode
+        );
+}
 function showEventTypeHolder(){
     $('#event_types_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
@@ -99,6 +121,33 @@ function hideEventTypeHolder(){
     isOpen = false;
 }
 
+function showGroupPermissionHolder(){
+    $('#group_permission_holder').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
+
+    isOpen = true;
+}
+function hideGroupPermissionHolder(){
+    $('#group_permission_holder').addClass('hidden');
+    $('#center_pane').addClass('invisible');
+    $('#group_permission_error').addClass('hidden');
+
+    isOpen = false;
+}
+function showGroups(){
+    $('#groups_holder').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
+    resizePageElements();
+
+    isOpen = true;
+}
+function hideGroups(){
+    $('#groups_holder').addClass('hidden');
+    $('#center_pane').addClass('invisible');
+
+    isOpen = false;
+}
+
 function reset(){
     $.each($('.event-type'), function(index, et){
         var $et = $(et);
@@ -108,7 +157,7 @@ function reset(){
             $et.removeClass('hidden');
     });
 
-    $('.keyword-text-field').val('');    
+    $('.keyword-text-field').val('');
 
     $('#custom_event_type .event-type-name').text('');
     $('#custom_event_type').addClass('hidden');
@@ -116,19 +165,14 @@ function reset(){
 }
 
 function eventTypeClicked(eventType, refreshResults){
-    $eventType = $(eventType);
-    keywordName = $.trim($eventType.find('.event-type-name').text());
-    keywordIconClass = 'event-type-' + $eventType.find('.event-type-image').data('event-type') + ($('#on_explore').length > 0 ? '-small-sprite' : '-medium-sprite');
+    var $eventType = $(eventType);
+    var keywordName = $.trim($eventType.find('.event-type-name').text());
+    var keywordIconClass = 'event-type-' + $eventType.find('.event-type-image').data('event-type') + (isOnExplore() ? '-small-sprite' : '-medium-sprite');
 
     if(!keywordAlreadyExists(keywordName)){
-        var $newKeyword = $($('#keyword_tag_stamp').clone());
-        $newKeyword[0].id = "";
-        $newKeyword.find('.keyword-tag-name').text(keywordName);
-        $newKeyword.find('.keyword-tag-icon').addClass(keywordIconClass);
-        $('#keyword_tag_list').append($newKeyword);
-        $newKeyword.removeClass('hidden');
+        if(isOnExplore()){
+            addKeywordToHolder(keywordName, keywordIconClass);
 
-        if($('#on_explore').length > 0){
             $('#explore_search_params').append(
                 '<input type="hidden" name="keywords[]" class="keyword-input" value="' + keywordName + '" />'
                 );
@@ -141,7 +185,9 @@ function eventTypeClicked(eventType, refreshResults){
                 refreshExploreResults();
             }
         }
-        else{
+        else if(isOnCreate()){
+            addKeywordToHolder(keywordName, keywordIconClass);
+
             $('#event_create_form').append(
                 '<input type="hidden" name="event[event_keywords_attributes][][name]" class="keyword-input" value="' + keywordName + '" />'
                 );
@@ -151,7 +197,33 @@ function eventTypeClicked(eventType, refreshResults){
             $('#create_what_next_arrow').removeClass('invisible');
             $('#create_what_tags').removeClass('invisible');
         }
+        else if(isOnSettings()){
+            if($eventType.find('#group_required').val() == 'false'){
+                addGroup($eventType.find('#group_id').val(), null);
+                hideGroups();
+                addKeywordToHolder(keywordName, keywordIconClass);
+            }
+            else{
+                $('#group_permission_id').val($eventType.find('#group_id').val());
+                $('.join-code-text').text($eventType.find('#join_code_description').val());
+                $('#group_permission_name').val(keywordName);
+                $('#group_permission_icon_class').val(keywordIconClass);
+                $('#group_permission_icon').addClass(keywordIconClass);
+            
+                hideGroups();
+                showGroupPermissionHolder();
+            }
+        }
     }
+}
+
+function addKeywordToHolder(keywordName, keywordIconClass){
+    var $newKeyword = $($('#keyword_tag_stamp').clone());
+    $newKeyword[0].id = "";
+    $newKeyword.find('.keyword-tag-name').text(keywordName);
+    $newKeyword.find('.keyword-tag-icon').addClass(keywordIconClass);
+    $('#keyword_tag_list').append($newKeyword);
+    $newKeyword.removeClass('hidden');
 }
 
 function keywordAlreadyExists(keywordName){
@@ -233,7 +305,7 @@ function removeKeyword(keywordCloseDom){
         $(inputElem).remove();
     }
     
-    if($('#on_explore').length > 0){
+    if(isOnExplore()){
         refreshExploreResults();
 
         if($('.keyword-tag').not('#keyword_tag_stamp').length < 1){
@@ -246,7 +318,7 @@ function removeKeyword(keywordCloseDom){
             $('.keyword-tag-holder').height('auto');
         }
     }
-    else{
+    else if(isOnCreate()){
         if($('.keyword-tag').not('#keyword_tag_stamp').length < 1){
             $('#create_what_next_arrow').addClass('invisible');
             $('#create_what_tags').addClass('invisible');
@@ -259,3 +331,15 @@ function removeKeyword(keywordCloseDom){
         resizeWhatTags();
     }
 }
+
+function isOnExplore(){
+    return $('#on_explore').length > 0;
+}
+function isOnCreate(){
+    return $('#on_create').length > 0;
+}
+function isOnSettings(){
+    return $('#on_settings').length > 0;
+}
+
+
