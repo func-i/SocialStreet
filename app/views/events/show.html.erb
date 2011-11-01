@@ -24,12 +24,9 @@
   }());
 </script>
 
-
-<% can_edit = @event.can_edit?(current_user) %>
-
 <% content_for :left_side_pane do %>
   <div id="show_event_details">
-    <% if can_edit %>
+    <% if @event.can_edit?(current_user) %>
       <div id="edit_event_links">
         <%= link_to "Edit StreetMeet", edit_event_path(@event), :id=>"edit_event_link" %>
         <%= link_to "Cancel StreetMeet", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
@@ -48,11 +45,7 @@
             </div>
           <% end %>
           <div id="show_event_title">
-            <% if can_edit %>
-              <span id="edit_event_title_link">Edit Title</span>
-              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>" maxlength="30"/>
-            <% end %>
-            <span id="show_event_title_text" class="text-shadow <%= "short" if can_edit -%>">
+            <span id="show_event_title_text" class="text-shadow">
               <%= @event.title %>
             </span>
 
@@ -68,12 +61,6 @@
       </div>
 
       <div id="show_event_description_holder" class="scroll-pane show-scroll-on-hover">
-        <% if can_edit %>
-          <span id="edit_event_description_link">
-            <%=(@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."%>
-          </span>
-          <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:359px; height:70px;" %>
-        <% end %>
         <span id="show_event_description_text">
           <%= raw @event.description %>
         </span>
