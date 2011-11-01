@@ -458,15 +458,14 @@ function setupCreateSummary(){
         $('#summary_event_name_field').val(formatTitleForSummary($('.keyword-input').first().val(), $('#location-name-field').val(), $('#event_street').val()));
     }
     $('#summary_event_name_field').live('change', function(){
-        $('#event_name').val($(this).val());
+        $('#event_name').val($.trim($(this).val()));
         resizePageElements();
     });
 
     //Description
     $('#summary_event_description_field').autoResize();
     $('#summary_event_description_field').live('change', function(){
-        console.log("description", $(this).val());
-        $('#event_description').val($(this).val());
+        $('#event_description').val($.trim($(this).val()));
         resizePageElements();
     });
 

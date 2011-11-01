@@ -154,9 +154,11 @@ $(function() {
         $(this).removeClass('edit-inline-mouseover');
     });
 
-    $('.submit-on-change').live('keyup', function(e){
+    $('.submit-on-change').live('keydown', function(e){
         if(e.keyCode == 13 && !e.shiftKey){
             $(this).trigger('change');
+            $(this).blur();
+            return false;
         }
     });
     $('.submit-on-change').live('change', function(){
