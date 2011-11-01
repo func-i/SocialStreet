@@ -26,6 +26,8 @@ class EventsController < ApplicationController
     
     @location = @event.build_location
 
+    @groups = Group.all
+
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'events/new.html.erb'}
     end
@@ -56,6 +58,8 @@ class EventsController < ApplicationController
     @page_title = "Edit StreetMeet - #{@event.title}"    
 
     @event_types = EventType.order('name').all
+
+    @groups = Group.all
 
     raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
 

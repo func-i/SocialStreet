@@ -1,6 +1,7 @@
 var createEventEventTypeTimer;
 var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
+var eventImageSummaryInterval;
 
 $(function(){
     cleanUpSelf = function(){
@@ -27,6 +28,9 @@ function resizeCenterPaneContent(){
     var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
     var scrollerTop = $('#event_types_scroller').offset().top;
     $('#event_types_scroller').height(centerPaneBottom - scrollerTop);
+
+    var groupScrollerTop = $('#groups_scroller').offset().top;
+    $('#groups_scroller').height(centerPaneBottom - groupScrollerTop);
 }
 function resizeWhatTags(){
     var docHeight = $(window).height();
@@ -95,22 +99,31 @@ function initCreateEvent(){
         $('#create_where').addClass('hidden');
         $('#create_when').removeClass('hidden');
 
-        markerManager.deleteAllMarkers();
+        //markerManager.deleteAllMarkers();
 
         setupCreateWhen();
     });
    
     //Create When Bindings
-    var alreadySubmitted = false;
     $('#create_when_next_arrow').click(function(){
-        if(!alreadySubmitted){
-            $('#event_create_form').submit();
-            alreadySubmitted = true;
-        }
+        $('#create_when').addClass('hidden');
+
+        setupCreateSummary();
+
+        $('#create_summary').removeClass('hidden');
     });
 
     $('.create-when-field').change(function(){
         updateCreateWhenDates();
+    });
+
+    //Summary
+    var alreadySubmitted = false;
+    $('#create_summary_create_button').click(function(){
+        if(!alreadySubmitted){
+            $('#event_create_form').submit();
+            alreadySubmitted = true;
+        }
     });
 }
 
@@ -118,6 +131,8 @@ function initCreateEvent(){
  *WHAT FUNCTIONS
  **/
 function setupCreateWhat(){
+    $('#on_create_what').val('true');
+
     showEventTypeHolder();
 
     $('.create-where-view').addClass('hidden');
@@ -129,6 +144,7 @@ function setupCreateWhat(){
  **/
 function setupCreateWhere(){
     $('.create-what-view').addClass('hidden');
+    $('#on_create_what').val('');
     $('#center_pane').addClass('invisible');
     $('.create-where-view').removeClass('hidden');
 
@@ -297,6 +313,14 @@ function reverse_geocode(marker){
                 locality = '';
             marker.address_ = street_address + locality;
 
+            //Store for summary
+            if(route.length > 0){
+                $('#event_street').val(route);
+            }
+            else{
+                $('#event_street').val(street_address);
+            }
+
             if(createEventSelectedMarker == marker){
                 selectMarker_createWhere(marker);
             }
@@ -393,3 +417,79 @@ function setWhenDate(date){
     updateCreateWhenDates();
 }
 
+
+function setupCreateSummary(){
+    $('.create-when-view').addClass('hidden');
+    $('#center_pane').addClass('invisible');
+    $('#on_create_summary').val('true');
+
+    $.each(markerManager.allMarkers_, function(index, marker){
+        marker.setDraggable(false);
+    });
+
+    //KEYWORDS
+    $.each($('.keyword-tag').not('#keyword_tag_stamp'), function(index, keyword){
+        var $newKeyword = $($(keyword).clone());
+        $newKeyword.find('.keyword-tag-remove').remove();
+        $newKeyword.removeClass('remove-keyword-tag');
+        $('#summary_keyword_list').append($newKeyword);
+    });
+    initScrollPane($('#summary_tag_holder'));
+
+
+    //WHERE
+    $('#summary_where_text').text($('#location-name-field').val());
+    $('#summary_where_address').text($('#location-geocodedaddress-field').val());
+
+    //WHEN
+    var startDate = new Date($('#start_date').val());
+    var endDate = new Date($('#end_date').val());
+    $('#summary_when_start_date').text(formatDateStringForSummary(startDate));
+    if(startDate.getDate() == endDate.getDate() && startDate.getMonth() == endDate.getMonth() && startDate.getYear() == endDate.getYear()){
+        $('#summary_when_end_date').text(formatTimeForSummary(endDate));
+    }
+    else{
+        $('#summary_when_end_date').text(formatDateStringForSummary(endDate));
+    }
+
+    //TITLE
+    $('#summary_event_name_field').autoResize();
+    if(null == $('#summary_event_name_field').val() || $('#summary_event_name_field').val().length < 1){
+        $('#summary_event_name_field').val(formatTitleForSummary($('.keyword-input').first().val(), $('#location-name-field').val(), $('#event_street').val()));
+    }
+    $('#summary_event_name_field').live('change', function(){
+        $('#event_name').val($(this).val());
+        resizePageElements();
+    });
+
+    //Description
+    $('#summary_event_description_field').autoResize();
+    $('#summary_event_description_field').live('change', function(){
+        console.log("description", $(this).val());
+        $('#event_description').val($(this).val());
+        resizePageElements();
+    });
+
+    //WHO
+    $('#add_group_link').live('click', function(){
+        markerManager.hideAllMarkers();
+        showGroups();
+    });
+
+    resizePageElements();
+    $('.create-summary-view').removeClass('hidden');
+}
+function formatDateStringForSummary(myDate){
+    //Create date
+    var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    //turn date into string
+    return dayNames[myDate.getDay()] + " " + monthNames[myDate.getMonth()] + " " + myDate.getDate() + " @ " + formatTimeForSummary(myDate);
+}
+function formatTimeForSummary(myDate){
+    return (myDate.getHours() > 12 ? myDate.getHours()  - 12: myDate.getHours())  + ":" + (myDate.getMinutes() < 10 ? "0" + myDate.getMinutes() : myDate.getMinutes()) + (myDate.getHours() >= 12 ? ' PM' : ' AM')
+}
+function formatTitleForSummary(keyword, location_text, location_street){
+    return keyword + ((null != location_text && location_text.length > 0) ? ' @ ' + location_text : ' on ' + location_street);
+}

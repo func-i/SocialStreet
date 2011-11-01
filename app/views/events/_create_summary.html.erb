@@ -1,16 +1,91 @@
 <% content_for :left_side_pane do %>
+  <div id="left_pane_scroller" class="create-summary-view expand-height scroll-pane include-vertical-bar hidden" style="overflow:auto;">
+    <div class="create-left-pane" >
+      <div id="summary_title_holder">
+        <%= text_area_tag 'summary_event_name', @event.name, :class => "text-shadow edit-inline submit-on-change", :id => "summary_event_name_field" %>
+      </div>
+      <div id="summary_description_holder">
+        <%= text_area_tag 'event_description', @event.description, :placeholder => 'Add a description...', :class => "text-shadow edit-inline submit-on-change", :id => "summary_event_description_field" %>
+      </div>
 
-  <div class="create-left-pane create-what-view">
-    <div id="create_keyword_tag_holder" class="keyword-tag-holder">
-      <ul id="keyword_tag_list">
-        <li id="keyword_tag_stamp" class="keyword-tag create-keyword-tag remove-keyword-tag hidden">
-          <div class="keyword-tag-icon create-keyword-tag-icon rounded-corners-fifteen drop-shadow"></div>
-          <span class="keyword-tag-name create-keyword-tag-name text-shadow"></span>
-          <%= image_tag('remove-keyword.png', :class => 'remove-keyword-tag keyword-tag-remove create-keyword-tag-remove') %>
-        </li>
+
+      <div id="summary_what" style="width:360px; height: 137px;">
+        <div id="summary_what_title" class="text-shadow">
+          What?
+        </div>
+        <div id="summary_tag_holder" style="height:112px; width:355px; overflow-y:auto;">
+          <ul id="summary_keyword_list">
+          </ul>
+        </div>
+      </div>
+
+      <div id="summary_where" style="width:360px; height: 105px; margin-bottom:10px">
+        <div id="summary_where_title" class="text-shadow">
+          Where?
+        </div>
+        <%= image_tag('create-event-marker.png', :style=>"float:left")%>
+        <div style="margin-top:10px;float:left; width:305px">
+          <div id="summary_where_text" class="text-shadow"></div>
+          <div id="summary_where_address" class="text-shadow"></div>
+        </div>
+      </div>
+
+      <div id="summary_when" style="width:360px;height:80px;margin-bottom:20px">
+        <div id="summary_when_title" class="text-shadow">
+          When?
+        </div>
+        <%= image_tag('calendar_icon.png', :style=>"float:left;margin-left:-5px;")%>
+        <div style="width:300px;float:left;margin-top:10px;" class="text-shadow">
+          <span style="color:#FFC233;font: bold 14px/14px Arial, Helvetica, sans-serif;">Starts:</span>
+          <span id="summary_when_start_date" class="text-shadow"></span>
+        </div>
+        <div style="width:300px;float:left;" class="text-shadow">
+          <span style="color:#FFC233;font: bold 14px/14px Arial, Helvetica, sans-serif;">Ends:</span>
+          <span id="summary_when_end_date" class="text-shadow"></span>
+        </div>
+      </div>
+
+      <div id="summary_who" style="width:360px; height:auto;">
+        <div id="summary_who_title" class="text-shadow">
+          Who?
+        </div>
+        <ul id="summary_who_group_list" style="list-style: disc inside none;">
+          <li id="summary_who_group_stamp" class="summary-who-group text-shadow hidden">
+            <span style="color:#FFC233">Everyone</span> <%= select_tag('visibility', options_for_select([['Can', 1], ['Cannot', 2]], 1)) %> Attend
+          </li>
+
+          <li class="summary-who-group text-shadow">
+            <span style="color:#FFC233">Everyone</span> <%= select_tag('visibility', options_for_select([['Can', 1], ['Cannot', 2]], 1)) %> Attend
+          </li>
+          <li id="add_group_link" class="text-shadow">
+            Add Group...
+          </li>
+        </ul>
+      </div>
+      <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"next-arrow drop-shadow") %>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :center_pane do %>
+  <div id="groups_holder" class="hidden">
+    <div id="groups_scroller" class="scroll-pane include-vertical-bar">
+      <ul>
+        <% @groups.each do |group| %>
+          <li class="event-type group-type">
+            <div class="container rounded-corners-four">
+              <%group_class = "#{sprite_class_name_for_group(group)}"%>
+              <div class="event-type-image group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+              <div class="event-type-name group-type-name">
+                <%= group.name %>
+              </div>
+              <%= hidden_field_tag "group_id", group.id %>
+              <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
+              <%= hidden_field_tag "join_code_description", group.join_code_description  %>
+            </div>
+          </li>
+        <% end %>
       </ul>
     </div>
-
-    <%= image_tag('continue-button.png', :id=>'create_what_next_arrow', :class=>"next-arrow drop-shadow #{'invisible' unless @event && !@event.event_keywords.empty?}") %>
   </div>
 <% end %>

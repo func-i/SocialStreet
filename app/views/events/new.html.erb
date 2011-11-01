@@ -6,6 +6,9 @@
     <%= location_fields.hidden_field :geocoded_address, :id => "location-geocodedaddress-field" %>
   <% end %>
 
+  <%= form.hidden_field :name, :id => 'event_name'  %>
+  <%= form.hidden_field :description, :id => 'event_description'  %>
+
   <% (@event.event_keywords || []).each do |keyword| %>
     <input type="hidden" name="event[event_keywords_attributes][][name]" value="<%=keyword.name%>" class="keyword-input" />
   <% end %>
@@ -26,6 +29,11 @@
   <%= render :partial => "create_when.html", :locals => {:event => @event} %>
 </div>
 
-<%= hidden_field_tag "on_create", "true" %>
+<div id="create_summary" class="overlay-group hidden">
+  <%= render :partial => "create_summary.html", :locals => {:event => @event} %>
+</div>
+
+<%= hidden_field_tag "on_create_what", "" %>
+<%= hidden_field_tag "on_create_summary", "" %>
 
 <%= javascript_include_tag "site_specific/create_event", 'fullcalendar.js' %>

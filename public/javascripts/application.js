@@ -142,6 +142,30 @@ $(function() {
     $('#feedback').click(function(){
         closeFeedback();
     });
+
+    //Submit on change & edit inline
+    $('.edit-inline').live('mouseenter', function(){
+        $(this).addClass('edit-inline-mouseover');
+    });
+    $('.edit-inline').live('mouseleave', function(){
+        $(this).removeClass('edit-inline-mouseover');
+    });
+    $('.edit-inline').live('click', function(){
+        $(this).removeClass('edit-inline-mouseover');
+    });
+
+    $('.submit-on-change').live('keyup', function(e){
+        if(e.keyCode == 13 && !e.shiftKey){
+            $(this).trigger('change');
+        }
+    });
+    $('.submit-on-change').live('change', function(){
+        var onChangeForm = $(this).data('on-change-form-id');
+        if(null != onChangeForm){
+            $('#' + onChangeForm).submit();
+        }
+    });
+
 });
 
 function setPlaceholdersInInternetExplorer(){

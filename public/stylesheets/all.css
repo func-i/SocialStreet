@@ -608,6 +608,99 @@ END OF RESET
     font: bold 14px/14px Arial, Helvetica, sans-serif;
     color: white;
 }
+/*#summary_keyword_list{
+    float:left;
+}*/
+#summary_title_holder{
+    width:360px;
+    margin: 5px 0;
+}
+#summary_event_name_field{
+    width:360px;
+    height:28px;
+    border: 0;
+    padding: 0 0 5px 0;
+    margin: 0;
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    text-align: center;
+    background: transparent;
+}
+#summary_description_holder{
+    width:360px;
+}
+#summary_event_description_field{
+    width:360px;
+    height: 18px;
+    border: 0;
+    padding: 0 0 5px 0;
+    margin: 0;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: left;
+    background: transparent;
+}
+#summary_what_title{
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    text-align:left;
+    margin: 5px 0;
+}
+
+#summary_where_title{
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    text-align:left;
+    margin: 5px 0;
+}
+#summary_where_text{
+    color:#FFC233;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    margin-left: 5px;
+    float:left;
+    width: 305px;
+}
+#summary_where_address{
+    color:white;
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    float: left;
+    width: 305px;
+    margin-left: 5px;
+}
+#summary_when_title{
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    text-align:left;
+    margin: 5px 0 0 0;
+}
+#summary_when_start_date{
+    color:white;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    margin-left: 5px;
+}
+#summary_when_end_date{
+    color:white;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    margin-left: 10px;
+}
+#summary_who_title{
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    text-align:left;
+    margin: 5px 0;
+}
+.summary-who-group{
+    width: 360px;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    color: white;
+}
+#add_group_link{
+    width:360px;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
+    color:white;
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 
 /*Arrow*/
