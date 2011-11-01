@@ -243,7 +243,7 @@ function eventTypeClicked(eventType, refreshResults){
 function addGroupToSummary(groupName, groupID){
     var $newGroup = $($('#summary_who_group_stamp').clone());
     $newGroup[0].id = "";
-    $newGroup.find('span').text(groupName);
+    $newGroup.find('.group-permission-name').text(groupName);
     $newGroup.find('#group_id').val(groupID);
     $newGroup.removeClass('hidden');
     $('#summary_who_group_list').append($newGroup);

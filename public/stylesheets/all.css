@@ -697,10 +697,35 @@ END OF RESET
 #add_group_link{
     width:360px;
     font: bold 14px/14px Arial, Helvetica, sans-serif;
-    color:white;
+    color:#FFC233;
     text-decoration: underline;
     cursor: pointer;
 }
+.group-permission{
+    position: relative;
+    cursor: pointer;
+}
+.group-permission ul{
+    display:none;
+    color: #000;
+    z-index:2;
+    left: -10px;
+    width: 60px;
+    position:absolute;
+    /*background: #d2e9f3;*/
+    background: #FFFCD5;
+    padding: 10px;
+}
+.group-permission:hover ul{
+    display:block;
+}
+.group-permission ul li{
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
+}
+.group-permission ul li:hover{
+    text-decoration: underline;
+}
+
 
 
 /*Arrow*/

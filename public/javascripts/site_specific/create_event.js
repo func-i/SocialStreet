@@ -477,26 +477,20 @@ function setupCreateSummary(){
         }
         else{
             var groupName = $('#group_id_' + groupID).closest('.group-type').find('.group-type-name').text();
-            addGroupToSummary(groupName);
+            addGroupToSummary(groupName, groupID);
         }
     });
-    $('#group_permission').live('change', function(){
-        var $this = $(this);
-        var groupID = $this.closest('#summary-who-group').find('#group_id').val();
-        groupID = (groupID && groupID.length > 0) ? groupID : "public"
-
-        $('#event_group_input_' + groupID).remove();
-
-        if($this.val() == 'Can'){
-            $('#event_create_form').append(
-                '<input type="hidden" name="event[event_groups_attributes][][pseudo_group_id]" class="event-group-input" value="' +
-                groupID +
-                '" id="event_group_input_' +
-                groupID +
-                '" />'
-                );
-        }
+    $('.group-permission-can').live('click', function(){
+        var $groupPermission = $(this).closest('.group-permission');
+        $groupPermission.find('span').text('Can');
+        changeGroupPermission($groupPermission.closest('.summary-who-group'));
     });
+    $('.group-permission-cannot').live('click', function(){
+        var $groupPermission = $(this).closest('.group-permission');
+        $groupPermission.find('span').text('Cannot');
+        changeGroupPermission($groupPermission.closest('.summary-who-group'));
+    });
+    
     $('#add_group_link').live('click', function(){
         markerManager.hideAllMarkers();
         showGroups();
@@ -505,6 +499,23 @@ function setupCreateSummary(){
     //Display page
     $('.create-summary-view').removeClass('hidden');
     resizePageElements();
+}
+function changeGroupPermission(summaryWhoGroup){
+    var $summaryWhoGroup = $(summaryWhoGroup);
+    var groupID = $summaryWhoGroup.find('#group_id').val();
+    groupID = (groupID && groupID.length > 0) ? groupID : "public"
+
+    $('#event_group_input_' + groupID).remove();
+
+    if($summaryWhoGroup.find('.group-permission span').text() == 'Can'){
+        $('#event_create_form').append(
+            '<input type="hidden" name="event[event_groups_attributes][][pseudo_group_id]" class="event-group-input" value="' +
+            groupID +
+            '" id="event_group_input_' +
+            groupID +
+            '" />'
+            );
+    }
 }
 function formatDateStringForSummary(myDate){
     //Create date

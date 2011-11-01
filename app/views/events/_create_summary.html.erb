@@ -1,5 +1,5 @@
 <% content_for :left_side_pane do %>
-  <div id="left_pane_scroller" class="create-summary-view expand-height scroll-pane include-vertical-bar hidden" style="overflow:auto;" data-expandBottomOffset="60">
+  <div id="left_pane_scroller" class="create-summary-view expand-height scroll-pane include-vertical-bar hidden" style="overflow:auto;">
     <div class="create-left-pane" >
       <div id="summary_title_holder">
         <%= text_area_tag 'summary_event_name', @event.name, :class => "text-shadow edit-inline submit-on-change", :id => "summary_event_name_field" %>
@@ -50,24 +50,26 @@
           Who?
         </div>
         <ul id="summary_who_group_list" style="list-style: disc inside none;">
-          <li id="summary_who_group_stamp" class="summary-who-group text-shadow hidden">
-            <span style="color:#FFC233">Everyone</span>
-            <%= select_tag('group_permission', options_for_select([['Can', 'Can'], ['Cannot', 'Cannot']], 'Can')) %>
-            Attend
+          <li id="summary_who_group_stamp" class="summary-who-group hidden">
+            <span class="group-permission-name text-shadow">Everyone</span>
+            <span class="group-permission">
+              <span style="color:#FFC233;text-decoration: underline;" class="text-shadow">Can</span>
+              <ul class="drop-shadow">
+                <li class="group-permission-can">Can</li>
+                <li class="group-permission-cannot">Cannot</li>
+              </ul>
+            </span>
+            <span class="text-shadow">Attend</span>
             <%= hidden_field_tag 'group_id', '' %>
           </li>
-
-          <!--          <li class="summary-who-group text-shadow">
-                      <span style="color:#FFC233">Everyone</span> <%#= select_tag('visibility', options_for_select([['Can', 1], ['Cannot', 2]], 1)) %> Attend
-                    </li>-->
           <li id="add_group_link" class="text-shadow">
             Add Group...
           </li>
         </ul>
       </div>
+      <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"drop-shadow create-summary-view hidden", :style => "margin: 15px 20px 15px 208px; cursor: pointer;") %>
     </div>
   </div>
-  <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"next-arrow drop-shadow create-summary-view hidden") %>
 <% end %>
 
 <% content_for :center_pane do %>
