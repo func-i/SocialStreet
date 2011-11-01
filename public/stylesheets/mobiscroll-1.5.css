@@ -11,7 +11,7 @@
     background: #fff;
     color: #000;
 }
-/* Datewheel overlay background */
+/* Datewheel overlay background 
 .dwo {
     width: 100%;
     background: #000;
@@ -21,7 +21,7 @@
     z-index: 1000;
     opacity: .7;
     filter:Alpha(Opacity=70);
-}
+} */
 /* Datewheel wheel container wrapper */
 .dwc {
     display: block;

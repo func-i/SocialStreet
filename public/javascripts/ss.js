@@ -215,9 +215,8 @@ function resizeModals(){
     });
 
     $mainWindowHeight = $mainWindowHeight - 99; //15 for position, 15+12=27 for modal padding, 27+11=38 for modal header, 9 for bottom of screen seperation == 99
-    if (isTouchEnabled() == false){
+    
         $('.pop-up .content').css('max-height', $mainWindowHeight - $saveButtonHeight);
-    }
     $('.pop-up .content').css('min-height', $mainWindowHeight - $saveButtonHeight - 200);
 
     var $sideWindowHeight = $mainWindowHeight - 39; //54+31=85 for sidebar padding, -19 for sidebar margin, -27 for modal padding == 39
@@ -273,8 +272,6 @@ function popup_modal_ajax(modal_divID, modal_title, requestURL, requestParams){
 
 var my_iScrollArr = [];
 function get_iScroller(scrollerID){
-    if(!isTouchEnabled())
-        return null;
 
     for(var i = 0; i < my_iScrollArr.length; i++){
         if(my_iScrollArr[i][0] == scrollerID){
@@ -293,8 +290,6 @@ function refresh_iScrollers(){
 }
 
 function attach_iScroll(divID){
-    if(!isTouchEnabled())
-        return;
 
     var myDiv = $(divID);
 
@@ -320,8 +315,6 @@ function pageless_iscroll_callback(that, e){
 }
 
 function detach_iScroll(divID){
-    if(!isTouchEnabled())
-        return;
 
     var myDiv = $(divID);
 

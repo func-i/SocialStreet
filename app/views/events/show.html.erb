@@ -1,10 +1,10 @@
 
 <div data-role="page" data-theme="a" id="event_main">
   <div data-role="header" data-position="inline">
-    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <%= link_to "Home", '/', {'data-role' => 'button', 'data-theme' => 'd', 'data-position' => 'inline'}%>
     <h1>SocialStreet</h1>
     <% if @event.editable_by?(current_user) %>
-      <%= link_to 'Edit', edit_event_path(@event), {'data-theme' => 'b'}%>
+      <%= link_to 'Edit', edit_event_path(@event), {'data-theme' => 'b', 'data-ajax' => false}%>
     <% end %>
   </div>
 
@@ -12,9 +12,14 @@
     <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
     <span id="event_title"><%= @event.title %></span>
 
-    <div id="more_details_link">
-      <%= link_to "More Details"%>
+    <div data-role="fieldcontain" style="font-size: 18px">
+      <%= address_for(@event.location)%>
+      <span style="float: right; font-size: 14px" id="map_link"><%= link_to "See on Map", "http://maps.google.com/maps?q=#{address_for(@event.location)}" %></span>
     </div>
+
+    <div data-role="fieldcontain" style="font-size: 14px"><%= @event.date_range_as_sentence %> </div>
+
+    <div data-role ="fieldcontain">
 
     <fieldset class="ui-grid-a">
       <%  if(@rsvp && Rsvp.statuses[:attending] == @rsvp.status) %>
@@ -23,19 +28,8 @@
         <div class="ui-block-a"><%= link_to "Attend", [:new, @event, :rsvp], {'data-role' => 'button', 'data-theme' => 'e', 'data-ajax' => false} %></div>
       <% end %>
 
-      <div class="ui-block-b" style="margin: -38px 10px 10px 190px"><%= link_to "Invite People", new_event_rsvp_invitation_path(@event, @rsvp) %></div>
+      <div class="ui-block-b"><%= link_to "Invite People", new_event_rsvp_invitation_path(@event, @rsvp), {'data-role' => 'button', 'data-theme' => 'b'} %></div>
     </fieldset>
-
-
-    <div data-role="fieldcontain" style="font-size: 18px"><%= address_for(@event.location)%>
-      <span style="float:right; font-size: 12px" id="map_link"><%= link_to "See on Map" %></span>
-    </div>
-
-    <div data-role="fieldcontain" style="font-size: 14px"><%= @event.date_range_as_sentence %> </div>
-
-    <div data-role ="fieldcontain">
-
-      <div><%= link_to "#{@event.num_attending} Attending", [:show_attendees, @event] %> </div>
 
     </div>
 
@@ -48,53 +42,11 @@
       <%=@event.description if !@event.description.blank?%>
     </div>
 
-    <div id="event_keyword">
-      <%- @event.searchable_event_types.each do |set| -%>
-        <span><%= set.name %></span>
-      <%- end -%>
-    </div>
-
-
-    <div data-role="fieldcontain" id="event_map_canvas" class="page-map">
-
-    </div>
-
     <div data-role="fieldcontain">
       <% if @event && @event.cancellable_by?(current_user) %>
-        <%= link_to "Cancel Event", [@event], :confirm => 'Are you sure?', :method => 'delete' %>
+        <%= link_to "Cancel Event", [@event], {:confirm => 'Are you sure?', :method => 'delete', "data-role" => "button", "data-theme" => "f"} %>
       <% end %>
     </div>
 
   </div>
 </div>
-
-<script type="text/javascript">
-
-  $('#more_details_link').click(function(event){
-    event.preventDefault(); // Prevent link from following its href
-    document.getElementById('event_details').scrollIntoView();
-  });
-
-  $('#map_link').click(function(event){
-    event.preventDefault(); // Prevent link from following its href
-    document.getElementById('event_map_canvas').scrollIntoView();
-  });
-
-  var latlng = '<%= @event.latitude %>,<%= @event.longitude %>'
-
-  $('#event_main').live("pagebeforeshow", function() {
-    $('#event_map_canvas').gmap('refresh');
-  });
-
-  $('#event_main').live("pageinit",function() {
-
-    $('#event_map_canvas').gmap(
-    {'center': latlng, 'zoom': 15, 'disableDefaultUI': true
-    }).bind('init', function(event, map) {
-      $('#event_map_canvas').gmap('addMarker', {'position': latlng, 'draggable': false, 'bounds': false
-      });
-        $('#event_map_canvas').gmap('refresh');
-    });
-      
-  });
-</script>

@@ -1,16 +1,356 @@
-
 <div data-role="page" id="create_what">
-  <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword...">
-    <% @event_types.each do |event|%>
-      <li>
-        <%= link_to image_tag(event.image_path) + event.name, "#create_when" %>
-      </li>
-    <% end %>
-  </ul>
+  <div data-role="header" data-position="fixed">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+    <%= link_to "Home", '/', {'data-role' => 'button', 'data-theme' => 'b'}%>
+  </div>
+
+  <script type="text/javascript">
+    $('#create_keywords_list li').live('click', function(li) {
+      keyword = $.trim($(this).text());
+      $('#create_keyword').val(keyword);
+    })
+
+    $('#create_what').live("pageshow",function() {
+      var keyword = "";
+      $('#no_results').hide();
+      
+         $('.ui-input-text').live('keyup', function(){
+            keyword = $(this).val();
+            $('#no_results a span').text(keyword);
+            if($('.result:visible').length == 1) {
+              if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
+                 $('#no_results').hide();
+               }
+
+            }
+            else if ($(this).val().length == 0){
+              $('#no_results').hide();
+            }
+            else
+            {
+               $('#no_results').show();
+            }
+         });
+      });
+  </script>
+
+  <div data-role ="content">
+    <div data-role ="fieldcontain">
+      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="create_keywords_list">
+        <li id="no_results"> <%= link_to "#create_where" do %>
+          <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
+          <span></span>
+          <% end  %>
+        </li>
+        <% @event_types.each do |event|%>
+          <li class="result">
+            <%= link_to image_tag(event.image_path, :size => "45x45") + event.name, "#create_where" %>
+          </li>
+
+        <% end %>
+
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div data-role ="page" id="create_where" class="page-map">
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1>SocialStreet</h1>
+    <%= link_to "Next", '#create_when', {'data-role' => 'button', 'data-theme' => 'e'}%>
+  </div>
+
+  <script type="text/javascript">
+
+    var userCurrentLocation = ('<%=users_current_location_string()%>').split(",");
+    var currentLocation = new google.maps.LatLng((parseFloat(userCurrentLocation[0])), parseFloat(userCurrentLocation[1]));
+    console.log(currentLocation);
+    var createMap;
+    var initMarker;
+    var geocoder = new google.maps.Geocoder();
+
+
+    $('#create_where').live("pageshow",function() {
+
+      $('#map-canvas').gmap(
+      {'center': currentLocation, 'zoom': 15, 'mapTypeControl' : false,
+        'navigationControl' : false,
+        'streetViewControl' : false
+      }).bind('init', function(event, map) {
+        createMap = $('#map-canvas').gmap('get', 'map');
+        initMarker = $('#map-canvas').gmap('addMarker', {'position': currentLocation, 'draggable': true, 'bounds': false, 'id': 'init-marker'}, function(map, marker) {
+          findLocation(marker.getPosition(), marker);
+        }).dragend( function(event) {
+          var self = this;
+          findLocation(event.latLng, this);
+        }).click( function() {
+          $('#map-location').val(this.title);
+        });
+
+
+      });
+    });
+
+    function findLocation(location, marker) {
+      $('#map-canvas').gmap('search', {'location': location}, function(results, status) {
+        if ( status === 'OK' ) {
+          $.each(results[0].address_components, function(i,v) {
+            if ( v.types[0] == "administrative_area_level_1" || v.types[0] == "administrative_area_level_2" ) {
+              $('#state'+marker.__gm_id).val(v.long_name);
+            } else if ( v.types[0] == "country") {
+              $('#country'+marker.__gm_id).val(v.long_name);
+            }
+          });
+          marker.setTitle(results[0].formatted_address);
+          $('#map-location').val(results[0].formatted_address);
+          updateLocationParams();
+        }
+      });
+    }
+
+    function updateLocationParams() {
+      bounds =  createMap.getBounds();
+      console.log(bounds);
+      c = bounds.getCenter();
+      console.log(c);
+
+      $('#create_map_lat').val(c.lat());
+      $('#create_map_lng').val(c.lng());
+    }
+
+    $('#map-location').live("keydown", function(e) {
+      if (e.keyCode == 13) {
+        e.stopPropagation();
+        searchLocation(e);
+        $(this).blur();
+        return false;
+      }
+      return true;
+    });
+
+    function searchLocation(e) {
+      var loc = e.target.value;
+      $('#map-canvas').gmap('clear', 'markers');
+      geocoder.geocode({address: loc}, function(results, status) {
+        if(status == google.maps.GeocoderStatus.OK) {
+          createMap.setCenter(results[0].geometry.location);
+          $('#map-canvas').gmap('addMarker', {'position': results[0].geometry.location, 'draggable': true, 'bounds': false}, function (map, marker){
+            findLocation(marker.getPosition(), marker);
+          }).dragend( function(event) {
+            var self = this;
+            findLocation(event.latLng, this);
+          }).click( function() {
+            $('#map-location').val(this.title);
+          });
+        }
+        else if(status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+          alert('No Location Found!');
+        }
+      });
+    }
+
+
+  </script>
+
+  <div>
+    <input type="text" name="name" id="map-location" value="" placeholder="Enter an Address or Use Map" />
+  </div>
+
+  <div id="map-canvas" class="full-page-map"></div>
 
 </div>
 
 <div data-role ="page" id="create_when">
-  <h1>This is the when page</h1>
-  <a href="#create_what">Back to what...</a>
+  <div data-role="header" data-position="inline">
+    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <!--%= link_to "Submit", '#', {'data-role' => 'button', 'data-theme' => 'e', 'onclick' => "$('#new_event').submit();"}%-->
+
+
+    <h1>SocialStreet</h1>
+  </div>
+
+  <script type="text/javascript">
+    //Create date
+    var monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var durationOptions = ['minutes', 'hours', 'days']
+
+    var myDate = new Date();
+    var dateHsh = {};
+    for(var i=0; i < 90; i++){
+      //turn date into string
+      var showDateString = dayNamesShort[myDate.getDay()] + " " + myDate.getDate() + " " + monthNamesShort[myDate.getMonth()];
+      var actualDateString = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate();
+
+      dateHsh[actualDateString] = showDateString;
+
+      myDate = new Date(myDate.getTime() + 86400000);
+    }
+
+    var hourHsh = {};
+    for(i=1; i<=12;i++){
+      hourHsh[i] = i;
+    }
+
+    var minuteHsh = {};
+    for(i=0; i<=11;i++){
+      minuteHsh[i*5] = i*5;
+    }
+
+    var countHsh = {};
+    for(i=1; i<=60; i++){
+      countHsh[i-1] = i;
+    }
+
+    var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}]
+    var durationWheels = [{"Amount" : countHsh}, {"Duration" : durationOptions}]
+
+    $(function() {
+      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').scroller({
+        wheels: wheels,
+        width: 40,
+        theme: 'ios',
+        //btnClass: 'hidden',
+        onClose: function(valueText, inst) {
+
+          console.log(valueText);
+
+          if(valueText.match("NaN") || valueText.search("/") == -1){
+            valueText = fixInvalidValues(valueText);
+            $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(valueText);
+          }
+
+          formatted_start_date = parseDate(valueText);
+          //$('#create_starts_at').val(formatted_start_date);
+          $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(formatted_start_date);
+
+        }
+
+      });
+
+      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').scroller({
+        wheels: wheels,
+        width: 40,
+        theme: 'ios',
+        onClose: function(valueText, inst) {
+
+          if(valueText.match("NaN") || valueText.search("/") == -1){
+            valueText = fixInvalidValues(valueText);
+            $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(valueText);
+          }
+
+          formatted_end_date = parseDate(valueText);
+          $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(formatted_end_date);
+        }
+
+      });
+
+    })
+
+    function parseDate(valueText) {
+
+      console.log(valueText);
+
+      split_array = valueText.split("/");
+      console.log(split_array);
+      new_array = split_array[2].split(" ");
+      split_array.pop();
+      split_array = split_array.concat(new_array);
+      for(i=0; i<5; i++){
+        split_array[i] = parseInt(split_array[i]);
+      }
+      if(split_array[5] == "PM")
+        if(split_array[3] != 12)
+          split_array[3] += 12;
+      //date = new Date(split_array[0], (split_array[1]-1), split_array[2], split_array[3], split_array[4]);
+        date = split_array[0]+"-"+split_array[1]+"-"+split_array[2]+" "+split_array[3]+":"+split_array[4];
+      console.log(date);
+
+      return date;
+    }
+
+    function fixInvalidValues(valueText) {
+      var newValueText;
+      console.log("fixing invalid values");
+      var fixedDate = new Date();
+      temp_array = valueText.split(" ");
+      if(temp_array[0] == "NaN" || temp_array[0] == "-1"){
+        console.log("No Date Specified!");
+        newValueText = fixedDate.getFullYear() + "/" + (fixedDate.getMonth() + 1) + "/" + fixedDate.getDate();
+      }
+      else
+        newValueText = temp_array[0];
+
+      for(i=1; i<temp_array.length; i++) {
+        if(temp_array[i] != "NaN")
+          newValueText += " " + temp_array[i];
+        else
+          if(i == 1){
+            if(fixedDate.getHours() != 12)
+              newValueText += " " + fixedDate.getHours()%12;
+            else
+              newValueText += " " + fixedDate.getHours();
+          }
+
+        else if(i == 2)
+          newValueText += " " + fixedDate.getMinutes();
+        else
+          if(fixedDate.getHours() < 12)
+            newValueText += " " + "AM";
+        else
+          newValueText += " " + "PM";
+      }
+      console.log(newValueText);
+
+      return newValueText;
+    }
+
+    function submitCreateForm() {
+      event.preventDefault();
+      console.log("submitting create form...")
+      $('#create_submit').addClass("ui-disabled");
+      $('#create_submit span').text("Submitting ... ");
+      $('#create_submit').attr("data-theme", "d");
+      $('#new_event').submit();
+    }
+
+  </script>
+
+  <div data-role="content">
+
+    <%=  form.fields_for :searchable do |searchable_fields| %>
+      <%= searchable_fields.hidden_field :keywords, :id => 'create_keyword' %>
+    
+      <%= searchable_fields.fields_for :searchable_date_ranges do |date_range_fields| %>
+        <div data-role="fieldcontain">
+          <label for="startdate">Start Date: </label>
+            <%= date_range_fields.text_field :starts_at, :class => "mobiscroll"%>
+        </div>
+
+        <!--%= date_range_fields.hidden_field :starts_at, :id => 'create_starts_at' %-->
+        <!--%= date_range_fields.hidden_field :ends_at, :id => 'create_ends_at' %-->
+
+        <div data-role="fieldcontain">
+          <label for="startdate">End Date: </label>
+            <%= date_range_fields.text_field :ends_at, :class => "mobiscroll"%>
+        </div>
+
+      <% end %>
+
+      <%= searchable_fields.fields_for :location do |location_fields| %>
+        <%= location_fields.hidden_field :latitude, :id => 'create_map_lat' %>
+        <%= location_fields.hidden_field :longitude, :id => 'create_map_lng'%>
+
+      <%  end %>
+
+        <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "create_submit", "onclick" => "submitCreateForm();" } %>
+        
+    <% end %>
+
+
+  </div>
+
 </div>

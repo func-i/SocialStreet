@@ -1,39 +1,25 @@
 <div data-role="page" class="wallpaper_page" id="home-page">
-  <% if user_signed_in? %>
     <div data-role="header" data-position="inline" data-theme="a">
-      <!--%= link_to 'Searches', profiles_path, {"data-icon" => "star", "data-theme" => "d"}%-->
-      <h1>Welcome to SocialStreet!</h1>
-      <!--%= link_to 'Profile', profiles_path(User.find(current_user)), {"data-icon" => "gear", "data-theme" => "c"}%-->
+      <h1>SocialStreet</h1>
     </div>
 
     <div data-role ="content">
       <div data-role="fieldcontain">
-        <div style="text-align: center;"><%= link_to image_tag("ss_site_logo_big.png") %></div>
+        <div style="text-align: center;"><%= image_tag("ss_site_logo_big.png") %></div>
       </div>
 
-      <div data-role="fieldcontain">
-        <%= link_to 'Explore!', explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search", "rel" => 'external'} %>
-        <%= link_to '+StreetMeet', new_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "rel" => 'external'} %>
+      <% if user_signed_in? %>
+        <div data-role="fieldcontain">
+          <%= link_to 'Explore!', explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search", "data-ajax" => false} %>
+          <%= link_to '+StreetMeet', new_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "rel" => 'external'} %>
+
+
+        <% else %>
+
+          <%= link_to 'Sign In', '/auth/facebook', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "sign-in", "rel" => 'external'} %>
+
+
+        <% end %>
       </div>
-
-    <% else %>
-
-      <div data-role="header" data-position="inline">
-        <h1>SocialStreet</h1>
-      </div>
-
-      <div style="text-align: center;"><%= link_to image_tag("ss_site_logo_big.png") %></div>
-      <%= link_to 'Sign In', '/auth/facebook', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "sign-in", "rel" => 'external'} %>
-
-    <% end %>
+    </div>
   </div>
-
-  <script type='text/javascript'>
-    $('#home-page').live("pagecreate", function() {
-        navigator.geolocation.getCurrentPosition(function(e){
-                updateUserLocation(e.coords.latitude, e.coords.longitude, true);
-            });
-    })
-  </script>
-
-</div>

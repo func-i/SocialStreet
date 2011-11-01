@@ -1,24 +1,20 @@
+<div data-role="header" data-position="inline">
+  <%= link_to "Home", '/', {'data-role' => 'button', 'data-theme' => 'd', 'data-position' => 'inline'}%>
+  <h1>SocialStreet</h1>
+  <%= link_to "Filter", '#explore_filter', {'data-role' => 'button', 'data-theme' => 'e', 'data-position' => 'inline'}%>
+</div>
 
-  <div data-role="content" id="list-view-explore-content">
-    <h3>Here's what's happening around you</h3>
-    <!--div data-role="collapsible-set"-->
-    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="c">
-      <h3>Events</h3>
-      <p>
-      <ul data-role="listview" data-theme="a" data-inset="true">
-        <% @searchables.each do |searchable| %>
-          <% if(!searchable.event.canceled) %>
-            <li id ="searchable_<%=searchable.id%>">
-              <%= link_to image_tag(url_for_event_image(searchable.event), :size => "60x60") + searchable.event.title, event_path(searchable.event) %>
-              <span id="explore-list-address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></span>
-            </li>
-          <%  end %>
-        <% end %>
-      </ul>
-      </p>
+<div data-role="content" id="list-view-explore-content">
+
+  <% if !params[:keyword].blank? %>
+    <div>
+      Only Showing: <span style="font-weight: bold;"><%= params[:keyword] %></span> Events
+      <span style="float:right;"><%= link_to "Remove", '#', {'id' => 'remove_filters'}%></span>
     </div>
+  <% end %>
 
-    <div data-role="fieldcontain">
-      <%= link_to "View Map", '#map-view-explore', {'data-role' => 'button', 'data-theme' => 'b', 'data-position' => 'inline', 'data-transition' => 'flip'}%></div>
+  <%= render "results", :searchable_results => (@searchables || []) %>
 
-  </div>
+</div>
+
+<%= link_to "View Map", '#map-view-explore', {'data-role' => 'button', 'data-theme' => 'b', 'data-position' => 'inline', 'data-transition' => 'flip', 'onclick' => "createMapMarkers();"}%>

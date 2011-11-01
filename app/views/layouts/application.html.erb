@@ -9,26 +9,17 @@
     <link rel="apple-touch-icon"
           href="/images/app_icon.png" />
 
+    <%= include_javascripts :init %>
+    <%= javascript_include_tag "http://code.jquery.com/jquery-1.6.4.min.js", "http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js", "http://maps.google.com/maps/api/js?v=3.5&sensor=true", "http://connect.facebook.net/en_US/all.js"  %>
     <%= include_javascripts :common %>
-
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
-    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-    <script src="/javascripts/jquerym_custom.js"></script>
-    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.5&sensor=true"></script>
-    <script src="/javascripts/jquery.ui.map.js"></script>
-    <script src="/javascripts/jquery.ui.map.extensions.js"></script>
-    <script src="/javascripts/jquery.ui.map.services.js"></script>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/mobile.css" />
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <%=  javascript_include_tag 'ss_MarkerManager', 'rails.js', 'ss_pageless' %>
+    <%= stylesheet_link_tag "http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" %>
+    <%= include_stylesheets :common %>
 
   </head>
 
   <body>
 
-    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
-
+    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/> 
     <%= yield %>
 
 
@@ -37,12 +28,6 @@
 
 
 <script type='text/javascript'>
-  FB.init({
-    appId  : '<%= FACEBOOK_APP_ID %>',
-    status : true, // check login status
-    cookie : true, // enable cookies to allow the server to access the session
-    xfbml  : true  // parse XFBML
-  });
 
   $(function() {
     if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
@@ -58,8 +43,4 @@
         }
     }
 })
-
-function updateUserLocation(latitude, longitude, updateDB){
-    $.getScript('/locations/update_users_location?latitude=' + latitude + '&longitude=' + longitude + '&=update_db=' + updateDB, function(data, textStatus){});
-}
 </script>

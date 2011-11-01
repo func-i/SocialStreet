@@ -62,7 +62,17 @@ class EventsController < ApplicationController
 
   def create
     if create_or_edit_event(params, :create)
-      redirect_to event_path(@event_for_create)
+      #puts "redirecting"
+      #redirect_to event_path(@event_for_create)
+
+       if request.xhr?
+         puts "rendering..."
+        render :update do |page|
+          page.redirect_to @event_for_create
+        end
+      else
+        redirect_to event_path(@event_for_create)
+      end
       #render :update do |page|
        # page.redirect_to event_path(@event_for_create, :invite => true)
       #end
@@ -105,10 +115,11 @@ class EventsController < ApplicationController
 
     @event.searchable.searchable_event_types.destroy_all
     @event_for_edit = @event
+
+    #raise params.inspect
     
     if create_or_edit_event(params, :edit)
       Resque.enqueue(Jobs::Email::EmailUserEditEvent, @event.id)
-      
       render :update do |page|
         page.redirect_to event_path(@event)
       end

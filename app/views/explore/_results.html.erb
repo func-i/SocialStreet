@@ -1,9 +1,13 @@
-<ul data-role="listview" data-theme="a" data-inset="true" id="results_list">
-        <% @searchables.each do |searchable| %>
-            <li >
-              <%= link_to image_tag(url_for_event_image(searchable.event), :size => "60x60") + searchable.event.title, event_path(searchable.event) %>
-              <span id="explore-list-address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></span>
-            </li>
-            
-          <% end %>
-      </ul>
+<ul data-role="listview" data-theme="a" data-inset="true" id="list_view_results">
+  <% @searchables.each do |searchable| %>
+    <% if(!searchable.event.canceled) %>
+      <li id ="searchable_<%=searchable.id%>">
+        <%= link_to event_path(searchable.event) do %>
+          <%= image_tag(url_for_event_image(searchable.event), :size => "45x45") %>
+          <span id="explore_list_title"><%= searchable.event.title %></span>
+          <div id="explore-list-address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></div>
+        <% end %>
+      </li>
+    <%  end %>
+  <% end %>
+</ul>

@@ -66,13 +66,7 @@ SocialStreet::Application.routes.draw do
 
     member do
       get "post_to_facebook"
-    end
-
-    member do
       get "show_attendees"
-    end
-
-    member do
       get "invite_people"
     end
 

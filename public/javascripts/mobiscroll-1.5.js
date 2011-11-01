@@ -1,5 +1,5 @@
 /*!
- * jQuery MobiScroll v1.5
+ * jQuery MobiScroll v1.5.1
  * http://mobiscroll.com
  *
  * Copyright 2010-2011, Acid Media
@@ -10,30 +10,58 @@
 
     function Scroller(elm, dw, settings) {
         var that = this,
+            s = settings,
             yOrd,
             mOrd,
             dOrd,
-            show = false;
+            visible = false;
 
-        this.settings = settings;
+        this.settings = s;
         this.values = null;
         this.val = null;
         // Temporary values
         this.temp = null;
 
+        /**
+        * Set settings for all instances.
+        * @param {Object} o - New default settings.
+        */
         this.setDefaults = function(o) {
             $.extend(defaults, o);
         }
 
+        /**
+        * Enables the scroller and the associated input.
+        */
+        this.enable = function() {
+            s.disabled = false;
+            if ($(elm).is(':input'))
+                $(elm).prop('disabled', false);
+        }
+
+        /**
+        * Disables the scroller and the associated input.
+        */
+        this.disable = function() {
+            s.disabled = true;
+            if ($(elm).is(':input'))
+                $(elm).prop('disabled', true);
+        }
+
+        /**
+        * Format a date into a string value with a specified format.
+        * @param {String} format - Output format.
+        * @param {Date} date - Date to format.
+        * @param {Object} settings - Settings.
+        * @return {String} - Returns the formatted date string.
+        */
         this.formatDate = function (format, date, settings) {
-            console.log('in format date');
-            
             if (!date) return null;
             var s = $.extend({}, this.settings, settings),
                 // Check whether a format character is doubled
                 look = function(m) {
                     var n = 0;
-                    while (i + 1 < format.length && format.charAt(i + 1) == m) {n++;i++;};
+                    while (i + 1 < format.length && format.charAt(i + 1) == m) { n++; i++; };
                     return n;
                 },
                 // Format a number, with leading zero if necessary
@@ -108,6 +136,13 @@
             return output;
         }
 
+        /**
+        * Extract a date from a string value with a specified format.
+        * @param {String} format - Input format.
+        * @param {String} value - String to parse.
+        * @param {Object} settings - Settings.
+        * @return {Date} - Returns the extracted date.
+        */
         this.parseDate = function (format, value, settings) {
             var def = new Date();
             if (!format || !value) return def;
@@ -235,17 +270,25 @@
             return date;
         }
 
+        /**
+        * Gets the selected wheel values, formats it, and set the value of the scroller instance.
+        * If input parameter is true, populates the associated input element.
+        * @param {Boolean} [input] - Also set the value of the associated input element. Default is true.
+        */
         this.setValue = function (input) {
             if (input == undefined) input = true;
             var v = this.formatResult();
             this.val = v;
             this.values = this.temp.slice(0);
-            if (input && $(elm).is('input')) $(elm).val(v).change();
+            if (input && $(elm).is(':input')) $(elm).val(v).change();
         }
 
+        /**
+        * Returns the currently selected date.
+        * @return {Date}
+        */
         this.getDate = function () {
             var d = this.values;
-            var s = this.settings;
             if (s.preset == 'date')
                 return new Date(d[yOrd], d[mOrd], d[dOrd]);
             if (s.preset == 'time') {
@@ -256,14 +299,14 @@
                 var hour = (s.ampm && d[s.seconds ? 6 : 5] == 'PM' && (d[3] - 0) < 12) ? (d[3] - 0 + 12) : d[3];
                 return new Date(d[yOrd], d[mOrd], d[dOrd], hour, d[4], s.seconds ? d[5] : null);
             }
-            if (s.preset == 'custom') {
-                var hour = (s.ampm && d[s.seconds ? 4 : 3] == 'PM' && (d[1] - 0) < 12) ? (d[1] - 0 + 12) : d[1];
-                return new Date(d[yOrd], d[mOrd], d[dOrd], hour, d[2], s.seconds ? d[3] : null);
-            }
         }
 
+        /**
+        * Sets the selected date
+        * @param {Date} d - Date to select.
+        * @param {Boolean} [input] - Also set the value of the associated input element. Default is true.
+        */
         this.setDate = function (d, input) {
-            var s = this.settings;
             if (s.preset.match(/date/i)) {
                 this.temp[yOrd] = d.getFullYear();
                 this.temp[mOrd] = d.getMonth();
@@ -283,28 +326,25 @@
                 if (s.seconds) this.temp[5] = d.getSeconds();
                 if (s.ampm) this.temp[s.seconds ? 6 : 5] = hour > 11 ? 'PM' : 'AM';
             }
-            if (s.preset == 'custom') {
-                var hour = d.getHours();
-                this.temp[1] = (s.ampm) ? (hour > 12 ? (hour - 12) : (hour == 0 ? 12 : hour)) : hour;
-                this.temp[2] = d.getMinutes();
-                if (s.seconds) this.temp[3] = d.getSeconds();
-                if (s.ampm) this.temp[s.seconds ? 4 : 3] = hour > 11 ? 'PM' : 'AM';
-            }
             this.setValue(input);
         }
 
+        /**
+        * Extracts the selected wheel values form the string value.
+        * @param {String} val - String to parse.
+        * @return {Array} Array with the selected wheel values.
+        */
         this.parseValue = function (val) {
-            var s = this.settings;
             if (this.preset) {
                 var result = [];
                 if (s.preset == 'date') {
-                    try {var d = this.parseDate(s.dateFormat, val, s);} catch (e) {var d = new Date();};
+                    try { var d = this.parseDate(s.dateFormat, val, s); } catch (e) { var d = new Date(); };
                     result[yOrd] = d.getFullYear();
                     result[mOrd] = d.getMonth();
                     result[dOrd] = d.getDate();
                 }
                 else if (s.preset == 'time') {
-                    try {var d = this.parseDate(s.timeFormat, val, s);} catch (e) {var d = new Date();};
+                    try { var d = this.parseDate(s.timeFormat, val, s); } catch (e) { var d = new Date(); };
                     var hour = d.getHours();
                     result[0] = (s.ampm) ? (hour > 12 ? (hour - 12) : (hour == 0 ? 12 : hour)) : hour;
                     result[1] = d.getMinutes();
@@ -312,7 +352,7 @@
                     if (s.ampm) result[s.seconds ? 3 : 2] = hour > 11 ? 'PM' : 'AM';
                 }
                 else if (s.preset == 'datetime') {
-                    try {var d = this.parseDate(s.dateFormat + ' ' + s.timeFormat, val, s);} catch (e) {var d = new Date();};
+                    try { var d = this.parseDate(s.dateFormat + ' ' + s.timeFormat, val, s); } catch (e) { var d = new Date(); };
                     var hour = d.getHours();
                     result[yOrd] = d.getFullYear();
                     result[mOrd] = d.getMonth();
@@ -322,26 +362,16 @@
                     if (s.seconds) result[5] = d.getSeconds();
                     if (s.ampm) result[s.seconds ? 6 : 5] = hour > 11 ? 'PM' : 'AM';
                 }
-                else if (s.preset == 'custom') {
-                    console.log('in parse value');
-                    try {var d = this.parseDate(s.dateFormat + ' ' + s.timeFormat, val, s);} catch (e) {var d = new Date();};
-                    var hour = d.getHours();
-                    result[yOrd] = d.getFullYear();
-                    result[mOrd] = d.getMonth();
-                    result[dOrd] = d.getDate();
-                    result[1] = (s.ampm) ? (hour > 12 ? (hour - 12) : (hour == 0 ? 12 : hour)) : hour;
-                    result[2] = d.getMinutes();
-                    if (s.seconds) result[3] = d.getSeconds();
-                    if (s.ampm) result[s.seconds ? 4 : 3] = hour > 11 ? 'PM' : 'AM';
-                    console.log(result);
-                }
                 return result;
             }
             return s.parseValue(val);
         }
 
+        /**
+        * Formats the selected wheel values form the required format.
+        * @return {String} Formatted string.
+        */
         this.formatResult = function () {
-            var s = this.settings;
             var d = this.temp;
             if (this.preset) {
                 if (s.preset == 'date') {
@@ -355,19 +385,18 @@
                     var hour = (s.ampm) ? ((d[s.seconds ? 3 : 2] == 'PM' && (d[0] - 0) < 12) ? (d[0] - 0 + 12) : (d[s.seconds ? 3 : 2] == 'AM' && (d[0] == 12) ? 0 : d[0])) : d[0];
                     return this.formatDate(s.timeFormat, new Date(1970, 0, 1, hour, d[1], s.seconds ? d[2] : null), s);
                 }
-                else if (s.preset == 'custom') {
-                    console.log('in Format Result');
-                    var hour = (s.ampm) ? ((d[s.seconds ? 4 : 3] == 'PM' && (d[1] - 0) < 12) ? (d[1] - 0 + 12) : (d[s.seconds ? 4 : 3] == 'AM' && (d[1] == 12) ? 0 : d[1])) : d[1];
-                    return this.formatDate(s.dateFormat + ' ' + s.timeFormat, new Date(d[yOrd], d[mOrd], d[dOrd], hour, d[2], s.seconds ? d[3] : null), s);
-                }
             }
             return s.formatResult(d);
         }
 
+        /**
+        * Checks if the current selected values are valid together.
+        * In case of date presets it checks the number of days in a month.
+        * @param {Integer} i - Currently changed wheel index, -1 if initial validation.
+        */
         this.validate = function(i) {
-            var s = this.settings;
             // If target is month, show/hide days
-            if (this.preset && s.preset.match(/date/i) && ((i == yOrd) || (i == mOrd))) {
+            if (this.preset && s.preset.match(/date/i) && ((i == yOrd) || (i == mOrd) || (i == -1))) {
                 var days = 32 - new Date(this.temp[yOrd], this.temp[mOrd], 32).getDate() - 1;
                 var day = $('ul:eq(' + dOrd + ')', dw);
                 $('li', day).show();
@@ -378,23 +407,35 @@
                 }
             }
             else {
-                methods.validate(i);
+                s.validate(i);
             }
         }
 
+        /**
+        * Hides the scroller instance.
+        */
         this.hide = function () {
-            this.settings.onClose(this.val, this);
-            $(':input:not(.dwtd)').attr('disabled', false).removeClass('dwtd');
+            // If onClose handler returns false, prevent hide
+            if (s.onClose(this.val, this) === false) return false;
+            // Re-enable temporary disabled fields
+            $('.dwtd').prop('disabled', false).removeClass('dwtd');
             $(elm).blur();
+            // Hide wheels and overlay
             dw.hide();
             dwo.hide();
-            show = false;
-            if (this.preset) this.settings.wheels = null;
+            visible = false;
+            if (this.preset)
+                s.wheels = null;
+            // Stop positioning on window resize
             $(window).unbind('resize.dw');
         }
 
+        /**
+        * Shows the scroller instance.
+        */
         this.show = function () {
-            var s = this.settings;
+            if (s.disabled || visible) return false;
+
             s.beforeShow(elm, this);
             // Set global wheel element height
             h = s.height;
@@ -454,39 +495,6 @@
                     }
                     s.wheels.push(w);
                 }
-                if (s.preset.match(/custom/i)) {
-                    var w = {};
-
-                    var now = new Date();
-                    var x = "Date";
-
-                    w[x] = {};
-
-                    for (i=0; i<90; i++){
-
-                        var currentDate = now.getDate();
-                        var currentDay = now.getDay();
-                        var currentMonth = now.getMonth();
-
-                        now = new Date(now.getTime() + 86400000);
-
-                        w[x][i] = this.formatDate(s.dateFormat, now, s);
-                    }
-
-
-                    w[s.hourText] = {};
-                    for (var i = 0; i < (s.ampm ? 13 : 24); i += s.stepHour)
-                        w[s.hourText][i] = (i < 10) ? ('0' + i) : i;
-                    w[s.minuteText] = {};
-                    for (var i = 0; i < 60; i += (s.stepMinute))
-                        w[s.minuteText][i] = (i < 10) ? ('0' + i) : i;
-                    if (s.ampm) {
-                        w[s.ampmText] = {};
-                        w[s.ampmText]['AM'] = 'AM';
-                        w[s.ampmText]['PM'] = 'PM';
-                    }
-                    s.wheels.push(w);
-                }
             }
 
             // Create wheels containers
@@ -515,6 +523,8 @@
             });
             // Set value text
             $('.dwv', dw).html(this.formatResult());
+            // Initial validate
+            that.validate(-1);
 
             // Init buttons
             $('#dw_set', dw).text(s.setText).unbind().bind('click', function (e) {
@@ -525,20 +535,21 @@
             });
 
             $('#dw_cancel', dw).text(s.cancelText).unbind().bind('click', function (e) {
+                s.onCancel(that.val, inst);
                 that.hide();
                 return false;
             });
 
             // Disable inputs to prevent bleed through (Android bug)
-            $(':input:disabled').addClass('dwtd');
-            $(':input').attr('disabled', true);
+            $(':input:not(:disabled)').addClass('dwtd');
+            $(':input').prop('disabled', true);
             // Show
             dwo.show();
             dw.attr('class', 'dw ' + s.theme).show();
-            show = true;
+            visible = true;
             // Set sizes
             $('.dww, .dwwl', dw).height(s.rows * h);
-            $('.dww', dw).each(function() {$(this).width($(this).parent().width() < s.width ? s.width : $(this).parent().width());});
+            $('.dww', dw).each(function() { $(this).width($(this).parent().width() < s.width ? s.width : $(this).parent().width()); });
             $('.dwbc a', dw).attr('class', s.btnClass);
             $('.dww li, .dwwb', dw).css({
                 height: h,
@@ -546,7 +557,7 @@
             });
             $('.dwwc', dw).each(function() {
                 var w = 0;
-                $('.dwwl', this).each(function() {w += $(this).outerWidth(true);});
+                $('.dwwl', this).each(function() { w += $(this).outerWidth(true); });
                 $(this).width(w);
             });
             $('.dwc', dw).each(function() {
@@ -554,10 +565,12 @@
             });
             // Set position
             this.pos();
-            $(window).bind('resize.dw', function() {that.pos();});
+            $(window).bind('resize.dw', function() { that.pos(); });
         }
 
-        // Set position
+        /**
+        * Positions the scroller instance to the center of the viewport.
+        */
         this.pos = function() {
             var totalw = 0,
                 minw = 0,
@@ -575,15 +588,18 @@
             dw.width(w);
             w = dw.outerWidth();
             h = dw.outerHeight();
-            dw.css({left: (ww - w) / 2, top: st + (wh - h) / 2});
+            dw.css({ left: (ww - w) / 2, top: st + (wh - h) / 2 });
+            //dw.css({ top: 42 }); //hack to display mobiscroller on top of page
             dwo.height(0);
             dwo.height($(document).height());
         }
 
+        /**
+        * Scroller initialization.
+        */
         this.init = function() {
-            var s = this.settings,
-                // Set year-month-day order
-                ty = s.dateOrder.search(/y/i),
+            // Set year-month-day order
+            var ty = s.dateOrder.search(/y/i),
                 tm = s.dateOrder.search(/m/i),
                 td = s.dateOrder.search(/d/i);
             yOrd = (ty < tm) ? (ty < td ? 0 : 1) : (ty < td ? 1 : 2);
@@ -591,28 +607,27 @@
             dOrd = (td < ty) ? (td < tm ? 0 : 1) : (td < tm ? 1 : 2);
             this.preset = (s.wheels === null);
             // Set values
-            if (this.values !== null) {
+            /*if (this.values !== null) {
                 // Clone values array
                 this.temp = this.values.slice(0);
             }
-            else {
-                this.temp = this.parseValue($(elm).val() ? $(elm).val() : '');
-                this.setValue(false);
-            }
+            else {*/
+            this.temp = this.parseValue($(elm).val() ? $(elm).val() : '');
+            this.setValue(false);
+            //}
         }
 
         this.init();
 
         // Set element readonly, save original state
-        $(elm).is('input') ? $(elm).attr('readonly', 'readonly').data('readonly', $(elm).attr('readonly')) : false;
+        if ($(elm).is(':input') && s.showOnFocus)
+            $(elm).data('dwro', $(elm).prop('readonly')).prop('readonly', true);
 
         // Init show datewheel
         $(elm).addClass('scroller').unbind('focus.dw').bind('focus.dw', function (e) {
-            if (!that.settings.disabled && that.settings.showOnFocus && !show)
+            if (s.showOnFocus)
                 that.show();
         });
-        
-        
     }
 
     var dw,
@@ -643,7 +658,7 @@
             theme: '',
             mode: 'scroller',
             preset: 'date',
-            dateFormat: 'D dd M',
+            dateFormat: 'mm/dd/yy',
             dateOrder: 'mmddy',
             ampm: true,
             seconds: false,
@@ -672,6 +687,7 @@
             beforeShow: function() {},
             onClose: function() {},
             onSelect: function() {},
+            onCancel: function() {},
             formatResult: function(d) {
                 var out = '';
                 for (var i = 0; i < d.length; i++) {
@@ -681,6 +697,9 @@
             },
             parseValue: function(val) {
                 return val.split(' ');
+            },
+            validate: function() {
+                return true;
             }
         },
 
@@ -827,14 +846,14 @@
                         e.preventDefault();
                         var t = $(this).closest('.dwwl').find('ul');
                         clearInterval(plustap);
-                        plustap = setInterval(function() {plus(t);}, 200);
+                        plustap = setInterval(function() { plus(t); }, 200);
                         plus(t);
                     }).delegate('.dwwbm', START_EVENT, function (e) {
                         // - Button
                         e.preventDefault();
                         var t = $(this).closest('.dwwl').find('ul');
                         clearInterval(minustap);
-                        minustap = setInterval(function() {minus(t);}, 200);
+                        minustap = setInterval(function() { minus(t); }, 200);
                         minus(t);
                     }).delegate('.dwwl', START_EVENT, function (e) {
                         // Scroll start
@@ -860,15 +879,14 @@
                     scrollers[this.id] = new Scroller(this, dw, settings);
                 });
             },
-            validate: function() { },
             enable: function() {
                 return this.each(function () {
-                    if (scrollers[this.id]) scrollers[this.id].settings.disabled = false;
+                    if (scrollers[this.id]) scrollers[this.id].enable();
                 });
             },
             disable: function() {
                 return this.each(function () {
-                    if (scrollers[this.id]) scrollers[this.id].settings.disabled = true;
+                    if (scrollers[this.id]) scrollers[this.id].disable();
                 });
             },
             isDisabled: function() {
@@ -925,7 +943,8 @@
                 return this.each(function () {
                     if (scrollers[this.id]) {
                         $(this).unbind('focus.dw').removeClass('scroller');
-                        $(this).is('input') ? $(this).attr('readonly', $(this).data('readonly')) : false;
+                        if ($(this).is(':input'))
+                            $(this).prop('readonly', $(this).data('dwro'));
                         delete scrollers[this.id];
                     }
                 });

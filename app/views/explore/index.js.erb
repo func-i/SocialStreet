@@ -1,4 +1,8 @@
-$('#list-view-explore-content').html('<%= escape_javascript(render(:partial => 'list_view', :locals => {:searchable_results => (@searchables || []), :hidden => params[:view].eql?("list")} )) %>');
+<% if params[:view] == "list" %>
+  $('#list-view-explore-content').html('<%= escape_javascript(render(:partial => 'results', :locals => {:searchable_results => (@searchables || [])} )) %>');
+/*<% else %>
+  $('#explore_map_content_holder').html('<%= escape_javascript(render(:partial => 'map_view', :locals => {:searchable_results => (@searchables || [])} )) %>');*/
+<% end %>
 
 var myMarkerManager = getMarkerManager();
 myMarkerManager.clearMarkers();
@@ -13,3 +17,4 @@ var myMarker;
 
 myMarkerManager.placeAllMarkers();
 
+console.log("JS file rendered");
