@@ -15,7 +15,7 @@ class Event < ActiveRecord::Base
   has_many :event_groups
   has_many :groups, :through => :event_groups
 
-  accepts_nested_attributes_for :event_keywords, :location
+  accepts_nested_attributes_for :event_keywords, :location, :event_groups
 
   scope :valid, where(:canceled => false);
   scope :upcoming, where("events.end_date > ?", Time.now)

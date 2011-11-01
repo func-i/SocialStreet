@@ -19,7 +19,7 @@ $(function(){
             isOnExplore() &&
             $(e.target).closest('.keyword-text-field-holder').length < 1 &&
             $(e.target).closest('.event-type').length < 1)
-        {
+            {
             hideEventTypeHolder();
         }
         else if(isOpen &&
@@ -27,14 +27,14 @@ $(function(){
             $(e.target).closest('.group-type').length < 1 &&
             $(e.target).closest('#group_permission_holder').length < 1 &&
             $(e.target).closest('#add_group_button').length < 1)
-        {
+            {
             hideGroups();
         }
         else if(isOpen &&
             isOnCreateSummary() &&
             $(e.target).closest('.group-type').length < 1 &&
             $(e.target).closest('#add_group_link').length < 1)
-        {
+            {
             hideGroups();
         }
 
@@ -110,7 +110,7 @@ function addGroup(groupID, groupCode){
     $.getScript('/profiles/add_group?' +
         'group_id=' + groupID +
         '&group_code=' + groupCode
-);
+        );
 }
 function showEventTypeHolder(){
     $('#event_types_holder').removeClass('hidden');
@@ -183,8 +183,8 @@ function eventTypeClicked(eventType, refreshResults){
             addKeywordToHolder(keywordName, keywordIconClass);
 
             $('#explore_search_params').append(
-            '<input type="hidden" name="keywords[]" class="keyword-input" value="' + keywordName + '" />'
-        );
+                '<input type="hidden" name="keywords[]" class="keyword-input" value="' + keywordName + '" />'
+                );
 
             $('#explore_keyword_header').removeClass('hidden').removeClass('invisible');
             if($('.keyword-tag-holder').height() > 150)
@@ -198,8 +198,8 @@ function eventTypeClicked(eventType, refreshResults){
             addKeywordToHolder(keywordName, keywordIconClass);
 
             $('#event_create_form').append(
-            '<input type="hidden" name="event[event_keywords_attributes][][name]" class="keyword-input" value="' + keywordName + '" />'
-        );
+                '<input type="hidden" name="event[event_keywords_attributes][][name]" class="keyword-input" value="' + keywordName + '" />'
+                );
 
             resizeWhatTags();
 
@@ -207,16 +207,18 @@ function eventTypeClicked(eventType, refreshResults){
             $('#create_what_tags').removeClass('invisible');
         }
         else if(isOnCreateSummary()){
-            var $newGroup = $($('#summary_who_group_stamp').clone());
-            $newGroup[0].id = "";
-            $newGroup.find('span').text(keywordName);
-            $newGroup.removeClass('hidden');
-            $('#summary_who_group_list').append($newGroup);
-            var $addGroupLink = $('#add_group_link').remove();
-            $('#summary_who_group_list').append($addGroupLink);
+            var groupID = $eventType.find('.group-id').val();
+            addGroupToSummary(keywordName, groupID);
+
+            $('#event_create_form').append(
+                '<input type="hidden" name="event[event_groups_attributes][][pseudo_group_id]" class="event-group-input" value="' +
+                groupID +
+                '" id="event_group_input_' +
+                groupID +
+                '" />'
+                );
 
             hideGroups();
-
         }
         else if(isOnSettings()){
             if($eventType.find('#group_required').val() == 'false'){
@@ -236,6 +238,17 @@ function eventTypeClicked(eventType, refreshResults){
             }
         }
     }
+}
+
+function addGroupToSummary(groupName, groupID){
+    var $newGroup = $($('#summary_who_group_stamp').clone());
+    $newGroup[0].id = "";
+    $newGroup.find('span').text(groupName);
+    $newGroup.find('#group_id').val(groupID);
+    $newGroup.removeClass('hidden');
+    $('#summary_who_group_list').append($newGroup);
+    var $addGroupLink = $('#add_group_link').remove();
+    $('#summary_who_group_list').append($addGroupLink);
 }
 
 function addKeywordToHolder(keywordName, keywordIconClass){
@@ -357,10 +370,10 @@ function isOnExplore(){
     return $('#on_explore').length > 0;
 }
 function isOnCreateWhat(){
-    return $('#on_create_what').val().length > 0;
+    return $('#on_create_what').val() && $('#on_create_what').val().length > 0;
 }
 function isOnCreateSummary(){
-    return $('#on_create_summary').val().length > 0;
+    return $('#on_create_summary').val() && $('#on_create_summary').val().length > 0;
 }
 function isOnSettings(){
     return $('#on_settings').length > 0;

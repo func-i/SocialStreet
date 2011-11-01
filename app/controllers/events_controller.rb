@@ -23,6 +23,8 @@ class EventsController < ApplicationController
 
     @event.start_date = Time.now.advance(:hours => 3).floor(15.minutes)
     @event.end_date = Time.now.advance(:hours => 6).floor(15.minutes)
+
+    @event.event_groups.build(:group_id => nil)
     
     @location = @event.build_location
 

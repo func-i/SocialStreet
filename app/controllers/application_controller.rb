@@ -79,10 +79,15 @@ class ApplicationController < ActionController::Base
     end
 
     @event.attributes = params[:event]
-    #@event.location.user = current_user if @event.location
+
+#    @event.private = true
+#    @event.event_groups.each do |event_group|
+#      if event_group.group_id.nil?
+#        @event.private = false
+#      end
+#    end
 
     if @event.save
-      # Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
       return true
     end
 

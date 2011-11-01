@@ -470,13 +470,41 @@ function setupCreateSummary(){
     });
 
     //WHO
+    $.each($('.event-group-input'), function(index, group){
+        var groupID = $(group).val();
+        if(groupID == 'public'){
+            addGroupToSummary('Everyone');
+        }
+        else{
+            var groupName = $('#group_id_' + groupID).closest('.group-type').find('.group-type-name').text();
+            addGroupToSummary(groupName);
+        }
+    });
+    $('#group_permission').live('change', function(){
+        var $this = $(this);
+        var groupID = $this.closest('#summary-who-group').find('#group_id').val();
+        groupID = (groupID && groupID.length > 0) ? groupID : "public"
+
+        $('#event_group_input_' + groupID).remove();
+
+        if($this.val() == 'Can'){
+            $('#event_create_form').append(
+                '<input type="hidden" name="event[event_groups_attributes][][pseudo_group_id]" class="event-group-input" value="' +
+                groupID +
+                '" id="event_group_input_' +
+                groupID +
+                '" />'
+                );
+        }
+    });
     $('#add_group_link').live('click', function(){
         markerManager.hideAllMarkers();
         showGroups();
     });
 
-    resizePageElements();
+    //Display page
     $('.create-summary-view').removeClass('hidden');
+    resizePageElements();
 }
 function formatDateStringForSummary(myDate){
     //Create date
