@@ -24,7 +24,7 @@ class EventsController < ApplicationController
     @event.start_date = Time.now.advance(:hours => 3).floor(15.minutes)
     @event.end_date = Time.now.advance(:hours => 6).floor(15.minutes)
 
-    @event.event_groups.build(:group_id => nil)
+    @event.event_groups.build(:group_id => nil, :can_attend => true, :can_view => true)
     
     @location = @event.build_location
 
@@ -36,7 +36,6 @@ class EventsController < ApplicationController
   end
 
   def create
-
     if create_or_edit_event(params, :create)     
 
       @event.reload
@@ -71,27 +70,16 @@ class EventsController < ApplicationController
   end
 
   def update
-    event = Event.find params[:id]
+    @event = Event.find params[:id]
 
-    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
-
-    if params[:event][:event_keywords_attributes]
-      event.event_keywords.each do |keyword|
-        keyword.destroy
-      end
-    end
-
-    event.attributes = params[:event]
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
 
     # => TODO, what happens if the save fails?s
-    event.save
+    if create_or_edit_event(params, :edit)
 
-    Resque.enqueue(Jobs::Email::EmailUserEditEvent, event.id)
+      Resque.enqueue(Jobs::Email::EmailUserEditEvent, @event.id)
 
-    if params[:event][:event_keywords_attributes] #HACK HACK HACKITY HACK
-      redirect_to event
-    else
-      render :nothing => true
+      redirect_to @event
     end
   end
 

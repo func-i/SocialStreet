@@ -471,37 +471,30 @@ function setupCreateSummary(){
 
     //WHO
     $.each($('.event-group-input'), function(index, group){
-        var groupID = $(group).val();
+        var splitID = group.id.split('_');
+        var groupID = splitID[splitID.length - 1];
+
+        var $newGroup = null;
         if(groupID == 'public'){
-            addGroupToSummary('Everyone');
+            $newGroup = addGroupToSummary('Everyone', 'public');
         }
         else{
             var groupName = $('#group_id_' + groupID).closest('.group-type').find('.group-type-name').text();
-            addGroupToSummary(groupName, groupID);
+            $newGroup = addGroupToSummary(groupName, groupID);
         }
+
+        var permissionLevel = $(group).val();
+        if(permissionLevel == 2)
+            changeGroupPermission($newGroup.find('.group-permission-join'));
+        else if(permissionLevel == 1)
+            changeGroupPermission($newGroup.find('.group-permission-view'));
+        else if(permissionLevel == 0)
+            changeGroupPermission($newGroup.find('.group-permission-nothing'));
     });
-    $('.group-permission-view').live('click', function(){
-        $('.group-permission .selected').removeClass('selected');
-        $(this).addClass('selected');
-        var $groupPermission = $(this).closest('.group-permission');
-        $groupPermission.find('span').text('View');
-        changeGroupPermission($groupPermission.closest('.summary-who-group'));
-    });
-    $('.group-permission-join').live('click', function(){
-        $('.group-permission .selected').removeClass('selected');
-        $(this).addClass('selected');
-        var $groupPermission = $(this).closest('.group-permission');
-        $groupPermission.find('span').text('View & Join');
-        changeGroupPermission($groupPermission.closest('.summary-who-group'));
-    });
-    $('.group-permission-nothing').live('click', function(){
-        $('.group-permission .selected').removeClass('selected');
-        $(this).addClass('selected');
-        var $groupPermission = $(this).closest('.group-permission');
-        $groupPermission.find('span').text('do nothing');
-        changeGroupPermission($groupPermission.closest('.summary-who-group'));
-    });
-    
+    $('.group-permission ul li').live('click', function(){
+        changeGroupPermission(this);
+    })
+
     $('#add_group_link').live('click', function(){
         markerManager.hideAllMarkers();
         showGroups();
@@ -511,22 +504,33 @@ function setupCreateSummary(){
     $('.create-summary-view').removeClass('hidden');
     resizePageElements();
 }
-function changeGroupPermission(summaryWhoGroup){
-    var $summaryWhoGroup = $(summaryWhoGroup);
+function changeGroupPermission(permissionLI){
+    var $permissionLI = $(permissionLI);
+    var permissionLevel = $permissionLI.hasClass('group-permission-join') ? 2 : $permissionLI.hasClass('group-permission-view') ? 1 : 0;
+    var $groupPermission = $permissionLI.closest('.group-permission');
+    var $summaryWhoGroup = $groupPermission.closest('.summary-who-group');
     var groupID = $summaryWhoGroup.find('#group_id').val();
-    groupID = (groupID && groupID.length > 0) ? groupID : "public"
+    groupID = (groupID && groupID.length > 0) ? groupID : "public";
 
+    //Set select LI
+    $groupPermission.find('.selected').removeClass('selected');
+    $permissionLI.addClass('selected');
+
+    //Set permission level text
+    $groupPermission.find('span').text(permissionLevel == 2 ? 'View & Join' : permissionLevel == 1 ? 'View' : 'Do Nothing' );
+
+    //Create Group Inputs
+    createGroupInputs(groupID, permissionLevel)
+}
+function createGroupInputs(groupID, permissionLevel){
     $('#event_group_input_' + groupID).remove();
 
-    if($summaryWhoGroup.find('.group-permission span').text() == 'Can'){
-        $('#event_create_form').append(
-            '<input type="hidden" name="event[event_groups_attributes][][pseudo_group_id]" class="event-group-input" value="' +
-            groupID +
-            '" id="event_group_input_' +
-            groupID +
-            '" />'
-            );
-    }
+    $('#event_create_form').append(
+        '<input type="hidden" class="event-group-input" ' +
+        'id="event_group_input_' + groupID + '" ' +
+        'name="group[' + groupID + ']"' +
+        'value="' + permissionLevel + '" />'
+        );
 }
 function formatDateStringForSummary(myDate){
     //Create date

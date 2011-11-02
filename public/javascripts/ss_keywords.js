@@ -210,13 +210,7 @@ function eventTypeClicked(eventType, refreshResults){
             var groupID = $eventType.find('.group-id').val();
             addGroupToSummary(keywordName, groupID);
 
-            $('#event_create_form').append(
-                '<input type="hidden" name="event[event_groups_attributes][][pseudo_group_id]" class="event-group-input" value="' +
-                groupID +
-                '" id="event_group_input_' +
-                groupID +
-                '" />'
-                );
+            createGroupInputs(groupID, 2);
 
             hideGroups();
         }
@@ -243,12 +237,17 @@ function eventTypeClicked(eventType, refreshResults){
 function addGroupToSummary(groupName, groupID){
     var $newGroup = $($('#summary_who_group_stamp').clone());
     $newGroup[0].id = "";
+    
     $newGroup.find('.group-permission-name').text(groupName);
     $newGroup.find('#group_id').val(groupID);
     $newGroup.removeClass('hidden');
+
     $('#summary_who_group_list').append($newGroup);
+
     var $addGroupLink = $('#add_group_link_li').remove();
     $('#summary_who_group_list').append($addGroupLink);
+
+    return $newGroup;
 }
 
 function addKeywordToHolder(keywordName, keywordIconClass){

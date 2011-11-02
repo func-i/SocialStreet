@@ -75,15 +75,30 @@ class ApplicationController < ActionController::Base
     if action == :create
       #Create the event
       @event = Event.new()
-      @event.user = current_user if current_user # TODO: remove if statement when enforced.
+      @event.user = current_user if current_user
+    elsif action == :edit
+      @event.event_keywords.each do |keyword|
+        keyword.destroy
+      end
     end
 
     @event.attributes = params[:event]
 
+    #Groups
     @event.private = true
-    @event.event_groups.each do |event_group|
-      if event_group.group_id.nil?
-        @event.private = false
+    @event.event_groups.each do |e_g|
+      e_g.destroy
+    end
+    params[:group].each do |groupID, permissionLevel|
+      e_g = @event.event_groups.build
+      e_g.can_view = permissionLevel.to_i >= 1
+      e_g.can_attend = permissionLevel.to_i >= 2
+
+      if groupID.eql?('public')
+        e_g.group_id = nil
+        @event.private = false if e_g.can_view
+      else
+        e_g.group_id = groupID
       end
     end
 

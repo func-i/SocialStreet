@@ -60,24 +60,25 @@ class ExploreBaseController < ApplicationController
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
     events = within_bounds(events, map_bounds)
 
-    #events = with_permission(events)
+    events = with_permission(events)
 
     return events;
   end
 
   def with_permission(events)
+    events = events.joins('LEFT OUTER JOIN event_groups ON event_groups.event_id = events.id')
     query = []
     query << "(
-      events.private NOT TRUE
+      NOT events.private
     )"
 
     if current_user
-      current_user.groups.each do |group|
-        query << "events"
+      current_user.user_groups.each do |user_group|
+        query << "(event_groups.group_id = #{user_group.group_id} AND event_groups.can_view)"
       end
     end
 
-    return events
+    return events.where(query.join(" OR "))
   end
 
   def with_keywords(event, keywords)
