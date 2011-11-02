@@ -5,14 +5,7 @@ class ExploreBaseController < ApplicationController
 
     init_page
 
-    @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
-
-    @events = find_events
-
-    @events = @events.order("events.start_date ASC");
-    @events = @events.all
-
-    @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
+    get_events();
 
     if request.xhr?
       render "/shared/ajax_load.js", :locals => {:file_name_var => @file_var_name}
@@ -22,17 +15,32 @@ class ExploreBaseController < ApplicationController
   def super_search
     @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
 
-    @events = find_events
-    @events = @events.order("events.start_date ASC");
-    @events = @events.all
-
-    @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
+    get_events();
   end
 
   protected
 
   def init_page
     @event_types = EventType.order('name').includes(:synonym).all
+  end
+
+  def get_events()
+    @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
+
+    @events = find_events
+
+    @events = @events.order("events.start_date ASC");
+    @events = @events.all
+
+    @events.each do |event|
+      puts event.inspect
+    end
+    
+
+    #@events.uniq_by!{ |event| event.id }
+
+    @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
+
   end
 
   def find_events(args = {})
@@ -52,7 +60,24 @@ class ExploreBaseController < ApplicationController
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
     events = within_bounds(events, map_bounds)
 
+    #events = with_permission(events)
+
     return events;
+  end
+
+  def with_permission(events)
+    query = []
+    query << "(
+      events.private NOT TRUE
+    )"
+
+    if current_user
+      current_user.groups.each do |group|
+        query << "events"
+      end
+    end
+
+    return events
   end
 
   def with_keywords(event, keywords)

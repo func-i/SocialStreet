@@ -80,12 +80,12 @@ class ApplicationController < ActionController::Base
 
     @event.attributes = params[:event]
 
-#    @event.private = true
-#    @event.event_groups.each do |event_group|
-#      if event_group.group_id.nil?
-#        @event.private = false
-#      end
-#    end
+    @event.private = true
+    @event.event_groups.each do |event_group|
+      if event_group.group_id.nil?
+        @event.private = false
+      end
+    end
 
     if @event.save
       return true

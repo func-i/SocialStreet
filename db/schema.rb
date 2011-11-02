@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111027191118) do
+ActiveRecord::Schema.define(:version => 20111102145642) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(:version => 20111027191118) do
     t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "can_view"
+    t.boolean  "can_attend"
   end
 
   create_table "event_keywords", :force => true do |t|

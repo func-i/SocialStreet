@@ -247,7 +247,7 @@ function addGroupToSummary(groupName, groupID){
     $newGroup.find('#group_id').val(groupID);
     $newGroup.removeClass('hidden');
     $('#summary_who_group_list').append($newGroup);
-    var $addGroupLink = $('#add_group_link').remove();
+    var $addGroupLink = $('#add_group_link_li').remove();
     $('#summary_who_group_list').append($addGroupLink);
 }
 

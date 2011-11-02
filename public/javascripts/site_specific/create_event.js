@@ -480,14 +480,25 @@ function setupCreateSummary(){
             addGroupToSummary(groupName, groupID);
         }
     });
-    $('.group-permission-can').live('click', function(){
+    $('.group-permission-view').live('click', function(){
+        $('.group-permission .selected').removeClass('selected');
+        $(this).addClass('selected');
         var $groupPermission = $(this).closest('.group-permission');
-        $groupPermission.find('span').text('Can');
+        $groupPermission.find('span').text('View');
         changeGroupPermission($groupPermission.closest('.summary-who-group'));
     });
-    $('.group-permission-cannot').live('click', function(){
+    $('.group-permission-join').live('click', function(){
+        $('.group-permission .selected').removeClass('selected');
+        $(this).addClass('selected');
         var $groupPermission = $(this).closest('.group-permission');
-        $groupPermission.find('span').text('Cannot');
+        $groupPermission.find('span').text('View & Join');
+        changeGroupPermission($groupPermission.closest('.summary-who-group'));
+    });
+    $('.group-permission-nothing').live('click', function(){
+        $('.group-permission .selected').removeClass('selected');
+        $(this).addClass('selected');
+        var $groupPermission = $(this).closest('.group-permission');
+        $groupPermission.find('span').text('do nothing');
         changeGroupPermission($groupPermission.closest('.summary-who-group'));
     });
     
