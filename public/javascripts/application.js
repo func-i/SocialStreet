@@ -3,46 +3,14 @@ var cleanUpSelf = function(){};
 $(function() {
     //Ajax call when clicking nav buttons
     $('.nav-link').live('click', function(e) {
-        cleanup();
-
-        var href;
-        if($(this).data('ajax-href') != '') {
-            href = $(this).data('ajax-href');
-        }
-        else if(this.href != undefined) {
-            href = this.href;
-        }
-
-            
-        if(href != undefined) {
-            if(history && history.pushState) {
-
-                $.getScript(href, function() {
-                    resizePageElements();
-                    setPlaceholdersInInternetExplorer();
-                });
-                history.pushState({}, "", href);
-            }
-            else{
-                window.location = href;
-            }
-            e.preventDefault();
-            e.stopPropagation();
-        }       
+        navLink(this);
+        e.preventDefault();
+        e.stopPropagation();
     });
 
     //Ajax Link
     $('.ajax-link').live('click', function(e){
-        var href;
-        if($(this).data('ajax-href') != '') {
-            href = $(this).data('ajax-href');
-        }
-        else if(this.href != undefined) {
-            href = this.href;
-        }
-
-        if(href != undefined)
-            $.getScript(href);
+        ajaxLink(this);
     });
 
     //Signin link
@@ -56,6 +24,25 @@ $(function() {
 
     $('#how_it_works_find').click(function() {
         closeHowItWorks();
+    });
+
+    //Invite User Link
+    $('.join-event-btn').live('click', function(e){
+        $this = $(this);
+        if($('#on_show_event').length > 0){
+            if($this.data('can-attend')){
+                ajaxLink($this)
+            }
+            else{
+                showGroups();
+            }
+        }
+        else{
+            navLink($this);
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
     });
 
     //HISTORY. Pop state is called when pressing back button in the browser
@@ -169,6 +156,44 @@ $(function() {
 
 });
 
+function navLink(link, e){
+    cleanup();
+
+    var href;
+    if($(link).data('ajax-href') != '') {
+        href = $(link).data('ajax-href');
+    }
+    else if(link.href != undefined) {
+        href = link.href;
+    }
+
+
+    if(href != undefined) {
+        if(history && history.pushState) {
+
+            $.getScript(href, function() {
+                resizePageElements();
+                setPlaceholdersInInternetExplorer();
+            });
+            history.pushState({}, "", href);
+        }
+        else{
+            window.location = href;
+        }
+    }
+}
+function ajaxLink(link){
+    var href;
+    if($(link).data('ajax-href') != '') {
+        href = $(link).data('ajax-href');
+    }
+    else if(link.href != undefined) {
+        href = link.href;
+    }
+
+    if(href != undefined)
+        $.getScript(href);
+}
 function setPlaceholdersInInternetExplorer(){
     if(getInternetExplorerVersion() != -1){
         $.each($('.ie-placeholder'), function(index, input){

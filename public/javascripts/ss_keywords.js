@@ -261,7 +261,7 @@ function eventTypeClicked(eventType, refreshResults){
 }
 
 function rsvpToEvent(){
-    $('#join_event_btn').data('ajax-href');
+    ajaxLink($('.join-event-btn')[0]);
 }
 
 function addGroupToSummary(groupName, groupID){

@@ -56,7 +56,7 @@
         </div>
 
         <div id="join_btn_holder" class="event-details-view">
-          <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => @event}) %>
+          <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => @event, :on_show => true}) %>
         </div>
       </div>
 
@@ -114,7 +114,7 @@
 
 
 <% content_for :center_pane do %>
-  <div id="groups_holder" class="hidden">
+  <div id="groups_holder" class="<%= 'hidden' unless params[:group]%>">
     <div class="container text-shadow" style="width:80%; height: auto;margin: 0 auto; font: bold 14px/14px Arial, Helvetica, sans-serif; color:white;padding: 20px;text-align:center;">
       To Join this Event, you must be a member of one of these groups. Please click on a group to become a member.
     </div>
@@ -156,6 +156,7 @@
 <% end %>
 
 <%= hidden_field_tag 'invite_view_bool', params[:invite] %>
+<%= hidden_field_tag 'group_view_bool', params[:group] %>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>
 <%= hidden_field_tag 'lng', @event.location.longitude %>

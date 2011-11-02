@@ -1,6 +1,12 @@
 <% if @success %>
   hideGroupPermissionHolder();
-  addKeywordToHolder($('#group_permission_name').val() ,$('#group_permission_icon_class').val());
+
+  if(isOnShowEvent()){
+    rsvpToEvent();
+  }
+  else if(isOnSettings){
+    addKeywordToHolder($('#group_permission_name').val() ,$('#group_permission_icon_class').val());
+  }
 <% else %>
   $('#group_permission_error').removeClass('hidden');
 <% end %>

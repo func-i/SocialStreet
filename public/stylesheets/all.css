@@ -352,12 +352,6 @@ END OF RESET
     padding: 3px 10px;
     width: 80px;
 }
-.result-join-btn-holder .join-event-btn{
-    font: bold 14px/32px Arial, Helvetica, sans-serif;
-    margin: 2px 10px 0 0;
-    padding: 3px 10px;
-}
-
 #suggested_actions{
     /*padding:60px 0 0 15px;
     height: 70px;*/
@@ -426,15 +420,6 @@ END OF RESET
     margin-top: -4px;
 }
 
-.join-event-btn{
-    color: #010000;
-    background: #FFC233;
-    font: bold 22px/32px Arial, Helvetica, sans-serif;
-    padding: 3px 50px;
-    cursor: pointer;
-    width: 80px;
-    text-align: center;
-}
 .invite-friends-btn{
     color: #010000;
     background: #9c3;

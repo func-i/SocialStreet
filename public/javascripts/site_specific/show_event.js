@@ -199,6 +199,10 @@ function setupShowEventPage(){
     }
     else{
         showEventView();
+
+        if($('#group_view_bool').val()){
+            showGroups();
+        }
     }
 
     getInvitationUsers();//Load invitation users on delay
@@ -225,7 +229,6 @@ function showInvitationView(){
 
     resizeLayout();
 }
-
 function showEventView(){
     $('.event-invitation-view').addClass('hidden');
     $('#center_pane').addClass('invisible');
@@ -236,6 +239,7 @@ function showEventView(){
     resizeLayout();
 
 }
+
 
 function getInvitationUsers(){
     setTimeout(function() {

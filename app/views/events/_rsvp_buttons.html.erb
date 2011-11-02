@@ -1,14 +1,26 @@
 <% if event.canceled %>
   <%= image_tag('canceled-btn.png') %>
+
 <% else %>
+
   <% if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
     <%= image_tag('invite-friends-btn.png', :class=>"nav-link", "data-ajax-href" => event_path(event, :invite => true)) %>
-    <div class="unattend-btn">
-      <%=link_to "I can no longer attend...", [:edit, event, rsvp], :remote=>true %>
-    </div>
+
+    <% if on_show %>
+      <div class="unattend-btn">
+        <%=link_to "I can no longer attend...", [:edit, event, rsvp], :remote=>true %>
+      </div>
+    <% end %>
+
   <% else %>
-    <% if event.can_attend?(current_user) %>
-      <%= image_tag('ill-join-btn.png', :class=>"ajax-link", :id=>'join_event_btn', "data-ajax-href" => new_event_event_rsvp_path(@event)) %>
+    <% if on_show %>
+      <%= image_tag('ill-join-btn.png', :class=>"join-event-btn", "data-ajax-href" => new_event_event_rsvp_path(event), "data-can-attend" => event.can_attend?(current_user)) %>
+    <% else %>
+      <% if event.can_attend?(current_user) %>
+        <%= image_tag('ill-join-btn.png', :class=>"join-event-btn", "data-ajax-href" => new_event_event_rsvp_path(event)) %>
+      <% else %>
+        <%= image_tag('ill-join-btn.png', :class=>"join-event-btn", "data-ajax-href" => event_path(event, :group => true)) %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

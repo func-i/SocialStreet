@@ -149,7 +149,7 @@ class Event < ActiveRecord::Base
     end
 
     return false unless user
-    return true if event_rsvps.by_user(user).first.try(:organizer)
+    #return true if event_rsvps.by_user(user).first.try(:organizer)
     return false
   end
 
