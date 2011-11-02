@@ -1,0 +1,35 @@
+/* 
+    Document   : smow_ie
+    Created on : 15-Oct-2011, 10:52:00 AM
+    Author     : jonathan
+    Description:
+        Purpose of the stylesheet follows.
+
+        Provide IE css styles for the SMOW html email
+*/
+
+.header-text {
+    top: 25px;
+}
+
+.table-bg {
+    background-image: none !important;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.blue-td {
+  border: none !important;
+}
+
+.top-site-link {
+    padding-left: 150px !important;
+}
+
+.bottom-join-btn {
+    left: 250px !important;
+}
+
+.bottom-site-link {
+    padding-left: 290px !important;
+}
