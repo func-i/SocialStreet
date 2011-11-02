@@ -37,6 +37,14 @@ $(function(){
             {
             hideGroups();
         }
+        else if(isOpen &&
+            isOnShowEvent() &&
+            $(e.target).closest('.group-type').length < 1 &&
+            $(e.target).closest('#group_permission_holder').length < 1 &&
+            $(e.target).closest('#join_btn_holder').length < 1)
+            {
+            hideGroups();
+        }
 
     });
 
@@ -231,7 +239,29 @@ function eventTypeClicked(eventType, refreshResults){
                 showGroupPermissionHolder();
             }
         }
+        else if(isOnShowEvent()){
+            if($eventType.find('#group_required').val() == 'false'){
+                addGroup($eventType.find('#group_id').val(), null);
+                hideGroups();
+
+                rsvpToEvent();
+            }
+            else{
+                $('#group_permission_id').val($eventType.find('#group_id').val());
+                $('.join-code-text').text($eventType.find('#join_code_description').val());
+                $('#group_permission_name').val(keywordName);
+                $('#group_permission_icon_class').val(keywordIconClass);
+                $('#group_permission_icon').addClass(keywordIconClass);
+
+                hideGroups();
+                showGroupPermissionHolder();
+            }
+        }
     }
+}
+
+function rsvpToEvent(){
+    $('#join_event_btn').data('ajax-href');
 }
 
 function addGroupToSummary(groupName, groupID){
@@ -376,6 +406,9 @@ function isOnCreateSummary(){
 }
 function isOnSettings(){
     return $('#on_settings').length > 0;
+}
+function isOnShowEvent(){
+    return $('#on_show_event').length > 0;
 }
 
 

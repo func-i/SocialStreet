@@ -18,6 +18,7 @@ class EventRsvpsController < ApplicationController
 
   def edit
     @event = Event.find params[:event_id].to_i
+
     rsvp = @event.event_rsvps.by_user(current_user).first if current_user
 
     rsvp.status = EventRsvp.statuses[:not_attending] if rsvp

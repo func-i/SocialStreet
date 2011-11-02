@@ -23,21 +23,13 @@
 
 <% end %>
 
-<div id="create_what" class="overlay-group">
-  <%= render :partial => "create_what.html", :locals => {:event => @event} %>
-</div>
+<%= render :partial => "create_what.html", :locals => {:event => @event} %>
 
-<div id="create_where" class="overlay-group hidden">
-  <%= render :partial => "create_where.html", :locals => {:event => @event} %>
-</div>
+<%= render :partial => "create_where.html", :locals => {:event => @event} %>
 
-<div id="create_when" class="overlay-group hidden">
-  <%= render :partial => "create_when.html", :locals => {:event => @event} %>
-</div>
+<%= render :partial => "create_when.html", :locals => {:event => @event} %>
 
-<div id="create_summary" class="overlay-group hidden">
-  <%= render :partial => "create_summary.html", :locals => {:event => @event} %>
-</div>
+<%= render :partial => "create_summary.html", :locals => {:event => @event} %>
 
 <%= hidden_field_tag "on_create_what", "" %>
 <%= hidden_field_tag "on_create_summary", "" %>

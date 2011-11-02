@@ -1395,10 +1395,16 @@ END OF RESET
     padding: 4px 2px 0 0;
 }
 
-#group_permission_holder{
+.profile-group_permission_holder{
     width: 500px;
     height: 170px;
     margin: 200px auto 0 auto;
+    text-align: center;
+}
+.show-event-group-permission-holder{
+    width: 500px;
+    height: 170px;
+    margin: 50px auto 0 auto;
     text-align: center;
 }
 #group_permission_icon{

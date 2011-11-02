@@ -122,9 +122,40 @@ class Event < ActiveRecord::Base
     user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end
 
+  def can_view?(user)
+    return true unless self.private
+
+    return false unless user
+    return true if event_rsvps.by_user(user).first.try(:organizer)
+
+    self.event_groups.each do |e_g|
+      user.user_groups.each do |u_g|
+        return true if e_g.group_id == u_g.group_id && e_g.can_view
+      end
+    end
+
+    return false
+  end
+
+  def can_attend?(user)
+    self.event_groups.each do |e_g|
+      return true if e_g.group_id.nil? && e_g.can_attend
+
+      if user
+        user.user_groups.each do |u_g|
+          return true if e_g.group_id == u_g.group_id && e_g.can_attend
+        end
+      end
+    end
+
+    return false unless user
+    return true if event_rsvps.by_user(user).first.try(:organizer)
+    return false
+  end
+
   def organizers_rsvps_list
     event_rsvps.organizers
-  end 
+  end
 
   protected
 

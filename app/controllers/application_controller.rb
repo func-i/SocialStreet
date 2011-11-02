@@ -132,6 +132,9 @@ class ApplicationController < ActionController::Base
     return false unless current_user
 
     @event = Event.find event_id
+
+    return false unless @event.can_attend?(current_user)
+
     rsvp = @event.event_rsvps.by_user(current_user).first if current_user
 
     if !rsvp

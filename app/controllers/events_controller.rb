@@ -6,6 +6,8 @@ class EventsController < ApplicationController
   def show
     @event = Event.find params[:id]
 
+    raise ActiveRecord::RecordNotFound if !@event.can_view?(current_user)
+
     @page_title = "StreetMeet - #{@event.title}"
 
     prepare_for_show
@@ -56,13 +58,13 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find params[:id]
 
-    @page_title = "Edit StreetMeet - #{@event.title}"    
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
+
+    @page_title = "Edit StreetMeet - #{@event.title}"
 
     @event_types = EventType.order('name').all
 
     @groups = Group.all
-
-    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
 
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'events/edit.html.erb'}

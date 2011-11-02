@@ -31,19 +31,6 @@ $(function() {
         }       
     });
 
-    //Signin link
-    $('#signin_button').click(function() {
-        window.location = $(this).data('href');
-    });
-
-    $('#header_signin_button').click(function() {
-        window.location = $(this).data('href');
-    });
-
-    $('#how_it_works_find').click(function() {
-        closeHowItWorks();
-    });
-
     //Ajax Link
     $('.ajax-link').live('click', function(e){
         var href;
@@ -58,6 +45,18 @@ $(function() {
             $.getScript(href);
     });
 
+    //Signin link
+    $('#signin_button').click(function() {
+        window.location = $(this).data('href');
+    });
+
+    $('#header_signin_button').click(function() {
+        window.location = $(this).data('href');
+    });
+
+    $('#how_it_works_find').click(function() {
+        closeHowItWorks();
+    });
 
     //HISTORY. Pop state is called when pressing back button in the browser
     var popped = (window.history && null === window.history.state), initialURL = location.href;
