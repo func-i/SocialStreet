@@ -24,7 +24,7 @@
 { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat; }
 
 .event-type-comedy-small-sprite {background: url('/images/event_types/comedy_small.png'); width: 55px; height: 55px;}
-.event-type-comedy-large-sprite {background: url('/images/event_types/comedy_large.png'); width: 70px; height: 70px;}
+.event-type-comedy-medium-sprite {background: url('/images/event_types/comedy_large.png'); width: 70px; height: 70px;}
 
 .event-type-videogames-small-sprite { background-position: -0px -0px; width: 55px; height: 55px; }
 .event-type-mini-golf-small-sprite { background-position: -55px -0px; width: 55px; height: 55px; }
