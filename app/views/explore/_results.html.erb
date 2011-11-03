@@ -3,7 +3,7 @@
     <% if(!searchable.event.canceled) %>
       <li id ="searchable_<%=searchable.id%>">
         <%= link_to event_path(searchable.event) do %>
-          <%= image_tag(url_for_event_image(searchable.event), :size => "45x45") %>
+          <%= image_tag(url_for_event_image(searchable.event), :size => "50x50") %>
           <span id="explore_list_title"><%= searchable.event.title %></span>
           <div id="explore-list-address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></div>
         <% end %>

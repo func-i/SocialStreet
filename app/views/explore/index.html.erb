@@ -25,7 +25,7 @@
         <li id="filter_no_results"> <%= link_to "#" do %>
             <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
             <span></span>
-          <% end  %>
+          <% end %>
         </li>
         <% @event_types.each do |event|%>
           <li class="result">
@@ -80,8 +80,14 @@
         google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
         google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
       });
-           $('#explore_map_canvas').gmap('refresh');
+           //$('#explore_map_canvas').gmap('refresh');
     });
+
+    $('#map-view-explore').live("pageshow", function() {
+        google.maps.event.trigger(exploreMap, "resize");
+        exploreMap.setCenter(map_center);
+        
+    })
 
     function getMarkerManager(){
       return markerManager;
