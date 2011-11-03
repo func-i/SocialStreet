@@ -16,7 +16,7 @@
   <%= form.hidden_field :name, :id => 'event_name'  %>
   <%= form.hidden_field :description, :id => 'event_description'  %>
 
-  <% (@event.event_groups || []).each do |event_group| %>
+  <% (@event.event_groups.order("group_id ASC NULLS FIRST") || []).each do |event_group| %>
     <% groupID = event_group.group_id || 'public' %>
     <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
   <% end %>
