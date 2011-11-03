@@ -332,21 +332,21 @@ function reverse_geocode(marker){
 /*
  *WHEN FUNCTIONS
  **/
-function formatDateStringForDisplay(myDate){
+/*function formatDateStringForDisplay(myDate){
     //Create date
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     //turn date into string
     return monthNames[myDate.getMonth()] + " " + myDate.getDate() + ", " + myDate.getFullYear();
-}
-function formatDateStringForInput(myDate){
+}*/
+/*function formatDateStringForInput(myDate){
     return myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes();
-}
+}*/
 
 function updateCreateWhenDates(){
     var start_date = $('#create_when_date').text();
-    start_date = new Date(start_date);
+    start_date = new Date(getDateFromFormat(start_date, 'MMM dd, yyyy'));
 
     var start_hour = $($('.create-when-time')[0]).val();
     var start_meridian = $($('.create-when-time')[2]).val();
@@ -374,8 +374,8 @@ function updateCreateWhenDates(){
     var end_date = new Date(start_date.getTime());
     end_date.setMilliseconds(start_date.getMilliseconds() + duration);
 
-    $('#start_date').val(formatDateStringForInput(start_date));
-    $('#end_date').val(formatDateStringForInput(end_date));
+    $('#start_date').val(formatDate(start_date, 'YYYY-MM-dd HH:mm'));
+    $('#end_date').val(formatDate(start_date, 'YYYY-MM-dd HH:mm'));
 }
 
 function setupCreateWhen(){
@@ -393,7 +393,7 @@ function setupCreateWhen(){
     resizeCalendar();
     
     var myStartDate = $('#start_date').val();
-    var myDate = new Date(myStartDate);
+    var myDate = new Date(getDateFromFormat(myStartDate, 'YYYY-MM-dd HH:mm'));
     setWhenDate(myDate);
 
 }
@@ -412,7 +412,7 @@ function setWhenDate(date){
     $('.fc-state-highlight').removeClass('fc-state-highlight');
     highlightDate(date);
 
-    $('#create_when_date').text(formatDateStringForDisplay(date));
+    $('#create_when_date').text(formatDate(date, 'MMM dd, yyyy'));
 
     updateCreateWhenDates();
 }
@@ -442,14 +442,14 @@ function setupCreateSummary(){
     $('#summary_where_address').text($('#location-geocodedaddress-field').val());
 
     //WHEN
-    var startDate = new Date($('#start_date').val());
-    var endDate = new Date($('#end_date').val());
-    $('#summary_when_start_date').text(formatDateStringForSummary(startDate));
+    var startDate = new Date(getDateFromFormat($('#start_date').val(), 'YYYY-MM-dd HH:mm'));
+    var endDate = new Date(getDateFromFormat($('#end_date').val(), 'YYYY-MM-dd HH:mm'));
+    $('#summary_when_start_date').text(formatDate(startDate, 'EE NNN dd @ hh:mm a'));
     if(startDate.getDate() == endDate.getDate() && startDate.getMonth() == endDate.getMonth() && startDate.getYear() == endDate.getYear()){
-        $('#summary_when_end_date').text(formatTimeForSummary(endDate));
+        $('#summary_when_end_date').text(formatDate(endDate, 'hh:mm a'));
     }
     else{
-        $('#summary_when_end_date').text(formatDateStringForSummary(endDate));
+        $('#summary_when_end_date').text(formatDate(startDate, 'EE NNN dd @ hh:mm a'));
     }
 
     //TITLE
@@ -532,17 +532,17 @@ function createGroupInputs(groupID, permissionLevel){
         'value="' + permissionLevel + '" />'
         );
 }
-function formatDateStringForSummary(myDate){
+/*function formatDateStringForSummary(myDate){
     //Create date
     var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     //turn date into string
     return dayNames[myDate.getDay()] + " " + monthNames[myDate.getMonth()] + " " + myDate.getDate() + " @ " + formatTimeForSummary(myDate);
-}
-function formatTimeForSummary(myDate){
+}*/
+/*function formatTimeForSummary(myDate){
     return (myDate.getHours() > 12 ? myDate.getHours()  - 12: myDate.getHours())  + ":" + (myDate.getMinutes() < 10 ? "0" + myDate.getMinutes() : myDate.getMinutes()) + (myDate.getHours() >= 12 ? ' PM' : ' AM')
-}
+}*/
 function formatTitleForSummary(keyword, location_text, location_street){
     return keyword + ((null != location_text && location_text.length > 0) ? ' @ ' + location_text : ' on ' + location_street);
 }
