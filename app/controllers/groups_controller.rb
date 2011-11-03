@@ -5,6 +5,6 @@ class GroupsController < ExploreBaseController
   end
 
   def apply_for_membership
-    
+    #TODO
   end
 end

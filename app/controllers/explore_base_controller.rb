@@ -66,13 +66,13 @@ class ExploreBaseController < ApplicationController
   end
 
   def with_permission(events)
-    events = events.joins('LEFT OUTER JOIN event_groups ON event_groups.event_id = events.id')
     query = []
     query << "(
       NOT events.private
     )"
 
     if current_user
+      events = events.includes(:event_groups)
       current_user.user_groups.each do |user_group|
         query << "(event_groups.group_id = #{user_group.group_id} AND event_groups.can_view)"
       end
@@ -81,8 +81,8 @@ class ExploreBaseController < ApplicationController
     return events.where(query.join(" OR "))
   end
 
-  def with_keywords(event, keywords)
-    return event.includes({:event_keywords => {:event_type => :synonym}}) if (keywords.blank? || keywords.empty?)
+  def with_keywords(events, keywords)
+    return events.includes({:event_keywords => {:event_type => :synonym}}) if (keywords.blank? || keywords.empty?)
 
     # => Collect event type synonyms
     enhanced_keywords = []
@@ -107,8 +107,8 @@ class ExploreBaseController < ApplicationController
       end
     end
 
-    return event if all_keywords.empty?
-    return event = event.matching_keywords(all_keywords, true)
+    return events if all_keywords.empty?
+    return events = events.matching_keywords(all_keywords, true)
   end
 
   def within_bounds(events, map_bounds)

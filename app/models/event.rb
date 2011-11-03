@@ -26,7 +26,7 @@ class Event < ActiveRecord::Base
 
   scope :matching_keywords, lambda { |keywords, include_searchables_with_no_keywords|
     unless keywords.blank?
-      chain = joins("LEFT OUTER JOIN event_keywords ON event_keywords.event_id = events.id LEFT OUTER JOIN event_groups ON event_groups.event_id = events.id")
+      chain = includes(:event_keywords).includes(:event_groups)
       #chain = chain.joins("LEFT OUTER JOIN event_types AS synonyms ON synonyms.synonym_id = event_keywords.event_type_id AND event_keywords.event_id = events.id")
       query = []
       args = {}
