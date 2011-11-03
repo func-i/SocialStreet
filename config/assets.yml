@@ -13,6 +13,7 @@ javascripts:
     - public/javascripts/autoresize.jquery.js
     - public/javascripts/ss_MarkerManager.js
     - public/javascripts/ss_keywords.js
+    - public/javascripts/ss_groups.js
     - public/javascripts/ss_pageless.js
     - public/javascripts/jScrollPane/jquery.jscrollpane.js
     - public/javascripts/jScrollPane/jquery.mousewheel.js

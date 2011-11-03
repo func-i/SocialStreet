@@ -1081,7 +1081,19 @@ END OF RESET
     height: 88px;
     margin:10px;
 }
+.group-type{
+    float: left;
+    width: 65px;
+    height: 88px;
+    margin:10px;
+}
 .event-type-image{
+    width: 55px;
+    height: 55px;
+    margin: 5px 5px 0 5px;
+    text-align: center;
+}
+.group-type-image{
     width: 55px;
     height: 55px;
     margin: 5px 5px 0 5px;
@@ -1095,6 +1107,15 @@ END OF RESET
     margin: 0 auto;
     word-wrap: break-word;
 }
+.group-type-name{
+    text-align: center;
+    font: bold 11px/11px Arial, Helvetica, sans-serif;
+    color: white;
+    width: 65px;
+    margin: 0 auto;
+    word-wrap: break-word;
+}
+
 #explore_keyword_header{
     background-color: #4F4F4D;
     padding-top: 2px;
