@@ -1421,21 +1421,43 @@ END OF RESET
     margin: 50px auto 0 auto;
     text-align: center;
 }
+
+.popup-holder,
 #group_permission_holder{
     margin: 100px auto 0 auto;
     text-align: center;
     max-width: 400px;
 }
+
+.popup-holder {
+    padding: 10px;
+    position: relative;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+
+.popup-close:hover {
+    cursor: pointer;
+}
+
 #group_permission_icon{
     margin: 5px 10px 10px 10px;;
     float:left;
 }
+
+.popup-text, 
 #group_permission_text{
     padding-top: 5px;
     color: white;
     text-align: left;
     font: 16px/16px Arial, Helvetica, sans-serif;
 }
+
+popup-fields-holder,
 #group_permission_text_field_holder{
     width:90%;
     margin: 0px 0px 0 10px;

@@ -43,6 +43,19 @@ $(function(){
     $('#event_wall_text_field').autoResize({
         extraSpace: 5
     });
+    
+    $('#send_message_button').live('click', function() {
+        $('#send_message_form').submit();
+    });
+
+    $('#event_organizer_message').live('click', function() {
+        showEventOrganizerMessage();
+        return false;
+    });
+
+    $('#close_event_organizer_message_btn').live('click', function() {
+       hideEventOrganizerMessage();
+    });
 
     $('.event-wall-comment').live('mouseenter', function(){
         $(this).find('.comment-delete').removeClass('hidden');
@@ -424,4 +437,13 @@ function resizeDate() {
         $('#show_event_date').css('width', '');
         $('#show_event_date').css('padding-top', '5px');
     }
+}
+
+function showEventOrganizerMessage(){
+    $('#event_organizer_message_holder').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
+}
+function hideEventOrganizerMessage(){
+    $('#event_organizer_message_holder').addClass('hidden');
+    $('#center_pane').addClass('invisible');
 }

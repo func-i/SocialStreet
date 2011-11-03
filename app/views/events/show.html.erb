@@ -30,7 +30,7 @@
       <div id="edit_event_links">
         <%= link_to "Edit StreetMeet", edit_event_path(@event), :id=>"edit_event_link" %>
         <%= link_to "Cancel StreetMeet", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
-        <%= link_to "Send Message", create_message_event_path(@event), :class => 'admin-link' %>
+        <%= link_to "Send Message", '#', :class => 'admin-link', :id => "event_organizer_message" %>
       </div>
     <% end %>
     <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
@@ -136,7 +136,8 @@
       <% end %>
     </ul>
   </div>
-  <%= render :partial => 'groups/group_permissions.html'%>
+  <%= render :partial => 'groups/group_permissions' %>
+  <%= render :partial => 'create_message' %>
 <% end %>
 
 <% unless params[:invite].blank? %>
