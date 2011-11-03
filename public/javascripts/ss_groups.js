@@ -40,7 +40,7 @@ $(function(){
     });
 
     //User clicks on a tag
-/*    $('.remove-keyword-tag').live('click', function(){
+    /*    $('.remove-keyword-tag').live('click', function(){
         removeKeyword(this);
     });*/
 
@@ -51,6 +51,20 @@ $(function(){
         var groupCode = $groupHolder.find('#group_permission_text_field').val();
 
         addGroup(groupID, groupCode);
+    });
+
+    $('#group_permission_error').live('click', function(){
+        $('#group_permission_error').addClass('hidden');
+        $('#group_permission_applied').removeClass('hidden');
+
+        var groupID = $groupHolder.find('#group_permission_id').val();
+        var groupCode = $groupHolder.find('#group_permission_text_field').val();
+
+        $.getScript('/groups/apply_for_membership?' +
+            'group_id=' + groupID +
+            '&group_code=' + groupCode
+            );
+
     });
 });
 
@@ -71,6 +85,7 @@ function hideGroupPermissionHolder(){
     $('#group_permission_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
     $('#group_permission_error').addClass('hidden');
+    $('#group_permission_applied').addClass('hidden');
 
     isOpen = false;
 }

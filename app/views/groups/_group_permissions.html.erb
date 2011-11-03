@@ -1,14 +1,18 @@
-<div id="group_permission_holder" class="show-event-group-permission-holder container hidden">
+<div id="group_permission_holder" class="container hidden">
   <div id="group_permission_icon" class="group-type-image rounded-corners-fifteen drop-shadow"></div>
   <div id="group_permission_text" class="text-shadow">
     To add this group, please enter your <span class="join-code-text">Join Code</span>:
   </div>
+  <div style="clear: both"></div>
   <div id="group_permission_text_field_holder">
-    <%= text_field_tag 'group_permission_code', '', :type => "text", :title => "permission_code", :placeholder => " Enter Code Here....", :id=>'group_permission_text_field', :class=>'ie-placeholder' %>
+    <%= text_field_tag 'group_permission_code', '', :type => "text", :title => "permission_code", :placeholder => " Enter Code Here....", :id=>'group_permission_text_field', :class=>'ie-placeholder', :style => "width:100%; height:35px;" %>
   </div>
+  <%= image_tag('continue-button.png', :id=>'group_permission_next_arrow', :class=>"next-arrow drop-shadow") %>
+  <div id="group_permission_error" class="hidden text-shadow">Sorry, we can't find this <span class="join-code-text">Join Code</span> in our records. <span style="color:#BF1F1E">Click here</span> to apply for membership.</div>
+  <div id="group_permission_applied" class="hidden text-shadow">Applied</div>
+  <div style="clear: both"></div>
+
   <%= hidden_field_tag 'group_permission_id', ''%>
   <%= hidden_field_tag 'group_permission_name', ''%>
   <%= hidden_field_tag 'group_permission_icon_class', ''%>
-  <%= image_tag('continue-button.png', :id=>'group_permission_next_arrow', :class=>"next-arrow drop-shadow") %>
-  <div id="group_permission_error" class="hidden text-shadow">Sorry, the <span class="join-code-text">Join Code</span> you entered does not match any of our records</div>
 </div>

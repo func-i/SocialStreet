@@ -3,4 +3,8 @@ class GroupsController < ExploreBaseController
     @group = Group.find params[:id]
     super_index
   end
+
+  def apply_for_membership
+    
+  end
 end

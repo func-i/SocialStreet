@@ -1413,20 +1413,24 @@ END OF RESET
     margin: 50px auto 0 auto;
     text-align: center;
 }
+#group_permission_holder{
+    margin: 100px auto 0 auto;
+    text-align: center;
+    max-width: 400px;
+}
 #group_permission_icon{
-    margin: 40px 20px 10px 20px;;
+    margin: 5px 10px 10px 10px;;
     float:left;
 }
 #group_permission_text{
-    float:left;
-    padding-top: 40px;
+    padding-top: 5px;
     color: white;
+    text-align: left;
     font: 16px/16px Arial, Helvetica, sans-serif;
 }
 #group_permission_text_field_holder{
-    float:left;
-    width:365px;
-    margin-top:10px;
+    width:90%;
+    margin: 0px 0px 0 10px;
 }
 #group_permission_text_field{
     width:100%;
@@ -1435,9 +1439,14 @@ END OF RESET
 #group_permission_error{
     color: #FFC233;
     font: bold 14px/14px Arial, Helvetica, sans-serif;
-    float: left;
-    width: 310px;
-    padding-left: 20px;
+    padding: 10px 0 0 10px;
+    text-align: center;
+    cursor: pointer;
+}
+#group_permission_applied{
+    color: #BF1F1E;
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    padding: 20px 0 0 10px;
 }
 #add_group_button{
     padding: 10px 20px 0 0;
