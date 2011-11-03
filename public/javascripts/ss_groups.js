@@ -27,8 +27,13 @@ $(function(){
             $(e.target).closest('#join_btn_holder').length < 1)
             {
             hideGroups();
-        }
+        }        
 
+    });
+
+    //  Close button on group permissions popup
+    $('#close_group_permissions_btn').live('click', function() {
+        hideGroupPermissionHolder();
     });
 
 
@@ -76,8 +81,11 @@ function addGroup(groupID, groupCode){
 }
 
 function showGroupPermissionHolder(){
+    $('#show_attendees_title').addClass('hidden');
+    $('#show_attendees_holder').addClass('hidden');
     $('#group_permission_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    resizePageElements();
 
     isOpen = true;
 }
@@ -86,6 +94,10 @@ function hideGroupPermissionHolder(){
     $('#center_pane').addClass('invisible');
     $('#group_permission_error').addClass('hidden');
     $('#group_permission_applied').addClass('hidden');
+
+    $('#show_attendees_title').removeClass('hidden');
+    $('#show_attendees_holder').removeClass('hidden');
+    resizePageElements();
 
     isOpen = false;
 }

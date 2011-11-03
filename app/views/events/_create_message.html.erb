@@ -9,7 +9,7 @@
   <div style="clear: both"></div>
   <div class="popup-fields-holder">
     <%= form_tag url_for(:action => :send_message), :remote => true, :id => "send_message_form" do %>
-      <%= text_area_tag :message, nil, :cols => "40", :rows => "5", :class => "textarea-resize" %>
+      <%= text_area_tag :message, nil, :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
       <%= image_tag('continue-button.png', :id=>'send_message_button', :class=>"next-arrow drop-shadow") %>
     <% end %>
   </div>

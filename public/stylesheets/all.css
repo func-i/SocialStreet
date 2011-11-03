@@ -1427,11 +1427,11 @@ END OF RESET
     margin: 100px auto 0 auto;
     text-align: center;
     max-width: 400px;
+    position: relative;
 }
 
 .popup-holder {
     padding: 10px;
-    position: relative;
 }
 
 .popup-close {

@@ -440,10 +440,17 @@ function resizeDate() {
 }
 
 function showEventOrganizerMessage(){
+    $('#show_attendees_title').addClass('hidden');
+    $('#show_attendees_holder').addClass('hidden');
     $('#event_organizer_message_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    resizePageElements();
 }
 function hideEventOrganizerMessage(){
     $('#event_organizer_message_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
+
+    $('#show_attendees_title').removeClass('hidden');
+    $('#show_attendees_holder').removeClass('hidden');
+    resizePageElements();
 }
