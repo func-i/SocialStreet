@@ -1,0 +1,21 @@
+<%= content_for :left_side_pane  do %>
+  <div class="content-left-holder">
+    <div class="clh-content">
+      <div id="show_event_title">
+          <div class="text-shadow">
+            This form will allow you to email a message to the <%= (num_attendees = @event.event_rsvps.attending.count) > 1 ? "#{num_attendees} people" : "1 person" %> <%= "person".pluralize if @event.event_rsvps.attending.count > 1 %> attending this event.
+          </div>
+          <div class="text-shadow" style="margin-top: 30px;">
+            Please type your message:
+          </div>
+      </div>
+      <br />
+      <%= form_tag url_for(:action => :send_message), :id => "send_message_form" do %>
+        <%= text_area_tag :message, nil, :cols => "40", :rows => "5", :class => "textarea-resize" %>
+        <%= image_tag('continue-button.png', :id=>'send_message_button', :class=>"next-arrow drop-shadow") %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%= javascript_include_tag "site_specific/send_message.js" %>

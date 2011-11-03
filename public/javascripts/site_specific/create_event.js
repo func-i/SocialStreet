@@ -452,7 +452,7 @@ function setupCreateSummary(){
     }
 
     //TITLE
-    $('#summary_event_name_field').autoResize();
+    //$('#summary_event_name_field').autoResize();
     if(null == $('#summary_event_name_field').val() || $('#summary_event_name_field').val().length < 1){
         $('#summary_event_name_field').val(formatTitleForSummary($('.keyword-input').first().val(), $('#location-name-field').val(), $('#event_street').val()));
     }

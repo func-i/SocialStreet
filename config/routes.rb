@@ -10,6 +10,12 @@ SocialStreetReborn::Application.routes.draw do
     collection do
       match 'streetmeet_of_the_week'
     end
+
+    member do
+      match 'create_message'
+      match 'send_message'
+    end
+
     resources :event_rsvps, :only => [:new, :edit]
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]

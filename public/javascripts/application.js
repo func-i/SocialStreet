@@ -370,7 +370,7 @@ function initScrollPane(scroll_pane) {
             $myElem.find('.jspVerticalBar').addClass('invisible');
         }
     });
-    $myElem.jScrollPane();
+    $myElem.jScrollPane({enableKeyboardNavigation: false});
 
     var that = $myElem;
     $(window).bind('resize', function() {
