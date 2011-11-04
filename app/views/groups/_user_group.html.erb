@@ -1,9 +1,22 @@
-<li class="show-attendee container rounded-corners-four user-group-item">
+<li class="show-attendee container rounded-corners-four user-group-item">  
   <span><%= user_group.to_s %></span>
-  <%= form_for [user_group.group, user_group], :remote => true do |f| %>
-    <%= f.text_field :external_name %><br/>
-    <%= f.text_field :external_email %><br/>
-    <%= f.text_field :join_code %>
+  <%= form_for [user_group.group, user_group], :remote => true, :html => {:class => 'hidden'} do |f| %>
+
+    <%= f.label :contact_name, "External Name:" %>
+    <%= f.text_field :external_name, :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Name..." %><br/>
+    <div style="clear:both"></div>
+
+    <%= f.label :external_email, "External Email:" %>
+    <%= f.text_field :external_email, :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Email..." %><br/>
+    <div style="clear:both"></div>
+    
+    <%= f.label :join_code, "Join Code:" %>
+    <%= f.text_field :join_code, :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Join Code..." %>
+    <div style="clear:both"></div>
     <%= f.submit %>
+  <% end %>
+
+  <%= form_for [user_group.group, user_group], :remote => true, :html => {:method => :delete, :style => "display: inline;"} do %>
+    <%= image_tag "btn-close5.png", :alt => "remove", :style => "float: right;" %>
   <% end %>
 </li>
