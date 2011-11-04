@@ -5,6 +5,7 @@ $(function(){
 
     //User clicks on doc away from event type or text field, hide
     $(document).bind("click", function(e){
+        
         if(isOpen &&
             isOnSettings() &&
             $(e.target).closest('.group-type').length < 1 &&
@@ -27,8 +28,7 @@ $(function(){
             $(e.target).closest('#join_btn_holder').length < 1)
             {
             hideGroups();
-        }        
-
+        }
     });
 
     //  Close button on group permissions popup
