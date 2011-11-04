@@ -1,6 +1,9 @@
 class GroupsController < ExploreBaseController
   def show
     @group = Group.find params[:id]
+
+    @page_title = @group.name
+    
     super_index
   end
 

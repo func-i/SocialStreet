@@ -7,7 +7,7 @@ $(function(){
     $('.keyword-text-field').live('focus', function(){
         //Clear any value in the text field
         $(this).val('');
-        reset();
+        resetKeywords();
 
         //show event type holder
         showEventTypeHolder();
@@ -35,7 +35,7 @@ $(function(){
             hideEventTypeHolder();
         }
 
-        reset();
+        resetKeywords();
         $('.keyword-text-field').blur();
     });
 
@@ -48,7 +48,7 @@ $(function(){
         }
 
         if(e.target.value.length < 1){
-            reset();
+            resetKeywords();
             return;
         }
         
@@ -60,7 +60,7 @@ $(function(){
             if(isOnExplore()){
                 hideEventTypeHolder();
             }
-            reset();
+            resetKeywords();
             $('.keyword-text-field').blur();
 
         }
@@ -84,6 +84,7 @@ $(function(){
 
 function showEventTypeHolder(){
     $('#event_types_holder').removeClass('hidden');
+    $('#right_side_pane').addClass('hide_for_center_pane');
     $('#center_pane').removeClass('invisible');
 
     resizePageElements();
@@ -94,12 +95,13 @@ function showEventTypeHolder(){
 
 function hideEventTypeHolder(){
     $('#event_types_holder').addClass('hidden');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
     $('#center_pane').addClass('invisible');
 
     isOpen = false;
 }
 
-function reset(){
+function resetKeywords(){
     $.each($('.event-type'), function(index, et){
         var $et = $(et);
         if($et.hasClass('synonym'))
@@ -272,4 +274,6 @@ function isOnExplore(){
 function isOnCreateWhat(){
     return $('#on_create_what').val() && $('#on_create_what').val().length > 0;
 }
-
+function isOnShowGroup(){
+    return $('#on_show_group').length > 0;
+}

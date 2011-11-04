@@ -206,6 +206,9 @@ END OF RESET
 .invisible{
     visibility: hidden;
 }
+.hide_for_center_pane{
+    display: none;
+}
 
 /*Main*/
 #main {

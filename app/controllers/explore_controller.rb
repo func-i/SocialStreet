@@ -3,6 +3,7 @@ class ExploreController < ExploreBaseController
   before_filter Proc.new{ @file_var_name = 'explore/index.html.erb' }
 
   def index
+    @page_title = "Explore"
     super_index
   end
 

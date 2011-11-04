@@ -2,10 +2,10 @@
   <% unless @group.is_member(current_user) %>
     <div style="margin:17px auto 0 auto; text-align:center;">
       <%= image_tag('join_group_btn.png', :id => "join_group_btn", "data-permission-required" => !@group.join_code_description.blank?) %>
-      <%= hidden_field_tag 'group_permission_id', @group.id%>
-      <%= hidden_field_tag 'group_permission_name', @group.name%>
-      <%= hidden_field_tag 'group_permission_join_code_description', @group.join_code_description%>
-      <%= hidden_field_tag 'group_permission_icon_class', "event-type-#{sprite_class_name_for_group(@group)}-medium-sprite"%>
+      <%= hidden_field_tag 'group_btn_id', @group.id%>
+      <%= hidden_field_tag 'group_btn_name', @group.name%>
+      <%= hidden_field_tag 'group_btn_join_code_description', @group.join_code_description%>
+      <%= hidden_field_tag 'group_btn_icon_class', "event-type-#{sprite_class_name_for_group(@group)}-medium-sprite"%>
     </div>
   <% end %>
 <% end %>
