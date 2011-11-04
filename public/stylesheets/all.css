@@ -1519,6 +1519,76 @@ popup-fields-holder,
     cursor: pointer;
 }
 
+#edit_group_name{
+    background: transparent;
+    color: #FFC233;
+    width: 280px;
+    margin: 10px 0 0 10px;
+    height: 60px;
+    overflow:hidden;
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    text-align: center;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+#edit_group_description{
+    background: transparent;
+    color: #FFC233;
+    width: 360px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+#edit_group_contact_name{
+    background: transparent;
+    color: #FFC233;
+    width: 220px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+#edit_group_contact_email{
+    background: transparent;
+    color: #FFC233;
+    width: 220px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+#edit_group_contact_address{
+    background: transparent;
+    color: #FFC233;
+    width: 200px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+#edit_group_contact_phone{
+    background: transparent;
+    color: #FFC233;
+    width: 200px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+
+
 .content-left-holder .clh-content {
     padding: 20px;
 }

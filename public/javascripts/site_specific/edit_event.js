@@ -15,5 +15,8 @@ $(function() {
             $('#user_groups_search_form').submit();
         }, 250);
     });
+
+    $('#edit_group_contact_address').autoResize();
+    $('#edit_group_description').autoResize();
 })
 
