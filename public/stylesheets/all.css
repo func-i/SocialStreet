@@ -1631,18 +1631,23 @@ popup-fields-holder,
     border: 2px solid #4F4F4D;
 }
 
-#user_group_holder label {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-#user_group_holder p {
-    margin-bottom: 7px;
+.clh-content label {
+    float:left;
+    padding-right: 5px;
+    color:#FFFCD5;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
 }
 
 #user_group_holder input[type=text] {
-    background-color: transparent;
-    border: none;
+    background: transparent;
     color: #FFC233;
+    width: 200px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
 }
+
 
