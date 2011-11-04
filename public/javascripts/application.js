@@ -264,8 +264,8 @@ function resizeLayout(){
     var docWidth = $(window).width();
     //var leftPaneTopOffset = $('#left_side_pane').offset().top;
     //var rightPaneTopOffset = $('#right_side_pane').offset().top;
-    var rightPaneWidth = $('#right_side_pane').width();
-    var leftPaneWidth = $('#left_side_pane').width();
+    var rightPaneWidth = $('#right_side_pane').hasClass('hidden') ? 0 : $('#right_side_pane').width();
+    var leftPaneWidth = $('#left_side_pane').hasClass('hidden') ? 0 : $('#left_side_pane').width();
     //var topPaneLeftOffset = $('#top_pane').offset().left;
     //var bottomPaneLeftOffset = $('#bottom_pane').offset().left;
 
