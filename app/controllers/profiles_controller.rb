@@ -32,10 +32,15 @@ class ProfilesController < ApplicationController
     @group = Group.find params[:group_id]
     
     if @group.join_code_description.blank?
-      if UserGroup.where(:group_id => @group, :user_id => @user).limit(1).count() <= 0
+      user_group = UserGroup.where(:group_id => @group, :user_id => @user).limit(1)
+      if user_group.length <= 0
         user_group = UserGroup.new
         user_group.user = @user
         user_group.group = @group
+        user_group.applied = false
+        user_group.save
+      elsif user_group.applied
+        user_group.applied = false
         user_group.save
       end
 
@@ -46,6 +51,7 @@ class ProfilesController < ApplicationController
         #Check user_group table for group_id & group_code and user_id is empty
         user_group = UserGroup.where(:group_id => @group, :join_code => params[:group_code]).limit(1).first
         user_group.user = @user
+        user_group.applied = false
         user_group.save
 
         @success = true

@@ -1,5 +1,5 @@
 class GroupsController < ExploreBaseController
-
+  before_filter :ss_authenticate_user!, :only => [:edit, :update, :apply_for_membership]
   before_filter :load_group, :only => [:show, :edit, :update, :destroy, :show_members]
 
   def show
@@ -8,7 +8,13 @@ class GroupsController < ExploreBaseController
   end
 
   def apply_for_membership
-    #TODO
+    user_group = UserGroup.where(:group_id => params[:group_id], :user_id => current_user).limit(1)
+    if user_group.length <= 0
+      ug = UserGroup.new(:user_id => current_user, :group_id=> params[:group_id], :join_code => params[:group_code], :applied => true)
+      ug.save
+    end
+
+    render :nothing => true
   end
 
   def update

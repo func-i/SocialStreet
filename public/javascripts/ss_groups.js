@@ -68,6 +68,7 @@ $(function(){
         $('#group_permission_error').addClass('hidden');
         $('#group_permission_applied').removeClass('hidden');
 
+        var $groupHolder = $(this).closest('#group_permission_holder');
         var groupID = $groupHolder.find('#group_permission_id').val();
         var groupCode = $groupHolder.find('#group_permission_text_field').val();
 
