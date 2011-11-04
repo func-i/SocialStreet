@@ -1493,8 +1493,16 @@ popup-fields-holder,
     padding: 20px;
 }
 
+.content-left-holder .clh-content h3 {
+    font-size: 22px;
+    color: #FFC233;
+    text-shadow: #4f4f4d 3px 3px 3px;
+}
+
 .group-settings-content {    
     /*padding: 10px;*/
+    max-width: 1050px;
+    margin: 0 auto;
 }
 
 .group-settings-content h3 {
