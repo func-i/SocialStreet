@@ -1503,6 +1503,18 @@ popup-fields-holder,
     font-size: 1.5em;
 }
 
+#user_groups_list li {
+    float: left;
+    margin: 10px;
+}
+
+#user_groups_list li span {
+    text-align: center;
+    font: bold 12px/12px Arial, Helvetica, sans-serif;
+    color: white;
+    padding: 5px 0 0 5px;
+}
+
 .search-text-field {
     width:365px;
     height:24px;
