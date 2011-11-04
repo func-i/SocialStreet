@@ -1,11 +1,11 @@
-var isOpen = false;
+var isGroupOpen = false;
 var eventTypeTimer = null;
 
 $(function(){
 
     //User clicks on doc away from event type or text field, hide
     $(document).bind("click", function(e){
-        if(isOpen &&
+        if(isGroupOpen &&
             isOnSettings() &&
             $(e.target).closest('.group-type').length < 1 &&
             $(e.target).closest('#group_permission_holder').length < 1 &&
@@ -13,14 +13,14 @@ $(function(){
             {
             hideGroups();
         }
-        else if(isOpen &&
+        else if(isGroupOpen &&
             isOnCreateSummary() &&
             $(e.target).closest('.group-type').length < 1 &&
             $(e.target).closest('#add_group_link').length < 1)
             {
             hideGroups();
         }
-        else if(isOpen &&
+        else if(isGroupOpen &&
             isOnShowEvent() &&
             $(e.target).closest('.group-type').length < 1 &&
             $(e.target).closest('#group_permission_holder').length < 1 &&
@@ -28,7 +28,13 @@ $(function(){
             {
             hideGroups();
         }
-
+        else if(isGroupOpen &&
+            isOnShowGroup() &&
+            $(e.target).closest('#group_permission_holder').length < 1 &&
+            $(e.target).closest('#join_group_btn').length < 1)
+            {
+            hideGroups();
+        }
     });
 
 
@@ -66,6 +72,23 @@ $(function(){
             );
 
     });
+
+    $('#join_group_btn').live('click', function(){
+        $this = $(this);
+        if(true == $this.data('permission-required')){
+            setValuesOnPermissionCodeOverlay(
+                $this.siblings('#group_permission_id').val(),
+                $this.siblings('#group_permission_join_code_description').val(),
+                $this.siblings('#group_permission_name').val(),
+                $this.siblings('#group_permission_icon_class').val()
+                )
+
+            showGroupPermissionHolder();
+        }
+        else{
+            addGroup($(this).data('group-id'), null);
+        }
+    });
 });
 
 function addGroup(groupID, groupCode){
@@ -79,7 +102,7 @@ function showGroupPermissionHolder(){
     $('#group_permission_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
 
-    isOpen = true;
+    isGroupOpen = true;
 }
 function hideGroupPermissionHolder(){
     $('#group_permission_holder').addClass('hidden');
@@ -87,21 +110,21 @@ function hideGroupPermissionHolder(){
     $('#group_permission_error').addClass('hidden');
     $('#group_permission_applied').addClass('hidden');
 
-    isOpen = false;
+    isGroupOpen = false;
 }
 function showGroups(){
     $('#groups_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
     resizePageElements();
 
-    isOpen = true;
+    isGroupOpen = true;
 }
 function hideGroups(){
     $('#groups_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
     hideGroupPermissionHolder();
 
-    isOpen = false;
+    isGroupOpen = false;
 }
 
 function reset(){
@@ -111,7 +134,7 @@ function reset(){
 function groupTypeClicked(groupType, refreshResults){
     var $groupType = $(groupType);
     var groupName = $.trim($groupType.find('.group-type-name').text());
-    var groupIconClass = 'event-type-' + $groupType.find('.group-type-image').data('event-type') + (isOnExplore() ? '-small-sprite' : '-medium-sprite');
+    var groupIconClass = 'event-type-' + $groupType.find('.group-type-image').data('event-type') + '-medium-sprite';
 
     if(!groupAlreadyExists(groupName)){
         if(isOnCreateSummary()){
@@ -129,12 +152,8 @@ function groupTypeClicked(groupType, refreshResults){
                 addGroupToHolder(groupName, groupIconClass);
             }
             else{
-                $('#group_permission_id').val($groupType.find('#group_id').val());
-                $('.join-code-text').text($groupType.find('#join_code_description').val());
-                $('#group_permission_name').val(groupName);
-                $('#group_permission_icon_class').val(groupIconClass);
-                $('#group_permission_icon').addClass(groupIconClass);
-
+                setValuesOnPermissionCodeOverlay($groupType.find('#group_id').val(), $groupType.find('#join_code_description').val(), groupName, groupIconClass)
+                
                 hideGroups();
                 showGroupPermissionHolder();
             }
@@ -147,17 +166,21 @@ function groupTypeClicked(groupType, refreshResults){
                 rsvpToEvent();
             }
             else{
-                $('#group_permission_id').val($groupType.find('#group_id').val());
-                $('.join-code-text').text($groupType.find('#join_code_description').val());
-                $('#group_permission_name').val(groupName);
-                $('#group_permission_icon_class').val(groupIconClass);
-                $('#group_permission_icon').addClass(groupIconClass);
+                setValuesOnPermissionCodeOverlay($groupType.find('#group_id').val(), $groupType.find('#join_code_description').val(), groupName, groupIconClass)
 
                 hideGroups();
                 showGroupPermissionHolder();
             }
         }
     }
+}
+
+function setValuesOnPermissionCodeOverlay(groupID, joinCodeDescription, groupName, groupIconClass){
+    $('#group_permission_id').val(groupID);
+    $('.join-code-text').text(joinCodeDescription);
+    $('#group_permission_name').val(groupName);
+    $('#group_permission_icon_class').val(groupIconClass);
+    $('#group_permission_icon').addClass(groupIconClass);
 }
 
 function rsvpToEvent(){
@@ -210,6 +233,9 @@ function isOnSettings(){
 }
 function isOnShowEvent(){
     return $('#on_show_event').length > 0;
+}
+function isOnShowGroup(){
+    return $('#on_show_group').length > 0;
 }
 
 

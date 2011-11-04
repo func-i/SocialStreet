@@ -1,1 +1,25 @@
+<% content_for :right_side_pane do %>
+  <% unless @group.is_member(current_user) %>
+    <div style="margin:17px auto 0 auto; text-align:center;">
+      <%= image_tag('join_group_btn.png', :id => "join_group_btn", "data-permission-required" => !@group.join_code_description.blank? , "data-group-id" => @group.id) %>
+      <%= hidden_field_tag 'group_permission_id', @group.id%>
+      <%= hidden_field_tag 'group_permission_name', @group.name%>
+      <%= hidden_field_tag 'group_permission_join_code_description', @group.join_code_description%>
+      <%= hidden_field_tag 'group_permission_icon_class', "event-type-#{sprite_class_name_for_group(@group)}-medium-sprite"%>
+    </div>
+  <% end %>
+<% end %>
+
 <%= render :file => "explore/index.html.erb" %>
+
+<% content_for :right_side_pane do %>
+  <div class="container" style="width:100%; height: 200px; margin-top: 20px;">
+
+  </div>
+<% end %>
+
+<% content_for :center_pane do %>
+  <%= render :partial => 'groups/group_permissions.html'%>
+<% end %>
+
+<%= hidden_field_tag 'on_show_group', 'true' %>
