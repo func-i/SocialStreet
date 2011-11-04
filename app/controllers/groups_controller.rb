@@ -3,6 +3,7 @@ class GroupsController < ExploreBaseController
   before_filter :load_group, :only => [:show, :edit, :update, :destroy, :show_members]
 
   def show
+    @page_title = @group.name
     super_index
   end
 

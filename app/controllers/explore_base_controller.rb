@@ -1,8 +1,6 @@
 class ExploreBaseController < ApplicationController
 
   def super_index
-    @page_title = "Explore"
-
     init_page
 
     get_events();

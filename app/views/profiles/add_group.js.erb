@@ -1,14 +1,16 @@
 <% if @success %>
   hideGroupPermissionHolder();
 
+
   if(isOnShowEvent()){
     rsvpToEvent();
   }
   else if(isOnSettings()){
     addKeywordToHolder($('#group_permission_name').val() ,$('#group_permission_icon_class').val());
   }
-  else if(isOnShowGroup(){
+  else if(isOnShowGroup()){
     $('#join_group_btn').addClass('hidden');
+    refreshExploreResults();
   }
 <% else %>
   $('#group_permission_error').removeClass('hidden');

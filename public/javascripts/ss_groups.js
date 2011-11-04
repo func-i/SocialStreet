@@ -47,7 +47,7 @@ $(function(){
     $('.group-type').live('click', function(){
         groupTypeClicked(this);
 
-        reset();
+        resetGroups();
     });
 
     //User clicks on a tag
@@ -82,10 +82,10 @@ $(function(){
         $this = $(this);
         if(true == $this.data('permission-required')){
             setValuesOnPermissionCodeOverlay(
-                $this.siblings('#group_permission_id').val(),
-                $this.siblings('#group_permission_join_code_description').val(),
-                $this.siblings('#group_permission_name').val(),
-                $this.siblings('#group_permission_icon_class').val()
+                $this.siblings('#group_btn_id').val(),
+                $this.siblings('#group_btn_join_code_description').val(),
+                $this.siblings('#group_btn_name').val(),
+                $this.siblings('#group_btn_icon_class').val()
                 )
 
             showGroupPermissionHolder();
@@ -108,6 +108,7 @@ function showGroupPermissionHolder(){
     $('#show_attendees_holder').addClass('hidden');
     $('#group_permission_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    $('#right_side_pane').addClass('hide_for_center_pane');
     resizePageElements();
 
     isGroupOpen = true;
@@ -115,6 +116,7 @@ function showGroupPermissionHolder(){
 function hideGroupPermissionHolder(){
     $('#group_permission_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
     $('#group_permission_error').addClass('hidden');
     $('#group_permission_applied').addClass('hidden');
 
@@ -127,6 +129,7 @@ function hideGroupPermissionHolder(){
 function showGroups(){
     $('#groups_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    $('#right_side_pane').addClass('hide_for_center_pane');
     resizePageElements();
 
     isGroupOpen = true;
@@ -134,12 +137,13 @@ function showGroups(){
 function hideGroups(){
     $('#groups_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
     hideGroupPermissionHolder();
 
     isGroupOpen = false;
 }
 
-function reset(){
+function resetGroups(){
     resizePageElements();
 }
 
