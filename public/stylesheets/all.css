@@ -721,6 +721,36 @@ END OF RESET
     text-decoration: underline;
 }
 
+#group_title{
+    float:left;
+    margin:10px 10px 0px 10px;
+    color:#FFC233;
+    text-align:center;
+    width:90px;
+    height:60px;
+    overflow:hidden;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+}
+#group_description{
+    margin-bottom:10px;
+    color:white;
+    width:180px;
+    font:14px/14px Arial, Helvetica, sans-serif;
+}
+#group_contact_us{
+    color:#FFC233;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
+}
+#group_contact{
+    font: italic 14px/14px Arial, Helvetica, sans-serif;
+    color:white;
+    margin-left:10px;
+    width:170px;
+}
+#group_contact_name{
+    font-style: normal;font-weight: bold;
+}
+
 
 
 /*Arrow*/
