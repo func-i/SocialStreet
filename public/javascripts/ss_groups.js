@@ -37,6 +37,11 @@ $(function(){
         }
     });
 
+    //  Close button on group permissions popup
+    $('#close_group_permissions_btn').live('click', function() {
+        hideGroupPermissionHolder();
+    });
+
 
     //User clicked on an event type in the holder
     $('.group-type').live('click', function(){
@@ -99,8 +104,11 @@ function addGroup(groupID, groupCode){
 }
 
 function showGroupPermissionHolder(){
+    $('#show_attendees_title').addClass('hidden');
+    $('#show_attendees_holder').addClass('hidden');
     $('#group_permission_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    resizePageElements();
 
     isGroupOpen = true;
 }
@@ -109,6 +117,10 @@ function hideGroupPermissionHolder(){
     $('#center_pane').addClass('invisible');
     $('#group_permission_error').addClass('hidden');
     $('#group_permission_applied').addClass('hidden');
+
+    $('#show_attendees_title').removeClass('hidden');
+    $('#show_attendees_holder').removeClass('hidden');
+    resizePageElements();
 
     isGroupOpen = false;
 }
