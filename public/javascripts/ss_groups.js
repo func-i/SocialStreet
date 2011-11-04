@@ -129,6 +129,7 @@ function hideGroupPermissionHolder(){
 function showGroups(){
     $('#groups_holder').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    $('#right_side_pane').addClass('hide_for_center_pane');
     resizePageElements();
 
     isGroupOpen = true;
@@ -136,6 +137,7 @@ function showGroups(){
 function hideGroups(){
     $('#groups_holder').addClass('hidden');
     $('#center_pane').addClass('invisible');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
     hideGroupPermissionHolder();
 
     isGroupOpen = false;
