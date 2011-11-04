@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111102145642) do
+ActiveRecord::Schema.define(:version => 20111104154212) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20111102145642) do
     t.boolean  "administrator"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "applied"
   end
 
   add_index "user_groups", ["group_id"], :name => "index_user_groups_on_group_id"

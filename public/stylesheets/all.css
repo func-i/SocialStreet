@@ -1523,3 +1523,20 @@ popup-fields-holder,
     padding: 20px;
 }
 
+.group-settings-content {    
+    /*padding: 10px;*/
+}
+
+.group-settings-content h3 {
+    color: #FFC233;
+    text-shadow: #4f4f4d 3px 3px 3px;
+    font-size: 1.5em;
+}
+
+.search-text-field {
+    width:365px;
+    height:24px;
+    margin:10px;
+    border: 2px solid #4F4F4D;
+}
+

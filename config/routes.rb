@@ -45,6 +45,10 @@ SocialStreetReborn::Application.routes.draw do
     collection do
       get 'apply_for_membership'
     end
+
+    member do
+      post 'search_user_groups'
+    end
   end
 
   match '/contact' => 'contact#create'

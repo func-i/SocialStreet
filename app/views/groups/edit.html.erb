@@ -1,0 +1,18 @@
+<% content_for :center_pane do %>
+  <div class="container expand-height group-settings-content scroll-pane">
+    <% unless @group.user_groups.applied.size.zero? %>
+      <h3>Pending Applications</h3>
+      <%= render 'user_group_list', :user_groups => @group.user_groups.applied %>
+    <% end %>
+    <h3>User Groups</h3>
+
+    <%= form_tag search_user_groups_group_path(@group), :remote => true, :id => "user_groups_search_form" do %>
+      <%= text_field_tag "keyword", params[:keyword], :class=>'drop-shadow ie-placeholder search-text-field', :placeholder => "Enter a name or email address (press enter)" %>
+    <% end %>
+
+    <%= render 'user_group_list', :user_groups => @group.user_groups.not_applied %>
+
+  </div>
+<% end %>
+
+<%= javascript_include_tag "site_specific/edit_event" %>

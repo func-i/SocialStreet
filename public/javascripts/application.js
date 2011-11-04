@@ -76,7 +76,7 @@ $(function() {
                 });
         }
     }*/
-
+    
     //Initialize the size elements to match page size and initialize scrollbars
     resizePageElements();
     $(window).resize(function() {
@@ -245,6 +245,7 @@ function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat,
 }
 
 function resizePageElements() {
+
     resizeLayout();
     resizeExpandHeightContainer();
     capHeightContainer();
@@ -370,7 +371,9 @@ function initScrollPane(scroll_pane) {
             $myElem.find('.jspVerticalBar').addClass('invisible');
         }
     });
-    $myElem.jScrollPane({enableKeyboardNavigation: false});
+    $myElem.jScrollPane({
+        enableKeyboardNavigation: false
+    });
 
     var that = $myElem;
     $(window).bind('resize', function() {
