@@ -11,6 +11,20 @@ class GroupsController < ExploreBaseController
     #TODO
   end
 
+  def update
+    @group.attributes = params[:group]
+    if @group.save
+      if request.xhr?
+        render :nothing => true
+        return
+      end
+
+      redirect_to :action => :edit
+    else
+      raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
+    end
+  end
+
   def search_user_groups
     unless params[:keyword].blank?
       @user_groups = UserGroup.search(params[:keyword])

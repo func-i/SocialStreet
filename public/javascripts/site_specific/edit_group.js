@@ -7,6 +7,9 @@ $(function() {
     resizeSelf = function() {        
     }
 
+    $('#edit_group_contact_address').autoResize();
+    $('#edit_group_description').autoResize();
+
     $('#center_pane').removeClass('invisible');
     resizePageElements();
 

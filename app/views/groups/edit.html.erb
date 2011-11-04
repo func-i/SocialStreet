@@ -1,7 +1,28 @@
 <% content_for :left_side_pane do  %>
   <div class="content-left-holder">
-    <div class="clh-content">
-      <h3><%= @group.name %></h3>
+    <div class="clh-content text-shadow">
+      <%= form_for @group, :url => group_path, :remote => true, :html => {:id => 'group_form'} do |form| %>
+        <div class="rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(@group)%>-medium-sprite" style="float:left;margin-bottom: 10px;"></div>
+        <%=form.text_area :name, :id=>"edit_group_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Group Name...", 'data-on-change-form-id' => 'group_form'%>
+        <div style="clear:both"></div>
+        <!--div style="float:left;padding-right: 5px;color:#FFFCD5;font: bold 18px/18px Arial, Helvetica, sans-serif;">Group Description: </div-->
+        <%= form.text_area :description, :id=>"edit_group_description", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Description...", 'data-on-change-form-id' => 'group_form'%>
+        <div style="clear:both"></div>
+        <div style="padding-top:10px">
+          <div style="float:left;padding-right: 5px;color:#FFFCD5;font: bold 18px/18px Arial, Helvetica, sans-serif;">Contact Name: </div>
+          <%= form.text_field :contact_name, :id=>"edit_group_contact_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Name...", 'data-on-change-form-id' => 'group_form'%>
+          <div style="clear:both"></div>
+          <div style="float:left;padding-right: 5px;color:#FFFCD5;font: bold 18px/18px Arial, Helvetica, sans-serif;">Contact Email: </div>
+          <%= form.text_field :contact_email, :id=>"edit_group_contact_email", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Email...", 'data-on-change-form-id' => 'group_form'%>
+          <div style="clear:both"></div>
+          <div style="float:left;padding-right: 5px;color:#FFFCD5;font: bold 18px/18px Arial, Helvetica, sans-serif;">Contact Address: </div>
+          <%= form.text_area :contact_address, :id=>"edit_group_contact_address", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Address...", 'data-on-change-form-id' => 'group_form'%>
+          <div style="clear:both"></div>
+          <div style="float:left;padding-right: 5px;color:#FFFCD5;font: bold 18px/18px Arial, Helvetica, sans-serif;">Contact Phone #: </div>
+          <%= form.text_field :contact_phone, :id=>"edit_group_contact_phone", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Phone Number...", 'data-on-change-form-id' => 'group_form'%>
+          <div style="clear:both"></div>
+        </div>
+      <% end %>
     </div>
     <div id="user_group_holder" class="clh-content">
       
