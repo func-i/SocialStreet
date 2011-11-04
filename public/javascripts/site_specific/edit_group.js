@@ -18,8 +18,14 @@ $(function() {
 
     $('.user-group-item').live('click', function() {
         var $form = $(this).find('form').first();
-        $('#user_group_holder').html($form.clone());
+        $newForm = $form.clone();
+        $('#user_group_holder').html($newForm);
+        $newForm.removeClass('hidden');
+    });
 
+    $('.user-group-item img').live('click', function() {
+        $(this).closest('li').remove();
+        $(this).closest('form').submit();
     });
 })
 

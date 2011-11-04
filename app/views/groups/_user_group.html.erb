@@ -1,9 +1,22 @@
-<li class="show-attendee container rounded-corners-four user-group-item">
+<li class="show-attendee container rounded-corners-four user-group-item">  
   <span><%= user_group.to_s %></span>
-  <%= form_for [user_group.group, user_group], :remote => true do |f| %>
-    <%= f.text_field :external_name %><br/>
-    <%= f.text_field :external_email %><br/>
-    <%= f.text_field :join_code %>
+  <%= form_for [user_group.group, user_group], :remote => true, :html => {:class => 'hidden'} do |f| %>
+    <p>
+      <%= f.label :external_name %>
+      <%= f.text_field :external_name %><br/>
+    </p>
+    <p>
+      <%= f.label :external_email %><br/>
+      <%= f.text_field :external_email %><br/>
+    </p>
+    <p>
+      <%= f.label :join_code %><br/>
+      <%= f.text_field :join_code %>
+    </p>
     <%= f.submit %>
+  <% end %>
+
+  <%= form_for [user_group.group, user_group], :remote => true, :html => {:method => :delete, :style => "display: inline;"} do %>
+    <%= image_tag "btn-close5.png", :alt => "remove", :style => "float: right;" %>
   <% end %>
 </li>

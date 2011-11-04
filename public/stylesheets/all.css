@@ -206,6 +206,7 @@ END OF RESET
 .invisible{
     visibility: hidden;
 }
+
 .hide_for_center_pane{
     display: none;
 }
@@ -1530,8 +1531,13 @@ popup-fields-holder,
     border: 2px solid #4F4F4D;
 }
 
-.user-group-item form {
-    display: none;
+#user_group_holder label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#user_group_holder p {
+    margin-bottom: 7px;
 }
 
 #user_group_holder input[type=text] {
