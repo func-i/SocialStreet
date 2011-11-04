@@ -2,7 +2,7 @@
   <%= form_for @user, :url => profile_path, :remote => true, :html => {:id => 'settings_form'} do |form| %>
     <div id="edit_user_name_holder">
       <%= avatar(current_user, :size => "60x60", :class=> "drop-shadow", :style=>"float:left; margin:0 20px")%>
-      <%= form.text_field :name, :class => "text-shadow edit-inline submit-on-change", :id => "edit_user_name_field", 'data-on-change-form-id' => 'settings_form', :style=>"float:left;vertical-align:bottom;" %>
+        <%= form.text_field :name, :class => "text-shadow edit-inline submit-on-change", :id => "edit_user_name_field", 'data-on-change-form-id' => 'settings_form', :style=>"float:left;vertical-align:bottom;" %>
     </div>
     <div id="edit_user_details">
       <div id="edit_user_email_holder">
