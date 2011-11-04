@@ -1,3 +1,9 @@
-<li class="show-attendee container rounded-corners-four">
+<li class="show-attendee container rounded-corners-four user-group-item">
   <span><%= user_group.to_s %></span>
+  <%= form_for [user_group.group, user_group], :remote => true do |f| %>
+    <%= f.text_field :external_name %><br/>
+    <%= f.text_field :external_email %><br/>
+    <%= f.text_field :join_code %>
+    <%= f.submit %>
+  <% end %>
 </li>

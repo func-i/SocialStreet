@@ -1,6 +1,4 @@
 SocialStreetReborn::Application.routes.draw do
-  get "groups/show"
-
   root :to => 'explore#index'
 
   get 'explore' => 'explore#search', :as => 'explore'
@@ -49,6 +47,8 @@ SocialStreetReborn::Application.routes.draw do
     member do
       post 'search_user_groups'
     end
+
+    resources :user_groups
   end
 
   match '/contact' => 'contact#create'

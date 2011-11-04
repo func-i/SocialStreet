@@ -7,6 +7,9 @@ $(function() {
     resizeSelf = function() {        
     }
 
+    $('#edit_group_contact_address').autoResize();
+    $('#edit_group_description').autoResize();
+
     $('#center_pane').removeClass('invisible');
     resizePageElements();
 
@@ -16,7 +19,10 @@ $(function() {
         }, 250);
     });
 
-    $('#edit_group_contact_address').autoResize();
-    $('#edit_group_description').autoResize();
+    $('.user-group-item').live('click', function() {
+        var $form = $(this).find('form').first();
+        $('#user_group_holder').html($form.clone());
+
+    });
 })
 
