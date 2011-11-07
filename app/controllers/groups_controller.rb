@@ -4,6 +4,7 @@ class GroupsController < ExploreBaseController
 
   def show
     @page_title = @group.name
+    @file_var_name = 'groups/show.html.erb'
     super_index
   end
 

@@ -348,11 +348,13 @@ function updateCreateWhenDates(){
     var start_date = $('#create_when_date').text();
     start_date = new Date(getDateFromFormat(start_date, 'MMM dd, yyyy'));
 
-    var start_hour = $($('.create-when-time')[0]).val();
+    var start_hour = parseInt($($('.create-when-time')[0]).val(),10);
     var start_meridian = $($('.create-when-time')[2]).val();
     if(start_meridian == "PM"){
-        var hour = parseInt(start_hour, 10);
-        start_hour = hour + (hour == 12 ? 0 : 12);
+        start_hour = start_hour + (start_hour == 12 ? 0 : 12);
+    }
+    else if(12 == start_hour){
+        start_hour = 0;
     }
     start_date.setHours(start_hour);
 
@@ -374,8 +376,8 @@ function updateCreateWhenDates(){
     var end_date = new Date(start_date.getTime());
     end_date.setMilliseconds(start_date.getMilliseconds() + duration);
 
-    $('#start_date').val(formatDate(start_date, 'YYYY-MM-dd HH:mm'));
-    $('#end_date').val(formatDate(end_date, 'YYYY-MM-dd HH:mm'));
+    $('#start_date').val(formatDate(start_date, 'yyyy/MM/dd HH:mm'));
+    $('#end_date').val(formatDate(end_date, 'yyyy/MM/dd HH:mm'));
 }
 
 function setupCreateWhen(){
@@ -392,7 +394,7 @@ function setupCreateWhen(){
 
     resizeCalendar();
     
-    var myDate = new Date(getDateFromFormat($('#start_date').val(), 'YYYY-MM-dd HH:mm'));
+    var myDate = new Date(getDateFromFormat($('#start_date').val(), 'yyyy/MM/dd HH:mm'));
     setWhenDate(myDate);
 
 }
@@ -441,8 +443,8 @@ function setupCreateSummary(){
     $('#summary_where_address').text($('#location-geocodedaddress-field').val());
 
     //WHEN
-    var startDate = new Date(getDateFromFormat($('#start_date').val(), 'YYYY-MM-dd HH:mm'));
-    var endDate = new Date(getDateFromFormat($('#end_date').val(), 'YYYY-MM-dd HH:mm'));
+    var startDate = new Date(getDateFromFormat($('#start_date').val(), 'yyyy/MM/dd HH:mm'));
+    var endDate = new Date(getDateFromFormat($('#end_date').val(), 'yyyy/MM/dd HH:mm'));
     $('#summary_when_start_date').text(formatDate(startDate, 'EE NNN dd @ h:mm a'));
     if(startDate.getDate() == endDate.getDate() && startDate.getMonth() == endDate.getMonth() && startDate.getYear() == endDate.getYear()){
         $('#summary_when_end_date').text(formatDate(endDate, 'h:mm a'));
@@ -472,23 +474,39 @@ function setupCreateSummary(){
     $.each($('.event-group-input'), function(index, group){
         var splitID = group.id.split('_');
         var groupID = splitID[splitID.length - 1];
+        var permissionLevel = $(group).val();
 
         var $newGroup = null;
         if(groupID == 'public'){
             $newGroup = addGroupToSummary('Everyone', 'public');
+            $newGroup.addClass('public-group');
+
+            if(permissionLevel == 2){
+                $('#event_public_switch').removeClass('hidden');
+                $('#summary_who_group_list').addClass('hidden');
+            }
+            else{
+                $('#event_public_switch').addClass('hidden');
+                $('#summary_who_group_list').removeClass('hidden');
+            }
         }
         else{
             var groupName = $('#group_id_' + groupID).closest('.group-type').find('.group-type-name').text();
             $newGroup = addGroupToSummary(groupName, groupID);
         }
 
-        var permissionLevel = $(group).val();
         if(permissionLevel == 2)
             changeGroupPermission($newGroup.find('.group-permission-join'));
         else if(permissionLevel == 1)
             changeGroupPermission($newGroup.find('.group-permission-view'));
         else if(permissionLevel == 0)
             changeGroupPermission($newGroup.find('.group-permission-nothing'));
+    });
+    $('#event_private_li').live('click', function(){
+        $('#event_public_switch').addClass('hidden');
+        $('#summary_who_group_list').removeClass('hidden');
+
+        changeGroupPermission($('.public-group').find('.group-permission-view'));
     });
     $('.group-permission ul li').live('click', function(){
         changeGroupPermission(this);
@@ -516,7 +534,7 @@ function changeGroupPermission(permissionLI){
     $permissionLI.addClass('selected');
 
     //Set permission level text
-    $groupPermission.find('span').text(permissionLevel == 2 ? 'View & Join' : permissionLevel == 1 ? 'View' : 'Do Nothing' );
+    $groupPermission.find('span').text(permissionLevel == 2 ? 'View & Join' : permissionLevel == 1 ? 'View' : 'not View' );
 
     //Create Group Inputs
     createGroupInputs(groupID, permissionLevel)

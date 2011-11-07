@@ -6,7 +6,7 @@
     rsvpToEvent();
   }
   else if(isOnSettings()){
-    addKeywordToHolder($('#group_permission_name').val() ,$('#group_permission_icon_class').val());
+    addGroupToHolder($('#group_permission_name').val() ,$('#group_permission_icon_class').val(), "/groups/" + <%=@group.id%>);
   }
   else if(isOnShowGroup()){
     $('#join_group_btn').addClass('hidden');

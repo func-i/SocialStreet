@@ -164,9 +164,10 @@ function groupTypeClicked(groupType, refreshResults){
         }
         else if(isOnSettings()){
             if($groupType.find('#group_required').val() == 'false'){
-                addGroup($groupType.find('#group_id').val(), null);
+                var $groupID = $groupType.find('#group_id').val();
+                addGroup($groupID, null);
                 hideGroups();
-                addGroupToHolder(groupName, groupIconClass);
+                addGroupToHolder(groupName, groupIconClass, "/groups/" + $groupID);
             }
             else{
                 setValuesOnPermissionCodeOverlay($groupType.find('#group_id').val(), $groupType.find('#join_code_description').val(), groupName, groupIconClass)
@@ -220,13 +221,19 @@ function addGroupToSummary(groupName, groupID){
     return $newGroup;
 }
 
-function addGroupToHolder(groupName, groupIconClass){
+function addGroupToHolder(groupName, groupIconClass, groupHref){
     var $newGroup = $($('#group_tag_stamp').clone());
     $newGroup[0].id = "";
     $newGroup.find('.group-tag-name').text(groupName);
     $newGroup.find('.group-tag-icon').addClass(groupIconClass);
+
+    if($newGroup.hasClass('nav-link')){
+        $newGroup.data('ajax-href', groupHref);
+    }
+
     $('#group_tag_list').append($newGroup);
     $newGroup.removeClass('hidden');
+
 }
 
 function groupAlreadyExists(groupName){

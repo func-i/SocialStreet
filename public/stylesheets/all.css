@@ -605,7 +605,7 @@ END OF RESET
     margin: 5px 0;
 }
 #summary_event_name_field{
-    width:360px;
+    width:355px;
     /*height:28px;*/
     border: 0;
     padding: 0 0 5px 0;
@@ -614,6 +614,7 @@ END OF RESET
     color: #FFC233;
     text-align: center;
     background: transparent;
+    overflow: hidden;
 }
 #summary_description_holder{
     width:360px;
@@ -691,6 +692,35 @@ END OF RESET
     text-decoration: underline;
     cursor: pointer;
 }
+#event_public_switch{
+    color: white;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+}
+#event_public_switch ul{
+    display:none;
+    color: #000;
+    z-index:2;
+    left: -5px;
+    width: 80px;
+    position:absolute;
+    /*background: #d2e9f3;*/
+    background: #FFFCD5;
+    padding: 10px;
+}
+#event_public_switch:hover ul{
+    display:block;
+}
+#event_public_switch ul li{
+    font: normal 14px/14px Arial, Helvetica, sans-serif;
+}
+#event_public_switch .selected{
+    font-weight: bold;
+}
+#event_public_switch ul li:hover{
+    text-decoration: underline;
+}
+
+
 .group-permission-name{
     color: #FFC233;
 }

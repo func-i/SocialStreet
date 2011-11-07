@@ -20,6 +20,7 @@ class EventsController < ApplicationController
     @page_title = "Plan StreetMeet"
 
     @event_types = EventType.order('name').all
+
     @event = Event.new
 
     @event.start_date = Time.now.advance(:hours => 3).floor(15.minutes)
@@ -29,7 +30,7 @@ class EventsController < ApplicationController
     
     @location = @event.build_location
 
-    @groups = Group.all
+    @groups = current_user.groups if current_user
 
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'events/new.html.erb'}

@@ -157,18 +157,14 @@ $(function() {
 });
 
 function navLink(link, e){
-    cleanup();
-
-    var href;
-    if($(link).data('ajax-href') != '') {
-        href = $(link).data('ajax-href');
-    }
-    else if(link.href != undefined) {
+    var href = $(link).data('ajax-href');
+    if((!href || href == '') && link.href != undefined) {
         href = link.href;
     }
 
-
     if(href != undefined) {
+        cleanup();
+        
         if(history && history.pushState) {
 
             $.getScript(href, function() {

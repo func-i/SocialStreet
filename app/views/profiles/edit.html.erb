@@ -30,7 +30,7 @@
     </div>
     <div id="group_tag_holder">
       <ul id="group_tag_list">
-        <li id="group_tag_stamp" class="group-tag /*remove-keyword-tag*/ hidden">
+        <li id="group_tag_stamp" class="group-tag nav-link hidden">
           <div class="group-tag-icon rounded-corners-fifteen drop-shadow"></div>
           <span class="group-tag-name text-shadow"></span>
   <%#= image_tag('remove-keyword.png', :class => 'keyword-tag-remove group-tag-remove') %>
@@ -41,7 +41,7 @@
                     </div>-->
         <% else %>
           <% @user.groups.each do |group| %>
-            <li class="group-tag /*remove-keyword-tag*/">
+            <li class="group-tag nav-link" data-ajax-href="<%=group_path(group)%>">
               <div class="group-tag-icon rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(group)%>-medium-sprite"></div>
               <span class="group-tag-name text-shadow">
                 <%=group.name%>

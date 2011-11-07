@@ -8,17 +8,6 @@
         <%= text_area_tag 'event_description', @event.description, :placeholder => 'Add a description...', :class => "text-shadow edit-inline submit-on-change", :id => "summary_event_description_field" %>
       </div>
 
-
-      <div id="summary_what" style="width:360px; height: 137px;">
-        <div id="summary_what_title" class="text-shadow">
-          What?
-        </div>
-        <div id="summary_tag_holder" style="height:112px; width:355px; overflow-y:auto;">
-          <ul id="summary_keyword_list">
-          </ul>
-        </div>
-      </div>
-
       <div id="summary_where" style="width:360px; height: 105px; margin-bottom:10px">
         <div id="summary_where_title" class="text-shadow">
           Where?
@@ -45,14 +34,39 @@
         </div>
       </div>
 
+      <div id="summary_what" style="width:360px; height: 137px;">
+        <div id="summary_what_title" class="text-shadow">
+          What?
+        </div>
+        <div id="summary_tag_holder" style="height:112px; width:355px; overflow-y:auto;">
+          <ul id="summary_keyword_list">
+          </ul>
+        </div>
+      </div>
+
       <div id="summary_who" style="width:360px; height:auto;">
         <div id="summary_who_title" class="text-shadow">
           Who?
         </div>
-        <ul id="summary_who_group_list" style="list-style: disc inside none;">
+        <span id="event_public_switch">
+          <span class="text-shadow">This StreetMeet is</span>
+          <span style="position:relative;cursor:pointer;">
+            <span style="color:#FFC233;" class="text-shadow">Public</span>
+            <ul class="drop-shadow">
+              <% if @groups.blank? %>
+                <li style="text-align:center;">You must sign-in to change this</li>
+              <% else %>
+                <li class="selected">Public</li>
+                <li id="event_private_li">Private</li>
+              <% end %>
+            </ul>
+
+          </span>
+        </span>
+        <ul id="summary_who_group_list" style="list-style: disc inside none;" class="hidden">
           <li id="summary_who_group_stamp" class="summary-who-group hidden">
             <span class="group-permission-name text-shadow">Everyone</span>
-            <span class="text-shadow">has permission to</span>
+            <span class="text-shadow">can</span>
             <span class="group-permission">
               <span style="color:#FFC233;text-decoration: underline;" class="text-shadow">View & Join</span>
               <ul class="drop-shadow">
@@ -61,15 +75,18 @@
                 <li class="group-permission-nothing">None</li>
               </ul>
             </span>
+            <span class="text-shadow">this StreetMeet</span>
             <!--span class="text-shadow">this StreetMeet</span-->
             <%= hidden_field_tag 'group_id', '' %>
           </li>
-          <li id="add_group_link_li" class="text-shadow">
-            <span id="add_group_link">Add Group...</span>
-          </li>
+          <% unless @groups.blank? %>
+            <li id="add_group_link_li" class="text-shadow">
+              <span id="add_group_link">Add Group...</span>
+            </li>
+          <% end %>
         </ul>
       </div>
-      <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"drop-shadow create-summary-view hidden", :style => "margin: 15px 20px 15px 208px; cursor: pointer;") %>
+      <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"drop-shadow create-summary-view hidden", :style => "margin: 15px 0px 15px 228px; cursor: pointer;") %>
     </div>
   </div>
 <% end %>
@@ -78,7 +95,7 @@
   <div id="groups_holder" class="hidden">
     <div id="groups_scroller" class="scroll-pane include-vertical-bar">
       <ul>
-        <% @groups.each do |group| %>
+        <% (@groups || []).each do |group| %>
           <li class="group-type">
             <div class="container rounded-corners-four">
               <%group_class = "#{sprite_class_name_for_group(group)}"%>
