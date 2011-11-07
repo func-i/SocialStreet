@@ -51,6 +51,6 @@ class AuthenticationsController < ApplicationController
   end
 
   def show_signins
-    @users = User.where("sign_in_count > 0").order("current_sign_in_at DESC").limit(20).all;
+    @users = User.where("sign_in_count > 0").order("current_sign_in_at DESC NULLS LAST").limit(20).all;
   end
 end
