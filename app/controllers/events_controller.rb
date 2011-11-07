@@ -63,7 +63,7 @@ class EventsController < ApplicationController
 
     @event_types = EventType.order('name').all
 
-    @groups = Group.all
+    @groups = current_user.groups if current_user
 
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'events/edit.html.erb'}
@@ -112,6 +112,9 @@ class EventsController < ApplicationController
 
   def store_create_request
     store_redirect(:controller => 'events', :action => 'create', :params => params)
+  end
+  def store_show_event_request
+    store_redirect(:controller => 'events', :action => 'show', :params => params)
   end
 
   def load_event

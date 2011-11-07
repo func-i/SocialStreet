@@ -7,7 +7,7 @@ class EventRsvpsController < ApplicationController
       raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
     end
 
-    if(request.xhr?)
+    if request.xhr?
       render :update do |page|
         page.redirect_to event_path(@event, :invite => true)
       end

@@ -1,7 +1,7 @@
 <div id="event_organizer_message_holder" class="popup-holder container hidden">
   <div id="close_event_organizer_message_btn" class="popup-close"><%= image_tag "btn-close5.png" %></div>
   <div class="popup-text text-shadow">
-    This form will allow you to email a message to the <%= (num_attendees = @event.event_rsvps.attending.count) > 1 ? "#{num_attendees} people" : "1 person" %> <%= "person".pluralize if @event.event_rsvps.attending.count > 1 %> attending this event.     
+    Send an email to the <%= pluralize(@event.event_rsvps.attending.count, 'person')%> attending this event.
   </div>
   <div class="popup-text text-shadow" style="margin: 20px 0px 15px 0px;">
     Please type your message:

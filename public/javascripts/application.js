@@ -28,6 +28,11 @@ $(function() {
 
     //Invite User Link
     $('.join-event-btn').live('click', function(e){
+        if($('#signin_button').length > 0){
+            $('#signin_button').trigger('click');
+            return;
+        }
+
         $this = $(this);
         if($('#on_show_event').length > 0){
             if($this.data('can-attend')){

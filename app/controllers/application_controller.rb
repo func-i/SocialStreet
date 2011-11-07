@@ -58,17 +58,51 @@ class ApplicationController < ActionController::Base
           return_path = event_path(@event, :invite => true)
         end
 
+      elsif session[:stored_redirect][:controller] == 'profiles' && session[:stored_redirect][:action] == 'add_group'
+
+        if add_group_to_profile(session[:stored_redirect][:params][:group_id], session[:stored_redirect][:params][:user_id],session[:stored_redirect][:params][:group_code])
+          return_path = get_current_path
+        end
       end
 
       return return_path if return_path
-
-      current_path = get_current_path
-      return current_path if current_path
     end
+
+    current_path = get_current_path
+    return current_path if current_path
 
     super
 
     #raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
+  end
+
+  def add_group_to_profile(group_id, user_id, group_code)
+    group = Group.find group_id
+    if group.join_code_description.blank?
+      user_group = UserGroup.where(:group_id => group_id, :user_id => user_id).limit(1)
+      if user_group.length <= 0
+        user_group = UserGroup.new(:user_id  => user_id, :group_id => group_id, :applied => false)
+      elsif user_group.applied
+        user_group.applied = false
+        user_group.save
+      end
+
+      return nil
+    else
+      #Validate group code
+      if group.is_code_valid(group_code)
+        #Check user_group table for group_id & group_code and user_id is empty
+        user_group = UserGroup.where(:group_id => group_id, :join_code => group_code).limit(1).first
+        user_group.user = user_id
+        user_group.applied = false
+        user_group.save
+
+        return true
+      else
+        #throw error
+        return false
+      end
+    end
   end
 
   def create_or_edit_event(params, action)

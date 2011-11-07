@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_filter :ss_authenticate_user!, :only => [:edit, :update, :add_group]
+  before_filter :store_add_group_redirect, :only => [:add_group]
 
   def edit
     @user = current_user
@@ -60,5 +61,11 @@ class ProfilesController < ApplicationController
         @success = false
       end
     end
+  end
+
+  protected
+
+  def store_add_group_redirect
+    store_redirect(:controller => 'profiles', :action => 'add_group', :params => params)
   end
 end
