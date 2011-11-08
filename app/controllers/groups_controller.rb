@@ -21,6 +21,8 @@ class GroupsController < ExploreBaseController
   def edit
     raise ActiveRecord::RecordNotFound if !@group.can_edit?(current_user)
 
+    @user_group = @group.user_groups.build(:applied => false)
+
     if request.xhr?
       render "/shared/ajax_load.js", :locals => {:file_name_var => 'groups/edit.html.erb'}
     end

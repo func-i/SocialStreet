@@ -25,46 +25,15 @@ $(function() {
     });
 
     $('.user-group-item').live('click', function() {
-        $('#group_member_external_name').val($(this).find('.user-group-name-field').val());
-        $('#group_member_external_email').val($(this).find('.user-group-email-field').val());
-        $('#group_member_join_code').val($(this).find('.user-group-code-field').val());
-
-        var adminFieldVal = $(this).find('.user-group-administrator-field').val();
-        if(adminFieldVal == 'false'){
-            $('#group_admin_false').attr('checked', true);
-            $('#destroy_user_group_link').removeClass('hidden');
-        }
-        else{
-            $('#group_admin_true').attr('checked', true);
-            $('#destroy_user_group_link').addClass('hidden');
-        }
-
-        if(null == adminFieldVal || 0 >= adminFieldVal.length){
-            $('#group_member_administrator_holder').addClass('hidden');
-        }
-        else{
-            $('#group_member_administrator_holder').removeClass('hidden');
-        }
-
-        if($('.user-group-applied-field').val() == 'true'){
-            $('#destroy_user_group_link').addClass('hidden');
-            $('#add_member_btn_link').removeClass('hidden');
-            $('#group_member_application_text').removeClass('hidden');
-            $('#group_details_application_text').addClass('hidden');
-            $('#group_member_applied').val('true');
-        }
-        else{
-            $('#add_member_btn_link').addClass('hidden');
-            $('#group_member_application_text').addClass('hidden');
-            $('#group_details_application_text').removeClass('hidden');
-            $('#group_member_applied').val('false');
-        }
-
-        $('#user_group_form').attr('action', $('.user-group-form-path-field').val());
-        $('#destroy_user_group_link').attr('href', $('.user-group-form-path-field').val());
-
-        $("#user_group_details").removeClass('hidden');
-
+        prepareMemberDetails(
+            $(this).find('.user-group-name-field').val(),
+            $(this).find('.user-group-email-field').val(),
+            $(this).find('.user-group-code-field').val(),
+            $(this).find('.user-group-administrator-field').val(),
+            $(this).find('.user-group-applied-field').val(),
+            false,
+            $(this).find('.user-group-form-path-field').val()
+            );
     });
 
     $('#group_admin_false').live('click', function(){
@@ -72,6 +41,18 @@ $(function() {
     });
     $('#group_admin_true').live('click', function(){
         $('#destroy_user_group_link').addClass('hidden');
+    });
+
+    $('#add_new_group_member').live('click', function(){
+        prepareMemberDetails(
+            '',
+            '',
+            '',
+            'false',
+            'false',
+            true,
+            $('#new_member_form_action').val()
+            );
     });
 
     $('#add_member_btn_link').live('click', function(){
@@ -98,7 +79,57 @@ $(function() {
         $('#edit_group_join_code').trigger('change');
     });
 
-})
+});
+
+function prepareMemberDetails(name, email, joinCode, administrator, applied, newMember, formAction){
+    $('#group_member_external_name').val(name);
+    $('#group_member_external_email').val(email);
+    $('#group_member_join_code').val(joinCode);
+
+    if(administrator == 'false'){
+        $('#group_admin_false').attr('checked', true);
+        $('#destroy_user_group_link').removeClass('hidden');
+    }
+    else{
+        $('#group_admin_true').attr('checked', true);
+        $('#destroy_user_group_link').addClass('hidden');
+    }
+
+    if(null == administrator || 0 >= administrator.length){
+        $('#group_member_administrator_holder').addClass('hidden');
+    }
+    else{
+        $('#group_member_administrator_holder').removeClass('hidden');
+    }
+
+    if(applied == 'true'){
+        $('#destroy_user_group_link').addClass('hidden');
+        $('#add_member_btn_link').removeClass('hidden');
+        $('#group_member_application_text').removeClass('hidden');
+        $('#group_details_application_text').addClass('hidden');
+        $('#group_member_applied').val('true');
+    }
+    else{
+        $('#add_member_btn_link').addClass('hidden');
+        $('#group_member_application_text').addClass('hidden');
+        $('#group_details_application_text').removeClass('hidden');
+        $('#group_member_applied').val('false');
+    }
+
+    if(newMember){
+        $('#destroy_user_group_link').addClass('hidden');
+        $('#add_member_btn_link').removeClass('hidden');
+        $('#user_group_form').attr('method', 'post');
+    }
+    else{
+        $('#user_group_form').attr('method', 'put');
+    }
+
+    $('#user_group_form').attr('action', formAction);
+    $('#destroy_user_group_link').attr('href', formAction);
+
+    $("#user_group_details").removeClass('hidden');
+}
 
 function countLines(area)
 {

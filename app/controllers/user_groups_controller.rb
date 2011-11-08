@@ -1,6 +1,17 @@
 class UserGroupsController < ApplicationController
 
-  before_filter :load_user_group
+  before_filter :load_user_group, :only => [:update, :destroy]
+
+  def create
+    @user_group = UserGroup.new(
+      :external_name => params[:external_name],
+      :external_email => params[:external_email],
+      :join_code => params[:join_code],
+      :administrator => params[:administrator],
+      :applied => !params[:applied].eql?('false')
+    )
+    @user_group.save
+  end
 
   def update
     @user_group.update_attributes(

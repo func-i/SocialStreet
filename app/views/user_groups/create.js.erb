@@ -1,2 +1,11 @@
-<h1>UserGroups#create.js</h1>
-<p>Find me in app/views/user_groups/create.js.html.erb</p>
+$('#user_groups_list').prepend('<%= escape_javascript render 'groups/user_group', :user_group => @user_group %>');
+
+prepareMemberDetails(
+'',
+'',
+'',
+'false',
+'false',
+true,
+$('#new_member_form_action').val()
+);
