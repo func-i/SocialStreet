@@ -1565,11 +1565,11 @@ popup-fields-holder,
 }
 #edit_group_description{
     background: transparent;
-    color: #FFC233;
+    color: white;
     width: 360px;
     /*height: 20px;*/
     margin: 0;
-    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    font: bold 14px/14px Arial, Helvetica, sans-serif;
     float: left;
     padding: 0px;
     border:0px;
@@ -1611,6 +1611,17 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 200px;
+    height: 20px;
+    margin: 0;
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 0px;
+    border:0px;
+}
+#edit_group_join_code{
+    background: transparent;
+    color: #FFC233;
+    width: 100px;
     height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
@@ -1665,7 +1676,7 @@ popup-fields-holder,
     float:left;
     padding-right: 5px;
     color:#FFFCD5;
-    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
 }
 
 #user_group_holder input[type=text] {
@@ -1696,10 +1707,37 @@ popup-fields-holder,
 .user-group-item:hover {
     cursor: pointer;
 }
-
-
 .user-group-item form {
     display: none;
+}
+
+#group_public_switch{
+    color: white;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+}
+#group_public_switch ul{
+    display:none;
+    color: #000;
+    z-index:2;
+    left: -5px;
+    width: 80px;
+    position:absolute;
+    /*background: #d2e9f3;*/
+    background: #FFFCD5;
+    padding: 10px;
+    text-shadow: 0 0;
+}
+#group_public_switch:hover ul{
+    display:block;
+}
+#group_public_switch ul li{
+    font: normal 14px/14px Arial, Helvetica, sans-serif;
+}
+#group_public_switch .selected{
+    font-weight: bold;
+}
+#group_public_switch ul li:hover{
+    text-decoration: underline;
 }
 
 

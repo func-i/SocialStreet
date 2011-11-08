@@ -18,7 +18,13 @@ class GroupsController < ExploreBaseController
     render :nothing => true
   end
 
+  def edit
+    raise ActiveRecord::RecordNotFound if !@group.can_edit?(current_user)
+  end
+
   def update
+    raise ActiveRecord::RecordNotFound if !@group.can_edit?(current_user)
+
     @group.attributes = params[:group]
     if @group.save
       if request.xhr?

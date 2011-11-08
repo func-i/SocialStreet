@@ -8,20 +8,42 @@
         <!--div style="float:left;padding-right: 5px;color:#FFFCD5;font: bold 18px/18px Arial, Helvetica, sans-serif;">Group Description: </div-->
         <%= form.text_area :description, :id=>"edit_group_description", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Description...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
-        <div style="padding-top:10px">
-          <%= form.label :contact_name, "Contact Name:" %>
-          <%= form.text_field :contact_name, :id=>"edit_group_contact_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Name...", 'data-on-change-form-id' => 'group_form'%>
-          <div style="clear:both"></div>
-          <%= form.label :contact_name, "Contact Email:" %>
-          <%= form.text_field :contact_email, :id=>"edit_group_contact_email", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Email...", 'data-on-change-form-id' => 'group_form'%>
-          <div style="clear:both"></div>
-          <%= form.label :contact_name, "Contact Address:" %>
-          <%= form.text_area :contact_address, :id=>"edit_group_contact_address", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Address...", 'data-on-change-form-id' => 'group_form'%>
-          <div style="clear:both"></div>
-          <%= form.label :contact_name, "Contact Phone:" %>
-          <%= form.text_field :contact_phone, :id=>"edit_group_contact_phone", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Phone Number...", 'data-on-change-form-id' => 'group_form'%>
-          <div style="clear:both"></div>
+
+        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+        
+        <%= form.label :contact_name, "Contact Name:" %>
+        <%= form.text_field :contact_name, :id=>"edit_group_contact_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Name...", 'data-on-change-form-id' => 'group_form'%>
+        <div style="clear:both"></div>
+        <%= form.label :contact_name, "Contact Email:" %>
+        <%= form.text_field :contact_email, :id=>"edit_group_contact_email", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Email...", 'data-on-change-form-id' => 'group_form'%>
+        <div style="clear:both"></div>
+        <%= form.label :contact_name, "Contact Address:" %>
+        <%= form.text_area :contact_address, :id=>"edit_group_contact_address", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Address...", 'data-on-change-form-id' => 'group_form'%>
+        <div style="clear:both"></div>
+        <%= form.label :contact_name, "Contact Phone:" %>
+        <%= form.text_field :contact_phone, :id=>"edit_group_contact_phone", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Phone Number...", 'data-on-change-form-id' => 'group_form'%>
+        <div style="clear:both"></div>
+
+        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+        
+        <div id="group_public_switch">
+          This group is
+          <span id="group_permission" style="position:relative;cursor:pointer;">
+            <span style="color:#FFC233"><%=@group.is_public() ? 'Public' : 'Private'%></span>
+            <ul class="drop-shadow">
+              <li id="group_public_li" class="<%='selected' if @group.is_public()%>">Public</li>
+              <li id="group_private_li" class="<%='selected' unless @group.is_public()%>">Private</li>
+            </ul>
+          </span>
         </div>
+        <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public()%>">
+          <%= form.label :join_code_description, "Membership Validated By:"%>
+          <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Join Code...", 'data-on-change-form-id' => 'group_form'%>
+        </div>
+        <div style="clear:both"></div>
+
+        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+
       <% end %>
     </div>
     <div id="user_group_holder" class="clh-content">
