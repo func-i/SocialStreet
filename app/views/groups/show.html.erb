@@ -1,5 +1,5 @@
 <% content_for :right_side_pane do %>
-  <% unless @group.is_member(current_user) %>
+  <% unless @group.is_member?(current_user) %>
     <div style="margin:17px auto 0 auto; text-align:center;">
       <%= image_tag('join_group_btn.png', :id => "join_group_btn", "data-permission-required" => !@group.join_code_description.blank?) %>
       <%= hidden_field_tag 'group_btn_id', @group.id%>
@@ -8,25 +8,30 @@
       <%= hidden_field_tag 'group_btn_icon_class', "event-type-#{sprite_class_name_for_group(@group)}-medium-sprite"%>
     </div>
   <% end %>
+  <% if @group.can_edit?(current_user) %>
+    <div style="margin:17px auto 0 auto; text-align:center;">
+      <%= image_tag('edit_group_btn.png', :class=>'nav-link', :id => "edit_group_button", "data-ajax-href" => edit_group_path(@group))%>
+    </div>
+  <% end %>
 <% end %>
 
 <%= render :file => "explore/index.html.erb" %>
 
 <% content_for :right_side_pane do %>
-    <div class="container text-shadow" style="width:100%; margin-top: 20px; padding:10px;">
-      <div class="rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(@group)%>-medium-sprite" style="float:left;margin-bottom: 10px;"></div>
-    <%#=image_tag(@group.icon_url || "")%>
-      <div id="group_title"><%=@group.name%></div>
-      <div style="clear:both"></div>
-      <div id="group_description"><%= ''%></div>
-      <div id="group_contact_us">Contact us:</div>
-      <div id="group_contact">
-        <div id="group_contact_name"><%=@group.contact_name || "Joshua Borts"%></div>
-        <div><%=@group.contact_email || "jborts@gmail.com"%></div>
-        <div><%=@group.contact_address || "250 Clarke Ave, Montreal"%></div>
-        <div><%=@group.contact_phone || "514-487-9070"%></div>
-      </div>
+  <div class="container text-shadow" style="width:100%; margin-top: 20px; padding:10px;">
+    <div class="rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(@group)%>-medium-sprite" style="float:left;margin-bottom: 10px;"></div>
+  <%#=image_tag(@group.icon_url || "")%>
+    <div id="group_title"><%=@group.name%></div>
+    <div style="clear:both"></div>
+    <div id="group_description"><%= ''%></div>
+    <div id="group_contact_us">Contact us:</div>
+    <div id="group_contact">
+      <div id="group_contact_name"><%=@group.contact_name || "Joshua Borts"%></div>
+      <div><%=@group.contact_email || "jborts@gmail.com"%></div>
+      <div><%=@group.contact_address || "250 Clarke Ave, Montreal"%></div>
+      <div><%=@group.contact_phone || "514-487-9070"%></div>
     </div>
+  </div>
 <% end %>
 
 <% content_for :center_pane do %>

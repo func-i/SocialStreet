@@ -7,7 +7,7 @@ class Group < ActiveRecord::Base
 
   scope :is_member, lambda { |user| where(:user_id => user) }
 
-  def is_member(user)
+  def is_member?(user)
     return false unless user
 
     user.groups.each do |group|

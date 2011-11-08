@@ -471,6 +471,7 @@ function setupCreateSummary(){
     });
 
     //WHO
+    var publicGroupPermissionLevel = 0;
     $.each($('.event-group-input'), function(index, group){
         var splitID = group.id.split('_');
         var groupID = splitID[splitID.length - 1];
@@ -478,17 +479,12 @@ function setupCreateSummary(){
 
         var $newGroup = null;
         if(groupID == 'public'){
+            publicGroupFound = true;
+
             $newGroup = addGroupToSummary('Everyone', 'public');
             $newGroup.addClass('public-group');
 
-            if(permissionLevel == 2){
-                $('#event_public_switch').removeClass('hidden');
-                $('#summary_who_group_list').addClass('hidden');
-            }
-            else{
-                $('#event_public_switch').addClass('hidden');
-                $('#summary_who_group_list').removeClass('hidden');
-            }
+            publicGroupPermissionLevel = permissionLevel;
         }
         else{
             var groupName = $('#group_id_' + groupID).closest('.group-type').find('.group-type-name').text();
@@ -502,6 +498,16 @@ function setupCreateSummary(){
         else if(permissionLevel == 0)
             changeGroupPermission($newGroup.find('.group-permission-nothing'));
     });
+
+    if(publicGroupPermissionLevel == 2){
+        $('#event_public_switch').removeClass('hidden');
+        $('#summary_who_group_list').addClass('hidden');
+    }
+    else{
+        $('#event_public_switch').addClass('hidden');
+        $('#summary_who_group_list').removeClass('hidden');
+    }
+
     $('#event_private_li').live('click', function(){
         $('#event_public_switch').addClass('hidden');
         $('#summary_who_group_list').removeClass('hidden');
