@@ -46,6 +46,19 @@ $(function() {
             $('#group_member_administrator_holder').removeClass('hidden');
         }
 
+        if($('.user-group-applied-field').val() == 'true'){
+            $('#destroy_user_group_link').addClass('hidden');
+            $('#add_member_btn_link').removeClass('hidden');
+            $('#group_member_application_text').removeClass('hidden');
+            $('#group_details_application_text').addClass('hidden');
+            $('#group_member_applied').val('true');
+        }
+        else{
+            $('#add_member_btn_link').addClass('hidden');
+            $('#group_member_application_text').addClass('hidden');
+            $('#group_details_application_text').removeClass('hidden');
+            $('#group_member_applied').val('false');
+        }
 
         $('#user_group_form').attr('action', $('.user-group-form-path-field').val());
         $('#destroy_user_group_link').attr('href', $('.user-group-form-path-field').val());
@@ -61,6 +74,10 @@ $(function() {
         $('#destroy_user_group_link').addClass('hidden');
     });
 
+    $('#add_member_btn_link').live('click', function(){
+        $('#group_member_applied').val('false');
+        $('#user_group_form').submit();
+    });
 
     $('#group_private_li').live('click', function(){
         $('#group_permission span').text('Private');

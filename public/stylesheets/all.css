@@ -1706,8 +1706,11 @@ popup-fields-holder,
 .user-group-item:hover {
     cursor: pointer;
 }
-.user-group-item form {
-    display: none;
+.applied-user-group-item{
+    background-color:#00952B;
+    -webkit-box-shadow: 3px 3px 3px #4F4F4D;
+    -moz-box-shadow: 3px 3px 3px #4f4f4d;
+    box-shadow: 3px 3px 3px #4F4F4D;
 }
 
 #group_public_switch{

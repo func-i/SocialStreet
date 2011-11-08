@@ -38,7 +38,7 @@
         </div>
         <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public()%>">
           <%= form.label :join_code_description, "Membership Validated By:"%>
-          <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Code Type...", 'data-on-change-form-id' => 'group_form'%>
+          <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Code Name...", 'data-on-change-form-id' => 'group_form'%>
         </div>
         <div style="clear:both"></div>
 
@@ -48,7 +48,9 @@
     </div>
 
     <div id="user_group_details" class="clh-content hidden">
-      <div class="text-shadow" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;">Member Details</div>
+      <div id="group_details_application_text" class="text-shadow" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;float:left;">Member Details</div>
+      <div id="group_member_application_text" class="text-shadow hidden" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;float:left;">Membership Application</div>
+      <div style="clear:both"></div>
       <div id="user_group_holder">
         <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
 
@@ -77,9 +79,13 @@
           </div>
 
           <div style="clear:both"></div>
+
+          <%= hidden_field_tag 'applied', 'false', :id => 'group_member_applied' %>
         <% end %>
 
         <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+
+        <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :id => 'add_member_btn_link'%>
 
         <%= link_to '', :method=>'delete', :remote=> true, :confirm => 'Are you sure you want to Delete this Membership?', :id=>"destroy_user_group_link" do %>
           <%= image_tag "delete_member_btn.png", :alt => "Delete Member", :style=>'float:right;'%>
@@ -93,16 +99,11 @@
 
 <% content_for :center_pane do %>
   <div class="expand-height group-settings-content">
-    <% unless @group.user_groups.applied.size.zero? %>
-      <h3>Pending Applications</h3>
-      <%= render 'user_group_list', :user_groups => @group.user_groups.applied %>
-    <% end %>
-
     <%= form_tag search_user_groups_group_path(@group), :remote => true, :id => "user_groups_search_form" do %>
       <%= text_field_tag "keyword", params[:keyword], :class=>'drop-shadow ie-placeholder search-text-field', :placeholder => "Enter a name or email address (press enter)" %>
     <% end %>
     <div class="scroll-pane expand-height">
-      <%= render 'user_group_list', :user_groups => @group.user_groups.not_applied %>
+      <%= render 'user_group_list', :user_groups => @group.user_groups.order("applied DESC") %>
       <div style="clear: both">&nbsp;</div>
     </div>
   </div>

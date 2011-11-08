@@ -7,7 +7,8 @@ class UserGroupsController < ApplicationController
       :external_name => params[:external_name],
       :external_email => params[:external_email],
       :join_code => params[:join_code],
-      :administrator => params[:administrator]
+      :administrator => params[:administrator],
+      :applied => !@user_group.applied || !params[:applied].eql?('false')
     ) if @user_group
   end
 
