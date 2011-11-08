@@ -1567,7 +1567,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 360px;
-    height: 20px;
+    /*height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1600,7 +1600,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 200px;
-    height: 20px;
+    /*height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1678,6 +1678,28 @@ popup-fields-holder,
     float: left;
     padding: 0px;
     border:0px;
+}
+
+#user_group_holder span {
+    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+}
+
+#user_group_holder form {
+    display: inline;
+}
+
+#user_group_holder img {
+    cursor: pointer;
+}
+
+.user-group-item:hover {
+    cursor: pointer;
+}
+
+
+.user-group-item form {
+    display: none;
 }
 
 

@@ -1,1 +1,4 @@
-$('#user_group_holder').append('<%= @user_group.to_s %> has been removed from the group');
+$('#user_group_holder').append('<span class="text-shadow"><%= @user_group.to_s %> has been removed from the group</span>');
+$('#user_group_holder').find('span').last().fadeOut(2500, function() {
+$('#user_group_holder').html('');
+});
