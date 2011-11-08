@@ -68,11 +68,13 @@
             <div style="clear:both"></div>
           </div>
 
-          <%= label :user_group, :administrator, "Administrator:" %>
-          <%= radio_button_tag 'administrator', 'true', true, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_true"%>
-          <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>
-          <%= radio_button_tag 'administrator', 'false', false, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_false"%>
-          <label for="group_admin_false" class="text-shadow" style="color:#FFC233;float:none;">No</label>
+          <div id="group_member_administrator_holder">
+            <%= label :user_group, :administrator, "Administrator:" %>
+            <%= radio_button_tag 'administrator', 'true', true, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_true"%>
+            <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>
+            <%= radio_button_tag 'administrator', 'false', false, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_false"%>
+            <label for="group_admin_false" class="text-shadow" style="color:#FFC233;float:none;">No</label>
+          </div>
 
           <div style="clear:both"></div>
         <% end %>

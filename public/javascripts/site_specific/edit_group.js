@@ -29,13 +29,21 @@ $(function() {
         $('#group_member_external_email').val($(this).find('.user-group-email-field').val());
         $('#group_member_join_code').val($(this).find('.user-group-code-field').val());
 
-        if($(this).find('.user-group-administrator-field').val() == 'false'){
+        var adminFieldVal = $(this).find('.user-group-administrator-field').val();
+        if(adminFieldVal == 'false'){
             $('#group_admin_false').attr('checked', true);
             $('#destroy_user_group_link').removeClass('hidden');
         }
         else{
             $('#group_admin_true').attr('checked', true);
             $('#destroy_user_group_link').addClass('hidden');
+        }
+
+        if(null == adminFieldVal || 0 >= adminFieldVal.length){
+            $('#group_member_administrator_holder').addClass('hidden');
+        }
+        else{
+            $('#group_member_administrator_holder').removeClass('hidden');
         }
 
 
