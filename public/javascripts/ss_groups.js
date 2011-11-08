@@ -202,7 +202,7 @@ function setValuesOnPermissionCodeOverlay(groupID, joinCodeDescription, groupNam
 }
 
 function rsvpToEvent(){
-    ajaxLink($('.join-event-btn')[0]);
+    $('.join-event-btn').trigger('click');
 }
 
 function addGroupToSummary(groupName, groupID){

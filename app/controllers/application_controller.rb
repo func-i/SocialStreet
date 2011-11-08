@@ -163,11 +163,13 @@ class ApplicationController < ActionController::Base
   end
 
   def attending_event_rsvp(event_id)
-    return false unless current_user
+    return -1 unless current_user #error
 
     @event = Event.find event_id
 
-    return false unless @event.can_attend?(current_user)
+    unless @event.can_attend?(current_user) 
+      return 1 #Show groups
+    end
 
     rsvp = @event.event_rsvps.by_user(current_user).first if current_user
 
@@ -178,10 +180,10 @@ class ApplicationController < ActionController::Base
 
     rsvp.status = EventRsvp.statuses[:attending]
 
-    if(rsvp.save)
-      return true
+    if rsvp.save
+      return 2 #Success
     else
-      return false
+      return -1#error
     end
   end
 end

@@ -26,30 +26,6 @@ $(function() {
         closeHowItWorks();
     });
 
-    //Invite User Link
-    $('.join-event-btn').live('click', function(e){
-        if($('#signin_button').length > 0){
-            $('#signin_button').trigger('click');
-            return;
-        }
-
-        $this = $(this);
-        if($('#on_show_event').length > 0){
-            if($this.data('can-attend')){
-                ajaxLink($this)
-            }
-            else{
-                showGroups();
-            }
-        }
-        else{
-            navLink($this);
-        }
-
-        e.preventDefault();
-        e.stopPropagation();
-    });
-
     //HISTORY. Pop state is called when pressing back button in the browser
     var popped = (window.history && null === window.history.state), initialURL = location.href;
     $(window).bind('popstate', function() {
