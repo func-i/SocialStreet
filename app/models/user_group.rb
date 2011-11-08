@@ -9,7 +9,7 @@ class UserGroup < ActiveRecord::Base
 
   scope :search, lambda {|keyword|
     includes(:user).
-      where("user_groups.external_name ~* ? OR user_groups.external_email ~* ? OR user_groups.join_code ~* ? OR users.name ~* ?", keyword, keyword, keyword, keyword)
+      where("(user_groups.external_name ~* ? OR user_groups.external_email ~* ? OR user_groups.join_code ~* ? OR users.first_name ~* ? OR users.last_name ~* ?)", keyword, keyword, keyword, keyword, keyword)
   }
 
   def get_name
