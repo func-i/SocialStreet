@@ -52,7 +52,7 @@
 
       <div id="add_new_group_member" style="font: bold 16px/16px Arial, Helvetica, sans-serif; color: #FFC233;text-align:center;cursor:pointer;">
         Add New Group Member....
-        <%= hidden_field_tag 'new_member_form_action', new_group_user_group_path(@group) %>
+        <%= hidden_field_tag 'new_member_form_action', "/groups/#{@group.id}/user_groups" %>
       </div>
     </div>
 

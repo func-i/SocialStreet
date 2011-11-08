@@ -1655,6 +1655,7 @@ popup-fields-holder,
 #user_groups_list li {
     float: left;
     margin: 10px;
+    text-align: center;
 }
 
 #user_groups_list li span {
@@ -1703,7 +1704,8 @@ popup-fields-holder,
     cursor: pointer;
 }
 
-.user-group-item:hover {
+.user-group-item{
+    padding: 15px 0;
     cursor: pointer;
 }
 .applied-user-group-item{
@@ -1711,6 +1713,7 @@ popup-fields-holder,
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
     box-shadow: 3px 3px 3px #4F4F4D;
+    padding: 10px 0;
 }
 
 #group_public_switch{
