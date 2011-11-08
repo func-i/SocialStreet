@@ -25,35 +25,41 @@ $(function() {
     });
 
     $('.user-group-item').live('click', function() {
-        var $holder = $('#user_group_holder');        
-        $holder.html('');
-        $.each($(this).find('form'), function(i, ele) {            
-            $holder.append($(ele).clone());
-        });
-    });
+        $('#group_member_external_name').val($(this).find('.user-group-name-field').val());
+        $('#group_member_external_email').val($(this).find('.user-group-email-field').val());
+        $('#group_member_join_code').val($(this).find('.user-group-code-field').val());
 
-    $('#user_group_holder .delete-img').live('click', function() {
-        if(confirm('Are you sure you want to remove this user from the group?')) {            
-            $(this).closest('form').submit();
-
-            var group_id = $(this).data('user-group');
-            var $userGroupLi = $('*[data-li-user-group=' + group_id + ']').first();
-            
-            $userGroupLi.fadeOut(2500, function() {
-                $(this).remove();
-            });
+        if($(this).find('.user-group-administrator-field').val() == 'false'){
+            $('#group_admin_false').attr('checked', true);
+            $('#destroy_user_group_link').removeClass('hidden');
         }
+        else{
+            $('#group_admin_true').attr('checked', true);
+            $('#destroy_user_group_link').addClass('hidden');
+        }
+
+
+        $('#user_group_form').attr('action', $('.user-group-form-path-field').val());
+        $('#destroy_user_group_link').attr('href', $('.user-group-form-path-field').val());
+
+        $("#user_group_details").removeClass('hidden');
+
     });
 
-    $('.update-event-img').live('click', function() {
-        $(this).closest('form').submit();
+    $('#group_admin_false').live('click', function(){
+        $('#destroy_user_group_link').removeClass('hidden');
     });
+    $('#group_admin_true').live('click', function(){
+        $('#destroy_user_group_link').addClass('hidden');
+    });
+
 
     $('#group_private_li').live('click', function(){
         $('#group_permission span').text('Private');
         $('#group_public_li').removeClass('selected');
         $('#group_private_li').addClass('selected');
         $('#join_code_description_holder').removeClass('hidden');
+        $('#group_member_join_code_holder').removeClass('hidden');
     });
 
     $('#group_public_li').live('click', function(){
@@ -61,6 +67,8 @@ $(function() {
         $('#group_public_li').addClass('selected');
         $('#group_private_li').removeClass('selected');
         $('#join_code_description_holder').addClass('hidden');
+        $('#group_member_join_code_holder').addClass('hidden');
+
         $('#edit_group_join_code').val('');
         $('#edit_group_join_code').trigger('change');
     });

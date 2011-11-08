@@ -1,9 +1,2 @@
-$('#user_group_holder').append('<span class="text-shadow">User Group updated successfully</span>');
-$('#user_group_holder').find('span').last().fadeOut(2500, function() {
-$('#user_group_holder').html('');
-});
-
-var group_id = $(this).data('user-group');
-var $userGroupLi = $('*[data-li-user-group=' + <%= @user_group.id %> + ']').first();
-
-$userGroupLi.find('span').first().html('<%= @user_group.to_s %>')
+$('*[data-li-user-group=' + <%= @user_group.id %> + ']').remove();
+$('#user_groups_list').prepend('<%= escape_javascript render 'groups/user_group', :user_group => @user_group %>');

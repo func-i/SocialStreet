@@ -1558,7 +1558,6 @@ popup-fields-holder,
     height: 60px;
     overflow:hidden;
     font: bold 24px/24px Arial, Helvetica, sans-serif;
-    text-align: center;
     float: left;
     padding: 0px;
     border:0px;
@@ -1621,7 +1620,7 @@ popup-fields-holder,
 #edit_group_join_code{
     background: transparent;
     color: #FFC233;
-    width: 100px;
+    width: 155px;
     height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;

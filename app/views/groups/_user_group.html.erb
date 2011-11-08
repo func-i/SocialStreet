@@ -1,26 +1,8 @@
 <li class="show-attendee container rounded-corners-four user-group-item" data-li-user-group="<%= user_group.id %>">  
   <span><%= user_group.to_s %></span>
-  <%= form_for [user_group.group, user_group], :remote => true do |f| %>
-    <hr />
-    <%= f.label :contact_name, "External Name:" %>
-    <%= f.text_field :external_name, :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Name..." %><br/>
-    <div style="clear:both"></div>
-
-    <%= f.label :external_email, "External Email:" %>
-    <%= f.text_field :external_email, :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Email..." %><br/>
-    <div style="clear:both"></div>
-
-    <%= f.label :join_code, "Join Code:" %>
-    <%= f.text_field :join_code, :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Join Code..." %>
-    <div style="clear:both"></div>
-    <br/>
-    <%= image_tag "update-event-btn.png", :class => "update-event-img", "data-user-group" => user_group.id %>
-  <% end %>
-
-  <%= form_for [user_group.group, user_group], :remote => true, :html => {:method => :delete} do %>
-    <%= image_tag "btn-close5.png", :alt => "remove", :class => "delete-img", "data-user-group" => user_group.id %> <span class="text-shadow"> Remove from group </span>
-    <hr />
-  <% end %>
-
-
+  <%= hidden_field_tag 'user_group_form_path', group_user_group_path(user_group.group, user_group), :class=>'user-group-form-path-field' %>
+  <%= hidden_field_tag 'user_group_name', user_group.get_name, :class=>'user-group-name-field' %>
+  <%= hidden_field_tag 'user_group_email', user_group.get_email, :class=>'user-group-email-field' %>
+  <%= hidden_field_tag 'user_group_code', user_group.join_code, :class=>'user-group-code-field' %>
+  <%= hidden_field_tag 'user_group_administrator', user_group.administrator, :class=>'user-group-administrator-field' %>
 </li>

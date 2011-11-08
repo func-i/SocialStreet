@@ -3,7 +3,12 @@ class UserGroupsController < ApplicationController
   before_filter :load_user_group
 
   def update
-    @user_group.update_attributes(params[:user_group]) if @user_group    
+    @user_group.update_attributes(
+      :external_name => params[:external_name],
+      :external_email => params[:external_email],
+      :join_code => params[:join_code],
+      :administrator => params[:administrator]
+    ) if @user_group
   end
 
   def destroy

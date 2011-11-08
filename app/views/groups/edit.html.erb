@@ -10,7 +10,7 @@
         <div style="clear:both"></div>
 
         <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-        
+
         <%= form.label :contact_name, "Contact Name:" %>
         <%= form.text_field :contact_name, :id=>"edit_group_contact_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Name...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
@@ -25,7 +25,7 @@
         <div style="clear:both"></div>
 
         <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-        
+
         <div id="group_public_switch">
           This group is
           <span id="group_permission" style="position:relative;cursor:pointer;">
@@ -38,7 +38,7 @@
         </div>
         <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public()%>">
           <%= form.label :join_code_description, "Membership Validated By:"%>
-          <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Join Code...", 'data-on-change-form-id' => 'group_form'%>
+          <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Code Type...", 'data-on-change-form-id' => 'group_form'%>
         </div>
         <div style="clear:both"></div>
 
@@ -46,8 +46,45 @@
 
       <% end %>
     </div>
-    <div id="user_group_holder" class="clh-content">
 
+    <div id="user_group_details" class="clh-content hidden">
+      <div class="text-shadow" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;">Member Details</div>
+      <div id="user_group_holder">
+        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+
+        <%= form_tag '', :remote => true, :method => :put, :id => 'user_group_form' do %>
+
+          <%= label :user_group, :external_name, "Name:" %>
+          <%= text_field_tag 'external_name', '', :id => 'group_member_external_name', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Name...", 'data-on-change-form-id' => 'user_group_form' %><br/>
+          <div style="clear:both"></div>
+
+          <%= label :user_group, :external_email, "Email:" %>
+          <%= text_field_tag 'external_email', '', :id => 'group_member_external_email', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Email...", 'data-on-change-form-id' => 'user_group_form' %><br/>
+          <div style="clear:both"></div>
+
+          <div id="group_member_join_code_holder" class="<%="hidden" if @group.is_public()%>">
+            <%= label :user_group, :join_code, "Validation Code:" %>
+            <%= text_field_tag 'join_code', '', :id => 'group_member_join_code', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Code...", 'data-on-change-form-id' => 'user_group_form' %><br/>
+            <div style="clear:both"></div>
+          </div>
+
+          <%= label :user_group, :administrator, "Administrator:" %>
+          <%= radio_button_tag 'administrator', 'true', true, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_true"%>
+          <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>
+          <%= radio_button_tag 'administrator', 'false', false, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_false"%>
+          <label for="group_admin_false" class="text-shadow" style="color:#FFC233;float:none;">No</label>
+
+          <div style="clear:both"></div>
+        <% end %>
+
+        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+
+        <%= link_to '', :method=>'delete', :remote=> true, :confirm => 'Are you sure you want to Delete this Membership?', :id=>"destroy_user_group_link" do %>
+          <%= image_tag "delete_member_btn.png", :alt => "Delete Member", :style=>'float:right;'%>
+        <% end %>
+        <div style="clear:both"></div>
+
+      </div>
     </div>
   </div>
 <% end %>
