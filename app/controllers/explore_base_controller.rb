@@ -20,6 +20,7 @@ class ExploreBaseController < ApplicationController
 
   def init_page
     @event_types = EventType.order('name').includes(:synonym).all
+    @all_groups = Group.all
   end
 
   def get_events()

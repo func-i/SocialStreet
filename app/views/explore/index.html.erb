@@ -57,6 +57,17 @@
             </div>
           </li>
         <% end %>
+        <% @all_groups.each do |group| %>
+          <li class="event-type explore-event-type">
+            <div class="container rounded-corners-four">
+              <%group_class = "#{sprite_class_name_for_group(group)}"%>
+              <div class="event-type-image explore-event-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+              <div class="event-type-name explore-event-type-name">
+                <%= group.name %>
+              </div>
+            </div>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
@@ -78,7 +89,7 @@
 <% unless params[:keywords].blank? %>
   <script type="text/javascript">
   <% for keyword in params[:keywords] %>
-    addKeyword('<%= keyword %>', false);
+      addKeyword('<%= keyword %>', false);
   <% end %>
   </script>
 <% end %>
