@@ -122,6 +122,8 @@ function prepareMemberDetails(name, email, joinCode, administrator, applied, new
         $('#user_group_form').attr('method', 'post');
     }
     else{
+        $('#destroy_user_group_link').removeClass('hidden');
+        $('#add_member_btn_link').addClass('hidden');
         $('#user_group_form').attr('method', 'put');
     }
 
