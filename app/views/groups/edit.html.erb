@@ -63,7 +63,7 @@
       <div id="user_group_holder">
         <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
 
-        <%= form_tag '', :remote => true, :method => :put, :id => 'user_group_form' do %>
+        <%= form_tag '', :remote => true, :id => 'user_group_form' do %>
 
           <%= label :user_group, :external_name, "Name:" %>
           <%= text_field_tag 'external_name', '', :id => 'group_member_external_name', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Name...", 'data-on-change-form-id' => 'user_group_form' %><br/>
