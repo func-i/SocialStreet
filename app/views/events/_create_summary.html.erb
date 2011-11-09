@@ -53,8 +53,10 @@
           <span style="position:relative;cursor:pointer;">
             <span style="color:#FFC233;" class="text-shadow">Public</span>
             <ul class="drop-shadow">
-              <% if @groups.blank? %>
+              <% if !user_signed_in? %>
                 <li style="text-align:center;">You must sign-in to change this</li>
+              <% elsif @groups.blank? %>
+                <li style="text-align:center;">You must belong to a group to change this</li>
               <% else %>
                 <li class="selected">Public</li>
                 <li id="event_private_li">Private</li>
