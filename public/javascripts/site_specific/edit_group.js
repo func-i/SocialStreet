@@ -121,11 +121,17 @@ function prepareMemberDetails(name, email, joinCode, administrator, applied, new
         $('#add_member_btn_link').removeClass('hidden');
         $('#user_group_form').attr('method', 'post');
         $('#user_group_form').find('[name=_method]').remove();
+        $('#user_group_form .submit-on-change').removeClass('submit-on-change');
     }
     else{
-        $('#destroy_user_group_link').removeClass('hidden');
-        $('#add_member_btn_link').addClass('hidden');
-        $('#user_group_form').append('<input name=​"_method" type=​"hidden" value=​"put">​');
+//        $('#destroy_user_group_link').removeClass('hidden');
+//        $('#add_member_btn_link').addClass('hidden');
+        $('#group_member_external_name').addClass('submit-on-change');
+        $('#group_member_external_email').addClass('submit-on-change');
+        $('#group_member_join_code').addClass('submit-on-change');
+        $('#group_admin_true').addClass('submit-on-change');
+        $('#group_admin_false').addClass('submit-on-change');
+        $('#user_group_form').append("<input name=​_method type=hidden value=put>​");
     }
 
     $('#user_group_form').attr('action', formAction);
