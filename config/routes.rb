@@ -8,12 +8,22 @@ SocialStreetReborn::Application.routes.draw do
     collection do
       match 'streetmeet_of_the_week'
     end
+
+    member do
+      match 'create_message'
+      match 'send_message'
+    end
+
     resources :event_rsvps, :only => [:new, :edit]
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
   end
 
-  resources :profiles
+  resources :profiles do
+    collection do
+      get 'add_group'
+    end
+  end
 
   resources :invitations, :only => [] do
     collection do
@@ -27,6 +37,18 @@ SocialStreetReborn::Application.routes.draw do
       match "show_tnc"
       match "show_signins"
     end
+  end
+
+  resources :groups do
+    collection do
+      get 'apply_for_membership'
+    end
+
+    member do
+      post 'search_user_groups'
+    end
+
+    resources :user_groups
   end
 
   match '/contact' => 'contact#create'

@@ -13,7 +13,7 @@
     <div id="create_where_marker_info" class="invisible">
       <div id="create_where_address_title" class="text-shadow">
         <span style="float:left">
-        ADDRESS:
+          ADDRESS:
         </span>
         <div id="create_where_name_location" class="text-shadow">
           <span id="create_where_name_location_text"><%= event.location.text %></span>
@@ -23,6 +23,7 @@
       <div id="create_where_address" class="text-shadow">
         <%= event.location.geocoded_address %>
       </div>
+      <%= hidden_field_tag 'event_street', event.location.street || event.location.route%>
     </div>
 
     <%= image_tag('continue-button.png', :id=>'create_where_next_arrow', :class=>"next-arrow drop-shadow invisible") %>

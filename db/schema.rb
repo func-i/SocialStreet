@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111020024526) do
+ActiveRecord::Schema.define(:version => 20111104183526) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -46,6 +46,15 @@ ActiveRecord::Schema.define(:version => 20111020024526) do
 
   add_index "connections", ["to_user_id"], :name => "index_connections_on_to_user_id"
   add_index "connections", ["user_id"], :name => "index_connections_on_user_id"
+
+  create_table "event_groups", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "can_view"
+    t.boolean  "can_attend"
+  end
 
   create_table "event_keywords", :force => true do |t|
     t.string   "name"
@@ -97,10 +106,25 @@ ActiveRecord::Schema.define(:version => 20111020024526) do
     t.boolean  "promoted",    :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "private",     :default => false
   end
 
   add_index "events", ["location_id"], :name => "index_events_on_location_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.string   "contact_name"
+    t.string   "contact_email"
+    t.string   "contact_phone"
+    t.string   "contact_address"
+    t.string   "icon_url"
+    t.string   "header_icon_url"
+    t.string   "join_code_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "description"
+  end
 
   create_table "locations", :force => true do |t|
     t.float    "latitude"
@@ -117,6 +141,22 @@ ActiveRecord::Schema.define(:version => 20111020024526) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "user_groups", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.string   "join_code"
+    t.string   "external_name"
+    t.string   "external_email"
+    t.boolean  "administrator"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "applied"
+  end
+
+  add_index "user_groups", ["group_id"], :name => "index_user_groups_on_group_id"
+  add_index "user_groups", ["join_code"], :name => "index_user_groups_on_join_code"
+  add_index "user_groups", ["user_id"], :name => "index_user_groups_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "first_name"

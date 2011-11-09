@@ -1,0 +1,4 @@
+$('*[data-li-user-group=' + <%= @user_group.id %> + ']').remove();
+$('#user_groups_list').prepend('<%= escape_javascript render 'groups/user_group', :user_group => @user_group %>');
+
+$('*[data-li-user-group=' + <%= @user_group.id %> + ']').trigger('click');

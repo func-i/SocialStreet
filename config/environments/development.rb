@@ -23,3 +23,9 @@ SocialStreetReborn::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 end
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :address => "localhost",
+  :port => 1025,
+  :domain => "everydayrails.com" }

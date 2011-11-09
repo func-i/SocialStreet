@@ -265,3 +265,12 @@
 .event-type-streetmeet4-medium-sprite { background-position: -140px -700px; width: 70px; height: 70px; }
 .event-type-hottub-medium-sprite { background-position: -210px -700px; width: 70px; height: 70px; }
 .event-type-unknown5-medium-sprite { background-position: -280px -700px; width: 70px; height: 70px; }
+
+.event-type-uoft-small-sprite
+{ display: inline-block; background: url('../images/event_types/uoft_small.png') no-repeat; width: 55px; height: 55px; }
+.event-type-uoft-medium-sprite
+{ display: inline-block; background: url('../images/event_types/uoft_medium.png') no-repeat; width: 70px; height: 70px;}
+.event-type-saa-small-sprite
+{ display: inline-block; background: url('../images/event_types/saa_small.png') no-repeat; width: 55px; height: 55px; }
+.event-type-saa-medium-sprite
+{ display: inline-block; background: url('../images/event_types/saa_medium.png') no-repeat; width: 70px; height: 70px;}

@@ -24,15 +24,13 @@
   }());
 </script>
 
-
-<% can_edit = @event.can_edit?(current_user) %>
-
 <% content_for :left_side_pane do %>
   <div id="show_event_details">
-    <% if can_edit %>
+    <% if @event.can_edit?(current_user) %>
       <div id="edit_event_links">
         <%= link_to "Edit StreetMeet", edit_event_path(@event), :id=>"edit_event_link" %>
         <%= link_to "Cancel StreetMeet", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
+        <%= link_to "Send Message", '#', :class => 'admin-link', :id => "event_organizer_message" %>
       </div>
     <% end %>
     <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
@@ -48,11 +46,7 @@
             </div>
           <% end %>
           <div id="show_event_title">
-            <% if can_edit %>
-              <span id="edit_event_title_link">Edit Title</span>
-              <input id="edit_event_title_field" class="hidden" name="event[name]" value="<%= @event.title %>" maxlength="30"/>
-            <% end %>
-            <span id="show_event_title_text" class="text-shadow <%= "short" if can_edit -%>">
+            <span id="show_event_title_text" class="text-shadow">
               <%= @event.title %>
             </span>
 
@@ -63,17 +57,11 @@
         </div>
 
         <div id="join_btn_holder" class="event-details-view">
-          <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => @event}) %>
+          <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => @event, :on_show => true}) %>
         </div>
       </div>
 
       <div id="show_event_description_holder" class="scroll-pane show-scroll-on-hover">
-        <% if can_edit %>
-          <span id="edit_event_description_link">
-            <%=(@event.description && @event.description.length > 0) ? "Edit description..." : "Add Description..."%>
-          </span>
-          <%= form.text_area :description, :id=> "edit_event_description_field", :class=>"hidden", :style=>"width:359px; height:70px;" %>
-        <% end %>
         <span id="show_event_description_text">
           <%= raw @event.description %>
         </span>
@@ -103,9 +91,9 @@
     </div>
   </div>
   <!--<div style="font-size:2px;background-color:#4F4F4D;position:absolute;bottom:30px;left:0px;width:400px;height:2px;">&nbsp;</div>-->
-<!--  <div id="fb_like_btn" style="width:50px;height:20px;overflow:hidden;position:absolute;bottom:5px; left:330px;">
-    <div class="fb-like" data-href="<%=event_path(@event)%>" data-send="false" data-layout="button_count" data-width="30" data-show-faces="false"></div>
-  </div>-->
+  <!--  <div id="fb_like_btn" style="width:50px;height:20px;overflow:hidden;position:absolute;bottom:5px; left:330px;">
+      <div class="fb-like" data-href="<%=event_path(@event)%>" data-send="false" data-layout="button_count" data-width="30" data-show-faces="false"></div>
+    </div>-->
 
 <% end %>
 
@@ -126,15 +114,44 @@
 <% end %>
 
 
+<% content_for :center_pane do %>
+  <div id="groups_holder" class="<%= 'hidden' unless params[:group]%>">
+    <div class="container text-shadow" style="width:80%; height: auto;margin: 0 auto; font: bold 14px/14px Arial, Helvetica, sans-serif; color:white;padding: 20px;text-align:center;">
+      To Join this Event, you must be a member of one of these groups. Please click on a group to become a member.
+    </div>
+    <ul>
+      <% @event.groups.each do |group| %>
+        <li class="group-type">
+          <div class="container rounded-corners-four">
+            <%group_class = "#{sprite_class_name_for_group(group)}"%>
+            <div class="group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+            <div class="group-type-name">
+              <%= group.name %>
+            </div>
+            <%= hidden_field_tag "group_id", group.id %>
+            <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
+            <%= hidden_field_tag "join_code_description", group.join_code_description  %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <%= render :partial => 'groups/group_permissions' %>
+  <%= render :partial => 'create_message' %>
+<% end %>
+
 <% unless params[:invite].blank? %>
   <%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
 <% end %>
 
 <%= hidden_field_tag 'invite_view_bool', params[:invite] %>
+<%= hidden_field_tag 'group_view_bool', params[:group] %>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>
 <%= hidden_field_tag 'lng', @event.location.longitude %>
 <%= hidden_field_tag 'location_text', @event.location.text %>
 <%= hidden_field_tag 'address', @event.location.short_address_as_sentence %>
+
+<%= hidden_field_tag 'on_show_event', 'true' %>
 
 <%= javascript_include_tag "site_specific/show_event"%>

@@ -43,6 +43,19 @@ $(function(){
     $('#event_wall_text_field').autoResize({
         extraSpace: 5
     });
+    
+    $('#send_message_button').live('click', function() {
+        $('#send_message_form').submit();
+    });
+
+    $('#event_organizer_message').live('click', function() {
+        showEventOrganizerMessage();
+        return false;
+    });
+
+    $('#close_event_organizer_message_btn').live('click', function() {
+        hideEventOrganizerMessage();
+    });
 
     $('.event-wall-comment').live('mouseenter', function(){
         $(this).find('.comment-delete').removeClass('hidden');
@@ -199,6 +212,10 @@ function setupShowEventPage(){
     }
     else{
         showEventView();
+
+        if($('#group_view_bool').val()){
+            showGroups();
+        }
     }
 
     getInvitationUsers();//Load invitation users on delay
@@ -219,23 +236,24 @@ function setupShowEventPage(){
 function showInvitationView(){
     $('.event-invitation-view').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
+    $('#right_side_pane').addClass('hide_for_center_pane');
     $('.event-details-view').addClass('hidden');
 
     hideMarkers();
 
     resizeLayout();
 }
-
 function showEventView(){
     $('.event-invitation-view').addClass('hidden');
     $('#center_pane').addClass('invisible');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
     $('.event-details-view').removeClass('hidden');
 
     showMarkers();
 
     resizeLayout();
-
 }
+
 
 function getInvitationUsers(){
     setTimeout(function() {
@@ -420,4 +438,26 @@ function resizeDate() {
         $('#show_event_date').css('width', '');
         $('#show_event_date').css('padding-top', '5px');
     }
+}
+
+function showEventOrganizerMessage(){
+    $('#event_organizer_message_holder').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
+    $('#right_side_pane').addClass('hide_for_center_pane');
+    resizePageElements();
+
+    $(document).bind('click.messages', function(e) {
+        if($(e.target).closest('#event_organizer_message_holder').length < 1) {
+            hideEventOrganizerMessage();
+        }
+    });
+}
+function hideEventOrganizerMessage(){
+    $('#event_organizer_message_holder').addClass('hidden');
+    $('#center_pane').addClass('invisible');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
+    
+    resizePageElements();
+
+    $(document).unbind('.messages');
 }

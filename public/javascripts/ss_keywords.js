@@ -7,7 +7,7 @@ $(function(){
     $('.keyword-text-field').live('focus', function(){
         //Clear any value in the text field
         $(this).val('');
-        reset();
+        resetKeywords();
 
         //show event type holder
         showEventTypeHolder();
@@ -16,11 +16,10 @@ $(function(){
     //User clicks on doc away from event type or text field, hide
     $(document).bind("click", function(e){
         if(isOpen &&
-            $('#on_explore').length > 0 &&
+            isOnExplore() &&
             $(e.target).closest('.keyword-text-field-holder').length < 1 &&
-            $(e.target).closest('#event_types_holder').length < 1)
+            $(e.target).closest('.event-type').length < 1)
             {
-
             hideEventTypeHolder();
         }
     });
@@ -32,11 +31,11 @@ $(function(){
 
         $('.keyword-text-field').val('');
 
-        if($('#on_explore').length > 0){
+        if(isOnExplore()){
             hideEventTypeHolder();
         }
 
-        reset();
+        resetKeywords();
         $('.keyword-text-field').blur();
     });
 
@@ -49,7 +48,7 @@ $(function(){
         }
 
         if(e.target.value.length < 1){
-            reset();
+            resetKeywords();
             return;
         }
         
@@ -58,10 +57,10 @@ $(function(){
         if(e.keyCode == 13){//Enter
             addKeyword(keyword_arr[keyword_arr.length - 1]);
 
-            if($('#on_explore').length > 0){
+            if(isOnExplore()){
                 hideEventTypeHolder();
             }
-            reset();
+            resetKeywords();
             $('.keyword-text-field').blur();
 
         }
@@ -80,10 +79,12 @@ $(function(){
     $('.remove-keyword-tag').live('click', function(){
         removeKeyword(this);
     });
+
 });
 
 function showEventTypeHolder(){
     $('#event_types_holder').removeClass('hidden');
+    $('#right_side_pane').addClass('hide_for_center_pane');
     $('#center_pane').removeClass('invisible');
 
     resizePageElements();
@@ -94,12 +95,13 @@ function showEventTypeHolder(){
 
 function hideEventTypeHolder(){
     $('#event_types_holder').addClass('hidden');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
     $('#center_pane').addClass('invisible');
 
     isOpen = false;
 }
 
-function reset(){
+function resetKeywords(){
     $.each($('.event-type'), function(index, et){
         var $et = $(et);
         if($et.hasClass('synonym'))
@@ -108,7 +110,7 @@ function reset(){
             $et.removeClass('hidden');
     });
 
-    $('.keyword-text-field').val('');    
+    $('.keyword-text-field').val('');
 
     $('#custom_event_type .event-type-name').text('');
     $('#custom_event_type').addClass('hidden');
@@ -116,19 +118,14 @@ function reset(){
 }
 
 function eventTypeClicked(eventType, refreshResults){
-    $eventType = $(eventType);
-    keywordName = $.trim($eventType.find('.event-type-name').text());
-    keywordIconClass = 'event-type-' + $eventType.find('.event-type-image').data('event-type') + ($('#on_explore').length > 0 ? '-small-sprite' : '-medium-sprite');
+    var $eventType = $(eventType);
+    var keywordName = $.trim($eventType.find('.event-type-name').text());
+    var keywordIconClass = 'event-type-' + $eventType.find('.event-type-image').data('event-type') + (isOnExplore() ? '-small-sprite' : '-medium-sprite');
 
     if(!keywordAlreadyExists(keywordName)){
-        var $newKeyword = $($('#keyword_tag_stamp').clone());
-        $newKeyword[0].id = "";
-        $newKeyword.find('.keyword-tag-name').text(keywordName);
-        $newKeyword.find('.keyword-tag-icon').addClass(keywordIconClass);
-        $('#keyword_tag_list').append($newKeyword);
-        $newKeyword.removeClass('hidden');
+        if(isOnExplore()){
+            addKeywordToHolder(keywordName, keywordIconClass);
 
-        if($('#on_explore').length > 0){
             $('#explore_search_params').append(
                 '<input type="hidden" name="keywords[]" class="keyword-input" value="' + keywordName + '" />'
                 );
@@ -141,7 +138,9 @@ function eventTypeClicked(eventType, refreshResults){
                 refreshExploreResults();
             }
         }
-        else{
+        else if(isOnCreateWhat()){
+            addKeywordToHolder(keywordName, keywordIconClass);
+
             $('#event_create_form').append(
                 '<input type="hidden" name="event[event_keywords_attributes][][name]" class="keyword-input" value="' + keywordName + '" />'
                 );
@@ -152,6 +151,15 @@ function eventTypeClicked(eventType, refreshResults){
             $('#create_what_tags').removeClass('invisible');
         }
     }
+}
+
+function addKeywordToHolder(keywordName, keywordIconClass){
+    var $newKeyword = $($('#keyword_tag_stamp').clone());
+    $newKeyword[0].id = "";
+    $newKeyword.find('.keyword-tag-name').text(keywordName);
+    $newKeyword.find('.keyword-tag-icon').addClass(keywordIconClass);
+    $('#keyword_tag_list').append($newKeyword);
+    $newKeyword.removeClass('hidden');
 }
 
 function keywordAlreadyExists(keywordName){
@@ -233,7 +241,7 @@ function removeKeyword(keywordCloseDom){
         $(inputElem).remove();
     }
     
-    if($('#on_explore').length > 0){
+    if(isOnExplore()){
         refreshExploreResults();
 
         if($('.keyword-tag').not('#keyword_tag_stamp').length < 1){
@@ -246,7 +254,7 @@ function removeKeyword(keywordCloseDom){
             $('.keyword-tag-holder').height('auto');
         }
     }
-    else{
+    else if(isOnCreateWhat()){
         if($('.keyword-tag').not('#keyword_tag_stamp').length < 1){
             $('#create_what_next_arrow').addClass('invisible');
             $('#create_what_tags').addClass('invisible');
@@ -258,4 +266,14 @@ function removeKeyword(keywordCloseDom){
 
         resizeWhatTags();
     }
+}
+
+function isOnExplore(){
+    return $('#on_explore').length > 0;
+}
+function isOnCreateWhat(){
+    return $('#on_create_what').val() && $('#on_create_what').val().length > 0;
+}
+function isOnShowGroup(){
+    return $('#on_show_group').length > 0;
 }

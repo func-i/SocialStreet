@@ -58,31 +58,85 @@ class ApplicationController < ActionController::Base
           return_path = event_path(@event, :invite => true)
         end
 
+      elsif session[:stored_redirect][:controller] == 'profiles' && session[:stored_redirect][:action] == 'add_group'
+
+        if add_group_to_profile(session[:stored_redirect][:params][:group_id], session[:stored_redirect][:params][:user_id],session[:stored_redirect][:params][:group_code])
+          return_path = get_current_path
+        end
       end
 
       return return_path if return_path
-
-      current_path = get_current_path
-      return current_path if current_path
     end
+
+    current_path = get_current_path
+    return current_path if current_path
 
     super
 
     #raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
   end
 
+  def add_group_to_profile(group_id, user_id, group_code)
+    group = Group.find group_id
+    if group.join_code_description.blank?
+      user_group = UserGroup.where(:group_id => group_id, :user_id => user_id).limit(1)
+      if user_group.length <= 0
+        user_group = UserGroup.new(:user_id  => user_id, :group_id => group_id, :applied => false)
+      elsif user_group.applied
+        user_group.applied = false
+        user_group.save
+      end
+
+      return nil
+    else
+      #Validate group code
+      if group.is_code_valid(group_code)
+        #Check user_group table for group_id & group_code and user_id is empty
+        user_group = UserGroup.where(:group_id => group_id, :join_code => group_code).limit(1).first
+        user_group.user = user_id
+        user_group.applied = false
+        user_group.save
+
+        return true
+      else
+        #throw error
+        return false
+      end
+    end
+  end
+
   def create_or_edit_event(params, action)
     if action == :create
       #Create the event
       @event = Event.new()
-      @event.user = current_user if current_user # TODO: remove if statement when enforced.
+      @event.user = current_user if current_user
+    elsif action == :edit
+      @event.event_keywords.each do |keyword|
+        keyword.destroy
+      end
     end
 
     @event.attributes = params[:event]
-    #@event.location.user = current_user if @event.location
+
+    #Groups
+    @event.private = true
+    @event.event_groups.each do |e_g|
+      e_g.destroy
+    end
+    params[:group].each do |groupID, permissionLevel|
+      e_g = @event.event_groups.build
+      e_g.can_view = permissionLevel.to_i >= 1
+      e_g.can_attend = permissionLevel.to_i >= 2
+
+      if groupID.eql?('public')
+        e_g.group_id = nil
+        @event.private = false if e_g.can_view
+      else
+        e_g.group_id = groupID
+      end
+    end
 
     if @event.save
-      # Connection.connect_with_users_in_action_thread(@event.user, @event.action) if @event.action
       return true
     end
 
@@ -109,9 +163,14 @@ class ApplicationController < ActionController::Base
   end
 
   def attending_event_rsvp(event_id)
-    return false unless current_user
+    return -1 unless current_user #error
 
     @event = Event.find event_id
+
+    unless @event.can_attend?(current_user) 
+      return 1 #Show groups
+    end
+
     rsvp = @event.event_rsvps.by_user(current_user).first if current_user
 
     if !rsvp
@@ -121,10 +180,10 @@ class ApplicationController < ActionController::Base
 
     rsvp.status = EventRsvp.statuses[:attending]
 
-    if(rsvp.save)
-      return true
+    if rsvp.save
+      return 2 #Success
     else
-      return false
+      return -1#error
     end
   end
 end

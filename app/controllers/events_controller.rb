@@ -2,9 +2,10 @@ class EventsController < ApplicationController
   before_filter :store_current_path, :only => [:show]
   before_filter :store_create_request, :only => [:create]
   before_filter :ss_authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
+  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message]
  
   def show
-    @event = Event.find params[:id]
+    raise ActiveRecord::RecordNotFound if !@event.can_view?(current_user)
 
     @page_title = "StreetMeet - #{@event.title}"
 
@@ -19,12 +20,17 @@ class EventsController < ApplicationController
     @page_title = "Plan StreetMeet"
 
     @event_types = EventType.order('name').all
+
     @event = Event.new
 
     @event.start_date = Time.now.advance(:hours => 3).floor(15.minutes)
     @event.end_date = Time.now.advance(:hours => 6).floor(15.minutes)
+
+    @event.event_groups.build(:group_id => nil, :can_attend => true, :can_view => true)
     
     @location = @event.build_location
+
+    @groups = current_user.groups if current_user
 
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'events/new.html.erb'}
@@ -32,7 +38,6 @@ class EventsController < ApplicationController
   end
 
   def create
-
     if create_or_edit_event(params, :create)     
 
       @event.reload
@@ -51,13 +56,14 @@ class EventsController < ApplicationController
   end
 
   def edit
-    @event = Event.find params[:id]
 
-    @page_title = "Edit StreetMeet - #{@event.title}"    
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
+
+    @page_title = "Edit StreetMeet - #{@event.title}"
 
     @event_types = EventType.order('name').all
 
-    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
+    @groups = current_user.groups if current_user
 
     if request.xhr?
       render "shared/ajax_load.js", :locals => {:file_name_var => 'events/edit.html.erb'}
@@ -65,40 +71,25 @@ class EventsController < ApplicationController
   end
 
   def update
-    event = Event.find params[:id]
-
-    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
-
-    if params[:event][:event_keywords_attributes]
-      event.event_keywords.each do |keyword|
-        keyword.destroy
-      end
-    end
-
-    event.attributes = params[:event]
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
 
     # => TODO, what happens if the save fails?s
-    event.save
+    if create_or_edit_event(params, :edit)
 
-    Resque.enqueue(Jobs::Email::EmailUserEditEvent, event.id)
+      Resque.enqueue(Jobs::Email::EmailUserEditEvent, @event.id)
 
-    if params[:event][:event_keywords_attributes] #HACK HACK HACKITY HACK
-      redirect_to event
-    else
-      render :nothing => true
+      redirect_to @event
     end
   end
 
   def destroy
-    event = Event.find params[:id]
+    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
 
-    raise ActiveRecord::RecordNotFound if !event.can_edit?(current_user)
+    @event.canceled = true
+    @event.save
 
-    event.canceled = true
-    event.save
-
-    if(event.upcoming)
-      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, event.id)
+    if(@event.upcoming)
+      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
     end
 
     redirect_to :root
@@ -108,10 +99,26 @@ class EventsController < ApplicationController
     render "user_mailer/streetmeet_of_the_week.html.erb", :layout => false
   end
 
+  def send_message    
+
+    if @event && !params[:message].blank?
+      Resque.enqueue(Jobs::Email::EmailEventUsersAdminMessage, @event.id, params[:message])
+    end
+
+    redirect_to @event
+  end
+
   protected
 
   def store_create_request
     store_redirect(:controller => 'events', :action => 'create', :params => params)
+  end
+  def store_show_event_request
+    store_redirect(:controller => 'events', :action => 'show', :params => params)
+  end
+
+  def load_event
+    @event = Event.find params[:id]
   end
 
   def prepare_for_show

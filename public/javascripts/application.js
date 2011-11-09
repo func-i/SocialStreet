@@ -3,32 +3,14 @@ var cleanUpSelf = function(){};
 $(function() {
     //Ajax call when clicking nav buttons
     $('.nav-link').live('click', function(e) {
-        cleanup();
+        navLink(this);
+        e.preventDefault();
+        e.stopPropagation();
+    });
 
-        var href;
-        if($(this).data('ajax-href') != '') {
-            href = $(this).data('ajax-href');
-        }
-        else if(this.href != undefined) {
-            href = this.href;
-        }
-
-            
-        if(href != undefined) {
-            if(history && history.pushState) {
-
-                $.getScript(href, function() {
-                    resizePageElements();
-                    setPlaceholdersInInternetExplorer();
-                });
-                history.pushState({}, "", href);
-            }
-            else{
-                window.location = href;
-            }
-            e.preventDefault();
-            e.stopPropagation();
-        }       
+    //Ajax Link
+    $('.ajax-link').live('click', function(e){
+        ajaxLink(this);
     });
 
     //Signin link
@@ -43,21 +25,6 @@ $(function() {
     $('#how_it_works_find').click(function() {
         closeHowItWorks();
     });
-
-    //Ajax Link
-    $('.ajax-link').live('click', function(e){
-        var href;
-        if($(this).data('ajax-href') != '') {
-            href = $(this).data('ajax-href');
-        }
-        else if(this.href != undefined) {
-            href = this.href;
-        }
-
-        if(href != undefined)
-            $.getScript(href);
-    });
-
 
     //HISTORY. Pop state is called when pressing back button in the browser
     var popped = (window.history && null === window.history.state), initialURL = location.href;
@@ -90,7 +57,7 @@ $(function() {
                 });
         }
     }*/
-
+    
     //Initialize the size elements to match page size and initialize scrollbars
     resizePageElements();
     $(window).resize(function() {
@@ -142,8 +109,68 @@ $(function() {
     $('#feedback').click(function(){
         closeFeedback();
     });
+
+    //Submit on change & edit inline
+    $('.edit-inline').live('mouseenter', function(){
+        $(this).addClass('edit-inline-mouseover');
+    });
+    $('.edit-inline').live('mouseleave', function(){
+        $(this).removeClass('edit-inline-mouseover');
+    });
+    $('.edit-inline').live('click', function(){
+        $(this).removeClass('edit-inline-mouseover');
+    });
+
+    $('.submit-on-change').live('keydown', function(e){
+        if(e.keyCode == 13 && !e.shiftKey){
+            $(this).trigger('change');
+            $(this).blur();
+            return false;
+        }
+    });
+    $('.submit-on-change').live('change', function(){
+        var onChangeForm = $(this).data('on-change-form-id');
+        if(null != onChangeForm){
+            $('#' + onChangeForm).submit();
+        }
+    });
+
 });
 
+function navLink(link, e){
+    var href = $(link).data('ajax-href');
+    if((!href || href == '') && link.href != undefined) {
+        href = link.href;
+    }
+
+    if(href != undefined) {
+        cleanup();
+        
+        if(history && history.pushState) {
+
+            $.getScript(href, function() {
+                resizePageElements();
+                setPlaceholdersInInternetExplorer();
+            });
+            history.pushState({}, "", href);
+        }
+        else{
+            window.location = href;
+        }
+    }
+}
+function ajaxLink(link){
+    var href;
+    if($(link).data('ajax-href') != '') {
+        href = $(link).data('ajax-href');
+    }
+    else if(link.href != undefined) {
+        href = link.href;
+    }
+
+    if(href != undefined)
+        $.getScript(href);
+}
 function setPlaceholdersInInternetExplorer(){
     if(getInternetExplorerVersion() != -1){
         $.each($('.ie-placeholder'), function(index, input){
@@ -195,6 +222,7 @@ function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat,
 }
 
 function resizePageElements() {
+
     resizeLayout();
     resizeExpandHeightContainer();
     capHeightContainer();
@@ -214,8 +242,8 @@ function resizeLayout(){
     var docWidth = $(window).width();
     //var leftPaneTopOffset = $('#left_side_pane').offset().top;
     //var rightPaneTopOffset = $('#right_side_pane').offset().top;
-    var rightPaneWidth = $('#right_side_pane').width();
-    var leftPaneWidth = $('#left_side_pane').width();
+    var rightPaneWidth = !$('#right_side_pane').is(":visible") ? 0 : $('#right_side_pane').width();
+    var leftPaneWidth = !$('#left_side_pane').is(":visible") ? 0 : $('#left_side_pane').width();
     //var topPaneLeftOffset = $('#top_pane').offset().left;
     //var bottomPaneLeftOffset = $('#bottom_pane').offset().left;
 
@@ -320,7 +348,9 @@ function initScrollPane(scroll_pane) {
             $myElem.find('.jspVerticalBar').addClass('invisible');
         }
     });
-    $myElem.jScrollPane();
+    $myElem.jScrollPane({
+        enableKeyboardNavigation: false
+    });
 
     var that = $myElem;
     $(window).bind('resize', function() {

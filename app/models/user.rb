@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   has_many :incoming_connections, :class_name => "Connection", :foreign_key => "to_user_id"
   has_many :connected_users, :through => :connections, :source => :to_user
 
+  has_many :user_groups
+  has_many :groups, :through => :user_groups
+
   validates :email, :uniqueness => { :allow_blank => true }
 
   after_save :email_user
@@ -45,6 +48,18 @@ class User < ActiveRecord::Base
       username
     else
       "Sir/Madam" # for now, should have more conditions before this
+    end
+  end
+  
+  def name=(n)
+    names = n.split( );
+
+    self.first_name = names[0]
+
+    if(names.length > 1)
+      self.last_name = names[1...names.length].join(' ')
+    else
+      self.last_name = ""
     end
   end
 
@@ -83,7 +98,7 @@ class User < ActiveRecord::Base
     return self.event_rsvps.for_event(event).count > 0
   end
 
-  def apply_omniauth(omniauth)    
+  def apply_omniauth(omniauth)
 
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
     if omniauth['extra'] && user_info = omniauth['extra']['user_hash']

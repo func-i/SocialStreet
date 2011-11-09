@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  
   before_create :build_initial_rsvp
   before_save :save_default_name
 
@@ -11,7 +12,10 @@ class Event < ActiveRecord::Base
   belongs_to :user
   belongs_to :location
 
-  accepts_nested_attributes_for :event_keywords, :location
+  has_many :event_groups
+  has_many :groups, :through => :event_groups
+
+  accepts_nested_attributes_for :event_keywords, :location, :event_groups
 
   scope :valid, where(:canceled => false);
   scope :upcoming, where("events.end_date > ?", Time.now)
@@ -22,17 +26,18 @@ class Event < ActiveRecord::Base
 
   scope :matching_keywords, lambda { |keywords, include_searchables_with_no_keywords|
     unless keywords.blank?
-      chain = joins("LEFT OUTER JOIN event_keywords ON event_keywords.event_id = events.id")
+      chain = includes(:event_keywords).includes(:groups)
       #chain = chain.joins("LEFT OUTER JOIN event_types AS synonyms ON synonyms.synonym_id = event_keywords.event_type_id AND event_keywords.event_id = events.id")
       query = []
       args = {}
 
       keywords.each_with_index do |k,i|
         unless k.blank?
-          query << "events.name ~* :key#{i}
+          query << "(events.name ~* :key#{i}
           OR events.description ~* :key#{i}
           OR event_keywords.id IS NULL
-          OR event_keywords.name ~* :key#{i}          
+          OR event_keywords.name ~* :key#{i}
+          OR (groups.name ~* :key#{i} AND NOT events.private))
           "
           #OR synonyms.name ~* :key#{i}
           args["key#{i}".to_sym] = "[[:<:]]#{k}"
@@ -117,9 +122,40 @@ class Event < ActiveRecord::Base
     user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end
 
+  def can_view?(user)
+    return true unless self.private
+
+    return false unless user
+    return true if event_rsvps.by_user(user).first.try(:organizer)
+
+    self.event_groups.each do |e_g|
+      user.user_groups.each do |u_g|
+        return true if e_g.group_id == u_g.group_id && e_g.can_view
+      end
+    end
+
+    return false
+  end
+
+  def can_attend?(user)
+    self.event_groups.each do |e_g|
+      return true if e_g.group_id.nil? && e_g.can_attend
+
+      if user
+        user.user_groups.each do |u_g|
+          return true if e_g.group_id == u_g.group_id && e_g.can_attend
+        end
+      end
+    end
+
+    return false unless user
+    #return true if event_rsvps.by_user(user).first.try(:organizer)
+    return false
+  end
+
   def organizers_rsvps_list
     event_rsvps.organizers
-  end 
+  end
 
   protected
 
