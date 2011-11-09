@@ -4,6 +4,7 @@ class UserGroupsController < ApplicationController
 
   def create
     @user_group = UserGroup.new(
+      :group_id => params[:group_id],
       :external_name => params[:external_name],
       :external_email => params[:external_email],
       :join_code => params[:join_code],
