@@ -29,7 +29,7 @@ class Group < ActiveRecord::Base
     return false
   end
 
-  def is_public()
-    return join_code_description.blank?
+  def is_public?
+    join_code_description.blank?
   end
 end

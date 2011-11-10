@@ -45,7 +45,7 @@ class GroupsController < ExploreBaseController
   def search_user_groups
     @user_groups = UserGroup.where(:group_id => params[:id]).order("applied DESC")
 
-    @user_groups = @user_groups.search(params[:keyword]).select{|ug| !ug.user.eql?(current_user)} unless params[:keyword].blank?
+    @user_groups = @user_groups.search(params[:keyword]) unless params[:keyword].blank?
   end
 
   protected

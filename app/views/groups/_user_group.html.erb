@@ -5,6 +5,6 @@
   <%= hidden_field_tag 'user_group_name', user_group.get_name, :class=>'user-group-name-field' %>
   <%= hidden_field_tag 'user_group_email', user_group.get_email, :class=>'user-group-email-field' %>
   <%= hidden_field_tag 'user_group_code', user_group.join_code, :class=>'user-group-code-field' %>
-  <%= hidden_field_tag 'user_group_administrator', user_group.administrator?, :class=>'user-group-administrator-field' %>
+  <%= hidden_field_tag 'user_group_administrator', current_user == user_group.user ? nil : user_group.administrator?, :class=>'user-group-administrator-field' %>
   <%= hidden_field_tag 'user_group_applied', user_group.applied, :class=>'user-group-applied-field' %>
 </li>

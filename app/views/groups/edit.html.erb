@@ -34,14 +34,14 @@
         <div id="group_public_switch">
           This group is
           <span id="group_permission" style="position:relative;cursor:pointer;">
-            <span style="color:#FFC233"><%=@group.is_public() ? 'Public' : 'Private'%></span>
+            <span style="color:#FFC233"><%= @group.is_public? ? 'Public' : 'Private'%></span>
             <ul class="drop-shadow">
-              <li id="group_public_li" class="<%='selected' if @group.is_public()%>">Public</li>
-              <li id="group_private_li" class="<%='selected' unless @group.is_public()%>">Private</li>
+              <li id="group_public_li" class="<%='selected' if @group.is_public? %>">Public</li>
+              <li id="group_private_li" class="<%='selected' unless @group.is_public? %>">Private</li>
             </ul>
           </span>
         </div>
-        <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public()%>">
+        <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public? %>">
           <%= form.label :join_code_description, "Membership Validated By:"%>
           <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Code Name...", 'data-on-change-form-id' => 'group_form'%>
         </div>
@@ -97,7 +97,7 @@
       </div>
     <% end %>
     <div class="scroll-pane expand-height">
-      <%= render 'user_group_list', :user_groups => @group.user_groups.order("applied DESC").select{|ug| !ug.user.eql?(current_user)} %>
+      <%= render 'user_group_list', :user_groups => @group.user_groups.order("applied DESC") %>
       <div style="clear: both">&nbsp;</div>
     </div>
   </div>

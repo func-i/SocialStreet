@@ -10,13 +10,13 @@ classes = "edit-inline submit-on-change" if defined? on_edit
 <%= form.text_field :external_email, :class=>"text-shadow #{classes}", :placeholder => "Enter Email..." %><br/>
 <div style="clear:both"></div>
 
-<div class="group-member-join-code-holder" class="<%="hidden" if @group.is_public()%>">
+<div class="group-member-join-code-holder <%= "hidden" if @group.is_public? %>">
   <%= form.label:join_code, "Validation Code:" %>
   <%= form.text_field :join_code, :class=>"text-shadow #{classes}", :placeholder => "Enter Code..." %><br/>
   <div style="clear:both"></div>
 </div>
 
-<div id="group_member_administrator_holder">
+<div class="group-member-administrator-holder">
   <%= form.label :administrator, "Administrator:" %>
   <%= form.radio_button :administrator, true, :class => "#{"submit-on-change" if defined? on_edit }" %>
   <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>

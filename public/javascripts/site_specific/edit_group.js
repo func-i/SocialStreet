@@ -52,8 +52,7 @@ $(function() {
         $form.find('[name="user_group\\[external_name\\]"]').val($(this).find('.user-group-name-field').val());
         $form.find('[name="user_group\\[external_email\\]"]').val($(this).find('.user-group-email-field').val());
         $form.find('[name="user_group\\[join_code\\]"]').val($(this).find('.user-group-code-field').val());
-        $form.find('[name="user_group\\[applied\\]"]').val(applied);
-       
+        $form.find('[name="user_group\\[applied\\]"]').val(applied);       
 
         // update the form action to this users update path
         $form.attr('action', formPath);
@@ -76,14 +75,15 @@ $(function() {
             $('#destroy_user_group_link').removeClass('hidden');
             $form.find('.form-btn').addClass('hidden');
         }
-
-        if(administrator == 'true') {
-            $('#group_member_administrator_holder').addClass('hidden');
+        
+        if(administrator == 'true' || administrator == '') {
+            $form.find('.group-member-administrator-holder').addClass('hidden');
             $('#destroy_user_group_link').addClass('hidden');
             $form.find('[name="user_group\\[administrator\\]"][value="true"]').attr('checked', 'checked');
         }
-        else
+        else 
             $form.find('[name="user_group\\[administrator\\]"][value="false"]').attr('checked', 'checked');
+        
     });
 
     $('.edit_user_group .form-btn').click(function() {
