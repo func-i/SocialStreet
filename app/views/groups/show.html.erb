@@ -21,7 +21,7 @@
   <div class="container text-shadow" style="width:100%; margin-top: 20px; padding:10px;">
     <div class="rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(@group)%>-medium-sprite" style="float:left;margin-bottom: 10px;"></div>
   <%#=image_tag(@group.icon_url || "")%>
-    <div id="group_title"><%=@group.name%></div>
+    <div id="group_title" class="dotdotdot"><%=@group.name%></div>
     <div style="clear:both"></div>
     <div id="group_description"><%= ''%></div>
     <div id="group_contact_us">Contact us:</div>

@@ -37,7 +37,8 @@ $(function() {
     });
 
     $('#group_admin_false').live('click', function(){
-        $('#destroy_user_group_link').removeClass('hidden');
+        if($('#add_member_btn_link').hasClass('hidden'))
+            $('#destroy_user_group_link').removeClass('hidden');
     });
     $('#group_admin_true').live('click', function(){
         $('#destroy_user_group_link').addClass('hidden');

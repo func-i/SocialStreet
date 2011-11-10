@@ -282,8 +282,6 @@ END OF RESET
     margin-bottom: 0px;
     width: 265px;
     height: 20px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
     display: block;
 }
@@ -754,10 +752,10 @@ END OF RESET
 
 #group_title{
     float:left;
-    margin:10px 10px 0px 10px;
+    margin:10px 0px 0px 5px;
     color:#FFC233;
     text-align:center;
-    width:90px;
+    width:105px;
     height:60px;
     overflow:hidden;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
@@ -777,6 +775,7 @@ END OF RESET
     color:white;
     margin-left:10px;
     width:170px;
+    word-wrap: break-word;
 }
 #group_contact_name{
     font-style: normal;font-weight: bold;
@@ -1576,7 +1575,7 @@ popup-fields-holder,
 #edit_group_contact_name{
     background: transparent;
     color: #FFC233;
-    width: 220px;
+    width: 240px;
     height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
@@ -1587,7 +1586,7 @@ popup-fields-holder,
 #edit_group_contact_email{
     background: transparent;
     color: #FFC233;
-    width: 220px;
+    width: 240px;
     height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
@@ -1598,7 +1597,7 @@ popup-fields-holder,
 #edit_group_contact_address{
     background: transparent;
     color: #FFC233;
-    width: 200px;
+    width: 220px;
     /*height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
@@ -1609,7 +1608,7 @@ popup-fields-holder,
 #edit_group_contact_phone{
     background: transparent;
     color: #FFC233;
-    width: 200px;
+    width: 235px;
     height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
@@ -1730,13 +1729,13 @@ popup-fields-holder,
     /*background: #d2e9f3;*/
     background: #FFFCD5;
     padding: 10px;
-    text-shadow: 0 0;
 }
 #group_public_switch:hover ul{
     display:block;
 }
 #group_public_switch ul li{
     font: normal 14px/14px Arial, Helvetica, sans-serif;
+    text-shadow: 0 0;
 }
 #group_public_switch .selected{
     font-weight: bold;

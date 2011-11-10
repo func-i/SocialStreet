@@ -74,6 +74,12 @@ $(function() {
         $(this).find('.jspVerticalBar').addClass('invisible');
     });
 
+
+    //Ellipsis on text overflow
+    $('.dotdotdot').dotdotdot({wrap: 'letter'});
+
+
+
     $('#how_it_works_btn').click(function() {
         openHowItWorks();
     });

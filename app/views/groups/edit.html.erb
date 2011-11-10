@@ -5,7 +5,7 @@
 
         <div class="rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(@group)%>-medium-sprite" style="float:left;margin-bottom: 10px;"></div>
 
-        <%=form.text_area :name, :id=>"edit_group_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Group Name...", 'data-on-change-form-id' => 'group_form'%>
+        <%=form.text_area :name, :id=>"edit_group_name", :class=>"text-shadow edit-inline submit-on-change", :maxLength => 40, :placeholder => "Enter Group Name...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
 
         <%= form.text_area :description, :id=>"edit_group_description", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Description...", 'data-on-change-form-id' => 'group_form'%>
