@@ -142,6 +142,23 @@ $(function() {
         }
     });
 
+    $.each($('.event-type-image'), function(index, eventTypeImage) {
+        var $eventTypeImage = $(eventTypeImage);
+        if(undefined == $eventTypeImage.css('background-image')) {
+            $.each($eventTypeImage.attr('class').split(' '), function(index2, myClass) {
+                console.log(myClass);
+                if(myClass.indexOf('event-type-') == 0) {
+                    var splitClass = myClass.split('-');
+                    var imageSize = splitClass[splitClass.length - 2];
+                    var imageName = splitClass[2];
+                    for(var i = 3; i < splitClass.length - 2; i++) {
+                        imageName = imageName + "_" + splitClass[i];
+                    }
+                }
+            });
+        }
+    });
+
 });
 
 function navLink(link, e){

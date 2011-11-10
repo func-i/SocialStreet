@@ -1577,7 +1577,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 220px;
-    height: 20px;
+    /*height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1588,7 +1588,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 220px;
-    height: 20px;
+    /*height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1677,6 +1677,10 @@ popup-fields-holder,
     padding-right: 5px;
     color:#FFFCD5;
     font: bold 16px/16px Arial, Helvetica, sans-serif;
+}
+
+#user_group_details label {
+    clear: left;
 }
 
 .clh-content .hr {
