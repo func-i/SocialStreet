@@ -1679,6 +1679,13 @@ popup-fields-holder,
     font: bold 16px/16px Arial, Helvetica, sans-serif;
 }
 
+.clh-content .hr {
+    margin:10px 0;
+    font-size:2px;
+    background-color:#4F4F4D;
+}
+
+#new_user_group_holder input[type=text],
 #user_group_holder input[type=text] {
     background: transparent;
     color: #FFC233;

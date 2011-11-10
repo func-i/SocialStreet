@@ -1,0 +1,29 @@
+<%
+classes = ""
+classes = "edit-inline submit-on-change" if defined? on_edit
+%>
+<%= form.label :external_name, "Name:" %>
+<%= form.text_field :external_name, :class=>"text-shadow #{classes}", :placeholder => "Enter Name..." %><br/>
+<div style="clear:both"></div>
+
+<%= form.label :external_email, "Email:" %>
+<%= form.text_field :external_email, :class=>"text-shadow #{classes}", :placeholder => "Enter Email..." %><br/>
+<div style="clear:both"></div>
+
+<div class="group-member-join-code-holder" class="<%="hidden" if @group.is_public()%>">
+  <%= form.label:join_code, "Validation Code:" %>
+  <%= form.text_field :join_code, :class=>"text-shadow #{classes}", :placeholder => "Enter Code..." %><br/>
+  <div style="clear:both"></div>
+</div>
+
+<div id="group_member_administrator_holder">
+  <%= form.label :administrator, "Administrator:" %>
+  <%= form.radio_button :administrator, true, :class => "#{"submit-on-change" if defined? on_edit }" %>
+  <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>
+  <%= form.radio_button :administrator, false, :checked => true, :class => "#{"submit-on-change" if defined? on_edit }" %>
+  <label for="group_admin_false" class="text-shadow" style="color:#FFC233;float:none;">No</label>
+</div>
+
+<div style="clear:both"></div>
+
+<%= form.hidden_field :applied %>

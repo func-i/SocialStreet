@@ -48,7 +48,7 @@
         <div style="clear:both"></div>
       <% end %>
 
-      <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+      <div class="hr">&nbsp;</div>
 
       <div id="add_new_group_member" style="font: bold 16px/16px Arial, Helvetica, sans-serif; color: #FFC233;text-align:center;cursor:pointer;">
         Add New Group Member....
@@ -60,50 +60,33 @@
       <div id="group_details_application_text" class="text-shadow" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;float:left;">Member Details</div>
       <div id="group_member_application_text" class="text-shadow hidden" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;float:left;">Membership Application</div>
       <div style="clear:both"></div>
-      <div id="user_group_holder">
-        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-
-        <%= form_tag '', :remote => true, :id => 'user_group_form' do %>
-
-          <%= label :user_group, :external_name, "Name:" %>
-          <%= text_field_tag 'external_name', '', :id => 'group_member_external_name', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Name...", 'data-on-change-form-id' => 'user_group_form' %><br/>
-          <div style="clear:both"></div>
-
-          <%= label :user_group, :external_email, "Email:" %>
-          <%= text_field_tag 'external_email', '', :id => 'group_member_external_email', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Email...", 'data-on-change-form-id' => 'user_group_form' %><br/>
-          <div style="clear:both"></div>
-
-          <div id="group_member_join_code_holder" class="<%="hidden" if @group.is_public()%>">
-            <%= label :user_group, :join_code, "Validation Code:" %>
-            <%= text_field_tag 'join_code', '', :id => 'group_member_join_code', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Code...", 'data-on-change-form-id' => 'user_group_form' %><br/>
-            <div style="clear:both"></div>
-          </div>
-
-          <div id="group_member_administrator_holder">
-            <%= label :user_group, :administrator, "Administrator:" %>
-            <%= radio_button_tag 'administrator', 'true', true, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_true"%>
-            <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>
-            <%= radio_button_tag 'administrator', 'false', false, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_false"%>
-            <label for="group_admin_false" class="text-shadow" style="color:#FFC233;float:none;">No</label>
-          </div>
-
-          <div style="clear:both"></div>
-
-          <%= hidden_field_tag 'applied', 'false', :id => 'group_member_applied' %>
-        <% end %>
-
-        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-
-        <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :id => 'add_member_btn_link'%>
-
-        <%= link_to '', :method=>'delete', :remote=> true, :confirm => 'Are you sure you want to Delete this Membership?', :id=>"destroy_user_group_link" do %>
-          <%= image_tag "delete_member_btn.png", :alt => "Delete Member", :style=>'float:right;'%>
+      <div id="new_user_group_holder">
+        <div class="hr">&nbsp;</div>
+        <%= form_for [@group, @group.user_groups.new], :remote => true do |form| %>
+          <%= render "user_groups/form", :form => form %>
+          <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :class => "form-btn" %>
         <% end %>
         <div style="clear:both"></div>
+        <div class="hr">&nbsp;</div>
+      </div>
+      <div id="user_group_holder" class="hidden">
+        <div class="hr">&nbsp;</div>
+        <%= form_for [@group, @group.user_groups.last], :remote => true do |form| %>
+          <%= render "user_groups/form", :form => form, :on_edit => true %>
 
+          <%= link_to '', :method=>'delete', :remote=> true, :confirm => 'Are you sure you want to Delete this Membership?', :id=>"destroy_user_group_link" do %>
+            <%= image_tag "delete_member_btn.png", :alt => "Delete Member", :style=>'float:right;'%>
+          <% end %>
+
+          <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :class => "form-btn hidden" %>
+
+        <% end %>
+        <div style="clear:both"></div>
+        <div class="hr">&nbsp;</div>
       </div>
     </div>
   </div>
+
 <% end %>
 
 <% content_for :center_pane do %>
@@ -114,7 +97,7 @@
       </div>
     <% end %>
     <div class="scroll-pane expand-height">
-      <%= render 'user_group_list', :user_groups => @group.user_groups.order("applied DESC") %>
+      <%= render 'user_group_list', :user_groups => @group.user_groups.order("applied DESC").select{|ug| !ug.user.eql?(current_user)} %>
       <div style="clear: both">&nbsp;</div>
     </div>
   </div>

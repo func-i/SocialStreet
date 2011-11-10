@@ -24,16 +24,73 @@ $(function() {
         }, 250);
     });
 
+    $('.form-btn').live('click', function() {
+        $(this).closest('form').submit();
+    });
+
+    $('#add_new_group_member').click(function() {
+
+        // Show the holder and the new user form
+        $('#user_group_details').removeClass('hidden');
+        $('#new_user_group_holder').removeClass('hidden');
+
+        // Hide the update form if visible
+        $('#user_group_holder').addClass('hidden');
+
+        $.each($('#new_user_group input[type="text"]'), function(i, ele) {
+            $(ele).val('');
+        });
+    });
+
     $('.user-group-item').live('click', function() {
-        prepareMemberDetails(
-            $(this).find('.user-group-name-field').val(),
-            $(this).find('.user-group-email-field').val(),
-            $(this).find('.user-group-code-field').val(),
-            $(this).find('.user-group-administrator-field').val(),
-            $(this).find('.user-group-applied-field').val(),
-            false,
-            $(this).find('.user-group-form-path-field').val()
-            );
+        var $form = $('.edit_user_group');
+        var applied = $(this).find('.user-group-applied-field').val();
+        var formPath = $(this).find('.user-group-form-path-field').val();
+        var administrator = $(this).find('.user-group-administrator-field').val();
+        
+        // Update the form partial with the values for the specific user_group
+        $form.find('[name="user_group\\[external_name\\]"]').val($(this).find('.user-group-name-field').val());
+        $form.find('[name="user_group\\[external_email\\]"]').val($(this).find('.user-group-email-field').val());
+        $form.find('[name="user_group\\[join_code\\]"]').val($(this).find('.user-group-code-field').val());
+        $form.find('[name="user_group\\[applied\\]"]').val(applied);
+       
+
+        // update the form action to this users update path
+        $form.attr('action', formPath);
+        $('#destroy_user_group_link').attr('href', formPath);
+
+        // Show the holder and the update form
+        $('#user_group_holder').removeClass('hidden');
+        $('#user_group_details').removeClass('hidden');
+
+        // Hide the new user form if visible
+        $('#new_user_group_holder').addClass('hidden');
+
+        if(applied == 'true') {
+            // if it's a new applicant for the group, show the add member button and hide the delete button
+            $('#destroy_user_group_link').addClass('hidden');
+            $form.find('.form-btn').removeClass('hidden');
+        }
+        else{
+            // if it's and existing member, hide the add member button and show the delete button
+            $('#destroy_user_group_link').removeClass('hidden');
+            $form.find('.form-btn').addClass('hidden');
+        }
+
+        if(administrator == 'true') {
+            $('#group_member_administrator_holder').addClass('hidden');
+            $('#destroy_user_group_link').addClass('hidden');
+            $form.find('[name="user_group\\[administrator\\]"][value="true"]').attr('checked', 'checked');
+        }
+        else
+            $form.find('[name="user_group\\[administrator\\]"][value="false"]').attr('checked', 'checked');
+    });
+
+    $('.edit_user_group .form-btn').click(function() {
+        var $form = $(this).closest('form');
+
+        // when hitting the add member button for a applicant to the group, update their applied = false
+        $form.find('[name="user_group\\[applied\\]"]').val('false');
     });
 
     $('#group_admin_false').live('click', function(){
@@ -41,23 +98,11 @@ $(function() {
     });
     $('#group_admin_true').live('click', function(){
         $('#destroy_user_group_link').addClass('hidden');
-    });
-
-    $('#add_new_group_member').live('click', function(){
-        prepareMemberDetails(
-            '',
-            '',
-            '',
-            'false',
-            'false',
-            true,
-            $('#new_member_form_action').val()
-            );
-    });
+    });    
 
     $('#add_member_btn_link').live('click', function(){
         $('#group_member_applied').val('false');
-        $('#user_group_form').submit();
+        $('#user_group_form').submit();        
     });
 
     $('#group_private_li').live('click', function(){
@@ -65,7 +110,7 @@ $(function() {
         $('#group_public_li').removeClass('selected');
         $('#group_private_li').addClass('selected');
         $('#join_code_description_holder').removeClass('hidden');
-        $('#group_member_join_code_holder').removeClass('hidden');
+        $('.group-member-join-code-holder').removeClass('hidden');
     });
 
     $('#group_public_li').live('click', function(){
@@ -73,72 +118,13 @@ $(function() {
         $('#group_public_li').addClass('selected');
         $('#group_private_li').removeClass('selected');
         $('#join_code_description_holder').addClass('hidden');
-        $('#group_member_join_code_holder').addClass('hidden');
+        $('.group-member-join-code-holder').addClass('hidden');
 
         $('#edit_group_join_code').val('');
         $('#edit_group_join_code').trigger('change');
     });
 
 });
-
-function prepareMemberDetails(name, email, joinCode, administrator, applied, newMember, formAction){
-    $('#group_member_external_name').val(name);
-    $('#group_member_external_email').val(email);
-    $('#group_member_join_code').val(joinCode);
-
-    if(administrator == 'false'){
-        $('#group_admin_false').attr('checked', true);
-        $('#destroy_user_group_link').removeClass('hidden');
-    }
-    else{
-        $('#group_admin_true').attr('checked', true);
-        $('#destroy_user_group_link').addClass('hidden');
-    }
-
-    if(null == administrator || 0 >= administrator.length){
-        $('#group_member_administrator_holder').addClass('hidden');
-    }
-    else{
-        $('#group_member_administrator_holder').removeClass('hidden');
-    }
-
-    if(applied == 'true'){
-        $('#destroy_user_group_link').addClass('hidden');
-        $('#add_member_btn_link').removeClass('hidden');
-        $('#group_member_application_text').removeClass('hidden');
-        $('#group_details_application_text').addClass('hidden');
-        $('#group_member_applied').val('true');
-    }
-    else{
-        $('#add_member_btn_link').addClass('hidden');
-        $('#group_member_application_text').addClass('hidden');
-        $('#group_details_application_text').removeClass('hidden');
-        $('#group_member_applied').val('false');
-    }
-
-    if(newMember){
-        $('#destroy_user_group_link').addClass('hidden');
-        $('#add_member_btn_link').removeClass('hidden');
-        $('#user_group_form').attr('method', 'post');
-        $('#user_group_form').find('[name=_method]').remove();
-        $('#user_group_form .submit-on-change').removeClass('submit-on-change');
-    }
-    else{
-//        $('#destroy_user_group_link').removeClass('hidden');
-//        $('#add_member_btn_link').addClass('hidden');
-        $('#group_member_external_name').addClass('submit-on-change');
-        $('#group_member_external_email').addClass('submit-on-change');
-        $('#group_member_join_code').addClass('submit-on-change');
-        $('#group_admin_true').addClass('submit-on-change');
-        $('#group_admin_false').addClass('submit-on-change');
-        $('#user_group_form').append("<input name=​_method type=hidden value=put>​");
-    }
-
-    $('#user_group_form').attr('action', formAction);
-    $('#destroy_user_group_link').attr('href', formAction);
-
-    $("#user_group_details").removeClass('hidden');
-}
 
 function countLines(area)
 {

@@ -129,9 +129,16 @@ $(function() {
         }
     });
     $('.submit-on-change').live('change', function(){
-        var onChangeForm = $(this).data('on-change-form-id');
+        var onChangeForm;
+        var formString = $(this).data('on-change-form-id');
+
+        if(formString == null)
+            onChangeForm = $(this).closest('form');
+        else
+            onChangeForm = $('#' + formString);
+
         if(null != onChangeForm){
-            $('#' + onChangeForm).submit();
+            onChangeForm.submit();
         }
     });
 

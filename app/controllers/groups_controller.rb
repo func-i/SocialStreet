@@ -21,8 +21,6 @@ class GroupsController < ExploreBaseController
   def edit
     raise ActiveRecord::RecordNotFound if !@group.can_edit?(current_user)
 
-    @user_group = @group.user_groups.build(:applied => false)
-
     if request.xhr?
       render "/shared/ajax_load.js", :locals => {:file_name_var => 'groups/edit.html.erb'}
     end
@@ -47,7 +45,7 @@ class GroupsController < ExploreBaseController
   def search_user_groups
     @user_groups = UserGroup.where(:group_id => params[:id]).order("applied DESC")
 
-    @user_groups = @user_groups.search(params[:keyword]) unless params[:keyword].blank?
+    @user_groups = @user_groups.search(params[:keyword]).select{|ug| !ug.user.eql?(current_user)} unless params[:keyword].blank?
   end
 
   protected
