@@ -17,7 +17,8 @@ javascripts:
     - public/javascripts/jScrollPane/jquery.jscrollpane.js
     - public/javascripts/jScrollPane/jquery.mousewheel.js
     - public/javascripts/jScrollPane/mwheelIntent.js
-    - public/javascripts/jquery.autoresize.js
+#    - public/javascripts/jquery.autoresize.js
+    - public/javascripts/autoresize.jquery.js
     - public/javascripts/date.js
 stylesheets:
   common:
