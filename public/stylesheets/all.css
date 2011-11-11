@@ -1569,7 +1569,7 @@ popup-fields-holder,
     background: transparent;
     color: white;
     width: 360px;
-    /*height: 20px;*/
+    height: 20px;
     margin: 0;
     font: bold 14px/14px Arial, Helvetica, sans-serif;
     float: left;
@@ -1591,7 +1591,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 220px;
-    /*height: 20px;*/
+    height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1602,7 +1602,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 200px;
-    /*height: 20px;*/
+    height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
