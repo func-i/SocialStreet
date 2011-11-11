@@ -754,13 +754,14 @@ END OF RESET
 
 #group_title{
     float:left;
-    margin:10px 10px 0px 10px;
+    margin:0px 0px 0px 5px;
     color:#FFC233;
     text-align:center;
-    width:90px;
+    width:105px;
     height:60px;
     overflow:hidden;
-    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    word-wrap: break-word;
 }
 #group_description{
     margin-bottom:10px;
@@ -777,6 +778,7 @@ END OF RESET
     color:white;
     margin-left:10px;
     width:170px;
+    word-wrap: break-word;
 }
 #group_contact_name{
     font-style: normal;font-weight: bold;

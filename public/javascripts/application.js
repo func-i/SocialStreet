@@ -231,6 +231,8 @@ function cleanup(){
     resizeSelf = function(){};
 
     $('.content-group').html(' ');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
+    $('#left_side_pane').removeClass('hide_for_center_pane');
 }
 
 function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat, neLng, updateDB){

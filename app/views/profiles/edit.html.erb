@@ -42,36 +42,35 @@
             </span>
           </li>
         <% end %>
-      <% end %>
-    </ul>
+      </ul>
+    </div>
   </div>
-</div>
 
-<div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+  <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
 <% end %>
 
 <% content_for :center_pane do %>
-<div id="groups_holder" class="hidden">
-  <div id="groups_scroller" class="scroll-pane include-vertical-bar">
-    <ul>
-      <% @groups.each do |group| %>
-        <li class="group-type">
-          <div class="container rounded-corners-four">
-            <%group_class = "#{sprite_class_name_for_group(group)}"%>
-            <div class="group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
-            <div class="group-type-name">
-              <%= group.name %>
+  <div id="groups_holder" class="hidden">
+    <div id="groups_scroller" class="scroll-pane include-vertical-bar">
+      <ul>
+        <% @groups.each do |group| %>
+          <li class="group-type">
+            <div class="container rounded-corners-four">
+              <%group_class = "#{sprite_class_name_for_group(group)}"%>
+              <div class="group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+              <div class="group-type-name">
+                <%= group.name %>
+              </div>
+              <%= hidden_field_tag "group_id", group.id %>
+              <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
+              <%= hidden_field_tag "join_code_description", group.join_code_description  %>
             </div>
-            <%= hidden_field_tag "group_id", group.id %>
-            <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
-            <%= hidden_field_tag "join_code_description", group.join_code_description  %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
-<%= render :partial => 'groups/group_permissions.html'%>
+  <%= render :partial => 'groups/group_permissions.html'%>
 <% end %>
 
 <%= hidden_field_tag "on_settings", "true" %>
