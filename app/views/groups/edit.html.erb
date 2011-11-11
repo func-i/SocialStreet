@@ -1,5 +1,5 @@
 <% content_for :left_side_pane do  %>
-  <div class="content-left-holder">
+  <div class="content-left-holder expand-height scroll-pane">
     <div class="clh-content text-shadow">
       <%= form_for @group, :url => group_path, :remote => true, :html => {:id => 'group_form'} do |form| %>
 
@@ -42,7 +42,7 @@
           </span>
         </div>
         <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public? %>">
-          <%= form.label :join_code_description, "Membership Validated By:"%>
+          <%= form.label :join_code_description, "Validated By:"%>
           <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Code Name...", 'data-on-change-form-id' => 'group_form'%>
         </div>
         <div style="clear:both"></div>

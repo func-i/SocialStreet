@@ -43,6 +43,8 @@ $(function() {
         $.each($('#new_user_group input[type="text"]'), function(i, ele) {
             $(ele).val('');
         });
+
+        resizePageElements();
     });
 
     $('.user-group-item').live('click', function() {
@@ -84,9 +86,11 @@ $(function() {
             $('#destroy_user_group_link').addClass('hidden');
             $form.find('[name="user_group\\[administrator\\]"][value="true"]').attr('checked', 'checked');
         }
-        else 
+        else{
             $form.find('[name="user_group\\[administrator\\]"][value="false"]').attr('checked', 'checked');
+        }
         
+        resizePageElements();        
     });
 
     $('.edit_user_group .form-btn').click(function() {
@@ -114,6 +118,8 @@ $(function() {
         $('#group_private_li').addClass('selected');
         $('#join_code_description_holder').removeClass('hidden');
         $('.group-member-join-code-holder').removeClass('hidden');
+
+        resizePageElements();
     });
 
     $('#group_public_li').live('click', function(){
@@ -125,6 +131,8 @@ $(function() {
 
         $('#edit_group_join_code').val('');
         $('#edit_group_join_code').trigger('change');
+
+        resizePageElements();
     });
 
 });

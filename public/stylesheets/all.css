@@ -1556,7 +1556,7 @@ popup-fields-holder,
 #edit_group_name{
     background: transparent;
     color: #FFC233;
-    width: 280px;
+    width: 265px;
     margin: 10px 0 0 10px;
     height: 60px;
     overflow:hidden;
@@ -1623,7 +1623,7 @@ popup-fields-holder,
 #edit_group_join_code{
     background: transparent;
     color: #FFC233;
-    width: 155px;
+    width: 175px;
     height: 20px;
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
