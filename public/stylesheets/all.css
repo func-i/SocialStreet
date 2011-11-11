@@ -1465,10 +1465,11 @@ END OF RESET
     font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
     float: left;
-    width: 62px;
+    width: 70px;
     text-align: center;
     padding-top: 2px;
     word-wrap: break-word;
+    overflow: hidden;
 }
 .group-tag-remove{
     float: right;

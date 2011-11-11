@@ -23,7 +23,7 @@
   <%#=image_tag(@group.icon_url || "")%>
     <div id="group_title"><%=@group.name%></div>
     <div style="clear:both"></div>
-    <div id="group_description"><%= ''%></div>
+    <div id="group_description"><%= @group.description%></div>
     <div id="group_contact_us">Contact us:</div>
     <div id="group_contact">
       <div id="group_contact_name"><%=@group.contact_name%></div>
