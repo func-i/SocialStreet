@@ -752,11 +752,7 @@ END OF RESET
 
 #group_title{
     float:left;
-<<<<<<< HEAD
-    margin:10px 0px 0px 5px;
-=======
     margin:0px 0px 0px 5px;
->>>>>>> feature-groups
     color:#FFC233;
     text-align:center;
     width:105px;
@@ -1581,13 +1577,8 @@ popup-fields-holder,
 #edit_group_contact_name{
     background: transparent;
     color: #FFC233;
-<<<<<<< HEAD
-    width: 240px;
-    height: 20px;
-=======
     width: 220px;
     /*height: 20px;*/
->>>>>>> feature-groups
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1597,13 +1588,8 @@ popup-fields-holder,
 #edit_group_contact_email{
     background: transparent;
     color: #FFC233;
-<<<<<<< HEAD
-    width: 240px;
-    height: 20px;
-=======
     width: 220px;
 /*    height: 20px;*/
->>>>>>> feature-groups
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1613,13 +1599,8 @@ popup-fields-holder,
 #edit_group_contact_address{
     background: transparent;
     color: #FFC233;
-<<<<<<< HEAD
-    width: 220px;
-    /*height: 20px;*/
-=======
     width: 200px;
 /*    height: 20px;*/
->>>>>>> feature-groups
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
