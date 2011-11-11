@@ -135,9 +135,33 @@ $(function() {
         }
     });
     $('.submit-on-change').live('change', function(){
-        var onChangeForm = $(this).data('on-change-form-id');
+        var onChangeForm;
+        var formString = $(this).data('on-change-form-id');
+
+        if(formString == null)
+            onChangeForm = $(this).closest('form');
+        else
+            onChangeForm = $('#' + formString);
+
         if(null != onChangeForm){
-            $('#' + onChangeForm).submit();
+            onChangeForm.submit();
+        }
+    });
+
+    $.each($('.event-type-image'), function(index, eventTypeImage) {
+        var $eventTypeImage = $(eventTypeImage);
+        if(undefined == $eventTypeImage.css('background-image')) {
+            $.each($eventTypeImage.attr('class').split(' '), function(index2, myClass) {
+                console.log(myClass);
+                if(myClass.indexOf('event-type-') == 0) {
+                    var splitClass = myClass.split('-');
+                    var imageSize = splitClass[splitClass.length - 2];
+                    var imageName = splitClass[2];
+                    for(var i = 3; i < splitClass.length - 2; i++) {
+                        imageName = imageName + "_" + splitClass[i];
+                    }
+                }
+            });
         }
     });
 
@@ -213,6 +237,8 @@ function cleanup(){
     resizeSelf = function(){};
 
     $('.content-group').html(' ');
+    $('#right_side_pane').removeClass('hide_for_center_pane');
+    $('#left_side_pane').removeClass('hide_for_center_pane');
 }
 
 function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat, neLng, updateDB){

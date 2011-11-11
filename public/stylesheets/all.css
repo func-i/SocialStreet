@@ -752,13 +752,18 @@ END OF RESET
 
 #group_title{
     float:left;
+<<<<<<< HEAD
     margin:10px 0px 0px 5px;
+=======
+    margin:0px 0px 0px 5px;
+>>>>>>> feature-groups
     color:#FFC233;
     text-align:center;
     width:105px;
     height:60px;
     overflow:hidden;
-    font: bold 18px/18px Arial, Helvetica, sans-serif;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    word-wrap: break-word;
 }
 #group_description{
     margin-bottom:10px;
@@ -1462,10 +1467,11 @@ END OF RESET
     font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
     float: left;
-    width: 62px;
+    width: 70px;
     text-align: center;
     padding-top: 2px;
     word-wrap: break-word;
+    overflow: hidden;
 }
 .group-tag-remove{
     float: right;
@@ -1552,7 +1558,7 @@ popup-fields-holder,
 #edit_group_name{
     background: transparent;
     color: #FFC233;
-    width: 280px;
+    width: 265px;
     margin: 10px 0 0 10px;
     height: 60px;
     overflow:hidden;
@@ -1565,7 +1571,7 @@ popup-fields-holder,
     background: transparent;
     color: white;
     width: 360px;
-    /*height: 20px;*/
+/*    height: 20px;*/
     margin: 0;
     font: bold 14px/14px Arial, Helvetica, sans-serif;
     float: left;
@@ -1575,8 +1581,13 @@ popup-fields-holder,
 #edit_group_contact_name{
     background: transparent;
     color: #FFC233;
+<<<<<<< HEAD
     width: 240px;
     height: 20px;
+=======
+    width: 220px;
+    /*height: 20px;*/
+>>>>>>> feature-groups
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1586,8 +1597,13 @@ popup-fields-holder,
 #edit_group_contact_email{
     background: transparent;
     color: #FFC233;
+<<<<<<< HEAD
     width: 240px;
     height: 20px;
+=======
+    width: 220px;
+/*    height: 20px;*/
+>>>>>>> feature-groups
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1597,8 +1613,13 @@ popup-fields-holder,
 #edit_group_contact_address{
     background: transparent;
     color: #FFC233;
+<<<<<<< HEAD
     width: 220px;
     /*height: 20px;*/
+=======
+    width: 200px;
+/*    height: 20px;*/
+>>>>>>> feature-groups
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1619,8 +1640,8 @@ popup-fields-holder,
 #edit_group_join_code{
     background: transparent;
     color: #FFC233;
-    width: 155px;
-    height: 20px;
+    width: 175px;
+/*    height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1678,6 +1699,17 @@ popup-fields-holder,
     font: bold 16px/16px Arial, Helvetica, sans-serif;
 }
 
+#user_group_details label {
+    clear: left;
+}
+
+.clh-content .hr {
+    margin:10px 0;
+    font-size:2px;
+    background-color:#4F4F4D;
+}
+
+#new_user_group_holder input[type=text],
 #user_group_holder input[type=text] {
     background: transparent;
     color: #FFC233;

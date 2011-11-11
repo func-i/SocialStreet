@@ -1,5 +1,5 @@
 <% content_for :left_side_pane do  %>
-  <div class="content-left-holder">
+  <div class="content-left-holder expand-height scroll-pane">
     <div class="clh-content text-shadow">
       <%= form_for @group, :url => group_path, :remote => true, :html => {:id => 'group_form'} do |form| %>
 
@@ -14,18 +14,18 @@
         <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
 
         <%= form.label :contact_name, "Contact Name:" %>
-        <%= form.text_field :contact_name, :id=>"edit_group_contact_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Name...", 'data-on-change-form-id' => 'group_form'%>
+        <%= form.text_area :contact_name, :id=>"edit_group_contact_name", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Name...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
 
-        <%= form.label :contact_name, "Contact Email:" %>
-        <%= form.text_field :contact_email, :id=>"edit_group_contact_email", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Email...", 'data-on-change-form-id' => 'group_form'%>
+        <%= form.label :contact_email, "Contact Email:" %>
+        <%= form.text_area :contact_email, :id=>"edit_group_contact_email", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Contact Email...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
 
-        <%= form.label :contact_name, "Contact Address:" %>
+        <%= form.label :contact_address, "Contact Address:" %>
         <%= form.text_area :contact_address, :id=>"edit_group_contact_address", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Address...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
 
-        <%= form.label :contact_name, "Contact Phone:" %>
+        <%= form.label :contact_phone, "Contact Phone:" %>
         <%= form.text_field :contact_phone, :id=>"edit_group_contact_phone", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Phone Number...", 'data-on-change-form-id' => 'group_form'%>
         <div style="clear:both"></div>
 
@@ -34,21 +34,21 @@
         <div id="group_public_switch">
           This group is
           <span id="group_permission" style="position:relative;cursor:pointer;">
-            <span style="color:#FFC233"><%=@group.is_public() ? 'Public' : 'Private'%></span>
+            <span style="color:#FFC233"><%= @group.is_public? ? 'Public' : 'Private'%></span>
             <ul class="drop-shadow">
-              <li id="group_public_li" class="<%='selected' if @group.is_public()%>">Public</li>
-              <li id="group_private_li" class="<%='selected' unless @group.is_public()%>">Private</li>
+              <li id="group_public_li" class="<%='selected' if @group.is_public? %>">Public</li>
+              <li id="group_private_li" class="<%='selected' unless @group.is_public? %>">Private</li>
             </ul>
           </span>
         </div>
-        <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public()%>">
-          <%= form.label :join_code_description, "Membership Validated By:"%>
+        <div id="join_code_description_holder" style="margin-top:4px;" class="<%='hidden' if @group.is_public? %>">
+          <%= form.label :join_code_description, "Validated By:"%>
           <%= form.text_field :join_code_description, :id => "edit_group_join_code", :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Code Name...", 'data-on-change-form-id' => 'group_form'%>
         </div>
         <div style="clear:both"></div>
       <% end %>
 
-      <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+      <div class="hr">&nbsp;</div>
 
       <div id="add_new_group_member" style="font: bold 16px/16px Arial, Helvetica, sans-serif; color: #FFC233;text-align:center;cursor:pointer;">
         Add New Group Member....
@@ -60,50 +60,33 @@
       <div id="group_details_application_text" class="text-shadow" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;float:left;">Member Details</div>
       <div id="group_member_application_text" class="text-shadow hidden" style="font: bold 20px/20px Arial, Helvetica, sans-serif; color: white;float:left;">Membership Application</div>
       <div style="clear:both"></div>
-      <div id="user_group_holder">
-        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-
-        <%= form_tag '', :remote => true, :id => 'user_group_form' do %>
-
-          <%= label :user_group, :external_name, "Name:" %>
-          <%= text_field_tag 'external_name', '', :id => 'group_member_external_name', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Name...", 'data-on-change-form-id' => 'user_group_form' %><br/>
-          <div style="clear:both"></div>
-
-          <%= label :user_group, :external_email, "Email:" %>
-          <%= text_field_tag 'external_email', '', :id => 'group_member_external_email', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Email...", 'data-on-change-form-id' => 'user_group_form' %><br/>
-          <div style="clear:both"></div>
-
-          <div id="group_member_join_code_holder" class="<%="hidden" if @group.is_public()%>">
-            <%= label :user_group, :join_code, "Validation Code:" %>
-            <%= text_field_tag 'join_code', '', :id => 'group_member_join_code', :class=>"text-shadow edit-inline submit-on-change", :placeholder => "Enter Code...", 'data-on-change-form-id' => 'user_group_form' %><br/>
-            <div style="clear:both"></div>
-          </div>
-
-          <div id="group_member_administrator_holder">
-            <%= label :user_group, :administrator, "Administrator:" %>
-            <%= radio_button_tag 'administrator', 'true', true, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_true"%>
-            <label for="group_admin_true" class="text-shadow" style="color:#FFC233;float:none;">Yes</label>
-            <%= radio_button_tag 'administrator', 'false', false, :class=>"submit-on-change", 'data-on-change-form-id' => 'user_group_form', :id=>"group_admin_false"%>
-            <label for="group_admin_false" class="text-shadow" style="color:#FFC233;float:none;">No</label>
-          </div>
-
-          <div style="clear:both"></div>
-
-          <%= hidden_field_tag 'applied', 'false', :id => 'group_member_applied' %>
-        <% end %>
-
-        <div style="margin:10px 0;font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-
-        <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :id => 'add_member_btn_link'%>
-
-        <%= link_to '', :method=>'delete', :remote=> true, :confirm => 'Are you sure you want to Delete this Membership?', :id=>"destroy_user_group_link" do %>
-          <%= image_tag "delete_member_btn.png", :alt => "Delete Member", :style=>'float:right;'%>
+      <div id="new_user_group_holder">
+        <div class="hr">&nbsp;</div>
+        <%= form_for [@group, @group.user_groups.new], :remote => true do |form| %>
+          <%= render "user_groups/form", :form => form %>
+          <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :class => "form-btn" %>
         <% end %>
         <div style="clear:both"></div>
+        <div class="hr">&nbsp;</div>
+      </div>
+      <div id="user_group_holder" class="hidden">
+        <div class="hr">&nbsp;</div>
+        <%= form_for [@group, @group.user_groups.last], :remote => true do |form| %>
+          <%= render "user_groups/form", :form => form, :on_edit => true %>
 
+          <%= link_to '', :method=>'delete', :remote=> true, :confirm => 'Are you sure you want to Delete this Membership?', :id=>"destroy_user_group_link" do %>
+            <%= image_tag "delete_member_btn.png", :alt => "Delete Member", :style=>'float:right;'%>
+          <% end %>
+
+          <%= image_tag 'add_member_btn.png', :alt => "Add Member", :style=>'float:right;', :class => "form-btn hidden" %>
+
+        <% end %>
+        <div style="clear:both"></div>
+        <div class="hr">&nbsp;</div>
       </div>
     </div>
   </div>
+
 <% end %>
 
 <% content_for :center_pane do %>
