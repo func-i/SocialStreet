@@ -3,8 +3,6 @@ class ExploreBaseController < ApplicationController
   def super_index
     init_page
 
-    puts "HERE I AM"
-
     get_events();
 
     if request.xhr?
