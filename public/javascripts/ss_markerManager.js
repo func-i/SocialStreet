@@ -156,8 +156,8 @@ MarkerManager.prototype.createMarker = function(location, searchableID, markerTi
 };
 
 MarkerManager.prototype.selectMarker = function(marker){
-  this.userSelectMarker_(marker);
-  this.setSelectedMarker_(marker);
+    this.userSelectMarker_(marker);
+    this.setSelectedMarker_(marker);
 };
 
 MarkerManager.prototype.clearMarkers = function(){
@@ -247,6 +247,57 @@ MarkerManager.prototype.placeAllMarkers = function(){
     markerArr_ = null;
 }
 
+MarkerManager.prototype.showAllMarkers = function(callbackFunction){
+    if(undefined == this.map_.mapTypes[this.map_.mapTypeId]){
+        that = this;
+        google.maps.event.addListenerOnce(this.map_, 'idle', function() {
+            that.showAllMarkers(callbackFunction);
+        });
+        return;
+    }
+
+    var markerArr = this.allMarkers_.slice(0);
+    this.allMarkers_ = [];
+
+    for(var i = 0; i < markerArr.length; i++){
+        var marker = markerArr[i];
+
+        if(null != (ownerMarker = this.clusterWith_(marker))){
+            //Cluster with ownerMarker
+            ownerMarker.clusteredMarkers_.push(marker);
+            marker.ownerMarker_ = ownerMarker;
+            marker.setMap(null);
+        }
+        else{
+            marker.setMap(this.map_);
+            marker.clusteredMarkers_ = [];
+            marker.clusteredMarkers_.push(marker);
+            marker.ownerMarker_ = marker;
+
+            var bounds = new google.maps.LatLngBounds(marker.getPosition(), marker.getPosition());
+            marker.extendedBounds_ = this.getExtendedBounds_(bounds);
+        }
+
+        this.allMarkers_.push(marker);
+    }
+
+    delete markerArr;
+    markerArr = null;
+
+    if(typeof callbackFunction == 'function')
+        callbackFunction();
+};
+
+MarkerManager.prototype.deleteAllMarkers = function(){
+    $.each(this.allMarkers_, function(index, marker){
+        marker.setMap(null);
+        delete marker.clusteredMarkers_;
+    });
+    delete this.allMarkers_;
+    this.allMarkers_ = [];
+};
+
+
 MarkerManager.prototype.resetMarker_ = function(marker){
     delete marker.clusteredMarkers_;
     marker.clusteredMarkers_= [];
@@ -276,7 +327,7 @@ MarkerManager.prototype.userSelectMarker_ = function(marker){
         //set searchable id field for maintaining on refresh
         $('#selected_searchable').val(marker.searchableID_);
     }
-    else if(this.createEvent_){       
+    else if(this.createEvent_){
 }
 };
 
@@ -453,7 +504,7 @@ function InfoWindow(markerManager){
     });
 
     $('#marker-name-field').live('keyup', function(e) {
-        if (e.keyCode == 13) {      
+        if (e.keyCode == 13) {
             
             if(this.value.length > 0)
             {
@@ -526,11 +577,11 @@ function Label(opt_options) {
     'font-family: Arial; font-weight: bold;' +
     'font-size: 8px;';
 
-    //'position: relative; left: -0.5em; top: -1.2em;' + 
+    //'position: relative; left: -0.5em; top: -1.2em;' +
 
     var div = this.div_ = document.createElement('div');
     div.appendChild(span);
-    div.style.cssText = 'position: absolute; display: none';  
+    div.style.cssText = 'position: absolute; display: none';
 };
 
 Label.prototype = new google.maps.OverlayView;

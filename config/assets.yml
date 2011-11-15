@@ -5,21 +5,23 @@ package_assets: on
 
 javascripts:
   init:
-    - public/javascripts/jquery-1.5.1.js
+#    - public/javascripts/jquery-1.5.1.js
     - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
-    - public/javascripts/rails.js
+#    - public/javascripts/jquery_ujs.js
+    
 
   common:
     - public/javascripts/ss_markerManager.js
+    - public/javascripts/jquery_ujs.js
     - public/javascripts/jquerym_custom.js
     - public/javascripts/jquery.ui.map.js
     - public/javascripts/jquery.ui.map.extensions.js
     - public/javascripts/jquery.ui.map.services.js
     - public/javascripts/ss_pageless.js
     - public/javascripts/mobiscroll-1.5.js
-    - public/javascripts/iscroll-lite.js
     - public/javascripts/infobubble.js
     - public/javascripts/ss.js
+    - public/javascripts/iscroll-lite.js
    
   
 stylesheets:

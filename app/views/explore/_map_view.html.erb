@@ -8,20 +8,26 @@
   <input type="text" name="name" id="explore_change_map_address" value="" placeholder="Enter an Address or Use Map" />
 </div>
 
-<div id="explore_event_details">
-  <ul data-role="listview" data-theme="a" data-inset="true" id="display_results">
+<div id="explore_event_details_wrapper">
+  <div id="explore_event_details">
+    <ul data-role="listview" data-theme="a" data-inset="true" id="display_results">
 
-  </ul>
+    </ul>
+  </div>
 </div>
 
 
 <div id="explore_map_canvas" class="full-page-map"></div>
 
 
-<%= form_tag '#', :method => :get, :remote => :true, "data-ajax" => false, :id => "explore_form" do %>
+<%= form_tag '#', :method => :get, :remote => :true, 'data-ajax' => false, :id => "explore_form" do %>
   <%= hidden_field_tag 'map_bounds', params[:map_bounds], :id => 'explore_map_bounds' %>
   <%= hidden_field_tag 'map_center', params[:map_center], :id => 'explore_map_center' %>
   <%= hidden_field_tag 'map_zoom', params[:map_zoom], :id => 'explore_map_zoom' %>
   <%= hidden_field_tag 'view', params[:view], :id => 'explore_view_params' %>
 
 <% end %>
+
+<script type="text/javascript">
+  attach_iScroll('explore_event_details_wrapper');
+</script>

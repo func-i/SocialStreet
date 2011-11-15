@@ -1,0 +1,5 @@
+<%= form_tag url_for(:action => :test_action), :method => :get, "data-ajax" => false, :remote => true do  %>
+    <%= password_field_tag 'pass' %>
+    <%= text_field_tag 'message' %>
+    <%= submit_tag 'Wont Do Nuthin', {"data-theme" => "e"}%>
+  <% end %>

@@ -58,7 +58,8 @@ SocialStreet::Application.routes.draw do
   get 'events/new' => 'events#new', :as => 'create'
   get 'events' => 'events#index', :as => 'view'
   get 'profiles' => 'profiles#show', :as => 'profiles'
-  get 'explore/simple_page' => 'explore#simple_page'
+  get 'explore/test_page' => 'explore#test_page'
+  match 'explore/test_action' => 'explore#test_action'
 
   resources :comments, :only => [:create, :destroy]
   resources :event_types, :only => [:index] # for autocomplete

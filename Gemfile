@@ -7,7 +7,7 @@ gem 'truncate_html'
 
 gem 'pg'
 gem 'silent-postgres'
-gem 'jquery-rails', '>= 0.2.6'
+gem 'jquery-rails', '>= 1.0.12'
 gem 'web-app-theme', '>= 0.6.2'
 gem 'omniauth'
 gem 'devise', '>= 1.2.0'

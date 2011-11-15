@@ -1,4 +1,4 @@
-<div data-role="page" class="wallpaper_page" id="home-page">
+<div data-role="page" class="wallpaper_page" id="home_page">
     <div data-role="header" data-position="inline" data-theme="a">
       <h1>SocialStreet</h1>
     </div>
@@ -16,10 +16,25 @@
 
         <% else %>
 
-          <%= link_to 'Sign In', '/auth/facebook', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "sign-in", "rel" => 'external'} %>
+          <%= link_to 'Sign In', '/auth/facebook', {"data-role" => "button", "data-theme" => "g", "data-icon" => "check", "id" => "sign-in", "rel" => 'external'} %>
 
 
         <% end %>
       </div>
     </div>
   </div>
+
+<script type="text/javascript">
+  $('#home_page').live('pageshow', function() {
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(e){
+          console.log(e.coords.latitude, e.coords.longitude);
+          updateUserLocation(e.coords.latitude, e.coords.longitude, true)
+        }, function(e){
+        },
+        {
+          maximumAge: 600000
+        });
+      }
+  })
+</script>

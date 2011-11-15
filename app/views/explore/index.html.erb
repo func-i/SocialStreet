@@ -1,8 +1,8 @@
 <%= javascript_include_tag 'site_specific/explore' %>
 
-<div data-role="page" id="explore_base">
+<div data-role="page" data-theme="a" id="explore_base">
 
-  <%- if params[:view].blank? || params[:view].eql?("list") -%>
+  <%- if params[:view].nil? || params[:view].eql?("list") -%>
     <%= render "list_view" -%>
   <%- else -%>
     <%= render "map_view" %>
@@ -11,12 +11,10 @@
 </div>
 
 <div data-role="page" id="explore_filter">
-  <div data-role="header" data-position="inline">
+  <div data-role="header" data-position="fixed">
     <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
     <h1>SocialStreet</h1>
-    <% if !params[:keyword].blank? %>
       <%= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
-    <% end %>
   </div>
 
   <div data-role="content" data-theme="b">
@@ -29,7 +27,7 @@
         </li>
         <% @event_types.each do |event|%>
           <li class="result">
-            <%= link_to image_tag(event.image_path, :size => "40x40") + event.name %>
+            <%= link_to image_tag(event.image_path, :size => "45x45") + event.name %>
           </li>
 
         <% end %>
@@ -55,15 +53,12 @@
     var selected_searchable;
     var searchable_id;
     var clustered_markers = [];
-    var canSubmit = false;
 
     $('#list_view_link').live("click", function() {
       $('#list_view_results').listview();
-      $('#explore_view_params').val("list");
-      $('#explore_form').submit();
-    });
+    })
 
-    $('#explore_base').live("pageshow", function() {
+    $('#map-view-explore').live("pagecreate", function() {
 
       $('#explore_map_canvas').gmap(
       {'center': map_center, 'zoom': 15, 'disableDefaultUI': true
@@ -79,15 +74,10 @@
 
         google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
         google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
+        google.maps.event.addListener(exploreMap, 'click', deselectMarker);
       });
-           //$('#explore_map_canvas').gmap('refresh');
-    });
 
-    $('#map-view-explore').live("pageshow", function() {
-        google.maps.event.trigger(exploreMap, "resize");
-        exploreMap.setCenter(map_center);
-        
-    })
+    });
 
     function getMarkerManager(){
       return markerManager;
@@ -95,12 +85,12 @@
 
     function createMapMarkers() {
 
-    <% (@searchables || []).each do |searchable| %>
-    <% if searchable.geo_located? %>
+<% (@searchables || []).each do |searchable| %>
+  <% if searchable.geo_located? %>
         marker = markerManager.createMarker(new google.maps.LatLng(<%= searchable.location.latitude %>, <%= searchable.location.longitude %>), <%= searchable.id -%>,null,'<%= searchable.location_address_for_explore -%>');
         google.maps.event.addListener(marker, 'click', selectedMarker);
-    <% end %>
-    <% end %>
+  <% end %>
+<% end %>
   }
 
   </script>

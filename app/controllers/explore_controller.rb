@@ -36,6 +36,10 @@ class ExploreController < ApplicationController
     @page_title = "Explore - #{params[:view].eql?('map') ? 'Map' : 'List'} View"
   end
 
+  def test_action
+    raise params.inspect
+  end
+
   protected
 
   def load_event_types

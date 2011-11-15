@@ -1,3 +1,10 @@
+<% if @searchables.empty? %>
+  <div id="no_results_message"> <strong>No Events found in this area. </strong> <br/><br/>
+    Use the <%= link_to "Map", '#map-view-explore', {'data-transition' => 'flip'}%> to change your location <br/>
+    <h4>OR</h4>
+    <%= link_to 'Create an Event', new_event_path, {"rel" => 'external'} %> here. </div>
+  <% end %>
+
 <ul data-role="listview" data-theme="a" data-inset="true" id="list_view_results">
   <% @searchables.each do |searchable| %>
     <% if(!searchable.event.canceled) %>
@@ -5,7 +12,7 @@
         <%= link_to event_path(searchable.event) do %>
           <%= image_tag(url_for_event_image(searchable.event), :size => "50x50") %>
           <span id="explore_list_title"><%= searchable.event.title %></span>
-          <div id="explore-list-address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></div>
+          <div id="explore_list_address"><%= searchable.event.location.text ? searchable.event.location.text : searchable.event.location.street %></div>
         <% end %>
       </li>
     <%  end %>

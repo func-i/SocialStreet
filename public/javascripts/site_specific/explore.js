@@ -1,5 +1,4 @@
 $('#remove_filters').live('click', function(){
-    alert('Removing all Filters');
     $('#keyword').val("");
     $('#keyword').submit();
     event.preventDefault();
@@ -7,7 +6,6 @@ $('#remove_filters').live('click', function(){
 
 $('#keyword_filter_list li').live('click', function(li){
     selKeyword = $.trim($(this).text());
-    alert('Filtering Results as ' + selKeyword + ' events only');
     $('#keyword').val(selKeyword);
     $('#keyword').submit();
     event.preventDefault(); // Prevent link from following its href
@@ -16,6 +14,7 @@ $('#keyword_filter_list li').live('click', function(li){
 $('#explore_filter').live("pageshow",function() {
     var keyword = "";
     $('#filter_no_results').hide();
+    $('input[data-type="search"]').val("");
 
     $('.ui-input-text').live('keyup', function(){
         keyword = $(this).val();
@@ -95,7 +94,19 @@ function selectedMarker() {
         }
     }
     $('#display_results').listview('refresh');
-    $('#explore_event_details').toggle();
+    refresh_iScrollers();
+    $('#explore_event_details').show();
+}
+
+function deselectMarker() {
+    $('#explore_event_details').hide();
+    marker = getMarkerManager();
+    if(marker.selectedMarker_.clusteredMarkers_){
+        $.each(marker.selectedMarker_.clusteredMarkers_, function(index, marker){
+            marker.selected_ = false;
+        });
+    }
+    marker.selectedMarker_.selected_ = false;
 }
 
 

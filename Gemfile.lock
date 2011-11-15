@@ -275,7 +275,7 @@ DEPENDENCIES
   geocoder
   hiredis (~> 0.3.1)
   jammit
-  jquery-rails (>= 0.2.6)
+  jquery-rails (>= 1.0.12)
   json
   mini_magick
   newrelic_rpm

@@ -1,8 +1,12 @@
-<% if params[:view] == "list" %>
+<%# if params[:view] == "list" %>
   $('#list-view-explore-content').html('<%= escape_javascript(render(:partial => 'results', :locals => {:searchable_results => (@searchables || [])} )) %>');
-<% else %>
-  $('#explore_map_content_holder').html('<%= escape_javascript(render(:partial => 'map_view', :locals => {:searchable_results => (@searchables || [])} )) %>');
-<% end %>
+/*<% else %>
+  $('#explore_map_content_holder').html('<%= escape_javascript(render(:partial => 'map_view', :locals => {:searchable_results => (@searchables || [])} )) %>');*/
+<%# end %>
+
+  <% if params[:keyword] %>
+    console.log("There's a Filter on Me");
+    <% end %>
 
 var myMarkerManager = getMarkerManager();
 myMarkerManager.clearMarkers();

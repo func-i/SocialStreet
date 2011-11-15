@@ -1,7 +1,7 @@
 <div data-role="header" data-position="inline">
-  <%= link_to "Home", '/', {'data-role' => 'button', 'data-theme' => 'd', 'data-position' => 'inline'}%>
+  <%= link_to "Home", '/', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
   <h1>SocialStreet</h1>
-  <%= link_to "Filter", '#explore_filter', {'data-role' => 'button', 'data-theme' => 'e', 'data-position' => 'inline'}%>
+  <%= link_to "Filter", '#explore_filter', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
 </div>
 
 <div data-role="content" id="list-view-explore-content">
@@ -13,15 +13,11 @@
     </div>
   <% end %>
 
-  <% if @searchables.empty? %>
-  <div> <strong>No Events are happening in this area. </strong> <br/><br/>
-    Use the <%= link_to "Map", '#map-view-explore', {'data-transition' => 'flip'}%> to change your location <br/>
-    <h4>OR</h4>
-    <%= link_to 'Create an Event', new_event_path, {"rel" => 'external'} %> here. </div>
-  <% end %>
-
   <%= render "results", :searchable_results => (@searchables || []) %>
 
 </div>
 
-<%= link_to "View Map", '#map-view-explore', {'data-role' => 'button', 'data-theme' => 'b', 'data-position' => 'inline', 'data-transition' => 'flip'}%>
+<div data-role="footer" data-position="fixed">
+  <%= link_to "View Map", '#map-view-explore', {'id' => 'map_view_link', 'data-role' => 'button', 'data-theme' => 'b', 'data-transition' => 'flip', 'style' => 'width: 100%;
+height: 35px;'}%>
+</div>

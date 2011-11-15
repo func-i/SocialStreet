@@ -9,10 +9,11 @@
     <link rel="apple-touch-icon"
           href="/images/app_icon.png" />
 
+    <%= javascript_include_tag "http://code.jquery.com/jquery-1.6.4.min.js" %>
     <%= include_javascripts :init %>
-    <%= javascript_include_tag "http://code.jquery.com/jquery-1.6.4.min.js", "http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js", "http://maps.google.com/maps/api/js?v=3.5&sensor=true", "http://connect.facebook.net/en_US/all.js"  %>
+    <%= javascript_include_tag "http://code.jquery.com/mobile/1.0rc3/jquery.mobile-1.0rc3.min.js", "http://maps.google.com/maps/api/js?v=3.5&sensor=true", "http://connect.facebook.net/en_US/all.js"  %>
     <%= include_javascripts :common %>
-    <%= stylesheet_link_tag "http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" %>
+    <%= stylesheet_link_tag "http://code.jquery.com/mobile/1.0rc3/jquery.mobile-1.0rc3.min.css" %>
     <%= include_stylesheets :common %>
 
   </head>
@@ -25,22 +26,3 @@
 
   </body>
 </html>
-
-
-<script type='text/javascript'>
-
-  $(function() {
-    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
-    {
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(function(e){
-                updateUserLocation(e.coords.latitude, e.coords.longitude, true)
-            }, function(e){
-                },
-                {
-                    maximumAge: 600000
-                });
-        }
-    }
-})
-</script>
