@@ -10,7 +10,7 @@ classes = "edit-inline submit-on-change" if defined? on_edit
 
 <div class="group-member-join-code-holder <%= "hidden" if @group.is_public? %>">
   <%= form.label:join_code, "Validation Code:" %>
-  <%= form.text_field :join_code, :class=>"text-shadow #{classes}", :placeholder => "Enter Code..." %><br/>
+  <%= form.text_field :join_code, :class=>"text-shadow #{classes}", :placeholder => "Enter Code...", :style=>"width:200px;" %><br/>
 </div>
 
 <div class="group-member-administrator-holder">
