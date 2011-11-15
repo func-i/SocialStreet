@@ -14,10 +14,6 @@
     position: relative;
 }
 
-#create_form_submit_button .ui-btn{
-    width: 100%;
-}
-
 #event_map_canvas {
 	height: 300px;
 	width: 290px;
@@ -101,6 +97,12 @@
     top: 3px;
 }
 
+#invite-submit span .ui-btn-text {
+    font-size: 15px;
+    color: #FFFCD5;
+    top: 3px;
+}
+
 .dw ios {
    left: 32px;
    top: 45px;
@@ -118,6 +120,8 @@
 #invite-users-list .ui-checkbox span {
     top: -8px;
 }*/
+
+
 
 #event_address {
     color: #FFFCD5;

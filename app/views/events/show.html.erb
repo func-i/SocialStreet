@@ -38,15 +38,21 @@
       <div style="float:right; margin: 3px"><%= link_to "#{@event.comments.count} Comments" %> </div>
     </div>
 
-<%#*<div data-role="fieldcontain" id="event_details">%>
-<%#=@event.description if !@event.description.empty?%>
-<%#*</div>%>
 
-    <% if !@event.description.nil? %>
-      <div data-role="fieldcontain" id="event_details">
-        <%= @event.description %>
-      </div>
-    <% end %>
+    <%#= form_for @event_for_edit, :remote => true, :html => {"data-ajax" => false} do |form| %>
+    <%# if !@event.description.nil? %>
+      <%#*<div data-role="fieldcontain" id="event_details">%>
+        <%#= @event.description %>
+      <%#*</div>%>
+    <%# else %>
+    <%#*<div data-role="fieldcontain">%>
+      <%#= link_to "Click to add a Description", "#", {'onclick' => 'addDescription();'}  %>
+      <%#*<div id="event_description">%>
+        <%#= form.text_field :description %>
+      <%#*</div>%>
+    <%#*</div>%>
+    <%# end %>
+    <%# end %>
 
     <div data-role="fieldcontain">
       <% if @event && @event.cancellable_by?(current_user) %>

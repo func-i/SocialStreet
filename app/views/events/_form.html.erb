@@ -1,4 +1,4 @@
-<div data-role="page" id="create_what">
+<div data-role="page" data-theme="a" id="create_what">
   <div data-role="header" data-position="fixed">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1>SocialStreet</h1>
@@ -15,19 +15,19 @@
 
     function captureKeyword(){
       keyword = $('.ui-input-text').val();
-        $('#no_results a span').text(keyword);
-        if($('.result:visible').length == 1) {
-          if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
-            $('#no_results').hide();
-          }
-
-        }
-        else if ($('.ui-input-text').val().length == 0){
+      $('#no_results a span').text(keyword);
+      if($('.result:visible').length == 1) {
+        if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
           $('#no_results').hide();
         }
-        else {
-          $('#no_results').show();
-        }
+
+      }
+      else if ($('.ui-input-text').val().length == 0){
+        $('#no_results').hide();
+      }
+      else {
+        $('#no_results').show();
+      }
     }
 
     $('#create_what').live("pageshow",function() {
@@ -50,26 +50,26 @@
   </script>
 
   <div data-role ="content">
-    
-      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="create_keywords_list">
-        <li id="no_results"> <%= link_to "#create_where" do %>
-            <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
-            <span></span>
-          <% end  %>
+
+    <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="create_keywords_list">
+      <li id="no_results"> <%= link_to "#create_where" do %>
+          <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
+          <span></span>
+        <% end  %>
+      </li>
+      <% @event_types.each do |event|%>
+        <li class="result">
+          <%= link_to image_tag(event.image_path, :size => "45x45") + event.name, "#create_where" %>
         </li>
-        <% @event_types.each do |event|%>
-          <li class="result">
-            <%= link_to image_tag(event.image_path, :size => "45x45") + event.name, "#create_where" %>
-          </li>
 
-        <% end %>
+      <% end %>
 
-      </ul>
+    </ul>
 
   </div>
 </div>
 
-<div data-role ="page" id="create_where" class="page-map">
+<div data-role ="page" data-theme="a" id="create_where" class="page-map">
   <div data-role="header" data-position="inline">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1>SocialStreet</h1>
@@ -156,6 +156,10 @@
     $('#create_map_lng').val(c.lng());
   }
 
+  $('#map-location').live('click', function() {
+    $(this).val("");
+  })
+
   $('#map-location').live("keydown", function(e) {
     if (e.keyCode == 13) {
       e.stopPropagation();
@@ -188,6 +192,7 @@
         createMap.setCenter(closestResult);
         createMapMarker = createCreateMapMarker();
         createMarkerManager.showAllMarkers();
+        updateLocationParams();
       }
       else {
         alert("Geocode was not successful for the following reason: " + status);
@@ -222,7 +227,7 @@
 
 </div>
 
-<div data-role ="page" id="create_when">
+<div data-role ="page" data-theme="a" id="create_when">
   <div data-role="header" data-position="inline">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
 
@@ -234,7 +239,6 @@
     //Create date
     var monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    var durationOptions = ['minutes', 'hours', 'days']
 
     var myDate = new Date();
     var dateHsh = {};
@@ -258,13 +262,7 @@
       minuteHsh[i*5] = i*5;
     }
 
-    var countHsh = {};
-    for(i=1; i<=60; i++){
-      countHsh[i-1] = i;
-    }
-
-    var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}]
-    var durationWheels = [{"Amount" : countHsh}, {"Duration" : durationOptions}]
+    var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}];
 
     $(function() {
       $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').scroller({
@@ -274,37 +272,34 @@
         //btnClass: 'hidden',
         onClose: function(valueText, inst) {
 
-          //console.log(valueText);
-
           if(valueText.match("NaN") || valueText.search("/") == -1){
             valueText = fixInvalidValues(valueText);
             $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(valueText);
           }
 
           formatted_start_date = parseDate(valueText);
-          //$('#create_starts_at').val(formatted_start_date);
           $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(formatted_start_date);
 
         }
 
       });
 
-      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').scroller({
-        wheels: wheels,
-        width: 40,
-        theme: 'ios',
-        onClose: function(valueText, inst) {
+      /*$('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').scroller({
+      wheels: wheels,
+      width: 40,
+      theme: 'ios',
+      onClose: function(valueText, inst) {
 
-          if(valueText.match("NaN") || valueText.search("/") == -1){
-            valueText = fixInvalidValues(valueText);
-            $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(valueText);
-          }
-
-          formatted_end_date = parseDate(valueText);
-          $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(formatted_end_date);
+        if(valueText.match("NaN") || valueText.search("/") == -1){
+          valueText = fixInvalidValues(valueText);
+          $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(valueText);
         }
 
-      });
+        formatted_end_date = parseDate(valueText);
+        $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(formatted_end_date);
+      }
+
+    });*/
 
     })
 
@@ -332,6 +327,7 @@
 
     function fixInvalidValues(valueText) {
       var newValueText;
+      console.log(valueText);
       console.log("fixing invalid values");
       var fixedDate = new Date();
       temp_array = valueText.split(" ");
@@ -342,7 +338,7 @@
       else
         newValueText = temp_array[0];
 
-      for(i=1; i<temp_array.length; i++) {
+      /*for(i=1; i<temp_array.length; i++) {
         if(temp_array[i] != "NaN")
           newValueText += " " + temp_array[i];
         else
@@ -360,17 +356,64 @@
             newValueText += " " + "AM";
         else
           newValueText += " " + "PM";
+      }*/
+
+      for(i=1; i<temp_array.length; i++){
+        if(temp_array[i] == "NaN" || temp_array[i] == "-501"){
+          if(i == 1)
+            newValueText += " " + 1;
+          else if(i == 2)
+            newValueText += " " + 0;
+          else if(i == 3)
+            newValueText += " " + "AM";
+        }
+        else
+          newValueText += " " + temp_array[i];
       }
       console.log(newValueText);
 
       return newValueText;
     }
 
+    function updateCreateTimes() {
+      var start_date = $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val();
+      var split_date = start_date.split(" ");
+      var date       = split_date[0];
+      var time_split = split_date[1].split(":");
+      var start_hour = time_split[0];
+      var start_min  = time_split[1];
+      start_date = new Date(getDateFromFormat(date, 'yyyy-mm-dd'));
+      start_date.setHours(start_hour);
+      start_date.setMinutes(start_min);
+
+      console.log(start_date);
+
+      var duration = $('#duration').val();
+      var duration_size = $('#duration_size').val();
+
+      if(duration_size == "Minutes"){
+        duration = duration*60000;
+      }
+      else if(duration_size == "Hours"){
+        duration = duration*3600000;
+      }
+      else if(duration_size == "Days"){
+        duration = duration*86400000;
+      }
+
+      var end_date = new Date(start_date.getTime());
+      end_date.setMilliseconds(start_date.getMilliseconds() + duration);
+
+      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(formatDate(start_date, 'yyyy/MM/dd HH:mm'));
+      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(formatDate(end_date, 'yyyy/MM/dd HH:mm'));
+
+      submitForm();
+    }
+
     function submitForm() {
       event.preventDefault();
       $('#submit_button').addClass("ui-disabled");
       $('#submit_button span').text("Submitting ... ");
-      $('#submit_button').attr("data-theme", "d");
       var form_id = $("form").attr("id");
       $('#'+form_id).submit();
     }
@@ -386,19 +429,21 @@
         <div data-role="fieldcontain">
           <label for="startdate">Start Date: </label>
           <%= date_range_fields.text_field :starts_at, :class => "mobiscroll"%>
-        </div>
-
-        <div data-role="fieldcontain">
-          <label for="startdate">End Date: </label>
-          <%= date_range_fields.text_field :ends_at, :class => "mobiscroll"%>
+          <%= date_range_fields.hidden_field :ends_at %>
         </div>
 
     <%#*<div data-role="fieldcontain">%>
-      <%#*<label for="duration">Duration: </label>%>
-      <%# duration, duration_size = event.duration_array %>
-      <%#= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration" %>
-      <%#= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size" %>
+    <%#*<label for="startdate">End Date: </label>%>
+    <%#= date_range_fields.text_field :ends_at, :class => "mobiscroll"%>
     <%#*</div>%>
+
+        <div data-role="fieldcontain">
+          <fieldset class="ui-grid-a">
+            <label for="duration">Duration: </label>
+            <div class="ui-block-a"><%= select_tag :duration, options_for_select((1...23).to_a), :id =>"duration" %></div>
+            <div class="ui-block-b"><%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]]), :id => "duration_size" %></div>
+          </fieldset>
+        </div>
 
       <% end %>
 
@@ -408,7 +453,7 @@
 
       <%  end %>
 
-      <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button", "onclick" => "submitForm();" } %>
+      <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button", "onclick" => "updateCreateTimes();" } %>
 
     <% end %>
 

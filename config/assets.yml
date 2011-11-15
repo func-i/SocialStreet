@@ -21,6 +21,7 @@ javascripts:
     - public/javascripts/mobiscroll-1.5.js
     - public/javascripts/infobubble.js
     - public/javascripts/ss.js
+    - public/javascripts/date.js
     - public/javascripts/iscroll-lite.js
    
   

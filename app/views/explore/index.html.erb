@@ -71,6 +71,7 @@
         });
         createMapMarkers();
         $('#explore_event_details').hide();
+        refresh_iScrollers();
 
         google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
         google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);

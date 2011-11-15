@@ -88,9 +88,7 @@ function selectedMarker() {
         clustered_markers = this.clusteredMarkers_;
         for (i=0; i < clustered_markers.length; i++){
             searchable_id = clustered_markers[i].searchableID_;
-            console.log("adding to display results");
             $('#searchable_'+searchable_id).clone().removeAttr('id').appendTo('#display_results');
-            console.log("appended results to display results");
         }
     }
     $('#display_results').listview('refresh');
@@ -108,6 +106,10 @@ function deselectMarker() {
     }
     marker.selectedMarker_.selected_ = false;
 }
+
+$('#explore_change_map_address').live('click', function() {
+    $(this).val("");
+  })
 
 
 $('#explore_change_map_address').live("keydown", function(e) {

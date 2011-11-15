@@ -1,25 +1,29 @@
-<div data-role="page" id="invite-users-page">
-  <div data-role="header" data-position="inline">
-    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+<div data-role="page" data-theme="a" id="invite-users-page">
+  <div data-role="header" data-position="fixed">
+    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1>SocialStreet</h1>
   </div>
 
   <div data-role="content">
-    <%= link_to 'Send Invites', '#', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "invite-submit"} %>
-    <div data-role="fieldcontain">
 
       <%= form_tag event_rsvp_invitations_path(@event, @rsvp), :method => :post, :id => "invite-form" do %>
-        <fieldset data-role="controlgroup" id="invite-users-list">
+        <fieldset data-role="controlgroup" id="invite-users-list" data-theme="c">
           <% @users.each do |u| %>
             <%= check_box_tag "user_ids[]", u.id, @event.invitations.collect(&:user).include?(u), :class => "custom", :id => "user_#{u.id}"  %>
-            <label for="user_<%=u.id%>"><%= avatar(u, :exclude_link => true, :size => "40x40") %> 
+            <label for="user_<%=u.id%>"><%= avatar(u, :exclude_link => true, :size => "40x40") %>
               <span><%= u.name %></span>
             </label>
           <% end %>
         <% end %>
       </fieldset>
-    </div>
+    
   </div>
+
+  <div data-role="footer" data-position="fixed">
+    <%= link_to 'Send Invites', '#', {"data-role" => "button", "data-theme" => "b", "id" => "invite-submit", 'style' => 'width: 100%;
+  height: 35px;'}%>
+  </div>
+
 </div>
 
 <script type="text/javascript">
@@ -34,9 +38,5 @@
   $('#invite-submit').live('click', function() {
     $('#invite-form').submit();
   })
-
-  /*$('#invite-users-list').bind( "change", function(event, ui) {
-    console.log(event)
-});*/
 
 </script>
