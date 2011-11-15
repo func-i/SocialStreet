@@ -1,0 +1,12 @@
+$('#list-view-explore-content').html('<%= escape_javascript(render(:partial => 'results')) %>');
+
+markerManager.deleteAllMarkers();
+
+<% (@events || []).each do |event| %>
+  <% if event.location.geo_located? %>
+    marker = markerManager.addMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10) );
+    google.maps.event.addListener(myMarker, 'click', selectedMarker);
+  <% end %>
+<% end %>
+
+markerManager.showAllMarkers();

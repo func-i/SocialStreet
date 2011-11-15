@@ -61,4 +61,16 @@ SocialStreetReborn::Application.routes.draw do
 
   get 'hb' => 'heartbeat#index'
   get 'sim_error' => 'heartbeat#error'
+
+  namespace :m do #mobile
+    root :to => 'site#index'
+    
+    get 'explore' => 'explore#index', :as => 'explore'
+
+    #get 'events/new' => 'events#new', :as => 'create'
+    resources :events do
+      resources :event_rsvps, :only => [:new, :edit]
+      resources :invitations
+    end    
+  end
 end

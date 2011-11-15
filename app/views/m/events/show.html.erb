@@ -1,0 +1,58 @@
+
+<div data-role="page" data-theme="a" id="event_main">
+  <div data-role="header" data-position="inline">
+    <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
+    <h1>SocialStreet</h1>
+    <% if @event.can_edit?(current_user) %>
+      <%= link_to 'Edit', edit_m_event_path(@event), {'data-theme' => 'a', 'data-ajax' => false}%>
+    <% end %>
+  </div>
+
+  <div data-role="content" data-theme="c">
+    <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
+    <span id="event_title"><%= @event.title %></span>
+
+    <div data-role="fieldcontain" style="font-size: 18px">
+      <span id="event_address"><%= address_for(@event.location)%></span>
+      <span style="float: right; font-size: 14px" id="map_link"><%= link_to "See on Map", "http://maps.google.com/maps?q=#{address_for(@event.location)}" %></span>
+    </div>
+
+    <div data-role="fieldcontain" style="font-size: 14px"><%= @event.date_range_as_sentence %> </div>
+
+    <div data-role ="fieldcontain">
+
+      <fieldset class="ui-grid-a">
+        <%  if(@rsvp && EventRsvp.statuses[:attending] == @rsvp.status) %>
+          <div id="attending-button"class="ui-block-a"><%= link_to "Attending", [:edit, :m, @event, :event_rsvp], {'data-role' => 'button', 'data-theme' => 'g', 'data-ajax' => false} %></div>
+        <% else %>
+          <div class="ui-block-a"><%= link_to "Attend", [:new, :m, @event, :event_rsvp], {'data-role' => 'button', 'data-theme' => 'e', 'data-ajax' => false} %></div>
+        <% end %>
+
+        <div class="ui-block-b"><%= link_to "Invite People", [:new, :m, @event, :invitation], {'data-role' => 'button', 'data-theme' => 'b'} %></div>
+      </fieldset>
+
+    </div>
+
+    <div data-role="fieldcontain">
+      <textarea cols="40" rows="8" name="textarea" placeholder="Leave a Comment..." data-theme="d"></textarea>
+      <div style="float:right; margin: 3px"><%= link_to "#{@event.comments.count} Comments" %> </div>
+    </div>
+
+<%#*<div data-role="fieldcontain" id="event_details">%>
+<%#=@event.description if !@event.description.empty?%>
+<%#*</div>%>
+
+    <% if !@event.description.nil? %>
+      <div data-role="fieldcontain" id="event_details">
+        <%= @event.description %>
+      </div>
+    <% end %>
+
+    <div data-role="fieldcontain">
+      <% if @event && @event.can_edit?(current_user) %>
+        <%= link_to "Cancel Event", [:m, @event], {:confirm => 'Are you sure?', :method => 'delete', "data-role" => "button", "data-theme" => "f"} %>
+      <% end %>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,3 @@
+<%= form_for [:m, @event], :remote => true, :html => {"data-ajax" => false} do |form| %>
+  <%= render 'm/events/form', :form => form, :event => @event %>
+<% end %>
