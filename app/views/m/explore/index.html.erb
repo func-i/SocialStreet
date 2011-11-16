@@ -70,15 +70,6 @@
           });
           createMapMarkers();
           $('#explore_event_details').hide();
-/*          exploreMap = new google.maps.Map(document.getElementById('explore_map_canvas'),
-          {
-            center: map_center,
-            zoom: 15
-          });
-          markerManager = new MarkerManager({
-            map: exploreMap
-          });
-          createMapMarkers();*/
 
           google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
           google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
@@ -94,7 +85,8 @@
         marker = markerManager.addMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10) );
         google.maps.event.addListener(marker, 'click', selectedMarker);
   <% end %>
-      markerManager.showAllMarkers();
+
+    markerManager.showAllMarkers();
 <% end %>
   }
 

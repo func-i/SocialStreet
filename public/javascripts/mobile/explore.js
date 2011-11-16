@@ -73,7 +73,6 @@ function changeExploreLocationParams(event) {
         $('#explore_map_center').val(c.lat() + ',' + c.lng());
         $('#explore_view_params').val("map");
         updateUserLocation(c.lat(), c.lng(), false);
-        console.log("submitting explore form...");
         $('#explore_form').submit();
 
     }, 20);
@@ -81,16 +80,14 @@ function changeExploreLocationParams(event) {
 
 
 function selectedMarker() {
-    searchable_id = this.searchableID_;
+    event_id = this.eventID_;
     $('#display_results').empty();
-    $('#searchable_'+searchable_id).clone().removeAttr('id').appendTo('#display_results');
+    $('#event_'+event_id).clone().removeAttr('id').appendTo('#display_results');
     if(this.clusteredMarkers_.length > 0) {
         clustered_markers = this.clusteredMarkers_;
         for (i=0; i < clustered_markers.length; i++){
-            searchable_id = clustered_markers[i].searchableID_;
-            console.log("adding to display results");
-            $('#searchable_'+searchable_id).clone().removeAttr('id').appendTo('#display_results');
-            console.log("appended results to display results");
+            event_id = clustered_markers[i].eventID_;
+            $('#event_'+event_id).clone().removeAttr('id').appendTo('#display_results');
         }
     }
     $('#display_results').listview('refresh');

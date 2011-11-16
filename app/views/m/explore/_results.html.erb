@@ -8,7 +8,7 @@
 <ul data-role="listview" data-theme="a" data-inset="true" id="list_view_results">
   <% (@events || []).each do |event| %>
     <% if(!event.canceled) %>
-      <li id ="searchable_<%=event.id%>">
+      <li id ="event_<%=event.id%>">
         <%= link_to m_event_path(event) do %>
           <%= image_tag(url_for_event_image(event), :size => "50x50") %>
           <span id="explore_list_title"><%= event.title %></span>
