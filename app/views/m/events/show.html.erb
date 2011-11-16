@@ -2,7 +2,7 @@
 <div data-role="page" data-theme="a" id="event_main">
   <div data-role="header" data-position="inline">
     <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
-    <h1>SocialStreet</h1>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
     <% if @event.can_edit?(current_user) %>
       <%= link_to 'Edit', edit_m_event_path(@event), {'data-theme' => 'a', 'data-ajax' => false}%>
     <% end %>

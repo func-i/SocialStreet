@@ -1,6 +1,6 @@
 <div data-role="header" data-position="inline">
   <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
-  <h1>SocialStreet</h1>
+  <h1><%=link_to "SocialStreet", '/m'%></h1>
   <%= link_to "Filter", '#explore_filter', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
 </div>
 
@@ -19,5 +19,5 @@
 
 <div data-role="footer" data-position="fixed">
   <%= link_to "View Map", '#map-view-explore', {'id' => 'map_view_link', 'data-role' => 'button', 'data-theme' => 'b', 'data-transition' => 'flip', 'style' => 'width: 100%;
-height: 35px;'}%>
+  height: 35px;'}%>
 </div>
