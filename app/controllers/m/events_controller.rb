@@ -2,6 +2,9 @@ class M::EventsController < MobileController
   def show
     @event = Event.find params[:id]
     @rsvp = @event.event_rsvps.by_user(current_user).first if current_user
+
+    @comments = @event.comments.order('created_at DESC').all
+    @comment = @event.comments.build
   end
 
   def new

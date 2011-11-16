@@ -142,6 +142,13 @@
     color: #FFC233 /*{a-body-link-visited}*/;
 }
 
+.ui-header .ui-title .ui-link,
+.ui-header .ui-title .ui-link:hover,
+.ui-header .ui-title .ui-link:active,
+.ui-header .ui-title .ui-link:visited{
+    color: white;
+    text-decoration: none;
+}
 
 .ui-btn-up-f, .ui-btn-hover-f, .ui-btn-down-f {
   color: white;
