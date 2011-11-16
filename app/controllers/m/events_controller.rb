@@ -73,13 +73,12 @@ class M::EventsController < MobileController
       Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
     end
 
-
     if request.xhr?
       render :update do |page|
-        page.redirect_to m_root_path
+        page.redirect_to [:m, :root]
       end
     else
-      redirect_to m_root_path
+      redirect_to [:m, :root]
     end
   end
   

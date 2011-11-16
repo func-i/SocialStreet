@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   def get_current_path
     return session[:stored_current_path] if session[:stored_current_path]
-    return null;
+    return nil;
   end
 
   def after_sign_in_path_for(resource_or_scope)   
