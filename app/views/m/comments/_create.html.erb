@@ -1,0 +1,12 @@
+<div style="clear:both;">
+  <div style="">
+    <%= avatar(comment.user, :size => "44x44", :style=>"float:left;padding:0 10px 5px 0;") %>
+    <div style="color:#FFFCD5;float:left;padding-top:15px;"><%= comment.user.name %></div>
+  </div>
+  <div style="float:left;clear:both;">
+    <%= raw comment.body %>
+  </div>
+  <div style="float: right;padding-bottom: 15px;font: italic 11px/26px Arial, Helvetica, sans-serif;">
+    <%= time_ago_in_words(comment.created_at, Time.now) %> ago
+  </div>
+</div>

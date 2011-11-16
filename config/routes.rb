@@ -71,6 +71,7 @@ SocialStreetReborn::Application.routes.draw do
     resources :events do
       resources :event_rsvps, :only => [:new, :edit]
       resources :invitations, :only => [:new, :create]
+      resources :comments, :only => [:create]
     end    
   end
 end
