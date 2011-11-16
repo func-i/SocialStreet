@@ -79,12 +79,10 @@ function changeExploreLocationParams(event) {
 }
 
 
-function selectedMarker() {
-    event_id = this.eventID_;
+function selectedMarker(marker) {
     $('#display_results').empty();
-    $('#event_'+event_id).clone().removeAttr('id').appendTo('#display_results');
-    if(this.clusteredMarkers_.length > 0) {
-        clustered_markers = this.clusteredMarkers_;
+    if(marker.clusteredMarkers_.length > 0) {
+        clustered_markers = marker.clusteredMarkers_;
         for (i=0; i < clustered_markers.length; i++){
             event_id = clustered_markers[i].eventID_;
             $('#event_'+event_id).clone().removeAttr('id').appendTo('#display_results');
