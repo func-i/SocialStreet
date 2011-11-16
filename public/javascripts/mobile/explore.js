@@ -1,3 +1,6 @@
+var selectedMarkerArray = [];
+var markerInterval;
+
 $('#remove_filters').live('click', function(){
     $('#keyword').val("");
     $('#keyword').submit();
@@ -62,7 +65,7 @@ function changeExploreLocationParams(event) {
         var zoom = 15;
         $('#explore_map_zoom').val(zoom);
 
-        $('#explore_event_details').hide();
+        deselectMarker();
 
         bounds = exploreMap.getBounds();
         ne = bounds.getNorthEast();
@@ -90,18 +93,52 @@ function selectedMarker(marker) {
     }
     $('#display_results').listview('refresh');
     refresh_iScrollers();
+
+    deselectMarker();
     $('#explore_event_details').show();
+
+    selectedMarkerArray.push(marker);
+    marker.setIcon("/images/marker-base.png");
+    marker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
+    marker.label_.setMap(exploreMap);
+
+    if(markerInterval != null){
+        clearTimeout(markerInterval);
+    }
+
+    if(marker.clusteredMarkers_.length > 1){
+        var count = 0;
+        markerInterval = setInterval(function(){
+            if($.inArray(marker, selectedMarkerArray) < 0){
+                clearTimeout(markerInterval);
+                return;
+            }
+            marker.label_.setIconClass(marker.clusteredMarkers_[count].iconClass_);
+            count += 1;
+            if(count >= marker.clusteredMarkers_.length)
+                count = 0;
+        }, 1000);
+    }
 }
 
 function deselectMarker() {
     $('#explore_event_details').hide();
-    marker = getMarkerManager();
-    if(marker.selectedMarker_.clusteredMarkers_){
-        $.each(marker.selectedMarker_.clusteredMarkers_, function(index, marker){
-            marker.selected_ = false;
-        });
+    
+    for(var i = 0; i < selectedMarkerArray.length; i++){
+        if(selectedMarkerArray[i] != undefined) {
+            selectedMarkerArray[i].setIcon("/images/grey-pin.png");
+            selectedMarkerArray[i].setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
+            selectedMarkerArray[i].label_.setMap(null);
+            delete selectedMarkerArray[i].clusteredIcons_
+        }
     }
-    marker.selectedMarker_.selected_ = false;
+    delete selectedMarkerArray;
+    selectedMarkerArray = [];
+    
+    if(markerInterval != null){
+        clearTimeout(markerInterval);
+    }
+
 }
 
 

@@ -50,6 +50,7 @@
     var exploreMap;
     var markerManager;
     var marker;
+    var iconClass;
     var clustered_markers = [];
 
     //    $(function(){
@@ -75,9 +76,17 @@
       });
     });
 
-    function createExploreMarker(lat, lng, eventID){
+    function getMarkerManager() {
+      return markerManager;
+    }
+
+    function createExploreMarker(lat, lng, eventID, iconClass){
       marker = markerManager.addMarker(lat, lng);
       marker.eventID_ = eventID;
+      marker.iconClass_ = 'event-type-'+iconClass+'-small-sprite';
+      marker.label_ = new IconLabel(marker);
+      marker.label_.bindTo('position', marker, 'position');
+      marker.label_.setIconClass('event-type-'+iconClass+'-small-sprite');
       google.maps.event.addListener(marker, 'click', function(){
         selectedMarker(this);
       });
@@ -87,7 +96,7 @@
 
 <% (@events || []).each do |event| %>
 
-      createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>);
+      createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>, "<%=sprite_class_name_for_event(event)%>");
 
 <% end %>
 
