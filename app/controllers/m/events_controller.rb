@@ -63,5 +63,18 @@ class M::EventsController < MobileController
       end
     end
   end
+
+  def destroy
+    event = Event.find params[:id]
+    event.canceled = true
+
+    if request.xhr?
+      render :update do |page|
+        page.redirect_to m_root_path
+      end
+    else
+      redirect_to m_root_path
+    end
+  end
   
 end
