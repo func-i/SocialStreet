@@ -50,8 +50,6 @@
     var exploreMap;
     var markerManager;
     var marker;
-    var selected_searchable;
-    var searchable_id;
     var clustered_markers = [];
 
     //    $(function(){
@@ -75,9 +73,7 @@
         google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
         google.maps.event.addListener(exploreMap, 'click', deselectMarker);
       });
-
     });
-    //   });
 
     function createExploreMarker(lat, lng, eventID){
       marker = markerManager.addMarker(lat, lng);

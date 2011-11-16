@@ -24,7 +24,7 @@ class Event < ActiveRecord::Base
     includes(:location).merge(Location.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng))
   }
 
-  scope :matching_keywords, lambda { |keywords, include_searchables_with_no_keywords|
+  scope :matching_keywords, lambda { |keywords, include_events_with_no_keywords|
     unless keywords.blank?
       chain = includes(:event_keywords).includes(:groups)
       #chain = chain.joins("LEFT OUTER JOIN event_types AS synonyms ON synonyms.synonym_id = event_keywords.event_type_id AND event_keywords.event_id = events.id")
