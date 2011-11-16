@@ -99,7 +99,15 @@
 
 <% content_for :right_side_pane do %>
   <div id="show_attendees_title" class="important-color text-shadow">
-    <%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>
+    <% if current_user && @event.event_rsvps.attending.by_user(current_user).count > 0%>
+      <% if @event.number_of_attendees == 1 %>
+        You're Attending
+      <% else %>
+        <%= "You & #{pluralize(@event.number_of_attendees - 1, 'Person')} are Attending" %>
+      <% end %>
+    <% else %>
+      <%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>
+    <% end %>
   </div>
   <div id="show_attendees_holder" class="container">
     <ul id="show_attendees_list">
