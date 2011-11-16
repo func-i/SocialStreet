@@ -68,8 +68,8 @@
           markerManager = new MarkerManager({
             map: exploreMap
           });
-          createMapMarkers();
           $('#explore_event_details').hide();
+          createMapMarkers();
 /*          exploreMap = new google.maps.Map(document.getElementById('explore_map_canvas'),
           {
             center: map_center,
@@ -82,7 +82,7 @@
 
           google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
           google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
-          google.maps.event.addListener(exploreMap, 'click', deselectMarker);
+          google.maps.event.addListener(exploreMap, 'click', deselectMarker());
         });
 
       });
@@ -92,7 +92,7 @@
 <% (@events || []).each do |event| %>
   <% if event.location.geo_located? %>
         marker = markerManager.addMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10) );
-        google.maps.event.addListener(marker, 'click', selectedMarker);
+        google.maps.event.addListener(marker, 'click', selectedMarker());
   <% end %>
       markerManager.showAllMarkers();
 <% end %>

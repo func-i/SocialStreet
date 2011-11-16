@@ -261,7 +261,7 @@
     var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}];
 
     $(function() {
-      $('#event_searchable_searchable_date_ranges_starts_at').scroller({
+      $('#event_start_date').scroller({
         wheels: wheels,
         width: 40,
         theme: 'ios',
@@ -270,11 +270,11 @@
 
           if(valueText.match("NaN") || valueText.search("/") == -1){
             valueText = fixInvalidValues(valueText);
-            $('#event_searchable_searchable_date_ranges_starts_at').val(valueText);
+            $('#event_start_date').val(valueText);
           }
 
-          formatted_start_date = parseDate(valueText);
-          $('#event_searchable_searchable_date_ranges_starts_at').val(formatted_start_date);
+          formatted_start_date = parseDate_(valueText);
+          $('#event_start_date').val(formatted_start_date);
 
         }
 
@@ -299,7 +299,7 @@
 
     })
 
-    function parseDate(valueText) {
+    function parseDate_(valueText) {
 
       console.log(valueText);
 
@@ -372,7 +372,7 @@
     }
 
     function updateCreateTimes() {
-      var start_date = $('#event_searchable_searchable_date_ranges_starts_at').val();
+      var start_date = $('#event_start_date').val();
       var split_date = start_date.split(" ");
       var date       = split_date[0];
       var time_split = split_date[1].split(":");
@@ -400,8 +400,8 @@
       var end_date = new Date(start_date.getTime());
       end_date.setMilliseconds(start_date.getMilliseconds() + duration);
 
-      $('#event_searchable_searchable_date_ranges_starts_at').val(formatDate(start_date, 'yyyy/MM/dd HH:mm'));
-      $('#event_searchable_searchable_date_ranges_ends_at').val(formatDate(end_date, 'yyyy/MM/dd HH:mm'));
+      $('#event_start_date').val(ssFormatDate(start_date, 'yyyy/MM/dd HH:mm'));
+      $('#event_end_date').val(ssFormatDate(end_date, 'yyyy/MM/dd HH:mm'));
 
       submitForm();
     }
@@ -417,42 +417,33 @@
   </script>
 
   <div data-role="content">
+    <input type="hidden" name="event[event_keywords_attributes][][name]" value="<%=@event.event_keywords.first.try(:name)%>" id="create_keyword" />
 
-    <%=  form.fields_for :searchable do |searchable_fields| %>
-      <%= searchable_fields.hidden_field :keywords, :id => 'create_keyword' %>
-
-      <%= searchable_fields.fields_for :searchable_date_ranges do |date_range_fields| %>
-        <div data-role="fieldcontain">
-          <label for="startdate">Start Date: </label>
-          <%= date_range_fields.text_field :starts_at, :class => "mobiscroll"%>
-          <%= date_range_fields.hidden_field :ends_at %>
-        </div>
-
-    <%#*<div data-role="fieldcontain">%>
-    <%#*<label for="startdate">End Date: </label>%>
-    <%#= date_range_fields.text_field :ends_at, :class => "mobiscroll"%>
-    <%#*</div>%>
-
-        <div data-role="fieldcontain">
-          <fieldset class="ui-grid-a">
-            <label for="duration">Duration: </label>
-            <div class="ui-block-a"><%= select_tag :duration, options_for_select((1...23).to_a), :id =>"duration" %></div>
-            <div class="ui-block-b"><%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]]), :id => "duration_size" %></div>
-          </fieldset>
-        </div>
-
-      <% end %>
-
-      <%= searchable_fields.fields_for :location do |location_fields| %>
-        <%= location_fields.hidden_field :latitude, :id => 'create_map_lat' %>
-        <%= location_fields.hidden_field :longitude, :id => 'create_map_lng'%>
-
-      <%  end %>
-
-      <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button", "onclick" => "updateCreateTimes();" } %>
-
+    <% (@event.event_groups || []).each do |event_group| %>
+      <% groupID = event_group.group_id || 'public' %>
+      <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
+    <div data-role="fieldcontain">
+      <label for="startdate">Start Date: </label>
+      <%= form.text_field :start_date, :class => "mobiscroll"%>
+      <%= form.hidden_field :end_date %>
+    </div>
+
+    <div data-role="fieldcontain">
+      <fieldset class="ui-grid-a">
+        <label for="duration">Duration: </label>
+        <div class="ui-block-a"><%= select_tag :duration, options_for_select((1...23).to_a), :id =>"duration" %></div>
+        <div class="ui-block-b"><%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]]), :id => "duration_size" %></div>
+      </fieldset>
+    </div>
+
+    <%= form.fields_for :location do |location_fields| %>
+      <%= location_fields.hidden_field :latitude, :id => 'create_map_lat' %>
+      <%= location_fields.hidden_field :longitude, :id => 'create_map_lng'%>
+    <%  end %>
+
+    <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button", "onclick" => "updateCreateTimes();" } %>
 
   </div>
 

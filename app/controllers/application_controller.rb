@@ -113,6 +113,7 @@ class ApplicationController < ActionController::Base
       @event = Event.new()
       @event.user = current_user if current_user
     elsif action == :edit
+      
       @event.event_keywords.each do |keyword|
         keyword.destroy
       end
@@ -125,6 +126,7 @@ class ApplicationController < ActionController::Base
     @event.event_groups.each do |e_g|
       e_g.destroy
     end
+
     params[:group].each do |groupID, permissionLevel|
       e_g = @event.event_groups.build
       e_g.can_view = permissionLevel.to_i >= 1
