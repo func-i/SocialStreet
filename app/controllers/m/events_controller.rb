@@ -65,8 +65,14 @@ class M::EventsController < MobileController
   end
 
   def destroy
-    event = Event.find params[:id]
-    event.canceled = true
+    @event = Event.find params[:id]
+    @event.canceled = true
+    @event.save
+
+    if(@event.upcoming)
+      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
+    end
+
 
     if request.xhr?
       render :update do |page|
