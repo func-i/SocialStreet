@@ -53,5 +53,6 @@ stylesheets:
     - public/stylesheets/ie7.css
   mobile:
     - public/stylesheets/mobiscroll-1.5.css
+    - public/stylesheets/event_type_sprite.css
     - public/stylesheets/mobile.css
 

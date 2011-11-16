@@ -3,7 +3,7 @@ $('#list-view-explore-content').html('<%= escape_javascript(render(:partial => '
 markerManager.deleteAllMarkers();
 
 <% (@events || []).each do |event| %>
-  createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>);
+  createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>, "<%=sprite_class_name_for_event(event)%>");
 <% end %>
 
 markerManager.showAllMarkers();
