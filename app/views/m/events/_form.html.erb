@@ -106,11 +106,12 @@
       });
       createMapMarker = createCreateMapMarker();
       findMarkerLocation(createMapMarker);
+      createMarkerManager.showAllMarkers();
     })
   })
 
   function createCreateMapMarker() {
-    var marker = createMarkerManager.createMarker(createMap.getCenter());
+    var marker = createMarkerManager.addMarker(createMap.getCenter().lat(), createMap.getCenter().lng());
     marker.setDraggable(true);
     google.maps.event.addListener(marker, 'dragend', function() {
       findMarkerLocation(this);
