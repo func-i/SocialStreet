@@ -50,52 +50,48 @@
     var exploreMap;
     var markerManager;
     var marker;
-    var selected_searchable;
-    var searchable_id;
     var clustered_markers = [];
 
-//    $(function(){
-      $('#list_view_link').live("click", function() {
-        $('#list_view_results').listview();
-      })
+    //    $(function(){
+    $('#list_view_link').live("click", function() {
+      $('#list_view_results').listview();
+    })
 
-      $('#map-view-explore').live("pageinit", function() {
+    $('#map-view-explore').live("pageinit", function() {
 
-        $('#explore_map_canvas').gmap(
-        {'center': map_center, 'zoom': 15, 'disableDefaultUI': true
-        }).bind('init', function(event, map) {
-          exploreMap = $('#explore_map_canvas').gmap('get', 'map');
-          markerManager = new MarkerManager({
-            map: exploreMap
-          });
-          $('#explore_event_details').hide();
-          createMapMarkers();
-/*          exploreMap = new google.maps.Map(document.getElementById('explore_map_canvas'),
-          {
-            center: map_center,
-            zoom: 15
-          });
-          markerManager = new MarkerManager({
-            map: exploreMap
-          });
-          createMapMarkers();*/
-
-          google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
-          google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
-          google.maps.event.addListener(exploreMap, 'click', deselectMarker());
+      $('#explore_map_canvas').gmap(
+      {'center': map_center, 'zoom': 15, 'disableDefaultUI': true
+      }).bind('init', function(event, map) {
+        exploreMap = $('#explore_map_canvas').gmap('get', 'map');
+        markerManager = new MarkerManager({
+          map: exploreMap
         });
+        createMapMarkers();
+        $('#explore_event_details').hide();
 
+        google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
+        google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
+        google.maps.event.addListener(exploreMap, 'click', deselectMarker);
       });
- //   });
+    });
+
+    function createExploreMarker(lat, lng, eventID){
+      marker = markerManager.addMarker(lat, lng);
+      marker.eventID_ = eventID;
+      google.maps.event.addListener(marker, 'click', function(){
+        selectedMarker(this);
+      });
+    }
+    
     function createMapMarkers() {
 
 <% (@events || []).each do |event| %>
-  <% if event.location.geo_located? %>
-        marker = markerManager.addMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10) );
-        google.maps.event.addListener(marker, 'click', selectedMarker());
-  <% end %>
-      markerManager.showAllMarkers();
+
+      createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>);
+
 <% end %>
+
+    markerManager.showAllMarkers();
   }
 
   </script>

@@ -40,7 +40,7 @@ MarkerManager.prototype.addMarker = function(lat, lng){
 };
 
 MarkerManager.prototype.showAllMarkers = function(callbackFunction){
-    if(undefined == this.map_.mapTypes[this.map_.mapTypeId]){
+    if(undefined == this.projectionHelper_.getProjection()){
         that = this;
         google.maps.event.addListenerOnce(this.map_, 'idle', function() {
             that.showAllMarkers(callbackFunction);
