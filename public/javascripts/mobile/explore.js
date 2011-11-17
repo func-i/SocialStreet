@@ -1,18 +1,35 @@
 var selectedMarkerArray = [];
 var markerInterval;
 
-$('#remove_filters').live('click', function(){
+$('#remove_filters').live('click', function(e){
     $('#keyword').val("");
-    $('#keyword').submit();
-    event.preventDefault();
+    $('#list_view_filter_text').css('display', 'none');
+
+    refreshResults();
+    
+    e.preventDefault();
+
 });
 
-$('#keyword_filter_list li').live('click', function(li){
+$('#keyword_filter_list li').live('click', function(e){
     selKeyword = $.trim($(this).text());
     $('#keyword').val(selKeyword);
-    $('#keyword').submit();
-    event.preventDefault(); // Prevent link from following its href
+    
+    $('#list_view_filter_text span').text(selKeyword);
+    $('#list_view_filter_text').css('display', '');
+
+    refreshResults();
+
+    e.preventDefault(); // Prevent link from following its href
 });
+
+function refreshResults(){
+    $('#explore_form').submit();
+
+    if(history && history.pushState) {
+        //history.pushState(null, "", '?' + $('#explore_form').serialize());
+    }
+}
 
 $('#explore_filter').live("pageshow",function() {
     var keyword = "";
@@ -76,7 +93,8 @@ function changeExploreLocationParams(event) {
         $('#explore_map_center').val(c.lat() + ',' + c.lng());
         $('#explore_view_params').val("map");
         updateUserLocation(c.lat(), c.lng(), false);
-        $('#explore_form').submit();
+
+        refreshResults();
 
     }, 20);
 }

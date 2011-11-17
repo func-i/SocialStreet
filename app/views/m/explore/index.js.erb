@@ -1,4 +1,5 @@
-$('#list-view-explore-content').html('<%= escape_javascript(render(:partial => 'results')) %>');
+$('#list_view_explore_content').html('<%= escape_javascript(render(:partial => 'results')) %>');
+$('#list_view_explore_content').trigger('create');
 
 markerManager.deleteAllMarkers();
 

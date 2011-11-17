@@ -5,18 +5,16 @@
   <%= link_to "Filter", '#explore_filter', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
 </div>
 
-<div data-role="content" id="list-view-explore-content">
+<div data-role="content">
 
-  <% if !params[:keywords].blank? %>
-    <div>
-      Only Showing: <span class="colored-text-2" style="font-weight: bolder;"><%= params[:keywords] %></span> Events
-      <span style="float:right;"><%= link_to "Remove", '#', {'id' => 'remove_filters'}%></span>
-    </div>
-    <br/>
-  <% end %>
+  <div id="list_view_filter_text" style="<%="display:none" if params[:keywords].blank?%>">
+    Filtering by: <span style="color:#FFC233"><%=params[:keywords]%></span>
+    <%= link_to "Remove", '#', :id => 'remove_filters', :style=>"font-size:10px;color:#FFFCD5;"%>
+  </div>
 
-  <%= render "results"%>
-
+  <div id="list_view_explore_content">
+    <%= render "results"%>
+  </div>
 </div>
 
 <div data-role="footer" data-position="fixed">
