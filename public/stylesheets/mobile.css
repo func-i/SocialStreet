@@ -117,6 +117,14 @@
     top: -8px;
 }*/
 
+.colored-text-1 {
+    color: #FFC233;
+}
+
+.colored-text-2 {
+    color: #FFFCD5;
+}
+
 #event_address {
     color: #FFFCD5;
 }
