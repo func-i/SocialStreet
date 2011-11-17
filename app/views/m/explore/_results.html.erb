@@ -1,6 +1,6 @@
 <% if @events.empty? %>
   <div id="no_results_message"> <strong>No Events found in this area. </strong> <br/><br/>
-    Use the <%= link_to "Map", '#map-view-explore', {'data-transition' => 'flip'}%> to change your location <br/>
+    Use the <%= link_to "Map", '#map-view-explore', {'data-transition' => 'flip'}%> to change your search location <br/>
     <h4>OR</h4>
     <%= link_to 'Create an Event', new_m_event_path, {"rel" => 'external'} %> here. </div>
   <% end %>

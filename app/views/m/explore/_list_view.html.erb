@@ -1,5 +1,6 @@
 <div data-role="header" data-position="inline">
-  <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
+  <%#= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
+  <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
   <h1><%=link_to "SocialStreet", '/m'%></h1>
   <%= link_to "Filter", '#explore_filter', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
 </div>
@@ -8,9 +9,10 @@
 
   <% if !params[:keywords].blank? %>
     <div>
-      Only Showing: <span style="font-weight: bold;"><%= params[:keywords] %></span> Events
+      Only Showing: <span class="colored-text-2" style="font-weight: bolder;"><%= params[:keywords] %></span> Events
       <span style="float:right;"><%= link_to "Remove", '#', {'id' => 'remove_filters'}%></span>
     </div>
+    <br/>
   <% end %>
 
   <%= render "results"%>
