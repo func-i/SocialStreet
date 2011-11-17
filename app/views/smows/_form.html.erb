@@ -1,0 +1,18 @@
+<%= form.label :title %>
+FREE <%= form.text_field :title %>
+
+<%= form.label :icon_path %>
+<%= form.select :icon_path, options_for_select(@icons) %>
+
+<%= form.label :top_image_url %>
+<%= file_field_tag :top_image_url %><br />
+
+<%= form.label :what_text %>
+<%= form.text_area :what_text %><br />
+
+<%= form.label :when_text %>
+<%= form.text_area :when_text %><br />
+
+<%= form.label :bottom_image_url %>
+<%= file_field_tag :bottom_image_url %>
+

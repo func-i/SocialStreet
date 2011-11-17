@@ -1,4 +1,12 @@
 SocialStreetReborn::Application.routes.draw do
+  get "smows/_form"
+
+  get "smows/new"
+
+  get "smows/edit"
+
+  get "smows/index"
+
   root :to => 'explore#index'
 
   get 'explore' => 'explore#search', :as => 'explore'
@@ -17,6 +25,7 @@ SocialStreetReborn::Application.routes.draw do
     resources :event_rsvps, :only => [:new, :edit]
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
+    resources :smows
   end
 
   resources :profiles do

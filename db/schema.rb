@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111104183526) do
+ActiveRecord::Schema.define(:version => 20111117172944) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -140,6 +140,21 @@ ActiveRecord::Schema.define(:version => 20111104183526) do
     t.string   "geocoded_address"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "smows", :force => true do |t|
+    t.integer  "event_id"
+    t.string   "top_image_url"
+    t.text     "what_text"
+    t.text     "where_text"
+    t.text     "when_text"
+    t.string   "bottom_image_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "emails_valid",     :default => 0
+    t.integer  "emails_sent",      :default => 0
+    t.string   "title"
+    t.string   "icon_path"
   end
 
   create_table "user_groups", :force => true do |t|
