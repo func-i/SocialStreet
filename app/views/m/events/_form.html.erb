@@ -282,6 +282,16 @@
       });
     })
 
+    $('#create_when').live('pageshow', function() {
+      $('#event_start_date').scroller('show');
+      $('#scroller_holder').empty();
+      $('.dw').appendTo('#scroller_holder');
+      $('.dww').first().css("width", 123); //hack to make full values show up on screen
+      /*$('#duration').removeAttr("disabled");
+      $('#duration_size').removeAttr("disabled");*/
+      $('select').selectmenu('enable');
+    })
+
     function parseDate_(valueText) {
 
       split_array = valueText.split("/");
@@ -351,6 +361,17 @@
     }
 
     function updateCreateTimes() {
+      
+      var valueText = $('.dwv').text();
+
+      if(valueText.match("NaN") || valueText.search("/") == -1){
+            valueText = fixInvalidValues(valueText);
+            $('#event_start_date').val(valueText);
+          }
+
+          formatted_start_date = parseDate_(valueText);
+          $('#event_start_date').val(formatted_start_date);
+
       var start_date = $('#event_start_date').val();
       var split_date = start_date.split(" ");
       var date       = split_date[0];
@@ -387,6 +408,8 @@
 
     function submitForm() {
       event.preventDefault();
+      console.log($('#event_start_date').val());
+      console.log($('#event_end_date').val());
       $('#submit_button').addClass("ui-disabled");
       $('#submit_button span').text("Submitting ... ");
       var form_id = $("form").attr("id");
@@ -403,11 +426,15 @@
       <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
-    <div data-role="fieldcontain">
-      <label for="startdate">Start Date: </label>
-      <%= form.text_field :start_date, :class => "mobiscroll"%>
+      <div id="scroller_holder">
+        
+      </div>
+
+    <%#*<div data-role="fieldcontain">%>
+      <%#*<label for="startdate">Start Date: </label>%>
+      <%= form.hidden_field :start_date, :class => "mobiscroll"%>
       <%= form.hidden_field :end_date %>
-    </div>
+    <%#*</div>%>
 
     <div data-role="fieldcontain">
       <fieldset class="ui-grid-a">
