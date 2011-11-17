@@ -3,18 +3,18 @@
     Use the <%= link_to "Map", '#map-view-explore', {'data-transition' => 'flip'}%> to change your location <br/>
     <h4>OR</h4>
     <%= link_to 'Create an Event', new_m_event_path, {"rel" => 'external'} %> here. </div>
-  <% end %>
+<% end %>
 
 <ul data-role="listview" data-theme="a" data-inset="true" id="list_view_results">
   <% (@events || []).each do |event| %>
-    <% if(!event.canceled) %>
-      <li id ="event_<%=event.id%>">
-        <%= link_to m_event_path(event) do %>
-          <%= image_tag(url_for_event_image(event), :size => "50x50") %>
-          <span id="explore_list_title"><%= event.title %></span>
-          <div id="explore_list_address"><%= event.location.text || event.location.street %></div>
-        <% end %>
-      </li>
-    <%  end %>
+    <li id ="event_<%=event.id%>">
+      <%= link_to m_event_path(event), :style => "padding:0;" do %>
+        <div class="event-type-<%=sprite_class_name_for_event(event)%>-small-sprite" style="float:left;"></div>
+        <div style="float:left;">
+        <div id="explore_list_title" style="margin: 18.5px 0 0 5px"><%= event.title %></div>
+        <div id="explore_list_address" style="font-size:10px; padding: 0 0 0 5px;"><%= event.location.as_sentence %></div>
+        </div>
+      <% end %>
+    </li>
   <% end %>
 </ul>
