@@ -1,4 +1,6 @@
 class SessionsController < Devise::SessionsController
+  skip_before_filter :redirect_mobile
+  
   def new
     respond_to do |format|
       format.js

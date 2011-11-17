@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   layout 'application'
 
+  before_filter :redirect_mobile
+
   def ss_authenticate_user!
     authenticate_user!
   end
@@ -188,6 +190,22 @@ class ApplicationController < ActionController::Base
       return 2 #Success
     else
       return -1#error
+    end
+  end
+
+  private 
+  def mobile_device?
+    request.user_agent =~ /Mobile|webOS/
+#    return true
+  end
+  helper_method :mobile_device?
+
+  def redirect_mobile
+    if mobile_device? && nil == (request.fullpath =~ /^\/m($|\/|\?|#)/)
+      puts request.fullpath
+      puts request.request_uri
+      puts request.inspect
+      redirect_to "/m" + request.fullpath.gsub(/#_=_/, '')
     end
   end
 end

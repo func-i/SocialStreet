@@ -1,4 +1,5 @@
 class AuthenticationsController < ApplicationController
+  skip_before_filter :redirect_mobile
 
   def destroy
     @authentication = current_user.authentications.find(params[:id])

@@ -1,4 +1,6 @@
 class M::EventsController < MobileController
+  before_filter :ss_authenticate_user!
+
   def show
     @event = Event.find params[:id]
     @rsvp = @event.event_rsvps.by_user(current_user).first if current_user
@@ -73,9 +75,7 @@ class M::EventsController < MobileController
       Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
     end
 
-    
-      redirect_to [:m, :root]
- 
+    redirect_to [:m, :root]
   end
   
 end

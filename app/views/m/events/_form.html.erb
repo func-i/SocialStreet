@@ -97,21 +97,23 @@
     $('#map-canvas').gmap({
       'center': currentLocation, 'zoom': 15, 'mapTypeControl' : false,
       'navigationControl': false, 'streetViewControl': false
-    }).bind('init', function (event, map) {
+    });
+
+    if(undefined == createMapMarker){
       createMap = $('#map-canvas').gmap('get', 'map');
       createMarkerManager = new MarkerManager({
-        map: createMap,
-        gridSize: 15,
-        mapView: true
+        map: createMap
       });
       createMapMarker = createCreateMapMarker();
       findMarkerLocation(createMapMarker);
       createMarkerManager.showAllMarkers();
-    })
-  })
+    }
+  });
 
   function createCreateMapMarker() {
     var marker = createMarkerManager.addMarker(createMap.getCenter().lat(), createMap.getCenter().lng());
+    marker.setIcon('/images/create-event-marker.png');
+    marker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
     marker.setDraggable(true);
     google.maps.event.addListener(marker, 'dragend', function() {
       findMarkerLocation(this);
@@ -121,7 +123,6 @@
   }
 
   function findMarkerLocation(marker) {
-    var latlng = new google.maps.LatLng(marker.getPosition().lat(), marker.getPosition().lng());
     geocoder.geocode({'location': marker.getPosition()}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         marker.setTitle(results[0].formatted_address);
@@ -283,10 +284,7 @@
 
     function parseDate_(valueText) {
 
-      console.log(valueText);
-
       split_array = valueText.split("/");
-      console.log(split_array);
       new_array = split_array[2].split(" ");
       split_array.pop();
       split_array = split_array.concat(new_array);
@@ -298,7 +296,6 @@
           split_array[3] += 12;
 
       date = split_array[0]+"-"+split_array[1]+"-"+split_array[2]+" "+split_array[3]+":"+split_array[4];
-      console.log(date);
 
       return date;
     }

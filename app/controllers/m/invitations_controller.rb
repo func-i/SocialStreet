@@ -1,4 +1,6 @@
 class M::InvitationsController < MobileController
+  before_filter :ss_authenticate_user!
+
   USERS_PER_PAGE = 30
   def new
     page = (params[:page] || 1).to_i
