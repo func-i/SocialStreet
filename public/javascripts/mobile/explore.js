@@ -1,17 +1,23 @@
 var selectedMarkerArray = [];
 var markerInterval;
 
-$('#remove_filters').live('click', function(){
+$('#remove_filters').live('click', function(e){
     $('#keyword').val("");
-    $('#keyword').submit();
-    event.preventDefault();
+    $('#list_view_filter_text').css('display', 'none');
+    $('#explore_form').submit();
+    e.preventDefault();
+
 });
 
-$('#keyword_filter_list li').live('click', function(li){
+$('#keyword_filter_list li').live('click', function(e){
     selKeyword = $.trim($(this).text());
     $('#keyword').val(selKeyword);
-    $('#keyword').submit();
-    event.preventDefault(); // Prevent link from following its href
+    
+    $('#list_view_filter_text span').text(selKeyword);
+    $('#list_view_filter_text').css('display', '');
+
+    $('#explore_form').submit();
+    e.preventDefault(); // Prevent link from following its href
 });
 
 $('#explore_filter').live("pageshow",function() {
