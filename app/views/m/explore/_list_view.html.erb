@@ -8,11 +8,11 @@
 <div data-role="content">
 
   <div id="list_view_filter_text" style="<%="display:none" if params[:keywords].blank?%>">
-    Filtering by: <span><%=params[:keywords]%></span>
-    <%= link_to "Remove", '#', {'id' => 'remove_filters'}%>
+    Filtering by: <span style="color:#FFC233"><%=params[:keywords]%></span>
+    <%= link_to "Remove", '#', :id => 'remove_filters', :style=>"font-size:10px;color:#FFFCD5;"%>
   </div>
 
-  <div id="list-view-explore-content">
+  <div id="list_view_explore_content">
     <%= render "results"%>
   </div>
 </div>
