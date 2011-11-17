@@ -58,11 +58,7 @@
       <%@comments.each do |comment|%>
         <%= render :partial => 'm/comments/create.html', :locals => {:comment => comment} %>
       <% end %>
-      <% if @comments.empty? %>
-        <div id="event_leave_message">
-          Leave a Message
-        </div>
-      <% end %>
+      
     </div>
 
 <%#*<div data-role="fieldcontain" id="event_details">%>
