@@ -1,4 +1,4 @@
-class M::SiteController < MobileController
+class M::SiteController < MobileController  
   def index
   end
 end

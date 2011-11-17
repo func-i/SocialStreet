@@ -1,38 +1,39 @@
 <div data-role="page" class="wallpaper_page" id="home_page">
-    <div data-role="header" data-position="inline" data-theme="a">
+  <div data-role="header" data-position="inline" data-theme="a">
     <h1><%=link_to "SocialStreet", '/m'%></h1>
+    <%= (link_to "Sign Out", destroy_user_session_path, {'data-role' => 'button', 'data-theme' => 'b', 'class' => 'ui-btn-right'}) if user_signed_in?%>
+  </div>
+
+  <div data-role ="content">
+    <div data-role="fieldcontain">
+      <div style="text-align: center;"><%= image_tag("ss_site_logo_big.png") %></div>
     </div>
 
-    <div data-role ="content">
+    <% if user_signed_in? %>
       <div data-role="fieldcontain">
-        <div style="text-align: center;"><%= image_tag("ss_site_logo_big.png") %></div>
-      </div>
-
-      <% if user_signed_in? %>
-        <div data-role="fieldcontain">
-          <%= link_to 'Explore!', m_explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search", "data-ajax" => false} %>
-          <%= link_to '+StreetMeet', new_m_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "rel" => 'external'} %>
+        <%= link_to 'Explore!', m_explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search", "data-ajax" => false} %>
+        <%= link_to '+StreetMeet', new_m_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "rel" => 'external'} %>
 
 
-        <% else %>
+      <% else %>
 
-          <%= link_to 'Sign In', '/auth/facebook', {"data-role" => "button", "data-theme" => "g", "data-icon" => "check", "id" => "sign-in", "rel" => 'external'} %>
+        <%= link_to 'Sign In', '/auth/facebook?redirect_uri=blah', {"data-role" => "button", "data-theme" => "g", "data-icon" => "check", "id" => "sign-in", "rel" => 'external'} %>
 
-        <% end %>
-      </div>
+      <% end %>
     </div>
   </div>
+</div>
 
 <script type="text/javascript">
   $('#home_page').live('pageshow', function() {
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(e){
-          updateUserLocation(e.coords.latitude, e.coords.longitude, true)
-        }, function(e){
-        },
-        {
-          maximumAge: 600000
-        });
-      }
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(e){
+        updateUserLocation(e.coords.latitude, e.coords.longitude, true)
+      }, function(e){
+      },
+      {
+        maximumAge: 600000
+      });
+    }
   })
 </script>

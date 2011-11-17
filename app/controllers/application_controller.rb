@@ -196,12 +196,16 @@ class ApplicationController < ActionController::Base
   private 
   def mobile_device?
     request.user_agent =~ /Mobile|webOS/
+#    return true
   end
   helper_method :mobile_device?
 
   def redirect_mobile
-    if mobile_device? && nil == (request.fullpath =~ /^\/m($|\/)/)
-      redirect_to "/m" + request.fullpath
+    if mobile_device? && nil == (request.fullpath =~ /^\/m($|\/|\?|#)/)
+      puts request.fullpath
+      puts request.request_uri
+      puts request.inspect
+      redirect_to "/m" + request.fullpath.gsub(/#_=_/, '')
     end
   end
 end

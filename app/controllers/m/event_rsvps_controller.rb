@@ -1,4 +1,6 @@
 class M::EventRsvpsController < MobileController
+  before_filter :ss_authenticate_user!
+
   def new
     rtn_code = attending_event_rsvp(params[:event_id].to_i)
 
