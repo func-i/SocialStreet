@@ -25,7 +25,11 @@ SocialStreetReborn::Application.routes.draw do
     resources :event_rsvps, :only => [:new, :edit]
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
-    resources :smows
+    resources :smows do
+      member do
+        match "send_single_email"
+      end      
+    end
   end
 
   resources :profiles do
@@ -59,6 +63,8 @@ SocialStreetReborn::Application.routes.draw do
 
     resources :user_groups
   end
+
+  resources :smows
 
   match '/contact' => 'contact#create'
 

@@ -1,5 +1,15 @@
 class SmowsController < ApplicationController
 
+  def index
+    @smows = Smow.all
+  end
+
+  def show
+    @event = Event.find params[:event_id]
+    @smow = @event.smow
+    render :layout => false
+  end
+
   def new
     @event = Event.find params[:event_id]
     @smow = @event.build_smow
@@ -22,14 +32,14 @@ class SmowsController < ApplicationController
       @smow.update_attribute("top_image_url", File.join("smow", @smow.id.to_s, t_name))
 
       b_name = params[:bottom_image_url].original_filename
-      File.open(File.join(directory, t_name), "wb"){ |f| f.write(params[:bottom_image_url].read)}
+      File.open(File.join(directory, b_name), "wb"){ |f| f.write(params[:bottom_image_url].read)}
       @smow.update_attribute("bottom_image_url", File.join("smow", @smow.id.to_s, b_name))
 
       @event.update_attribute("promoted", true)
 
     end
 
-    redirect_to @event
+    redirect_to smows_path
 
   end
 
@@ -68,11 +78,14 @@ class SmowsController < ApplicationController
 
     end
 
-    redirect_to @event
+    redirect_to smows_path
   end
 
-  def index
-    
+  def send_single_email
+    @event = Event.find params[:event_id]
+    @smow = Smow.find params[:id]
+    UserMailer.deliver_streetmeet_of_the_week(@smow, current_user.email)
+    redirect_to [@event, @smow]
   end
   
 end

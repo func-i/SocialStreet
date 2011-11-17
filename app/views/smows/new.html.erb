@@ -1,5 +1,5 @@
 <%= content_for :left_side_pane do %>
-  <div class="content-left-holder">
+  <div class="content-left-holder scroll-pane expand-height">
     <div class="clh-content">
       <%= form_for [@event, @smow], :html => {:multipart => true} do |form| %>
         <%= render 'form', :form => form %>
