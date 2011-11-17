@@ -28,6 +28,7 @@ SocialStreetReborn::Application.routes.draw do
     resources :smows do
       member do
         match "send_single_email"
+        match "send_smow"
       end      
     end
   end

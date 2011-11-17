@@ -1,5 +1,7 @@
 class SmowsController < ApplicationController
 
+  before_filter :is_god
+
   def index
     @smows = Smow.all
   end
@@ -86,6 +88,19 @@ class SmowsController < ApplicationController
     @smow = Smow.find params[:id]
     UserMailer.deliver_streetmeet_of_the_week(@smow, current_user.email)
     redirect_to [@event, @smow]
+  end
+
+  def send_smow
+    @event = Event.find params[:event_id]
+    @smow = Smow.find params[:id]
+    #Resque.enqueue(Jobs::Email::EmailAllUsersStreetmeetEvent)
+    redirect_to smows_path
+  end
+
+  protected
+
+  def is_god
+    raise ActiveRecord::RecordNotFound unless current_user && current_user.god?
   end
   
 end

@@ -9,6 +9,8 @@
         <th>Emails Valid</th>
         <th>Emails Sent</th>
         <th></th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +23,8 @@
           <td><%= smow.emails_valid %></td>
           <td><%= smow.emails_sent %></td>
           <td><%= link_to "Edit", edit_event_smow_path(smow.event, smow) if smow.event%></td>
+          <td><%= button_to "Test Single Email", send_single_email_event_smow_path(smow.event, smow) if smow.event %></td>
+          <td><%= button_to "SEND SMOW", send_smow_event_smow_path(smow.event, smow), :style => "color: red;", :confirm => "THIS WILL SEND TO ALL USERS!! ARE YOU SURE???", :disable_with => "SENDING.." if smow.event %></td>
         </tr>
       <% end %>
     </tbody>
