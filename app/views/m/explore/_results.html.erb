@@ -1,13 +1,17 @@
 <ul data-role="listview" data-theme="a" data-inset="true" id="list_view_results">
   <% (@events || []).each do |event| %>
     <li id ="event_<%=event.id%>">
+      <% className = sprite_class_name_for_event(event)%>
       <%= link_to m_event_path(event), :style => "padding:0;" do %>
-        <div class="event-type-<%=sprite_class_name_for_event(event)%>-small-sprite" style="float:left;"></div>
+        <div class="event-type-image event-type-<%=className%>-small-sprite" style="float:left;"></div>
         <div style="float:left;">
           <div id="explore_list_title" style="margin: 18.5px 0 0 5px"><%= event.title %></div>
           <div id="explore_list_address" style="font-size:10px; padding: 0 0 0 5px;"><%= event.location.as_sentence %></div>
         </div>
       <% end %>
+      <%= hidden_field_tag "lat", event.location.latitude, :class=>'lat' %>
+      <%= hidden_field_tag "lng", event.location.longitude, :class=>'lng' %>
+      <%= hidden_field_tag "icon_class", className, :class=>'icon-class' %>
     </li>
   <% end %>
 </ul>

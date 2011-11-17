@@ -1,13 +1,7 @@
 <%= javascript_include_tag 'mobile/explore' %>
 
 <div data-role="page" data-theme="a" id="explore_base">
-
-  <%- if params[:view].nil? || params[:view].eql?("list") -%>
-    <%= render "list_view" -%>
-  <%- else -%>
-    <%= render "map_view" %>
-  <% end %>
-
+  <%= render "list_view" -%>
 </div>
 
 <div data-role="page" id="explore_filter">
@@ -72,7 +66,7 @@
         map: exploreMap
       });
 
-      createMapMarkers();
+      addExploreMarkers();
 
       $('#explore_event_details').hide();
 
@@ -86,33 +80,7 @@
         deselectMarker();
       });
     });
-
-    function getMarkerManager() {
-      return markerManager;
-    }
-
-    function createExploreMarker(lat, lng, eventID, iconClass){
-      marker = markerManager.addMarker(lat, lng);
-      marker.eventID_ = eventID;
-      marker.iconClass_ = 'event-type-'+iconClass+'-small-sprite';
-      marker.label_ = new IconLabel(marker);
-      marker.label_.bindTo('position', marker, 'position');
-      marker.label_.setIconClass('event-type-'+iconClass+'-small-sprite');
-      google.maps.event.addListener(marker, 'click', function(){
-        selectedMarker(this);
-      });
-    }
-    
-    function createMapMarkers() {
-
-<% (@events || []).each do |event| %>
-
-      createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>, "<%=sprite_class_name_for_event(event)%>");
-
-<% end %>
-
-    markerManager.showAllMarkers();
-  }
+  
 
   </script>
 
@@ -127,6 +95,7 @@
   <%= hidden_field_tag 'map_bounds', params[:map_bounds], :id => 'explore_map_bounds' %>
   <%= hidden_field_tag 'map_center', params[:map_center], :id => 'explore_map_center' %>
   <%= hidden_field_tag 'map_zoom', params[:map_zoom], :id => 'explore_map_zoom' %>
+  <%= hidden_field_tag 'selected_results', params[:selected_results]%>
   <%= hidden_field_tag 'view', params[:view], :id => 'explore_view_params' %>
   <%= hidden_field_tag 'keywords', params[:keywords], :id => 'keyword' %>
 <% end %>

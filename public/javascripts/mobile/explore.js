@@ -27,8 +27,8 @@ function refreshResults(){
     $('#explore_form').submit();
 
     if(history && history.pushState) {
-        //history.pushState(null, "", '?' + $('#explore_form').serialize());
-    }
+//history.pushState(null, "", '?' + $('#explore_form').serialize());
+}
 }
 
 $('#explore_filter').live("pageshow",function() {
@@ -82,7 +82,8 @@ function changeExploreLocationParams(event) {
         var zoom = 15;
         $('#explore_map_zoom').val(zoom);
 
-        deselectMarker();
+        //deselectMarker();
+        //clearExploreMarkers();
 
         bounds = exploreMap.getBounds();
         ne = bounds.getNorthEast();
@@ -99,32 +100,86 @@ function changeExploreLocationParams(event) {
     }, 20);
 }
 
+function addExploreMarkers(){
+    var selectedResults = $('#selected_results').val();
+    var selectedResultsArr = []
+    if(selectedResults)
+        selectedResultsArr = selectedResults.split(',');
 
-function selectedMarker(marker) {
-    $('#display_results').empty();
-    if(marker.clusteredMarkers_.length > 0) {
-        clustered_markers = marker.clusteredMarkers_;
-        for (i=0; i < clustered_markers.length; i++){
-            event_id = clustered_markers[i].eventID_;
-            $('#event_'+event_id).clone().removeAttr('id').appendTo('#display_results');
+    var mySelectedMarkersArray = [];
+    $.each($('#list_view_explore_content li'), function(index, result){
+        $result = $(result);
+        var lat = $result.children('.lat').val();
+        var lng = $result.children('.lng').val();
+        var iconClass = $result.children('.icon-class').val();
+        var id = result.id
+
+        var marker = createExploreMarker(lat, lng, id, iconClass);
+
+        for(var i = 0; i < selectedResultsArr.length; i++){
+            if(selectedResultsArr[i] == result.id){
+                mySelectedMarkersArray.push(marker);
+            }
+        }
+    });
+
+    markerManager.showAllMarkers();
+
+    $.each(mySelectedMarkersArray, function(index, marker){
+        selectMarker(marker);
+    });
+}
+
+function getMarkerManager() {
+    return markerManager;
+}
+
+
+function createExploreMarker(lat, lng, eventID, iconClass){
+    marker = markerManager.addMarker(lat, lng);
+    marker.eventID_ = eventID;
+    marker.iconClass_ = 'event-type-'+iconClass+'-small-sprite';
+    marker.label_ = new IconLabel(marker);
+    marker.label_.bindTo('position', marker, 'position');
+    marker.label_.setIconClass('event-type-'+iconClass+'-small-sprite');
+    google.maps.event.addListener(marker, 'click', function(){
+        deselectMarker();
+        selectMarker(this);
+    });
+
+    return marker;
+}  
+
+function selectMarker(marker){
+    //Show results clustered in this pin
+    if(marker.clusteredMarkers_){
+        for(var i = 0; i < marker.clusteredMarkers_.length; i++){
+            var eventID = marker.clusteredMarkers_[i].eventID_;
+            $('#' + eventID).clone().removeAttr('id').appendTo('#display_results');
+
+            //Select result
+            var selectedResults = $('#selected_results').val();
+            if(selectedResults.indexOf(eventID) < 0){
+                $('#selected_results').val((selectedResults.length > 0 ? (selectedResults + ',') : '') + eventID);
+            }
         }
     }
     $('#display_results').listview('refresh');
     refresh_iScrollers();
 
-    deselectMarker();
     $('#explore_event_details').show();
 
+    //Set marker icon
     selectedMarkerArray.push(marker);
-    marker.setIcon("/images/marker-base.png");
-    marker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
-    marker.label_.setMap(exploreMap);
+    marker.ownerMarker_.setIcon("/images/marker-base.png");
+    marker.ownerMarker_.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
+    marker.ownerMarker_.label_.setIconClass(marker.iconClass_);
+    marker.ownerMarker_.label_.setMap(exploreMap);
 
     if(markerInterval != null){
         clearTimeout(markerInterval);
     }
-
-    if(marker.clusteredMarkers_.length > 1){
+    if(marker.clusteredMarkers_ && marker.clusteredMarkers_.length > 1){
         var count = 0;
         markerInterval = setInterval(function(){
             if($.inArray(marker, selectedMarkerArray) < 0){
@@ -139,24 +194,33 @@ function selectedMarker(marker) {
     }
 }
 
+function clearExploreMarkers(){
+    for(var i = 0; i < selectedMarkerArray.length; i++)
+        if(selectedMarkerArray[i] != undefined)
+            selectedMarkerArray[i].label_.setMap(null);
+
+    markerManager.deleteAllMarkers();
+    delete selectedMarkerArray
+    selectedMarkerArray = [];
+
+    if(markerInterval != null)
+        clearTimeout(markerInterval);
+
+}
+
 function deselectMarker() {
     $('#explore_event_details').hide();
-    
+    $('#display_results').empty();
+
+    $('#selected_results').val('');
+
     for(var i = 0; i < selectedMarkerArray.length; i++){
-        if(selectedMarkerArray[i] != undefined) {
+        if(selectedMarkerArray[i] != undefined){
+            selectedMarkerArray[i].label_.setMap(null);
             selectedMarkerArray[i].setIcon("/images/grey-pin.png");
             selectedMarkerArray[i].setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
-            selectedMarkerArray[i].label_.setMap(null);
-            delete selectedMarkerArray[i].clusteredIcons_
         }
     }
-    delete selectedMarkerArray;
-    selectedMarkerArray = [];
-    
-    if(markerInterval != null){
-        clearTimeout(markerInterval);
-    }
-
 }
 
 
