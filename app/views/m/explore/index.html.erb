@@ -76,9 +76,15 @@
 
       $('#explore_event_details').hide();
 
-      google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
-      google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
-      google.maps.event.addListener(exploreMap, 'click', deselectMarker);
+      google.maps.event.addListener(exploreMap, 'zoom_changed', function(){
+        changeExploreLocationParams();
+      });
+      google.maps.event.addListener(exploreMap, 'dragend', function(){
+        changeExploreLocationParams();
+      });
+      google.maps.event.addListener(exploreMap, 'click', function(){
+        deselectMarker();
+      });
     });
 
     function getMarkerManager() {
