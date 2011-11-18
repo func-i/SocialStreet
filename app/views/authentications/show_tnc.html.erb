@@ -1,6 +1,6 @@
 <%content_for :center_pane do%>
-  <div id="scroller" class="scroll-pane container" style="overflow: auto">
-    <div style="padding:10px;list-style:decimal;color:white;">
+  <div id="scroller" class="scroll-pane container" style="overflow: auto; ">
+    <div style="padding:10px; list-style:decimal; color:white;">
       <h1>Terms and Services</h1>
       <h2>Welcome to SocialStreet!</h2>
 
@@ -249,6 +249,7 @@
 
 <script>
   $(function(){
+
     $('#center_pane').removeClass('invisible');
     $('#left_side_pane').addClass('hidden');
     $('#zoom_btns').addClass('hidden');
@@ -258,12 +259,14 @@
       $('#zoom_btns').removeClass('hidden');
       google.maps.event.removeListener(mapListener);    
     }
+    
     resizeSelf = function(){
       var centerPaneBottom = $('#center_pane').offset().top + $('#center_pane').height();
       var scrollerTop = $('#scroller').offset().top;
       $('#scroller').height(centerPaneBottom - scrollerTop);
       initializeScrollPanes();
     }
+    
     resizePageElements();
 
 

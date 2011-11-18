@@ -76,7 +76,9 @@ $(function() {
 
 
     //Ellipsis on text overflow
-    $('.dotdotdot').dotdotdot({wrap: 'letter'});
+    $('.dotdotdot').dotdotdot({
+        wrap: 'letter'
+    });
 
 
 
@@ -450,6 +452,7 @@ function closeHowItWorks() {
     //markerManager.showAllMarkers();
     $('.content-group').removeClass('hidden');
     $('#zoom_btns').removeClass('hidden');
+
 }
 
 function openFeedback() {

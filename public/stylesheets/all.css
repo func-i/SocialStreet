@@ -1757,4 +1757,16 @@ popup-fields-holder,
     text-decoration: underline;
 }
 
+h2 {
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h1 {
+    font-size: 22px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
 

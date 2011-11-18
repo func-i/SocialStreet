@@ -88,7 +88,10 @@
           <% end %>
         </ul>
       </div>
-      <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"drop-shadow create-summary-view hidden", :style => "margin: 15px 0px 15px 228px; cursor: pointer;") %>
+      <div style="margin-top: 20px;">
+        <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"drop-shadow create-summary-view hidden", :style => "float:right; cursor: pointer; vertical-align: middle;") %>
+        <%= link_to "< Start Over", new_event_path, :class => "nav-link text-shadow", :style => "color: #FFC233; float: left;"  %>
+      </div>
     </div>
   </div>
 <% end %>
