@@ -1,0 +1,34 @@
+<%= content_for :center_pane do %>
+  <div class="content-left-holder container">
+    <div class="clh-content">
+      <h3> Your Browser Sucks! </h3>
+      <div style="font-size: 20px; color: white; font-weight: bold; margin-top: 25px; margin-bottom: 25px;">
+        Please upgrade to the latest version of one of the following:
+      </div>
+      <div style="float: left; margin-left: 25px;">
+        <%= link_to "http://www.mozilla.org/en-US/firefox/new/", "data-popup" => true do %>
+          <%= image_tag "ff-logo-only.png", :size => "100x100" %>
+        <% end %>
+      </div>
+      <div style="float: left; margin-left: 20%;">
+        <%= link_to "http://www.google.com/chrome", "data-popup" => true do %>
+          <%= image_tag "Chrome.png", :size => "100x100" %>
+        <% end %>
+      </div>
+      <div style="float: left; margin-left: 20%;">
+        <%= link_to "http://www.apple.com/safari/download/", "data-popup" => true do %>
+          <%= image_tag "Apple_Safari.png", :size => "100x100" %>
+        <% end %>
+      </div>
+      <div style="float: left; margin-left: 20%;">
+        <%= link_to "http://windows.microsoft.com/en-CA/internet-explorer/products/ie/home", "data-popup" => true do %>
+          <%= image_tag "ie-logo-small.png", :size => "100x100" %>
+        <% end %>
+      </div>
+      <div style="clear: both;">&nbsp;</div>
+
+    </div>
+  </div>
+<% end %>
+
+<%= javascript_include_tag "site_specific/browser_warning" %>

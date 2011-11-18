@@ -1,5 +1,7 @@
 class AuthenticationsController < ApplicationController
 
+  skip_filter :check_browser, :only => :invalid_browser
+
   def destroy
     @authentication = current_user.authentications.find(params[:id])
     @authentication.destroy
@@ -53,4 +55,9 @@ class AuthenticationsController < ApplicationController
   def show_signins
     @users = User.where("sign_in_count > 0").order("current_sign_in_at DESC NULLS LAST").limit(20).all;
   end
+
+  def invalid_browser
+    render "shared/browser_warning.html"
+  end
+
 end

@@ -2,6 +2,7 @@ SocialStreetReborn::Application.routes.draw do
   root :to => 'explore#index'
 
   get 'explore' => 'explore#search', :as => 'explore'
+  get 'invalid_browser' => 'authentications#invalid_browser', :as => "invalid_browser"
 
   resources :event_types, :only => [:index]
   resources :events do

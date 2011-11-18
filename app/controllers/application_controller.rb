@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   layout 'application'
 
+  before_filter :check_browser
+
   def ss_authenticate_user!
     authenticate_user!
   end
@@ -187,5 +189,11 @@ class ApplicationController < ActionController::Base
     else
       return -1#error
     end
+  end
+
+  protected
+
+  def check_browser    
+    redirect_to invalid_browser_path if request.env['HTTP_USER_AGENT'] =~ /MSIE 6.0|MSIE 7.0/
   end
 end
