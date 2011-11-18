@@ -351,6 +351,7 @@
 
     function setDefaultTime() {
       var strtime = '<%= @event.start_date %>';
+      console.log(strtime);
       var strdateArr = strtime.split(" ");
       console.log(strdateArr);
       
@@ -371,6 +372,12 @@
         data[1] = strHour.toString();
         data[3] = "PM";
       }
+
+      else if(strHour == 0){
+        data[1] = "12";
+        data[3] = "AM";
+      }
+
       else {
         data[1] = strHour.toString();
         data[3] = "AM";

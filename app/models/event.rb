@@ -57,7 +57,7 @@ class Event < ActiveRecord::Base
     hours = minutes / 60
     days = hours / 24
 
-    return [days.floor, "Days"] if days > 1
+    return [days.floor, "Days"] if days >= 1
     return [hours.floor, "Hours"] if hours > 1
     return [minutes.floor, "Minutes"] if minutes > 1
     return [diff_in_seconds, "Seconds"]
