@@ -1,4 +1,4 @@
-<div data-role="page" class="wallpaper_page" id="home_page">
+<div data-role="page" data-theme="a" class="wallpaper_page" id="home_page">
   <div data-role="header" data-position="inline" data-theme="a">
     <h1><%=link_to "SocialStreet", '/m'%></h1>
     <%= (link_to "Sign Out", destroy_user_session_path, {'data-role' => 'button', 'data-theme' => 'f', 'class' => 'ui-btn-right'}) if user_signed_in?%>
@@ -10,7 +10,7 @@
     </div>
 
     <% if user_signed_in? %>
-      <div data-role="fieldcontain">
+      <div data-role="fieldcontain" style="padding:0;">
         <%= link_to 'Explore!', m_explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search", "data-ajax" => false} %>
         <%= link_to '+StreetMeet', new_m_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "rel" => 'external'} %>
 
@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
   $('#home_page').live('pageshow', function() {
-    if(navigator.geolocation){
+/*    if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(function(e){
         updateUserLocation(e.coords.latitude, e.coords.longitude, true)
       }, function(e){
@@ -34,6 +34,6 @@
       {
         maximumAge: 600000
       });
-    }
-  })
+    }*/
+  });
 </script>

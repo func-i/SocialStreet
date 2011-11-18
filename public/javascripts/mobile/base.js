@@ -28,7 +28,7 @@ $.fn.serializeObject = function()
 };
 
 if (window.location.hash == "#_=_")
-        window.location.hash = "";
+    window.location.hash = "";
 
 $(function() {
 
@@ -119,9 +119,9 @@ function detach_iScroll(divID){
 }
 
 $(function() {
-    if(-1 == document.cookie.indexOf('current_location_latitude') || -1 == document.cookie.indexOf('current_location_longitude'))
-    {
-        if(navigator.geolocation){
+    if(navigator.geolocation){
+        if(-1 == document.cookie.indexOf('c_lat') || -1 == document.cookie.indexOf('c_lng'))
+        {
             navigator.geolocation.getCurrentPosition(function(e){
                 updateUserLocation(e.coords.latitude, e.coords.longitude, true)
             }, function(e){

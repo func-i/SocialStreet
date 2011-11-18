@@ -8,12 +8,13 @@
   <div data-role="header" data-position="fixed">
     <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
-    <%= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
+    <%#= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
   </div>
 
   <div data-role="content" data-theme="b">
     <div data-role ="fieldcontain">
-      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="keyword_filter_list">
+      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." data-scroll="true" id="keyword_filter_list">
+        <div>
         <li id="filter_no_results">
           <%= link_to '#', :style => "padding:0;", "data-rel"=> :back do %>
             <div class="event-type-streetmeet2-small-sprite" style="float:left;"></div>
@@ -28,6 +29,7 @@
             <% end %>
           </li>
         <% end %>
+        </div>
       </ul>
     </div>
   </div>

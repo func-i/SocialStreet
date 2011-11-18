@@ -202,10 +202,7 @@ class ApplicationController < ActionController::Base
 
   def redirect_mobile
     if mobile_device? && nil == (request.fullpath =~ /^\/m($|\/|\?|#)/)
-      puts request.fullpath
-      puts request.request_uri
-      puts request.inspect
-      redirect_to "/m" + request.fullpath.gsub(/#_=_/, '')
+      redirect_to "/m" + request.fullpath
     end
   end
 end

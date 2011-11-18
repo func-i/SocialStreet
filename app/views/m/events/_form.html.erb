@@ -1,6 +1,6 @@
 <div data-role="page" id="create_what">
   <div data-role="header" data-position="fixed">
-    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
+    <%#= link_to "Back", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline', 'data-icon'=>"arrow-l"}%>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
     <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a'}%>
   </div>
@@ -365,12 +365,12 @@
       var valueText = $('.dwv').text();
 
       if(valueText.match("NaN") || valueText.search("/") == -1){
-            valueText = fixInvalidValues(valueText);
-            $('#event_start_date').val(valueText);
-          }
+        valueText = fixInvalidValues(valueText);
+        $('#event_start_date').val(valueText);
+      }
 
-          formatted_start_date = parseDate_(valueText);
-          $('#event_start_date').val(formatted_start_date);
+      formatted_start_date = parseDate_(valueText);
+      $('#event_start_date').val(formatted_start_date);
 
       var start_date = $('#event_start_date').val();
       var split_date = start_date.split(" ");
@@ -426,15 +426,15 @@
       <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
-      <div id="scroller_holder">
-        
-      </div>
+    <div id="scroller_holder">
 
-    <%#*<div data-role="fieldcontain">%>
-      <%#*<label for="startdate">Start Date: </label>%>
-      <%= form.hidden_field :start_date, :class => "mobiscroll"%>
-      <%= form.hidden_field :end_date %>
-    <%#*</div>%>
+    </div>
+
+<%#*<div data-role="fieldcontain">%>
+<%#*<label for="startdate">Start Date: </label>%>
+    <%= form.hidden_field :start_date, :class => "mobiscroll"%>
+    <%= form.hidden_field :end_date %>
+<%#*</div>%>
 
     <div data-role="fieldcontain">
       <fieldset class="ui-grid-a">
