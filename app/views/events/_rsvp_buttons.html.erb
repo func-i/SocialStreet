@@ -4,7 +4,6 @@
 <% else %>
 
   <% if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
-    <div style="float: left; margin-right: 20px; color: #86d125; font-weight: bold;"><%= image_tag("checkmark_small.png", :size => "25x25", :style => "vertical-align: middle;") %> You're going</div>
     <%= image_tag('invite-friends-btn.png', :class=>"nav-link", "data-ajax-href" => event_path(event, :invite => true), :style => "vertical-align: middle;") %>
 
     <% if on_show %>

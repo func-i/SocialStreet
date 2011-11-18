@@ -231,6 +231,31 @@ function setupShowEventPage(){
             }
         }, 3000);
     }
+
+    var pane = $('#show_event_description_holder');
+    pane.jScrollPane({
+        autoReinitialise: true,
+        animateScroll: true, //added
+        animateDuration : 10000 //added - length each way in milliseconds
+    });
+
+    var api = pane.data('jsp');
+
+    //listen to the x-axis scrolling event
+    pane.bind('jsp-scroll-y', function (event, pos_y, at_top, at_bottom) {
+        //we're at the right now lets scroll back to the left
+        if (at_bottom)
+        {
+            setTimeout(function() {
+                api.scrollToY(0);
+                $(this).unbind(event);//added with edit
+            }, 500);
+        }
+    });
+    
+    //initial animate scroll to the right
+    api.scrollToY(parseInt($('#show_event_description_text').height()));
+    
 }
 
 function showInvitationView(){
@@ -425,7 +450,7 @@ function showMarkers(){
 
     if(showMarker){
         showMarker.iconLabel_.setMap(map);
-        showMarker.label_.setMap(map);        
+        showMarker.label_.setMap(map);
     }
 }
 

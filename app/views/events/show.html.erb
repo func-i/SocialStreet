@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div id="show_event_description_holder" class="scroll-pane show-scroll-on-hover">
+      <div id="show_event_description_holder" class="show-scroll-on-hover">
         <span id="show_event_description_text">
           <%= raw @event.description %>
         </span>
@@ -154,4 +154,4 @@
 
 <%= hidden_field_tag 'on_show_event', 'true' %>
 
-<%= javascript_include_tag "site_specific/show_event"%>
+<%= javascript_include_tag "site_specific/show_event" %>
