@@ -1,6 +1,6 @@
 <div data-role="page" id="create_what">
   <div data-role="header" data-position="fixed">
-    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
+    <%#= link_to "Back", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline', 'data-icon'=>"arrow-l"}%>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
     <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a'}%>
   </div>
@@ -51,7 +51,7 @@
 
   <div data-role ="content">
 
-    <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="create_keywords_list">
+    <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." data-scroll="true" id="create_keywords_list">
       <li id="no_results"> <%= link_to "#create_where" do %>
           <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
           <span></span>

@@ -1,25 +1,19 @@
 <%= javascript_include_tag 'mobile/explore' %>
 
 <div data-role="page" data-theme="a" id="explore_base">
-
-  <%- if params[:view].nil? || params[:view].eql?("list") -%>
-    <%= render "list_view" -%>
-  <%- else -%>
-    <%= render "map_view" %>
-  <% end %>
-
+  <%= render "list_view" -%>
 </div>
 
 <div data-role="page" id="explore_filter">
   <div data-role="header" data-position="fixed">
     <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
-    <%= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
+    <%#= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
   </div>
 
   <div data-role="content" data-theme="b">
     <div data-role ="fieldcontain">
-      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="keyword_filter_list">
+      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." data-scroll="true" id="keyword_filter_list">
         <li id="filter_no_results">
           <%= link_to '#', :style => "padding:0;", "data-rel"=> :back do %>
             <div class="event-type-streetmeet2-small-sprite" style="float:left;"></div>
@@ -72,41 +66,21 @@
         map: exploreMap
       });
 
-      createMapMarkers();
+      addExploreMarkers();
 
       $('#explore_event_details').hide();
 
-      google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
-      google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
-      google.maps.event.addListener(exploreMap, 'click', deselectMarker);
-    });
-
-    function getMarkerManager() {
-      return markerManager;
-    }
-
-    function createExploreMarker(lat, lng, eventID, iconClass){
-      marker = markerManager.addMarker(lat, lng);
-      marker.eventID_ = eventID;
-      marker.iconClass_ = 'event-type-'+iconClass+'-small-sprite';
-      marker.label_ = new IconLabel(marker);
-      marker.label_.bindTo('position', marker, 'position');
-      marker.label_.setIconClass('event-type-'+iconClass+'-small-sprite');
-      google.maps.event.addListener(marker, 'click', function(){
-        selectedMarker(this);
+      google.maps.event.addListener(exploreMap, 'zoom_changed', function(){
+        changeExploreLocationParams();
       });
-    }
-    
-    function createMapMarkers() {
-
-<% (@events || []).each do |event| %>
-
-      createExploreMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10), <%=event.id%>, "<%=sprite_class_name_for_event(event)%>");
-
-<% end %>
-
-    markerManager.showAllMarkers();
-  }
+      google.maps.event.addListener(exploreMap, 'dragend', function(){
+        changeExploreLocationParams();
+      });
+      google.maps.event.addListener(exploreMap, 'click', function(){
+        deselectMarker();
+      });
+    });
+  
 
   </script>
 
@@ -121,6 +95,7 @@
   <%= hidden_field_tag 'map_bounds', params[:map_bounds], :id => 'explore_map_bounds' %>
   <%= hidden_field_tag 'map_center', params[:map_center], :id => 'explore_map_center' %>
   <%= hidden_field_tag 'map_zoom', params[:map_zoom], :id => 'explore_map_zoom' %>
+  <%= hidden_field_tag 'selected_results', params[:selected_results]%>
   <%= hidden_field_tag 'view', params[:view], :id => 'explore_view_params' %>
   <%= hidden_field_tag 'keywords', params[:keywords], :id => 'keyword' %>
 <% end %>
