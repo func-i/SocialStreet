@@ -5,7 +5,7 @@ class ExploreBaseController < ApplicationController
 
     puts "HERE I AM"
 
-    get_events();
+    get_events;
 
     if request.xhr?
       render "/shared/ajax_load.js", :locals => {:file_name_var => @file_var_name}
@@ -15,7 +15,7 @@ class ExploreBaseController < ApplicationController
   def super_search
     @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
 
-    get_events();
+    get_events;
   end
 
   protected
@@ -25,7 +25,7 @@ class ExploreBaseController < ApplicationController
     @all_groups = Group.all
   end
 
-  def get_events()
+  def get_events
     @promoted_events = Event.where(:promoted => true).where("events.canceled <> true").upcoming.limit(1).all
 
     @events = find_events

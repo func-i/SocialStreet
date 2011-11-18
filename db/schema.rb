@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111117172944) do
+ActiveRecord::Schema.define(:version => 20111118155554) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(:version => 20111117172944) do
     t.integer  "emails_sent",      :default => 0
     t.string   "title"
     t.string   "icon_path"
+    t.string   "bottom_text"
   end
 
   create_table "user_groups", :force => true do |t|

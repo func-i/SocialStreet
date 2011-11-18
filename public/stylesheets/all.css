@@ -1791,4 +1791,12 @@ popup-fields-holder,
     vertical-align: middle;
 }
 
+#errorExplanation {
+    color: #990000;
+}
+
+#errorExplanation h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+}
 
