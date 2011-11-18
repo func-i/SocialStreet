@@ -26,7 +26,7 @@ class ExploreBaseController < ApplicationController
   end
 
   def get_events()
-    @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
+    @promoted_events = Event.where(:promoted => true).where("events.canceled <> true").upcoming.limit(1).all
 
     @events = find_events
 
