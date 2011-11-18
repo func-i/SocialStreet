@@ -242,7 +242,7 @@
     for(var i=0; i < 90; i++){
       //turn date into string
       var showDateString = dayNamesShort[myDate.getDay()] + " " + myDate.getDate() + " " + monthNamesShort[myDate.getMonth()];
-      var actualDateString = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate();
+      var actualDateString = myDate.getFullYear() + "_" + (myDate.getMonth() + 1) + "_" + myDate.getDate();
 
       dateHsh[actualDateString] = showDateString;
 
@@ -269,32 +269,41 @@
         //btnClass: 'hidden',
         onClose: function(valueText, inst) {
 
-          if(valueText.match("NaN") || valueText.search("/") == -1){
+          /*if(valueText.match("NaN") || valueText.search("/") == -1){
             valueText = fixInvalidValues(valueText);
             $('#event_start_date').val(valueText);
           }
 
           formatted_start_date = parseDate_(valueText);
-          $('#event_start_date').val(formatted_start_date);
+          $('#event_start_date').val(formatted_start_date);*/
 
         }
 
       });
+
+      $('#submit_button').click(function(){
+        event.preventDefault();
+        updateCreateTimes();
+        $('#submit_button').addClass("ui-disabled");
+        $('#submit_button span').text("Submitting ... ");
+        $(this).closest('form').submit();
+
+      })
     })
 
     $('#create_when').live('pageshow', function() {
+      setDefaultTime();
       $('#event_start_date').scroller('show');
       $('#scroller_holder').empty();
       $('.dw').appendTo('#scroller_holder');
       $('.dww').first().css("width", 123); //hack to make full values show up on screen
-      /*$('#duration').removeAttr("disabled");
-      $('#duration_size').removeAttr("disabled");*/
-      $('select').selectmenu('enable');
+      
+      //$('select').selectmenu('enable');
     })
 
     function parseDate_(valueText) {
 
-      split_array = valueText.split("/");
+      split_array = valueText.split("_");
       new_array = split_array[2].split(" ");
       split_array.pop();
       split_array = split_array.concat(new_array);
@@ -323,28 +332,8 @@
       else
         newValueText = temp_array[0];
 
-      /*for(i=1; i<temp_array.length; i++) {
-        if(temp_array[i] != "NaN")
-          newValueText += " " + temp_array[i];
-        else
-          if(i == 1){
-            if(fixedDate.getHours() != 12)
-              newValueText += " " + fixedDate.getHours()%12;
-            else
-              newValueText += " " + fixedDate.getHours();
-          }
-
-        else if(i == 2)
-          newValueText += " " + fixedDate.getMinutes();
-        else
-          if(fixedDate.getHours() < 12)
-            newValueText += " " + "AM";
-        else
-          newValueText += " " + "PM";
-      }*/
-
       for(i=1; i<temp_array.length; i++){
-        if(temp_array[i] == "NaN" || temp_array[i] == "-501"){
+        if(temp_array[i] == "NaN" || temp_array[i] == "-501" || temp_array[i] == "-1"){
           if(i == 1)
             newValueText += " " + 1;
           else if(i == 2)
@@ -360,17 +349,48 @@
       return newValueText;
     }
 
+    function setDefaultTime() {
+      var strtime = '<%= @event.start_date %>';
+      var strdateArr = strtime.split(" ");
+      console.log(strdateArr);
+      
+      var data = [];
+      data[0] = strdateArr[0].replace(/-/g, "_");
+      var strtimeArr = []
+      strtimeArr = strdateArr[1].split(":");
+      
+      data[2] = strtimeArr[1];
+      
+      var strHour = parseInt(strtimeArr[0]);
+      if( strHour > 12 ){
+        strHour = strHour%12;
+        data[1] = strHour.toString();
+        data[3] = "PM";
+      }
+      else if(strHour == 12){
+        data[1] = strHour.toString();
+        data[3] = "PM";
+      }
+      else {
+        data[1] = strHour.toString();
+        data[3] = "AM";
+      }
+
+      console.log(data);
+      $('#event_start_date').scroller('setValue', data);
+    }
+
     function updateCreateTimes() {
       
       var valueText = $('.dwv').text();
 
       if(valueText.match("NaN") || valueText.search("/") == -1){
-            valueText = fixInvalidValues(valueText);
-            $('#event_start_date').val(valueText);
-          }
+        valueText = fixInvalidValues(valueText);
+        $('#event_start_date').val(valueText);
+      }
 
-          formatted_start_date = parseDate_(valueText);
-          $('#event_start_date').val(formatted_start_date);
+      formatted_start_date = parseDate_(valueText);
+      $('#event_start_date').val(formatted_start_date);
 
       var start_date = $('#event_start_date').val();
       var split_date = start_date.split(" ");
@@ -403,17 +423,6 @@
       $('#event_start_date').val(ssFormatDate(start_date, 'yyyy/MM/dd HH:mm'));
       $('#event_end_date').val(ssFormatDate(end_date, 'yyyy/MM/dd HH:mm'));
 
-      submitForm();
-    }
-
-    function submitForm() {
-      event.preventDefault();
-      console.log($('#event_start_date').val());
-      console.log($('#event_end_date').val());
-      $('#submit_button').addClass("ui-disabled");
-      $('#submit_button span').text("Submitting ... ");
-      var form_id = $("form").attr("id");
-      $('#'+form_id).submit();
     }
 
   </script>
@@ -426,21 +435,22 @@
       <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
-      <div id="scroller_holder">
-        
-      </div>
+    <div id="scroller_holder">
 
-    <%#*<div data-role="fieldcontain">%>
-      <%#*<label for="startdate">Start Date: </label>%>
-      <%= form.hidden_field :start_date, :class => "mobiscroll"%>
-      <%= form.hidden_field :end_date %>
-    <%#*</div>%>
+    </div>
+
+<%#*<div data-role="fieldcontain">%>
+<%#*<label for="startdate">Start Date: </label>%>
+    <%= form.hidden_field :start_date, :class => "mobiscroll"%>
+    <%= form.hidden_field :end_date %>
+<%#*</div>%>
 
     <div data-role="fieldcontain">
       <fieldset class="ui-grid-a">
         <label for="duration">Duration: </label>
-        <div class="ui-block-a"><%= select_tag :duration, options_for_select((1...23).to_a), :id =>"duration" %></div>
-        <div class="ui-block-b"><%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]]), :id => "duration_size" %></div>
+        <% duration, duration_size = @event.duration_array %>
+        <div class="ui-block-a"><%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration" %></div>
+        <div class="ui-block-b"><%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size" %></div>
       </fieldset>
     </div>
 
@@ -449,7 +459,7 @@
       <%= location_fields.hidden_field :longitude, :id => 'create_map_lng'%>
     <%  end %>
 
-    <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button", "onclick" => "updateCreateTimes();" } %>
+    <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button"} %>
 
   </div>
 

@@ -1,7 +1,7 @@
 
 <div data-role="page" data-theme="a" id="event_main">
   <div data-role="header" data-position="inline">
-    <%#= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
+<%#= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
     <% if @event.can_edit?(current_user) %>
@@ -9,7 +9,7 @@
     <% end %>
   </div>
 
-  <div data-role="content" data-theme="c">
+  <div data-role="content">
     <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
     <span id="event_title"><%= @event.title %></span>
 
@@ -42,7 +42,11 @@
 
     <% if @event && @event.can_edit?(current_user) %>
       <div data-role="fieldcontain">
-        <%= link_to "Cancel Event", [:m, @event], {:confirm => 'Are you sure?', :method => 'delete', "data-role" => "button", "data-theme" => "f"} %>
+        <%= form_for [:m, @event], :html => {:method => :delete} do %>
+
+          <%= link_to "Cancel Event", [:m, @event], {:id => "delete_event", "data-role" => "button", "data-theme" => "f"} %>
+
+        <% end %>
       </div>
     <% end %>
 
@@ -59,7 +63,7 @@
       <%@comments.each do |comment|%>
         <%= render :partial => 'm/comments/create.html', :locals => {:comment => comment} %>
       <% end %>
-      
+
     </div>
 
 <%#*<div data-role="fieldcontain" id="event_details">%>
@@ -76,4 +80,11 @@
       $(this).blur();
     }
   });
+
+  $(function(){
+    $('#delete_event').click(function() {
+      event.preventDefault();
+      $(this).closest('form').submit();
+    });
+  })
 </script>

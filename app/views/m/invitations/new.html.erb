@@ -1,12 +1,10 @@
 <div data-role="page" id="invite-users-page">
   <div data-role="header" data-position="inline">
-    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
+    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
   </div>
 
   <div data-role="content">
-    <%= link_to 'Send Invites', '', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "invite-submit"} %>
-    <div data-role="fieldcontain">
 
       <%= form_tag m_event_invitations_path(@event), :method => :post, :id => "invite-form" do %>
         <fieldset data-role="controlgroup" id="invite-users-list">
@@ -18,8 +16,12 @@
           <% end %>
         </fieldset>
       <% end %>
-    </div>
   </div>
+
+  <div data-role="footer" data-position="fixed">
+    <%= link_to 'Send Invites', '#', {'id' => 'invite_submit', 'data-role' => 'button', 'data-theme' => 'b', 'style' => 'width: 100%;height: 35px;'}%>
+  </div>
+
 </div>
 
 <script type="text/javascript">
@@ -30,7 +32,7 @@
   var c;
   var s;
 
-  $('#invite-submit').live('click', function() {
+  $('#invite_submit').live('click', function() {
     $('#invite-form').submit();
   })
 </script>

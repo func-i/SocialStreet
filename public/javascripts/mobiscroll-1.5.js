@@ -465,9 +465,9 @@
                 return false;
             });*/
 
-            // Disable inputs to prevent bleed through (Android bug)
+            /* Disable inputs to prevent bleed through (Android bug)
             $(':input:disabled').addClass('dwtd');
-            $(':input').attr('disabled', true);
+            $(':input').attr('disabled', true);*/
             // Show
             //dwo.show();
             dw.attr('class', 'dw ' + s.theme).show();

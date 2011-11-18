@@ -99,6 +99,12 @@
     top: 3px;
 }
 
+#invite_submit span .ui-btn-text {
+    font-size: 15px;
+    color: #FFFCD5;
+    top: 3px;
+}
+
 .dw ios {
    left: 32px;
    top: 45px;
