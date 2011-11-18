@@ -442,8 +442,10 @@ END OF RESET
 .unattend-btn{   
     color: black;
     font: italic 11px/12px Arial, Helvetica, sans-serif;
-    text-align: center;
+    /*text-align: center;*/
     cursor: pointer;
+    font-weight: 800;
+
 }
 #loading_invitation_image{
     margin:100px 0 0 200px;
