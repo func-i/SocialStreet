@@ -6,7 +6,7 @@
 
   <div data-role="content">
     <div data-role ="fieldcontain">
-      <ul data-role="listview" data-inset="true">
+      <ul data-role="listview" data-inset="true" data-scroll="true">
         <% @event.attending_users.each do |attendee| %>
           <li>
             <%= avatar(attendee, :exclude_link => true, :size => "40x40") %>

@@ -1,4 +1,4 @@
-<ul data-role="listview" data-theme="a" data-inset="true" id="list_view_results">
+<ul data-role="listview" data-theme="a" data-inset="true" data-scroll="true" id="list_view_results">
   <% (@events || []).each do |event| %>
     <li id ="event_<%=event.id%>">
       <% className = sprite_class_name_for_event(event)%>
