@@ -36,7 +36,7 @@ html .fc,
 /* Header
 ------------------------------------------------------------------------*/
 .fc-header{
-    background: url(http://localhost:3000/images/overlay_box_bg.png);
+    background: url(../images/overlay_box_bg.png);
 }
 .fc-header td {
     white-space: nowrap;
