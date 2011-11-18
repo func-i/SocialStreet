@@ -25,15 +25,8 @@
 </div>
 
 <script type="text/javascript">
-  $('#home_page').live('pageshow', function() {
-/*    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(function(e){
-        updateUserLocation(e.coords.latitude, e.coords.longitude, true)
-      }, function(e){
-      },
-      {
-        maximumAge: 600000
-      });
-    }*/
-  });
+  $('#sign-in').live('click', function() {
+    window.location.href='/auth/facebook?redirect_uri=blah';
+    return false;
+  })
 </script>
