@@ -79,8 +79,7 @@ function changeMapLocation(e, latLng) {
 
 function changeExploreLocationParams(event) {
     setTimeout(function() {
-        var zoom = 15;
-        $('#explore_map_zoom').val(zoom);
+        var zoom = exploreMap.getZoom();
 
         //deselectMarker();
         //clearExploreMarkers();
@@ -92,6 +91,7 @@ function changeExploreLocationParams(event) {
 
         $('#explore_map_bounds').val(ne.lat() + ',' + ne.lng() + ',' + sw.lat() + ',' + sw.lng());
         $('#explore_map_center').val(c.lat() + ',' + c.lng());
+        $('#explore_map_zoom').val(zoom);
         $('#explore_view_params').val("map");
         updateUserLocation(c.lat(), c.lng(), false);
 

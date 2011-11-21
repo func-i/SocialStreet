@@ -14,7 +14,7 @@
     <span id="event_title"><%= @event.title %></span>
 
     <div data-role="fieldcontain" style="font-size: 18px">
-      <span id="event_address"><%= address_for(@event.location)%></span>
+      <span id="event_address"><%= full_address_for(@event.location)%></span>
       <span style="float: right; font-size: 14px" id="map_link"><%= link_to "See on Map", "http://maps.google.com/maps?q=#{address_for(@event.location)}" %></span>
     </div>
 
