@@ -101,6 +101,10 @@ module ApplicationHelper
     end
   end
 
+  def full_address_for(location)
+    "#{location.street} #{location.city}, #{location.state}"
+  end
+
   def users_current_location_string
     if cookies[:c_lng].blank? || cookies[:c_lat].blank?
       if current_user

@@ -38,6 +38,7 @@ javascripts:
     - public/javascripts/infobubble.js
     - public/javascripts/mobile/base.js
     - public/javascripts/date.js
+    - public/javascripts/bookmark_bubble.js
     - public/javascripts/iscroll-lite.js
 
 stylesheets:

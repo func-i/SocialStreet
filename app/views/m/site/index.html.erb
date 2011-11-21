@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'mobile/home' %>
+
 <div data-role="page" data-theme="a" class="wallpaper_page" id="home_page">
   <div data-role="header" data-position="inline" data-theme="a">
     <h1><%=link_to "SocialStreet", '/m'%></h1>
@@ -23,10 +25,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-  $('#sign-in').live('click', function() {
-    window.location.href='/auth/facebook?redirect_uri=blah';
-    return false;
-  })
-</script>
