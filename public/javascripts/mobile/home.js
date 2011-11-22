@@ -2,6 +2,19 @@ $('#sign-in').live('click', function() {
     window.location.href='/auth/facebook?redirect_uri=blah';
     return false;
   })
+
+$('#explore_btn').live('click', function() {
+    console.log('found an explorer!');
+    window.location.href = '/m/explore';
+    event.preventDefault();
+})
+
+$('#new_event_btn').live('click', function() {
+    console.log("new streetmeet!");
+    window.location.href = '/m/events/new';
+    event.preventDefault();
+})
+
   
   $('#home_page').live('pageinit', function() {
     window.setTimeout(function() {

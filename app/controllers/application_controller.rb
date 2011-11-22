@@ -195,8 +195,9 @@ class ApplicationController < ActionController::Base
 
   private 
   def mobile_device?
-    request.user_agent =~ /Mobile|webOS/
-#    return true
+    if request.user_agent =~ /iPhone|webOS|iPod|Android|Blackberry|Windows Phone|^iPad/
+      return true
+    end
   end
   helper_method :mobile_device?
 

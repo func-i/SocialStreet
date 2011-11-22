@@ -18,7 +18,7 @@
 .dwc {
     display: block;
     float: left;
-    margin: 0 2px 5px 2px;
+    /*margin: 0 2px 5px 2px;*/
     padding-top: 30px;
 }
 /* Datewheel label */
@@ -83,6 +83,11 @@
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
 }*/
+
+.dww dwrc {
+    width: 125px !important;
+}
+
 .dww li {
     list-style: none;
     margin: 0;
