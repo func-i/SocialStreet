@@ -189,13 +189,14 @@ END OF RESET
     color: #000;
     z-index:2;
     right: 0px;
+    top: 22px;
     width: 60px;
     position:absolute;
     /*background: #d2e9f3;*/
     background: #FFFCD5;
     padding: 10px 20px 10px 20px;
 }
-#signed_in_button:hover ul{
+#signed_in_holder:hover ul{
     display:block;
 }
 

@@ -12,15 +12,17 @@
 
       <% if user_signed_in? %>
 
-        <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %></div>
-        <div id="signed_in_button">
-          <span id="current_user_name">
-            <%=current_user.name%>
-          </span>
-          <ul class="drop-shadow">
-            <li><%=link_to "Settings", edit_profile_path(current_user) %></li>
-            <li><%=link_to "Sign Out", destroy_user_session_path%></li>
-          </ul>
+        <div id="signed_in_holder">
+          <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %></div>
+          <div id="signed_in_button">
+            <span id="current_user_name">
+              <%=current_user.name%>
+            </span>
+            <ul class="drop-shadow">
+              <li><%=link_to "Settings", edit_profile_path(current_user) %></li>
+              <li><%=link_to "Sign Out", destroy_user_session_path%></li>
+            </ul>
+          </div>
         </div>
       <% else %>
         <div id="signin_button" data-href='/auth/facebook'>
