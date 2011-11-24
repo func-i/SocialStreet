@@ -8,6 +8,8 @@
     <title>SocialStreet <%= " - #{truncate(@page_title, :length => 30)}" if @page_title %></title>
     <link rel="apple-touch-icon"
           href="/images/app_icon.png" />
+    <link rel="apple-touch-startup-image"
+          href="/images/splash_page.png" />
 
     <%= javascript_include_tag "http://code.jquery.com/jquery-1.6.4.min.js" %>
     <%= include_javascripts :mobile_init %>

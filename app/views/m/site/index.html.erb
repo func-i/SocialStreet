@@ -8,13 +8,13 @@
 
   <div data-role ="content">
     <div data-role="fieldcontain">
-      <div style="text-align: center;"><%= image_tag("ss_site_logo_big.png") %></div>
+      <div style="text-align: center;"><%= image_tag("ss-logo-gradient.png") %></div>
     </div>
 
     <% if user_signed_in? %>
       <div data-role="fieldcontain" style="padding:0;">
         <%= link_to 'Explore!', m_explore_path, {"data-role" => "button", "data-theme" => "b", "data-icon" => "search", "id" => "explore_btn", "data-ajax" => false} %>
-        <%= link_to '+StreetMeet', new_m_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "id" => "new_event_btn", "data-ajax" => false} %>
+        <%= link_to 'Plan', new_m_event_path, {"data-role" => "button", "data-theme" => "e", "data-icon" => "plus", "id" => "new_event_btn", "data-ajax" => false} %>
 
 
       <% else %>
