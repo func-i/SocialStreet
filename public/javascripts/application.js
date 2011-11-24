@@ -259,10 +259,12 @@ function resizePageElements() {
 
     initializeScrollPanes();
 
-    //Ellipsis on text overflow
-    $('.dotdotdot').dotdotdot({
-        wrap: 'letter'
+    $('.dotdotdot').each(function() {
+        $(this).dotdotdot({
+            wrap: 'letter'
+        });
     });
+    
 }
 
 function resizeLayout(){
