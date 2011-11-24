@@ -819,6 +819,7 @@ END OF RESET
 #show_event_title_text{
     float:left;
     width: 264px;
+    min-height: 20px;
     max-height: 37px;
     overflow: hidden;
 }
