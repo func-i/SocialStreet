@@ -10,18 +10,30 @@
       <div id="create_when_date" class="text-shadow">
         <%= event.start_date.strftime("%B %e, %Y") %>
       </div>
-      <div id="create_when_time" class="text-shadow">
-        Start Time:
-        <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime("%I")), :class => "create-when-time create-when-field"%>
-        <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime('%M')), :class => "create-when-time create-when-field"%>
-        <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], event.start_date.strftime('%p')), :class => "create-when-time create-when-field"%>
-      </div>
-      <div id="create_when_duration" class="text-shadow">
-        Duration:
-        <% duration, duration_size = event.duration_array %>
-        <%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration", :class => "create-when-field"%>
-        <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size", :class => "create-when-field"%>
-      </div>
+
+      <% duration, duration_size = event.duration_array %>
+
+      <table>
+        <tr id="create_when_time">
+          <td class="text-shadow" style="text-align: right;">Start Time:</td>
+          <td>
+            <%= select_tag :starts_at_hour, options_for_select((1..12).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime("%I")), :class => "create-when-time create-when-field"%>
+          </td>
+          <td>
+            <%= select_tag :starts_at_minute, options_for_select(0.step(55, 5).to_a.collect{|e| e.to_s.rjust(2, "0")}, event.start_date.strftime('%M')), :class => "create-when-time create-when-field"%>
+          </td>
+          <td>
+            <%= select_tag :starts_at_meridian, options_for_select([["AM"], ["PM"]], event.start_date.strftime('%p')), :class => "create-when-time create-when-field"%>
+          </td>
+        </tr>
+        <tr id="create_when_duration">
+          <td class="text-shadow" style="text-align: right;">Duration:</td>
+          <td><%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration", :class => "create-when-field"%></td>
+          <td colspan="2">
+            <%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size", :class => "create-when-field"%>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <%= image_tag('continue-button.png', :id=>'create_when_next_arrow', :class=>"next-arrow drop-shadow") %>

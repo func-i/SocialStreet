@@ -1773,12 +1773,11 @@ h1 {
     margin-bottom: 7px;
 }
 
-input:-moz-placeholder,
-textarea:-moz-placeholder {
+#event_wall_text_field:-moz-placeholder {
     padding-top: 8px;
 }
 
-::-webkit-input-placeholder {
+#event_wall_text_field::-webkit-input-placeholder {
     padding-top: 8px;
 }
 
