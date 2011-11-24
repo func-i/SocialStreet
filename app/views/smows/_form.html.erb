@@ -1,0 +1,24 @@
+<%= render "shared/error_messages", :target => @smow %>
+<br />
+
+<%= form.label :title %>
+FREE <%= form.text_field :title %><br />
+
+<%= form.label :icon_path %>
+<%= form.select :icon_path, options_for_select(@icons, @smow.icon_path) %><br />
+
+<%= form.label :top_image_url %>
+<%= file_field_tag :top_image_url %><br />
+
+<%= form.label :what_text %>
+<%= form.text_area :what_text, :size => "50x10" %><br />
+
+<%= form.label :when_text %>
+<%= form.text_area :when_text, :size => "50x10" %><br />
+
+<%= form.label :bottom_text %>
+<%= form.text_field :bottom_text %><br />
+
+<%= form.label :bottom_image_url %>
+<%= file_field_tag :bottom_image_url %><br />
+

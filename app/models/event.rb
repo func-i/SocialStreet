@@ -15,6 +15,8 @@ class Event < ActiveRecord::Base
   has_many :event_groups
   has_many :groups, :through => :event_groups
 
+  has_one :smow
+
   accepts_nested_attributes_for :event_keywords, :location, :event_groups
 
   scope :valid, where(:canceled => false);

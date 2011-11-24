@@ -1,0 +1,2 @@
+module SmowsHelper
+end

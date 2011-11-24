@@ -1571,7 +1571,7 @@ popup-fields-holder,
     background: transparent;
     color: white;
     width: 360px;
-/*    height: 20px;*/
+    /*    height: 20px;*/
     margin: 0;
     font: bold 14px/14px Arial, Helvetica, sans-serif;
     float: left;
@@ -1593,7 +1593,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 220px;
-/*    height: 20px;*/
+    /*    height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1604,7 +1604,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 200px;
-/*    height: 20px;*/
+    /*    height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1626,7 +1626,7 @@ popup-fields-holder,
     background: transparent;
     color: #FFC233;
     width: 175px;
-/*    height: 20px;*/
+    /*    height: 20px;*/
     margin: 0;
     font: bold 18px/18px Arial, Helvetica, sans-serif;
     float: left;
@@ -1780,5 +1780,48 @@ textarea:-moz-placeholder {
 
 ::-webkit-input-placeholder {
     padding-top: 8px;
+}
+
+.ss-table {
+    width: 100%;
+    border: 2px solid #000;
+}
+
+.ss-table thead {
+    color: white;
+    background: url("../images/header-bg.png");
+}
+
+.ss-table thead th {
+    padding: 5px;
+}
+
+.ss-table tr.odd {
+    background-color: #CCC;
+}
+
+.ss-table tr.even {
+    background-color: #EFEFEF;
+}
+
+.ss-table tr.current-smow {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+}
+
+.ss-table tr td {
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#errorExplanation {
+    color: #990000;
+}
+
+#errorExplanation h2 {
+    font-size: 1.5em;
+    font-weight: bold;
 }
 

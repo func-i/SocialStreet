@@ -96,8 +96,10 @@ class EventsController < ApplicationController
   end
 
   def streetmeet_of_the_week
-    render "user_mailer/streetmeet_of_the_week.html.erb", :layout => false
+    event = Event.where(:promoted => true).first
+    render :partial => "smows/smow", :locals => {:event => event, :smow => event.smow}, :layout => false
   end
+
 
   def send_message    
 

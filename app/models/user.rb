@@ -129,6 +129,10 @@ class User < ActiveRecord::Base
     #      end
   end
 
+  def god?
+    [408850, 570, 643].include?(self.id)
+  end
+
   protected
 
   def email_user

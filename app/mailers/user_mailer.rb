@@ -97,9 +97,9 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "This is a test email")
   end
 
-  def streetmeet_of_the_week(email)
-    mail(:to => email, :subject => "StreetMeet of the Week - FREE Pool Night @ VIP Lounge") do |format|
-      format.html {render :layout => false}
+  def streetmeet_of_the_week(smow, email)
+    mail(:to => email, :subject => "StreetMeet of the Week - FREE #{smow.title}") do |format|
+      format.html {render :file => "/smows/_smow.html.erb", :locals => {:event => smow.event, :smow => smow}, :layout => false}
     end
   end
 

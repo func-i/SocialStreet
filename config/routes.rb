@@ -1,4 +1,12 @@
 SocialStreetReborn::Application.routes.draw do
+  get "smows/_form"
+
+  get "smows/new"
+
+  get "smows/edit"
+
+  get "smows/index"
+
   root :to => 'explore#index'
 
   get 'explore' => 'explore#search', :as => 'explore'
@@ -18,6 +26,12 @@ SocialStreetReborn::Application.routes.draw do
     resources :event_rsvps, :only => [:new, :edit]
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
+    resources :smows do
+      member do
+        match "send_single_email"
+        match "send_smow"
+      end      
+    end
   end
 
   resources :profiles do
@@ -51,6 +65,8 @@ SocialStreetReborn::Application.routes.draw do
 
     resources :user_groups
   end
+
+  resources :smows
 
   match '/contact' => 'contact#create'
 
