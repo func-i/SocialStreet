@@ -41,6 +41,7 @@ $(function(){
             return false;
         }
     });
+    
     $('#event_wall_text_field').autoResize({
         extraSpace: 5
     });

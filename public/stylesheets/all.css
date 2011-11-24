@@ -1772,4 +1772,12 @@ h1 {
     margin-bottom: 7px;
 }
 
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    padding-top: 8px;
+}
+
+::-webkit-input-placeholder {
+    padding-top: 8px;
+}
 
