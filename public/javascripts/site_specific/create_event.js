@@ -435,6 +435,8 @@ function setupCreateSummary(){
         $newKeyword.removeClass('remove-keyword-tag');
         $('#summary_keyword_list').append($newKeyword);
     });
+
+    
     initScrollPane($('#summary_tag_holder'));
 
 
@@ -465,6 +467,10 @@ function setupCreateSummary(){
 
     //Description
     $('#summary_event_description_field').autoResize();
+    setTimeout(function(){
+        $('#summary_event_description_field').trigger('change');
+    }, 100);
+    
     $('#summary_event_description_field').live('change', function(){
         $('#event_description').val($.trim($(this).val()));
         resizePageElements();
