@@ -237,7 +237,7 @@ function setupShowEventPage(){
     pane.jScrollPane({
         autoReinitialise: true,
         animateScroll: true, //added
-        animateDuration : 10000 //added - length each way in milliseconds
+        animateDuration : 100000 //added - length each way in milliseconds
     });
 
     var api = pane.data('jsp');
