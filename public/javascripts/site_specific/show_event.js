@@ -4,6 +4,7 @@ var invitationView = false;
 var invitationCounter = 0;
 var invitationPageless = null;
 var eventImageInterval = null;
+var initialScroll = true;
 
 $(function(){
 
@@ -243,17 +244,21 @@ function setupShowEventPage(){
 
     //listen to the x-axis scrolling event
     pane.bind('jsp-scroll-y', function (event, pos_y, at_top, at_bottom) {
-        //we're at the right now lets scroll back to the left
+        //we're at the bottom now lets scroll back to the top
         if (at_bottom)
         {
-            setTimeout(function() {
-                api.scrollToY(0);
-                $(this).unbind(event);//added with edit
-            }, 500);
+            setTimeout(function(){
+                if(initialScroll){
+                    api.scrollToY(0, false);
+                    $(this).unbind(event);//added with edit
+                    initialScroll = false;
+                }
+            }, 2000);
+            
         }
     });
     
-    //initial animate scroll to the right
+    //initial animate scroll to the bottom
     api.scrollToY(parseInt($('#show_event_description_text').height()));
     
 }
