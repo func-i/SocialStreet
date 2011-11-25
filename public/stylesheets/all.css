@@ -969,8 +969,9 @@ END OF RESET
 }
 #event_wall_text_field{
     width:360px;
-    height:35px;
-    padding:0px;
+    height: 35px;
+    box-sizing: border-box;
+    padding: 7px;
     margin: 0px;
     border: 0px;
     font: 18px/18px Arial, Helvetica, sans-serif;
@@ -1773,13 +1774,13 @@ h1 {
     margin-bottom: 7px;
 }
 
-#event_wall_text_field:-moz-placeholder {
+/*#event_wall_text_field:-moz-placeholder {
     padding-top: 8px;
 }
 
 #event_wall_text_field::-webkit-input-placeholder {
     padding-top: 8px;
-}
+}*/
 
 .ss-table {
     width: 100%;

@@ -237,7 +237,7 @@ function setupShowEventPage(){
      
     $('#show_event_description_holder').autoscroll({
         action: "resume",
-        step: 100,
+        step: 10,
         onEdge: function(a) {
             if(a.y == "bottom") {
                 var that = this;
