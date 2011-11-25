@@ -4,7 +4,6 @@ var invitationView = false;
 var invitationCounter = 0;
 var invitationPageless = null;
 var eventImageInterval = null;
-var initialScroll = true;
 
 $(function(){
 
@@ -76,8 +75,7 @@ $(function(){
         if(e.keyCode == 13 && e.target.value.length > 0){
             addEmail(e.target.value);
             $(this).val('');
-            refreshInviteUserList('');            
-            
+            refreshInviteUserList('');
         }
         else if($('#user_search_value').val() != e.target.value){
             refreshInviteUserList(e.target.value);
@@ -235,32 +233,22 @@ function setupShowEventPage(){
     }
 
     var pane = $('#show_event_description_holder');
-    pane.jScrollPane({
-        autoReinitialise: true,
-        animateScroll: true, //added
-        animateDuration : 100000 //added - length each way in milliseconds
-    });
-
-    var api = pane.data('jsp');
-
-    //listen to the x-axis scrolling event
-    pane.bind('jsp-scroll-y', function (event, pos_y, at_top, at_bottom) {
-        //we're at the bottom now lets scroll back to the top
-        if (at_bottom)
-        {
-            setTimeout(function(){
-                if(initialScroll){
-                    api.scrollToY(0, false);
-                    $(this).unbind(event);//added with edit
-                    initialScroll = false;
-                }
-            }, 2000);
-            
+    pane.jScrollPane();
+     
+    $('#show_event_description_holder').autoscroll({
+        action: "resume",
+        step: 100,
+        onEdge: function(a) {
+            if(a.y == "bottom") {
+                var that = this;
+                setTimeout(function() {
+                    $(that).scrollTop(0);
+                    $(that).autoscroll("pause");
+                }, 2000);                
+            }
         }
     });
     
-    //initial animate scroll to the bottom
-    api.scrollToY(parseInt($('#show_event_description_text').height()));
     
 }
 

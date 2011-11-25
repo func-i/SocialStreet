@@ -14,7 +14,20 @@ version 2.4
     var k = "$autoscroll", ek = "$tAutoscroll", ik = "$autoscrollInterval", lk = "$edgeAutoscroll", mk = "$lastEdgeAutoscroll",
 
     // angle enum
-    G = { up: 90.0, left: 180.0, right: 360.0, upleft: 135.0, upright: 45.0, downleft: 225.0, downright: 315.0, leftup: 135.0, rightup: 45.0, leftdown: 225.0, rightdown: 315.0, down: 270.0 },
+    G = {
+        up: 90.0,
+        left: 180.0,
+        right: 360.0,
+        upleft: 135.0,
+        upright: 45.0,
+        downleft: 225.0,
+        downright: 315.0,
+        leftup: 135.0,
+        rightup: 45.0,
+        leftdown: 225.0,
+        rightdown: 315.0,
+        down: 270.0
+    },
 
     // #endregion
 
@@ -26,7 +39,10 @@ version 2.4
             return this.each(function () {
                 if (d(this)) $(this).data(k, V($.extend(d(this), s)));
                 else {
-                    $(this).data(k, V($.extend({ e: false, fr: false }, $.fn.autoscroll.defaults.settings, s)));
+                    $(this).data(k, V($.extend({
+                        e: false,
+                        fr: false
+                    }, $.fn.autoscroll.defaults.settings, s)));
                     $(this).hover(function () {
                         var c = d(this);
                         if (c) {
@@ -66,8 +82,12 @@ version 2.4
                 }
             });
         },
-        fastforward: function (s) { return FR(this, "f", s); },
-        rewind: function (s) { return FR(this, "r", s); },
+        fastforward: function (s) {
+            return FR(this, "f", s);
+        },
+        rewind: function (s) {
+            return FR(this, "r", s);
+        },
         pause: function () {
             return this.each(function () {
                 var c = d(this);
@@ -164,10 +184,14 @@ version 2.4
     },
 
     // get data
-    d = function (e) { return $(e).data(k); },
+    d = function (e) {
+        return $(e).data(k);
+    },
 
     // step equality
-    E = function (a, b) { return a.step === b.step && a.direction === b.direction && a.scroll === b.scroll; },
+    E = function (a, b) {
+        return a.step === b.step && a.direction === b.direction && a.scroll === b.scroll;
+    },
 
     // ff and rw handler
     FR = function (a, r, s) {
@@ -179,7 +203,10 @@ version 2.4
                 c.fr = true;
                 if (r == "r" && (b += 180.0) > 360.0) b -= 360.0;
                 if (c.scroll) _I(this);
-                $(this).stop(true).animate(S(f.step, b), f.speed, "swing", function () { d(this).fr = false; if (c.scroll) I(this); });
+                $(this).stop(true).animate(S(f.step, b), f.speed, "swing", function () {
+                    d(this).fr = false;
+                    if (c.scroll) I(this);
+                });
             }
         });
     },
@@ -195,7 +222,9 @@ version 2.4
     },
 
     // conversions
-    d2r = function (a) { return a * Math.PI / 180.0; },
+    d2r = function (a) {
+        return a * Math.PI / 180.0;
+    },
 
     // angle handler
     A = function (a) {
@@ -210,27 +239,36 @@ version 2.4
     // step handler
     S = function (s, a) {
         var x = Math.round(s * Math.cos(a = d2r(a))),
-            y = Math.round(s * Math.sin(a)) * -1,
-            $t = arguments[2];
+        y = Math.round(s * Math.sin(a)) * -1,
+        $t = arguments[2];
         return ($t && $($t).length > 0) ?
-            { scrollTop: $t.scrollTop + y, scrollLeft: $t.scrollLeft + x} :
-            { scrollTop: ((y < 0) ? "-=" : "+=") + Math.abs(y), scrollLeft: ((x < 0) ? "-=" : "+=") + Math.abs(x) };
+        {
+            scrollTop: $t.scrollTop + y,
+            scrollLeft: $t.scrollLeft + x
+            } :
+{
+            scrollTop: ((y < 0) ? "-=" : "+=") + Math.abs(y),
+            scrollLeft: ((x < 0) ? "-=" : "+=") + Math.abs(x)
+        };
     },
 
     // edge handler
     D = function (e) {
         var c = d(e);
         if (c && typeof c.onEdge == "function") {
-            var c2 = $(e).data(lk) || { x: null, y: null },
-                s = c.step,
-                l = e.scrollLeft,
-                v = d2r(c.direction),
-                x = Math.round(s * Math.cos(v)),
-                nl = l + x,
-                t = e.scrollTop,
-                y = Math.round(s * Math.sin(v)) * -1
+            var c2 = $(e).data(lk) || {
+                x: null,
+                y: null
+            },
+            s = c.step,
+            l = e.scrollLeft,
+            v = d2r(c.direction),
+            x = Math.round(s * Math.cos(v)),
+            nl = l + x,
+            t = e.scrollTop,
+            y = Math.round(s * Math.sin(v)) * -1
             nt = t + y,
-                _e = $(e).data(mk);
+            _e = $(e).data(mk);
             // left edge
             if (l > nl && l == 0) {
                 if (!c2.x || c2.x != "left") c2.x = "left";
@@ -257,7 +295,9 @@ version 2.4
                     return true;
                 }
             }
-            catch ($e) { throw $e; }
+            catch ($e) {
+                throw $e;
+            }
             finally {
                 $(e).data(mk, $.extend(true, {}, c2)).data(lk, c2);
             }
@@ -278,8 +318,19 @@ version 2.4
     };
 
     // defaults
-    $.fn.autoscroll.defaults = { settings: { step: 50, scroll: true, direction: "down" }, delay: 5000, ffrw: { speed: "fast", step: 100} };
+    $.fn.autoscroll.defaults = {
+        settings: {
+            step: 50,
+            scroll: true,
+            direction: "down"
+        },
+        delay: 5000,
+        ffrw: {
+            speed: "fast",
+            step: 100
+        }
+    };
 
-    // #endregion
+// #endregion
 
 })(jQuery);
