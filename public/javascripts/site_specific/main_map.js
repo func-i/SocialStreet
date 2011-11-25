@@ -2,6 +2,7 @@ var map;
 var mapInit = false;
 var toronto = new google.maps.LatLng(43.7427662, -79.3922001);
 var markerManager;
+var zoomControl;
 
 $(function(){
     init_map();
@@ -65,20 +66,20 @@ function init_map(){
     });
 
     //ADD ZOOM CONTROL
-    var controlDiv = document.createElement("div");
-    controlDiv.id = "zoom_btns"
+    zoomControl = document.createElement("div");
+    zoomControl.id = "zoom_btns"
 
     var plusBtn = document.createElement('div');
     plusBtn.title = "Zoom in";
     plusBtn.id = "zoom_in_btn";
-    controlDiv.appendChild(plusBtn);
+    zoomControl.appendChild(plusBtn);
 
     var minusBtn = document.createElement('div');
     minusBtn.title = "Zoom out";
     minusBtn.id = "zoom_out_btn";
-    controlDiv.appendChild(minusBtn);
+    zoomControl.appendChild(minusBtn);
     
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControl);
 
     google.maps.event.addDomListener(plusBtn, 'click', function() {
         map.setZoom(map.getZoom() + 1);

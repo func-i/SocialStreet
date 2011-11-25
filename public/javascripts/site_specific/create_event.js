@@ -131,6 +131,7 @@ function initCreateEvent(){
  *WHAT FUNCTIONS
  **/
 function setupCreateWhat(){
+    $(zoomControl).hide();
     $('#on_create_what').val('true');
 
     showEventTypeHolder();
@@ -143,6 +144,7 @@ function setupCreateWhat(){
  *WHERE FUNCTIONS
  **/
 function setupCreateWhere(){
+    $(zoomControl).show();
     $('.create-what-view').addClass('hidden');
     $('#on_create_what').val('');
     $('#center_pane').addClass('invisible');
@@ -381,6 +383,7 @@ function updateCreateWhenDates(){
 }
 
 function setupCreateWhen(){
+    $(zoomControl).hide();
     $('.create-where-view').addClass('hidden');
     $('.create-when-view').removeClass('hidden');
     $('#center_pane').removeClass('invisible');
@@ -420,6 +423,7 @@ function setWhenDate(date){
 
 
 function setupCreateSummary(){
+    $(zoomControl).show();
     $('.create-when-view').addClass('hidden');
     $('#center_pane').addClass('invisible');
     $('#on_create_summary').val('true');
