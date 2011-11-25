@@ -23,7 +23,7 @@
 
   <body>
 
-    <input type="hidden" id="users-current-location" name="users-current-location" value="<%=users_current_location_string()%>"/>
+    <%= hidden_field_tag "users-current-location", users_current_location_string %>
     <%= yield %>
 
 

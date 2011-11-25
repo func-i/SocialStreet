@@ -1,6 +1,6 @@
 <%= javascript_include_tag 'mobile/explore' %>
 
-<div data-role="page" data-theme="a" id="explore_base">
+<div data-role="page" data-theme="a" id="explore_base" class="wallpaper_page">
   <%= render "list_view" -%>
 </div>
 
@@ -8,7 +8,6 @@
   <div data-role="header" data-position="fixed">
     <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
-    <%#= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
   </div>
 
   <div data-role="content" data-theme="b">
@@ -34,55 +33,6 @@
 </div>
 
 <div data-role="page" id="map-view-explore">
-
-  <script type="text/javascript">
-
-    var usersCurrentLocation = ('<%=users_current_location_string()%>').split(",");
-    var map_center = new google.maps.LatLng((parseFloat(usersCurrentLocation[0])), parseFloat(usersCurrentLocation[1]));
-    var geocoder = new google.maps.Geocoder();
-    var exploreMap;
-    var markerManager;
-    var marker;
-    var iconClass;
-    var clustered_markers = [];
-
-    //    $(function(){
-    $('#list_view_link').live("click", function() {
-      $('#list_view_results').listview();
-    })
-
-    $('#map-view-explore').live("pageinit", function() {
-
-      $('#explore_map_canvas').gmap(
-      {
-        'center': map_center,
-        'zoom': 15,
-        'disableDefaultUI': true
-      });
-      
-      exploreMap = $('#explore_map_canvas').gmap('get', 'map');
-
-      markerManager = new MarkerManager({
-        map: exploreMap
-      });
-
-      addExploreMarkers();
-
-      $('#explore_event_details').hide();
-
-      google.maps.event.addListener(exploreMap, 'zoom_changed', function(){
-        changeExploreLocationParams();
-      });
-      google.maps.event.addListener(exploreMap, 'dragend', function(){
-        changeExploreLocationParams();
-      });
-      google.maps.event.addListener(exploreMap, 'click', function(){
-        deselectMarker();
-      });
-    });
-  
-
-  </script>
 
   <div id="explore_map_content_holder">
 

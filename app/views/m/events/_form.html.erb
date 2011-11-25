@@ -1,8 +1,7 @@
 <div data-role="page" id="create_what">
   <div data-role="header" data-position="fixed">
-    <%#= link_to "Back", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline', 'data-icon'=>"arrow-l"}%>
+    <%= link_to "Back", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline', 'data-icon'=>"arrow-l"}%>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
-    <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a'}%>
   </div>
 
   <script type="text/javascript">
@@ -37,9 +36,9 @@
       if($('#create_keyword').val().length > 0) {
         console.log('in this keyword bitch');
         $('.ui-input-text').val($('#create_keyword').val());
-        //keyword = $('#create_keyword').val();
+        
         captureKeyword();
-        //$('ul').listview('refresh');
+        
       }
 
 
@@ -190,6 +189,7 @@
         createMap.setCenter(closestResult);
         createMapMarker = createCreateMapMarker();
         createMarkerManager.showAllMarkers();
+        updateLocationParams();
       }
       else {
         alert("Geocode was not successful for the following reason: " + status);
@@ -269,14 +269,6 @@
         //btnClass: 'hidden',
         onClose: function(valueText, inst) {
 
-          /*if(valueText.match("NaN") || valueText.search("/") == -1){
-            valueText = fixInvalidValues(valueText);
-            $('#event_start_date').val(valueText);
-          }
-
-          formatted_start_date = parseDate_(valueText);
-          $('#event_start_date').val(formatted_start_date);*/
-
         }
 
       });
@@ -310,11 +302,17 @@
       for(i=0; i<5; i++){
         split_array[i] = parseInt(split_array[i]);
       }
-      if(split_array[5] == "PM")
+
+      if(split_array[5] == "PM") {
         if(split_array[3] != 12)
           split_array[3] += 12;
+      }
+      else if (split_array[5] == "AM" && split_array[3] == 12) {
+        split_array[3] = 0;
+      }
 
       date = split_array[0]+"-"+split_array[1]+"-"+split_array[2]+" "+split_array[3]+":"+split_array[4];
+
 
       return date;
     }
@@ -396,13 +394,17 @@
         $('#event_start_date').val(valueText);
       }
 
-      formatted_start_date = parseDate_(valueText);
-      $('#event_start_date').val(formatted_start_date);
+      console.log("vtext", valueText);
+      var formattedStartDate = parseDate_(valueText);
+      $('#event_start_date').val(formattedStartDate);
 
       var start_date = $('#event_start_date').val();
       var split_date = start_date.split(" ");
       var date       = split_date[0];
       var time_split = split_date[1].split(":");
+
+      console.log("splitDate", split_date);
+
       var start_hour = time_split[0];
       var start_min  = time_split[1];
       start_date = new Date(getDateFromFormat(date, 'yyyy-mm-dd'));
@@ -446,11 +448,9 @@
 
     </div>
 
-<%#*<div data-role="fieldcontain">%>
-<%#*<label for="startdate">Start Date: </label>%>
     <%= form.hidden_field :start_date, :class => "mobiscroll"%>
     <%= form.hidden_field :end_date %>
-<%#*</div>%>
+
 
     <div data-role="fieldcontain">
       <fieldset class="ui-grid-a">
