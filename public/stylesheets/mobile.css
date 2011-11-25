@@ -5,6 +5,15 @@
 .wallpaper_page {
      background: transparent;
      background: url(/images/bg-nologo.png) no-repeat;
+     /*width: 100%;
+     height: 100%;*/
+     background-size: cover;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .page-map {

@@ -7,13 +7,26 @@ $('#explore_btn').live('click', function() {
     console.log('found an explorer!');
     window.location.href = '/m/explore';
     event.preventDefault();
-})
+});
 
 $('#new_event_btn').live('click', function() {
     console.log("new streetmeet!");
     window.location.href = '/m/events/new';
     event.preventDefault();
+});
+
+$('#home_page').live('pageshow', function() {
+    document.ontouchmove = function(e){ e.preventDefault(); }
 })
+
+$(window).bind('orientationchange', function(e) {
+    if(e.orientation == 'portrait') {
+        document.ontouchmove = function(e){ e.preventDefault(); }
+        $(window).resize();
+    }
+    else
+        document.ontouchmove = function(e){ }
+});
 
   
   $('#home_page').live('pageinit', function() {
