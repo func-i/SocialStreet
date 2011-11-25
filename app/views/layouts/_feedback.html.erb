@@ -2,27 +2,30 @@
   <%= image_tag "icons.png", :alt => "SocialStreet", :style => "float: left; margin: 5px; width: 33%;" %>
   <%= image_tag "btn-close5.png", :alt => "X", :id => "close_feedback", :style => "float: right; margin-top: 20px;" %>
 
-  <div style="clear: right;">
-    <strong style="color: #FFC233;font-size: 30px;">
-      <span>Send Us Your Thoughts!</span>
-    </strong>
-
-    <br/><br/>
+  <div style="clear: right;">   
     <%= form_for :email, :url => '/contact', :html => {:id=>"feedback_form"}, :remote => true do |f| %>
-      <table style="color: white; font-weight: bold;">
-        <tr>
-          <td style="text-align: right;">Name:</td>
-          <td><%= f.text_field :name, :size => 52, :class=>"text dismiss-onscreenkeyboard" %></td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Feedback:</td>
-          <td><%= f.text_area :body, :rows => 10, :cols => 55, :class=>"text" %></td>
-        </tr>
-        <tr>
-          <td colspan="2" style="text-align: right;">
-            <%= image_tag('continue-button.png', :id=>'submit_feedback', :style=>"float:right; padding-top:10px;")%>
-          </td>
-        </tr>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Send Us Your Thoughts!</th>
+          </tr>
+        </thead>
+        <tbody>          
+          <tr>
+            <td>Name:</td>
+            <td><%= f.text_field :name, :class=>"text dismiss-onscreenkeyboard", :style => "width: 405px;" %></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Feedback:</td>
+            <td><%= f.text_area :body, :rows => 10, :class=>"text", :style => "width: 405px;" %></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <%= image_tag('continue-button.png', :id=>'submit_feedback', :style=>"float:right; padding-top:10px;")%>
+            </td>
+          </tr>
+        </tbody>
       </table>
     <% end %>
   </div>

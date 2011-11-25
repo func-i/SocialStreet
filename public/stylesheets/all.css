@@ -1274,6 +1274,24 @@ END OF RESET
     z-index: 3;
 }
 
+#feedback_container table {
+    color: white;
+    font-weight: bold;
+    width: 480px;
+}
+
+#feedback_container table thead th {
+    padding-bottom: 20px;
+    color: #FFC233;
+    font-size: 30px;
+    font-weight: normal;
+    text-align: left;
+}
+
+#feedback_container table td {
+    padding-bottom: 5px;
+    text-align: right;
+}
 
 #how_it_works_header {
     background: url("../images/header-bg.png") repeat-x #333;

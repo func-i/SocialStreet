@@ -32,6 +32,10 @@ body, html {
     top: 65px;
 }
 
+#feedback {
+    top: 65px;
+}
+
 #show_attendees_list {
     width: 197px;
 }
