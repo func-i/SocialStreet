@@ -843,10 +843,10 @@ END OF RESET
 }
 #show_event_description_holder{
     color: white;
-    margin: 0px 20px 5px 20px;
+    margin: 0px 0px 5px 20px;
     overflow-y: auto;
     max-height: 75px;
-    width: 365px;
+    width: 380px;
 }
 #show_event_description{
 
