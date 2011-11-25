@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
   end
 
   def god?
-    [408850, 570, 643].include?(self.id)
+    [408850, 570, 26].include?(self.id)
   end
 
   protected
