@@ -16,10 +16,12 @@ $(function() {
     //Signin link
     $('#signin_button').click(function() {
         window.location = $(this).data('href');
+        return false;
     });
 
     $('#header_signin_button').click(function() {
         window.location = $(this).data('href');
+        return false;
     });
 
     $('#how_it_works_find').click(function() {
