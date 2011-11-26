@@ -235,19 +235,19 @@ function setupShowEventPage(){
     var pane = $('#show_event_description_holder');
     pane.jScrollPane();
      
-    $('#show_event_description_holder').autoscroll({
-        action: "resume",
-        step: 10,
-        onEdge: function(a) {
-            if(a.y == "bottom") {
-                var that = this;
-                setTimeout(function() {
-                    $(that).scrollTop(0);
-                    $(that).autoscroll("pause");
-                }, 2000);                
-            }
-        }
-    });
+//    $('#show_event_description_holder').autoscroll({
+//        action: "resume",
+//        step: 10,
+//        onEdge: function(a) {
+//            if(a.y == "bottom") {
+//                var that = this;
+//                setTimeout(function() {
+//                    $(that).scrollTop(0);
+//                    $(that).autoscroll("pause");
+//                }, 2000);
+//            }
+//        }
+//    });
     
     
 }
