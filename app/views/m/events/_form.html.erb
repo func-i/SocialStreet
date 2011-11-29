@@ -13,7 +13,7 @@
     })
 
     function captureKeyword(){
-      keyword = $('.ui-input-text').val();
+      keyword = $('.ui-input-text').first().val();
       $('#no_results a span').text(keyword);
       if($('.result:visible').length == 1) {
         if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
@@ -21,7 +21,7 @@
         }
 
       }
-      else if ($('.ui-input-text').val().length == 0){
+      else if ($('.ui-input-text').first().val().length == 0){
         $('#no_results').hide();
       }
       else {
@@ -35,14 +35,14 @@
 
       if($('#create_keyword').val().length > 0) {
         console.log('in this keyword bitch');
-        $('.ui-input-text').val($('#create_keyword').val());
+        $('.ui-input-text').first().val($('#create_keyword').val());
         
         captureKeyword();
         
       }
 
 
-      $('.ui-input-text').live('keyup', function(){
+      $('.ui-input-text').first().live('keyup', function(){
         captureKeyword($(this).val());
       });
     });

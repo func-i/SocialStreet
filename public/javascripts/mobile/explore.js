@@ -50,8 +50,9 @@ $('#remove_filters').live('click', function(e){
     $('#keyword').val("");
     $('#list_view_filter_text').css('display', 'none');
 
+    $('#explore_form').submit();
     refreshResults();
-    
+    //$('#list_view_results').listview();
     e.preventDefault();
 
 });
@@ -62,16 +63,15 @@ $('#keyword_filter_list li').live('click', function(e){
     
     $('#list_view_filter_text span').text(selKeyword);
     $('#list_view_filter_text').css('display', '');
-
+    $('#explore_form').submit();
     refreshResults();
 
     e.preventDefault(); // Prevent link from following its href
 });
 
-function refreshResults(){
-    $('#explore_form').submit();
-    $('#list_view_results').listview('refresh');
-
+function refreshResults() {
+    console.log('refreshing results');
+    $('#list_view_results').listview();    
 }
 
 $('#explore_filter').live("pageshow",function() {
@@ -137,7 +137,7 @@ function changeExploreLocationParams(event) {
         $('#explore_map_zoom').val(zoom);
         $('#explore_view_params').val("map");
         updateUserLocation(c.lat(), c.lng(), false);
-
+        $('#explore_form').submit();
         refreshResults();
 
     }, 20);
