@@ -93,6 +93,10 @@
     padding-top: 3px;
 }
 
+#add_comment {
+    float: right;
+}
+
 #explore_list_address {
     padding-top: 5px;
     color: #FFFCD5;
