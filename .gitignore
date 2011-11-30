@@ -8,3 +8,5 @@ nbproject/*
 config/database.yml
 config/secrets.yml
 dump.rdb
+public/.DS_Store
+.DS_Store
