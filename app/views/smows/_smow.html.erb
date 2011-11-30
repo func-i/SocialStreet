@@ -26,7 +26,7 @@
                       of the Week
                     </span>
                     <span style="float: right;">
-                      <%= link_to new_event_event_rsvp_path(event), :style => "text-decoration: none; color: white;" do %>
+                      <%= link_to new_event_event_rsvp_url(event), :style => "text-decoration: none; color: white;" do %>
                         <%= image_tag "http://socialstreet.com/images/ill-join-btn.png", :alt => "attend", :style => "border-style: none;" %>
                       <% end %>
                     </span>
@@ -93,7 +93,7 @@
                     <% end %>
                     <%= image_tag "http://socialstreet.com/images/#{smow.bottom_image_url}", :alt => smow.title, :style => "width: 100%", :alt => "" %>
                     <br /> <br /><br /><br />
-                    <%= link_to new_event_event_rsvp_path(event), :style => "position: relative; left: 175px; text-decoration: none; color: white;" do %>
+                    <%= link_to new_event_event_rsvp_url(event), :style => "position: relative; left: 175px; text-decoration: none; color: white;" do %>
                       <%= image_tag "http://socialstreet.com/images/ill-join-btn.png", :alt => "attend", :style => "border-style: none;" %>
                     <% end %>
                   </td>
