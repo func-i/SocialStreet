@@ -4,8 +4,8 @@ class Jobs::Email::EmailAllUsersStreetmeetEvent
 
   # the "orig_action_id" is the action that was in the same chain as the new action represented by "action_id"
   def self.perform
-    #users = User.where("email <> ''")
-    users = User.find [408850, 570, 26]
+    users = User.where("email <> ''")
+    #users = User.find [408850, 570, 26]
     event = Event.where(:promoted => true).first
     smow = event.smow
 
