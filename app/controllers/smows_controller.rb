@@ -101,7 +101,7 @@ class SmowsController < ApplicationController
   def send_smow
     @event = Event.find params[:event_id]
     @smow = Smow.find params[:id]
-    #Resque.enqueue(Jobs::Email::EmailAllUsersStreetmeetEvent)
+    Resque.enqueue(Jobs::Email::EmailAllUsersStreetmeetEvent)
     redirect_to smows_path
   end
 
