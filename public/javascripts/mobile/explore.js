@@ -152,9 +152,9 @@ function addExploreMarkers(){
     var mySelectedMarkersArray = [];
     $.each($('#list_view_explore_content li'), function(index, result){
         $result = $(result);
-        var lat = $result.children('.lat').val();
-        var lng = $result.children('.lng').val();
-        var iconClass = $result.children('.icon-class').val();
+        var lat = parseFloat($result.find('.lat').val(),10);
+        var lng = parseFloat($result.find('.lng').val(),10);
+        var iconClass = $result.find('.icon-class').val();
         var id = result.id
 
         var marker = createExploreMarker(lat, lng, id, iconClass);
