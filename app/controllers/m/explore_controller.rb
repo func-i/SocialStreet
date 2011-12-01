@@ -1,4 +1,6 @@
 class M::ExploreController < MobileController
+  before_filter :ss_authenticate_user!
+
   def index
     init_page
     

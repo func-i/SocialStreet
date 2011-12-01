@@ -1,8 +1,7 @@
 <div data-role="page" id="create_what">
   <div data-role="header" data-position="fixed">
-    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
-    <h1>SocialStreet</h1>
-    <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a'}%>
+    <%= link_to "Back", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline', 'data-icon'=>"arrow-l"}%>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
   </div>
 
   <script type="text/javascript">
@@ -14,7 +13,7 @@
     })
 
     function captureKeyword(){
-      keyword = $('.ui-input-text').val();
+      keyword = $('.ui-input-text').first().val();
       $('#no_results a span').text(keyword);
       if($('.result:visible').length == 1) {
         if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
@@ -22,7 +21,7 @@
         }
 
       }
-      else if ($('.ui-input-text').val().length == 0){
+      else if ($('.ui-input-text').first().val().length == 0){
         $('#no_results').hide();
       }
       else {
@@ -33,16 +32,15 @@
     $('#create_what').live("pageshow",function() {
       keyword = "";
       $('#no_results').hide();
-      
+
       if($('#create_keyword').val().length > 0) {
-        console.log('in this keyword bitch');
-        $('.ui-input-text').val($('#create_keyword').val());
-        //keyword = $('#create_keyword').val();
+        $('.ui-input-text').first().val($('#create_keyword').val());
+        
         captureKeyword();
-        //$('ul').listview('refresh');
+        
       }
 
-      
+
       $('.ui-input-text').live('keyup', function(){
         captureKeyword($(this).val());
       });
@@ -51,7 +49,7 @@
 
   <div data-role ="content">
 
-    <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="create_keywords_list">
+    <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." data-scroll="true" id="create_keywords_list">
       <li id="no_results"> <%= link_to "#create_where" do %>
           <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
           <span></span>
@@ -72,7 +70,7 @@
 <div data-role ="page" id="create_where" class="page-map">
   <div data-role="header" data-position="inline">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
-    <h1>SocialStreet</h1>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
     <%= link_to "Next", '#create_when', {'data-role' => 'button', 'data-theme' => 'a'}%>
   </div>
 
@@ -97,20 +95,23 @@
     $('#map-canvas').gmap({
       'center': currentLocation, 'zoom': 15, 'mapTypeControl' : false,
       'navigationControl': false, 'streetViewControl': false
-    }).bind('init', function (event, map) {
+    });
+
+    if(undefined == createMapMarker){
       createMap = $('#map-canvas').gmap('get', 'map');
       createMarkerManager = new MarkerManager({
-        map: createMap,
-        gridSize: 15,
-        mapView: true
+        map: createMap
       });
       createMapMarker = createCreateMapMarker();
       findMarkerLocation(createMapMarker);
-    })
-  })
+      createMarkerManager.showAllMarkers();
+    }
+  });
 
   function createCreateMapMarker() {
-    var marker = createMarkerManager.createMarker(createMap.getCenter());
+    var marker = createMarkerManager.addMarker(createMap.getCenter().lat(), createMap.getCenter().lng());
+    marker.setIcon('/images/create-event-marker.png');
+    marker.setShadow(new google.maps.MarkerImage('/images/icon-shadow.png', null, null, new google.maps.Point(17,55)));
     marker.setDraggable(true);
     google.maps.event.addListener(marker, 'dragend', function() {
       findMarkerLocation(this);
@@ -120,7 +121,6 @@
   }
 
   function findMarkerLocation(marker) {
-    var latlng = new google.maps.LatLng(marker.getPosition().lat(), marker.getPosition().lng());
     geocoder.geocode({'location': marker.getPosition()}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         marker.setTitle(results[0].formatted_address);
@@ -151,7 +151,7 @@
     //bounds =  createMap.getBounds();
     //c = bounds.getCenter();
     c = createMapMarker.getPosition();
-      
+
     $('#create_map_lat').val(c.lat());
     $('#create_map_lng').val(c.lng());
   }
@@ -188,6 +188,7 @@
         createMap.setCenter(closestResult);
         createMapMarker = createCreateMapMarker();
         createMarkerManager.showAllMarkers();
+        updateLocationParams();
       }
       else {
         alert("Geocode was not successful for the following reason: " + status);
@@ -222,26 +223,25 @@
 
 </div>
 
-<div data-role ="page" id="create_when">
+<div data-role ="page" data-theme="a" id="create_when">
   <div data-role="header" data-position="inline">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
 
 
-    <h1>SocialStreet</h1>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
   </div>
 
   <script type="text/javascript">
     //Create date
     var monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    var durationOptions = ['minutes', 'hours', 'days']
 
     var myDate = new Date();
     var dateHsh = {};
     for(var i=0; i < 90; i++){
       //turn date into string
       var showDateString = dayNamesShort[myDate.getDay()] + " " + myDate.getDate() + " " + monthNamesShort[myDate.getMonth()];
-      var actualDateString = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate();
+      var actualDateString = myDate.getFullYear() + "_" + (myDate.getMonth() + 1) + "_" + myDate.getDate();
 
       dateHsh[actualDateString] = showDateString;
 
@@ -258,121 +258,171 @@
       minuteHsh[i*5] = i*5;
     }
 
-    var countHsh = {};
-    for(i=1; i<=60; i++){
-      countHsh[i-1] = i;
-    }
-
-    var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}]
-    var durationWheels = [{"Amount" : countHsh}, {"Duration" : durationOptions}]
+    var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}];
 
     $(function() {
-      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').scroller({
+      $('#event_start_date').scroller({
         wheels: wheels,
         width: 40,
         theme: 'ios',
         //btnClass: 'hidden',
         onClose: function(valueText, inst) {
 
-          //console.log(valueText);
-
-          if(valueText.match("NaN") || valueText.search("/") == -1){
-            valueText = fixInvalidValues(valueText);
-            $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(valueText);
-          }
-
-          formatted_start_date = parseDate(valueText);
-          //$('#create_starts_at').val(formatted_start_date);
-          $('#event_searchable_attributes_searchable_date_ranges_attributes_0_starts_at').val(formatted_start_date);
-
         }
 
       });
 
-      $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').scroller({
-        wheels: wheels,
-        width: 40,
-        theme: 'ios',
-        onClose: function(valueText, inst) {
+      $('#submit_button').click(function(){
+        event.preventDefault();
+        updateCreateTimes();
+        $('#submit_button').addClass("ui-disabled");
+        $('#submit_button span').text("Submitting ... ");
+        $(this).closest('form').submit();
 
-          if(valueText.match("NaN") || valueText.search("/") == -1){
-            valueText = fixInvalidValues(valueText);
-            $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(valueText);
-          }
-
-          formatted_end_date = parseDate(valueText);
-          $('#event_searchable_attributes_searchable_date_ranges_attributes_0_ends_at').val(formatted_end_date);
-        }
-
-      });
-
+      })
     })
 
-    function parseDate(valueText) {
+    $('#create_when').live('pageshow', function() {
+      setDefaultTime();
+      $('#event_start_date').scroller('show');
+      $('#scroller_holder').empty();
+      $('.dw').appendTo('#scroller_holder');
+      $('.dww').first().css("width", 123); //hack to make full values show up on screen
+      
+      //$('select').selectmenu('enable');
+    })
 
-      console.log(valueText);
+    function parseDate_(valueText) {
 
-      split_array = valueText.split("/");
-      console.log(split_array);
+      split_array = valueText.split("_");
       new_array = split_array[2].split(" ");
       split_array.pop();
       split_array = split_array.concat(new_array);
       for(i=0; i<5; i++){
         split_array[i] = parseInt(split_array[i]);
       }
-      if(split_array[5] == "PM")
+
+      if(split_array[5] == "PM") {
         if(split_array[3] != 12)
           split_array[3] += 12;
-  
+      }
+      else if (split_array[5] == "AM" && split_array[3] == 12) {
+        split_array[3] = 0;
+      }
+
       date = split_array[0]+"-"+split_array[1]+"-"+split_array[2]+" "+split_array[3]+":"+split_array[4];
-      console.log(date);
+
 
       return date;
     }
 
     function fixInvalidValues(valueText) {
       var newValueText;
-      console.log("fixing invalid values");
       var fixedDate = new Date();
       temp_array = valueText.split(" ");
       if(temp_array[0] == "NaN" || temp_array[0] == "-1"){
-        console.log("No Date Specified!");
         newValueText = fixedDate.getFullYear() + "/" + (fixedDate.getMonth() + 1) + "/" + fixedDate.getDate();
       }
       else
         newValueText = temp_array[0];
 
-      for(i=1; i<temp_array.length; i++) {
-        if(temp_array[i] != "NaN")
-          newValueText += " " + temp_array[i];
-        else
-          if(i == 1){
-            if(fixedDate.getHours() != 12)
-              newValueText += " " + fixedDate.getHours()%12;
-            else
-              newValueText += " " + fixedDate.getHours();
-          }
-
-        else if(i == 2)
-          newValueText += " " + fixedDate.getMinutes();
-        else
-          if(fixedDate.getHours() < 12)
+      for(i=1; i<temp_array.length; i++){
+        if(temp_array[i] == "NaN" || temp_array[i] == "-501" || temp_array[i] == "-1"){
+          if(i == 1)
+            newValueText += " " + 1;
+          else if(i == 2)
+            newValueText += " " + 0;
+          else if(i == 3)
             newValueText += " " + "AM";
+        }
         else
-          newValueText += " " + "PM";
+          newValueText += " " + temp_array[i];
       }
-      console.log(newValueText);
-
+      
       return newValueText;
     }
 
-    function submitForm() {
-      event.preventDefault();
-      $('#submit_button').addClass("ui-disabled");
-      $('#submit_button span').text("Submitting ... ");
-      $('#submit_button').attr("data-theme", "d");
-      var form_id = $("form").attr("id");
-      $('#'+form_id).submit();
+    function setDefaultTime() {
+      var strtime = '<%= @event.start_date %>';
+      var strdateArr = strtime.split(" ");
+      
+      var data = [];
+      data[0] = strdateArr[0].replace(/-/g, "_");
+      var strtimeArr = []
+      strtimeArr = strdateArr[1].split(":");
+      
+      data[2] = strtimeArr[1];
+      
+      var strHour = parseInt(strtimeArr[0]);
+      if( strHour > 12 ){
+        strHour = strHour%12;
+        data[1] = strHour.toString();
+        data[3] = "PM";
+      }
+      else if(strHour == 12){
+        data[1] = strHour.toString();
+        data[3] = "PM";
+      }
+
+      else if(strHour == 0){
+        data[1] = "12";
+        data[3] = "AM";
+      }
+
+      else {
+        data[1] = strHour.toString();
+        data[3] = "AM";
+      }
+
+      $('#event_start_date').scroller('setValue', data);
+    }
+
+    function updateCreateTimes() {
+      
+      var valueText = $('.dwv').text();
+
+      if(valueText.match("NaN") || valueText.search("/") == -1){
+        valueText = fixInvalidValues(valueText);
+        $('#event_start_date').val(valueText);
+      }
+
+      var formattedStartDate = parseDate_(valueText);
+      $('#event_start_date').val(formattedStartDate);
+
+      var start_date = $('#event_start_date').val();
+      var split_date = start_date.split(" ");
+      var dateArray       = split_date[0].split("-");
+      var time_split = split_date[1].split(":");
+      
+      var start_hour = time_split[0];
+      var start_min  = time_split[1];
+
+      //fixing date month and day to rjust to 2 chars
+      var date = dateArray[0] + "-" + dateArray[1].rjust(2, "0") + "-" + dateArray[2].rjust(2, "0");
+
+      start_date = new Date(getDateFromFormat(date, 'yyyy-mm-dd'));
+      start_date.setHours(start_hour);
+      start_date.setMinutes(start_min);
+      
+      var duration = $('#duration').val();
+      var duration_size = $('#duration_size').val();
+
+      if(duration_size == "Minutes"){
+        duration = duration*60000;
+      }
+      else if(duration_size == "Hours"){
+        duration = duration*3600000;
+      }
+      else if(duration_size == "Days"){
+        duration = duration*86400000;
+      }
+
+      var end_date = new Date(start_date.getTime());
+      end_date.setMilliseconds(start_date.getMilliseconds() + duration);
+
+      $('#event_start_date').val(ssFormatDate(start_date, 'yyyy/MM/dd HH:mm'));
+      $('#event_end_date').val(ssFormatDate(end_date, 'yyyy/MM/dd HH:mm'));
+      
     }
 
   </script>
@@ -385,14 +435,21 @@
       <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
-    <div data-role="fieldcontain">
-      <label for="startdate">Start Date: </label>
-      <%= form.text_field :start_date, :class => "mobiscroll"%>
+    <div id="scroller_holder">
+
     </div>
 
+    <%= form.hidden_field :start_date, :class => "mobiscroll"%>
+    <%= form.hidden_field :end_date %>
+
+
     <div data-role="fieldcontain">
-      <label for="startdate">End Date: </label>
-      <%= form.text_field :end_date, :class => "mobiscroll"%>
+      <fieldset class="ui-grid-a">
+        <label for="duration">Duration: </label>
+        <% duration, duration_size = @event.duration_array %>
+        <div class="ui-block-a"><%= select_tag :duration, options_for_select((1...23).to_a, duration), :id =>"duration" %></div>
+        <div class="ui-block-b"><%= select_tag :duration_size, options_for_select([["Minutes"],["Hours"],["Days"]], duration_size), :id => "duration_size" %></div>
+      </fieldset>
     </div>
 
     <%= form.fields_for :location do |location_fields| %>
@@ -400,7 +457,8 @@
       <%= location_fields.hidden_field :longitude, :id => 'create_map_lng'%>
     <%  end %>
 
-    <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button", "onclick" => "submitForm();" } %>
+    <%= link_to "Submit", "#", {"data-role" => "button", "data-theme" => "e", "id" => "submit_button"} %>
 
   </div>
+
 </div>

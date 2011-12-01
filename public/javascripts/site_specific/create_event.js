@@ -378,8 +378,8 @@ function updateCreateWhenDates(){
     var end_date = new Date(start_date.getTime());
     end_date.setMilliseconds(start_date.getMilliseconds() + duration);
 
-    $('#start_date').val(formatDate(start_date, 'yyyy/MM/dd HH:mm'));
-    $('#end_date').val(formatDate(end_date, 'yyyy/MM/dd HH:mm'));
+    $('#start_date').val(ssFormatDate(start_date, 'yyyy/MM/dd HH:mm'));
+    $('#end_date').val(ssFormatDate(end_date, 'yyyy/MM/dd HH:mm'));
 }
 
 function setupCreateWhen(){
@@ -416,7 +416,7 @@ function setWhenDate(date){
     $('.fc-state-highlight').removeClass('fc-state-highlight');
     highlightDate(date);
 
-    $('#create_when_date').text(formatDate(date, 'MMM dd, yyyy'));
+    $('#create_when_date').text(ssFormatDate(date, 'MMM dd, yyyy'));
 
     updateCreateWhenDates();
 }
@@ -451,12 +451,12 @@ function setupCreateSummary(){
     //WHEN
     var startDate = new Date(getDateFromFormat($('#start_date').val(), 'yyyy/MM/dd HH:mm'));
     var endDate = new Date(getDateFromFormat($('#end_date').val(), 'yyyy/MM/dd HH:mm'));
-    $('#summary_when_start_date').text(formatDate(startDate, 'EE NNN dd @ h:mm a'));
+    $('#summary_when_start_date').text(ssFormatDate(startDate, 'EE NNN dd @ h:mm a'));
     if(startDate.getDate() == endDate.getDate() && startDate.getMonth() == endDate.getMonth() && startDate.getYear() == endDate.getYear()){
-        $('#summary_when_end_date').text(formatDate(endDate, 'h:mm a'));
+        $('#summary_when_end_date').text(ssFormatDate(endDate, 'h:mm a'));
     }
     else{
-        $('#summary_when_end_date').text(formatDate(endDate, 'EE NNN dd @ h:mm a'));
+        $('#summary_when_end_date').text(ssFormatDate(endDate, 'EE NNN dd @ h:mm a'));
     }
 
     //TITLE

@@ -1,19 +1,20 @@
 
-<div data-role="page" data-theme="a" id="event_main">
+<div data-role="page" data-theme="a" id="event_main" class="wallpaper_page">
   <div data-role="header" data-position="inline">
-    <%= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
-    <h1>SocialStreet</h1>
+<%#= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
+    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
     <% if @event.can_edit?(current_user) %>
       <%= link_to 'Edit', edit_m_event_path(@event), {'data-theme' => 'a', 'data-ajax' => false}%>
     <% end %>
   </div>
 
-  <div data-role="content" data-theme="c">
+  <div data-role="content">
     <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
     <span id="event_title"><%= @event.title %></span>
 
     <div data-role="fieldcontain" style="font-size: 18px">
-      <span id="event_address"><%= address_for(@event.location)%></span>
+      <span id="event_address"><%= full_address_for(@event.location)%></span>
       <span style="float: right; font-size: 14px" id="map_link"><%= link_to "See on Map", "http://maps.google.com/maps?q=#{address_for(@event.location)}" %></span>
     </div>
 
@@ -33,26 +34,60 @@
 
     </div>
 
-    <div data-role="fieldcontain">
-      <textarea cols="40" rows="8" name="textarea" placeholder="Leave a Comment..." data-theme="d"></textarea>
-      <div style="float:right; margin: 3px"><%= link_to "#{@event.comments.count} Comments" %> </div>
-    </div>
-
-<%#*<div data-role="fieldcontain" id="event_details">%>
-<%#=@event.description if !@event.description.empty?%>
-<%#*</div>%>
-
-    <% if !@event.description.nil? %>
+    <% unless @event.description.blank? %>
       <div data-role="fieldcontain" id="event_details">
         <%= @event.description %>
       </div>
     <% end %>
 
-    <div data-role="fieldcontain">
-      <% if @event && @event.can_edit?(current_user) %>
-        <%= link_to "Cancel Event", [:m, @event], {:confirm => 'Are you sure?', :method => 'delete', "data-role" => "button", "data-theme" => "f"} %>
+    <% if @event && @event.can_edit?(current_user) %>
+      <div data-role="fieldcontain">
+        <%= form_for [:m, @event], :html => {:method => :delete} do %>
+
+          <%= link_to "Cancel Event", [:m, @event], {:id => "delete_event", "data-role" => "button", "data-theme" => "f"} %>
+
+        <% end %>
+      </div>
+    <% end %>
+
+
+    <%= form_for [:m, @event, @comment], :remote => true, :html => {:id => "event_wall_form", "data-ajax" => "false"} do |form| %>
+      <div data-role="fieldcontain">
+        <%= form.text_area :body, :placeholder => " Leave a Message",  "data-theme" => "d"%>
+        <!--textarea cols="40" rows="8" name="textarea" placeholder="Leave a Comment..." data-theme="d"></textarea>
+        <div style="float:right; margin: 3px"><%= link_to "#{@event.comments.count} Comments" %> </div-->
+      </div>
+    <% end %>
+
+    <div id="event_wall">
+      <%@comments.each do |comment|%>
+        <%= render :partial => 'm/comments/create.html', :locals => {:comment => comment} %>
       <% end %>
+
     </div>
 
+<%#*<div data-role="fieldcontain" id="event_details">%>
+<%#=@event.description if !@event.description.empty?%>
+<%#*</div>%>
   </div>
 </div>
+
+<script type="text/javascript">
+
+  $(function(){
+
+    $('#delete_event').click(function() {
+      event.preventDefault();
+      $(this).closest('form').submit();
+    });
+
+    $('#event_wall_form textarea').bind("keydown change keypress", function(e){
+      if(e.keyCode == 13 && !e.shiftKey) {
+        $('#event_wall_form').submit();
+        $(this).val('');
+        $(this).blur();
+      }
+    });
+
+  })
+</script>

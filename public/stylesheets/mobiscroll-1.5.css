@@ -1,7 +1,7 @@
 /* Datewheel overlay */
 .dw {
     padding: 0 10px;
-    position: absolute;
+    position: static;
     top: 5%;
     left: 0;
     z-index: 1001;
@@ -18,7 +18,7 @@
 .dwc {
     display: block;
     float: left;
-    margin: 0 2px 5px 2px;
+    /*margin: 0 2px 5px 2px;*/
     padding-top: 30px;
 }
 /* Datewheel label */
@@ -30,6 +30,7 @@
     white-space: nowrap;
     position: relative;
     top: -30px;
+    
 }
 /* Datewheel value */
 .dwv {
@@ -60,7 +61,7 @@
     background: -moz-linear-gradient(center bottom,#000 0%,#333 35%, #888 50%,#333 65%,#000 100%);
 }
 .dww {
-    margin: 0 2px;
+/*    margin: 0 2px;*/
     overflow: hidden;
     position: relative;
     top: -30px;
@@ -82,6 +83,11 @@
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
 }*/
+
+.dww dwrc {
+    width: 125px !important;
+}
+
 .dww li {
     list-style: none;
     margin: 0;
@@ -201,6 +207,7 @@
     /*margin-top: 5px;*/
     padding: 5px 0;
     text-align: center;
+    display: none;
 }
 /* Datewheel button wrapper */
 .dwbw {
@@ -314,8 +321,8 @@
 }
 /* iOS Skin */
 .ios {
-    padding: 40px 10px 10px 10px;
-    border: 1px solid #2d3034;
+/*    padding: 40px 10px 10px 10px;
+    border: 1px solid #2d3034;*/
     background: #50515d;
     background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #484a56),color-stop(1, #a2a3ab));
     background: -moz-linear-gradient(center bottom,#484a56 0%, #a2a3ab 100%);
@@ -428,10 +435,12 @@
     background: -moz-linear-gradient(center bottom,#252c36 0%, #171e28 50%, #272e38 50%, #6b6e75 100%);
 }
 .ios .dwb-s {
+    display: none;
     float: right;
     text-align: right;
 }
 .ios .dwb-c {
+    display: none;
     float: left;
     text-align: left;
 }

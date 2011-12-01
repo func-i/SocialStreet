@@ -1,7 +1,12 @@
 class M::EventsController < MobileController
+  before_filter :ss_authenticate_user!
+
   def show
     @event = Event.find params[:id]
     @rsvp = @event.event_rsvps.by_user(current_user).first if current_user
+
+    @comments = @event.comments.order('created_at DESC').all
+    @comment = @event.comments.build
   end
 
   def new
@@ -59,6 +64,18 @@ class M::EventsController < MobileController
         redirect_to m_event_path(@event)
       end
     end
+  end
+
+  def destroy
+    @event = Event.find params[:id]
+    @event.canceled = true
+    @event.save
+
+    if(@event.upcoming)
+      Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
+    end
+
+    redirect_to [:m, :root]
   end
   
 end

@@ -1,42 +1,38 @@
 <div data-role="page" id="invite-users-page">
   <div data-role="header" data-position="inline">
-    <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
-    <h1>SocialStreet</h1>
+    <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
   </div>
 
   <div data-role="content">
-    <%= link_to 'Send Invites', '#', {"data-role" => "button", "data-theme" => "b", "data-icon" => "check", "id" => "invite-submit"} %>
-    <div data-role="fieldcontain">
 
       <%= form_tag m_event_invitations_path(@event), :method => :post, :id => "invite-form" do %>
         <fieldset data-role="controlgroup" id="invite-users-list">
-          <% @users.each do |u| %>
-            <%= check_box_tag "user_ids[]", u.id, @event.invitations.collect(&:user).include?(u), :class => "custom", :id => "user_#{u.id}"  %>
-            <label for="user_<%=u.id%>"><%= avatar(u, :exclude_link => true, :size => "40x40") %> 
-              <span><%= u.name %></span>
+          <% @invited_user_connections.each do |connection| %>
+            <%= check_box_tag "user_ids[]", connection.to_user.id, false, :class => "custom", :id => "user_#{connection.to_user.id}"  %>
+            <label for="user_<%=connection.to_user.id%>"><%= avatar(connection.to_user, :exclude_link => true, :size => "40x40") %>
+              <span><%= connection.to_user.name %></span>
             </label>
           <% end %>
-        <% end %>
-      </fieldset>
-    </div>
+        </fieldset>
+      <% end %>
   </div>
+
+  <div data-role="footer" data-position="fixed">
+    <%= link_to 'Send Invites', '#', {'id' => 'invite_submit', 'data-role' => 'button', 'data-theme' => 'b', 'style' => 'width: 100%;height: 35px;'}%>
+  </div>
+
 </div>
 
 <script type="text/javascript">
   //pageless not currently working
 
   var timeout = null;
-  var invitationPageless = null;
   var checked_array = [];
   var c;
   var s;
 
-  $('#invite-submit').live('click', function() {
+  $('#invite_submit').live('click', function() {
     $('#invite-form').submit();
   })
-
-  /*$('#invite-users-list').bind( "change", function(event, ui) {
-    console.log(event)
-});*/
-
 </script>

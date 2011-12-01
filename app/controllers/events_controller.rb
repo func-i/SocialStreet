@@ -50,8 +50,7 @@ class EventsController < ApplicationController
         end
       else
         redirect_to event_path(@event, :invite => true)
-      end
-      
+      end      
     end
   end
 

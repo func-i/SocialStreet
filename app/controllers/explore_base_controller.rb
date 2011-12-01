@@ -3,9 +3,7 @@ class ExploreBaseController < ApplicationController
   def super_index
     init_page
 
-    puts "HERE I AM"
-
-    get_events;
+    get_events
 
     if request.xhr?
       render "/shared/ajax_load.js", :locals => {:file_name_var => @file_var_name}

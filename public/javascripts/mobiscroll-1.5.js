@@ -356,7 +356,7 @@
             $(':input:not(.dwtd)').attr('disabled', false).removeClass('dwtd');
             $(elm).blur();
             dw.hide();
-            dwo.hide();
+            //dwo.hide();
             show = false;
             if (this.preset) this.settings.wheels = null;
             $(window).unbind('resize.dw');
@@ -452,7 +452,7 @@
             // Set value text
             $('.dwv', dw).html(this.formatResult());
 
-            // Init buttons
+            /* Init buttons
             $('#dw_set', dw).text(s.setText).unbind().bind('click', function (e) {
                 that.setValue();
                 s.onSelect(that.val, inst);
@@ -463,13 +463,13 @@
             $('#dw_cancel', dw).text(s.cancelText).unbind().bind('click', function (e) {
                 that.hide();
                 return false;
-            });
+            });*/
 
-            // Disable inputs to prevent bleed through (Android bug)
+            /* Disable inputs to prevent bleed through (Android bug)
             $(':input:disabled').addClass('dwtd');
-            $(':input').attr('disabled', true);
+            $(':input').attr('disabled', true);*/
             // Show
-            dwo.show();
+            //dwo.show();
             dw.attr('class', 'dw ' + s.theme).show();
             show = true;
             // Set sizes
@@ -512,8 +512,8 @@
             w = dw.outerWidth();
             h = dw.outerHeight();
             dw.css({ left: (ww - w) / 2, top: st + (wh - h) / 2 });
-            dwo.height(0);
-            dwo.height($(document).height());
+            //dwo.height(0);
+            //dwo.height($(document).height());
         }
 
         this.init = function() {
@@ -550,7 +550,7 @@
     }
 
     var dw,
-        dwo,
+        //dwo,
         h,
         m,
         inst, // Current instance
@@ -640,12 +640,12 @@
                     minustap = false;
 
                 if ($('.dw').length) {
-                    dwo = $('.dwo');
+                    //dwo = $('.dwo');
                     dw = $('.dw');
                 }
                 else {
                     // Create html
-                    dwo = $('<div class="dwo"></div>').hide().appendTo('body');
+                    //dwo = $('<div class="dwo"></div>').hide().appendTo('body');
                     dw = $('<div class="dw">' +
                         '<div class="dwv">&nbsp;</div>' +
                         '<div class="dwbc" style="clear:both;">' +

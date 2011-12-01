@@ -39,6 +39,8 @@ javascripts:
     - public/javascripts/mobiscroll-1.5.js
     - public/javascripts/infobubble.js
     - public/javascripts/mobile/base.js
+    - public/javascripts/date.js
+    - public/javascripts/bookmark_bubble.js
     - public/javascripts/iscroll-lite.js
 
 stylesheets:
@@ -54,5 +56,6 @@ stylesheets:
     - public/stylesheets/ie7.css
   mobile:
     - public/stylesheets/mobiscroll-1.5.css
+    - public/stylesheets/event_type_sprite.css
     - public/stylesheets/mobile.css
 

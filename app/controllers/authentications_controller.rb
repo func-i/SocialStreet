@@ -1,4 +1,5 @@
 class AuthenticationsController < ApplicationController
+  skip_before_filter :redirect_mobile
 
   skip_filter :check_browser, :only => :invalid_browser
 

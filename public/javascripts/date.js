@@ -102,7 +102,7 @@ function compareDates(date1,dateformat1,date2,dateformat2) {
 // Returns a date in the output format specified.
 // The format string uses the same abbreviations as in getDateFromFormat()
 // ------------------------------------------------------------------
-function formatDate(date,format) {
+function ssFormatDate(date,format) {
     format=format+"";
     var result="";
     var i_format=0;

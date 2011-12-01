@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   layout 'application'
 
+  before_filter :redirect_mobile
   before_filter :check_browser
 
   def ss_authenticate_user!
@@ -27,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   def get_current_path
     return session[:stored_current_path] if session[:stored_current_path]
-    return null;
+    return nil;
   end
 
   def after_sign_in_path_for(resource_or_scope)   
@@ -115,6 +116,7 @@ class ApplicationController < ActionController::Base
       @event = Event.new()
       @event.user = current_user if current_user
     elsif action == :edit
+      
       @event.event_keywords.each do |keyword|
         keyword.destroy
       end
@@ -127,6 +129,7 @@ class ApplicationController < ActionController::Base
     @event.event_groups.each do |e_g|
       e_g.destroy
     end
+
     params[:group].each do |groupID, permissionLevel|
       e_g = @event.event_groups.build
       e_g.can_view = permissionLevel.to_i >= 1
@@ -195,5 +198,19 @@ class ApplicationController < ActionController::Base
 
   def check_browser    
     redirect_to invalid_browser_path if request.env['HTTP_USER_AGENT'] =~ /MSIE 6.0|MSIE 7.0/
+  end
+
+  private
+  def mobile_device?
+    if request.user_agent =~ /iPhone|webOS|iPod|Android|BlackBerry|Windows Phone|^iPad/
+      return true
+    end
+  end
+  helper_method :mobile_device?
+
+  def redirect_mobile
+    if mobile_device? && nil == (request.fullpath =~ /^\/m($|\/|\?|#)/)
+      redirect_to "/m" + request.fullpath
+    end
   end
 end

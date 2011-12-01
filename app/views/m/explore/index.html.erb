@@ -1,109 +1,51 @@
 <%= javascript_include_tag 'mobile/explore' %>
 
-<div data-role="page" data-theme="a" id="explore_base">
-
-  <%- if params[:view].nil? || params[:view].eql?("list") -%>
-    <%= render "list_view" -%>
-  <%- else -%>
-    <%= render "map_view" %>
-  <% end %>
-
+<div data-role="page" data-theme="a" id="explore_base" class="wallpaper_page">
+  <%= render "list_view" -%>
 </div>
 
 <div data-role="page" id="explore_filter">
   <div data-role="header" data-position="fixed">
     <a data-theme ="c" data-rel="back" data-icon="arrow-l">Back</a>
-    <h1>SocialStreet</h1>
-    <%= link_to "Remove All", '', {'data-role' => 'button', 'data-theme' => 'b', 'id' => 'remove_filters'}%>
+    <h1><%=link_to "SocialStreet", '/m'%></h1>
   </div>
 
   <div data-role="content" data-theme="b">
     <div data-role ="fieldcontain">
-      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." id="keyword_filter_list">
-        <li id="filter_no_results"> <%= link_to "#" do %>
-            <%=  image_tag('/images/event_types/streetmeet2.png', :size => "45x45") %>
-            <span></span>
+      <ul data-role="listview" data-theme="a" data-inset="true" data-filter="true" data-filter-placeholder="Enter Keyword..." data-scroll="true" id="keyword_filter_list">
+        <li id="filter_no_results">
+          <%= link_to '#', :style => "padding:0;", "data-rel"=> :back do %>
+            <div class="event-type-streetmeet2-small-sprite" style="float:left;"></div>
+            <span style="float:left;margin:18.5px 0 0 5px;"></span>
           <% end %>
         </li>
-        <% @event_types.each do |event|%>
+        <% @event_types.each do |et|%>
           <li class="result">
-            <%= link_to image_tag(event.image_path, :size => "45x45") + event.name %>
+            <%= link_to '#', :style => "padding:0;", "data-rel"=> :back do %>
+              <div class="event-type-<%=sprite_class_name_for_event_type(et)%>-small-sprite" style="float:left"></div>
+              <span style="float:left;margin:18.5px 0 0 5px;"><%=et.name%></span>
+            <% end %>
           </li>
-
         <% end %>
-
       </ul>
     </div>
-    <%= form_tag({:controller => "explore", :action => "index"}, {:method => 'get'}) do |form|%>
-      <%= hidden_field_tag 'keywords', params[:keywords], :id => 'keyword' %>
-    <% end %>
   </div>
 </div>
 
 <div data-role="page" id="map-view-explore">
-
-  <script type="text/javascript">
-
-    var usersCurrentLocation = ('<%=users_current_location_string()%>').split(",");
-    var map_center = new google.maps.LatLng((parseFloat(usersCurrentLocation[0])), parseFloat(usersCurrentLocation[1]));
-    var geocoder = new google.maps.Geocoder();
-    var exploreMap;
-    var markerManager;
-    var marker;
-    var selected_searchable;
-    var searchable_id;
-    var clustered_markers = [];
-
-//    $(function(){
-      $('#list_view_link').live("click", function() {
-        $('#list_view_results').listview();
-      })
-
-      $('#map-view-explore').live("pageinit", function() {
-
-        $('#explore_map_canvas').gmap(
-        {'center': map_center, 'zoom': 15, 'disableDefaultUI': true
-        }).bind('init', function(event, map) {
-          exploreMap = $('#explore_map_canvas').gmap('get', 'map');
-          markerManager = new MarkerManager({
-            map: exploreMap
-          });
-          createMapMarkers();
-          $('#explore_event_details').hide();
-/*          exploreMap = new google.maps.Map(document.getElementById('explore_map_canvas'),
-          {
-            center: map_center,
-            zoom: 15
-          });
-          markerManager = new MarkerManager({
-            map: exploreMap
-          });
-          createMapMarkers();*/
-
-          google.maps.event.addListener(exploreMap, 'zoom_changed', changeExploreLocationParams);
-          google.maps.event.addListener(exploreMap, 'dragend', changeExploreLocationParams);
-          google.maps.event.addListener(exploreMap, 'click', deselectMarker);
-        });
-
-      });
- //   });
-    function createMapMarkers() {
-
-<% (@events || []).each do |event| %>
-  <% if event.location.geo_located? %>
-        marker = markerManager.addMarker(parseFloat(<%=event.location.latitude%>, 10), parseFloat(<%=event.location.longitude%>, 10) );
-        google.maps.event.addListener(marker, 'click', selectedMarker);
-  <% end %>
-      markerManager.showAllMarkers();
-<% end %>
-  }
-
-  </script>
 
   <div id="explore_map_content_holder">
 
     <%= render "map_view" %>
 
   </div>
-
 </div>
+
+<%= form_tag '#', :method => :get, :remote => :true, 'data-ajax' => false, :id => "explore_form" do %>
+  <%= hidden_field_tag 'map_bounds', params[:map_bounds], :id => 'explore_map_bounds' %>
+  <%= hidden_field_tag 'map_center', params[:map_center], :id => 'explore_map_center' %>
+  <%= hidden_field_tag 'map_zoom', params[:map_zoom], :id => 'explore_map_zoom' %>
+  <%= hidden_field_tag 'selected_results', params[:selected_results]%>
+  <%= hidden_field_tag 'view', params[:view], :id => 'explore_view_params' %>
+  <%= hidden_field_tag 'keywords', params[:keywords], :id => 'keyword' %>
+<% end %>

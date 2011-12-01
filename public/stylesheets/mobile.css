@@ -4,7 +4,16 @@
 }*/
 .wallpaper_page {
      background: transparent;
-     background: url(/images/gray-gradient.jpg) no-repeat;
+     background: url(/images/bg-nologo.png) no-repeat;
+     /*width: 100%;
+     height: 100%;*/
+     background-size: cover;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .page-map {
@@ -84,16 +93,30 @@
     padding-top: 3px;
 }
 
+#add_comment {
+    float: right;
+}
+
 #explore_list_address {
     padding-top: 5px;
     color: #FFFCD5;
+    font-size:10px;
+    padding: 0 0 0 5px;
+    overflow: hidden;
 }
 
 #explore_list_title {
     color: #FFC233;
+    margin: 18.5px 0 0 5px;
 }
 
 #map_view_link span .ui-btn-text {
+    font-size: 15px;
+    color: #FFFCD5;
+    top: 3px;
+}
+
+#invite_submit span .ui-btn-text {
     font-size: 15px;
     color: #FFFCD5;
     top: 3px;
@@ -104,10 +127,10 @@
    top: 45px;
 }
 
-#explore_event_details {
+/*#explore_event_details {
     height: 60px;
     overflow: auto;
-}
+}*/
 
 /*#invite-users-list .ui-checkbox {
     height: 50px;
@@ -116,6 +139,14 @@
 #invite-users-list .ui-checkbox span {
     top: -8px;
 }*/
+
+.colored-text-1 {
+    color: #FFC233;
+}
+
+.colored-text-2 {
+    color: #FFFCD5;
+}
 
 #event_address {
     color: #FFFCD5;
@@ -142,6 +173,13 @@
     color: #FFC233 /*{a-body-link-visited}*/;
 }
 
+.ui-header .ui-title .ui-link,
+.ui-header .ui-title .ui-link:hover,
+.ui-header .ui-title .ui-link:active,
+.ui-header .ui-title .ui-link:visited{
+    color: white;
+    text-decoration: none;
+}
 
 .ui-btn-up-f, .ui-btn-hover-f, .ui-btn-down-f {
   color: white;

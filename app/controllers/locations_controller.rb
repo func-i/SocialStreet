@@ -1,4 +1,5 @@
 class LocationsController < ApplicationController
+  skip_before_filter :redirect_mobile
 
   def update_user_location   
     #store in session for quick access
