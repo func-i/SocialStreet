@@ -513,7 +513,7 @@ END OF RESET
     text-align: center;
     font: bold 12px/12px Arial, Helvetica, sans-serif;
     color: white;
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
     box-shadow: 3px 3px 3px #4F4F4D;
@@ -876,21 +876,21 @@ END OF RESET
     font: italic 14px/14px Arial, Helvetica, sans-serif;
     padding: 5px;
     margin-left: 2px;
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
 }
 .admin-link{
     color: #FFFD8B;
     font: italic 14px/14px Arial, Helvetica, sans-serif;
     padding: 5px;
     margin-left: 2px;
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
 }
 
 #destroy_event_link{
     color: #FFFD8B;
     font: italic 14px/14px Arial, Helvetica, sans-serif;
     padding: 5px;
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
 }
 #show_event_details{
     margin-bottom: 20px;
@@ -1005,7 +1005,7 @@ END OF RESET
     height: auto;
     overflow: visible;
     width: 250px;
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
     overflow: hidden;
     margin-bottom: 0px;
     min-height: 30px;
@@ -1090,7 +1090,7 @@ END OF RESET
     height: 55px;
     width: 120px;
     color: white;
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
     word-wrap: break-word;
     text-align: center;
     vertical-align: middle;
@@ -1103,7 +1103,7 @@ END OF RESET
 }
 
 .container {
-    background: url("../images/overlay_box_bg.png");
+    background: url("../images/overlay_box_bg_2.png");
     -webkit-box-shadow: 3px 3px 3px #4F4F4D;
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
     box-shadow: 3px 3px 3px #4F4F4D;
