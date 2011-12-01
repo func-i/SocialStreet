@@ -152,7 +152,7 @@ $(function() {
         var $eventTypeImage = $(eventTypeImage);
         if(undefined == $eventTypeImage.css('background-image')) {
             $.each($eventTypeImage.attr('class').split(' '), function(index2, myClass) {
-                console.log(myClass);
+                
                 if(myClass.indexOf('event-type-') == 0) {
                     var splitClass = myClass.split('-');
                     var imageSize = splitClass[splitClass.length - 2];

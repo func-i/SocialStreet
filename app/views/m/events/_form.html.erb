@@ -34,7 +34,6 @@
       $('#no_results').hide();
 
       if($('#create_keyword').val().length > 0) {
-        console.log('in this keyword bitch');
         $('.ui-input-text').first().val($('#create_keyword').val());
         
         captureKeyword();
@@ -42,7 +41,7 @@
       }
 
 
-      $('.ui-input-text').first().live('keyup', function(){
+      $('.ui-input-text').live('keyup', function(){
         captureKeyword($(this).val());
       });
     });
@@ -319,12 +318,9 @@
 
     function fixInvalidValues(valueText) {
       var newValueText;
-      console.log(valueText);
-      console.log("fixing invalid values");
       var fixedDate = new Date();
       temp_array = valueText.split(" ");
       if(temp_array[0] == "NaN" || temp_array[0] == "-1"){
-        console.log("No Date Specified!");
         newValueText = fixedDate.getFullYear() + "/" + (fixedDate.getMonth() + 1) + "/" + fixedDate.getDate();
       }
       else
@@ -342,16 +338,13 @@
         else
           newValueText += " " + temp_array[i];
       }
-      console.log(newValueText);
-
+      
       return newValueText;
     }
 
     function setDefaultTime() {
       var strtime = '<%= @event.start_date %>';
-      console.log(strtime);
       var strdateArr = strtime.split(" ");
-      console.log(strdateArr);
       
       var data = [];
       data[0] = strdateArr[0].replace(/-/g, "_");
@@ -381,7 +374,6 @@
         data[3] = "AM";
       }
 
-      console.log(data);
       $('#event_start_date').scroller('setValue', data);
     }
 
@@ -394,25 +386,24 @@
         $('#event_start_date').val(valueText);
       }
 
-      console.log("vtext", valueText);
       var formattedStartDate = parseDate_(valueText);
       $('#event_start_date').val(formattedStartDate);
 
       var start_date = $('#event_start_date').val();
       var split_date = start_date.split(" ");
-      var date       = split_date[0];
+      var dateArray       = split_date[0].split("-");
       var time_split = split_date[1].split(":");
-
-      console.log("splitDate", split_date);
-
+      
       var start_hour = time_split[0];
       var start_min  = time_split[1];
+
+      //fixing date month and day to rjust to 2 chars
+      var date = dateArray[0] + "-" + dateArray[1].rjust(2, "0") + "-" + dateArray[2].rjust(2, "0");
+
       start_date = new Date(getDateFromFormat(date, 'yyyy-mm-dd'));
       start_date.setHours(start_hour);
       start_date.setMinutes(start_min);
-
-      console.log(start_date);
-
+      
       var duration = $('#duration').val();
       var duration_size = $('#duration_size').val();
 
@@ -431,7 +422,7 @@
 
       $('#event_start_date').val(ssFormatDate(start_date, 'yyyy/MM/dd HH:mm'));
       $('#event_end_date').val(ssFormatDate(end_date, 'yyyy/MM/dd HH:mm'));
-
+      
     }
 
   </script>

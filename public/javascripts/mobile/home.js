@@ -4,13 +4,14 @@ $('#sign-in').live('click', function() {
   })
 
 $('#explore_btn').live('click', function() {
-    console.log('found an explorer!');
+    
     window.location.href = '/m/explore';
+    console.log('explorer...');
     event.preventDefault();
 });
 
 $('#new_event_btn').live('click', function() {
-    console.log("new streetmeet!");
+    
     window.location.href = '/m/events/new';
     event.preventDefault();
 });

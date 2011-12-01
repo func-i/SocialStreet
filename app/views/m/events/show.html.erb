@@ -56,7 +56,6 @@
         <%= form.text_area :body, :placeholder => " Leave a Message",  "data-theme" => "d"%>
         <!--textarea cols="40" rows="8" name="textarea" placeholder="Leave a Comment..." data-theme="d"></textarea>
         <div style="float:right; margin: 3px"><%= link_to "#{@event.comments.count} Comments" %> </div-->
-        <%= link_to "Add Comment", "#", {"id" => "add_comment"} %>
       </div>
     <% end %>
 
@@ -74,25 +73,21 @@
 </div>
 
 <script type="text/javascript">
-  $('#event_wall_form textarea').live('keydown', function(e){
-    if(e.keyCode == 13) {
-      $('#event_wall_form').submit();
-      $(this).val('');
-      $(this).blur();
-    }
-  });
 
   $(function(){
+
     $('#delete_event').click(function() {
       event.preventDefault();
       $(this).closest('form').submit();
     });
 
-    $('#add_comment').click(function(){
-      event.preventDefault();
-      $('#event_wall_form').submit();
-      $('#event_wall_form textarea').val('');
-      $('#event_wall_form textarea').blur();
+    $('#event_wall_form textarea').bind("keydown change keypress", function(e){
+      if(e.keyCode == 13 && !e.shiftKey) {
+        $('#event_wall_form').submit();
+        $(this).val('');
+        $(this).blur();
+      }
     });
+
   })
 </script>

@@ -70,7 +70,6 @@ $('#keyword_filter_list li').live('click', function(e){
 });
 
 function refreshResults() {
-    console.log('refreshing results');
     $('#list_view_results').listview();    
 }
 
@@ -123,9 +122,6 @@ function changeMapLocation(e, latLng) {
 function changeExploreLocationParams(event) {
     setTimeout(function() {
         var zoom = exploreMap.getZoom();
-
-        //deselectMarker();
-        //clearExploreMarkers();
 
         bounds = exploreMap.getBounds();
         ne = bounds.getNorthEast();
