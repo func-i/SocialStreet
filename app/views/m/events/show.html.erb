@@ -81,7 +81,7 @@
       $(this).closest('form').submit();
     });
 
-    $('#event_wall_form textarea').bind("keydown change keypress", function(e){
+    $('#event_wall_form textarea').bind("keyup change keypress", function(e){
       if(e.keyCode == 13 && !e.shiftKey) {
         $('#event_wall_form').submit();
         $(this).val('');
