@@ -28,7 +28,7 @@ javascripts:
     - public/javascripts/autoscroll.js
 
   mobile:
-    - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
+#    - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
     - public/javascripts/ss_MarkerManager.js
     - public/javascripts/jquery_ujs.js
     - public/javascripts/jquerym_custom.js
