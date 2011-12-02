@@ -76,8 +76,8 @@
 
   $(function(){
 
-    $('#delete_event').click(function() {
-      event.preventDefault();
+    $('#delete_event').click(function(e) {
+      e.preventDefault();
       $(this).closest('form').submit();
     });
 

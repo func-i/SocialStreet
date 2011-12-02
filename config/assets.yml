@@ -4,8 +4,6 @@ embed_assets: datauri
 package_assets: on
 
 javascripts:
-  mobile_init:
-    - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
 
   common:
     - public/javascripts/jquery-1.5.1.js
@@ -29,7 +27,7 @@ javascripts:
 
   mobile:
 #    - public/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
-    - public/javascripts/ss_MarkerManager.js
+    - public/javascripts/mobile/base.js
     - public/javascripts/jquery_ujs.js
     - public/javascripts/jquerym_custom.js
     - public/javascripts/jquery.ui.map.js
@@ -38,10 +36,10 @@ javascripts:
     - public/javascripts/ss_pageless.js
     - public/javascripts/mobiscroll-1.5.js
     - public/javascripts/infobubble.js
-    - public/javascripts/mobile/base.js
     - public/javascripts/date.js
     - public/javascripts/bookmark_bubble.js
     - public/javascripts/iscroll-lite.js
+    - public/javascripts/ss_MarkerManager.js
 
 stylesheets:
   common:

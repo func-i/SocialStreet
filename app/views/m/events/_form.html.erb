@@ -272,8 +272,8 @@
 
       });
 
-      $('#submit_button').click(function(){
-        event.preventDefault();
+      $('#submit_button').click(function(e){
+        e.preventDefault();
         updateCreateTimes();
         $('#submit_button').addClass("ui-disabled");
         $('#submit_button span').text("Submitting ... ");
@@ -345,9 +345,13 @@
     function setDefaultTime() {
       var strtime = '<%= @event.start_date %>';
       var strdateArr = strtime.split(" ");
+
+      //removing the leading zero from date if date < 10 to display on mobiscroll
+
+      var fixDateArr = strdateArr[0].split("-");
       
       var data = [];
-      data[0] = strdateArr[0].replace(/-/g, "_");
+      data[0] = parseInt(fixDateArr[0]) + "_" + parseInt(fixDateArr[1]) + "_" + parseInt(fixDateArr[2]);
       var strtimeArr = []
       strtimeArr = strdateArr[1].split(":");
       
@@ -373,6 +377,8 @@
         data[1] = strHour.toString();
         data[3] = "AM";
       }
+
+      console.log("data ", data);
 
       $('#event_start_date').scroller('setValue', data);
     }
