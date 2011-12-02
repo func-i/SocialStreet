@@ -119,11 +119,12 @@ function resetKeywords(){
 
 function eventTypeClicked(eventType, refreshResults){
     var $eventType = $(eventType);
+    console.log($(eventType));
     var keywordName = $.trim($eventType.find('.event-type-name').text());
     var keywordIconClass = 'event-type-' + $eventType.find('.event-type-image').data('event-type') + (isOnExplore() ? '-small-sprite' : '-medium-sprite');
 
-    if(!keywordAlreadyExists(keywordName)){
-        if(isOnExplore()){
+    if(!keywordAlreadyExists(keywordName)) {
+        if(isOnExplore()) {
             addKeywordToHolder(keywordName, keywordIconClass);
 
             $('#explore_search_params').append(
@@ -134,7 +135,7 @@ function eventTypeClicked(eventType, refreshResults){
             if($('.keyword-tag-holder').height() > 150)
                 initScrollPane($('.keyword-tag-holder'));
 
-            if(undefined == refreshResults || refreshResults){
+            if(undefined == refreshResults || refreshResults) {
                 refreshExploreResults();
             }
         }
@@ -153,10 +154,10 @@ function eventTypeClicked(eventType, refreshResults){
     }
 }
 
-function addKeywordToHolder(keywordName, keywordIconClass){
+function addKeywordToHolder(keywordName, keywordIconClass){    
     var $newKeyword = $($('#keyword_tag_stamp').clone());
     $newKeyword[0].id = "";
-    $newKeyword.find('.keyword-tag-name').text(keywordName);
+    $newKeyword.find('.keyword-tag-name').text(unescape(keywordName));
     $newKeyword.find('.keyword-tag-icon').addClass(keywordIconClass);
     $('#keyword_tag_list').append($newKeyword);
     $newKeyword.removeClass('hidden');
@@ -192,8 +193,9 @@ function addKeyword(keyword, refreshResults){
 }
 
 function keywordTyped(text){
-    var trimmedText = $.trim(text);
+    var trimmedText = unescape($.trim(text));
     var regEx = new RegExp(trimmedText, "i");
+    console.log(regEx);
     var exact_match = false;
     var lowerCaseText = trimmedText.toLowerCase();
         
