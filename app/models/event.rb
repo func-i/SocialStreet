@@ -121,7 +121,7 @@ class Event < ActiveRecord::Base
   end
 
   def number_of_maybe_attendees
-    event_rsvps.attending_or_maybe_attending.size
+    event_rsvps.maybe_attending.size
   end
 
   def can_edit?(user)
