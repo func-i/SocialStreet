@@ -3,17 +3,17 @@ $('#sign-in').live('click', function() {
     return false;
   })
 
-$('#explore_btn').live('click', function() {
+$('#explore_btn').live('click', function(e) {
     
     window.location.href = '/m/explore';
     console.log('explorer...');
-    event.preventDefault();
+    e.preventDefault();
 });
 
-$('#new_event_btn').live('click', function() {
+$('#new_event_btn').live('click', function(e) {
     
     window.location.href = '/m/events/new';
-    event.preventDefault();
+    e.preventDefault();
 });
 
 $('#home_page').live('pageshow', function() {
