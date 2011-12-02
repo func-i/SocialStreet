@@ -184,6 +184,10 @@ function resizeAttendees() {
         initScrollPane($('#show_attendees_holder'));
     }
 
+    if($('#show_maybe_attendees_holder').height() > 150){
+        initScrollPane($('#show_maybe_attendees_holder'));
+    }
+
 }
 
 function setupShowEventPage(){

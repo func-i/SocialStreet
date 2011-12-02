@@ -901,7 +901,8 @@ END OF RESET
     position: relative;
     top: 13px;
 }
-#show_attendees_title{
+#show_maybe_attendees_title,
+#show_attendees_title {
     background-color: #4F4F4D;
     padding-top: 2px;
     width: 200px;
@@ -910,6 +911,8 @@ END OF RESET
     text-align: center;
     margin-top:17px;
 }
+
+#show_maybe_attendees_holder,
 #show_attendees_holder{
     width: 200px;
     max-height: 165px;
