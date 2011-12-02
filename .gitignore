@@ -11,4 +11,4 @@ dump.rdb
 public/images/smow
 .DS_Store
 public/.DS_Store
-
+public/assets/*
