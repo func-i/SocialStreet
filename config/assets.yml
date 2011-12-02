@@ -1,4 +1,4 @@
-compress_assets: on
+compress_assets: off
 javascript_compressor: yui
 embed_assets: datauri
 package_assets: on
