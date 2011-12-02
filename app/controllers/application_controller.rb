@@ -169,7 +169,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def attending_event_rsvp(event_id)
+  def attending_event_rsvp(event_id, status = nil)
     return -1 unless current_user #error
 
     @event = Event.find event_id
@@ -185,7 +185,7 @@ class ApplicationController < ActionController::Base
       rsvp.user = current_user
     end
 
-    rsvp.status = EventRsvp.statuses[:attending]
+    rsvp.status = status ? EventRsvp.statuses[status.to_sym] : EventRsvp.statuses[:attending]
 
     if rsvp.save
       return 2 #Success

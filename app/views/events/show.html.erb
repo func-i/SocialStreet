@@ -99,27 +99,57 @@
 <% end %>
 
 <% content_for :right_side_pane do %>
-  <div id="show_attendees_title" class="important-color text-shadow">
-    <% if current_user && @event.event_rsvps.attending.by_user(current_user).count > 0%>
-      <% if @event.number_of_attendees == 1 %>
-        You're Attending
+
+  <% unless (attendings = @event.event_rsvps.attending).blank? %>
+    <div id="show_attendees_title" class="important-color text-shadow">
+      <% if current_user && @event.event_rsvps.attending.by_user(current_user).count > 0%>
+        <% if @event.number_of_attendees == 1 %>
+          You're Attending
+        <% else %>
+          <%= "You & #{pluralize(@event.number_of_attendees - 1, 'Person')} are Attending" %>
+        <% end %>
       <% else %>
-        <%= "You & #{pluralize(@event.number_of_attendees - 1, 'Person')} are Attending" %>
+        <%= "#{pluralize @event.number_of_attendees, 'Person'} Attending"%>
       <% end %>
-    <% else %>
-      <%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>
-    <% end %>
-  </div>
-  <div id="show_attendees_holder" class="container">
-    <ul id="show_attendees_list">
-      <% @event.event_rsvps.attending.each do |attendee| %>
-        <li class="show-attendee" id="attendee_<%=attendee.user_id%>">
-          <%=avatar(attendee.user, :size => "50x50", :class=> "show-attendee-icon")%>
-          <span class="show-attendee-name"><%=attendee.user.name%></span>
-        </li>
+    </div>
+    <div id="show_attendees_holder" class="container">
+      <ul id="show_attendees_list">
+        <% attendings.each do |attendee| %>
+          <li class="show-attendee" id="attendee_<%= attendee.user_id%>">
+            <%= avatar(attendee.user, :size => "50x50", :class=> "show-attendee-icon")%>
+            <span class="show-attendee-name"><%= attendee.user.name%></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Maybe attending section -->
+
+  <% unless (maybe_attendings = @event.event_rsvps.maybe_attending).blank? %>
+    <div id="show_attendees_title" class="important-color text-shadow">
+      <% if current_user && @event.event_rsvps.maybe_attending.by_user(current_user).count > 0 %>
+        <% if @event.number_of_attendees == 1 %>
+          You Might Attend
+        <% else %>
+          <%= "You & #{pluralize(@event.number_of_attendees - 1, 'Person')} might Attend" %>
+        <% end %>
+      <% else %>
+        <%= "#{pluralize @event.number_of_attendees, 'Person'} might Attend" %>
       <% end %>
-    </ul>
-  </div>
+    </div>
+    <div id="show_attendees_holder" class="container">
+      <ul id="show_attendees_list">
+        <% maybe_attendings.each do |m_attendee| %>
+          <li class="show-attendee" id="attendee_<%= m_attendee.user_id%>">
+            <%= avatar(m_attendee.user, :size => "50x50", :class=> "show-attendee-icon") %>
+            <span class="show-attendee-name"><%= m_attendee.user.name%></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
 <% end %>
 
 
