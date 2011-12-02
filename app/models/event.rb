@@ -120,6 +120,10 @@ class Event < ActiveRecord::Base
     event_rsvps.attending_or_maybe_attending.size
   end
 
+  def number_of_maybe_attendees
+    event_rsvps.attending_or_maybe_attending.size
+  end
+
   def can_edit?(user)
     user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
   end

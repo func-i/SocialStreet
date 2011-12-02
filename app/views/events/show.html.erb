@@ -129,13 +129,13 @@
   <% unless (maybe_attendings = @event.event_rsvps.maybe_attending).blank? %>
     <div id="show_attendees_title" class="important-color text-shadow">
       <% if current_user && @event.event_rsvps.maybe_attending.by_user(current_user).count > 0 %>
-        <% if @event.number_of_attendees == 1 %>
+        <% if @event.number_of_maybe_attendees == 1 %>
           You Might Attend
         <% else %>
-          <%= "You & #{pluralize(@event.number_of_attendees - 1, 'Person')} might Attend" %>
+          <%= "You & #{pluralize(@event.number_of_maybe_attendees - 1, 'Person')} might Attend" %>
         <% end %>
       <% else %>
-        <%= "#{pluralize @event.number_of_attendees, 'Person'} might Attend" %>
+        <%= "#{pluralize @event.number_of_maybe_attendees, 'Person'} might Attend" %>
       <% end %>
     </div>
     <div id="show_attendees_holder" class="container">
