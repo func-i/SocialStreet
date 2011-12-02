@@ -1,7 +1,7 @@
-compress_assets: off
+compress_assets: on
 javascript_compressor: yui
 embed_assets: datauri
-package_assets: off
+package_assets: on
 
 javascripts:
   mobile_init:
