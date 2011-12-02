@@ -11,13 +11,16 @@ class Jobs::Facebook::PostEventAttendance
       photo_url = 'event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
     end
 
+    message = "I'm attending this StreetMeet on SocialStreet!"
+    message = "I'm considering attending this StreetMeet on SocialStreet!" unless event.event_rsvps.maybe_attending.by_user(user).empty?
+
     options = {
       :picture => "http://www.socialstreet.com/#{photo_url}",
       :link => "http://www.socialstreet.com/events/#{event.id}",
       :name => event.title,
       :caption => "Brought to you by SocialStreet",
       :description => event.name.blank? ? "" : event.title_from_parameters(true),
-      :message => "I'm attending this StreetMeet on SocialStreet!",
+      :message => message,
       :type => "link"
     }
 

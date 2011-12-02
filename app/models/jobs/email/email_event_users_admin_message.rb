@@ -6,7 +6,7 @@ class Jobs::Email::EmailEventUsersAdminMessage
   def self.perform(event_id, message)
     event = Event.find event_id
     if event
-      event.event_rsvps.attending.each do |attendee|
+      event.event_rsvps.attending_or_maybe_attending.each do |attendee|
         UserMailer.deliver_event_admin_message_to_attendee(event, attendee, message)
       end
     end    

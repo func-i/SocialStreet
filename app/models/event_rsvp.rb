@@ -17,6 +17,7 @@ class EventRsvp < ActiveRecord::Base
   scope :by_user, lambda {|user| where(:user_id => user.id) }
 
   scope :attending, where(:status => @@statuses[:attending])
+  scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
   scope :attending_or_maybe_attending, where("event_rsvps.status IN (?)", @@statuses.except(:not_attending).except(:invited).values)
   scope :organizers, where(:organizer => true)
 end

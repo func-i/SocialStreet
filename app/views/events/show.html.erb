@@ -120,6 +120,33 @@
       <% end %>
     </ul>
   </div>
+
+  <!-- Maybe attending section -->
+
+  <% unless (maybe_attendings = @event.event_rsvps.maybe_attending).blank? %>
+    <div id="show_attendees_title" class="important-color text-shadow">
+      <% if current_user && @event.event_rsvps.maybe_attending.by_user(current_user).count > 0 %>
+        <% if @event.number_of_attendees == 1 %>
+          You Might Attend
+        <% else %>
+          <%= "You & #{pluralize(@event.number_of_attendees - 1, 'Person')} might Attend" %>
+        <% end %>
+      <% else %>
+        <%= "#{pluralize @event.number_of_attendees, 'Person'} might Attend" %>
+      <% end %>
+    </div>
+    <div id="show_attendees_holder" class="container">
+      <ul id="show_attendees_list">
+        <% maybe_attendings.each do |m_attendee| %>
+          <li class="show-attendee" id="attendee_<%= m_attendee.user_id%>">
+            <%= avatar(m_attendee.user, :size => "50x50", :class=> "show-attendee-icon") %>
+            <span class="show-attendee-name"><%= m_attendee.user.name%></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
 <% end %>
 
 
