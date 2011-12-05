@@ -92,13 +92,31 @@
   var createMapMarker;
 
   $('#create_where').live("pageshow", function() {
-    $('#map-canvas').gmap({
-      'center': currentLocation, 'zoom': 15, 'mapTypeControl' : false,
-      'navigationControl': false, 'streetViewControl': false
-    });
+    if(userAgent.match("BlackBerry") != null) {
+        $('#create_map_canvas').gmap(
+        {
+            'center': currentLocation,
+            'zoom': 15,
+            'disableDefaultUI': true,
+            'panControl': true,
+            'zoomControl': true,
+            'zoomControlOptions': {
+                style: google.maps.ZoomControlStyle.SMALL,
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        });
+    }
+    else {
+        $('#create_map_canvas').gmap(
+        {
+            'center': currentLocation,
+            'zoom': 15,
+            'disableDefaultUI': true
+        });
+    }
 
     if(undefined == createMapMarker){
-      createMap = $('#map-canvas').gmap('get', 'map');
+      createMap = $('#create_map_canvas').gmap('get', 'map');
       createMarkerManager = new MarkerManager({
         map: createMap
       });
@@ -131,7 +149,7 @@
   }
 
   function findLocation(location, marker) {
-    $('#map-canvas').gmap('search', {'location': location}, function(results, status) {
+    $('#create_map_canvas').gmap('search', {'location': location}, function(results, status) {
       if ( status === 'OK' ) {
         $.each(results[0].address_components, function(i,v) {
           if ( v.types[0] == "administrative_area_level_1" || v.types[0] == "administrative_area_level_2" ) {
@@ -219,7 +237,7 @@
     <input type="text" name="name" id="map-location" value="" placeholder="Enter an Address or Use Map" />
   </div>
 
-  <div id="map-canvas" class="full-page-map"></div>
+  <div id="create_map_canvas" class="full-page-map"></div>
 
 </div>
 
