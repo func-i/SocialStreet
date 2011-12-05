@@ -17,12 +17,29 @@ $('#list_view_link').live("click", function() {
 
 $('#map-view-explore').live("pageinit", function() {
 
-    $('#explore_map_canvas').gmap(
-    {
-        'center': map_center,
-        'zoom': 15,
-        'disableDefaultUI': true
-    });
+    if(userAgent.match("BlackBerry") != null) {
+        $('#explore_map_canvas').gmap(
+        {
+            'center': map_center,
+            'zoom': 15,
+            'disableDefaultUI': true,
+            'panControl': true,
+            'zoomControl': true,
+            'zoomControlOptions': {
+                style: google.maps.ZoomControlStyle.SMALL,
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        });
+    }
+    else {
+        $('#explore_map_canvas').gmap(
+        {
+            'center': map_center,
+            'zoom': 15,
+            'disableDefaultUI': true
+        });
+    }
+
       
     exploreMap = $('#explore_map_canvas').gmap('get', 'map');
 
