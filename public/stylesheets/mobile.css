@@ -89,6 +89,10 @@
     padding-bottom: 0px;
 }
 
+.ui-body-a #scroller_holder {
+    font-family: "Times New Roman", "Arial", "sans-serif";
+}
+
 #list_view_results img.ui-li-thumb {
     padding-top: 3px;
 }
