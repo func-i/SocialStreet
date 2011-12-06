@@ -93,26 +93,26 @@
 
   $('#create_where').live("pageshow", function() {
     if(userAgent.match("BlackBerry") != null) {
-        $('#create_map_canvas').gmap(
-        {
-            'center': currentLocation,
-            'zoom': 15,
-            'disableDefaultUI': true,
-            'panControl': true,
-            'zoomControl': true,
-            'zoomControlOptions': {
-                style: google.maps.ZoomControlStyle.SMALL,
-                position: google.maps.ControlPosition.LEFT_TOP
-            }
-        });
+      $('#create_map_canvas').gmap(
+      {
+        'center': currentLocation,
+        'zoom': 15,
+        'disableDefaultUI': true,
+        'panControl': true,
+        'zoomControl': true,
+        'zoomControlOptions': {
+          style: google.maps.ZoomControlStyle.SMALL,
+          position: google.maps.ControlPosition.RIGHT_TOP
+        }
+      });
     }
     else {
-        $('#create_map_canvas').gmap(
-        {
-            'center': currentLocation,
-            'zoom': 15,
-            'disableDefaultUI': true
-        });
+      $('#create_map_canvas').gmap(
+      {
+        'center': currentLocation,
+        'zoom': 15,
+        'disableDefaultUI': true
+      });
     }
 
     if(undefined == createMapMarker){
@@ -279,16 +279,32 @@
     var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}];
 
     $(function() {
-      $('#event_start_date').scroller({
-        wheels: wheels,
-        width: 40,
-        theme: 'ios',
-        //btnClass: 'hidden',
-        onClose: function(valueText, inst) {
 
-        }
+      if(userAgent.match("BlackBerry") != null) {
+        $('#event_start_date').scroller({
+          wheels: wheels,
+          width: 40,
+          theme: 'ios',
+          mode: 'clickpick',
+          //btnClass: 'hidden',
+          onClose: function(valueText, inst) {
 
-      });
+          }
+
+        });
+      }
+      else {
+        $('#event_start_date').scroller({
+          wheels: wheels,
+          width: 40,
+          theme: 'ios',
+          //btnClass: 'hidden',
+          onClose: function(valueText, inst) {
+
+          }
+
+        });
+      }
 
       $('#submit_button').click(function(e){
         e.preventDefault();
@@ -302,13 +318,16 @@
 
     $('#create_when').live('pageshow', function() {
       setDefaultTime();
+      setupMobiScroll();
+      //$('select').selectmenu('enable');
+    })
+
+    function setupMobiScroll() {
       $('#event_start_date').scroller('show');
       $('#scroller_holder').empty();
       $('.dw').appendTo('#scroller_holder');
       $('.dww').first().css("width", 123); //hack to make full values show up on screen
-      
-      //$('select').selectmenu('enable');
-    })
+    }
 
     function parseDate_(valueText) {
 
@@ -459,9 +478,18 @@
       <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
-    <div id="scroller_holder">
+    <% if request.user_agent =~ /BlackBerry/ %>
 
-    </div>
+      <div id="bb_create_when">
+        I'm a BlackBerry!
+      </div>
+
+    <% else %>
+
+      <div id="scroller_holder">
+
+      </div>
+    <% end %>
 
     <%= form.hidden_field :start_date, :class => "mobiscroll"%>
     <%= form.hidden_field :end_date %>
