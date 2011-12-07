@@ -280,35 +280,28 @@
 
     $(function() {
 
-      if(userAgent.match("BlackBerry") != null) {
-        $('#event_start_date').scroller({
-          wheels: wheels,
-          width: 40,
-          theme: 'ios',
-          mode: 'clickpick',
-          //btnClass: 'hidden',
-          onClose: function(valueText, inst) {
+      $('#event_start_date').scroller({
+        wheels: wheels,
+        width: 40,
+        theme: 'ios',
+        //btnClass: 'hidden',
+        onClose: function(valueText, inst) {
 
-          }
+        }
 
-        });
-      }
-      else {
-        $('#event_start_date').scroller({
-          wheels: wheels,
-          width: 40,
-          theme: 'ios',
-          //btnClass: 'hidden',
-          onClose: function(valueText, inst) {
-
-          }
-
-        });
-      }
+      });
 
       $('#submit_button').click(function(e){
         e.preventDefault();
-        updateCreateTimes();
+
+        if(userAgent.match("BlackBerry") == null) {
+          updateCreateTimes();
+        }
+
+        else {
+          updateBBCreateTimes();
+        }
+
         $('#submit_button').addClass("ui-disabled");
         $('#submit_button span').text("Submitting ... ");
         $(this).closest('form').submit();
@@ -317,10 +310,21 @@
     })
 
     $('#create_when').live('pageshow', function() {
-      setDefaultTime();
-      setupMobiScroll();
+      if(userAgent.match("BlackBerry") == null) {
+        setDefaultTime();
+        setupMobiScroll();
+      }
+      // else if device is blackberry, setup the input to have event start time
+      else {
+        setBBDefaultTime();
+      }
       //$('select').selectmenu('enable');
     })
+
+    function setBBDefaultTime() {
+      var bb_strdtime = '<%= @event.start_date %>';
+      $('#bb_start_date').val(bb_strdtime);
+    }
 
     function setupMobiScroll() {
       $('#event_start_date').scroller('show');
@@ -415,8 +419,6 @@
         data[3] = "AM";
       }
 
-      console.log("data ", data);
-
       $('#event_start_date').scroller('setValue', data);
     }
 
@@ -468,6 +470,40 @@
       
     }
 
+    function updateBBCreateTimes() {
+      var bbStartDtime = $('#bb_start_datetime').val();
+      var bbSplitDtime = bbStartDtime.split("T");
+      var bbStrDate = bbSplitDtime[0];
+      var bbStrTime = bbSplitDtime[1].split(":");
+      var bbStartHour = bbStrTime[0];
+      var bbStartMin  = bbStrTime[1];
+
+
+      var bbStartDate = new Date(getDateFromFormat(bbStrDate, 'yyyy-mm-dd'));
+      bbStartDate.setHours(bbStartHour);
+      bbStartDate.setMinutes(bbStartMin);
+
+      duration = $('#duration').val();
+      duration_size = $('#duration_size').val();
+
+      if(duration_size == "Minutes"){
+        duration = duration*60000;
+      }
+      else if(duration_size == "Hours"){
+        duration = duration*3600000;
+      }
+      else if(duration_size == "Days"){
+        duration = duration*86400000;
+      }
+
+      var bbEndDate = new Date(bbStartDate.getTime());
+      bbEndDate.setMilliseconds(bbStartDate.getMilliseconds() + duration);
+
+      $('#event_start_date').val(ssFormatDate(bbStartDate, 'yyyy/MM/dd HH:mm'));
+      $('#event_end_date').val(ssFormatDate(bbEndDate, 'yyyy/MM/dd HH:mm'));
+      
+    }
+
   </script>
 
   <div data-role="content">
@@ -480,8 +516,9 @@
 
     <% if request.user_agent =~ /BlackBerry/ %>
 
-      <div id="bb_create_when">
-        I'm a BlackBerry!
+      <div data-role="fieldcontain">
+        <label for="bb_start_date">Start Date: </label>
+        <input type="datetime-local" id="bb_start_datetime" value=""/>
       </div>
 
     <% else %>
