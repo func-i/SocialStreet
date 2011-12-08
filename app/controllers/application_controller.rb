@@ -197,7 +197,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_browser    
-    redirect_to invalid_browser_path if request.env['HTTP_USER_AGENT'] =~ /MSIE 6.0|MSIE 7.0/
+    redirect_to invalid_browser_path if request.env['HTTP_USER_AGENT'] =~ /MSIE 6.0|MSIE 7.0/ && !mobile_device?
   end
 
   private
