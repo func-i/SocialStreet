@@ -274,13 +274,3 @@
 { display: inline-block; background: url('../images/event_types/saa_small.png') no-repeat; width: 55px; height: 55px; }
 .event-type-saa-medium-sprite
 { display: inline-block; background: url('../images/event_types/saa_medium.png') no-repeat; width: 70px; height: 70px;}
-.event-type-fundraising-small-sprite { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat;  background-position: -275px -550px; width: 55px; height: 55px; }
-.event-type-fundraising-medium-sprite { display: inline-block; background: url('../images/event_types/medium_sprite.png') no-repeat; background-position: -350px -700px; width: 70px; height: 70px; }
-.event-type-volunteer-small-sprite { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat;  background-position: -330px -550px; width: 55px; height: 55px; }
-.event-type-volunteer-medium-sprite { display: inline-block; background: url('../images/event_types/medium_sprite.png') no-repeat; background-position: -420px -700px; width: 70px; height: 70px; }
-.event-type-skiing-small-sprite { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat;  background-position: -385px -550px; width: 55px; height: 55px; }
-.event-type-skiing-medium-sprite { display: inline-block; background: url('../images/event_types/medium_sprite.png') no-repeat; background-position: -490px -700px; width: 70px; height: 70px; }
-.event-type-snowboarding-small-sprite { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat;  background-position: -440px -550px; width: 55px; height: 55px; }
-.event-type-snowboarding-medium-sprite { display: inline-block; background: url('../images/event_types/medium_sprite.png') no-repeat; background-position: -560px -700px; width: 70px; height: 70px; }
-.event-type-comedy-small-sprite { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat;  background-position: -495px -550px; width: 55px; height: 55px; }
-.event-type-comedy-medium-sprite { display: inline-block; background: url('../images/event_types/medium_sprite.png') no-repeat; background-position: -630px -700px; width: 70px; height: 70px; }
