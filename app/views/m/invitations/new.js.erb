@@ -1,0 +1,32 @@
+//$('#invite-users-list').selectmenu();
+
+if($('#invite-users-list').length > 0){
+<% if current_user%>
+  <% if current_user.try(:facebook_friends_imports) %>
+    <% if params[:page] %>
+      $('#invite-users-list').append('<%= escape_javascript(render('invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections})) %>');
+    <% else %>
+      var pageless = getInviteUsersPageless();
+      if(null == pageless) {
+      makeInviteUsersPageless();
+      }
+      else{
+      pageless.reset(
+      {
+      totalPage: <%=  @num_pages %>,
+      currentPage: 1
+      });
+      }
+
+      $('#invite-users-list').html('<%= escape_javascript render 'invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections} %>');
+      var api = $('#user_holder_for_invitation').data('jsp');
+      if(api)
+      api.scrollToY(0);
+    <% end %>
+      $('#invite-users-page').trigger('create');
+      $('#invite-users-page').trigger('updatelayout');
+  <% else %>
+    getInvitationUsers();
+  <% end %>
+<% end %>
+}

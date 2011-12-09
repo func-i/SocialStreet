@@ -9,9 +9,9 @@ class M::InvitationsController < MobileController
     if(current_user)
       @invited_user_connections = current_user.connections.includes(:to_user).order("connections.strength DESC NULLS LAST, users.last_name ASC")
 
-      #@num_pages = (@invited_user_connections.count / USERS_PER_PAGE).ceil if 1 == page
+      @num_pages = (@invited_user_connections.count / USERS_PER_PAGE).ceil if 1 == page
 
-      #@invited_user_connections = @invited_user_connections.limit(USERS_PER_PAGE).offset(offset).all
+      @invited_user_connections = @invited_user_connections.limit(USERS_PER_PAGE).offset(offset).all
     end
 
     @event = Event.find params[:event_id]

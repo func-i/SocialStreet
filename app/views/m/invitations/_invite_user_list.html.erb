@@ -1,0 +1,6 @@
+<% @invited_user_connections.each do |connection| %>
+  <%= check_box_tag "user_ids[]", connection.to_user.id, false, :class => "custom", :id => "user_#{connection.to_user.id}"  %>
+  <label for="user_<%=connection.to_user.id%>"><%= avatar(connection.to_user, :exclude_link => true, :size => "40x40") %>
+    <span><%= connection.to_user.name %></span>
+  </label>
+<% end %>
