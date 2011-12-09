@@ -61,7 +61,7 @@ class InvitationsController < ApplicationController
 #    if (!to_user || !to_user.sign_in_count.zero?) && (email || to_user.email)
  #     Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
  #   elsif to_user
-      Resque.enqueue(Jobs::Facebook::PostEventInvitation, from_user.id, to_user.id, @event.id)
+      Resque.enqueue(Jobs::Facebook::PostEventInvitation, from_user.id, to_user.id, @event.id) if to_user
 #    end
   end
 end
