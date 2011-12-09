@@ -42,7 +42,7 @@ $(function(){
     });
     
     $('#event_wall_text_field').autoResize({
-        extraSpace: 5
+        extraSpace: 14
     });
     
     $('#send_message_button').live('click', function() {
