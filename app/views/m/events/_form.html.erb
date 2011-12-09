@@ -92,13 +92,31 @@
   var createMapMarker;
 
   $('#create_where').live("pageshow", function() {
-    $('#map-canvas').gmap({
-      'center': currentLocation, 'zoom': 15, 'mapTypeControl' : false,
-      'navigationControl': false, 'streetViewControl': false
-    });
+    if(userAgent.match("BlackBerry") != null) {
+      $('#create_map_canvas').gmap(
+      {
+        'center': currentLocation,
+        'zoom': 15,
+        'disableDefaultUI': true,
+        'panControl': true,
+        'zoomControl': true,
+        'zoomControlOptions': {
+          style: google.maps.ZoomControlStyle.SMALL,
+          position: google.maps.ControlPosition.RIGHT_TOP
+        }
+      });
+    }
+    else {
+      $('#create_map_canvas').gmap(
+      {
+        'center': currentLocation,
+        'zoom': 15,
+        'disableDefaultUI': true
+      });
+    }
 
     if(undefined == createMapMarker){
-      createMap = $('#map-canvas').gmap('get', 'map');
+      createMap = $('#create_map_canvas').gmap('get', 'map');
       createMarkerManager = new MarkerManager({
         map: createMap
       });
@@ -131,7 +149,7 @@
   }
 
   function findLocation(location, marker) {
-    $('#map-canvas').gmap('search', {'location': location}, function(results, status) {
+    $('#create_map_canvas').gmap('search', {'location': location}, function(results, status) {
       if ( status === 'OK' ) {
         $.each(results[0].address_components, function(i,v) {
           if ( v.types[0] == "administrative_area_level_1" || v.types[0] == "administrative_area_level_2" ) {
@@ -219,7 +237,7 @@
     <input type="text" name="name" id="map-location" value="" placeholder="Enter an Address or Use Map" />
   </div>
 
-  <div id="map-canvas" class="full-page-map"></div>
+  <div id="create_map_canvas" class="full-page-map"></div>
 
 </div>
 
@@ -261,6 +279,7 @@
     var wheels = [{"Date" : dateHsh},{"Hour" : hourHsh, "Minute" : minuteHsh, "" : {AM : "AM", PM: "PM"}}];
 
     $(function() {
+
       $('#event_start_date').scroller({
         wheels: wheels,
         width: 40,
@@ -274,7 +293,15 @@
 
       $('#submit_button').click(function(e){
         e.preventDefault();
-        updateCreateTimes();
+
+        if(userAgent.match("BlackBerry") == null) {
+          updateCreateTimes();
+        }
+
+        else {
+          updateBBCreateTimes();
+        }
+
         $('#submit_button').addClass("ui-disabled");
         $('#submit_button span').text("Submitting ... ");
         $(this).closest('form').submit();
@@ -283,14 +310,28 @@
     })
 
     $('#create_when').live('pageshow', function() {
-      setDefaultTime();
+      if(userAgent.match("BlackBerry") == null) {
+        setDefaultTime();
+        setupMobiScroll();
+      }
+      // else if device is blackberry, setup the input to have event start time
+      else {
+        setBBDefaultTime();
+      }
+      //$('select').selectmenu('enable');
+    })
+
+    function setBBDefaultTime() {
+      var bb_strdtime = '<%= @event.start_date %>';
+      $('#bb_start_date').val(bb_strdtime);
+    }
+
+    function setupMobiScroll() {
       $('#event_start_date').scroller('show');
       $('#scroller_holder').empty();
       $('.dw').appendTo('#scroller_holder');
       $('.dww').first().css("width", 123); //hack to make full values show up on screen
-      
-      //$('select').selectmenu('enable');
-    })
+    }
 
     function parseDate_(valueText) {
 
@@ -378,8 +419,6 @@
         data[3] = "AM";
       }
 
-      console.log("data ", data);
-
       $('#event_start_date').scroller('setValue', data);
     }
 
@@ -431,6 +470,40 @@
       
     }
 
+    function updateBBCreateTimes() {
+      var bbStartDtime = $('#bb_start_datetime').val();
+      var bbSplitDtime = bbStartDtime.split("T");
+      var bbStrDate = bbSplitDtime[0];
+      var bbStrTime = bbSplitDtime[1].split(":");
+      var bbStartHour = bbStrTime[0];
+      var bbStartMin  = bbStrTime[1];
+
+
+      var bbStartDate = new Date(getDateFromFormat(bbStrDate, 'yyyy-mm-dd'));
+      bbStartDate.setHours(bbStartHour);
+      bbStartDate.setMinutes(bbStartMin);
+
+      duration = $('#duration').val();
+      duration_size = $('#duration_size').val();
+
+      if(duration_size == "Minutes"){
+        duration = duration*60000;
+      }
+      else if(duration_size == "Hours"){
+        duration = duration*3600000;
+      }
+      else if(duration_size == "Days"){
+        duration = duration*86400000;
+      }
+
+      var bbEndDate = new Date(bbStartDate.getTime());
+      bbEndDate.setMilliseconds(bbStartDate.getMilliseconds() + duration);
+
+      $('#event_start_date').val(ssFormatDate(bbStartDate, 'yyyy/MM/dd HH:mm'));
+      $('#event_end_date').val(ssFormatDate(bbEndDate, 'yyyy/MM/dd HH:mm'));
+      
+    }
+
   </script>
 
   <div data-role="content">
@@ -441,9 +514,19 @@
       <input type="hidden" class="event-group-input" id="event_group_input_<%=groupID%>" name="group[<%=groupID%>]" value="<%= event_group.can_attend ? 2 : event_group.can_view ? 1 : 0%>"/>
     <% end %>
 
-    <div id="scroller_holder">
+    <% if request.user_agent =~ /BlackBerry/ %>
 
-    </div>
+      <div data-role="fieldcontain">
+        <label for="bb_start_date">Start Date: </label>
+        <input type="datetime-local" id="bb_start_datetime" value=""/>
+      </div>
+
+    <% else %>
+
+      <div id="scroller_holder">
+
+      </div>
+    <% end %>
 
     <%= form.hidden_field :start_date, :class => "mobiscroll"%>
     <%= form.hidden_field :end_date %>

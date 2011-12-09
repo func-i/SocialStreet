@@ -1,0 +1,19 @@
+/* 
+    Document   : ie8
+    Created on : 9-Dec-2011, 3:08:07 PM
+    Author     : Josh
+    Description:
+        Purpose of the stylesheet follows.
+
+        To provide styles for IE8 compatibility only.  This will have to overwrites
+        IE styles from ie.css
+*/
+
+.header-right.not-signed #how_it_works_btn {
+    margin-right: 125px;
+}
+
+.header-right.not-signed .how-it-works {
+    margin-right: 125px;
+}
+
