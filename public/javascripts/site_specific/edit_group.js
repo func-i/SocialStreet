@@ -9,7 +9,7 @@ $(function() {
     }
 
     $.each($('#group_form textarea'), function(i, ele) {
-        console.log(countLines(ele));
+        //console.log(countLines(ele));
         $(ele).attr('rows', countLines(ele) > 1 ? countLines(ele) + 1 : 1);
     });
     
