@@ -1,8 +1,47 @@
+<style>
+  #tos h2{
+    font-size:48px;
+    text-align: center;
+    margin:30px;
+    font-weight: bold;
+    color: #FFC233;
+  }
+  #tos h4{
+    font-size:24px;
+    margin:5px;
+    text-align: center;
+    font-weight: bold;
+    color: #FFC233;
+  }
+
+  #tos ol{
+    list-style: decimal inside none;
+  }
+  #tos p{
+    margin:5px;
+  }
+  #tos ul{
+    list-style: disc inside none;
+    margin:10px;
+  }
+  #tos ol li{
+    margin:10px;
+  }
+  #tos ol lh{
+    font-size:18px;
+    color: #FFC233;
+  }
+  #tos a, #tos span{
+    text-decoration: underline;
+    color:#FFC233;
+  }
+
+</style>
+
 <%content_for :center_pane do%>
   <div id="scroller" class="scroll-pane container" style="overflow: auto; ">
-    <div style="padding:10px; list-style:decimal; color:white;">
-      <h1>Terms and Services</h1>
-      <h2>Welcome to SocialStreet!</h2>
+    <div id="tos" style="padding:10px; list-style:decimal; color:white;">
+      <h4>Welcome to SocialStreet!</h4>
 
       <p>SocialStreet allows you to connect with the human world around you by meeting,
         socializing and networking with individuals who share the same interests, location, and
@@ -14,7 +53,7 @@
         that you do not use SocialStreet to break any laws. SocialStreet relies on you to ensure
         its activities are safe, enjoyable and respectful.</p>
 
-      <p>Please use the feedback link [NTD:link] to respond to a post on the SocialStreet website
+      <p>Please use the <span class="feedback-link" style="cursor:pointer;">feedback link</span> to respond to a post on the SocialStreet website
         that you believe violates our terms of service or any other disrespectful or illegal activity
         related to SocialStreet’s services.</p>
 
@@ -40,8 +79,8 @@
               acceptance is expressly limited to these terms. </li>
             <li> The Website is available only to individuals who are at least 13 years old.
               Privacy</li></ol></li>
-        <li>Your privacy is very important to SocialStreet. We designed our Privacy Policy
-          [NTD:link] to make important disclosures about how we collect, disclose and can use
+        <li>Your privacy is very important to SocialStreet. We designed our <span class="nav-link" data-ajax-href="/authentications/show_privacy">Privacy Policy</span>
+          to make important disclosures about how we collect, disclose and can use
           your content and information. We encourage you to read the Privacy Policy, and to use
           it to help make informed decisions. In particular, we encourage you to be aware of what
           information you are sharing with SocialStreet and what information SocialStreet is
@@ -241,8 +280,9 @@
         <li>This Agreement will be binding upon and will inure to the beneﬁt of the parties, their
           successors and permitted assigns.</li>
       </ol>
-      © Copyright SocialStreet 2011We are grateful to Automattic Inc. [NTD:link] for making their privacy policy available
-      under a Creative Commons Sharealike license [NTD:link].
+      © Copyright SocialStreet 2011 <br/>
+      We are grateful to <%=link_to 'Automattic Inc.', 'http://automattic.com/'%> for making their privacy policy available
+      under a Creative Commons Sharealike license.
     </div>
   </div>
 <% end %>

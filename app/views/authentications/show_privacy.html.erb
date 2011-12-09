@@ -1,19 +1,50 @@
 <%content_for :center_pane do%>
+  <style>
+    #privacy h2{
+      font-size:48px;
+      text-align: center;
+      margin:30px;
+      font-weight: bold;
+      color: #FFC233;
+    }
+    #privacy ol{
+      list-style: decimal inside none;
+    }
+    #privacy ul{
+      list-style: disc inside none;
+      margin:10px;
+    }
+    #privacy ol li{
+      margin:10px;
+    }
+    #privacy ol lh{
+      font-size:18px;
+      color: #FFC233;
+    }
+    #privacy a, #privacy span{
+      text-decoration: underline;
+      color:#FFC233;
+    }
+  </style>
+
   <div id="scroller" class="scroll-pane container" style="overflow: auto">
-    <div style="padding:10px;list-style:decimal;color:white;">
+    <div id="privacy" style="padding:10px;list-style:decimal;color:white;">
       Your privacy is of paramount importance to SocialStreet. Our privacy policy is based on
       the following principles:
-      We only ask for information that we need in order to make SocialStreet function
-      and in order to improve it.
-      We don’t share your information with anyone except to comply with the law,
-      develop our products, or protect our rights.
-      We don’t store personal information unless required for the on-going operation of
-      one of our services.
-      If you have questions about deleting or correcting your personal data please contact us
-      here [NTD:link]. Please be aware that some of this information is drawn from third party
+      <ul>
+        <li>We only ask for information that we need in order to make SocialStreet function
+          and in order to improve it.</li>
+        <li>We don’t share your information with anyone except to comply with the law,
+          develop our products, or protect our rights.</li>
+        <li>We don’t store personal information unless required for the on-going operation of
+          one of our services.</li>
+      </ul>
+      If you have questions about deleting or correcting your personal data please <span class="feedback-link" style="cursor:pointer;">Contact Us here.</span>. Please be aware that some of this information is drawn from third party
       services when you sign up for a SocialStreet account and that this information can only
       be changed via these services.
+
       <h2>Privacy Policy</h2>
+
       <ol>
         <li>  It  is 1844636 Ontario Inc.’s (“SocialStreet”) policy to respect your privacy regarding
           any information we may collect while operating our websites. </li>
@@ -96,7 +127,7 @@
           address, SocialStreet may occasionally send you an email to tell you about new
           features, solicit your feedback, or keep you up to date with what’s going on at
           SocialStreet.</li>
-        <li>If you send us a request (for example via our feedback link [NTD:link]), we reserve
+        <li>If you send us a request (for example via our <span class="feedback-link" style="cursor:pointer;">Feedback Link</span>), we reserve
           the right to publish it after removing any identifying information in order to help us clarify
           or respond to your request or to help us support other users.</li>
         <li>SocialStreet takes all measures reasonably necessary to protect against the
@@ -139,9 +170,9 @@
         <li>Your continued use of this site after any change in this Privacy Policy will constitute
           your acceptance of such change.</li>
       </ol>
-      © Copyright SocialStreet 2011
-      We are grateful to Automattic Inc. [NTD:link] for making their privacy policy available
-      under a Creative Commons Sharealike license [NTD:link].
+      © Copyright SocialStreet 2011<br/>
+      We are grateful to <%=link_to 'Automattic Inc.', 'http://automattic.com/'%> for making their privacy policy available
+      under a Creative Commons Sharealike license.
     </div>
   </div>
 <% end %>

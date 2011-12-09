@@ -88,7 +88,7 @@ $(function() {
         closeHowItWorks();
     });
 
-    $('#feedback_btn').click(function(){
+    $('.feedback-link').click(function(){
         openFeedback();
     });
     $('#close_feedback').click(function(){
