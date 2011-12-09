@@ -352,12 +352,13 @@ function capHeightContainer(){
 
         var bottomOffset = $(ele).data('expandBottomOffset');
         bottomOffset = bottomOffset || 0;
+        
+        //if(height > (maxHeight - bottomOffset))
+        //    height = maxHeight - bottomOffset;
 
-
-        if(height > (maxHeight - bottomOffset))
-            height = maxHeight - bottomOffset;
-
-        $myElem.height(height);
+        //$myElem.height(height);
+        
+        $myElem.height(maxHeight - bottomOffset);
     });
 }
 
