@@ -52,6 +52,8 @@ stylesheets:
     - public/stylesheets/ie.css
   ie7: 
     - public/stylesheets/ie7.css
+  ie8:
+    - public/stylesheets/ie8.css
   mobile:
     - public/stylesheets/mobiscroll-1.5.css
     - public/stylesheets/event_type_sprite.css
