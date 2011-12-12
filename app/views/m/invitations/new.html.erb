@@ -1,21 +1,20 @@
-<div data-role="page" id="invite-users-page">
-  <div data-role="header" data-position="inline">
+<div data-role="page" id="invite-users-page" class="wallpaper_page">
+  <div data-role="header" data-position="fixed">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
   </div>
 
-  <div data-role="content">
+  <div data-role="content" id="invite_pageless_container">
 
-      <%= form_tag m_event_invitations_path(@event), :method => :post, :id => "invite-form" do %>
-        <fieldset data-role="controlgroup" id="invite-users-list">
-          <% @invited_user_connections.each do |connection| %>
-            <%= check_box_tag "user_ids[]", connection.to_user.id, false, :class => "custom", :id => "user_#{connection.to_user.id}"  %>
-            <label for="user_<%=connection.to_user.id%>"><%= avatar(connection.to_user, :exclude_link => true, :size => "40x40") %>
-              <span><%= connection.to_user.name %></span>
-            </label>
-          <% end %>
-        </fieldset>
-      <% end %>
+    <%= form_tag search_m_event_invitations_path(@event), :method => :get, :remote => true, :id => "invite_user_search_form", "data-ajax" => "false"  do %>
+      <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a Name ... " %>
+    <% end %>
+
+    <%= form_tag m_event_invitations_path(@event), :method => :post, :id => "invite-form" do %>
+      <fieldset data-role="controlgroup" id="invite-users-list">
+        <%= render :partial => "m/invitations/invite_user_list.html", :locals=>{:user_list => @invited_user_connections, :first_insert => true} %>
+      </fieldset>
+    <% end %>
   </div>
 
   <div data-role="footer" data-position="fixed">
@@ -25,14 +24,46 @@
 </div>
 
 <script type="text/javascript">
-  //pageless not currently working
 
-  var timeout = null;
-  var checked_array = [];
-  var c;
-  var s;
+  var inviteUsersPageless = null;
+  var refreshInviteListTimer = null;
+
+  function makeInviteUsersPageless() {
+    inviteUsersPageless = new Pageless({
+      container: window,
+      loaderContainer: '#invite-users-list',
+      totalPages: <%= @num_pages %>,
+      currentPage: 1,
+      url: '<%=new_m_event_invitation_path(@event)%>'
+    });
+    inviteUsersPageless.start();
+  }
+
+  function getInviteUsersPageless() {
+    return inviteUsersPageless;
+  }
+
+  $('#invite-users-page').live("pageshow", function() {
+    makeInviteUsersPageless();
+  });
 
   $('#invite_submit').live('click', function() {
     $('#invite-form').submit();
   })
+
+  $('#invite_user_text_field').keydown(function(e){
+    if(e.keyCode == 13 && e.target.value.length > 0){
+      refreshInviteUserList();
+    }
+  });
+
+  function refreshInviteUserList() {
+    if (refreshInviteListTimer) {
+      clearTimeout(refreshInviteListTimer);
+      delete refreshInviteListTimer;
+    }
+    refreshInviteListTimer = setTimeout(function() {
+      $('#invite_user_search_form').submit();
+    }, 250);
+  }
 </script>
