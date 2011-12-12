@@ -1,0 +1,15 @@
+
+<% if current_user && current_user.try(:facebook_friends_imports) %>
+  <% (@invited_user_connections || []).each do |connection| %>
+    if($('#user_<%=connection.to_user_id%>').length == 0){
+    $('#invite-users-list .end-pageless').after('<%= escape_javascript(render(:partial =>'m/invitations/invite_user_list.html', :locals => {:user_list => [connection] })) %>');
+    }
+    else{
+    $('#invite-users-list .end-pageless').after($('#user_<%=connection.to_user_id%>').parents('.invitation'));
+    }
+    $('.end-pageless').removeClass('end-pageless');
+    $('#user_<%=connection.to_user_id%>').parents('.invitation').addClass('end-pageless');
+  <% end %>
+  $('#invite-users-page').trigger('create');
+  $('#invite-users-page').trigger('updatelayout');
+<% end %>

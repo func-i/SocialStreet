@@ -29,7 +29,7 @@
           <div class="ui-block-a"><%= link_to "Attend", [:new, :m, @event, :event_rsvp], {'data-role' => 'button', 'data-theme' => 'e', 'data-ajax' => false} %></div>
         <% end %>
 
-        <div class="ui-block-b"><%= link_to "Invite People", [:new, :m, @event, :invitation], {'data-role' => 'button', 'data-theme' => 'b'} %></div>
+        <div class="ui-block-b"><%= link_to "Invite", [:new, :m, @event, :invitation], {'id' => 'invite_users_btn', 'data-role' => 'button', 'data-theme' => 'b', 'data-ajax' => false} %></div>
       </fieldset>
 
     </div>
@@ -81,7 +81,14 @@
       $(this).closest('form').submit();
     });
 
-    $('#event_wall_form textarea').bind("keyup change keypress", function(e){
+    $('#invite_users_btn').live('click', function(e) {
+
+      //window.location.href = '/m/events/new';
+      window.location.href = (this.href);
+      e.preventDefault();
+    });
+
+    $('#event_wall_form textarea').bind("keydown change keypress", function(e){
       if(e.keyCode == 13 && !e.shiftKey) {
         $('#event_wall_form').submit();
         $(this).val('');

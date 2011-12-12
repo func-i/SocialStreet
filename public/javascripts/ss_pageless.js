@@ -24,11 +24,11 @@ Pageless.prototype.init = function(opt_options)
         options['loaderContainer'] = this.loaderContainer_ || options['container']
     }
     if(options['loaderHtml'] == undefined){
-        options['loaderHtml'] = this.loaderHtml_ || '\
+        options['loaderHtml'] = this.loaderHtml_ || ''/*'\
             <div id="pageless-loader" style="display:none;text-align:center;width:100%;">\
             <div class="msg" style="color:#e9e9e9;font-size:2em">Loading...</div>\
             <img src="' + '/images/load.gif' + '" alt="loading more results" style="margin:10px auto" />\
-            </div>';
+            </div>'*/;
     }
     if (options['url'] == undefined) {
         options['url'] = this.url_ || "";//TODO
@@ -77,14 +77,14 @@ Pageless.prototype.loading = function (bool) {
 
 Pageless.prototype.distanceToBottom = function () {
     if(this.container_ === window){
-        return $('#end_of_body').offset().top
+        /*return $('#end_of_body').offset().top
         + $('#end_of_body').height()
         - window.innerHeight
-        - document.body.scrollTop;
+        - document.body.scrollTop;*/
 
-    /*        return $(document).height()
+            return $(document).height()
         - this.container_dom_.scrollTop()
-        - this.container_dom_.height();*/
+        - this.container_dom_.height();
     }
     else{
         if(this.iScroller_){
