@@ -93,6 +93,7 @@ function refreshResults() {
 $('#explore_filter').live("pageshow",function() {
     var keyword = "";
     $('#filter_no_results').hide();
+    $('.synonym').addClass('hidden');
     $('input[data-type="search"]').val("");
 
     $('.ui-input-text').live('keyup', function(){
@@ -101,7 +102,7 @@ $('#explore_filter').live("pageshow",function() {
         if(keyword.length == 0){
             //reset results
             $('#filter_no_results').hide();
-            $('.synonym').addClass('hidden');
+            $('.synonym').hide();
         }
         else{
             var exactMatch = false;
