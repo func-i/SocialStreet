@@ -13,19 +13,39 @@
     })
 
     function captureKeyword(){
-      keyword = $('.ui-input-text').first().val();
+      keyword = $.trim($('.ui-input-text').first().val());
       $('#no_results a span').text(keyword);
-      if($('.result:visible').length == 1) {
-        if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
+      if(keyword.length == 0){
+        //reset results
+        $('#no_results').hide();
+        $('.synonym').addClass('hidden');
+      }
+      else{
+        var exactMatch = false;
+        var trimmedText = unescape(keyword);
+        var regEx = new RegExp(trimmedText, "i");
+        var lowerCaseText = trimmedText.toLowerCase();
+
+        $.each($('.result'), function(index, val){
+          $et = $(val);
+          if($.trim($et.text()).match(regEx) == null){
+            $et.hide();
+          }
+          else{
+            $et.show();
+
+            if($.trim($et.text()).toLowerCase() == lowerCaseText){
+              exactMatch = true;
+            }
+          }
+        });
+
+        if(exactMatch){
           $('#no_results').hide();
         }
-
-      }
-      else if ($('.ui-input-text').first().val().length == 0){
-        $('#no_results').hide();
-      }
-      else {
-        $('#no_results').show();
+        else{
+          $('#no_results').show();
+        }
       }
     }
 
@@ -55,9 +75,12 @@
           <span></span>
         <% end  %>
       </li>
-      <% @event_types.each do |event|%>
-        <li class="result">
-          <%= link_to image_tag(event.image_path, :size => "45x45") + event.name, "#create_where" %>
+      <% @event_types.each do |et|%>
+        <li class="result <%="synonym" if et.synonym_id != et.id%>" style="<%="display:none" if et.synonym_id != et.id %>">
+          <%= link_to '#create_where',:style => "padding:0;" do %>
+            <div class="event-type-<%=sprite_class_name_for_event_type(et)%>-small-sprite" style="float:left"></div>
+            <span style="float:left;margin:18.5px 0 0 5px;"><%=et.name%></span>
+          <% end %>
         </li>
 
       <% end %>

@@ -13,12 +13,12 @@
             </div>
           <% end %>
           <div id="search_results">
-            <%= render :partial => "/explore/results", :locals => { :results => @events } %>
+            <%= render :partial => "/explore/results", :locals => { :results => @results } %>
           </div>
         </div>
         <%= render :partial => "/explore/suggested_explore_actions" %>
       </div>
-    </div>
+    </div>   
   </div>
 <% end %>
 

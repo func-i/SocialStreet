@@ -96,20 +96,39 @@ $('#explore_filter').live("pageshow",function() {
     $('input[data-type="search"]').val("");
 
     $('.ui-input-text').live('keyup', function(){
-        keyword = $(this).val();
+        keyword = $.trim($(this).val());
         $('#filter_no_results a span').text(keyword);
-        if($('.result:visible').length == 1) {
-            if($('.result:visible a').text() == keyword || $('.result:visible a').text().toLowerCase() == keyword){
+        if(keyword.length == 0){
+            //reset results
+            $('#filter_no_results').hide();
+            $('.synonym').addClass('hidden');
+        }
+        else{
+            var exactMatch = false;
+            var trimmedText = unescape(keyword);
+            var regEx = new RegExp(trimmedText, "i");
+            var lowerCaseText = trimmedText.toLowerCase();
+
+            $.each($('.result'), function(index, val){
+                $et = $(val);
+                if($.trim($et.text()).match(regEx) == null){
+                    $et.hide();
+                }
+                else{
+                    $et.show();
+
+                    if($.trim($et.text()).toLowerCase() == lowerCaseText){
+                        exactMatch = true;
+                    }
+                }
+            });
+
+            if(exactMatch){
                 $('#filter_no_results').hide();
             }
-
-        }
-        else if ($(this).val().length == 0){
-            $('#filter_no_results').hide();
-        }
-        else
-        {
-            $('#filter_no_results').show();
+            else{
+                $('#filter_no_results').show();
+            }
         }
     });
 });
