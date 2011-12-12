@@ -2,16 +2,19 @@
   <div data-role="header" data-position="fixed">
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
     <h1><%=link_to "SocialStreet", '/m'%></h1>
-    <%#= link_to 'Invite', '#', {'id' => 'invite_submit', 'data-role' => 'button', 'data-theme' => 'a'}%>
   </div>
 
   <div data-role="content" id="invite_pageless_container">
 
-      <%= form_tag m_event_invitations_path(@event), :method => :post, :id => "invite-form" do %>
-        <fieldset data-role="controlgroup" id="invite-users-list">
-          <%= render "invite_user_list" %>
-        </fieldset>
-      <% end %>
+    <%= form_tag search_m_event_invitations_path(@event), :method => :get, :remote => true, :id => "invite_user_search_form", "data-ajax" => "false"  do %>
+      <%= text_field_tag "user_search", params[:user_search], :id => "invite_user_text_field", :placeholder => "Enter a Name ... " %>
+    <% end %>
+
+    <%= form_tag m_event_invitations_path(@event), :method => :post, :id => "invite-form" do %>
+      <fieldset data-role="controlgroup" id="invite-users-list">
+        <%= render :partial => "m/invitations/invite_user_list.html", :locals=>{:user_list => @invited_user_connections, :first_insert => true} %>
+      </fieldset>
+    <% end %>
   </div>
 
   <div data-role="footer" data-position="fixed">
@@ -21,9 +24,9 @@
 </div>
 
 <script type="text/javascript">
-  //pageless not currently working
 
   var inviteUsersPageless = null;
+  var refreshInviteListTimer = null;
 
   function makeInviteUsersPageless() {
     inviteUsersPageless = new Pageless({
@@ -47,4 +50,20 @@
   $('#invite_submit').live('click', function() {
     $('#invite-form').submit();
   })
+
+  $('#invite_user_text_field').keydown(function(e){
+    if(e.keyCode == 13 && e.target.value.length > 0){
+      refreshInviteUserList();
+    }
+  });
+
+  function refreshInviteUserList() {
+    if (refreshInviteListTimer) {
+      clearTimeout(refreshInviteListTimer);
+      delete refreshInviteListTimer;
+    }
+    refreshInviteListTimer = setTimeout(function() {
+      $('#invite_user_search_form').submit();
+    }, 250);
+  }
 </script>

@@ -87,7 +87,11 @@ SocialStreetReborn::Application.routes.draw do
     #get 'events/new' => 'events#new', :as => 'create'
     resources :events do
       resources :event_rsvps, :only => [:new, :edit]
-      resources :invitations, :only => [:new, :create]
+      resources :invitations, :only => [:new, :create] do
+        collection do
+          get "search"
+        end
+      end
       resources :comments, :only => [:create]
     end    
   end

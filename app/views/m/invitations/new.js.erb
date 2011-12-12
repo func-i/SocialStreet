@@ -1,32 +1,15 @@
-//$('#invite-users-list').selectmenu();
 
-if($('#invite-users-list').length > 0){
-<% if current_user%>
-  <% if current_user.try(:facebook_friends_imports) %>
-    <% if params[:page] %>
-      $('#invite-users-list').append('<%= escape_javascript(render('invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections})) %>');
-    <% else %>
-      var pageless = getInviteUsersPageless();
-      if(null == pageless) {
-      makeInviteUsersPageless();
-      }
-      else{
-      pageless.reset(
-      {
-      totalPage: <%=  @num_pages %>,
-      currentPage: 1
-      });
-      }
-
-      $('#invite-users-list').html('<%= escape_javascript render 'invite_user_list.html', :layout => false, :locals => {:user_list => @invitation_user_connections} %>');
-      var api = $('#user_holder_for_invitation').data('jsp');
-      if(api)
-      api.scrollToY(0);
-    <% end %>
-      $('#invite-users-page').trigger('create');
-      $('#invite-users-page').trigger('updatelayout');
-  <% else %>
-    getInvitationUsers();
+<% if current_user && current_user.try(:facebook_friends_imports) %>
+  <% (@invited_user_connections || []).each do |connection| %>
+    if($('#user_<%=connection.to_user_id%>').length == 0){
+    $('#invite-users-list .end-pageless').after('<%= escape_javascript(render(:partial =>'m/invitations/invite_user_list.html', :locals => {:user_list => [connection] })) %>');
+    }
+    else{
+    $('#invite-users-list .end-pageless').after($('#user_<%=connection.to_user_id%>').parents('.invitation'));
+    }
+    $('.end-pageless').removeClass('end-pageless');
+    $('#user_<%=connection.to_user_id%>').parents('.invitation').addClass('end-pageless');
   <% end %>
+  $('#invite-users-page').trigger('create');
+  $('#invite-users-page').trigger('updatelayout');
 <% end %>
-}

@@ -1,0 +1,18 @@
+
+<% if @invited_user_connections.blank?  %>
+  $('.invitation').show();
+  getInviteUsersPageless().start();
+<% else %>
+  getInviteUsersPageless().stop();
+  $('.invitation').hide();
+  <% (@invited_user_connections || []).each do |connection| %>
+    if($('#user_<%=connection.to_user_id%>').length > 0)
+    $('#user_<%=connection.to_user_id%>').parents('.invitation').show();
+    else{
+    $('#invite-users-list').append('<%= escape_javascript(render(:partial => 'm/invitations/invite_user_list.html', :locals => {:user_list => [connection]})) %>');
+    $('#invite-users-page').trigger('create');
+    }
+
+  <% end %>
+  $('#invite-users-page').trigger('updatelayout');
+<% end %>

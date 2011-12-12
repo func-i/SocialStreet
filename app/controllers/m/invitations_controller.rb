@@ -17,6 +17,12 @@ class M::InvitationsController < MobileController
     @event = Event.find params[:event_id]
   end
 
+  def search
+    if(current_user)
+      @invited_user_connections = current_user.connections.includes(:to_user).to_user_matches_keyword(params[:user_search]) unless params[:user_search].blank?
+    end
+  end
+
   def create
     @event = Event.find params[:event_id]
 
