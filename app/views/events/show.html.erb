@@ -99,7 +99,9 @@
 <% end %>
 
 <% content_for :right_side_pane do %>
-  <div id="show_attendees_title" class="important-color text-shadow">
+  <% attending_count = @event.event_rsvps.attending.size %>
+  <% maybe_count = @event.event_rsvps.maybe_attending.size %>
+  <div id="show_attendees_title" class="important-color text-shadow" style="<%="padding-top:2px;" if attending_count > 0 || maybe_count > 0%>">
     <% if current_user && rsvp = @event.event_rsvps.attending_or_maybe_attending.by_user(current_user).first%>
       <% if rsvp.status == EventRsvp.statuses[:attending] %>
         You're In!
