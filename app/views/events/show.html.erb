@@ -100,8 +100,6 @@
 
 <% content_for :right_side_pane do %>
   <div id="show_attendees_title" class="important-color text-shadow">
-    <% attending_count = @event.event_rsvps.attending.size %>
-    <% maybe_count = @event.event_rsvps.maybe_attending.size %>
     <% if current_user && rsvp = @event.event_rsvps.attending_or_maybe_attending.by_user(current_user).first%>
       <% if rsvp.status == EventRsvp.statuses[:attending] %>
         You're In!

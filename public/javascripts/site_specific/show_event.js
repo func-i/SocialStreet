@@ -455,11 +455,13 @@ function showMarkers(){
 function resizeDate() {
     if($('#show_event_title_text').height() > 30){
         $('#show_event_date').width(140);
-        $('#show_event_date').css('padding-top', '15px');
+        $('#show_event_title_text').css('padding-bottom', '15px');
+        $('#show_event_date').css('padding-top', '0px');
     }
     else{
         $('#show_event_date').css('width', '');
-        $('#show_event_date').css('padding-top', '5px');
+        $('#show_event_title_text').css('padding-bottom', '5px');
+        $('#show_event_date').css('padding-top', '0px');
     }
 }
 
