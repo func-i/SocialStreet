@@ -111,6 +111,7 @@
       <br/>
       <span style="font-size:12px;">
         <%="#{pluralize(attending_count, "Attendee")}" if attending_count > 0%>
+        <%= ", " if attending_count > 0 && maybe_count > 0 %>
         <%="#{pluralize(maybe_count, 'Maybe')}" if maybe_count > 0%>
       </span>
     <% else %>
