@@ -66,6 +66,7 @@ function resizeCalendar(){
 function initCreateEvent(){
     //Create What bindings
     $('#create_what_next_arrow').click(function(){
+        hideCreateWhat();
         setupCreateWhere();
 
         $('#create_what').addClass('hidden');
@@ -101,13 +102,20 @@ function initCreateEvent(){
 
         //markerManager.deleteAllMarkers();
 
+        hideCreateWhere();
         setupCreateWhen();
     });
+    $('#create_where_back_button').live('click', function(){
+        hideCreateWhere();
+        setupCreateWhat();
+    });
+
    
     //Create When Bindings
     $('#create_when_next_arrow').click(function(){
         $('#create_when').addClass('hidden');
 
+        hideCreateWhen();
         setupCreateSummary();
 
         $('#create_summary').removeClass('hidden');
@@ -116,6 +124,11 @@ function initCreateEvent(){
     $('.create-when-field').change(function(){
         updateCreateWhenDates();
     });
+    $('#create_when_back_button').live('click', function(){
+        hideCreateWhen();
+        setupCreateWhere();
+    });
+
 
     //Summary
     var alreadySubmitted = false;
@@ -124,6 +137,25 @@ function initCreateEvent(){
             $('#event_create_form').submit();
             alreadySubmitted = true;
         }
+    });
+
+    $('#event_private_li').live('click', function(){
+        $('#event_public_switch').addClass('hidden');
+        $('#summary_who_group_list').removeClass('hidden');
+
+        changeGroupPermission($('.public-group').find('.group-permission-view'));
+    });
+    $('.group-permission ul li').live('click', function(){
+        changeGroupPermission(this);
+    })
+
+    $('#add_group_link').live('click', function(){
+        markerManager.hideAllMarkers();
+        showGroups();
+    });
+    $('#create_summary_back_button').live('click', function(){
+        hideCreateSummary();
+        setupCreateWhen();
     });
 }
 
@@ -138,49 +170,65 @@ function setupCreateWhat(){
 
     $('.create-where-view').addClass('hidden');
     $('.create-when-view').addClass('hidden');
+
+    $('.create-what-view').removeClass('hidden');
+}
+
+function hideCreateWhat(){
+    $(zoomControl).show();
+    $('.create-what-view').addClass('hidden');
+    $('#on_create_what').val('');
 }
 
 /*
  *WHERE FUNCTIONS
  **/
 function setupCreateWhere(){
-    $(zoomControl).show();
-    $('.create-what-view').addClass('hidden');
-    $('#on_create_what').val('');
     $('#center_pane').addClass('invisible');
     $('.create-where-view').removeClass('hidden');
 
-    $('#top_pane').width($(window).width() - $('#left_side_pane').width() - 40);//20 is for 20px gutters
+    //$('#top_pane').width($(window).width() - $('#left_side_pane').width() - 40);//20 is for 20px gutters
 
-    var lat = $('#location-lat-field').val();
-    var lng = $('#location-lng-field').val();
+    if(0 == markerManager.allMarkers_.length){
+        var lat = $('#location-lat-field').val();
+        var lng = $('#location-lng-field').val();
 
-    if(lat && lng){
-        var marker = createCreateMarker(new google.maps.LatLng(lat, lng));
+        if(lat && lng){
+            var marker = createCreateMarker(new google.maps.LatLng(lat, lng));
 
-        var name = $('#location-name-field').val();
-        selectMarker_createWhere(marker);
-        if(name){
-            saveMarkerName(name);
+            var name = $('#location-name-field').val();
             selectMarker_createWhere(marker);
+            if(name){
+                saveMarkerName(name);
+                selectMarker_createWhere(marker);
+            }
+        }else{
+            $('#create_where_next_arrow').addClass('invisible');
+            $('#create_where_marker_info').addClass('invisible');
+            $('#create_where_name_location-text').text('');
+            $('#create_where_address').text('');
+
+            createCreateMarker(map.getCenter());
         }
-    }else{
-        $('#create_where_next_arrow').addClass('invisible');
-        $('#create_where_marker_info').addClass('invisible');
-        $('#create_where_name_location-text').text('');
-        $('#create_where_address').text('');
 
-        createCreateMarker(map.getCenter());
+        map.setZoom(15);
+        var xOffset = $('#location-map').width() / 5;
+        var yOffset = $('#location-map').height() / 5;
+        map.panBy(-xOffset, -yOffset);
     }
-
-    map.setZoom(15);
-    var xOffset = $('#location-map').width() / 5;
-    var yOffset = $('#location-map').height() / 5;
-    map.panBy(-xOffset, -yOffset);
-
+    else if(null != createEventSelectedMarker){
+        map.panTo(createEventSelectedMarker.getPosition());
+    }
 
     markerManager.showAllMarkers();
 }
+
+function hideCreateWhere(){
+    $(zoomControl).hide();
+    $('.create-where-view').addClass('hidden');
+    markerManager.hideAllMarkers();
+}
+
 
 function selectMarker_createWhere(marker){
     createEventSelectedMarker = marker;
@@ -259,7 +307,7 @@ function distanceBetweenMapPoints(pos1, pos2){
     return d;
 }
 
-function createCreateMarker(latlng, address){
+function createCreateMarker(latlng, address){    
     var marker = markerManager.addMarker(latlng.lat(), latlng.lng());
     marker.setDraggable(true);
     marker.text_ = null;
@@ -346,6 +394,29 @@ function reverse_geocode(marker){
     return myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes();
 }*/
 
+function setupCreateWhen(){
+    $('.create-when-view').removeClass('hidden');
+    $('#center_pane').removeClass('invisible');
+
+    $('#create_when_calendar').fullCalendar({
+        defaultView: 'month',
+        dayClick: function(date, allDay, jsEvent, view) {
+            setWhenDate(date);
+        }
+    });
+
+    resizeCalendar();
+
+    var myDate = new Date(getDateFromFormat($('#start_date').val(), 'yyyy/MM/dd HH:mm'));
+    setWhenDate(myDate);
+}
+
+function hideCreateWhen(){
+    $(zoomControl).show();
+    $('.create-when-view').addClass('hidden');
+    $('#center_pane').addClass('invisible');
+}
+
 function updateCreateWhenDates(){
     var start_date = $('#create_when_date').text();
     start_date = new Date(getDateFromFormat(start_date, 'MMM dd, yyyy'));
@@ -382,26 +453,6 @@ function updateCreateWhenDates(){
     $('#end_date').val(ssFormatDate(end_date, 'yyyy/MM/dd HH:mm'));
 }
 
-function setupCreateWhen(){
-    $(zoomControl).hide();
-    $('.create-where-view').addClass('hidden');
-    $('.create-when-view').removeClass('hidden');
-    $('#center_pane').removeClass('invisible');
-
-    $('#create_when_calendar').fullCalendar({
-        defaultView: 'month',
-        dayClick: function(date, allDay, jsEvent, view) {
-            setWhenDate(date);
-        }
-    });
-
-    resizeCalendar();
-    
-    var myDate = new Date(getDateFromFormat($('#start_date').val(), 'yyyy/MM/dd HH:mm'));
-    setWhenDate(myDate);
-
-}
-
 function highlightDate(date){
     $.each($('.fc-day-number'), function(index, elem){
         if(! $(elem).parent().parent().hasClass('fc-other-month')){
@@ -421,11 +472,8 @@ function setWhenDate(date){
     updateCreateWhenDates();
 }
 
-
+/*SUMMARY FUNCTIONS*/
 function setupCreateSummary(){
-    $(zoomControl).show();
-    $('.create-when-view').addClass('hidden');
-    $('#center_pane').addClass('invisible');
     $('#on_create_summary').val('true');
 
     $.each(markerManager.allMarkers_, function(index, marker){
@@ -433,7 +481,25 @@ function setupCreateSummary(){
     });
 
     //KEYWORDS
-    $.each($('.keyword-tag').not('#keyword_tag_stamp'), function(index, keyword){
+    var api = null;
+    if(null != (api = $('#summary_tag_holder').data('jsp')))
+        api.destroy();
+    
+    $.each($('#keyword_tag_list .keyword-tag').not('#keyword_tag_stamp'), function(index, keyword){
+        var $keyword = $(keyword);
+
+        var returnBool = false;
+        var keywordName = $.trim($keyword.find('.keyword-tag-name').text());
+        $.each($('#summary_keyword_list'), function(index2, summaryKeyword){
+            var summaryKeywordName = $.trim($(summaryKeyword).find('.keyword-tag-name').text());
+            if(summaryKeywordName == keywordName){
+                returnBool = true;
+                return false;
+            }
+        });
+        if(returnBool)
+            return true;
+
         var $newKeyword = $($(keyword).clone());
         $newKeyword.find('.keyword-tag-remove').remove();
         $newKeyword.removeClass('remove-keyword-tag');
@@ -481,7 +547,7 @@ function setupCreateSummary(){
     });
 
     //WHO
-    var publicGroupPermissionLevel = 0;
+    var publicGroupPermissionLevel = 2;
     $.each($('.event-group-input'), function(index, group){
         var splitID = group.id.split('_');
         var groupID = splitID[splitID.length - 1];
@@ -489,7 +555,8 @@ function setupCreateSummary(){
 
         var $newGroup = null;
         if(groupID == 'public'){
-            publicGroupFound = true;
+            if($('.public-group').length > 0)
+                return true;           
 
             $newGroup = addGroupToSummary('Everyone', 'public');
             $newGroup.addClass('public-group');
@@ -498,7 +565,19 @@ function setupCreateSummary(){
         }
         else{
             var groupName = $('#group_id_' + groupID).closest('.group-type').find('.group-type-name').text();
+
+            var returnBool = false;
+            $.each($('#summary_who_group_list .summary-who-group'), function(index, summaryGroup){
+                if($.trim(groupName) == $.trim($(summaryGroup).find('.group-permission-name').text())){
+                    returnBool = true;
+                    return false;
+                }
+            });
+            if(returnBool)
+                return true;
+
             $newGroup = addGroupToSummary(groupName, groupID);
+            publicGroupPermissionLevel = 0;
         }
 
         if(permissionLevel == 2)
@@ -518,24 +597,19 @@ function setupCreateSummary(){
         $('#summary_who_group_list').removeClass('hidden');
     }
 
-    $('#event_private_li').live('click', function(){
-        $('#event_public_switch').addClass('hidden');
-        $('#summary_who_group_list').removeClass('hidden');
-
-        changeGroupPermission($('.public-group').find('.group-permission-view'));
-    });
-    $('.group-permission ul li').live('click', function(){
-        changeGroupPermission(this);
-    })
-
-    $('#add_group_link').live('click', function(){
-        markerManager.hideAllMarkers();
-        showGroups();
-    });
-
     //Display page
     $('.create-summary-view').removeClass('hidden');
     resizePageElements();
+}
+function hideCreateSummary(){
+    $('#on_create_summary').val('');
+    $('.create-summary-view').addClass('hidden');
+
+    $.each(markerManager.allMarkers_, function(index, marker){
+        marker.setDraggable(true);
+    });
+
+
 }
 function changeGroupPermission(permissionLI){
     var $permissionLI = $(permissionLI);

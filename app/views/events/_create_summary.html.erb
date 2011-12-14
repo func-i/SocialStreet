@@ -90,7 +90,7 @@
       </div>
       <div style="margin-top: 20px;">
         <%= image_tag((event.new_record? ? 'create-event-btn.png' : 'update-event-btn.png'), :id=>'create_summary_create_button', :class=>"drop-shadow create-summary-view hidden", :style => "float:right; cursor: pointer; vertical-align: middle;") %>
-        <%= link_to "< Start Over", (event.new_record? ? new_event_path : edit_event_path(event)), :class => "nav-link text-shadow", :style => "color: #FFC233; float: left;"  %>
+        <%= image_tag('back.png', :id=>"create_summary_back_button", :class=>"drop-shadow create-summary-view hidden", :style => "float:left; cursor: pointer; vertical-align: middle;") %>
       </div>
     </div>
   </div>
