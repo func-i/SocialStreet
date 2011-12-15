@@ -159,8 +159,7 @@ $(function() {
                 }
             });
         }
-    });
-
+    });    
 });
 
 function navLink(link, e){
@@ -205,8 +204,8 @@ function setPlaceholdersInInternetExplorer(){
                 $input.val($input.attr('placeholder'));               
                 
                 if(getInternetExplorerVersion() == 8) {
-                  $input.css("box-sizing", "border-box");
-                  $input.css("padding-top", "7px");
+                    $input.css("box-sizing", "border-box");
+                    $input.css("padding-top", "7px");
                 }
                 
                 $input.click(function(){
@@ -272,6 +271,14 @@ function resizePageElements() {
             wrap: 'letter'
         });
     });
+
+    $('.user-image').tipsy({
+        html: true,
+        title: function() {
+            return "<img src='" + $(this).attr('src') + "' style='vertical-align: middle;' /> <span style='font-weight: bold; padding: 5px;'>" + $(this).data('user-name') + "</span>";
+        }
+    });
+
     
 }
 

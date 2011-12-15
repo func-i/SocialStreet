@@ -13,7 +13,7 @@
       <% if user_signed_in? %>
 
         <div id="signed_in_holder">
-          <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow') %></div>
+          <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow login-user-image') %></div>
           <div id="signed_in_button">
             <span id="current_user_name">
               <%=current_user.name%>
