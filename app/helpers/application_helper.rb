@@ -90,7 +90,8 @@ module ApplicationHelper
       :size=> options[:size] || "30x30",
       :class => "#{options[:class] && options[:class].include?("skip-hovercard") ? "" : "user-image"} #{options[:class] || ''}",
       :style => options[:style] || "",
-      "data-user-id" => user.id
+      "data-user-id" => user.id,
+      "data-gravity" => options[:gravity] || "nw"
     )
   end
 

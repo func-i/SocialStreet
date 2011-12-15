@@ -237,6 +237,10 @@ function cleanup(){
 
     resizeSelf = function(){};
 
+    $('.user-image').each(function() {
+        $(this).tipsy('hide');
+    });
+
     $('.content-group').html(' ');
     $('#right_side_pane').removeClass('hide_for_center_pane');
     $('#left_side_pane').removeClass('hide_for_center_pane');
@@ -276,6 +280,8 @@ function resizePageElements() {
         html: true,
         live: true,
         fallback: 'Loading..',
+        opacity: 1,
+        gravity: $.fn.tipsy.elementGravity,
         title: function() {
             $.ajax({
                 url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
@@ -287,7 +293,7 @@ function resizePageElements() {
             });
             return "Loading...";
         }
-    })
+    });
 
     
 }

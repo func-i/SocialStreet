@@ -19,10 +19,11 @@
         <div style="float:left;position:relative;">
           <%= avatar attendee, :size => "29x29", :class=>"result-attendees-image"%>
           <!--<div class="hidden drop-shadow rounded-corners-four attendee-name-popup">
-            <%=attendee.try(:name)%>
+          <%=attendee.try(:name)%>
           </div>-->
         </div>
       <% end %>
+
       <% if attendees_count > 5%>
         <span class="result-attendee-more-text text-shadow">
           <%=attendees_count - 4 %> more
@@ -33,13 +34,13 @@
 
     <div class="result-join-btn-holder rounded-corners-four hidden">
       <%= render(:partial => 'events/rsvp_buttons', :locals => {:event => event, :on_show => false}) %>
-      <%# if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
-        <%#= image_tag('invite-friends-btn.png', :class=>"nav-link", "data-ajax-href" => event_path(event, :invite => true)) %>
-      <%# else %>
-        <%# if event.can_attend?(current_user) %>
-          <%#= image_tag('ill-join-btn.png', :class=>"nav-link", "data-ajax-href" => new_event_event_rsvp_path(event)) %>
-        <%# end %>
-      <%# end %>
+  <%# if current_user && rsvp = event.event_rsvps.attending.by_user(current_user).first%>
+  <%#= image_tag('invite-friends-btn.png', :class=>"nav-link", "data-ajax-href" => event_path(event, :invite => true)) %>
+  <%# else %>
+  <%# if event.can_attend?(current_user) %>
+  <%#= image_tag('ill-join-btn.png', :class=>"nav-link", "data-ajax-href" => new_event_event_rsvp_path(event)) %>
+  <%# end %>
+  <%# end %>
     </div>
     <%= hidden_field_tag "result_lat", event.location.latitude %>
     <%= hidden_field_tag "result_lng", event.location.longitude %>

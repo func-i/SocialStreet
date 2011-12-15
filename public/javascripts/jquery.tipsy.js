@@ -24,7 +24,12 @@
                 
                 $tip.find('.tipsy-inner')[this.options.html ? 'html' : 'text'](title);
                 $tip[0].className = 'tipsy'; // reset classname in case of dynamic gravity
-                $tip.remove().css({top: 0, left: 0, visibility: 'hidden', display: 'block'}).prependTo(document.body);
+                $tip.remove().css({
+                    top: 0,
+                    left: 0,
+                    visibility: 'hidden',
+                    display: 'block'
+                }).prependTo(document.body);
                 
                 var pos = $.extend({}, this.$element.offset(), {
                     width: this.$element[0].offsetWidth,
@@ -32,22 +37,34 @@
                 });
                 
                 var actualWidth = $tip[0].offsetWidth,
-                    actualHeight = $tip[0].offsetHeight,
-                    gravity = maybeCall(this.options.gravity, this.$element[0]);
+                actualHeight = $tip[0].offsetHeight,
+                gravity = maybeCall(this.options.gravity, this.$element[0]);
                 
                 var tp;
                 switch (gravity.charAt(0)) {
                     case 'n':
-                        tp = {top: pos.top + pos.height + this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        tp = {
+                            top: pos.top + pos.height + this.options.offset,
+                            left: pos.left + pos.width / 2 - actualWidth / 2
+                            };
                         break;
                     case 's':
-                        tp = {top: pos.top - actualHeight - this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        tp = {
+                            top: pos.top - actualHeight - this.options.offset,
+                            left: pos.left + pos.width / 2 - actualWidth / 2
+                            };
                         break;
                     case 'e':
-                        tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth - this.options.offset};
+                        tp = {
+                            top: pos.top + pos.height / 2 - actualHeight / 2,
+                            left: pos.left - actualWidth - this.options.offset
+                            };
                         break;
                     case 'w':
-                        tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width + this.options.offset};
+                        tp = {
+                            top: pos.top + pos.height / 2 - actualHeight / 2,
+                            left: pos.left + pos.width + this.options.offset
+                            };
                         break;
                 }
                 
@@ -66,16 +83,27 @@
                 }
                 
                 if (this.options.fade) {
-                    $tip.stop().css({opacity: 0, display: 'block', visibility: 'visible'}).animate({opacity: this.options.opacity});
+                    $tip.stop().css({
+                        opacity: 0,
+                        display: 'block',
+                        visibility: 'visible'
+                    }).animate({
+                        opacity: this.options.opacity
+                        });
                 } else {
-                    $tip.css({visibility: 'visible', opacity: this.options.opacity});
+                    $tip.css({
+                        visibility: 'visible',
+                        opacity: this.options.opacity
+                        });
                 }
             }
         },
         
         hide: function() {
             if (this.options.fade) {
-                this.tip().stop().fadeOut(function() { $(this).remove(); });
+                this.tip().stop().fadeOut(function() {
+                    $(this).remove();
+                });
             } else {
                 this.tip().remove();
             }
@@ -116,9 +144,15 @@
             }
         },
         
-        enable: function() { this.enabled = true; },
-        disable: function() { this.enabled = false; },
-        toggleEnabled: function() { this.enabled = !this.enabled; }
+        enable: function() {
+            this.enabled = true;
+        },
+        disable: function() {
+            this.enabled = false;
+        },
+        toggleEnabled: function() {
+            this.enabled = !this.enabled;
+        }
     };
     
     $.fn.tipsy = function(options) {
@@ -149,7 +183,9 @@
                 tipsy.show();
             } else {
                 tipsy.fixTitle();
-                setTimeout(function() { if (tipsy.hoverState == 'in') tipsy.show(); }, options.delayIn);
+                setTimeout(function() {
+                    if (tipsy.hoverState == 'in') tipsy.show();
+                }, options.delayIn);
             }
         };
         
@@ -159,16 +195,20 @@
             if (options.delayOut == 0) {
                 tipsy.hide();
             } else {
-                setTimeout(function() { if (tipsy.hoverState == 'out') tipsy.hide(); }, options.delayOut);
+                setTimeout(function() {
+                    if (tipsy.hoverState == 'out') tipsy.hide();
+                }, options.delayOut);
             }
         };
         
-        if (!options.live) this.each(function() { get(this); });
+        if (!options.live) this.each(function() {
+            get(this);
+        });
         
         if (options.trigger != 'manual') {
             var binder   = options.live ? 'live' : 'bind',
-                eventIn  = options.trigger == 'hover' ? 'mouseenter' : 'focus',
-                eventOut = options.trigger == 'hover' ? 'mouseleave' : 'blur';
+            eventIn  = options.trigger == 'hover' ? 'mouseenter' : 'focus',
+            eventOut = options.trigger == 'hover' ? 'mouseleave' : 'blur';
             this[binder](eventIn, enter)[binder](eventOut, leave);
         }
         
@@ -206,6 +246,10 @@
     $.fn.tipsy.autoWE = function() {
         return $(this).offset().left > ($(document).scrollLeft() + $(window).width() / 2) ? 'e' : 'w';
     };
+
+    $.fn.tipsy.elementGravity = function() {
+        return $(this).data('gravity');
+    };
     
     /**
      * yields a closure of the supplied parameters, producing a function that takes
@@ -222,20 +266,23 @@
      *        that element's tooltip to be 'se', preserving the southern
      *        component.
      */
-     $.fn.tipsy.autoBounds = function(margin, prefer) {
-		return function() {
-			var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
-			    boundTop = $(document).scrollTop() + margin,
-			    boundLeft = $(document).scrollLeft() + margin,
-			    $this = $(this);
+    $.fn.tipsy.autoBounds = function(margin, prefer) {
+        return function() {
+            var dir = {
+                ns: prefer[0],
+                ew: (prefer.length > 1 ? prefer[1] : false)
+                },
+            boundTop = $(document).scrollTop() + margin,
+            boundLeft = $(document).scrollLeft() + margin,
+            $this = $(this);
 
-			if ($this.offset().top < boundTop) dir.ns = 'n';
-			if ($this.offset().left < boundLeft) dir.ew = 'w';
-			if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
-			if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
+            if ($this.offset().top < boundTop) dir.ns = 'n';
+            if ($this.offset().left < boundLeft) dir.ew = 'w';
+            if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
+            if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
 
-			return dir.ns + (dir.ew ? dir.ew : '');
-		}
-	};
+            return dir.ns + (dir.ew ? dir.ew : '');
+        }
+    };
     
 })(jQuery);
