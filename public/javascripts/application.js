@@ -285,6 +285,7 @@ function resizePageElements() {
                     $('.tipsy-inner').html(data);
                 }
             });
+            return "Loading...";
         }
     })
 
