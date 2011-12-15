@@ -274,10 +274,19 @@ function resizePageElements() {
 
     $('.user-image').tipsy({
         html: true,
+        live: true,
+        fallback: 'Loading..',
         title: function() {
-            return "<img src='" + $(this).attr('src') + "' style='vertical-align: middle;' /> <span style='font-weight: bold; padding: 5px;'>" + $(this).data('user-name') + "</span>";
+            $.ajax({
+                url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $('.tipsy-inner').html(data);
+                }
+            });
         }
-    });
+    })
 
     
 }
