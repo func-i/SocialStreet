@@ -291,11 +291,11 @@ function resizePageElements() {
                     $('.tipsy-inner').html(data);
                 }
             });
+            if($(this).siblings('.show-attendee-name').length > 0)
+                return $(this).siblings('.show-attendee-name').text()
             return "Loading...";
         }
     });
-
-    
 }
 
 function resizeLayout(){
