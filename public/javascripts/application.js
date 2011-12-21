@@ -42,8 +42,10 @@ $(function() {
         $.getScript(location.href, function() {
             resizePageElements();
             setPlaceholdersInInternetExplorer();
+            setupTipsy();
         });
     });
+
 
 
     //Get users current Location
@@ -67,6 +69,7 @@ $(function() {
     });
 
     setPlaceholdersInInternetExplorer();
+    setupTipsy();
 
     //Scrollbar behaviour on mouseover
     $('.show-scroll-on-hover').live('mouseenter', function(){
@@ -159,7 +162,36 @@ $(function() {
                 }
             });
         }
-    });    
+    });
+
+    //Tipsy
+    var hideTipsyTimer = null;
+    var $currentTipsyElem = null;
+    $('.user-image').live('mouseenter', function(){
+        clearTimeout(hideTipsyTimer);
+        if(null == $currentTipsyElem || $currentTipsyElem[0] != this){
+            if($currentTipsyElem)
+                $currentTipsyElem.tipsy('hide');
+
+            $currentTipsyElem = $(this);
+            $(this).tipsy('show');
+        }
+    });
+    $('.tipsy').live('mouseenter', function(){
+        clearTimeout(hideTipsyTimer);
+    });
+    $('.user-image').live('mouseleave', function(){
+        hideTipsyTimer = setTimeout(function(){
+            $currentTipsyElem.tipsy('hide');
+            $currentTipsyElem = null;
+        }, 500);
+    });
+    $('.tipsy').live('mouseleave', function(){
+        hideTipsyTimer = setTimeout(function(){
+            $currentTipsyElem.tipsy('hide');
+            $currentTipsyElem = null;
+        }, 500);
+    });
 });
 
 function navLink(link, e){
@@ -176,6 +208,7 @@ function navLink(link, e){
             $.getScript(href, function() {
                 resizePageElements();
                 setPlaceholdersInInternetExplorer();
+                setupTipsy();
             });
             history.pushState({}, "", href);
         }
@@ -258,6 +291,32 @@ function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat,
         '&update_db=' + updateDB, function(data, textStatus){});
 }
 
+function setupTipsy(){
+    var lastXhr;
+    $('.user-image').tipsy({
+        html: true,
+        //        live: true,
+        fallback: 'Loading..',
+        opacity: 1,
+        gravity: $.fn.tipsy.elementGravity,
+        trigger: 'manual',
+        title: function() {
+            lastXhr = $.ajax({
+                url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data, status, jqXhr) {
+                    if(lastXhr == jqXhr)
+                        $('.tipsy-inner').html(data);
+                }
+            });
+            if($(this).siblings('.show-attendee-name').length > 0)
+                return $(this).siblings('.show-attendee-name').text()
+            return "Loading...";
+        }
+    });
+}
+
 function resizePageElements() {
 
     resizeLayout();
@@ -274,27 +333,6 @@ function resizePageElements() {
         $(this).dotdotdot({
             wrap: 'letter'
         });
-    });
-
-    $('.user-image').tipsy({
-        html: true,
-        live: true,
-        fallback: 'Loading..',
-        opacity: 1,
-        gravity: $.fn.tipsy.elementGravity,
-        title: function() {
-            $.ajax({
-                url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
-                type: 'GET',
-                dataType: 'html',
-                success: function (data) {
-                    $('.tipsy-inner').html(data);
-                }
-            });
-            if($(this).siblings('.show-attendee-name').length > 0)
-                return $(this).siblings('.show-attendee-name').text()
-            return "Loading...";
-        }
     });
 }
 
