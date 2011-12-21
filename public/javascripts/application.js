@@ -184,13 +184,13 @@ $(function() {
         hideTipsyTimer = setTimeout(function(){
             $currentTipsyElem.tipsy('hide');
             $currentTipsyElem = null;
-        }, 500);
+        }, 200);
     });
     $('.tipsy').live('mouseleave', function(){
         hideTipsyTimer = setTimeout(function(){
             $currentTipsyElem.tipsy('hide');
             $currentTipsyElem = null;
-        }, 500);
+        }, 200);
     });
 });
 
