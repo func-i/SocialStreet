@@ -38,6 +38,10 @@ SocialStreetReborn::Application.routes.draw do
     collection do
       get 'add_group'
     end
+
+    member do
+      get 'socialcard'
+    end
   end
 
   resources :invitations, :only => [] do

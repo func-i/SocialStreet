@@ -159,8 +159,7 @@ $(function() {
                 }
             });
         }
-    });
-
+    });    
 });
 
 function navLink(link, e){
@@ -205,8 +204,8 @@ function setPlaceholdersInInternetExplorer(){
                 $input.val($input.attr('placeholder'));               
                 
                 if(getInternetExplorerVersion() == 8) {
-                  $input.css("box-sizing", "border-box");
-                  $input.css("padding-top", "7px");
+                    $input.css("box-sizing", "border-box");
+                    $input.css("padding-top", "7px");
                 }
                 
                 $input.click(function(){
@@ -237,6 +236,10 @@ function cleanup(){
     closeHowItWorks();
 
     resizeSelf = function(){};
+
+    $('.user-image').each(function() {
+        $(this).tipsy('hide');
+    });
 
     $('.content-group').html(' ');
     $('#right_side_pane').removeClass('hide_for_center_pane');
@@ -272,7 +275,27 @@ function resizePageElements() {
             wrap: 'letter'
         });
     });
-    
+
+    $('.user-image').tipsy({
+        html: true,
+        live: true,
+        fallback: 'Loading..',
+        opacity: 1,
+        gravity: $.fn.tipsy.elementGravity,
+        title: function() {
+            $.ajax({
+                url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $('.tipsy-inner').html(data);
+                }
+            });
+            if($(this).siblings('.show-attendee-name').length > 0)
+                return $(this).siblings('.show-attendee-name').text()
+            return "Loading...";
+        }
+    });
 }
 
 function resizeLayout(){

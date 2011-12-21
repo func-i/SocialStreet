@@ -123,7 +123,7 @@
     <ul id="show_attendees_list">
       <% @event.event_rsvps.attending_or_maybe_attending.each do |attendee| %>
         <li class="show-attendee" id="attendee_<%= attendee.user_id%>">
-          <%= avatar(attendee.user, :size => "50x50", :class=> "show-attendee-icon")%>
+          <%= avatar(attendee.user, :size => "50x50", :class=> "show-attendee-icon", :gravity => "ne")%>
           <span class="show-attendee-name"><%= attendee.user.name%></span>
         </li>
       <% end %>

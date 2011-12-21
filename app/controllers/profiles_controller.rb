@@ -63,6 +63,11 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def socialcard
+    @user = User.find params[:id]
+    render :layout => false
+  end
+
   protected
 
   def store_add_group_redirect
