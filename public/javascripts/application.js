@@ -301,13 +301,12 @@ function setupTipsy(){
         gravity: $.fn.tipsy.elementGravity,
         trigger: 'manual',
         title: function() {
-            lastXhr = $.ajax({
+            $.ajax({
                 url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data, status, jqXhr) {
-                    if(lastXhr == jqXhr)
-                        $('.tipsy-inner').html(data);
+                    $('.tipsy-inner').html(data);
                 }
             });
             if($(this).siblings('.show-attendee-name').length > 0)
