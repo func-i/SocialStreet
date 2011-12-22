@@ -99,25 +99,8 @@
 <% end %>
 
 <% content_for :right_side_pane do %>
-  <% attending_count = @event.event_rsvps.attending.size %>
-  <% maybe_count = @event.event_rsvps.maybe_attending.size %>
-  <div id="show_attendees_title" class="important-color text-shadow" style="<%="padding-top:2px;" if attending_count > 0 || maybe_count > 0%>">
-    <% if current_user && rsvp = @event.event_rsvps.attending_or_maybe_attending.by_user(current_user).first%>
-      <% if rsvp.status == EventRsvp.statuses[:attending] %>
-        You're In!
-      <% else %>
-        You're Maybe In
-      <% end %>
-      <br/>
-      <span style="font-size:12px;">
-        <%="#{pluralize(attending_count, "Attendee")}" if attending_count > 0%>
-        <%= ", " if attending_count > 0 && maybe_count > 0 %>
-        <%="#{pluralize(maybe_count, 'Maybe')}" if maybe_count > 0%>
-      </span>
-    <% else %>
-      <%="#{pluralize(attending_count, "Attendee")}" if attending_count > 0%>
-      <%="#{pluralize(maybe_count, 'Maybe')}" if maybe_count > 0%>
-    <% end %>
+  <div id="show_attendees_title" class="important-color text-shadow">
+    <%= render :partial => 'attendee_title', :locals => {:event => @event} %>
   </div>
   <div id="show_attendees_holder" class="container">
     <ul id="show_attendees_list">

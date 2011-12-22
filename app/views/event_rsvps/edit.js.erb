@@ -7,4 +7,4 @@ if(scrollApi){
 $('#show_attendees_holder').height('auto');
 resizeAttendees();
 
-$('#show_attendees_title').text('<%="#{pluralize @event.number_of_attendees, 'Person'} Attending"%>');
+$('#show_attendees_title').html('<%= escape_javascript render :partial => 'events/attendee_title', :locals => {:event => @event} %>');
