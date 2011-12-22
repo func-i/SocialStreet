@@ -1,5 +1,8 @@
 var cleanUpSelf = function(){};
 
+var hideTipsyTimer = null;
+var $currentTipsyElem = null;
+
 $(function() {
     //Ajax call when clicking nav buttons
     $('.nav-link').live('click', function(e) {
@@ -165,8 +168,6 @@ $(function() {
     });
 
     //Tipsy
-    var hideTipsyTimer = null;
-    var $currentTipsyElem = null;
     $('.user-image').live('mouseenter', function(){
         clearTimeout(hideTipsyTimer);
         if(null == $currentTipsyElem || $currentTipsyElem[0] != this){
@@ -182,13 +183,15 @@ $(function() {
     });
     $('.user-image').live('mouseleave', function(){
         hideTipsyTimer = setTimeout(function(){
-            $currentTipsyElem.tipsy('hide');
+            if($currentTipsyElem)
+                $currentTipsyElem.tipsy('hide');
             $currentTipsyElem = null;
         }, 200);
     });
     $('.tipsy').live('mouseleave', function(){
         hideTipsyTimer = setTimeout(function(){
-            $currentTipsyElem.tipsy('hide');
+            if($currentTipsyElem)
+                $currentTipsyElem.tipsy('hide');
             $currentTipsyElem = null;
         }, 200);
     });
@@ -304,14 +307,18 @@ function setupTipsy(){
             if(lastXhr)
                 lastXhr.abort();
             
-            var $thisUser = $(this);
             lastXhr = $.ajax({
                 url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data, status, jqXhr) {
                     $('.tipsy-inner').html(data);
-                    $thisUser.data('tipsy').position();
+                    $('.tipsy-inner').find('img,iframe,script,frame').load(function(){
+                        if($currentTipsyElem)
+                            $currentTipsyElem.data('tipsy').position();
+                    })
+                    if($currentTipsyElem)
+                        $currentTipsyElem.data('tipsy').position();
                 }
             });
             if($(this).siblings('.show-attendee-name').length > 0)
