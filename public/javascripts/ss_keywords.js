@@ -18,7 +18,8 @@ $(function(){
         if(isOpen &&
             isOnExplore() &&
             $(e.target).closest('.keyword-text-field-holder').length < 1 &&
-            $(e.target).closest('.event-type').length < 1)
+            $(e.target).closest('.event-type').length < 1 &&
+            $(e.target).closest('.jspVerticalBar').length < 1)
             {
             hideEventTypeHolder();
         }
