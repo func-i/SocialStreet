@@ -68,6 +68,10 @@ class Event < ActiveRecord::Base
   def upcoming
     Time.now < start_date
   end
+  def passed
+    Time.now > end_date
+  end
+
   
   def event_types
     event_keywords.collect(&:event_type).compact

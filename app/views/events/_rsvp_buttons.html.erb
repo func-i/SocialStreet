@@ -1,6 +1,8 @@
 <% if event.canceled %>
   <%= image_tag('canceled-btn.png') %>
 
+<% elsif event.passed%>
+  <span style="color:#FFC233;font-weight:bold;font-size:22px">Too Late...</span>
 <% else %>
 
   <% if current_user && rsvp = event.event_rsvps.attending_or_maybe_attending.by_user(current_user).first%>
