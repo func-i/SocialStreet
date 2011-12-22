@@ -4,6 +4,7 @@ class ExploreBaseController < ApplicationController
     init_page
 
     get_events
+    get_chat_rooms
 
     if request.xhr?
       render "/shared/ajax_load.js", :locals => {:file_name_var => @file_var_name}
@@ -13,7 +14,8 @@ class ExploreBaseController < ApplicationController
   def super_search
     @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
 
-    get_events;
+    get_events
+    get_chat_rooms
   end
 
   protected
@@ -34,7 +36,7 @@ class ExploreBaseController < ApplicationController
     @events = @events.reject{|item| @promoted_events.include?(item)} unless @promoted_events.blank?
 
   end
-
+  
   def find_events(args = {})
     events = Event.valid.upcoming
 
@@ -55,6 +57,11 @@ class ExploreBaseController < ApplicationController
     events = with_permission(events)
 
     return events;
+  end
+
+  def get_chat_rooms(args = {})
+    ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",")
+    @chat_rooms = ChatRoom.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng).all
   end
 
   def with_permission(events)

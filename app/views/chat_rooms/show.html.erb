@@ -1,0 +1,12 @@
+<div id="chat_<%= @chat_room.id %>">
+  <div>
+    <ul class="chat-content">
+    </ul>
+  </div>
+  <%= form_for [@chat_room, Message.new], :remote => true do |f| %>
+    <%= f.text_field :content %>
+    <%= f.submit "Send" %>
+  <% end %>
+
+</div>
+

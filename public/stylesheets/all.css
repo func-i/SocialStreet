@@ -1845,3 +1845,14 @@ h1 {
     font-weight: bold;
 }
 
+.chat-content {
+    background-color: white;
+    height: 250px;
+    margin-bottom: 10px;
+    overflow: auto;
+    padding: 0 10px 10px 10px;
+}
+
+.chat-content li {
+    margin-top: 10px
+}

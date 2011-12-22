@@ -1,5 +1,14 @@
 clearExploreMarkers();
 $('#search_results').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @events })%>');
 $('#promoted_events').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @promoted_events })%>');
+
+<% @chat_rooms.each do |chat_room| %>
+  var marker = createChatRoomMarker(parseFloat(<%= chat_room.location.latitude %>), parseFloat(<%= chat_room.location.longitude %>));
+  marker.chatRoomId = <%= chat_room.id %>;
+  console.log(marker);
+<% end %>
+
 addExploreMarkers();
 toggle_suggested_actions();
+
+

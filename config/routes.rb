@@ -71,6 +71,10 @@ SocialStreetReborn::Application.routes.draw do
   end
 
   resources :smows
+  resources :chat_rooms do
+    resource :messages
+  end
+  
 
   match '/contact' => 'contact#create'
 

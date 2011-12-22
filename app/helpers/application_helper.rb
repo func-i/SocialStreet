@@ -1,4 +1,4 @@
-module ApplicationHelper
+module ApplicationHelper  
 
   def url_for_event_image(event)
     url_for_event_keyword(nil) if event.event_types.empty?
@@ -123,4 +123,11 @@ module ApplicationHelper
 
     return "#{latitude},#{longitude}"
   end
+
+  def broadcast(channel, &block)
+    message = {:channel => channel, :data => capture(&block), :ext => {:auth_token => FAYE_TOKEN}}
+    uri = URI.parse("http://localhost:9292/faye")
+    Net::HTTP.post_form(uri, :message => message.to_json)
+  end
+
 end

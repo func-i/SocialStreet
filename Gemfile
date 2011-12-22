@@ -27,6 +27,7 @@ gem 'jammit'
 gem 'airbrake'
 gem 'rpm_contrib'
 gem 'newrelic_rpm'
+gem 'faye'
 
 gem "aws-ses", "~> 0.4.3", :require => 'aws/ses'
 
