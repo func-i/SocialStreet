@@ -4,7 +4,7 @@
     <title>SocialStreet <%= " - #{truncate(@page_title, :length => 30)}" if @page_title %></title>
     <%= include_stylesheets :common %>
     <%#=stylesheet_link_tag "event_type_sprite" %>
-    <%= javascript_include_tag 'http://maps.google.com/maps/api/js?v=3.5&sensor=true', "http://10.0.1.9:9292/faye.js" %>
+    <%= javascript_include_tag 'http://maps.google.com/maps/api/js?v=3.5&sensor=true', "http://localhost:9292/faye.js" %>
     <!--[if lte IE 9]><link href="/assets/ie.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if lte IE 8]><link href="/assets/ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if lt IE 8]><link href="/assets/ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
@@ -65,9 +65,7 @@
       </div>
     </div>
 
-    <div id="chat_room_template" style="display:none; height: 300px; padding: 10px; background-color: black;">
-      
-    </div>
+    <div id="chat_room_template" class="chat-holder container"></div>
 
   </body>
 </html>

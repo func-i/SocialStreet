@@ -304,20 +304,24 @@ function createChatRoomMarker(lat, lng) {
     //marker.label_.bindTo('position', marker, 'position');
 
     google.maps.event.addListener(marker, 'click', function() {
-        var $chatWindow = $('#chat_room_template').clone();
-        $('#bottom_pane').append($chatWindow);
-        $.ajax({
-            url: '/chat_rooms/' + marker.chatRoomId,
-            success: function(data){
-                $chatWindow.html(data);
-                $chatWindow.show();
-                faye.subscribe('/chat_rooms/' + marker.chatRoomId, function (data) {
-                    eval(data);
-                });
-            }
-        })
 
-        resizePageElements();
+        if($('#chat_' + marker.chatRoomId).length < 1) {
+            var $chatWindow = $('#chat_room_template').clone();
+            $chatWindow.removeAttr('id');
+            $('#bottom_pane').append($chatWindow);
+            $.ajax({
+                url: '/chat_rooms/' + marker.chatRoomId,
+                success: function(data){
+                    $chatWindow.html(data);
+                    $chatWindow.show();
+                    faye.subscribe('/chat_rooms/' + marker.chatRoomId, function (data) {
+                        eval(data);
+                    });
+                }
+            })
+
+            resizePageElements();
+        }
     });
 
     return marker;
