@@ -160,6 +160,7 @@ function updateExploreLocationParams(){
 
 function refreshExploreResults(){
     $('#explore_search_params').submit();
+    deleteTipsy();
     if(history && history.pushState) {
         history.pushState(null, "", '?' + $('#explore_search_params').serialize());
     }

@@ -271,11 +271,7 @@ function cleanup(){
 
     resizeSelf = function(){};
 
-    console.log("cleanup");
-    if($currentTipsyElem)
-        $currentTipsyElem.data('tipsy').hide();
-
-    $('.user-image').data('tipsy', null);
+    deleteTipsy();
 
     $('.content-group').html(' ');
     $('#right_side_pane').removeClass('hide_for_center_pane');
@@ -294,13 +290,19 @@ function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat,
         '&update_db=' + updateDB, function(data, textStatus){});
 }
 
-function setupTipsy(){
-    console.log("setup Tipsy");
-    if($currentTipsyElem)
-        $currentTipsyElem.data('tipsy').hide();
+function deleteTipsy(){
+    clearTimeout(hideTipsyTimer);
 
     //delete all tipsy apis
+    if($currentTipsyElem && undefined != $currentTipsyElem.data('tipsy')){
+        $currentTipsyElem.data('tipsy').hide();
+        $currentTipsyElem = null;
+    }
     $('.user-image').data('tipsy', null);
+    $('.tipsy').remove();
+}
+function setupTipsy(){
+    deleteTipsy();
 
     var lastXhr;
     $('.user-image').tipsy({
