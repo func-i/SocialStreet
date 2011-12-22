@@ -252,7 +252,7 @@ function selectMarker_createWhere(marker){
 }
 
 function saveMarkerName(marker_name){
-    $('#create_where_name_location_text').text(marker_name);
+    $('#create_where_name_location_text').text((marker_name && marker_name.length > 0) ? marker_name : "Click here to name this location...");
     createEventSelectedMarker.text_ = marker_name;
     $('#create_where_name_location_text').removeClass('hidden');
     $('#create_where_name_location_input').addClass('hidden');
