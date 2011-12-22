@@ -15,8 +15,7 @@
       <% attendees = User.attending_event(event)%>
       <% attendees_count = attendees.count %>
       <% number_attendees_to_show = (attendees_count == 5 ? 5 : 4)%>
-      <%# attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
-      <%User.limit(10).each do |attendee|%>
+      <% attendees.order_by_rank_to_user(current_user).limit(number_attendees_to_show).each do |attendee| %>
         <div style="float:left;position:relative;">
           <%= avatar attendee, :size => "29x29", :class=>"result-attendees-image", :gravity => "sw"%>
           <span class="show-attendee-name hidden"><%= attendee.name%></span>
