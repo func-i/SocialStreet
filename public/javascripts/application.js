@@ -340,11 +340,8 @@ function resizePageElements() {
 
     initializeScrollPanes();
 
-    $('.dotdotdot').each(function() {
-        $(this).dotdotdot({
-            wrap: 'letter'
-        });
-    });
+    if($currentTipsyElem)
+        $currentTipsyElem.data('tipsy').position();
 }
 
 function resizeLayout(){
