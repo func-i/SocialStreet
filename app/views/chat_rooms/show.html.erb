@@ -4,8 +4,7 @@
     </ul>
   </div>
   <%= form_for [@chat_room, Message.new], :remote => true do |f| %>
-    <%= f.text_field :content %>
-    <%= f.submit "Send" %>
+    <%= f.text_field :content, :class=>'chat-text-field' %>
   <% end %>
 
 </div>
