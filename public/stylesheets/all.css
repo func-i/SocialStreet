@@ -336,6 +336,7 @@ END OF RESET
     text-align: center;
     bottom: 10px;
     right: 20px;
+    height: 30px;
 }
 .result-join-btn-holder .attending {
     width: 50px;
@@ -443,7 +444,7 @@ END OF RESET
 .unattend-btn{   
     color: black;
     font: italic 11px/12px Arial, Helvetica, sans-serif;
-    /*text-align: center;*/
+    text-align: center;
     cursor: pointer;
     font-weight: 800;
 
@@ -818,7 +819,7 @@ END OF RESET
     padding-bottom: 5px;
 }
 #show_event_title_text{
-    float:left;
+/*    float:left;*/
     width: 264px;
     min-height: 20px;
     max-height: 38px;
@@ -830,11 +831,11 @@ END OF RESET
 }
 
 #show_event_date{
-    clear:right;
-    float: left;
-    padding-top: 5px;
-    text-align:center;
-    font: 14px/14px Arial, Helvetica, sans-serif;
+    width: 140px;
+    height: 30px;
+    position: absolute;
+    left: 114px;
+    top:65px;
 }
 #show_event_tags{
     color: white;
@@ -898,8 +899,11 @@ END OF RESET
 
 #join_btn_holder{
     float: right;
-    position: relative;
-    top: 13px;
+    /*position: relative;
+    top: 13px;*/
+    position:absolute;
+    top:65px;/*15px + 80 - 30 = 65*/
+    right:20px;
 }
 #show_maybe_attendees_title,
 #show_attendees_title {
