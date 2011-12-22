@@ -294,39 +294,6 @@ function createExploreMarker(lat, lng, iconClass, resultID){
     return marker;
 }
 
-function createChatRoomMarker(lat, lng) {
-    var marker = new google.maps.Marker({
-        map: map,
-        icon: '/images/ss_chat_ico.png',
-        position: new google.maps.LatLng(lat, lng)
-    });
-    //marker.label_ = new IconLabel(marker);
-    //marker.label_.bindTo('position', marker, 'position');
-
-    google.maps.event.addListener(marker, 'click', function() {
-
-        if($('#chat_' + marker.chatRoomId).length < 1) {
-            var $chatWindow = $('#chat_room_template').clone();
-            $chatWindow.removeAttr('id');
-            $('#bottom_pane').append($chatWindow);
-            $.ajax({
-                url: '/chat_rooms/' + marker.chatRoomId,
-                success: function(data){
-                    $chatWindow.html(data);
-                    $chatWindow.show();
-                    faye.subscribe('/chat_rooms/' + marker.chatRoomId, function (data) {
-                        eval(data);
-                    });
-                }
-            })
-
-            resizePageElements();
-        }
-    });
-
-    return marker;
-}
-
 function removeSelectedPinState(){
     for(var i = 0; i < selectedMarkerArr.length; i++){
         if(selectedMarkerArr[i] != undefined) {

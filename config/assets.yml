@@ -15,6 +15,7 @@ javascripts:
     - public/javascripts/ss_keywords.js
     - public/javascripts/ss_groups.js
     - public/javascripts/ss_pageless.js
+    - public/javascripts/ss_chat.js
     - public/javascripts/jScrollPane/jquery.jscrollpane.js
     - public/javascripts/jScrollPane/jquery.mousewheel.js
     - public/javascripts/jScrollPane/mwheelIntent.js

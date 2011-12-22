@@ -2,7 +2,6 @@ var cleanUpSelf = function(){};
 
 var hideTipsyTimer = null;
 var $currentTipsyElem = null;
-var faye = new Faye.Client('http://localhost:9292/faye')
 
 $(function() {
    

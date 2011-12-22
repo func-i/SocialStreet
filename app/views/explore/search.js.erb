@@ -3,9 +3,7 @@ $('#search_results').html('<%= escape_javascript render(:partial => "results", :
 $('#promoted_events').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @promoted_events })%>');
 
 <% @chat_rooms.each do |chat_room| %>
-  var marker = createChatRoomMarker(parseFloat(<%= chat_room.location.latitude %>), parseFloat(<%= chat_room.location.longitude %>));
-  marker.chatRoomId = <%= chat_room.id %>;
-  console.log(marker);
+  createChatRoomMarker(parseFloat(<%= chat_room.location.latitude %>), parseFloat(<%= chat_room.location.longitude %>), <%=chat_room.id%>);
 <% end %>
 
 addExploreMarkers();
