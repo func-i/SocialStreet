@@ -92,6 +92,7 @@ function setupExplorePage(){
     }
 
     addExploreMarkers();
+    addChatMarkers();
     toggle_suggested_actions();
 
     resizePageElements();
@@ -168,6 +169,15 @@ function refreshExploreResults(){
     if(history && history.pushState) {
         history.pushState(null, "", '?' + $('#explore_search_params').serialize());
     }
+}
+
+function addChatMarkers(){
+    $.each($('#results-list .chat-room-result'), function(index, room){
+        var lat = $(room).children('#result_lat');
+        var lng = $(room).children('#result_lng');
+
+        createChatRoomMarker(lat, lng, $(room).id.split('_')[2]);
+    });
 }
 
 function addExploreMarkers(){

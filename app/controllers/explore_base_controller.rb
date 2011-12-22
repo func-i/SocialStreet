@@ -60,8 +60,12 @@ class ExploreBaseController < ApplicationController
   end
 
   def get_chat_rooms(args = {})
-    ne_lat, ne_lng, sw_lat, sw_lng = params[:map_bounds].split(",")
-    @chat_rooms = ChatRoom.in_bounds(ne_lat, ne_lng, sw_lat, sw_lng).all
+    @chat_rooms = ChatRoom
+
+    map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
+    @chat_rooms = within_bounds(@chat_rooms, map_bounds)
+
+    return @chat_rooms
   end
 
   def with_permission(events)
@@ -110,7 +114,9 @@ class ExploreBaseController < ApplicationController
     return events = events.matching_keywords(all_keywords, true)
   end
 
-  def within_bounds(events, map_bounds)
+  def within_bounds(located_obj, map_bounds)
+    return located_obj unless located_obj.respond_to?(:in_bounds)
+
     if params[:map_zoom].blank?
       if cookies[:c_zoom].blank?
         if current_user
@@ -170,7 +176,7 @@ class ExploreBaseController < ApplicationController
     params[:map_bounds] = "#{ne_lat},#{ne_lng},#{sw_lat},#{sw_lng}"
 
     #SEARCH FOR EVENTS IN BOUNDS
-    events = events.in_bounds(ne_lat,ne_lng,sw_lat,sw_lng)
+    located_obj = located_obj.in_bounds(ne_lat,ne_lng,sw_lat,sw_lng)
   end
 
 

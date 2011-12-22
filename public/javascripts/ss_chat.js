@@ -1,4 +1,4 @@
-var faye = new Faye.Client('http://10.0.1.9:9292/faye');
+var faye = new Faye.Client('http://localhost:9292/faye');
 
 $(function(){
    $('.chat-text-field').live('keydown', function(e){
