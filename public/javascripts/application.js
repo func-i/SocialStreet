@@ -45,7 +45,6 @@ $(function() {
         $.getScript(location.href, function() {
             resizePageElements();
             setPlaceholdersInInternetExplorer();
-            setupTipsy();
         });
     });
 
@@ -211,7 +210,6 @@ function navLink(link, e){
             $.getScript(href, function() {
                 resizePageElements();
                 setPlaceholdersInInternetExplorer();
-                setupTipsy();
             });
             history.pushState({}, "", href);
         }
@@ -273,9 +271,11 @@ function cleanup(){
 
     resizeSelf = function(){};
 
-    $('.user-image').each(function() {
-        $(this).tipsy('hide');
-    });
+    console.log("cleanup");
+    if($currentTipsyElem)
+        $currentTipsyElem.data('tipsy').hide();
+
+    $('.user-image').data('tipsy', null);
 
     $('.content-group').html(' ');
     $('#right_side_pane').removeClass('hide_for_center_pane');
@@ -295,6 +295,13 @@ function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat,
 }
 
 function setupTipsy(){
+    console.log("setup Tipsy");
+    if($currentTipsyElem)
+        $currentTipsyElem.data('tipsy').hide();
+
+    //delete all tipsy apis
+    $('.user-image').data('tipsy', null);
+
     var lastXhr;
     $('.user-image').tipsy({
         html: true,
@@ -340,8 +347,7 @@ function resizePageElements() {
 
     initializeScrollPanes();
 
-    if($currentTipsyElem)
-        $currentTipsyElem.data('tipsy').position();
+    setupTipsy();
 }
 
 function resizeLayout(){

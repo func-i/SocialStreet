@@ -3,3 +3,5 @@ $('#search_results').html('<%= escape_javascript render(:partial => "results", :
 $('#promoted_events').html('<%= escape_javascript render(:partial => "results", :locals => { :results => @promoted_events })%>');
 addExploreMarkers();
 toggle_suggested_actions();
+resizePageElements();
+resizeResultButtons();

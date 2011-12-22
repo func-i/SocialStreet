@@ -54,11 +54,6 @@ function resizeResultButtons(){
 function setupExplorePage(){
     $('#notify_me_btn').removeClass('hidden');
 
-    $('#explore_search_params').ajaxComplete(function() {
-        resizePageElements();
-        resizeResultButtons();
-    });
-
     var mapCenter = $('#map_center').val();
     var mapCenterArr = mapCenter.split(",");
 

@@ -137,7 +137,7 @@
 .event-type-eating-medium-sprite, .event-type-arts-culture-medium-sprite, .event-type-water-balloon-medium-sprite, .event-type-basketball-medium-sprite, .event-type-unknown7-medium-sprite,
 .event-type-squash-medium-sprite, .event-type-concert-medium-sprite, .event-type-potluck-medium-sprite, .event-type-unknown8-medium-sprite, .event-type-golf-medium-sprite,
 .event-type-espanol-medium-sprite, .event-type-coffee-medium-sprite, .event-type-language-exchange-medium-sprite, .event-type-streetmeet3-medium-sprite, .event-type-dinner-medium-sprite,
-.event-type-recreation-medium-sprite, .event-type-picnic-medium-sprite, .event-type-paintball-medium-sprite, .event-type-korean-medium-sprite, .event-type-fundraiser-medium-sprite,
+.event-type-recreation-medium-sprite, .event-type-picnic-medium-sprite, .event-type-paintball-medium-sprite, .event-type-chinese-medium-sprite, .event-type-fundraiser-medium-sprite,
 .event-type-unknown9-medium-sprite, .event-type-walk-medium-sprite, .event-type-cycling-medium-sprite, .event-type-exercise-class-medium-sprite, .event-type-hookah-medium-sprite,
 .event-type-baseball-medium-sprite, .event-type-lunch-medium-sprite, .event-type-travel-medium-sprite, .event-type-wine-cheese-medium-sprite, .event-type-streetmeet4-medium-sprite,
 .event-type-skateboard-medium-sprite, .event-type-icecream-medium-sprite, .event-type-predrinking-medium-sprite, .event-type-francais-medium-sprite, .event-type-streetmeet5-medium-sprite,
@@ -210,7 +210,7 @@
 .event-type-recreation-medium-sprite { background-position: -0px -420px; width: 70px; height: 70px; }
 .event-type-picnic-medium-sprite { background-position: -70px -420px; width: 70px; height: 70px; }
 .event-type-paintball-medium-sprite { background-position: -140px -420px; width: 70px; height: 70px; }
-.event-type-korean-medium-sprite { background-position: -210px -420px; width: 70px; height: 70px; }
+.event-type-chinese-medium-sprite { background-position: -210px -420px; width: 70px; height: 70px; }
 .event-type-fundraiser-medium-sprite { background-position: -280px -420px; width: 70px; height: 70px; }
 .event-type-unknown9-medium-sprite { background-position: -350px -420px; width: 70px; height: 70px; }
 .event-type-walk-medium-sprite { background-position: -420px -420px; width: 70px; height: 70px; }
