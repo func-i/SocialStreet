@@ -1845,6 +1845,23 @@ h1 {
     font-weight: bold;
 }
 
+.chat-holder {
+    display:none;
+    height: 310px;
+    padding: 10px;
+    width: 218px;
+}
+
+.chat-title {
+    float: left;
+    color: white;
+}
+
+.chat-nav {
+    color: white;
+    float: right;
+}
+
 .chat-content {
     background-color: white;
     height: 250px;

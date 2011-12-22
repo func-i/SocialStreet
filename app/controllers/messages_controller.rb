@@ -5,5 +5,4 @@ class MessagesController < ApplicationController
     @message = @chat_room.messages.create!(params[:message])
   end
 
-
 end

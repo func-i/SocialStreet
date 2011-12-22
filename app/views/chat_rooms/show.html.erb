@@ -1,8 +1,13 @@
 <div id="chat_<%= @chat_room.id %>">
   <div>
-    <ul class="chat-content">
-    </ul>
+    <div class="chat-title"><%= @chat_room.name %></div>
+    <div class="chat-nav">
+      <%= link_to "-", '#', :class => "chat-minimize" %>
+      <%= link_to "X", '#', :class => "chat-close" %>
+    </div>
+    <div style="clear:both"></div>
   </div>
+  <ul class="chat-content"></ul>
   <%= form_for [@chat_room, Message.new], :remote => true do |f| %>
     <%= f.text_field :content, :class=>'chat-text-field' %>
   <% end %>
