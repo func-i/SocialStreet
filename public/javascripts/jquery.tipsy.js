@@ -65,6 +65,7 @@
                 }
             }
 
+            console.log(tp);
             $tip.css(tp);
 
             $tip.removeClass('tipsy-n tipsy-s tipsy-e tipsy-w tipsy-ne tipsy-nw tipsy-se tipsy-sw')
@@ -283,6 +284,7 @@
         if ($this.offset().left + (dirNS ? this.offsetWidth/2 : 0) - tipWidth < boundLeft) dirEW = 'w';
         if ($this.offset().left + this.offsetWidth - (dirNS ? this.offsetWeight/2 : 0) + tipWidth > boundRight) dirEW = 'e';
 
+        console.log((dirNS ? dirNS : '') + (dirEW ? dirEW : ''));
         return (dirNS ? dirNS : '') + (dirEW ? dirEW : '');
     }
 
