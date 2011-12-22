@@ -17,6 +17,62 @@
     };
     
     Tipsy.prototype = {
+        position: function(){
+            var $tip = this.tip();
+
+            var pos = $.extend({}, this.$element.offset(), {
+                width: this.$element[0].offsetWidth,
+                height: this.$element[0].offsetHeight
+            });
+
+            var actualWidth = $tip[0].offsetWidth,
+            actualHeight = $tip[0].offsetHeight,
+            gravity = maybeCall(this.options.gravity, this.$element[0]);
+
+            var tp;
+            switch (gravity.charAt(0)) {
+                case 'n':
+                    tp = {
+                        top: pos.top + pos.height + this.options.offset,
+                        left: pos.left + pos.width / 2 - actualWidth / 2
+                    };
+                    break;
+                case 's':
+                    tp = {
+                        top: pos.top - actualHeight - this.options.offset,
+                        left: pos.left + pos.width / 2 - actualWidth / 2
+                    };
+                    break;
+                case 'e':
+                    tp = {
+                        top: pos.top + pos.height / 2 - actualHeight / 2,
+                        left: pos.left - actualWidth - this.options.offset
+                    };
+                    break;
+                case 'w':
+                    tp = {
+                        top: pos.top + pos.height / 2 - actualHeight / 2,
+                        left: pos.left + pos.width + this.options.offset
+                    };
+                    break;
+            }
+
+            if (gravity.length == 2) {
+                if (gravity.charAt(1) == 'w') {
+                    tp.left = pos.left + pos.width / 2 - 15;
+                } else {
+                    tp.left = pos.left + pos.width / 2 - actualWidth + 15;
+                }
+            }
+
+            $tip.css(tp);
+
+            $tip.removeClass('tipsy-n tipsy-s tipsy-e tipsy-w tipsy-ne tipsy-nw tipsy-se tipsy-sw')
+            $tip.addClass('tipsy-' + gravity);
+
+            $tip.find('.tipsy-arrow')[0].className = 'tipsy-arrow tipsy-arrow-' + gravity.charAt(0);
+        },
+
         show: function() {
             var title = this.getTitle();
             if (title && this.enabled) {
@@ -31,53 +87,8 @@
                     display: 'block'
                 }).prependTo(document.body);
                 
-                var pos = $.extend({}, this.$element.offset(), {
-                    width: this.$element[0].offsetWidth,
-                    height: this.$element[0].offsetHeight
-                });
-                
-                var actualWidth = $tip[0].offsetWidth,
-                actualHeight = $tip[0].offsetHeight,
-                gravity = maybeCall(this.options.gravity, this.$element[0]);
-                
-                var tp;
-                switch (gravity.charAt(0)) {
-                    case 'n':
-                        tp = {
-                            top: pos.top + pos.height + this.options.offset,
-                            left: pos.left + pos.width / 2 - actualWidth / 2
-                            };
-                        break;
-                    case 's':
-                        tp = {
-                            top: pos.top - actualHeight - this.options.offset,
-                            left: pos.left + pos.width / 2 - actualWidth / 2
-                            };
-                        break;
-                    case 'e':
-                        tp = {
-                            top: pos.top + pos.height / 2 - actualHeight / 2,
-                            left: pos.left - actualWidth - this.options.offset
-                            };
-                        break;
-                    case 'w':
-                        tp = {
-                            top: pos.top + pos.height / 2 - actualHeight / 2,
-                            left: pos.left + pos.width + this.options.offset
-                            };
-                        break;
-                }
-                
-                if (gravity.length == 2) {
-                    if (gravity.charAt(1) == 'w') {
-                        tp.left = pos.left + pos.width / 2 - 15;
-                    } else {
-                        tp.left = pos.left + pos.width / 2 - actualWidth + 15;
-                    }
-                }
-                
-                $tip.css(tp).addClass('tipsy-' + gravity);
-                $tip.find('.tipsy-arrow')[0].className = 'tipsy-arrow tipsy-arrow-' + gravity.charAt(0);
+                this.position();
+
                 if (this.options.className) {
                     $tip.addClass(maybeCall(this.options.className, this.$element[0]));
                 }
@@ -89,12 +100,12 @@
                         visibility: 'visible'
                     }).animate({
                         opacity: this.options.opacity
-                        });
+                    });
                 } else {
                     $tip.css({
                         visibility: 'visible',
                         opacity: this.options.opacity
-                        });
+                    });
                 }
             }
         },
@@ -247,6 +258,34 @@
         return $(this).offset().left > ($(document).scrollLeft() + $(window).width() / 2) ? 'e' : 'w';
     };
 
+    $.fn.tipsy.autoSocialStreet = function(){
+        var $this = $(this);
+
+        prefer = $this.data('gravity');
+        var dirNS = 'n' == prefer[0] || 's' == prefer[0] ? prefer[0] : false;
+        var dirEW = !dirNS ? prefer[0] : prefer.length > 1 ? prefer[1] : false;
+
+        var tipsy = $this.data('tipsy');
+        var $tip = tipsy.tip();
+
+        var tipWidth = $tip[0].offsetWidth,
+        tipHeight = $tip[0].offsetHeight;
+
+        var MARGIN = 15;
+        var boundTop = $(document).scrollTop() + MARGIN,
+        boundBottom = $(document).scrollTop() + $(window).height() - MARGIN,
+        boundLeft = $(document).scrollLeft() + MARGIN,
+        boundRight = $(document).scrollLeft() + $(window).width() - MARGIN;
+
+        if ($this.offset().top + (dirEW ? this.offsetHeight/2 : 0) - tipHeight < boundTop) dirNS = 'n';
+        if ($this.offset().top + this.offsetHeight - (dirEW ? this.offsetHeight/2 : 0) + tipHeight > boundBottom) dirNS = 's';
+
+        if ($this.offset().left + (dirNS ? this.offsetWidth/2 : 0) - tipWidth < boundLeft) dirEW = 'w';
+        if ($this.offset().left + this.offsetWidth - (dirNS ? this.offsetWeight/2 : 0) + tipWidth > boundRight) dirEW = 'e';
+
+        return (dirNS ? dirNS : '') + (dirEW ? dirEW : '');
+    }
+
     $.fn.tipsy.elementGravity = function() {
         return $(this).data('gravity');
     };
@@ -271,7 +310,7 @@
             var dir = {
                 ns: prefer[0],
                 ew: (prefer.length > 1 ? prefer[1] : false)
-                },
+            },
             boundTop = $(document).scrollTop() + margin,
             boundLeft = $(document).scrollLeft() + margin,
             $this = $(this);

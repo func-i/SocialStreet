@@ -298,15 +298,20 @@ function setupTipsy(){
         //        live: true,
         fallback: 'Loading..',
         opacity: 1,
-        gravity: $.fn.tipsy.elementGravity,
         trigger: 'manual',
+        gravity: $.fn.tipsy.autoSocialStreet,
         title: function() {
-            $.ajax({
+            if(lastXhr)
+                lastXhr.abort();
+            
+            var $thisUser = $(this);
+            lastXhr = $.ajax({
                 url: '/profiles/' + $(this).data('user-id')  + '/socialcard',
                 type: 'GET',
                 dataType: 'html',
                 success: function (data, status, jqXhr) {
                     $('.tipsy-inner').html(data);
+                    $thisUser.data('tipsy').position();
                 }
             });
             if($(this).siblings('.show-attendee-name').length > 0)
