@@ -8,6 +8,18 @@ $(function(){
             return false;
         }
     });
+
+    $('.chat-header').live('click', function(e) {
+        toggleChatRoom($(this).closest('.chat-room')[0].id.split('_')[1]);
+        e.preventDefault();
+        e.stopPropagation();
+    });
+    $('.chat-close').live('click', function(e){
+        closeChatRoom($(this).closest('.chat-room')[0].id.split('_')[1]);
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
 });
 
 function createChatRoomMarker(lat, lng, chatRoomID) {
@@ -37,13 +49,28 @@ function openChatRoom(chatRoomID){
                 $chatWindow.html(data);
                 setupTipsy();
                 $chatWindow.show();
-
-                faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
+                
+                var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
                 });
+                $chatWindow.data('subscribe', subscribeObj);
             }
         })
 
         resizePageElements();
     }
+}
+
+function closeChatRoom(chatRoomID){
+    var $chatWindow = $('#chat_' + chatRoomID);
+    $chatWindow.data('subscribe').cancel();
+    $chatWindow.closest('.chat-holder').remove();
+}
+
+function toggleChatRoom(chatRoomID){
+    var $chatHolder = $('#chat_' + chatRoomID).closest('.chat-holder');
+    $chatHolder.find('.chat-content').toggle();
+    $chatHolder.find('.new_message').toggle();
+    $chatHolder.find('.chat-minimize').toggle();
+    $chatHolder.toggleClass('minimized');
 }
