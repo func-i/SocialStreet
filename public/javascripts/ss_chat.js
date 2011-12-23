@@ -4,8 +4,9 @@ $(function(){
     $('.chat-text-field').live('keydown', function(e){
         if(e.keyCode == 13 && !e.shiftKey){
             $(this).closest('form').submit();
-            $(this).val('');
+            $(this).val('');            
             return false;
+            
         }
     });
 
@@ -54,7 +55,7 @@ function openChatRoom(chatRoomID){
                     eval(data);
                 });
                 $chatWindow.data('subscribe', subscribeObj);
-                console.log($chatWindow);
+                $chatWindow.find('.chat-content').scrollTop($chatWindow.find('.chat-content').attr('scrollHeight'));
             }
         })
 

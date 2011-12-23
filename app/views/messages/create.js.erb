@@ -1,4 +1,6 @@
 <% broadcast "/chat_rooms/#{@message.chat_room.id}" do %>
-  $("#chat_<%= @message.chat_room_id %> .chat-content").append("<%= escape_javascript render(@message) %>");
+  var $chatContent = $("#chat_<%= @message.chat_room_id %> .chat-content");
+  $chatContent.append("<%= escape_javascript render(@message) %>");
+  $chatContent.scrollTop($chatContent.attr('scrollHeight'));
 <% end %>
 setupTipsy();

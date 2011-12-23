@@ -8,7 +8,7 @@
     <div style="clear:both"></div>
   </div>
   <ul class="chat-content">
-    <% @chat_room.messages.limit(50).order('created_at ASC').each do |message| %>
+    <% @chat_room.messages.limit(50).order('created_at DESC').reverse.each do |message| %>
       <%= render :partial => 'messages/message', :locals => {:message => message} %>
     <% end %>
   </ul>
