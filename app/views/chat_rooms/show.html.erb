@@ -7,7 +7,11 @@
     </div>
     <div style="clear:both"></div>
   </div>
-  <ul class="chat-content"></ul>
+  <ul class="chat-content">
+    <% @chat_room.messages.limit(50).order('created_at ASC').each do |message| %>
+      <%= render :partial => 'messages/message', :locals => {:message => message} %>
+    <% end %>
+  </ul>
   <%= form_for [@chat_room, Message.new], :remote => true do |f| %>
     <%= f.text_field :content, :class=>'chat-text-field' %>
   <% end %>

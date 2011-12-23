@@ -15,10 +15,18 @@
           <div id="search_results">
             <%= render :partial => "/explore/results", :locals => { :results => @events } %>
           </div>
+          <div id="chat_results" class="hidden">
+            <%@chat_rooms.each do |room|%>
+              <div id="chat_room_<%=room.id%>" class="chat-room-result">
+                <%= hidden_field_tag "result_lat", room.location.latitude %>
+                <%= hidden_field_tag "result_lng", room.location.longitude %>
+              </div>
+            <% end %>
+          </div>
         </div>
         <%= render :partial => "/explore/suggested_explore_actions" %>
       </div>
-    </div>   
+    </div>
   </div>
 <% end %>
 

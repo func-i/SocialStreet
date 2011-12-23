@@ -35,7 +35,9 @@ function openChatRoom(chatRoomID){
             url: '/chat_rooms/' + chatRoomID,
             success: function(data){
                 $chatWindow.html(data);
-                $chatWindow.removeClass('hidden');
+                setupTipsy();
+                $chatWindow.show();
+
                 faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
                 });

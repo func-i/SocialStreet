@@ -198,25 +198,6 @@ $(function() {
         }, 200);
     });
 
-    $('.chat-minimize').live('click', function(e) {
-        $(this).closest('.chat-holder').find('.chat-content').addClass('hidden');;
-        $(this).closest('.chat-holder').find('.new_message').addClass('hidden');;
-        $(this).closest('.chat-holder').height(12);
-        $(this).addClass('hidden');
-        
-        e.preventDefault();
-        e.stopPropagation();
-    });
-
-    $('.chat-holder').live('click', function(e) {
-        if($(this).height() == 12) {
-            $(this).find('.chat-content').removeClass('hidden');
-            $(this).find('.new_message').removeClass('hidden');;
-            $(this).find('.chat-minimize').removeClass('hidden');;
-            $(this).height(310);
-        }
-    });
-
 });
 
 function navLink(link, e){

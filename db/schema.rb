@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(:version => 20111222193959) do
     t.datetime "updated_at"
   end
 
+  create_table "chats", :force => true do |t|
+    t.integer  "location_id", :null => false
+    t.integer  "user_id",     :null => false
+    t.string   "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "event_id"
