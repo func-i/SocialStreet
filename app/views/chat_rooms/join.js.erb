@@ -1,3 +1,6 @@
 <% broadcast "/chat_rooms/#{@chat_room.id}" do %>
-  $('#chat_<%= @chat_room.id%>').find('.user-holder').append('<%= escape_javascript(render("user", :user => current_user)) %>');
+  if($('#chat_<%= @chat_room.id%> .user-<%= current_user.id %>').length < 1 && $('#message_user_id').val() != <%= current_user.id %>) {
+    $('#chat_<%= @chat_room.id%>').find('.user-holder').prepend('<%= escape_javascript(render("user", :user => current_user)) %>');
+    setupTipsy();
+  }
 <% end %>

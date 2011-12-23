@@ -1,3 +1,1 @@
-<div class="user-<%= user.id  %>" style="float:left; clear: left">
-  <%= avatar(current_user, :size => "29x29") %>
-</div>
+<li class="user-<%= user.id %> drop-shadow-1px"><%= avatar(user, :size => "29x29", :gravity=>'s') %></li>
