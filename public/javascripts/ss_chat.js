@@ -35,7 +35,7 @@ function openChatRoom(chatRoomID){
             url: '/chat_rooms/' + chatRoomID,
             success: function(data){
                 $chatWindow.html(data);
-                $chatWindow.show();
+                $chatWindow.removeClass('hidden');
                 faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
                 });

@@ -199,10 +199,10 @@ $(function() {
     });
 
     $('.chat-minimize').live('click', function(e) {
-        $(this).closest('.chat-holder').find('.chat-content').hide();
-        $(this).closest('.chat-holder').find('.new_message').hide();
+        $(this).closest('.chat-holder').find('.chat-content').addClass('hidden');;
+        $(this).closest('.chat-holder').find('.new_message').addClass('hidden');;
         $(this).closest('.chat-holder').height(12);
-        $(this).hide();
+        $(this).addClass('hidden');
         
         e.preventDefault();
         e.stopPropagation();
@@ -210,9 +210,9 @@ $(function() {
 
     $('.chat-holder').live('click', function(e) {
         if($(this).height() == 12) {
-            $(this).find('.chat-content').show();
-            $(this).find('.new_message').show();
-            $(this).find('.chat-minimize').show();
+            $(this).find('.chat-content').removeClass('hidden');
+            $(this).find('.new_message').removeClass('hidden');;
+            $(this).find('.chat-minimize').removeClass('hidden');;
             $(this).height(310);
         }
     });

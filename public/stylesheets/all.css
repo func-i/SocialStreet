@@ -1850,6 +1850,7 @@ h1 {
     height: 310px;
     padding: 10px;
     width: 218px;
+    float: right;
 }
 
 .chat-title {
