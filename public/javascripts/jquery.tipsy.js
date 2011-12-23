@@ -274,7 +274,7 @@
         if ($this.offset().top + this.offsetHeight - (dirEW ? this.offsetHeight/2 : 0) + tipHeight > boundBottom) dirNS = 's';
 
         if ($this.offset().left + (dirNS ? this.offsetWidth/2 : 0) - tipWidth < boundLeft) dirEW = 'w';
-        if ($this.offset().left + this.offsetWidth - (dirNS ? this.offsetWeight/2 : 0) + tipWidth > boundRight) dirEW = 'e';
+        if ($this.offset().left + this.offsetWidth - (dirNS ? this.offsetWidth/2 : 0) + tipWidth > boundRight) dirEW = 'e';
 
         //console.log((dirNS ? dirNS : '') + (dirEW ? dirEW : ''));
         return (dirNS ? dirNS : '') + (dirEW ? dirEW : '');
