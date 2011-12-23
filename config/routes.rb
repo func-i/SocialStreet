@@ -75,6 +75,7 @@ SocialStreetReborn::Application.routes.draw do
     resource :messages
 
     member do
+      match 'join'
       match 'leave'
     end
   end

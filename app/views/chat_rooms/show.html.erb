@@ -1,7 +1,7 @@
 <div class="chat-room">
   <div class="chat-header">
     <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
-    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<%= @chat_room.users.count %>)</div>
+    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %></div>
     <div class="chat-nav">
       <%= link_to "X", '#', :class => "chat-close" %>
     </div>
@@ -18,10 +18,8 @@
       <%= f.text_field :content, :class=>'chat-text-field' %>
     <% end %>
   </div>
-  <div style="float:right;">
-    <% @chat_room.users.each do |user| %>
-      <div style="float:left; clear: left"><%= avatar(current_user, :size => "29x29") %></div>
-    <% end %>
+  <div class="user-holder" style="float:right;">
+    <%# TODO need to broadcast to find other users in the channel %>
   </div>
 
 
