@@ -21,7 +21,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def leave
-    @chat_room = ChatRoom.find params[:id]
+    @chat_room = ChatRoom.find params[:id]       
 
     r = Redis.new
     r.srem "cr_user_list_#{@chat_room.id}", current_user.id
