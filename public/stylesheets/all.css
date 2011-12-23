@@ -1847,11 +1847,19 @@ h1 {
 
 .chat-holder {
     display:none;
-    height: 310px;
-    padding: 10px;
-    width: 218px;
+    height: 332px;
+    width: 238px;
+}
+.chat-holder.minimized{
+    height: 26px;
+}
+.chat-room{
+    padding: 0 10px 10px 10px;
 }
 
+.chat-header{
+    padding-top:10px;
+}
 .chat-title {
     float: left;
     color: white;
