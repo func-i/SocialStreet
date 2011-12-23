@@ -5,15 +5,15 @@ $(function(){
         if(e.keyCode == 13 && !e.shiftKey){
             $(this).closest('form').submit();
             $(this).val('');            
-            return false;
-            
+            return false;            
         }
+        return true;
     });
 
     $('.chat-header').live('click', function(e) {
         toggleChatRoom($(this).closest('.chat-room')[0].id.split('_')[1]);
-        e.preventDefault();
         e.stopPropagation();
+        e.preventDefault();
     });
     $('.chat-close').live('click', function(e){
         closeChatRoom($(this).closest('.chat-room')[0].id.split('_')[1]);
@@ -75,4 +75,5 @@ function toggleChatRoom(chatRoomID){
     $chatHolder.find('.new_message').toggleClass('hidden');
     $chatHolder.find('.chat-minimize').toggleClass('hidden');
     $chatHolder.toggleClass('minimized');
+    $chatHolder.find('.chat-content').scrollTop($chatHolder.find('.chat-content').attr('scrollHeight'));
 }
