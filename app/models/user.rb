@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   has_many :user_groups
   has_many :groups, :through => :user_groups
 
+  has_and_belongs_to_many :chat_rooms
+
   validates :email, :uniqueness => { :allow_blank => true }
 
   after_save :email_user

@@ -18,8 +18,27 @@ $(function(){
 
         google.maps.event.clearListeners(map, 'dragstart');
         google.maps.event.clearListeners(map, 'dragend');
-        google.maps.event.clearListeners(map, 'bounds_changed');
+        google.maps.event.clearListeners(map, 'bounds_changed');        
+
+        $('.chat-room').each(function(){
+            var chatRoomID = $(this).attr('id').split('_')[1];
+            $.ajax({
+                url: '/chat_rooms/' + chatRoomID + '/leave'
+            });
+        });
+
     }
+
+    $(window).bind('beforeunload', function() {
+        $('.chat-room').each(function(){
+            var chatRoomID = $(this).attr('id').split('_')[1];
+            $.ajax({
+                type: 'GET',
+                dataType: 'script',
+                url: '/chat_rooms/' + chatRoomID + '/leave'
+            });
+        });
+    });
 
     resizeSelf = function(){
         resizeCenterPaneContent();

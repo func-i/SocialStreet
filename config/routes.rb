@@ -73,6 +73,10 @@ SocialStreetReborn::Application.routes.draw do
   resources :smows
   resources :chat_rooms do
     resource :messages
+
+    member do
+      match 'leave'
+    end
   end
   
 

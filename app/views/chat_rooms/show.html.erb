@@ -1,6 +1,6 @@
 <div id="chat_<%= @chat_room.id %>" class="chat-room container">
   <div class="chat-header">
-    <div class="chat-title"><%= @chat_room.name %></div>
+    <div class="chat-title"><%= @chat_room.name %> (<%= @chat_room.users.count %>)</div>
     <div class="chat-nav">
 <%#= link_to "-", '#', :class => "chat-minimize" %>
       <%= link_to "X", '#', :class => "chat-close" %>

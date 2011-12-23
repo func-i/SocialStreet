@@ -67,6 +67,9 @@ function closeChatRoom(chatRoomID){
     var $chatWindow = $('#chat_' + chatRoomID);
     $chatWindow.closest('.chat-holder').data('subscribe').cancel();
     $chatWindow.closest('.chat-holder').remove();
+    $.ajax({
+        url: "/chat_rooms/" + chatRoomID + "/leave"
+    })
 }
 
 function toggleChatRoom(chatRoomID){
