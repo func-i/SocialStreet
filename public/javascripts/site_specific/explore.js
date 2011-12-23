@@ -33,8 +33,6 @@ $(function(){
         $('.chat-room').each(function(){
             var chatRoomID = $(this).attr('id').split('_')[1];
             $.ajax({
-                type: 'GET',
-                dataType: 'script',
                 url: '/chat_rooms/' + chatRoomID + '/leave'
             });
         });
