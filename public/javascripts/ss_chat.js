@@ -42,18 +42,19 @@ function openChatRoom(chatRoomID){
     if($('#chat_' + chatRoomID).length < 1) {
         var $chatWindow = $('#chat_room_template').clone();
         $chatWindow.removeAttr('id');
-        $('#bottom_pane').append($chatWindow);
+        $('#chat_bar').append($chatWindow);
         $.ajax({
             url: '/chat_rooms/' + chatRoomID,
             success: function(data){
                 $chatWindow.html(data);
                 setupTipsy();
-                $chatWindow.show();
+                $chatWindow.removeClass('hidden');
                 
                 var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
                 });
                 $chatWindow.data('subscribe', subscribeObj);
+                console.log($chatWindow);
             }
         })
 
@@ -63,14 +64,14 @@ function openChatRoom(chatRoomID){
 
 function closeChatRoom(chatRoomID){
     var $chatWindow = $('#chat_' + chatRoomID);
-    $chatWindow.data('subscribe').cancel();
+    $chatWindow.closest('.chat-holder').data('subscribe').cancel();
     $chatWindow.closest('.chat-holder').remove();
 }
 
 function toggleChatRoom(chatRoomID){
     var $chatHolder = $('#chat_' + chatRoomID).closest('.chat-holder');
-    $chatHolder.find('.chat-content').toggle();
-    $chatHolder.find('.new_message').toggle();
-    $chatHolder.find('.chat-minimize').toggle();
+    $chatHolder.find('.chat-content').toggleClass('hidden');
+    $chatHolder.find('.new_message').toggleClass('hidden');
+    $chatHolder.find('.chat-minimize').toggleClass('hidden');
     $chatHolder.toggleClass('minimized');
 }

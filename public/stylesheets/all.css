@@ -1845,13 +1845,22 @@ h1 {
     font-weight: bold;
 }
 
+#chat_bar {
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    z-index: 200;
+}
+
 .chat-holder {
-    display:none;
     height: 332px;
     width: 238px;
+    float: right;
+    margin-left: 5px;
 }
 
 .chat-holder.minimized{
+    margin-top: 304px;
     height: 26px;
 }
 
@@ -1881,5 +1890,5 @@ h1 {
 }
 
 .chat-content li {
-    margin-top: 10px
+    margin-top: 10px;
 }
