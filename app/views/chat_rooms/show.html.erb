@@ -1,4 +1,9 @@
 <ul class="chat-user-list user-holder">
+  <% @chat_members.each do |user| %>
+    <% unless user == current_user %>
+      <%=render("user", :user => user)%>
+    <% end %>
+  <% end %>
   <div style="clear:both;"></div>
 </ul>
 
