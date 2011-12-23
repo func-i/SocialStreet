@@ -178,6 +178,8 @@ function addChatMarkers(){
 
         createChatRoomMarker(lat, lng, room.id.split('_')[2]);
     });
+
+    showChatMarkers();
 }
 
 function addExploreMarkers(){
