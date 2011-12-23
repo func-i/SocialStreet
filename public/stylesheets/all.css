@@ -389,6 +389,11 @@ END OF RESET
     -moz-box-shadow: 3px 3px 3px #4f4f4d;
     box-shadow: 3px 3px 3px #4F4F4D;
 }
+.drop-shadow-1px{
+    -webkit-box-shadow: 1px 1px 1px #4F4F4D;
+    -moz-box-shadow: 1px 1px 1px #4f4f4d;
+    box-shadow: 1px 1px 1px #4F4F4D;
+}
 
 .text-shadow{
     text-shadow: #4f4f4d 3px 3px 3px;
@@ -1853,15 +1858,15 @@ h1 {
 }
 
 .chat-holder {
-    height: 337px;
-    width: 290px;
+    height: 377px;
+    width: 238px;
     float: right;
     margin-left: 5px;
 }
 
 .chat-holder.minimized{
-    margin-top: 304px;
-    height: 33px;
+    margin-top: 338px;
+    height: 34px;
 }
 
 .chat-room{
@@ -1870,6 +1875,17 @@ h1 {
 
 .chat-header{
     padding:10px 0 5px 0;
+}
+.chat-user-list{
+    height:29px;
+    width:100%;
+    margin-bottom:5px;
+    overflow:hidden;
+}
+.chat-user-list li{
+    float:left;
+    height:29px;
+    margin: 0 5px 5px 0;
 }
 .chat-title {
     float: left;
