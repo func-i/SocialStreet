@@ -172,11 +172,11 @@ function refreshExploreResults(){
 }
 
 function addChatMarkers(){
-    $.each($('#results-list .chat-room-result'), function(index, room){
-        var lat = $(room).children('#result_lat');
-        var lng = $(room).children('#result_lng');
+    $.each($('#results_list .chat-room-result'), function(index, room){
+        var lat = $(room).children('#result_lat').val();
+        var lng = $(room).children('#result_lng').val();
 
-        createChatRoomMarker(lat, lng, $(room).id.split('_')[2]);
+        createChatRoomMarker(lat, lng, room.id.split('_')[2]);
     });
 }
 

@@ -197,26 +197,6 @@ $(function() {
             $currentTipsyElem = null;
         }, 200);
     });
-
-    $('.chat-minimize').live('click', function(e) {
-        $(this).closest('.chat-holder').find('.chat-content').hide();
-        $(this).closest('.chat-holder').find('.new_message').hide();
-        $(this).closest('.chat-holder').height(12);
-        $(this).hide();
-        
-        e.preventDefault();
-        e.stopPropagation();
-    });
-
-    $('.chat-holder').live('click', function(e) {
-        if($(this).height() == 12) {
-            $(this).find('.chat-content').show();
-            $(this).find('.new_message').show();
-            $(this).find('.chat-minimize').show();
-            $(this).height(310);
-        }
-    });
-
 });
 
 function navLink(link, e){
