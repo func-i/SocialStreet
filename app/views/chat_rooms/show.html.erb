@@ -10,7 +10,7 @@
 <div class="chat-room container">
   <div class="chat-header">
     <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
-    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %></div>
+    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<span class="user-count"><%=@chat_members.count%></span>)</div>
     <div class="chat-nav">
       <%= link_to "X", '#', :class => "chat-close" %>
     </div>

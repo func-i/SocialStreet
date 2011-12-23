@@ -1,3 +1,6 @@
 <% broadcast "/chat_rooms/#{@chat_room.id}" do %>
   $('#chat_<%= @chat_room.id%>').find('.user-holder').find('.user-<%= current_user.id %>').remove();
+  var $count = $('#chat_<%= @chat_room.id%>').find('.user-count');
+  $count.text(parseInt($count.text(),10) + 1);
+
 <% end %>

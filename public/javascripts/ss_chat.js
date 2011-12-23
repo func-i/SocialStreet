@@ -1,4 +1,4 @@
-var faye = new Faye.Client('http://192.168.1.110:9292/faye');
+var faye = new Faye.Client('http://localhost:9292/faye');
 var chatMarkerManager;
 
 
