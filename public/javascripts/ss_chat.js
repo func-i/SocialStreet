@@ -69,6 +69,10 @@ function openChatRoom(chatRoomID){
                 });
                 $chatWindow.data('subscribe', subscribeObj);
                 $chatWindow.find('.chat-content').scrollTop($chatWindow.find('.chat-content').attr('scrollHeight'));
+
+                $.ajax({
+                    url: '/chat_rooms/' + chatRoomID + '/join'
+                })
             }
         })
 

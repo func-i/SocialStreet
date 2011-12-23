@@ -1,8 +1,9 @@
-<ul class="chat-user-list"">
-    <% 9.times do %>
-  <% @chat_room.users.each do |user| %>
-    <li class="drop-shadow-1px"><%= avatar(current_user, :size => "29x29", :gravity=>'s') %></li>
-  <% end %>
+<ul class="chat-user-list user-holder">
+  <% 9.times do %>
+    <%# @chat_room.users.each do |user| %>
+  <% user = current_user %>
+      <li class="drop-shadow-1px"><%= avatar(user, :size => "29x29", :gravity=>'s') %></li>
+    <% #end %>
   <% end %>
   <div style="clear:both;"></div>
 </ul>
@@ -10,7 +11,7 @@
 <div class="chat-room container">
   <div class="chat-header">
     <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
-    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<%= @chat_room.users.count %>)</div>
+    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %></div>
     <div class="chat-nav">
       <%= link_to "X", '#', :class => "chat-close" %>
     </div>
@@ -24,8 +25,7 @@
   </ul>
   <%= form_for [@chat_room, Message.new], :remote => true do |f| %>
     <%= f.text_field :content, :class=>'chat-text-field' %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
   <% end %>
-
-
 </div>
 
