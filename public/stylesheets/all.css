@@ -1853,7 +1853,7 @@ h1 {
 }
 
 .chat-holder {
-    height: 332px;
+    height: 337px;
     width: 290px;
     float: right;
     margin-left: 5px;
@@ -1861,7 +1861,7 @@ h1 {
 
 .chat-holder.minimized{
     margin-top: 304px;
-    height: 26px;
+    height: 33px;
 }
 
 .chat-room{
@@ -1869,7 +1869,7 @@ h1 {
 }
 
 .chat-header{
-    padding-top:10px;
+    padding:10px 0 5px 0;
 }
 .chat-title {
     float: left;

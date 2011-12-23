@@ -21,7 +21,7 @@ $(function(){
         google.maps.event.clearListeners(map, 'bounds_changed');        
 
         $('.chat-room').each(function(){
-            var chatRoomID = $(this).attr('id').split('_')[1];
+            var chatRoomID = $(this).closest('.chat-holder').attr('id').split('_')[1];
             $.ajax({
                 url: '/chat_rooms/' + chatRoomID + '/leave'
             });
@@ -31,7 +31,7 @@ $(function(){
 
     $(window).bind('beforeunload', function() {
         $('.chat-room').each(function(){
-            var chatRoomID = $(this).attr('id').split('_')[1];
+            var chatRoomID = $(this).closest('.chat-holder').attr('id').split('_')[1];
             $.ajax({
                 url: '/chat_rooms/' + chatRoomID + '/leave'
             });
@@ -195,6 +195,8 @@ function addChatMarkers(){
 
         createChatRoomMarker(lat, lng, room.id.split('_')[2]);
     });
+
+    showChatMarkers();
 }
 
 function addExploreMarkers(){

@@ -1,6 +1,7 @@
-<div id="chat_<%= @chat_room.id %>" class="chat-room container">
+<div class="chat-room">
   <div class="chat-header">
-    <div class="chat-title"><%= @chat_room.name %> (<%= @chat_room.users.count %>)</div>
+    <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
+    <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<%= @chat_room.users.count %>)</div>
     <div class="chat-nav">
       <%= link_to "X", '#', :class => "chat-close" %>
     </div>
@@ -19,7 +20,7 @@
   </div>
   <div style="float:right;">
     <% @chat_room.users.each do |user| %>
-      <%= avatar(current_user, :size => "29x29") %>
+      <div style="float:left; clear: left"><%= avatar(current_user, :size => "29x29") %></div>
     <% end %>
   </div>
 

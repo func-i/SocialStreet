@@ -1,6 +1,12 @@
 var faye = new Faye.Client('http://localhost:9292/faye');
+var chatMarkerManager;
+
 
 $(function(){
+    chatMarkerManager = new MarkerManager({
+        map: map
+    });
+
     $('.chat-text-field').live('keydown', function(e){
         if(e.keyCode == 13 && !e.shiftKey){
             $(this).closest('form').submit();
@@ -11,12 +17,12 @@ $(function(){
     });
 
     $('.chat-header').live('click', function(e) {
-        toggleChatRoom($(this).closest('.chat-room')[0].id.split('_')[1]);
+        toggleChatRoom($(this).closest('.chat-holder')[0].id.split('_')[1]);
         e.stopPropagation();
         e.preventDefault();
     });
     $('.chat-close').live('click', function(e){
-        closeChatRoom($(this).closest('.chat-room')[0].id.split('_')[1]);
+        closeChatRoom($(this).closest('.chat-holder')[0].id.split('_')[1]);
         e.preventDefault();
         e.stopPropagation();
     });
@@ -24,26 +30,33 @@ $(function(){
 });
 
 function createChatRoomMarker(lat, lng, chatRoomID) {
-    var marker = new google.maps.Marker({
-        map: map,
-        icon: '/images/ss_chat_ico.png',
-        position: new google.maps.LatLng(lat, lng)
-    });
+    var marker = chatMarkerManager.addMarker(lat, lng);
+    marker.setIcon('/images/ss_chat_ico.png');
+    marker.setShadow(null);
     marker.chatRoomId = chatRoomID;
 
     google.maps.event.addListener(marker, 'click', function() {
-        openChatRoom(marker.chatRoomId);
+        $.each(marker.clusteredMarkers_, function(index, cMarker){
+            openChatRoom(cMarker.chatRoomId);
+        });
     });
 
     return marker;
+}
+
+function showChatMarkers(){
+    chatMarkerManager.showAllMarkers();
+}
+function clearChatMarkers(){
+    chatMarkerManager.deleteAllMarkers();
 }
 
 function openChatRoom(chatRoomID){
 
     if($('#chat_' + chatRoomID).length < 1) {
         var $chatWindow = $('#chat_room_template').clone();
-        $chatWindow.removeAttr('id');
-        $('#chat_bar').append($chatWindow);
+        $chatWindow[0].id = 'chat_' + chatRoomID;
+        $('#chat_bar').prepend($chatWindow);
         $.ajax({
             url: '/chat_rooms/' + chatRoomID,
             success: function(data){
@@ -69,11 +82,11 @@ function closeChatRoom(chatRoomID){
     $chatWindow.closest('.chat-holder').remove();
     $.ajax({
         url: "/chat_rooms/" + chatRoomID + "/leave"
-    })
+    });
 }
 
 function toggleChatRoom(chatRoomID){
-    var $chatHolder = $('#chat_' + chatRoomID).closest('.chat-holder');
+    var $chatHolder = $('#chat_' + chatRoomID);
     $chatHolder.find('.chat-content').toggleClass('hidden');
     $chatHolder.find('.new_message').toggleClass('hidden');
     $chatHolder.find('.chat-minimize').toggleClass('hidden');
