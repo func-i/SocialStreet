@@ -1854,7 +1854,7 @@ h1 {
 
 .chat-holder {
     height: 332px;
-    width: 238px;
+    width: 290px;
     float: right;
     margin-left: 5px;
 }
@@ -1874,6 +1874,7 @@ h1 {
 .chat-title {
     float: left;
     color: white;
+    padding-bottom: 5px;
 }
 
 .chat-nav {
