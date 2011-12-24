@@ -257,6 +257,8 @@
         prefer = $this.data('gravity');
         var dirNS = 'n' == prefer[0] || 's' == prefer[0] ? prefer[0] : false;
         var dirEW = !dirNS ? prefer[0] : prefer.length > 1 ? prefer[1] : false;
+        
+        if(!dirNS && !dirEW) dirEW = 's';
 
         var tipsy = $this.data('tipsy');
         var $tip = tipsy.tip();
@@ -270,13 +272,18 @@
         boundLeft = $(document).scrollLeft() + MARGIN,
         boundRight = $(document).scrollLeft() + $(window).width() - MARGIN;
 
-        if ($this.offset().top + (dirEW ? this.offsetHeight/2 : 0) - tipHeight < boundTop) dirNS = 'n';
-        if ($this.offset().top + this.offsetHeight - (dirEW ? this.offsetHeight/2 : 0) + tipHeight > boundBottom) dirNS = 's';
+        var tooLarge = false;
+        if ($this.offset().top + (dirEW ? this.offsetHeight/2 : 0) - tipHeight < boundTop){ tooLarge = true; dirNS = 'n';}
+        if ($this.offset().top + this.offsetHeight - (dirEW ? this.offsetHeight/2 : 0) + tipHeight > boundBottom) dirNS = tooLarge ? false : 's';
 
-        if ($this.offset().left + (dirNS ? this.offsetWidth/2 : 0) - tipWidth < boundLeft) dirEW = 'w';
-        if ($this.offset().left + this.offsetWidth - (dirNS ? this.offsetWidth/2 : 0) + tipWidth > boundRight) dirEW = 'e';
+        if(!dirNS && !dirEW) dirEW = 'w';
 
-        //console.log((dirNS ? dirNS : '') + (dirEW ? dirEW : ''));
+        tooLarge = false;
+        if ($this.offset().left + (dirNS ? this.offsetWidth/2 : 0) - tipWidth < boundLeft){ tooLarge = true; dirEW = 'w';}
+        if ($this.offset().left + this.offsetWidth - (dirNS ? this.offsetWidth/2 : 0) + tipWidth > boundRight) dirEW = tooLarge ? false : 'e';
+
+        if(!dirNS && !dirEW) dirEW = prefer;
+        
         return (dirNS ? dirNS : '') + (dirEW ? dirEW : '');
     }
 
