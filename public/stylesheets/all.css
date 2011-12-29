@@ -1858,14 +1858,14 @@ h1 {
 }
 
 .chat-holder {
-    height: 377px;
+    height: 370px;
     width: 238px;
     float: right;
     margin-left: 5px;
 }
 
 .chat-holder.minimized{
-    margin-top: 341px;
+    margin-top: 334px;
     height: 36px;
 }
 
@@ -1904,6 +1904,12 @@ h1 {
     margin-bottom: 10px;
     overflow: auto;
     padding: 0 10px 10px 10px;
+}
+#message_content{
+    width:100%;
+    padding: 2px 0;
+    margin: 0;
+    border: 0;
 }
 
 .chat-content li {
