@@ -92,7 +92,7 @@ function closeChatRoom(chatRoomID){
 function toggleChatRoom(chatRoomID){
     var $chatHolder = $('#chat_' + chatRoomID);
     $chatHolder.find('.chat-content').toggleClass('hidden');
-    $chatHolder.find('.chat-user-list').toggleClass('hidden');
+    $chatHolder.find('.chat-user-list-container').toggleClass('hidden');
     $chatHolder.find('.new_message').toggleClass('hidden');
     $chatHolder.find('.chat-minimize').toggleClass('hidden');
     $chatHolder.toggleClass('minimized');

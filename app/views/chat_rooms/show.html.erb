@@ -1,11 +1,13 @@
-<ul class="chat-user-list user-holder">
-  <% @chat_members.each do |user| %>
-    <% unless user == current_user %>
-      <%=render("user", :user => user)%>
+<div class="chat-user-list-container container hidden">
+  <ul class="chat-user-list user-holder">
+    <% @chat_members.each do |user| %>
+      <% unless user == current_user %>
+        <%=render("user", :user => user)%>
+      <% end %>
     <% end %>
-  <% end %>
-  <div style="clear:both;"></div>
-</ul>
+    <div style="clear:both;"></div>
+  </ul>
+</div>
 
 <div class="chat-room container">
   <div class="chat-header">
