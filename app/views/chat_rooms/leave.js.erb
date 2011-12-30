@@ -1,6 +1,19 @@
 <% broadcast "/chat_rooms/#{@chat_room.id}" do %>
-  $('#chat_<%= @chat_room.id%>').find('.user-holder').find('.user-<%= current_user.id %>').remove();
+  var $chatRoom = $('#chat_<%= @chat_room.id%>');
+  $chatRoom.find('.user-holder').find('.user-<%= current_user.id %>').remove();
   var $count = $('#chat_<%= @chat_room.id%>').find('.user-count');
-  $count.text(parseInt($count.text(),10) + 1);
+  var count = parseInt($count.text(),10);
+  $count.text(count - 1);
+
+  console.log(count - 1);
+
+  if(count-1 <= 1) {
+  $chatRoom.find('.chat-user-list-container').removeClass('container');
+  $chatRoom.find('.chat-user-list-container').height(36)
+  }
+
+  if(count-1 <= 7) {  
+  $chatRoom.find('.chat-user-list-container').width("100%");
+  }
 
 <% end %>

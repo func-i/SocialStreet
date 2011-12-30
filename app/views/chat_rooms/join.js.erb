@@ -1,9 +1,23 @@
 <% broadcast "/chat_rooms/#{@chat_room.id}" do %>
   var $chatRoom = $('#chat_<%= @chat_room.id%>');
   if( $chatRoom.find('.user-<%= current_user.id %>').length < 1 && $chatRoom.find('#message_user_id').val() != <%= current_user.id %>) {
-    $chatRoom.find('.user-holder').prepend('<%= escape_javascript(render("user", :user => current_user)) %>');
-    setupTipsy();
+  $chatRoom.find('.user-holder').prepend('<%= escape_javascript(render("user", :user => current_user)) %>');
+  setupTipsy();
   }
   var $count = $chatRoom.find('.user-count');
-  $count.text(parseInt($count.text(),10) + 1);
+  var count = parseInt($count.text(),10);
+  $count.text(count + 1);
+
+  if(count > 0) {
+  $chatRoom.find('.chat-user-list-container').addClass('container');
+  }
+  
+  if(count > 6) {
+  $chatRoom.find('.chat-user-list').width(count * 37);
+  $chatRoom.find('.chat-user-list-container').height(50);
+  $chatRoom.find('.chat-user-list-container').addClass('scroll-pane');
+  initializeScrollPanes();
+  }
+
+  console.log($chatRoom.find('.chat-user-list').width());
 <% end %>

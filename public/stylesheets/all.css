@@ -1853,8 +1853,12 @@ h1 {
 #chat_bar {
     position: absolute;
     right: 10px;
-    bottom: 0px;
+    bottom: 20px;
+    height: 377px;
     z-index: 200;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 
 .chat-holder {
@@ -1864,27 +1868,34 @@ h1 {
     margin-left: 5px;
 }
 
-.chat-holder.minimized{
-    margin-top: 334px;
+.chat-holder.minimized {
+    position: relative;
+    top: 341px;
     height: 36px;
 }
 
-.chat-room{
+.chat-room {
     padding: 0 10px 10px 10px;
 }
 
-.chat-header{
+.chat-header {
     padding:10px 0 5px 0;
 }
-.chat-user-list{
-    height:29px;
-    width:100%;
-    margin-bottom:5px;
-    overflow:hidden;
+.chat-user-list {
+    height: 39px;
+    width: 100%;
 }
-.chat-user-list li{
-    float:left;
-    height:29px;
+
+.chat-user-list-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 5px;
+}
+
+.chat-user-list li {
+    float: left;
+    height: 29px;
     margin: 0 5px 5px 0;
 }
 .chat-title {
@@ -1914,4 +1925,14 @@ h1 {
 
 .chat-content li {
     margin-top: 10px;
+}
+
+.chat-text-field {
+    width: 100%;
+}
+
+.user-holder {
+    padding: 5px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
