@@ -1853,8 +1853,12 @@ h1 {
 #chat_bar {
     position: absolute;
     right: 10px;
-    bottom: 0px;
+    bottom: 20px;
+    height: 377px;
     z-index: 200;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 
 .chat-holder {

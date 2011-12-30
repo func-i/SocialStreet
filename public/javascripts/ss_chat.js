@@ -56,13 +56,24 @@ function openChatRoom(chatRoomID){
     if($('#chat_' + chatRoomID).length < 1) {
         var $chatWindow = $('#chat_room_template').clone();
         $chatWindow[0].id = 'chat_' + chatRoomID;
-        $('#chat_bar').prepend($chatWindow);
+        //$('#chat_bar').data('jsp').getContentPane().prepend($chatWindow);
+        //$('#chat_bar').data('jsp').reinitialize();
+        $('#chat_rooms_holder').prepend($chatWindow);
+        
         $.ajax({
             url: '/chat_rooms/' + chatRoomID,
             success: function(data){
                 $chatWindow.html(data);
                 setupTipsy();
                 $chatWindow.removeClass('hidden');
+                $chatWindow.css('display', 'inline-block');
+                if($('.chat-room').length > 3) {
+                    $('#chat_bar').width(700);
+                    $('#chat_rooms_holder').width($('.chat-room').length * 250);
+                }
+                else
+                    $('#chat_bar').width('');
+
                 
                 var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
@@ -87,10 +98,13 @@ function closeChatRoom(chatRoomID){
     $.ajax({
         url: "/chat_rooms/" + chatRoomID + "/leave"
     });
+
+    //$('#chat_rooms_holder').width($('#chat_rooms_holder').width() - 238);
 }
 
 function toggleChatRoom(chatRoomID){
     var $chatHolder = $('#chat_' + chatRoomID);
+
     $chatHolder.find('.chat-content').toggleClass('hidden');
     $chatHolder.find('.chat-user-list-container').toggleClass('hidden');
     $chatHolder.find('.new_message').toggleClass('hidden');
