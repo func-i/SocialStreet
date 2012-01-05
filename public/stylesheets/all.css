@@ -1854,7 +1854,7 @@ h1 {
     position: absolute;
     right: 10px;
     bottom: 20px;
-    height: 377px;
+    height: 37px;
     z-index: 200;
     overflow-x: auto;
     overflow-y: hidden;
@@ -1866,12 +1866,12 @@ h1 {
     width: 238px;
     float: right;
     margin-left: 5px;
+    z-index: 200;
 }
 
 .chat-holder.minimized {
-    position: relative;
-    top: 341px;
     height: 36px;
+    opacity: none;
 }
 
 .chat-room {

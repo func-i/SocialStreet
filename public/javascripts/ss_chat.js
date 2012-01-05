@@ -58,7 +58,7 @@ function openChatRoom(chatRoomID){
         $chatWindow[0].id = 'chat_' + chatRoomID;
         //$('#chat_bar').data('jsp').getContentPane().prepend($chatWindow);
         //$('#chat_bar').data('jsp').reinitialize();
-        $('#chat_rooms_holder').prepend($chatWindow);
+        $('#content').prepend($chatWindow);
         
         $.ajax({
             url: '/chat_rooms/' + chatRoomID,
@@ -66,6 +66,9 @@ function openChatRoom(chatRoomID){
                 $chatWindow.html(data);
                 setupTipsy();
                 $chatWindow.removeClass('hidden');
+                $chatWindow.draggable({
+                    containment: '#content'
+                });
                 $chatWindow.css('display', 'inline-block');
                 if($('.chat-room').length > 3) {
                     $('#chat_bar').width(700);
@@ -99,11 +102,27 @@ function closeChatRoom(chatRoomID){
         url: "/chat_rooms/" + chatRoomID + "/leave"
     });
 
-    //$('#chat_rooms_holder').width($('#chat_rooms_holder').width() - 238);
+//$('#chat_rooms_holder').width($('#chat_rooms_holder').width() - 238);
 }
 
 function toggleChatRoom(chatRoomID){
     var $chatHolder = $('#chat_' + chatRoomID);
+
+    if($chatHolder.draggable("option", "disabled")) {
+        // chat is not draggable, therefore it is minimized.
+        $chatHolder.appendTo("#content");
+        $chatHolder.draggable("enable");
+        $chatHolder.css('top', $chatHolder.data('top'));
+        $chatHolder.css('left', $chatHolder.data('left'));
+    }
+    else {
+        $chatHolder.appendTo('#chat_bar');
+        $chatHolder.draggable("disable");
+        $chatHolder.data("top", $chatHolder.css('top'));
+        $chatHolder.data("left", $chatHolder.css('left'));
+        $chatHolder.css('top', '');
+        $chatHolder.css('left', '');
+    }
 
     $chatHolder.find('.chat-content').toggleClass('hidden');
     $chatHolder.find('.chat-user-list-container').toggleClass('hidden');
