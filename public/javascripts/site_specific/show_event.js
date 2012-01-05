@@ -6,7 +6,8 @@ var invitationPageless = null;
 var eventImageInterval = null;
 
 $(function(){
-
+    openLeftPaneView();
+    
     cleanUpSelf = function(){
         if(showMarker){
             //            showMarker.infoBubble_.close();
@@ -258,8 +259,7 @@ function setupShowEventPage(){
 
 function showInvitationView(){
     $('.event-invitation-view').removeClass('hidden');
-    $('#center_pane').removeClass('invisible');
-    $('#right_side_pane').addClass('hide_for_center_pane');
+    openCenterPane();
     $('.event-details-view').addClass('hidden');
 
     hideMarkers();
@@ -268,8 +268,7 @@ function showInvitationView(){
 }
 function showEventView(){
     $('.event-invitation-view').addClass('hidden');
-    $('#center_pane').addClass('invisible');
-    $('#right_side_pane').removeClass('hide_for_center_pane');
+    closeCenterPane();
     $('.event-details-view').removeClass('hidden');
 
     showMarkers();
@@ -467,8 +466,7 @@ function resizeDate() {
 
 function showEventOrganizerMessage(){
     $('#event_organizer_message_holder').removeClass('hidden');
-    $('#center_pane').removeClass('invisible');
-    $('#right_side_pane').addClass('hide_for_center_pane');
+    openCenterPane();
     resizePageElements();
 
     $(document).bind('click.messages', function(e) {
@@ -479,8 +477,7 @@ function showEventOrganizerMessage(){
 }
 function hideEventOrganizerMessage(){
     $('#event_organizer_message_holder').addClass('hidden');
-    $('#center_pane').addClass('invisible');
-    $('#right_side_pane').removeClass('hide_for_center_pane');
+    closeCenterPane();
     
     resizePageElements();
 

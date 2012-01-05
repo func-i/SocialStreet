@@ -1,78 +1,233 @@
-<% content_for :left_side_pane do %>
-  <%= form_for @user, :url => profile_path, :remote => true, :html => {:id => 'settings_form'} do |form| %>
-    <div id="edit_user_name_holder">
-      <%= avatar(current_user, :size => "60x60", :class=> "drop-shadow", :style=>"float:left; margin:0 20px")%>
-      <%= form.text_field :name, :class => "text-shadow edit-inline submit-on-change", :id => "edit_user_name_field", 'data-on-change-form-id' => 'settings_form', :style=>"float:left;vertical-align:bottom;" %>
-    </div>
-    <div id="edit_user_details">
-      <div id="edit_user_email_holder">
-        <div class="text-shadow" id="edit_user_email_label">Email:</div>
-        <%= form.text_field :email, :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form', :id => "edit_user_email_field" %>
-      </div>
-      <div id="edit_user_gender_holder">
-        <div class="text-shadow" id="edit_user_gender_label">Gender:</div>
-        <%= form.radio_button :gender, "male", :class=>"submit-on-change", 'data-on-change-form-id' => 'settings_form', :id=>"gender_male"%>
-        <label for="gender_male" class="text-shadow">Male</label>
-        <%= form.radio_button :gender, "female", :class=>"submit-on-change", 'data-on-change-form-id' => 'settings_form', :id=>"gender_female"%>
-        <label for="gender_female" class="text-shadow">Female</label>
-      </div>
-      <div id="edit_user_location_holder">
-        <div class="text-shadow" id="edit_user_location_label">Location:</div>
-        <%= form.text_field :location, :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form', :id => "edit_user_location_field" %>
-      </div>
-    </div>
-  <% end %>
-  <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-  <div id="edit_group" class="<%="hidden" if @groups.blank?%>">
-    <div id="edit_group_title" class="text-shadow">
-      Groups:
-      <span id="add_group_button">+Add</span>
-    </div>
-    <div id="group_tag_holder" class="scroll-pane">
-      <ul id="group_tag_list">
-        <li id="group_tag_stamp" class="group-tag nav-link hidden">
-          <div class="group-tag-icon rounded-corners-fifteen drop-shadow"></div>
-          <span class="group-tag-name text-shadow"></span>
-        </li>
-        <% (@user.groups || []).each do |group| %>
-          <li class="group-tag nav-link" data-ajax-href="<%=group_path(group)%>">
-            <div class="group-tag-icon rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(group)%>-medium-sprite"></div>
-            <span class="group-tag-name text-shadow">
-              <%=group.name%>
-            </span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
+<style>
+  #profile_container{
+    /*max-width: 768px;*/
+  }
+  #profile_container label{
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    width: 60px;
+    float:left;
+    text-align: right;
+    padding-right:5px;
+  }
+  #profile_container input,
+  #profile_container select{
+    border: 0;
+    padding: 0;
+    margin: 0;
+    color: #FFC233;
+    font: bold 16px/16px Arial, Helvetica, sans-serif;
+    width: 190px;
+    background: transparent;
+    float:left;
+  }
+  #profile_container div.fields{
+    clear:both;
+    float:left;
+    margin-top: 10px;
+  }
+  #profile_container select{
+    width: 100px;
+  }
+  #left_col{
+    float:left;
+    padding: 10px 0 0 10px;
+    width:260px;
+  }
+  #left_col img{
+    margin: 0 auto 10px auto;
+    text-align: center;
+    display: block;
+  }
+  #center_col{
+    padding:10px;
+    margin-left: 260px;
+  }
 
-  <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
-<% end %>
+  #center_col_container {
+    width: 400px;
+    margin: 0 auto;
+  }
+  #center_col #user_name{
+    height:35px;
+    width:400px;
+    font: bold 32px/32px Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    text-align:center;
+  }
+  #users_groups{
+    padding:70px 0 0 30px;
+    height: 300px;
+  }
+  #users_groups .scroll-pane{
+    height:120px;
+    overflow-y: auto;
+    width:100%;
+    margin: 40px 0;
+  }
+  #users_groups_title{
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    color: #FFFCD5;
+    float:left;
+  }
+  #add_group_button{
+    font: bold 24px/24px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    float:right;
+    cursor: pointer;
+  }
+  #no_groups_text{
+    float:left;
+    font:bold 18px/18px Arial, Helvetica, sans-serif;
+    color: #FFC233;
+    margin: 20px;
+  }
+  #profile_container #groups_holder{
+    float:left;
+  }
+
+  #profile_permission_holder{
+    width: 100%;
+    padding-top: 100px;
+  }
+  #profile_permission_holder .group-type-image{
+    float:left;
+    margin-right: 5px;
+  }
+  #profile_permission_holder .permission-text{
+    color: #FFC233;
+    text-align: left;
+    font: 24px/24px Arial, Helvetica, sans-serif;
+  }
+  #profile_permission_holder input{
+    width: 310px;
+    height: 60px;
+    background: white;
+    color:black;
+    font: 32px/32px Arial, Helvetica, sans-serif;
+    margin-top:10px;
+  }
+  #profile_permission_holder .permission-error{
+    float: right;
+    width: 160px;
+    cursor: pointer;
+    text-align: center;
+  }
+  #profile_permission_holder .permission-applied{
+    float: right;
+    width: 160px;
+    color: #BF1F1E;
+    font: bold 20px/20px Arial, Helvetica, sans-serif;
+    padding-top: 15px;
+    text-align: center;
+  }
+
+</style>
 
 <% content_for :center_pane do %>
-  <div id="groups_holder" class="hidden">
-    <div id="groups_scroller" class="scroll-pane include-vertical-bar">
-      <ul>
-        <% (@groups || []).each do |group| %>
-          <li class="group-type">
-            <div class="container rounded-corners-four">
-              <%group_class = "#{sprite_class_name_for_group(group)}"%>
-              <div class="group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
-              <div class="group-type-name">
-                <%= group.name %>
+  <div id="profile_container" class="container expand-height">
+
+    <%= form_for @user, :url => profile_path, :remote => true, :html => {:id => 'settings_form'} do |form| %>
+      <div id="left_col" class="expand-height">
+        <%= avatar current_user, :fb_size => "large", :class=>'skip-hovercard drop-shadow', :size => '' %>
+        <div class="fields">
+          <%= form.label :email %>
+          <%= form.text_field :email, :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form'%>
+        </div>
+        <div class="fields">
+          <%= form.label :home %>
+          <%= form.text_field :location, :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form'%>
+        </div>
+        <div class="fields">
+          <%= form.label :gender %>
+          <%= form.select :gender, options_for_select([['Male', 'Male'], ['Female', 'Female']], @user.gender), {},:class => 'submit-on-change' %>
+        </div>
+      </div>
+      <div id="center_col" class="expand-height">
+        <div id="center_col_container">
+          <div id="center_profile">
+            <%= form.text_field :name, :id=>'user_name', :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form' %>
+
+            <div id="users_groups" class="text-shadow">
+              <div id="users_groups_title">
+                I Belong To...
               </div>
-              <%= hidden_field_tag "group_id", group.id %>
-              <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
-              <%= hidden_field_tag "join_code_description", group.join_code_description  %>
+              <div id="add_group_button">+Add Group</div>
+              <% if @user.groups.empty? %>
+                <div id="no_groups_text">No Groups...</div>
+              <% end %>
+              <div class="scroll-pane">
+                <ul id="group_tag_list">
+                  <li id="group_tag_stamp" class="group-tag nav-link hidden">
+                    <div class="group-tag-icon rounded-corners-fifteen drop-shadow"></div>
+                    <span class="group-tag-name text-shadow"></span>
+                  </li>
+                  <% (@user.groups || []).each do |group| %>
+                    <li class="group-tag nav-link" data-ajax-href="<%=group_path(group)%>">
+                      <div class="group-tag-icon rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(group)%>-medium-sprite"></div>
+                      <span class="group-tag-name text-shadow">
+                        <%=group.name%>
+                      </span>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
-          </li>
+          </div>
+          <div id="groups_holder" class="hidden" style="width:400px;">
+            <div id="groups_scroller" class="include-vertical-bar">
+              <ul>
+                <% (@groups || []).each do |group| %>
+                  <li class="group-type">
+                    <div class="container rounded-corners-four">
+                      <%group_class = "#{sprite_class_name_for_group(group)}"%>
+                      <div class="group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+                      <div class="group-type-name">
+                        <%= group.name %>
+                      </div>
+                      <%= hidden_field_tag "group_id", group.id %>
+                      <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
+                      <%= hidden_field_tag "join_code_description", group.join_code_description  %>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
         <% end %>
-      </ul>
+
+        <div id="profile_permission_holder" class="group-permission-holder hidden">
+          <div class="permission-text text-shadow">
+            To join this group, please enter your <span class="join-code-text">Join Code</span>:
+          </div>
+          <div class="group-type-image rounded-corners-fifteen drop-shadow"></div>
+          <%= text_field_tag 'group_permission_code', '', :type => "text", :title => "permission_code", :placeholder => " Enter Code Here....", :class=>'permission-code-field ie-placeholder'%>
+          <%= image_tag('continue-button.png', :class=>"next-arrow drop-shadow") %>
+          <div class="permission-error hidden text-shadow">Sorry, we can't find this <span class="join-code-text">Join Code</span> in our records. <span style="color:#BF1F1E">Click here</span> to apply for membership.</div>
+          <div class="permission-applied hidden text-shadow">Applied</div>
+          <div style="clear: both"></div>
+
+          <%= hidden_field_tag 'group_permission_id', ''%>
+          <%= hidden_field_tag 'group_permission_name', ''%>
+          <%= hidden_field_tag 'group_permission_icon_class', ''%>
+        </div>
+      </div>
     </div>
   </div>
-  <%= render :partial => 'groups/group_permissions.html'%>
 <% end %>
 
 <%= hidden_field_tag "on_settings", "true" %>
 
-<%= javascript_include_tag "site_specific/settings"%>
+<%#= javascript_include_tag "site_specific/settings"%>
+
+<script>
+  $(function(){
+    openCenterPaneView();
+
+    $('#add_group_button').live('click', function(){
+      $('#center_profile').addClass('hidden');
+      showGroups();
+      return false;
+    });
+  });
+</script>

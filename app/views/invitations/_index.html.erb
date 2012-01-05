@@ -14,9 +14,6 @@
   </div>
 <% end %>
 
-<% content_for :bottom_pane do %>
-<% end %>
-
 <% content_for :left_side_pane do %>
   <div class="event-invitation-view <%=  "hidden" unless params[:invite] %>">
     <%= form_tag new_event_invitation_path(@event), :method=> :get, :remote=>true, :id=>'invite_form' do %>

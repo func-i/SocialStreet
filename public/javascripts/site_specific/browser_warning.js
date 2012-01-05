@@ -1,6 +1,5 @@
 $(function() {
-    $('#left_side_pane').addClass('hidden');
-    $('#center_pane').removeClass('invisible');
+    openCenterPaneView();
     $('.remove-how-it-works').addClass('hidden');
 
     resizePageElements();

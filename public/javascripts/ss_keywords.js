@@ -85,8 +85,7 @@ $(function(){
 
 function showEventTypeHolder(){
     $('#event_types_holder').removeClass('hidden');
-    $('#right_side_pane').addClass('hide_for_center_pane');
-    $('#center_pane').removeClass('invisible');
+    openCenterPane();
 
     resizePageElements();
     initScrollPane($('#event_types_scroller'));
@@ -96,8 +95,7 @@ function showEventTypeHolder(){
 
 function hideEventTypeHolder(){
     $('#event_types_holder').addClass('hidden');
-    $('#right_side_pane').removeClass('hide_for_center_pane');
-    $('#center_pane').addClass('invisible');
+    closeCenterPane();
 
     isOpen = false;
 }

@@ -5,6 +5,8 @@ class ProfilesController < ApplicationController
   def edit
     @user = current_user
 
+    puts @user.inspect
+
     @groups = Group.all
     
     if request.xhr?
@@ -33,6 +35,7 @@ class ProfilesController < ApplicationController
     @group = Group.find params[:group_id]
     
     if @group.join_code_description.blank?
+      puts "BLANK"
       user_group = UserGroup.where(:group_id => @group, :user_id => @user).limit(1)
       if user_group.length <= 0
         user_group = UserGroup.new
@@ -47,8 +50,10 @@ class ProfilesController < ApplicationController
 
       render :nothing => true
     else
+      puts "NOT BLANK"
       #Validate group code
       if @group.is_code_valid(params[:group_code])
+        puts "VALID"
         #Check user_group table for group_id & group_code and user_id is empty
         user_group = UserGroup.where(:group_id => @group, :join_code => params[:group_code]).limit(1).first
         user_group.user = @user
@@ -57,6 +62,7 @@ class ProfilesController < ApplicationController
 
         @success = true
       else
+        puts "NOT VALID"
         #throw error
         @success = false
       end

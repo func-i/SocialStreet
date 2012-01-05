@@ -260,6 +260,36 @@ function setPlaceholdersInInternetExplorer(){
     }
 }
 
+function openLeftPaneView(){
+    closeCenterPaneView();
+}
+function openCenterPaneView(){
+    $('#left_side_pane').addClass('center-pane-view');
+    $('#right_side_pane').addClass('center-pane-view');
+    $('#center_pane').addClass('center-pane-view');
+    $('#zoom_btns').addClass('hidden');
+    resizePageElements();
+}
+function closeCenterPaneView(){
+    $('#left_side_pane').removeClass('center-pane-view');
+    $('#right_side_pane').removeClass('center-pane-view');
+    $('#center_pane').addClass('center-pane-view');
+    $('#zoom_btns').removeClass('hidden');
+    resizePageElements();
+}
+function openCenterPane(){
+    $('#right_side_pane').addClass('center-pane-view');
+    $('#center_pane').addClass('center-pane-view');
+    $('#zoom_btns').addClass('hidden');
+}
+function closeCenterPane(){
+    if(!$('#left_side_pane').hasClass('center-pane-view')){
+        $('#right_side_pane').removeClass('center-pane-view');
+        $('#center_pane').removeClass('center-pane-view');
+        $('#zoom_btns').removeClass('hidden');
+    }
+}
+
 function cleanup(){
     if(typeof cleanUpSelf == 'function') {
         cleanUpSelf();
@@ -274,8 +304,8 @@ function cleanup(){
     deleteTipsy();
 
     $('.content-group').html(' ');
-    $('#right_side_pane').removeClass('hide_for_center_pane');
-    $('#left_side_pane').removeClass('hide_for_center_pane');
+
+    openLeftPaneView();
 }
 
 function updateUserLocation(latitude, longitude, zoomLevel, swLat, swLng, neLat, neLng, updateDB){
@@ -353,37 +383,15 @@ function resizePageElements() {
 }
 
 function resizeLayout(){
-
-    var ver = getInternetExplorerVersion();
-
-    //var docHeight = $(window).height();
     var docWidth = $(window).width();
-    //var leftPaneTopOffset = $('#left_side_pane').offset().top;
-    //var rightPaneTopOffset = $('#right_side_pane').offset().top;
     var rightPaneWidth = !$('#right_side_pane').is(":visible") ? 0 : $('#right_side_pane').width();
     var leftPaneWidth = !$('#left_side_pane').is(":visible") ? 0 : $('#left_side_pane').width();
-    //var topPaneLeftOffset = $('#top_pane').offset().left;
-    //var bottomPaneLeftOffset = $('#bottom_pane').offset().left;
-
-    var centerPaneLeftOffset = $('#center_pane').offset().left;
-    var topPaneTopOffset = $('#top_pane').offset().top;
-    var topPaneTopPosition = $('#top_pane').position().top;
-    var topPaneHeight = $('#top_pane').height();
-    var bottomPaneTopOffset = $('#bottom_pane').offset().top;
-    //    $('#left_side_pane').height(docHeight - leftPaneTopOffset); //Commented out because expanding prematurely causes the map to not be movable
-    //    $('#right_side_pane').height(docHeight - rightPaneTopOffset); //Commented out because expanding prematurely causes the map to not be movable
-    //    $('#top_pane').width(docWidth - topPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
-    //  $('#bottom_pane').width(docWidth - bottomPaneLeftOffset - rightPaneWidth - 40);//20 is for 20px gutters
-
-    //if ( ver == -1 )
-    $('#right_side_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0))
-    
-    //if ( ver == -1 )
-    $('#center_pane').css('top', topPaneTopPosition + topPaneHeight + (topPaneHeight > 0 ? 20 : 0));//20 is fo 20px gutters
-
     $('#center_pane').css('left', leftPaneWidth + 40);//40 is for 2x20px gutters
     $('#center_pane').width(docWidth - leftPaneWidth - 40 - rightPaneWidth - 40);//20 is for 20px gutters
-    $('#center_pane').height(bottomPaneTopOffset - topPaneTopOffset - topPaneHeight - 40);//40 is for 2x20px gutters
+
+    var docHeight = $(window).height();
+    var centerPaneTopOffset = $('#center_pane').offset().top;
+    $('#center_pane').height(docHeight - centerPaneTopOffset - 40);//40 is for 40px gutters
 }
 
 function resizeExpandHeightContainer() {

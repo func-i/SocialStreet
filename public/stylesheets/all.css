@@ -97,27 +97,22 @@ END OF RESET
     overflow: hidden;
     z-index: 10;
 }
-#top_pane{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    height: auto;
-    overflow: hidden;
-    z-index: 10;
-}
-#bottom_pane{
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    height: auto;
-    overflow: hidden;
-    z-index: 10;
-}
 #center_pane{
+    top: 20px;
+    height: 100%;
     position: absolute;
     overflow: hidden;
     z-index: 10;
 }
+
+#left_side_pane.center-pane-view,
+#right_side_pane.center-pane-view{
+    display:none;
+}
+#center_pane.center-pane-view{
+    visibility: visible;
+}
+
 
 #footer{
     position: absolute;
@@ -208,7 +203,7 @@ END OF RESET
     visibility: hidden;
 }
 
-.hide_for_center_pane{
+.hide-for-center-pane{
     display: none;
 }
 
@@ -1571,13 +1566,6 @@ popup-fields-holder,
     color: #BF1F1E;
     font: bold 20px/20px Arial, Helvetica, sans-serif;
     padding: 20px 0 0 10px;
-}
-#add_group_button{
-    padding: 10px 20px 0 0;
-    float:right;
-    color:#FFC233;
-    font: bold 14px/14px Arial, Helvetica, sans-serif;
-    cursor: pointer;
 }
 
 #edit_group_name{

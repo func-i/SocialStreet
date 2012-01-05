@@ -8,7 +8,7 @@ $(function(){
         if(isGroupOpen &&
             isOnSettings() &&
             $(e.target).closest('.group-type').length < 1 &&
-            $(e.target).closest('#group_permission_holder').length < 1 &&
+            $(e.target).closest('.group-permission-holder').length < 1 &&
             $(e.target).closest('#add_group_button').length < 1)
             {
             hideGroups();
@@ -23,14 +23,14 @@ $(function(){
         else if(isGroupOpen &&
             isOnShowEvent() &&
             $(e.target).closest('.group-type').length < 1 &&
-            $(e.target).closest('#group_permission_holder').length < 1 &&
+            $(e.target).closest('.group-permission-holder').length < 1 &&
             $(e.target).closest('#join_btn_holder').length < 1)
             {
             hideGroups();
         }
         else if(isGroupOpen &&
             isOnShowGroup() &&
-            $(e.target).closest('#group_permission_holder').length < 1 &&
+            $(e.target).closest('.group-permission-holder').length < 1 &&
             $(e.target).closest('#join_group_btn').length < 1)
             {
             hideGroups();
@@ -56,21 +56,21 @@ $(function(){
     });*/
 
     //User submits group code
-    $('#group_permission_next_arrow').live('click', function(){
-        var $groupHolder = $(this).closest('#group_permission_holder');
+    $('.group-permission-holder .next-arrow').live('click', function(){
+        var $groupHolder = $(this).closest('.group-permission-holder');
         var groupID = $groupHolder.find('#group_permission_id').val();
-        var groupCode = $groupHolder.find('#group_permission_text_field').val();
+        var groupCode = $groupHolder.find('.permission-code-field').val();
 
         addGroup(groupID, groupCode);
     });
 
-    $('#group_permission_error').live('click', function(){
-        $('#group_permission_error').addClass('hidden');
-        $('#group_permission_applied').removeClass('hidden');
+    $('.permission-error').live('click', function(){
+        $('.permission-error').addClass('hidden');
+        $('.permission-applied').removeClass('hidden');
 
-        var $groupHolder = $(this).closest('#group_permission_holder');
+        var $groupHolder = $(this).closest('.group-permission-holder');
         var groupID = $groupHolder.find('#group_permission_id').val();
-        var groupCode = $groupHolder.find('#group_permission_text_field').val();
+        var groupCode = $groupHolder.find('.permission-code-field').val();
 
         $.getScript('/groups/apply_for_membership?' +
             'group_id=' + groupID +
@@ -105,41 +105,40 @@ function addGroup(groupID, groupCode){
 }
 
 function showGroupPermissionHolder(){
-    $('#show_attendees_title').addClass('hidden');
-    $('#show_attendees_holder').addClass('hidden');
-    $('#group_permission_holder').removeClass('hidden');
-    $('#center_pane').removeClass('invisible');
-    $('#right_side_pane').addClass('hide_for_center_pane');
+    $('.group-permission-holder').removeClass('hidden');
+    openCenterPane();
     resizePageElements();
 
     isGroupOpen = true;
 }
-function hideGroupPermissionHolder(){
-    $('#group_permission_holder').addClass('hidden');
-    $('#center_pane').addClass('invisible');
-    $('#right_side_pane').removeClass('hide_for_center_pane');
-    $('#group_permission_error').addClass('hidden');
-    $('#group_permission_applied').addClass('hidden');
+function hideGroupPermissionHolder(show_permission){
+    $('.group-permission-holder').addClass('hidden');
+    $('.permission-error').addClass('hidden');
+    $('.permission-applied').addClass('hidden');
+    closeCenterPane();
 
-    $('#show_attendees_title').removeClass('hidden');
-    $('#show_attendees_holder').removeClass('hidden');
     resizePageElements();
 
     isGroupOpen = false;
 }
 function showGroups(){
     $('#groups_holder').removeClass('hidden');
-    $('#center_pane').removeClass('invisible');
-    $('#right_side_pane').addClass('hide_for_center_pane');
+    openCenterPane();
     resizePageElements();
 
     isGroupOpen = true;
 }
-function hideGroups(){
+function hideGroups(show_permission){
+    if(undefined == show_permission)
+        show_permission = false;
+    
+    if(isOnSettings() && false == show_permission){
+        $('#center_profile').removeClass('hidden');
+    }
+
     $('#groups_holder').addClass('hidden');
-    $('#center_pane').addClass('invisible');
-    $('#right_side_pane').removeClass('hide_for_center_pane');
-    hideGroupPermissionHolder();
+    closeCenterPane();
+    hideGroupPermissionHolder(show_permission);
 
     isGroupOpen = false;
 }
@@ -172,7 +171,7 @@ function groupTypeClicked(groupType, refreshResults){
             else{
                 setValuesOnPermissionCodeOverlay($groupType.find('#group_id').val(), $groupType.find('#join_code_description').val(), groupName, groupIconClass)
                 
-                hideGroups();
+                hideGroups(true);
                 showGroupPermissionHolder();
             }
         }
@@ -198,7 +197,7 @@ function setValuesOnPermissionCodeOverlay(groupID, joinCodeDescription, groupNam
     $('.join-code-text').text(joinCodeDescription);
     $('#group_permission_name').val(groupName);
     $('#group_permission_icon_class').val(groupIconClass);
-    $('#group_permission_icon').addClass(groupIconClass);
+    $('.group-permission-holder .group-type-image').addClass(groupIconClass);
 }
 
 function rsvpToEvent(){
@@ -222,6 +221,14 @@ function addGroupToSummary(groupName, groupID){
 }
 
 function addGroupToHolder(groupName, groupIconClass, groupHref){
+    if($('.group-tag').length == 1){//Stamp always exists
+        $('#no_groups_text').addClass('hidden');
+    }
+
+    var $scrollpane = $('#group_tag_list').closest('.scroll-pane');
+    $scrollpane.data('jsp').destroy();
+    $scrollpane.css('height','auto');
+
     var $newGroup = $($('#group_tag_stamp').clone());
     $newGroup[0].id = "";
     $newGroup.find('.group-tag-name').text(groupName);
@@ -234,6 +241,7 @@ function addGroupToHolder(groupName, groupIconClass, groupHref){
     $('#group_tag_list').append($newGroup);
     $newGroup.removeClass('hidden');
 
+    initScrollPane($scrollpane);
 }
 
 function groupAlreadyExists(groupName){

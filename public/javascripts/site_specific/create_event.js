@@ -4,6 +4,8 @@ var geocoder = new google.maps.Geocoder();
 var eventImageSummaryInterval;
 
 $(function(){
+    openLeftPaneView();
+    
     cleanUpSelf = function(){
     }
 
@@ -184,7 +186,7 @@ function hideCreateWhat(){
  *WHERE FUNCTIONS
  **/
 function setupCreateWhere(){
-    $('#center_pane').addClass('invisible');
+    closeCenterPane();
     $('.create-where-view').removeClass('hidden');
 
     //$('#top_pane').width($(window).width() - $('#left_side_pane').width() - 40);//20 is for 20px gutters
@@ -396,7 +398,7 @@ function reverse_geocode(marker){
 
 function setupCreateWhen(){
     $('.create-when-view').removeClass('hidden');
-    $('#center_pane').removeClass('invisible');
+    openCenterPane();
 
     $('#create_when_calendar').fullCalendar({
         defaultView: 'month',
@@ -414,7 +416,7 @@ function setupCreateWhen(){
 function hideCreateWhen(){
     $(zoomControl).show();
     $('.create-when-view').addClass('hidden');
-    $('#center_pane').addClass('invisible');
+    closeCenterPane();
 }
 
 function updateCreateWhenDates(){

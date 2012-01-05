@@ -1,0 +1,78 @@
+<% content_for :left_side_pane do %>
+  <%= form_for @user, :url => profile_path, :remote => true, :html => {:id => 'settings_form'} do |form| %>
+    <div id="edit_user_name_holder">
+      <%= avatar(current_user, :size => "60x60", :class=> "drop-shadow", :style=>"float:left; margin:0 20px")%>
+      <%= form.text_field :name, :class => "text-shadow edit-inline submit-on-change", :id => "edit_user_name_field", 'data-on-change-form-id' => 'settings_form', :style=>"float:left;vertical-align:bottom;" %>
+    </div>
+    <div id="edit_user_details">
+      <div id="edit_user_email_holder">
+        <div class="text-shadow" id="edit_user_email_label">Email:</div>
+        <%= form.text_field :email, :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form', :id => "edit_user_email_field" %>
+      </div>
+      <div id="edit_user_gender_holder">
+        <div class="text-shadow" id="edit_user_gender_label">Gender:</div>
+        <%= form.radio_button :gender, "male", :class=>"submit-on-change", 'data-on-change-form-id' => 'settings_form', :id=>"gender_male"%>
+        <label for="gender_male" class="text-shadow">Male</label>
+        <%= form.radio_button :gender, "female", :class=>"submit-on-change", 'data-on-change-form-id' => 'settings_form', :id=>"gender_female"%>
+        <label for="gender_female" class="text-shadow">Female</label>
+      </div>
+      <div id="edit_user_location_holder">
+        <div class="text-shadow" id="edit_user_location_label">Location:</div>
+        <%= form.text_field :location, :class => "text-shadow edit-inline submit-on-change", 'data-on-change-form-id' => 'settings_form', :id => "edit_user_location_field" %>
+      </div>
+    </div>
+  <% end %>
+  <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+  <div id="edit_group" class="<%="hidden" if @groups.blank?%>">
+    <div id="edit_group_title" class="text-shadow">
+      Groups:
+      <span id="add_group_button">+Add</span>
+    </div>
+    <div id="group_tag_holder" class="scroll-pane">
+      <ul id="group_tag_list">
+        <li id="group_tag_stamp" class="group-tag nav-link hidden">
+          <div class="group-tag-icon rounded-corners-fifteen drop-shadow"></div>
+          <span class="group-tag-name text-shadow"></span>
+        </li>
+        <% (@user.groups || []).each do |group| %>
+          <li class="group-tag nav-link" data-ajax-href="<%=group_path(group)%>">
+            <div class="group-tag-icon rounded-corners-fifteen drop-shadow event-type-<%=sprite_class_name_for_group(group)%>-medium-sprite"></div>
+            <span class="group-tag-name text-shadow">
+              <%=group.name%>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+<% end %>
+
+<% content_for :center_pane do %>
+  <div id="groups_holder" class="hidden">
+    <div id="groups_scroller" class="scroll-pane include-vertical-bar">
+      <ul>
+        <% (@groups || []).each do |group| %>
+          <li class="group-type">
+            <div class="container rounded-corners-four">
+              <%group_class = "#{sprite_class_name_for_group(group)}"%>
+              <div class="group-type-image rounded-corners-fifteen drop-shadow event-type-<%=group_class%>-small-sprite" data-event-type="<%=group_class%>"></div>
+              <div class="group-type-name">
+                <%= group.name %>
+              </div>
+              <%= hidden_field_tag "group_id", group.id %>
+              <%= hidden_field_tag "group_required", !group.join_code_description.blank?  %>
+              <%= hidden_field_tag "join_code_description", group.join_code_description  %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <%= render :partial => 'groups/group_permissions.html'%>
+<% end %>
+
+<%= hidden_field_tag "on_settings", "true" %>
+
+<%= javascript_include_tag "site_specific/settings"%>

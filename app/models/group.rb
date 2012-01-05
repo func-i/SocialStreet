@@ -24,8 +24,8 @@ class Group < ActiveRecord::Base
   end
 
   def is_code_valid(group_code)
-    user_group = UserGroup.where(:group_id => self, :join_code => group_code).limit(1).first
-    return true if(user_group && user_group.user_id.blank?)
+    user_group = UserGroup.where(:group_id => self, :join_code => group_code, :user_id => nil).limit(1).first
+    return true if user_group
     return false
   end
 

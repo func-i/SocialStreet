@@ -179,13 +179,9 @@
 
 <script>
   $(function(){
-    $('#center_pane').removeClass('invisible');
-    $('#left_side_pane').addClass('hidden');
-    $('#zoom_btns').addClass('hidden');
-
+    openCenterPaneView();
+    
     cleanUpSelf = function(){
-      $('#left_side_pane').removeClass('hidden');
-      $('#zoom_btns').removeClass('hidden');
       google.maps.event.removeListener(mapListener);    
     }
     resizeSelf = function(){

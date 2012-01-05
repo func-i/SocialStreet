@@ -8,6 +8,8 @@ var markerSlideShowInterval;
 var dragOff = true;
 
 $(function(){
+    openLeftPaneView();
+
     //Cleanup function on leaving the page
     cleanUpSelf = function() {
         $('#notify_me_btn').addClass('hidden');

@@ -1,6 +1,7 @@
 
 $(function() { 
-
+    openLeftPaneView();
+    
     cleanUpSelf = function(){
     }
 
@@ -17,7 +18,7 @@ $(function() {
     $('#edit_group_contact_email').autoResize();
     $('#edit_group_description').autoResize();
 
-    $('#center_pane').removeClass('invisible');
+    openCenterPane();
     resizePageElements();
 
     $('#keyword').keydown(function(e){
