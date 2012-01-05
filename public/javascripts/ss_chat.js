@@ -70,13 +70,6 @@ function openChatRoom(chatRoomID){
                     containment: '#content'
                 });
                 $chatWindow.css('display', 'inline-block');
-                if($('.chat-room').length > 3) {
-                    $('#chat_bar').width(700);
-                    $('#chat_rooms_holder').width($('.chat-room').length * 250);
-                }
-                else
-                    $('#chat_bar').width('');
-
                 
                 var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
@@ -116,12 +109,12 @@ function toggleChatRoom(chatRoomID){
         $chatHolder.css('left', $chatHolder.data('left'));
     }
     else {
-        $chatHolder.appendTo('#chat_bar');
+        $chatHolder.appendTo('#chat_rooms_holder');
         $chatHolder.draggable("disable");
         $chatHolder.data("top", $chatHolder.css('top'));
         $chatHolder.data("left", $chatHolder.css('left'));
         $chatHolder.css('top', '');
-        $chatHolder.css('left', '');
+        $chatHolder.css('left', '');       
     }
 
     $chatHolder.find('.chat-content').toggleClass('hidden');
@@ -130,4 +123,11 @@ function toggleChatRoom(chatRoomID){
     $chatHolder.find('.chat-minimize').toggleClass('hidden');
     $chatHolder.toggleClass('minimized');
     $chatHolder.find('.chat-content').scrollTop($chatHolder.find('.chat-content').attr('scrollHeight'));
+
+    if($('.chat-holder.minimized').length > 3) {
+        $('#chat_bar').width(700);
+        $('#chat_rooms_holder').width($('.chat-holder.minimized').length * 250);
+    }
+    else
+        $('#chat_bar').width('');
 }
