@@ -5,13 +5,17 @@
   setupTipsy();
   }
   var $count = $chatRoom.find('.user-count');
+  var $minCount = $('#chat_room_placeholder_' + <%= @chat_room.id %>).find('.user-count');
   var count = parseInt($count.text(),10);
+
+  // update the number of users in the chat bar and chat room titles.
   $count.text(count + 1);
+  $minCount.text(count + 1);
 
   if(count > 0) {
   $chatRoom.find('.chat-user-list-container').addClass('container');
   }
-  
+
   if(count > 6) {
   $chatRoom.find('.chat-user-list').width(count * 37);
   $chatRoom.find('.chat-user-list-container').height(50);

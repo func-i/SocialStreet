@@ -17,7 +17,6 @@ $(function(){
     });
 
     $('.chat-placeholder').live('click', function(e) {
-        console.log('clicked');
         toggleChatRoom($(this).attr('id').split('_')[3]);
         e.stopPropagation();
         e.preventDefault();
@@ -31,6 +30,12 @@ $(function(){
     
     $('.chat-close').live('click', function(e){
         closeChatRoom($(this).closest('.chat-holder')[0].id.split('_')[1]);
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $('.min-chat-close').live('click', function(e){
+        closeChatRoom($(this).closest('.chat-placeholder')[0].id.split("_")[3]);
         e.preventDefault();
         e.stopPropagation();
     });

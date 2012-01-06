@@ -35,6 +35,9 @@
 <div id="chat_room_placeholder_<%= @chat_room.id %>" class="chat-placeholder container invisible">
   <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
   <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<span class="user-count"><%=@chat_members.count%></span>)</div>
+  <div class="chat-nav">
+    <%= link_to "X", '#', :class => "min-chat-close" %>
+  </div>
 </div>
 
 
