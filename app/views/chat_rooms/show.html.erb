@@ -7,9 +7,10 @@
     <% end %>
     <div style="clear:both;"></div>
   </ul>
-</div>
+</div> 
 
 <div class="chat-room container">
+
   <div class="chat-header">
     <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
     <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<span class="user-count"><%=@chat_members.count%></span>)</div>
@@ -29,4 +30,12 @@
     <%= f.hidden_field :user_id, :value => current_user.id %>
   <% end %>
 </div>
+
+
+<div id="chat_room_placeholder_<%= @chat_room.id %>" class="chat-placeholder container invisible">
+  <%= image_tag 'ss_chat_ico.png', :style=>"float:left;width:30px;height:30px;margin:-10px 0;" %>
+  <div class="chat-title"><%= truncate(@chat_room.name, :length => 25) %> (<span class="user-count"><%=@chat_members.count%></span>)</div>
+</div>
+
+
 

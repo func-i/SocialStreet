@@ -16,11 +16,19 @@ $(function(){
         return true;
     });
 
+    $('.chat-placeholder').live('click', function(e) {
+        console.log('clicked');
+        toggleChatRoom($(this).attr('id').split('_')[3]);
+        e.stopPropagation();
+        e.preventDefault();
+    });
+
     $('.chat-header').live('click', function(e) {
         toggleChatRoom($(this).closest('.chat-holder')[0].id.split('_')[1]);
         e.stopPropagation();
         e.preventDefault();
     });
+    
     $('.chat-close').live('click', function(e){
         closeChatRoom($(this).closest('.chat-holder')[0].id.split('_')[1]);
         e.preventDefault();
@@ -56,8 +64,7 @@ function openChatRoom(chatRoomID){
     if($('#chat_' + chatRoomID).length < 1) {
         var $chatWindow = $('#chat_room_template').clone();
         $chatWindow[0].id = 'chat_' + chatRoomID;
-        //$('#chat_bar').data('jsp').getContentPane().prepend($chatWindow);
-        //$('#chat_bar').data('jsp').reinitialize();
+
         $('#content').prepend($chatWindow);
         
         $.ajax({
@@ -65,11 +72,16 @@ function openChatRoom(chatRoomID){
             success: function(data){
                 $chatWindow.html(data);
                 setupTipsy();
+
+                var $minChatWindow = $('#chat_room_placeholder_' + chatRoomID);
+
+                $minChatWindow.prependTo('#chat_rooms_holder');
+                $chatWindow.css('position', 'absolute');          
+
+                repositionChatWindows();
+
+                $chatWindow.css('zIndex', 1000000);
                 $chatWindow.removeClass('hidden');
-                $chatWindow.draggable({
-                    containment: '#content'
-                });
-                $chatWindow.css('display', 'inline-block');
                 
                 var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
                     eval(data);
@@ -91,37 +103,36 @@ function closeChatRoom(chatRoomID){
     var $chatWindow = $('#chat_' + chatRoomID);
     $chatWindow.closest('.chat-holder').data('subscribe').cancel();
     $chatWindow.closest('.chat-holder').remove();
+    $('#chat_room_placeholder_' + chatRoomID).remove();
     $.ajax({
         url: "/chat_rooms/" + chatRoomID + "/leave"
     });
+
+    repositionChatWindows();
 
 //$('#chat_rooms_holder').width($('#chat_rooms_holder').width() - 238);
 }
 
 function toggleChatRoom(chatRoomID){
+    
     var $chatHolder = $('#chat_' + chatRoomID);
+    var $minChatHolder = $('#chat_room_placeholder_' + chatRoomID);
 
-    if($chatHolder.draggable("option", "disabled")) {
-        // chat is not draggable, therefore it is minimized.
-        $chatHolder.appendTo("#content");
-        $chatHolder.draggable("enable");
-        $chatHolder.css('top', $chatHolder.data('top'));
-        $chatHolder.css('left', $chatHolder.data('left'));
+    if($minChatHolder.hasClass('invisible')) {
+        // chat placeholder is invisible, chat window is maximized, need to minimize
+        $minChatHolder.removeClass('invisible');
+        $chatHolder.addClass('hidden');
+        $chatHolder.height(0);
     }
     else {
-        $chatHolder.appendTo('#chat_rooms_holder');
-        $chatHolder.draggable("disable");
-        $chatHolder.data("top", $chatHolder.css('top'));
-        $chatHolder.data("left", $chatHolder.css('left'));
-        $chatHolder.css('top', '');
-        $chatHolder.css('left', '');       
+        // chat placeholder is not invisible, so we need to maximize
+        $minChatHolder.addClass('invisible');
+        $chatHolder.css('height', '');
+        $chatHolder.removeClass('hidden'); 
     }
 
-    $chatHolder.find('.chat-content').toggleClass('hidden');
-    $chatHolder.find('.chat-user-list-container').toggleClass('hidden');
-    $chatHolder.find('.new_message').toggleClass('hidden');
-    $chatHolder.find('.chat-minimize').toggleClass('hidden');
-    $chatHolder.toggleClass('minimized');
+    //$chatHolder.toggleClass('hidden');
+    $chatHolder.find('.chat-room, .chat-content, .chat-user-list-container, .new_message, .chat-minimize, .chat-header').toggleClass('hidden');    
     $chatHolder.find('.chat-content').scrollTop($chatHolder.find('.chat-content').attr('scrollHeight'));
 
     if($('.chat-holder.minimized').length > 3) {
@@ -130,4 +141,13 @@ function toggleChatRoom(chatRoomID){
     }
     else
         $('#chat_bar').width('');
+}
+
+function repositionChatWindows() {
+    $('.chat-holder:not(#chat_room_template)').each(function() {
+        var thisChatRoomID = $(this).attr('id').split('_')[1];
+        var $placeHolder = $('#chat_room_placeholder_' + thisChatRoomID);
+        if($placeHolder.length > 0)
+            $(this).css('left', $placeHolder.offset().left);
+    });
 }
