@@ -1853,11 +1853,10 @@ h1 {
 #chat_bar {
     position: absolute;
     right: 10px;
-    bottom: 20px;
+    bottom: 00px;
     height: 37px;
-    z-index: 200;
-    overflow-x: auto;
-    overflow-y: hidden;
+    z-index: 500;
+    overflow: hidden;
     white-space: nowrap;
 }
 
@@ -1865,7 +1864,7 @@ h1 {
     /*height: 370px;*/
     width: 238px;
     z-index: 200;
-    bottom: 20px;
+    bottom: 0px;
 }
 
 .chat-holder.minimized {
@@ -1942,4 +1941,33 @@ h1 {
     width: 218px;
     float: right;
     margin-left: 5px;
+}
+
+#chat_rooms_holder {
+}
+
+#chat_rooms_scroll_container {
+    float: left;
+    max-width: 800px;
+    overflow: auto;
+}
+
+#chat_scroll_left,
+#chat_scroll_right {
+    color: white;
+    padding: 10px;
+}
+#chat_scroll_left {
+    margin-right: 10px;
+    float: left;
+}
+
+#chat_scroll_right:hover,
+#chat_scroll_left:hover {
+    cursor: pointer;
+}
+
+#chat_scroll_right {
+    margin-left: 10px;
+    float: right;
 }

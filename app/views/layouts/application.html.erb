@@ -52,24 +52,31 @@
           <div id="other_content" class="content-group">
             <%= yield %>
           </div>
+
           <div id="chat_bar">
-            <div id="chat_rooms_holder"></div>
+            <div id="chat_scroll_left" class="container"> < </div>
+            <div id="chat_rooms_scroll_container">
+              <div id="chat_rooms_holder"></div>
+            </div>
+            <div id="chat_scroll_right" class="container"> > </div>
             <div id="chat_room_template" class="chat-holder hidden"></div>
+          </div>
+
+          <div id="footer">
+            <ul style="float:left">
+              <!--<li><%#= link_to "About", '#' -%></li>
+              <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%> | </li>-->
+              <li><span class="nav-link" data-ajax-href="<%= show_tnc_authentications_path %>">Terms</span> | </li>
+              <li><span class="nav-link" data-ajax-href="<%= show_privacy_authentications_path %>">Privacy</span> | </li>
+              <li><span class="feedback-link" style="cursor:pointer;">Contact</span> |</li>
+              <li><%=link_to "Blog", "http://blog.socialstreet.com"%> |</li>
+              <li><span>SocialStreet &#169; 2011</span></li>
+            </ul>
           </div>
         </div>
 
       </div>
-      <div id="footer">
-        <ul style="float:left">
-          <!--<li><%#= link_to "About", '#' -%></li>
-          <li><%= mail_to 'jobs@SocialStreet.com', "Jobs" -%> | </li>-->
-          <li><span class="nav-link" data-ajax-href="<%= show_tnc_authentications_path %>">Terms</span> | </li>
-          <li><span class="nav-link" data-ajax-href="<%= show_privacy_authentications_path %>">Privacy</span> | </li>
-          <li><span class="feedback-link" style="cursor:pointer;">Contact</span> |</li>
-          <li><%=link_to "Blog", "http://blog.socialstreet.com"%> |</li>
-          <li><span>SocialStreet &#169; 2011</span></li>
-        </ul>
-      </div>      
+
     </div>    
 
   </body>

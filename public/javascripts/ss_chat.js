@@ -40,6 +40,18 @@ $(function(){
         e.stopPropagation();
     });
 
+    $('#chat_scroll_right').live('click', function(e){
+        var $scrollContainer =  $('#chat_rooms_scroll_container');
+        $scrollContainer.scrollLeft($scrollContainer.scrollLeft() + 250);
+        repositionChatWindows();
+    });
+
+    $('#chat_scroll_left').live('click', function(e){
+        var $scrollContainer =  $('#chat_rooms_scroll_container');
+        $scrollContainer.scrollLeft($scrollContainer.scrollLeft() - 250);
+        repositionChatWindows();
+    });
+
 });
 
 function createChatRoomMarker(lat, lng, chatRoomID) {
@@ -97,6 +109,18 @@ function openChatRoom(chatRoomID){
                 $.ajax({
                     url: '/chat_rooms/' + chatRoomID + '/join'
                 })
+
+                if($('.chat-holder:not(#chat_room_template)').length > 3) {
+                    $('#chat_scroll_left, #chat_scroll_right').removeClass('hidden');
+                    $('#chat_rooms_holder').width($('.chat-holder:not(#chat_room_template)').length * 250);
+                    $('#chat_rooms_scroll_container').scrollLeft($('#chat_rooms_scroll_container').width());
+
+                    repositionChatWindows();
+                }
+                else {
+                    $('#chat_bar').width('');
+                //$('#chat_scroll_left, #chat_scroll_right').addClass('hidden');
+                }
             }
         })
 
@@ -118,41 +142,55 @@ function closeChatRoom(chatRoomID){
 //$('#chat_rooms_holder').width($('#chat_rooms_holder').width() - 238);
 }
 
+function minimizeChatRoom(chatRoomID) {
+    var $chatHolder = $('#chat_' + chatRoomID);
+    var $minChatHolder = $('#chat_room_placeholder_' + chatRoomID);
+    
+    $minChatHolder.removeClass('invisible');
+    $chatHolder.addClass('hidden');
+    $chatHolder.height(0);    
+    $chatHolder.find('.chat-room, .chat-content, .chat-user-list-container, .new_message, .chat-minimize, .chat-header').addClass('hidden');    
+}
+
+function maximizeChatRoom(chatRoomID) {
+    var $chatHolder = $('#chat_' + chatRoomID);
+    var $minChatHolder = $('#chat_room_placeholder_' + chatRoomID);
+
+    if($minChatHolder.position().left > 0 && $minChatHolder.position().left < 800) {
+        $minChatHolder.addClass('invisible');
+        $chatHolder.css('height', '');
+        $chatHolder.removeClass('hidden');
+        $chatHolder.find('.chat-room, .chat-content, .chat-user-list-container, .new_message, .chat-minimize, .chat-header').removeClass('hidden');
+        $chatHolder.find('.chat-content').scrollTop($chatHolder.find('.chat-content').attr('scrollHeight'));
+    }
+
+}
+
 function toggleChatRoom(chatRoomID){
     
-    var $chatHolder = $('#chat_' + chatRoomID);
     var $minChatHolder = $('#chat_room_placeholder_' + chatRoomID);
 
     if($minChatHolder.hasClass('invisible')) {
         // chat placeholder is invisible, chat window is maximized, need to minimize
-        $minChatHolder.removeClass('invisible');
-        $chatHolder.addClass('hidden');
-        $chatHolder.height(0);
+        minimizeChatRoom(chatRoomID);
     }
     else {
         // chat placeholder is not invisible, so we need to maximize
-        $minChatHolder.addClass('invisible');
-        $chatHolder.css('height', '');
-        $chatHolder.removeClass('hidden'); 
+        maximizeChatRoom(chatRoomID);
     }
-
-    //$chatHolder.toggleClass('hidden');
-    $chatHolder.find('.chat-room, .chat-content, .chat-user-list-container, .new_message, .chat-minimize, .chat-header').toggleClass('hidden');    
-    $chatHolder.find('.chat-content').scrollTop($chatHolder.find('.chat-content').attr('scrollHeight'));
-
-    if($('.chat-holder.minimized').length > 3) {
-        $('#chat_bar').width(700);
-        $('#chat_rooms_holder').width($('.chat-holder.minimized').length * 250);
-    }
-    else
-        $('#chat_bar').width('');
 }
 
 function repositionChatWindows() {
     $('.chat-holder:not(#chat_room_template)').each(function() {
         var thisChatRoomID = $(this).attr('id').split('_')[1];
         var $placeHolder = $('#chat_room_placeholder_' + thisChatRoomID);
-        if($placeHolder.length > 0)
+        if($placeHolder.length > 0) {
             $(this).css('left', $placeHolder.offset().left);
+
+            if($placeHolder.position().left < 0 || ($placeHolder.position().left + $placeHolder.width()) > 800)
+                minimizeChatRoom(thisChatRoomID);
+        }
+
+
     });
 }
