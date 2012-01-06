@@ -1,9 +1,12 @@
 var createEventEventTypeTimer;
 var createEventSelectedMarker;
 var geocoder = new google.maps.Geocoder();
+var googlePlaces;
 var eventImageSummaryInterval;
 
 $(function(){
+    googlePlaces = new google.maps.places.PlacesService(map);
+
     openLeftPaneView();
     
     cleanUpSelf = function(){
@@ -268,29 +271,46 @@ function searchLocations(e) {
         'bounds' : map.getBounds()
     }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-            var selectedMarker = null;
-            var distance = 40000;
-
-            markerManager.deleteAllMarkers();
-            $.each(results, function(index, result)
-            {
-                var marker = createCreateMarker(result.geometry.location, loc);
-
-                var d = distanceBetweenMapPoints(map.getCenter(), result.geometry.location);
-                if(d < distance){
-                    distance = d;
-                    selectedMarker = marker;
-                }
-
-                selectMarker_createWhere(selectedMarker);
-            });
-            markerManager.showAllMarkers();
+            mapResults(results, loc);
         }
         else {
-            alert("Geocode was not successful for the following reason: " + status);
+            //Search based on place name
+            googlePlaces.search({
+                'bounds': map.getBounds(),
+                'name': loc
+            }, function(results, status){
+                if(status == google.maps.places.PlacesServiceStatus.OK){
+                    mapResults(results, undefined, loc);
+                }
+                else{
+                    alert("The location you searched for cannot be found");
+                }
+            });
         }
     });
     return false;
+}
+
+function mapResults(results, address, name){
+    var selectedMarker = null;
+    var distance = 40000;
+
+    markerManager.deleteAllMarkers();
+    $.each(results, function(index, result)
+    {
+        var marker = createCreateMarker(result.geometry.location, (undefined == address ? result.vicinity : address));
+        if(undefined != name)
+            marker.text_ = name
+
+        var d = distanceBetweenMapPoints(map.getCenter(), result.geometry.location);
+        if(d < distance){
+            distance = d;
+            selectedMarker = marker;
+        }
+
+        selectMarker_createWhere(selectedMarker);
+    });
+    markerManager.showAllMarkers();
 }
 
 function distanceBetweenMapPoints(pos1, pos2){
