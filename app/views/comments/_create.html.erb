@@ -9,7 +9,7 @@
   </div>
   <div class="event-wall-comment-body rounded-corners-four drop-shadow">
     <%= raw comment.body %>
-    <%= link_to(image_tag('remove-keyword.png'), [comment.event, comment], :method=>"delete", :remote=>true, :confirm => 'Are you sure you want to delete this Message?', :class => 'comment-delete hidden') if current_user && comment.user == current_user%>
+    <%= link_to(image_tag('remove-keyword.png'), [comment.event, comment], :method=>"delete", :remote=>true, :confirm => 'Are you sure you want to delete this Message?', :class => 'comment-delete hidden') if current_user && (comment.user == current_user || current_user.god?)%>
   </div>
   <div class="comment-time"><%= time_ago_in_words(comment.created_at, Time.now) %> ago</div>
 </div>
