@@ -273,7 +273,7 @@ function openCenterPaneView(){
 function closeCenterPaneView(){
     $('#left_side_pane').removeClass('center-pane-view');
     $('#right_side_pane').removeClass('center-pane-view');
-    $('#center_pane').addClass('center-pane-view');
+    $('#center_pane').removeClass('center-pane-view');
     $('#zoom_btns').removeClass('hidden');
     resizePageElements();
 }
