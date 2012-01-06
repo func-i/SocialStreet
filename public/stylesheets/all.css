@@ -1862,7 +1862,7 @@ h1 {
 }
 
 .chat-holder {
-    height: 370px;
+    /*height: 370px;*/
     width: 238px;
     z-index: 200;
     bottom: 20px;

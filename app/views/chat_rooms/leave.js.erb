@@ -2,14 +2,17 @@
   var $chatRoom = $('#chat_<%= @chat_room.id%>');
   $chatRoom.find('.user-holder').find('.user-<%= current_user.id %>').remove();
   var $count = $('#chat_<%= @chat_room.id%>').find('.user-count');
+  var $minCount = $('#chat_room_placeholder_' + <%= @chat_room.id %>).find('.user-count');
+
   var count = parseInt($count.text(),10);
+
+  // update the chat bar holder and the chat room's user count
   $count.text(count - 1);
-
-  console.log(count - 1);
-
+  $minCount.text(count - 1);
+  
   if(count-1 <= 1) {
   $chatRoom.find('.chat-user-list-container').removeClass('container');
-  $chatRoom.find('.chat-user-list-container').height(36)
+  $chatRoom.find('.chat-user-list-container').height(36);
   }
 
   if(count-1 <= 7) {  
