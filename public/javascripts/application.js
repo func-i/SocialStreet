@@ -377,6 +377,12 @@ function resizePageElements() {
         resizeSelf();
     }
 
+    $('.dotdotdot').each(function() {
+        $(this).dotdotdot({
+            wrap: 'letter'
+        });
+    });
+    
     initializeScrollPanes();
 
     setupTipsy();
