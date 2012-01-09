@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
 
   before_save Proc.new{|event| event.description = event.description.gsub("\r", "<br />") if event.description}
   
-  has_many :event_keywords
+  has_many :event_keywords, :order => 'event_keywords.id ASC'
   has_many :event_rsvps
   has_many :comments
 
