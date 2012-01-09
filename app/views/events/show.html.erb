@@ -8,22 +8,6 @@
   <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
 <% end %>
 
-<div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function()
-  {
-    FB.init({appId: <%=FACEBOOK_APP_ID%>, status: true, cookie: true, xfbml: true});
-    FB.XFBML.parse( $('#fb_like_btn')[0] );
-  };
-
-  (function() {
-    var e = document.createElement('script');
-    e.async = true;
-    e.src = document.location.protocol +  '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb-root').appendChild(e);
-  }());
-</script>
-
 <% content_for :left_side_pane do %>
   <div id="show_event_details">
     <% if @event.can_edit?(current_user) %>

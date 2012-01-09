@@ -6,11 +6,10 @@
     <%= image_tag('plan-btn.png', :class=>"nav-link remove-how-it-works", "data-ajax-href" => new_event_path) %>
 
     <div class="header-right <%= "not-signed" unless user_signed_in? %>">
-      <div id="how_it_works_btn" class="remove-how-it-works">
-        What is SocialStreet?
-      </div>
-
       <% if user_signed_in? %>
+        <div id="how_it_works_btn" class="remove-how-it-works">
+          What is SocialStreet?
+        </div>
 
         <div id="signed_in_holder">
           <div><%= avatar(current_user, :size => "30x30", :class=>'drop-shadow skip-hovercard') %></div>
@@ -27,6 +26,12 @@
       <% else %>
         <div id="signin_button" data-href='/auth/facebook'>
           <%= image_tag("sign-in-logo.png", :id =>"" , :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -38px;") %>
+        </div>
+        <div class="fb-facepile-container" style="float:right;margin-top:-10px;display:none;">
+          <p style="color:#FFC233;font-size:10px;">Already on SocialStreet</p>
+          <div style="height:35px;overflow:hidden;width:200px">
+            <div class="fb-facepile" data-size="small" data-width="1000" data-max-rows="1" style="bottom:25px;"></div>
+          </div>
         </div>
         <div class="how-it-works hidden" style="margin-top:7px;">
           <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>

@@ -814,7 +814,7 @@ END OF RESET
     padding-bottom: 5px;
 }
 #show_event_title_text{
-/*    float:left;*/
+    /*    float:left;*/
     width: 264px;
     min-height: 20px;
     max-height: 38px;
@@ -1836,4 +1836,3 @@ h1 {
     font-size: 1.5em;
     font-weight: bold;
 }
-
