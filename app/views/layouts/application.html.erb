@@ -23,12 +23,14 @@
       {
         FB.init({appId: <%=FACEBOOK_APP_ID%>, status: true, cookie: true, xfbml: true});
         FB.Event.subscribe('xfbml.render', function(response) {
-          var $facepile = $('.fb-facepile iframe');
+          var $facepile = $('.fb-facepile-container iframe');
           if($facepile.length > 0){
-            $('.fb-facepile-container').show();
+            FB.getLoginStatus(function(response){
+              if(response.status != 'unknown')
+                $('.fb-facepile-container').show();
+            });
           }
-        }
-      );
+        });
         FB.XFBML.parse();
       };
 
