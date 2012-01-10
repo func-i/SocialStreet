@@ -22,7 +22,7 @@
       window.fbAsyncInit = function()
       {
         FB.init({appId: <%=FACEBOOK_APP_ID%>, status: true, cookie: true, xfbml: true});
-        FB.Event.subscribe('xfbml.render', function(response) {
+/*        FB.Event.subscribe('xfbml.render', function(response) {
           var $facepile = $('.fb-facepile-container iframe');
           if($facepile.length > 0){
             FB.getLoginStatus(function(response){
@@ -30,7 +30,7 @@
                 $('.fb-facepile-container').show();
             });
           }
-        });
+        });*/
         FB.XFBML.parse();
       };
 

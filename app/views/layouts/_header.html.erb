@@ -27,12 +27,26 @@
         <div id="signin_button" data-href='/auth/facebook'>
           <%= image_tag("sign-in-logo.png", :id =>"" , :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -38px;") %>
         </div>
-        <div class="fb-facepile-container" style="float:right;margin-top:-10px;display:none;">
+        <div style="float:right;margin-top:-10px;">
+          <% users = User.where('users.sign_in_count > 0') %>
+          <p style="color:white;font-size:10px;font-weight:bold;">
+            Neighborhood Connections
+            <span style="color:#FFC233;">(<%=users.count%>)</span>
+          </p>
+          <ul>
+            <% users.limit(6).all.each do |u| %>
+              <li style="float:left;margin: 1px 2px 0 0;">
+                <%= avatar u, :size => '35x35', :gravity => 'ne'%>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <!--div class="fb-facepile-container" style="float:right;margin-top:-10px;display:none;">
           <p style="color:#FFC233;font-size:10px;">Already on SocialStreet</p>
           <div style="height:35px;overflow:hidden;width:175px">
             <div class="fb-facepile" data-size="small" data-width="1000" data-max-rows="1" style="bottom:25px;"></div>
           </div>
-        </div>
+        </div-->
         <div class="how-it-works hidden" style="margin-top:7px;">
           <%= image_tag "sign-in-arrow.png", :style => "margin-right: 5px; float: right;" %>
           <span class="chalk" style="margin-right: 5px; float: right;">Sign in with Facebook</span>
