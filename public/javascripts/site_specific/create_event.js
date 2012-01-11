@@ -278,9 +278,9 @@ function searchLocations(e) {
             googlePlaces.search({
                 'bounds': map.getBounds(),
                 'name': loc
-            }, function(results, status){
-                if(status == google.maps.places.PlacesServiceStatus.OK){
-                    mapResults(results, undefined, loc);
+            }, function(results2, status2){
+                if(status2 == google.maps.places.PlacesServiceStatus.OK){
+                    mapResults(results2, undefined, loc);
                 }
                 else{
                     alert("The location you searched for cannot be found");
@@ -434,7 +434,6 @@ function setupCreateWhen(){
 }
 
 function hideCreateWhen(){
-    $(zoomControl).show();
     $('.create-when-view').addClass('hidden');
     closeCenterPane();
 }
@@ -501,6 +500,7 @@ function setupCreateSummary(){
     $.each(markerManager.allMarkers_, function(index, marker){
         marker.setDraggable(false);
     });
+    markerManager.showAllMarkers();
 
     //KEYWORDS
     var api = null;

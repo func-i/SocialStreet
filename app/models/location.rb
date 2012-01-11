@@ -40,6 +40,15 @@ class Location < ActiveRecord::Base
     where(final_sql)
   }
 
+  def geocoded_address=(a)
+    a_components = a.split(',')
+    #HACKITY HACK HACK HACKITY HACK
+    self.street = a_components[0] if a_components.length > 0
+    self.city = a_components[1] if a_components.length > 1
+    self.state = a_components[2] if a_components.length > 2
+    self.country = a_components[3] if a_components.length > 3
+    self.postal = a_components[4] if a_components.length > 4
+  end
 
   def geocodable_address
     if has_geocodable_address?
