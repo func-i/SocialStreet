@@ -96,10 +96,11 @@ class Location < ActiveRecord::Base
   end
 
   def should_reverse_geocode?
-    if new_record?
-      return !has_geocodable_address?
-    else
-      return latitude_changed? || longitude_changed?
-    end
+    return false
+    #if new_record?
+      #return !has_geocodable_address?
+    #else
+      #return latitude_changed? || longitude_changed?
+    #end
   end
 end
