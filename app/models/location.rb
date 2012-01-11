@@ -60,7 +60,7 @@ class Location < ActiveRecord::Base
   end
 
   def short_address_as_sentence
-    "#{street}, #{city}"
+    [street, city].join(', ')
   end
 
   def as_sentence
