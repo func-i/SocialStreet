@@ -44,6 +44,7 @@ class Location < ActiveRecord::Base
     a_components = a.split(',')
     #HACKITY HACK HACK HACKITY HACK
     self.street = a_components[0] if a_components.length > 0
+    self.route = a_components[0] if a_components.length > 0
     self.city = a_components[1] if a_components.length > 1
     self.state = a_components[2] if a_components.length > 2
     self.country = a_components[3] if a_components.length > 3
