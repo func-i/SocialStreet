@@ -16,6 +16,8 @@ class AuthenticationsController < ApplicationController
 
     if authentication
       #flash[:notice] = "Welcome back #{authentication.user.name}"
+      authentication.auth_response = auth
+      authentication.save
       sign_in_and_redirect(:user, authentication.user)
     elsif current_user
       current_user.apply_omniauth(auth)
