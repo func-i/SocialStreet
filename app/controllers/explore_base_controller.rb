@@ -15,7 +15,7 @@ class ExploreBaseController < ApplicationController
     @promoted_events = Event.where(:promoted => true).upcoming.limit(1).all
 
     get_events
-    get_chat_rooms
+    get_chat_rooms    
   end
 
   protected

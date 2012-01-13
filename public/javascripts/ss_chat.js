@@ -42,17 +42,34 @@ $(function(){
 
     $('#chat_scroll_right').live('click', function(e){
         var $scrollContainer =  $('#chat_rooms_scroll_container');
-        $scrollContainer.scrollLeft($scrollContainer.scrollLeft() + 250);
+        $scrollContainer.scrollLeft($scrollContainer.scrollLeft() + 238);
+
+        toggleScrollButtons();
         repositionChatWindows();
     });
 
     $('#chat_scroll_left').live('click', function(e){
         var $scrollContainer =  $('#chat_rooms_scroll_container');
-        $scrollContainer.scrollLeft($scrollContainer.scrollLeft() - 250);
+        var scrollLeftPosition = $scrollContainer.scrollLeft();
+        $scrollContainer.scrollLeft(scrollLeftPosition - 238);
+
+        toggleScrollButtons();
         repositionChatWindows();
+
     });
 
 });
+
+function toggleScrollButtons() {
+    var $scrollContainer =  $('#chat_rooms_scroll_container');      
+    var scrollLeftPosition = $scrollContainer.scrollLeft();
+    var numChats = $('.chat-holder:not(#chat_room_template)').length;
+    var numHiddenLeft = parseInt(scrollLeftPosition / 238);
+    var numHiddenRight = numChats - numHiddenLeft - 3;
+
+    numHiddenLeft > 0 ? $('#chat_scroll_left').removeClass('invisible') : $('#chat_scroll_left').addClass('invisible');
+    numHiddenRight > 0 ? $('#chat_scroll_right').removeClass('invisible') : $('#chat_scroll_right').addClass('invisible');
+}
 
 function createChatRoomMarker(lat, lng, chatRoomID) {
     var marker = chatMarkerManager.addMarker(lat, lng);
@@ -93,7 +110,7 @@ function openChatRoom(chatRoomID){
                 var $minChatWindow = $('#chat_room_placeholder_' + chatRoomID);
 
                 $minChatWindow.prependTo('#chat_rooms_holder');
-                $chatWindow.css('position', 'absolute');          
+                $chatWindow.css('position', 'absolute');
 
                 repositionChatWindows();
 
@@ -110,17 +127,8 @@ function openChatRoom(chatRoomID){
                     url: '/chat_rooms/' + chatRoomID + '/join'
                 })
 
-                if($('.chat-holder:not(#chat_room_template)').length > 3) {
-                    $('#chat_scroll_left, #chat_scroll_right').removeClass('hidden');
-                    $('#chat_rooms_holder').width($('.chat-holder:not(#chat_room_template)').length * 250);
-                    $('#chat_rooms_scroll_container').scrollLeft($('#chat_rooms_scroll_container').width());
-
-                    repositionChatWindows();
-                }
-                else {
-                    $('#chat_bar').width('');
-                //$('#chat_scroll_left, #chat_scroll_right').addClass('hidden');
-                }
+                resizeChatHolder();
+                toggleScrollButtons();
             }
         })
 
@@ -137,9 +145,25 @@ function closeChatRoom(chatRoomID){
         url: "/chat_rooms/" + chatRoomID + "/leave"
     });
 
+    resizeChatHolder();
     repositionChatWindows();
+    toggleScrollButtons();
 
 //$('#chat_rooms_holder').width($('#chat_rooms_holder').width() - 238);
+}
+
+function resizeChatHolder() {
+    if($('.chat-holder:not(#chat_room_template)').length >= 3) {
+        $('#chat_scroll_left, #chat_scroll_right').removeClass('hidden');
+        $('#chat_rooms_holder').width($('.chat-holder:not(#chat_room_template)').length * 243);
+        $('#chat_rooms_scroll_container').scrollLeft($('#chat_rooms_scroll_container').width());
+
+        repositionChatWindows();
+    }
+    else {
+        $('#chat_bar').width('');
+    //$('#chat_scroll_left, #chat_scroll_right').addClass('hidden');
+    }
 }
 
 function minimizeChatRoom(chatRoomID) {
@@ -148,8 +172,8 @@ function minimizeChatRoom(chatRoomID) {
     
     $minChatHolder.removeClass('invisible');
     $chatHolder.addClass('hidden');
-    $chatHolder.height(0);    
-    $chatHolder.find('.chat-room, .chat-content, .chat-user-list-container, .new_message, .chat-minimize, .chat-header').addClass('hidden');    
+    $chatHolder.height(0);
+    $chatHolder.find('.chat-room, .chat-content, .chat-user-list-container, .new_message, .chat-minimize, .chat-header').addClass('hidden');
 }
 
 function maximizeChatRoom(chatRoomID) {
@@ -186,8 +210,8 @@ function repositionChatWindows() {
         var $placeHolder = $('#chat_room_placeholder_' + thisChatRoomID);
         if($placeHolder.length > 0) {
             $(this).css('left', $placeHolder.offset().left);
-
-            if($placeHolder.position().left < 0 || ($placeHolder.position().left + $placeHolder.width()) > 800)
+            
+            if($placeHolder.position().left < 0 || ($placeHolder.position().left) > 700)
                 minimizeChatRoom(thisChatRoomID);
         }
 

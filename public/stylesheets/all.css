@@ -1948,7 +1948,7 @@ h1 {
 
 #chat_rooms_scroll_container {
     float: left;
-    max-width: 800px;
+    max-width: 725px;
     overflow: auto;
 }
 
@@ -1958,7 +1958,7 @@ h1 {
     padding: 10px;
 }
 #chat_scroll_left {
-    margin-right: 10px;
+    margin-right: 5px;
     float: left;
 }
 
