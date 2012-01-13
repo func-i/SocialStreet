@@ -31,7 +31,8 @@ class ApplicationController < ActionController::Base
     return nil;
   end
 
-  def after_sign_in_path_for(resource_or_scope)   
+  def after_sign_in_path_for(resource_or_scope)
+
     if session[:stored_redirect]
       if session[:stored_redirect][:controller] == 'comments' && session[:stored_redirect][:action] == 'create'
 
@@ -68,6 +69,8 @@ class ApplicationController < ActionController::Base
         if add_group_to_profile(session[:stored_redirect][:params][:group_id], session[:stored_redirect][:params][:user_id],session[:stored_redirect][:params][:group_code])
           return_path = get_current_path
         end
+      elsif session[:stored_redirect][:controller] == 'chat_rooms'
+        return_path = explore_path(:chat_room_id => session[:stored_redirect][:params][:id])
       end
 
       return return_path if return_path

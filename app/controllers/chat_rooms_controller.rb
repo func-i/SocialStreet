@@ -1,5 +1,6 @@
 class ChatRoomsController < ApplicationController
-
+  
+  before_filter :store_all_redirects
   before_filter :ss_authenticate_user!
 
   def show
@@ -27,4 +28,11 @@ class ChatRoomsController < ApplicationController
     r.srem "cr_user_list_#{@chat_room.id}", current_user.id
     r.quit
   end
+
+  protected
+
+  def store_all_redirects
+    store_redirect(:controller => 'event_rsvps', :action => 'new', :params => params)
+  end
+
 end

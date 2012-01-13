@@ -15,7 +15,7 @@ class AuthenticationsController < ApplicationController
     authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
 
     if authentication
-      #flash[:notice] = "Welcome back #{authentication.user.name}"
+      #flash[:notice] = "Welcome back #{authentication.user.name}"      
       sign_in_and_redirect(:user, authentication.user)
     elsif current_user
       current_user.apply_omniauth(auth)

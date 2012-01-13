@@ -113,6 +113,10 @@ function setupExplorePage(){
     toggle_suggested_actions();
 
     resizePageElements();
+
+    var qs = jQuery.parseQuerystring();
+    console.log(qs['chat_room_id']);
+    //if(qs['chat_room_id'])
 }
 
 function addMapListeners(){

@@ -23,6 +23,7 @@ class CommentsController < ApplicationController
   protected
 
   def store_comment_request
+    session[:user_return_to] = url_for(:controller => "explore", :chat_room_id => params[:id])
     store_redirect(:controller => 'comments', :action => 'create', :params => params)
   end
 

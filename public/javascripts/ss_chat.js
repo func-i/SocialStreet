@@ -103,32 +103,34 @@ function openChatRoom(chatRoomID){
         
         $.ajax({
             url: '/chat_rooms/' + chatRoomID,
-            success: function(data){
-                $chatWindow.html(data);
-                setupTipsy();
+            success: function(data) {
+                if(data != "window.location = '/auth/facebook';") {
+                    $chatWindow.html(data);
+                    setupTipsy();
 
-                var $minChatWindow = $('#chat_room_placeholder_' + chatRoomID);
+                    var $minChatWindow = $('#chat_room_placeholder_' + chatRoomID);
 
-                $minChatWindow.prependTo('#chat_rooms_holder');
-                $chatWindow.css('position', 'absolute');
+                    $minChatWindow.prependTo('#chat_rooms_holder');
+                    $chatWindow.css('position', 'absolute');
 
-                repositionChatWindows();
+                    repositionChatWindows();
 
-                $chatWindow.css('zIndex', 1000000);
-                $chatWindow.removeClass('hidden');
+                    $chatWindow.css('zIndex', 1000000);
+                    $chatWindow.removeClass('hidden');
                 
-                var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
-                    eval(data);
-                });
-                $chatWindow.data('subscribe', subscribeObj);
-                $chatWindow.find('.chat-content').scrollTop($chatWindow.find('.chat-content').attr('scrollHeight'));
+                    var subscribeObj = faye.subscribe('/chat_rooms/' + chatRoomID, function (data) {
+                        eval(data);
+                    });
+                    $chatWindow.data('subscribe', subscribeObj);
+                    $chatWindow.find('.chat-content').scrollTop($chatWindow.find('.chat-content').attr('scrollHeight'));
+                    
+                    $.ajax({
+                        url: '/chat_rooms/' + chatRoomID + '/join'
+                    })
 
-                $.ajax({
-                    url: '/chat_rooms/' + chatRoomID + '/join'
-                })
-
-                resizeChatHolder();
-                toggleScrollButtons();
+                    resizeChatHolder();
+                    toggleScrollButtons();
+                }
             }
         })
 
