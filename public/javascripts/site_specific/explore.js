@@ -115,7 +115,8 @@ function setupExplorePage(){
     resizePageElements();
 
     var qs = jQuery.parseQuerystring();
-    console.log(qs['chat_room_id']);
+    if(qs['chat_room_id'])
+        openChatRoom(qs['chat_room_id']);
     //if(qs['chat_room_id'])
 }
 

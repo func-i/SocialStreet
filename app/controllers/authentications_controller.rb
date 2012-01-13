@@ -16,7 +16,8 @@ class AuthenticationsController < ApplicationController
 
     if authentication
       #flash[:notice] = "Welcome back #{authentication.user.name}"      
-      sign_in_and_redirect(:user, authentication.user)
+      sign_in(:user, authentication.user)
+      redirect_to after_sign_in_path_for(authentication.user)
     elsif current_user
       current_user.apply_omniauth(auth)
       current_user.save!
