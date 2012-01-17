@@ -38,7 +38,7 @@ class UserMailer < ActionMailer::Base
     @user = invitation.user
     @invitation = invitation
     @event = invitation.event
-    mail(:to => (@user.email || invitation.email), :subject => "#{invitation.invitor.name} invited you to '#{invitation.event.title}' on SocialStreet")
+    mail(:to => (invitation.email || @user.try(:email)), :subject => "#{invitation.invitor.name} invited you to '#{invitation.event.title}' on SocialStreet")
   end
 
   #Send when a new comment thread is created in an event

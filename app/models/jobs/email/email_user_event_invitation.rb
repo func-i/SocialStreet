@@ -10,10 +10,11 @@ class Jobs::Email::EmailUserEventInvitation
     end
     
     to_user = invitation.user
+    email_address = invitation.email || to_user.try(:email)
     event = invitation.event
 
     # make sure the user has not already RSVP'd to the event they are being invited to
-    if to_user.email? && invitation.status == EventRsvp.statuses[:invited]
+    if email_address && invitation.status == EventRsvp.statuses[:invited]
       email = UserMailer.event_invitation_notice(invitation)
       email.deliver
     end

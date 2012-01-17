@@ -1,5 +1,5 @@
 <div style="margin-bottom:15px;font-size:12px">
-  Hi <%=@user.try(:first_name)%>,
+  Hi<%=" #{@user.try(:first_name)}" if @user%>,
 </div>
 <div style="margin-bottom:15px">
   <%=@invitation.invitor.name%> invited you to
