@@ -13,6 +13,7 @@
     <%= csrf_meta_tag %>
     <%= favicon_link_tag %>
 
+
     <%= yield :head %>
 
     <script type="text/javascript">
@@ -29,31 +30,26 @@
 
     </script>
   </head>
+
   <body>
-
     <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=<%=FACEBOOK_APP_ID%>";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
     <script>
-      window.fbAsyncInit = function()
-      {
-        FB.init({appId: <%=FACEBOOK_APP_ID%>, status: true, cookie: true, xfbml: true});
-        /*        FB.Event.subscribe('xfbml.render', function(response) {
-          var $facepile = $('.fb-facepile-container iframe');
-          if($facepile.length > 0){
-            FB.getLoginStatus(function(response){
-              if(response.status != 'unknown')
-                $('.fb-facepile-container').show();
-            });
-          }
-        });*/
-        FB.XFBML.parse();
-      };
-
-      (function() {
-        var e = document.createElement('script');
-        e.async = true;
-        e.src = document.location.protocol +  '//connect.facebook.net/en_US/all.js';
-        document.getElementById('fb-root').appendChild(e);
-      }());
+      (function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0];
+      if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;
+        js.src="//platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+      }}(document,"script","twitter-wjs"));
     </script>
 
     <input type="hidden" id="users_current_location" name="users_current_location" value="<%=users_current_location_string()%>"/>
@@ -66,7 +62,7 @@
         <div id="content">
           <div id="location-map" class="map-frame" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index: 0;"></div>
           <div id="how_it_works" class="hidden">
-            <%= render "layouts/how_it_works" %>
+<%#= render "layouts/how_it_works" %>
           </div>
           <div id="feedback" class="hidden">
             <%= render "layouts/feedback" %>

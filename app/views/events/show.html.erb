@@ -1,4 +1,6 @@
 <% content_for :head do %>
+  <meta name="description" content="StreetMeets are real life, everyday interactions between you and your community. <%= @event.title %>, <%=@event.description%>"/>
+
   <meta property="og:title" content="<%= @event.title %>" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="<%=request.url %>" />
@@ -7,6 +9,8 @@
   <meta property="og:description" content="<%= 'SocialStreet mission is to make it easy to discover friends (new or old) that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!'%>" />
   <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
 <% end %>
+
+
 
 <% content_for :left_side_pane do %>
   <div id="show_event_details">
@@ -18,6 +22,7 @@
         <%= link_to "SMOW", new_event_smow_path(@event), :class => "admin-link" if @current_user.god? %>
       </div>
     <% end %>
+
     <%= form_for @event, :method=>'put', :remote => true, :html => {:id=>"event_edit_form"} do |form|%>
       <div id="show_event_details_holder">
 
@@ -51,9 +56,16 @@
           <%= raw @event.description %>
         </span>
       </div>
+
     <% end %>
+
+    <div id="social_bar" style="width:360px; height:40px;overflow:hidden;float:left;margin: 0 0 10px 20px;">
+      <iframe src="//www.facebook.com/plugins/like.php?href=<%=escape_javascript event_url(@event)%>&amp;send=false&amp;layout=button_count&amp;width=50&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=268954796465479" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:21px; float:right;" allowTransparency="true"></iframe>
+      <iframe allowtransparency="true" frameborder="0" scrolling="no" src="//platform.twitter.com/widgets/tweet_button.html?url=<%=event_url(@event)%>&count=none&lang=en" style="width:60px; height:20px; float:right; margin: 0 5px;"></iframe>
+    </div>
+
     <br/>
-    <div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div>
+    <!--div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div-->
   </div>
 
   <div class="event-details-view <%="hidden" if params[:invite]%>">
@@ -63,17 +75,15 @@
           <%= form.text_area :body, :id => "event_wall_text_field", :placeholder => " Leave a Message", :class=>'ie-placeholder'-%>
         </div>
       <% end %>
-      <div id="event_wall" class="cap-height scroll-pane show-scroll-on-hover" data-expandBottomOffset="40" style="overflow:auto;">
+      <div id="event_wall" class="cap-height scroll-pane show-scroll-on-hover" data-expandBottomOffset="20" style="overflow:auto;">
         <%@comments.each do |comment|%>
           <%= render :partial => 'comments/create.html', :locals => {:comment => comment} %>
         <% end %>
       </div>
     </div>
   </div>
-  <!--<div style="font-size:2px;background-color:#4F4F4D;position:absolute;bottom:30px;left:0px;width:400px;height:2px;">&nbsp;</div>-->
-  <!--  <div id="fb_like_btn" style="width:50px;height:20px;overflow:hidden;position:absolute;bottom:5px; left:330px;">
-      <div class="fb-like" data-href="<%=event_path(@event)%>" data-send="false" data-layout="button_count" data-width="30" data-show-faces="false"></div>
-    </div>-->
+
+  <!--div style="font-size:2px;background-color:#4F4F4D;position:absolute;bottom:30px;left:0px;width:400px;height:2px;">&nbsp;</div-->
 
 <% end %>
 

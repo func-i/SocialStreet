@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <meta name="description" content="SocialStreet makes it easy to discover friends that enjoy the same things as you! You can now easily connect with your own personalized community, no matter where you are."/>
+<% end %>
+
 <% content_for :left_side_pane do %>
   <div class="">
     <div id="explore_keyword_text_field_holder" class="keyword-text-field-holder">
@@ -18,7 +22,7 @@
         </div>
         <%= render :partial => "/explore/suggested_explore_actions" %>
       </div>
-    </div>   
+    </div>
   </div>
 <% end %>
 
@@ -89,7 +93,7 @@
 <% unless params[:keywords].blank? %>
   <script type="text/javascript">
   <% for keyword in params[:keywords] %>
-      addKeyword('<%= u keyword %>', false);
+    addKeyword('<%= u keyword %>', false);
   <% end %>
   </script>
 <% end %>
