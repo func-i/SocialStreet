@@ -80,8 +80,8 @@ module ApplicationHelper
       when 2..23
         minutes_ratio = (distance_in_hours - distance_in_hours.floor)
         middle_text = "in" if upcoming
-        end_text = "more than #{distance_in_hours.floor} hours#{' ago' unless upcoming}" if minutes_raio < 0.66
-        end_text = "almost #{distance_in_hours.floor + 1} hours#{' ago' unless upcoming}" if minutes_raio >= 0.66
+        end_text = "more than #{distance_in_hours.floor} hours#{' ago' unless upcoming}" if minutes_ratio < 0.66
+        end_text = "almost #{distance_in_hours.floor + 1} hours#{' ago' unless upcoming}" if minutes_ratio >= 0.66
       end
     when 1
       end_text = "#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"

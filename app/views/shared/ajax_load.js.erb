@@ -1,7 +1,7 @@
 <%# Pass file_name_var as a local to call this loader%>
 var myContent = '<%= escape_javascript(render(:file => file_name_var)) -%>';
 
-$('#head_data').html('<%= escape_javascript content_for :head %>');
+//$('#head_data').html('<%= escape_javascript content_for :head %>');
 $('#left_side_pane').html('<%= escape_javascript content_for :left_side_pane %>');
 $('#right_side_pane').html('<%= escape_javascript content_for :right_side_pane %>');
 $('#center_pane').html('<%= escape_javascript content_for :center_pane %>');
