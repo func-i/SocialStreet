@@ -4,7 +4,7 @@
   <meta property="og:title" content="<%= @event.title %>" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="<%=request.url %>" />
-  <meta property="og:image" content="<%= url_for_event_image(@event) %>" />
+  <meta property="og:image" content="<%= request.host + url_for_event_image(@event) %>" />
   <meta property="og:site_name" content="SocialStreet" />
   <meta property="og:description" content="<%= 'SocialStreet mission is to make it easy to discover friends (new or old) that enjoy the same things as you! By attending and organizing "StreetMeets", you are sure to discover that you are surrounded by people just like you!'%>" />
   <meta property="fb:app_id" content="<%=FACEBOOK_APP_ID%>" />
@@ -59,13 +59,20 @@
 
     <% end %>
 
-    <div id="social_bar" style="width:360px; height:40px;overflow:hidden;float:left;margin: 0 0 10px 20px;">
-      <iframe src="//www.facebook.com/plugins/like.php?href=<%=escape_javascript event_url(@event)%>&amp;send=false&amp;layout=button_count&amp;width=50&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=268954796465479" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:21px; float:right;" allowTransparency="true"></iframe>
-      <iframe allowtransparency="true" frameborder="0" scrolling="no" src="//platform.twitter.com/widgets/tweet_button.html?url=<%=event_url(@event)%>&count=none&lang=en" style="width:60px; height:20px; float:right; margin: 0 5px;"></iframe>
+    <div id="social_bar" style="width:360px; height:40px;overflow:hidden;float:left;margin: 5px 20px 0px 20px;">
+      <% start_text, middle_text, end_text = ss_time_ago_in_words(@event.start_date)
+         tweet_date = [start_text, middle_text, end_text].compact.join(' ')
+         tweet_text = "You should attend #{@event.title} which #{tweet_date}"
+         hash_tags = "StreetMeet,SocialStreet,ExploreRealLife"
+         url = event_url(@event)
+         short_url = url #url_shortner(url)
+       %>
+
+      <iframe src="//www.facebook.com/plugins/like.php?href=<%=short_url%>&amp;send=false&amp;layout=button_count&amp;width=50&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=268954796465479" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:21px; float:right;" allowTransparency="true"></iframe>
+      <iframe src="//platform.twitter.com/widgets/tweet_button.html?url=<%=short_url%>&hashtags=<%=hash_tags%>&text=<%=tweet_text%>&count_url=<%=url%>&count=none&lang=en" allowtransparency="true" frameborder="0" scrolling="no" style="width:60px; height:20px; float:right; margin: 0 5px;"></iframe>
     </div>
 
     <br/>
-    <!--div style="font-size:2px;background-color:#4F4F4D">&nbsp;</div-->
   </div>
 
   <div class="event-details-view <%="hidden" if params[:invite]%>">
@@ -82,8 +89,6 @@
       </div>
     </div>
   </div>
-
-  <!--div style="font-size:2px;background-color:#4F4F4D;position:absolute;bottom:30px;left:0px;width:400px;height:2px;">&nbsp;</div-->
 
 <% end %>
 

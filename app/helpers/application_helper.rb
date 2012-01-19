@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def url_shortner(url)
+    url.gsub(/www\.socialstreet\.com/, 'socialstreet.com')
+    url.gsub(/socialstreet\.com/, 'scl.st')
+  end
+
   def url_for_event_image(event)
     url_for_event_keyword(nil) if event.event_types.empty?
     url_for_event_keyword(ek = event.event_keywords.detect {|ek| (ek.event_type && ek.event_type.image_path?) })
@@ -9,7 +14,7 @@ module ApplicationHelper
     if event_keyword && event_keyword.event_type && event_keyword.event_type.image_path?
       event_keyword.event_type.image_path
     else
-      'event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
+      '/images/event_types/streetmeet' + (rand(8) + 1).to_s + '.png'
     end
   end
 
@@ -36,7 +41,8 @@ module ApplicationHelper
     start_time = event.start_date
     end_time = event.end_date
 
-    ss_time_ago_in_words(start_time, end_time)
+    start_words, middle_words, end_words = ss_time_ago_in_words(start_time, end_time)
+    return [start_words.capitalize, middle_words, end_words].compact.join(' ')
   end
 
   def ss_time_ago_in_words(start_time, end_time = nil)
@@ -48,7 +54,9 @@ module ApplicationHelper
     distance_in_hours = (distance_in_minutes / 60.0)
     distance_in_days = ((time.beginning_of_day - Time.zone.now.beginning_of_day).abs / (24.0 * 60.0 * 60.0)).round
 
-    text = "#{ended ? 'Ended ' : (started ? 'Started ' : 'Starts ')}"
+    start_text = "#{ended ? 'ended' : (started ? 'started' : 'starts')}"
+    middle_text = nil
+    end_text = nil
 
     case distance_in_days
     when 0
@@ -56,28 +64,35 @@ module ApplicationHelper
       when 0..1
         case distance_in_minutes
         when 0..5
-          text = "#{'Just ' unless upcoming}#{text}#{'in a couple of minutes ' if upcoming}"
+          start_text = "Just #{start_text}" unless upcoming
+          middle_text = "in" if upcoming
+          end_text = "a couple of minutes" if upcoming
         when 6..59
-          text = "#{text}#{'in ' if upcoming}#{distance_in_minutes} minutes#{' ago' unless upcoming}"
+          middle_text = "in" if upcoming
+          end_text = "#{distance_in_minutes} minutes" unless upcoming
         when 60..100
-          text = "#{text}#{'in ' if upcoming}more than 1 hour #{' ago' unless upcoming}"
+          middle_text = "in" if upcoming
+          end_text = "more than 1 hour#{' ago' unless upcoming}"
         when 101..120
-          text = "#{text}#{'in ' if upcoming}almost 2 hours #{' ago' unless upcoming}"
+          middle_text = "in" if upcoming
+          end_text = "more than 2 hours#{' ago' unless upcoming}"
         end
       when 2..23
         minutes_ratio = (distance_in_hours - distance_in_hours.floor)
-        text = "#{text}#{'in ' if upcoming}more than #{distance_in_hours.floor} hours#{' ago' unless upcoming}" if minutes_ratio < 0.66
-        text = "#{text}#{'in ' if upcoming}almost #{distance_in_hours.floor + 1} hours#{' ago' unless upcoming}" if minutes_ratio >= 0.66
+        middle_text = "in" if upcoming
+        end_text = "more than #{distance_in_hours.floor} hours#{' ago' unless upcoming}" if minutes_raio < 0.66
+        end_text = "almost #{distance_in_hours.floor + 1} hours#{' ago' unless upcoming}" if minutes_raio >= 0.66
       end
     when 1
-      text = "#{text}#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
+      end_text = "#{upcoming ? 'Tomorrow ' : 'Yesterday '} @ #{time.strftime("%l:%M %p")}"
     when 2..6
-      text = "#{text}this #{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
+      middle_text = "this"
+      end_text = "#{time.strftime("%A")} @ #{time.strftime("%l:%M %p")}"
     else
-      text = "#{text}#{time.strftime("%A, %b %e %l:%M %p")}"
+      end_text = "#{time.strftime("%A, %b %e %l:%M %p")}"
     end
 
-    return text
+    return [start_text, middle_text, end_text]
   end
 
   def url_for_avatar(user, options={})
@@ -87,6 +102,7 @@ module ApplicationHelper
 
   def avatar(user, options={})
     image_tag(url_for_avatar(user, :fb_size => options[:fb_size] || 'square'),
+      :alt => options[:alt] || user.try(:name),
       :size=> options[:size] || "30x30",
       :class => "#{options[:class] && options[:class].include?("skip-hovercard") ? "" : "user-image"} #{options[:class] || ''}",
       :style => options[:style] || "",
