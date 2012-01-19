@@ -84,6 +84,7 @@ SocialStreetReborn::Application.routes.draw do
   get 'sim_error' => 'heartbeat#error'
 
   get '/connections/facebook_realtime' => 'facebook_realtime#update'
+  post '/connections/facebook_realtime' => 'facebook_realtime#update'
 
   namespace :m do #mobile
     root :to => 'site#index'
