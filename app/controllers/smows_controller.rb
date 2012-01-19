@@ -94,7 +94,7 @@ class SmowsController < ApplicationController
   def send_single_email
     @event = Event.find params[:event_id]
     @smow = Smow.find params[:id]
-    UserMailer.deliver_streetmeet_of_the_week(@smow, current_user.email)
+    UserMailer.streetmeet_of_the_week(@smow, current_user.email).deliver
     redirect_to [@event, @smow]
   end
 

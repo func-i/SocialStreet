@@ -29,7 +29,7 @@ class Jobs::Email::EmailAllUsersStreetmeetEvent
     smow.update_attribute("emails_sent", i)
 
     # => Send summary email
-    UserMailer.deliver_streetmeet_of_the_week_summary("Total users: #{users.size}<br/>Total successful emails: #{i}")
+    UserMailer.streetmeet_of_the_week_summary("Total users: #{users.size}<br/>Total successful emails: #{i}").deliver
 
   end
 end

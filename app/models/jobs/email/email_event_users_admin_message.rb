@@ -7,7 +7,7 @@ class Jobs::Email::EmailEventUsersAdminMessage
     event = Event.find event_id
     if event
       event.event_rsvps.attending_or_maybe_attending.each do |attendee|
-        UserMailer.deliver_event_admin_message_to_attendee(event, attendee, message)
+        UserMailer.event_admin_message_to_attendee(event, attendee, message).deliver
       end
     end    
   end
