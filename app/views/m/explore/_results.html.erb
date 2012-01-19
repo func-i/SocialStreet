@@ -4,7 +4,7 @@
       <% className = sprite_class_name_for_event(event)%>
       <%= link_to m_event_path(event), :style => "padding:0;" do %>
         <div class="event-type-image event-type-<%=className%>-small-sprite" style="float:left;"></div>
-        <div style="float:left; max-width: 350px;">
+        <div style="float:left; max-width: 70%;">
           <div id="explore_list_title" class="dotdotdot"><p><%= event.title %></p></div>
           <div id="explore_list_address" class="dotdotdot"><%= event.location.short_address_as_sentence %></div>
         </div>
