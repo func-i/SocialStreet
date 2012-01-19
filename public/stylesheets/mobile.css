@@ -39,10 +39,14 @@
 #event_title {
     font-size: 25px;
     font-weight: bolder;
-    position: absolute;
     margin: 10px 10px;
     color: #FFC233;
+    float: left;
+    width: 70%;
+}
 
+#event_icon {
+    float: left;
 }
 
 #more_details_link {
