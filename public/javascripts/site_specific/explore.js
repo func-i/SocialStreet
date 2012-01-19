@@ -145,7 +145,8 @@ function updateExploreLocationParams(){
 
         var tr = bounds.getNorthEast();
         var trPix = projection.fromLatLngToDivPixel(tr);
-        trPix.y += 76;//Selected Marker height
+        //trPix.y += 76;//Selected Marker height
+        trPix.y += 20;
 
         var sw = projection.fromDivPixelToLatLng(blPix);
         var ne = projection.fromDivPixelToLatLng(trPix);

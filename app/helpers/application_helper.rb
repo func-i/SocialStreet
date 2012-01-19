@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def url_shortner(url)
+    url.gsub(/www\.socialstreet\.com/, 'socialstreet.com')
+    url.gsub(/socialstreet\.com/, 'scl.st')
+  end
+
   def url_for_event_image(event)
     url_for_event_keyword(nil) if event.event_types.empty?
     url_for_event_keyword(ek = event.event_keywords.detect {|ek| (ek.event_type && ek.event_type.image_path?) })
@@ -87,6 +92,7 @@ module ApplicationHelper
 
   def avatar(user, options={})
     image_tag(url_for_avatar(user, :fb_size => options[:fb_size] || 'square'),
+      :alt => options[:alt] || user.try(:name),
       :size=> options[:size] || "30x30",
       :class => "#{options[:class] && options[:class].include?("skip-hovercard") ? "" : "user-image"} #{options[:class] || ''}",
       :style => options[:style] || "",

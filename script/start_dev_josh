@@ -3,7 +3,7 @@
 echo ">>>Starting Resque Server"
 /usr/bin/redis-2.2.7/src/redis-server&
 
-cd /Users/joshuaborts/SocialStreet_reborn
+cd /Users/joshuaborts/Work/personal_work/SocialStreet_reborn
 
 echo ">>>Starting Resque Worker"
 QUEUE=* bundle exec rake environment resque:work&
