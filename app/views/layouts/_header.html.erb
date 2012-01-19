@@ -8,7 +8,7 @@
     <div class="header-right <%= "not-signed" unless user_signed_in? %>">
       <% if user_signed_in? %>
       
-        <div style="margin:-10px 20px 0 0;">
+        <div id="neighborhood_connections" style="margin:-10px 20px 0 0;">
           <% users = User.where('users.sign_in_count > 0') %>
           <p style="color:white;font-size:10px;font-weight:bold;">
             Neighborhood Connections
@@ -42,18 +42,13 @@
           <%= image_tag("sign-in-logo.png", :id =>"" , :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -38px;") %>
         </div>
 
-        <div style="float:right;margin-top:-10px;">
-          <% users = User.where('users.sign_in_count > 0') %>
+        <div id="neighborhood_connections" style="float:right;margin-top:-10px;">
           <p style="color:white;font-size:10px;font-weight:bold;">
             Neighborhood Connections
-            <span style="color:#FFC233;">(<%=users.count + 2000%>)</span>
+            <span style="color:#FFC233;">(<%=User.where('users.sign_in_count > 0').count + 2000%>)</span>
           </p>
           <ul>
-            <% users.offset([0, rand(users.count).floor - 6].max).limit(6).all.each do |u| %>
-              <li style="float:left;margin: 1px 2px 0 0;">
-                <%= avatar u, :size => '29x29', :gravity => 'ne'%>
-              </li>
-            <% end %>
+            <%= render 'layouts/neighbours' %>
           </ul>
         </div>
 

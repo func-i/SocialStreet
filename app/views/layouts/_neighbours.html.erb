@@ -1,0 +1,6 @@
+<% users = User.where('users.sign_in_count > 0') %>
+<% users.offset([0, rand(users.count).floor - 6].max).limit(6).all.each do |u| %>
+  <li style="float:left;margin: 1px 2px 0 0;">
+    <%= avatar u, :size => '29x29', :gravity => 'ne'%>
+  </li>
+<% end %>

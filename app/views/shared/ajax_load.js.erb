@@ -10,3 +10,5 @@ $('#center_pane').html('<%= escape_javascript content_for :center_pane %>');
 $('#other_content').html(myContent);//Make sure this is last so the content has been loaded before any inline scripts are run
 
 document.title = 'SocialStreet' + '<%= " - #{truncate(escape_javascript(@page_title), :length => 30)}" if @page_title %>'
+
+$('#neighborhood_connections ul').html('<%= escape_javascript render 'layouts/neighbours' %>');
