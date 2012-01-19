@@ -1,13 +1,17 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.9'
+gem 'rails', '3.1.1'
 gem 'rake', '0.9.2'
 
 gem 'pg'
 gem 'silent-postgres'
 gem 'jquery-rails', '>= 0.2.6'
+gem 'prototype-rails'
+
 gem 'omniauth'
+gem 'omniauth-facebook'
 gem 'devise', '>= 1.2.0'
+
 gem 'geocoder'
 
 gem 'truncate_html'

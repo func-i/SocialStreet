@@ -5,8 +5,8 @@
       <%= link_to m_event_path(event), :style => "padding:0;" do %>
         <div class="event-type-image event-type-<%=className%>-small-sprite" style="float:left;"></div>
         <div style="float:left;">
-          <div id="explore_list_title"><%= event.title %></div>
-          <div id="explore_list_address"><%= event.location.short_address_as_sentence %></div>
+          <div id="explore_list_title" class="dotdotdot"><p><%= event.title %></p></div>
+          <div id="explore_list_address" class="dotdotdot"><%= event.location.short_address_as_sentence %></div>
         </div>
       <% end %>
       <%= hidden_field_tag "lat", event.location.latitude, :class=>'lat' %>

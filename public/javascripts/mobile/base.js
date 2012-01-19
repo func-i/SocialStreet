@@ -3,20 +3,20 @@ String.prototype.repeat = function( num ) {
 }
 
 String.prototype.ljust = function( width, padding ) {
-	padding = padding || " ";
-	padding = padding.substr( 0, 1 );
-	if( this.length < width )
-		return this + padding.repeat( width - this.length );
-	else
-		return this;
+    padding = padding || " ";
+    padding = padding.substr( 0, 1 );
+    if( this.length < width )
+        return this + padding.repeat( width - this.length );
+    else
+        return this;
 }
 String.prototype.rjust = function( width, padding ) {
-	padding = padding || " ";
-       	padding = padding.substr( 0, 1 );
-       	if( this.length < width )
-		return padding.repeat( width - this.length ) + this;
-	else
-		return this;
+    padding = padding || " ";
+    padding = padding.substr( 0, 1 );
+    if( this.length < width )
+        return padding.repeat( width - this.length ) + this;
+    else
+        return this;
 }
 
 if(!Array.indexOf) {
@@ -64,6 +64,13 @@ $(function() {
         }
 
     });
+
+    $.each($('.dotdotdot'), function(index, dot) {
+        $(dot).dotdotdot({
+            wrap: 'letter'
+        });
+    });
+
 })
 
 var my_iScrollArr = [];

@@ -34,6 +34,7 @@ javascripts:
     - public/javascripts/jquery.ui.map.js
     - public/javascripts/jquery.ui.map.extensions.js
     - public/javascripts/jquery.ui.map.services.js
+    - public/javascripts/jquery.dotdotdot-1.3.0.js
     - public/javascripts/ss_pageless.js
     - public/javascripts/mobiscroll-1.5.js
     - public/javascripts/infobubble.js
