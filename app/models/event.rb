@@ -4,6 +4,8 @@ class Event < ActiveRecord::Base
   before_save :save_default_name
 
   before_save Proc.new{|event| event.description = event.description.gsub("\r", "<br />") if event.description}
+
+  after_save :update_facebook_og
   
   has_many :event_keywords, :order => 'event_keywords.id ASC'
   has_many :event_rsvps
@@ -176,5 +178,9 @@ class Event < ActiveRecord::Base
 
   def save_default_name
     #self.name = title_from_parameters(false) unless self.name
+  end
+
+  def update_facebook_og
+    Resque.enqueue(Jobs::Facebook::UpdateOpenGraph, @event.id)
   end
 end
