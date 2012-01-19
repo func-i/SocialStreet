@@ -93,12 +93,13 @@ class Event < ActiveRecord::Base
   def location_as_sentence
     location.as_sentence
   end
-
+  
   def title
     return self.name unless self.name.blank?
 
     return title_from_parameters
   end
+
 
   def title_from_parameters(include_date = false)
     title = (self.event_keywords.first.try(:name) || "Something").clone
