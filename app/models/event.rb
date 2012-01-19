@@ -181,6 +181,6 @@ class Event < ActiveRecord::Base
   end
 
   def update_facebook_og
-    Resque.enqueue(Jobs::Facebook::UpdateOpenGraph, @event.id)
+    Resque.enqueue(Jobs::Facebook::UpdateOpenGraph, self.id)
   end
 end
