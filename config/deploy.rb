@@ -99,5 +99,5 @@ namespace :god do
 end
 
 
-        require './config/boot'
-        require 'airbrake/capistrano'
+ #       require './config/boot'
+ #       require 'airbrake/capistrano'
