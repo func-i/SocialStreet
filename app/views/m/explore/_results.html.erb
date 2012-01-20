@@ -1,9 +1,9 @@
-<ul data-role="listview" data-theme="a" data-inset="true" data-scroll="true" id="list_view_results">
-  <% (@events || []).each do |event| %>
-    <li id ="event_<%=event.id%>">
-      <% className = sprite_class_name_for_event(event)%>
+<ul data-role="listview" data-theme="a" data-inset="true" data-scroll="true" class="list_view_results">
+  <% (results || []).each do |event| %>
+    <li id ="event_<%= event.id %>">
+      <% className = sprite_class_name_for_event(event) %>
       <%= link_to m_event_path(event), :style => "padding:0;" do %>
-        <div class="event-type-image event-type-<%=className%>-small-sprite" style="float:left;"></div>
+        <div class="event-type-image event-type-<%= className %>-small-sprite" style="float:left;"></div>
         <div style="float:left; max-width: 70%;">
           <div id="explore_list_title" class="dotdotdot"><p><%= event.title %></p></div>
           <div id="explore_list_address" class="dotdotdot"><%= event.location.short_address_as_sentence %></div>
@@ -15,11 +15,3 @@
     </li>
   <% end %>
 </ul>
-
-<div style="font-size:16px;color:#FFFCD5;text-align:center;">
-  <div style="font-size:18px;color:#FFC233;">Not enough results?</div><br/>
-  <div>Try adjusting the <%= link_to "Map", '#map-view-explore', 'data-transition' => 'flip', :class=> "ui-link", :style => "color:#FFC233"%></div>
-
-  <div style="font-size:18px">OR</div>
-  <div>Plan a <%= link_to "StreetMeet", new_m_event_path, 'rel' => 'external', :class=> "ui-link", :style => "color:#FFC233"%></div>
-</div>

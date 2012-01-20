@@ -29,12 +29,12 @@ class M::ExploreController < MobileController
   def find_events(args = {})
     events = Event.valid.upcoming
 
-    # => MATCH GROUPS
-    if @group
-      params[:keywords] ||= []
-      params[:keywords] << @group.name
-    end
+    params[:keywords] ||= []
+    params[:keywords] = [params[:keywords]] unless params[:keywords].is_a?(Array)
 
+    # => MATCH GROUPS    
+    params[:keywords] << @group.name if @group
+    
     # => MATCH KEYWORDS
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
     events = with_keywords(events, keywords)

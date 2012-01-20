@@ -1,4 +1,6 @@
-$('#list_view_explore_content').html('<%= escape_javascript(render(:partial => 'results')) %>');
+$('#list_view_explore_content').html('<%= escape_javascript(render(:partial => 'results', :locals => {:results => @events})) %>');
+$('#promoted_event_holder').html('<%= escape_javascript(render 'results', :results => @promoted_events, :promoted => true) %>');
+
 refreshResults();
 
 clearExploreMarkers();
