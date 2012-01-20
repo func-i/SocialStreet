@@ -11,8 +11,8 @@ var iconClass;
 var clustered_markers = [];
 
 //    $(function(){
-$('#list_view_link').live("click", function() {
-    $('#list_view_results').listview();
+$('.list_view_link').live("click", function() {
+    $('.list_view_results').listview();
 })
 
 $('#map-view-explore').live("pageinit", function() {
@@ -87,7 +87,7 @@ $('#keyword_filter_list li').live('click', function(e){
 });
 
 function refreshResults() {
-    $('#list_view_results').listview();    
+    $('.list_view_results').listview();
 }
 
 $('#explore_filter').live("pageshow",function() {

@@ -11,8 +11,22 @@
     <%= link_to "Remove", '#', :id => 'remove_filters', :style=>"font-size:10px;color:#FFFCD5;"%>
   </div>
 
+  <div id="promoted_events" style="border-bottom: 2px solid #FFC233;">
+    <div id="smow_heading">StreetMeet of the Week</div>
+    <div id="promoted_events_holder">
+      <%= render "results", :results => @promoted_events %>
+    </div>
+  </div>
+
   <div id="list_view_explore_content">
-    <%= render "results"%>
+    <%= render "results", :results => @events %>
+  </div>
+  <div style="font-size:16px;color:#FFFCD5;text-align:center;">
+    <div style="font-size:18px;color:#FFC233;">Not enough results?</div><br/>
+    <div>Try adjusting the <%= link_to "Map", '#map-view-explore', 'data-transition' => 'flip', :class=> "ui-link", :style => "color:#FFC233"%></div>
+
+    <div style="font-size:18px">OR</div>
+    <div>Plan a <%= link_to "StreetMeet", new_m_event_path, 'rel' => 'external', :class=> "ui-link", :style => "color:#FFC233"%></div>
   </div>
 </div>
 

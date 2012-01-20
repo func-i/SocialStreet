@@ -20,7 +20,7 @@
         <% @event_types.each do |et|%>
           <li class="result">
             <%= link_to '#', :style => "padding:0;", "data-rel"=> :back do %>
-              <div class="event-type-<%=sprite_class_name_for_event_type(et)%>-small-sprite" style="float:left"></div>
+              <div class="event-type-<%= sprite_class_name_for_event_type(et) %>-small-sprite" style="float:left"></div>
               <span style="float:left;margin:18.5px 0 0 5px;"><%=et.name%></span>
             <% end %>
           </li>
@@ -31,11 +31,8 @@
 </div>
 
 <div data-role="page" id="map-view-explore">
-
   <div id="explore_map_content_holder">
-
     <%= render "map_view" %>
-
   </div>
 </div>
 
