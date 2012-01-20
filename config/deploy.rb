@@ -3,7 +3,6 @@ require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'airbrake/capistrano'
 require 'new_relic/recipes'
-require './config/boot'
 
 # => Enable multistage deployment
 set :stages, %w(dev reborn production)
@@ -98,3 +97,5 @@ namespace :god do
     sudo "#{god_command} status resque"
   end
 end
+
+require './config/boot'
