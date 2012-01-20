@@ -8,15 +8,15 @@ namespace :resque do
       ActiveRecord::Base.establish_connection
     end
 
-#    require 'resque/failure/multiple'
- #   require 'resque/failure/airbrake'
-  #  require 'resque/failure/redis'
-   # Resque::Failure::Airbrake.configure do |config|
-    #  config.api_key = 'bd14c793d842d9b471da1cfefe6759b5'
-     # config.secure = true
-    #end
-    #Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Airbrake]
-    #Resque::Failure.backend = Resque::Failure::Multiple
+    require 'resque/failure/multiple'
+    require 'resque/failure/airbrake'
+    require 'resque/failure/redis'
+    Resque::Failure::Airbrake.configure do |config|
+      config.api_key = 'bd14c793d842d9b471da1cfefe6759b5'
+      config.secure = true
+    end
+    Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Airbrake]
+    Resque::Failure.backend = Resque::Failure::Multiple
     
     #require 'resque/failure/hoptoad'
 
