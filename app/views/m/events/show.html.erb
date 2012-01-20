@@ -3,14 +3,14 @@
   <div data-role="header" data-position="inline">
 <%#= link_to "Home", '/m', {'data-role' => 'button', 'data-theme' => 'a', 'data-position' => 'inline'}%>
     <a data-theme ="a" data-rel="back" data-icon="arrow-l">Back</a>
-    <h1><%=link_to "SocialStreet", '/m'%></h1>
+    <h1><%= link_to "SocialStreet", '/m' %></h1>
     <% if @event.can_edit?(current_user) %>
       <%= link_to 'Edit', edit_m_event_path(@event), {'data-theme' => 'a', 'data-ajax' => false}%>
     <% end %>
   </div>
 
   <div data-role="content">
-    <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar") %>
+    <%= image_tag(url_for_event_image(@event), :size => "80x80", :class => "avatar", :id => "event_icon") %>
     <span id="event_title"><%= @event.title %></span>
 
     <div data-role="fieldcontain" style="font-size: 18px">
