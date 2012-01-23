@@ -67,8 +67,8 @@
       <%
       url = event_url(@event)
       short_url = url_shortner(url)
-      tweet_text = "#{truncate(@event.title, :length => (140 - 16 - 17 - 13 - 5))} - #{@event.start_date.strftime("%b %-d %l:%M%p")} @ExploreRealLife"
-      related = "ExploreRealLife:SocialStreet is the place to meet friends new and old"
+      tweet_text = "#{truncate(@event.title, :length => (140 - 16 - 17 - 13 - 5))} - #{@event.start_date.strftime("%b %-d %l:%M%p")} @SocialStreet_TO"
+      related = "@SocialStreet_TO:The place to meet friends new and old"
       hash_tags = "Event,Toronto"
     %>
 
