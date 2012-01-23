@@ -1,8 +1,8 @@
 var selectedMarkerArray = [];
 var markerInterval;
 
-var usersCurrentLocation = $('#users-current-location').val().split(",");
-var map_center = new google.maps.LatLng((parseFloat(usersCurrentLocation[0])), parseFloat(usersCurrentLocation[1]));
+var usersCurrentLocation;
+var map_center;
 var geocoder = new google.maps.Geocoder();
 var exploreMap;
 var markerManager;
@@ -10,38 +10,48 @@ var marker;
 var iconClass;
 var clustered_markers = [];
 
-//    $(function(){
-$('.list_view_link').live("click", function() {
-    $('.list_view_results').listview();
-})
+$('#explore_base').live("pageinit", function(){
+    setupListeners();
+});
 
 $('#map-view-explore').live("pageinit", function() {
 
+    usersCurrentLocation = $('#users-current-location').val().split(",");
+    map_center = new google.maps.LatLng((parseFloat(usersCurrentLocation[0])), parseFloat(usersCurrentLocation[1]));
+
+    map_zoom = 12;
+    if($('#explore_map_zoom').val().length > 0)
+        map_zoom = parseInt($('#explore_map_zoom').val(), 10);
+
+
+    map_options = {
+        center: map_center,
+        zoom: map_zoom,
+        disableDefaultUI: true
+    };
+
     if(userAgent.match("BlackBerry") != null) {
-        $('#explore_map_canvas').gmap(
+        $.extend(map_options,
         {
-            'center': map_center,
-            'zoom': 15,
-            'disableDefaultUI': true,
-            'panControl': true,
-            'zoomControl': true,
-            'zoomControlOptions': {
+            panControl: true,
+            zoomControl: true,
+            zoomControlOptions: {
                 style: google.maps.ZoomControlStyle.SMALL,
                 position: google.maps.ControlPosition.RIGHT_TOP
             }
         });
     }
-    else {
-        $('#explore_map_canvas').gmap(
-        {
-            'center': map_center,
-            'zoom': 15,
-            'disableDefaultUI': true
-        });
-    }
 
+    $('#explore_map_canvas').gmap(map_options);
       
     exploreMap = $('#explore_map_canvas').gmap('get', 'map');
+
+    var bounds = $('#explore_map_bounds').val();
+    bounds = bounds.split(',')
+    neBounds = new google.maps.LatLng(parseFloat(bounds[0]), parseFloat(bounds[1]));
+    swBounds = new google.maps.LatLng(parseFloat(bounds[2]), parseFloat(bounds[3]));
+//    if(!exploreMap.getBounds().contains(neBounds) || !exploreMap.getBounds().contains(swBounds))
+    exploreMap.fitBounds(new google.maps.LatLngBounds(swBounds, neBounds));
 
     markerManager = new MarkerManager({
         map: exploreMap
@@ -61,34 +71,6 @@ $('#map-view-explore').live("pageinit", function() {
         deselectMarker();
     });
 });
-
-
-$('#remove_filters').live('click', function(e){
-    $('#keyword').val("");
-    $('#list_view_filter_text').css('display', 'none');
-
-    $('#explore_form').submit();
-    refreshResults();
-    //$('#list_view_results').listview();
-    e.preventDefault();
-
-});
-
-$('#keyword_filter_list li').live('click', function(e){
-    selKeyword = $.trim($(this).text());
-    $('#keyword').val(selKeyword);
-    
-    $('#list_view_filter_text span').text(selKeyword);
-    $('#list_view_filter_text').css('display', '');
-    $('#explore_form').submit();
-    refreshResults();
-
-    e.preventDefault(); // Prevent link from following its href
-});
-
-function refreshResults() {
-    $('.list_view_results').listview();
-}
 
 $('#explore_filter').live("pageshow",function() {
     var keyword = "";
@@ -133,6 +115,51 @@ $('#explore_filter').live("pageshow",function() {
         }
     });
 });
+
+function setupListeners(){
+    $('.list_view_link').live("click", function() {
+        $('.list_view_results').listview();
+    });
+
+    $('#remove_filters').live('click', function(e){
+        $('#keyword').val("");
+        $('#list_view_filter_text').css('display', 'none');
+
+        $('#explore_form').submit();
+        refreshResults();
+        //$('#list_view_results').listview();
+        e.preventDefault();
+
+    });
+
+    $('#keyword_filter_list li').live('click', function(e){
+        selKeyword = $.trim($(this).text());
+        $('#keyword').val(selKeyword);
+
+        $('#list_view_filter_text span').text(selKeyword);
+        $('#list_view_filter_text').css('display', '');
+        $('#explore_form').submit();
+        refreshResults();
+
+        e.preventDefault(); // Prevent link from following its href
+    });
+
+    $('#explore_change_map_address').live("keydown", function(e) {
+        if (e.keyCode == 13) {
+            e.stopPropagation();
+            $(this).blur();
+            $('#explore_event_details').hide();
+            changeMapLocation(e);
+            return false;
+        }
+        return true;
+    });
+}
+
+
+function refreshResults() {
+    $('.list_view_results').listview();
+}
 
 function changeMapLocation(e, latLng) {
     if(latLng == null) {
@@ -297,17 +324,4 @@ function deselectMarker() {
             selectedMarkerArray[i].setShadow(new google.maps.MarkerImage('/images/pin-shadow.png', null, null, new google.maps.Point(0,26)));
         }
     }
-}
-
-
-$('#explore_change_map_address').live("keydown", function(e) {
-    if (e.keyCode == 13) {
-        e.stopPropagation();
-        $(this).blur();
-        $('#explore_event_details').hide();
-        changeMapLocation(e);
-        return false;
-    }
-    return true;
-});
-  
+}  

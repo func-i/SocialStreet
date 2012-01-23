@@ -39,11 +39,13 @@ class M::ExploreController < MobileController
     keywords = args.key?(:keywords) ? args[:keywords] : params[:keywords]
     events = with_keywords(events, keywords)
 
+    # Permissions
+    events = with_permission(events)
+
     # => MATCH MAP BOUNDS
     map_bounds = args.key?(:map_bounds) ? args[:map_bounds] : params[:map_bounds]
-    events = within_bounds(events, map_bounds)
-
-    events = with_permission(events)
+    map_zoom = args.key?(:map_zoom) ? args[:map_zoom] : params[:map_zoom]
+    events = within_bounds(events, map_bounds, map_zoom)
 
     return events;
   end
@@ -94,7 +96,7 @@ class M::ExploreController < MobileController
     return events = events.matching_keywords(all_keywords, true)
   end
 
-  def within_bounds(events, map_bounds)
+  def within_bounds(events, map_bounds, zoom_level)
     if params[:map_zoom].blank?
       if cookies[:c_zoom].blank?
         if current_user
@@ -151,10 +153,39 @@ class M::ExploreController < MobileController
     ne_lng ||= longitude + 0.054
     ne_lat ||= latitude + 0.027
 
-    params[:map_bounds] = "#{ne_lat},#{ne_lng},#{sw_lat},#{sw_lng}"
 
-    #SEARCH FOR EVENTS IN BOUNDS
-    events = events.in_bounds(ne_lat,ne_lng,sw_lat,sw_lng)
+    loop_counter = 0
+    event_count = -1
+    stored_event_query = nil
+    stored_bounds = nil
+    while loop_counter < 5
+      new_event_query = within_bounds_instance(events, ne_lat, ne_lng, sw_lat, sw_lng)
+
+      if new_event_query.count > event_count
+        event_count = new_event_query.count
+        stored_event_query = new_event_query
+        stored_bounds = "#{ne_lat},#{ne_lng},#{sw_lat},#{sw_lng}"
+      end
+
+      if !map_bounds.nil? || event_count >= 5
+        loop_counter = 5
+      else
+        loop_counter = loop_counter + 1
+
+        sw_lng = sw_lng - 0.054
+        sw_lat = sw_lat - 0.027
+        ne_lng = ne_lng + 0.054
+        ne_lat = ne_lat + 0.027
+      end
+    end
+
+    params[:map_bounds] = stored_bounds
+
+    return stored_event_query
   end
 
+  def within_bounds_instance(events, ne_lat, ne_lng, sw_lat, sw_lng)
+    #SEARCH FOR EVENTS IN BOUNDS
+    events.in_bounds(ne_lat,ne_lng,sw_lat,sw_lng)
+  end
 end
