@@ -60,11 +60,11 @@ class Location < ActiveRecord::Base
   end
 
   def short_address_as_sentence
-    [street, city].join(', ')
+    "#{street} #{"," + city if city}"
   end
 
   def as_sentence
-    "#{(text + "\n") if text}#{street}, #{city}, #{state}"
+    "#{(text + "\n") if text}#{street} #{"," + city if city}, #{"," + state if state}"
   end
 
   def geo_located?
