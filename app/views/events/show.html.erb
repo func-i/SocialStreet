@@ -66,14 +66,15 @@
     <div id="social_bar" style="width:360px; height:40px;overflow:hidden;float:left;margin: 5px 20px 0px 20px;">
       <% start_text, middle_text, end_text = ss_time_ago_in_words(@event.start_date)
          tweet_date = [start_text, middle_text, end_text].compact.join(' ')
-         tweet_text = "You should attend #{@event.title} which #{tweet_date}"
-         hash_tags = "StreetMeet,SocialStreet,ExploreRealLife"
+         tweet_text = "#{truncate(@event.title, :length => (140 - 16 - 17 - 13 - 5)} - #{@event.start_date.strftime("%b -d %l:%M%p")} @ExploreRealLife"
+         related = "ExploreRealLife:SocialStreet is the place to meet friends new and old"
+         hash_tags = "Event,Toronto"
          url = event_url(@event)
-         short_url = url #url_shortner(url)
+         short_url = url_shortner(url)
        %>
 
       <iframe src="//www.facebook.com/plugins/like.php?href=<%=short_url%>&amp;send=false&amp;layout=button_count&amp;width=50&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=268954796465479" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:21px; float:right;" allowTransparency="true"></iframe>
-      <iframe src="//platform.twitter.com/widgets/tweet_button.html?url=<%=short_url%>&hashtags=<%=hash_tags%>&text=<%=tweet_text%>&count_url=<%=url%>&count=none&lang=en" allowtransparency="true" frameborder="0" scrolling="no" style="width:60px; height:20px; float:right; margin: 0 5px;"></iframe>
+      <iframe src="//platform.twitter.com/widgets/tweet_button.html?url=<%=short_url%>&hashtags=<%=hash_tags%>&related=<%=related%>&text=<%=tweet_text%>&count_url=<%=url%>&count=none&lang=en" allowtransparency="true" frameborder="0" scrolling="no" style="width:60px; height:20px; float:right; margin: 0 5px;"></iframe>
     </div>
 
     <br/>
