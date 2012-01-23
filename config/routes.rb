@@ -105,4 +105,6 @@ SocialStreetReborn::Application.routes.draw do
       resources :comments, :only => [:create]
     end    
   end
+
+  match "*r", redirect{|p, request| request.url.gsub(/scl\.st/, "socialstreet.com")}, :constraints => [:host => 'scl.st']
 end
