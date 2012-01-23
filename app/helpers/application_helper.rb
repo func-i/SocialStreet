@@ -56,7 +56,7 @@ module ApplicationHelper
     distance_in_hours = (distance_in_minutes / 60.0)
     distance_in_days = ((time.beginning_of_day - Time.zone.now.beginning_of_day).abs / (24.0 * 60.0 * 60.0)).round
 
-    start_text = "#{ended ? 'ended' : (started ? 'started' : nil)}"#starts
+    start_text = ended ? 'ended' : (started ? 'started' : nil)
     middle_text = nil
     end_text = nil
 
