@@ -101,7 +101,11 @@ class User < ActiveRecord::Base
   def apply_omniauth(omniauth)
 
     authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
-    if omniauth['extra'] && user_info = omniauth['extra']['user_hash']
+
+    user_info = nil
+    user_info = omniauth['extra']['user_hash'] if omniauth['extra']
+    user_info ||= omniauth['info']
+    if user_info
       self.username = user_info['screen_name'] if !user_info['screen_name'].blank? && self.username.blank?
 
       if !user_info['name'].blank?
