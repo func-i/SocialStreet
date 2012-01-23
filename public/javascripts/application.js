@@ -235,7 +235,8 @@ function setPlaceholdersInInternetExplorer(){
         $.each($('.ie-placeholder'), function(index, input){
             $input = $(input);
             if($input.attr("placeholder") && $input.attr("placeholder").length > 0){
-                $input.val($input.attr('placeholder'));               
+                if($(this).val().length < 1)
+                    $input.val($input.attr('placeholder'));               
                 
                 if(getInternetExplorerVersion() == 8) {
                     $input.css("box-sizing", "border-box");
