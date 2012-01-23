@@ -14,8 +14,8 @@ SocialStreetReborn::Application.routes.draw do
 
   resources :event_types, :only => [:index]
 
-  match "e/:id" => 'events#show'
-  match "e/smow" => 'events#streetmeet_of_the_week'
+  match "e/:id" => redirect("http://www.socialstreet.com/events/%{id}")
+  match "e/smow" => redirect("http://www.socialstreet.com/events/streetmeet_of_the_week")
   resources :events do
     collection do
       match 'streetmeet_of_the_week'
