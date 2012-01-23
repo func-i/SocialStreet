@@ -66,7 +66,7 @@
     <div id="social_bar" style="width:360px; height:40px;overflow:hidden;float:left;margin: 5px 20px 0px 20px;">
       <% start_text, middle_text, end_text = ss_time_ago_in_words(@event.start_date)
          tweet_date = [start_text, middle_text, end_text].compact.join(' ')
-         tweet_text = "#{truncate(@event.title, :length => (140 - 16 - 17 - 13 - 5)} - #{@event.start_date.strftime("%b -d %l:%M%p")} @ExploreRealLife"
+         tweet_text = "#{truncate(@event.title, :length => (140 - 16 - 17 - 13 - 5))} - #{@event.start_date.strftime("%b -d %l:%M%p")} @ExploreRealLife"
          related = "ExploreRealLife:SocialStreet is the place to meet friends new and old"
          hash_tags = "Event,Toronto"
          url = event_url(@event)
