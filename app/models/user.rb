@@ -100,7 +100,8 @@ class User < ActiveRecord::Base
 
   def apply_omniauth(omniauth)
 
-    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth)
+    authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
+    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth) unless authentication
 
     user_info = nil
     user_info = omniauth['extra']['user_hash'] if omniauth['extra']
@@ -127,10 +128,7 @@ class User < ActiveRecord::Base
     
     if self.first_sign_in_date.blank?
       self.first_sign_in_date = Time.now
-    end
-
-    
-    #      end
+    end  
   end
 
   def god?
