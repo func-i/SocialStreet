@@ -44,7 +44,9 @@ module ApplicationHelper
     end_time = event.end_date
 
     start_words, middle_words, end_words = ss_time_ago_in_words(start_time, end_time)
-    return [start_words, middle_words, end_words].compact.join(' ').capitalize
+    str = [start_words, middle_words, end_words].compact.join(' ')
+    str[0] = str[0].upcase
+    return str
   end
 
   def ss_time_ago_in_words(start_time, end_time = nil)
