@@ -1,8 +1,10 @@
 module ApplicationHelper
 
   def url_shortner(url)
-    url.gsub(/www\.socialstreet\.com/, 'socialstreet.com')
-    url.gsub(/socialstreet\.com/, 'scl.st')
+    url.gsub(/www\.socialstreet\.com/, 'socialstreet.com')#Remove www
+    url.gsub(/socialstreet\.com/, 'scl.st')#shorter to scl
+    url.gsub(/http:\\\\\scl\.st/, 'scl.st')#Remove http
+    url.gsub(/scl\.st\/events\//, 'scl.st/e/')#Shorten events
   end
 
   def url_for_event_image(event)

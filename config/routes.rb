@@ -13,6 +13,9 @@ SocialStreetReborn::Application.routes.draw do
   get 'invalid_browser' => 'authentications#invalid_browser', :as => "invalid_browser"
 
   resources :event_types, :only => [:index]
+
+  match "e/:id" => 'events/show'
+  match "e/smow" => 'events/streetmeet_of_the_week'
   resources :events do
     collection do
       match 'streetmeet_of_the_week'
