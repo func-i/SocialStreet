@@ -44,7 +44,7 @@ module ApplicationHelper
     end_time = event.end_date
 
     start_words, middle_words, end_words = ss_time_ago_in_words(start_time, end_time)
-    return [start_words.capitalize, middle_words, end_words].compact.join(' ')
+    return [start_words, middle_words, end_words].compact.join(' ').capitalize
   end
 
   def ss_time_ago_in_words(start_time, end_time = nil)
@@ -56,7 +56,7 @@ module ApplicationHelper
     distance_in_hours = (distance_in_minutes / 60.0)
     distance_in_days = ((time.beginning_of_day - Time.zone.now.beginning_of_day).abs / (24.0 * 60.0 * 60.0)).round
 
-    start_text = "#{ended ? 'ended' : (started ? 'started' : 'starts')}"
+    start_text = "#{ended ? 'ended' : (started ? 'started' : nil)}"#starts
     middle_text = nil
     end_text = nil
 
@@ -71,7 +71,7 @@ module ApplicationHelper
           end_text = "a couple of minutes" if upcoming
         when 6..59
           middle_text = "in" if upcoming
-          end_text = "#{distance_in_minutes} minutes" unless upcoming
+          end_text = "#{distance_in_minutes} minutes#{' ago' unless upcoming}"
         when 60..100
           middle_text = "in" if upcoming
           end_text = "more than 1 hour#{' ago' unless upcoming}"
