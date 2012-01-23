@@ -6,18 +6,19 @@
     <%= image_tag('plan-btn.png', :class=>"nav-link remove-how-it-works", "data-ajax-href" => new_event_path) %>
 
     <div class="header-right <%= "not-signed" unless user_signed_in? %>">
+      <div id="neighborhood_connections" style="margin:-15px 40px 0 0;">
+        <p style="color:white;font-size:10px;font-weight:bold;">
+          Neighborhood Connections
+          <span style="color:#FFC233;">(<%=User.where('users.sign_in_count > 0').count + 2000%>)</span>
+        </p>
+        <ul style="margin-top:3px;">
+          <%= render 'layouts/neighbours' %>
+        </ul>
+      </div>
+
+
       <% if user_signed_in? %>
       
-        <div id="neighborhood_connections" style="margin:-15px 20px 0 0;">
-          <p style="color:white;font-size:10px;font-weight:bold;">
-            Neighborhood Connections
-            <span style="color:#FFC233;">(<%=User.where('users.sign_in_count > 0').count + 2000%>)</span>
-          </p>
-          <ul style="margin-top:3px;">
-            <%= render 'layouts/neighbours' %>
-          </ul>
-        </div>
-
         <div id="signed_in_holder">
           <div><%= avatar(current_user, :size => "30x30", :class=>'skip-hovercard') %></div>
           <div id="signed_in_button">
@@ -30,21 +31,11 @@
             </ul>
           </div>
         </div>
-      
+
       <% else %>
 
         <div id="signin_button" data-href='/auth/facebook'>
           <%= image_tag("sign-in-logo.png", :id =>"" , :class => "sign-in-ribbon", :style => "float: right; position: absolute; top: -38px;") %>
-        </div>
-
-        <div id="neighborhood_connections" style="float:right;margin-top:-15px;">
-          <p style="color:white;font-size:10px;font-weight:bold;">
-            Neighborhood Connections
-            <span style="color:#FFC233;">(<%=User.where('users.sign_in_count > 0').count + 2000%>)</span>
-          </p>
-          <ul style="margin-top:3px;">
-            <%= render 'layouts/neighbours' %>
-          </ul>
         </div>
 
       <% end %>
