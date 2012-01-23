@@ -100,8 +100,8 @@ class User < ActiveRecord::Base
 
   def apply_omniauth(omniauth)
 
-    authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
-    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth) unless authentication
+    auth = Authentication.where(:provider => omniauth['provider'], :uid => omniauth['uid'])
+    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'], :auth_response => omniauth) unless auth.count > 0
 
     user_info = nil
     user_info = omniauth['extra']['user_hash'] if omniauth['extra']
@@ -122,6 +122,8 @@ class User < ActiveRecord::Base
       self.email = user_info['email'] if !user_info['email'].blank? && self.email.blank?
       self.gender = user_info['gender'] if !user_info['gender'].blank? && self.gender.blank?
       self.location = user_info['location']['name'] if !user_info['location'].blank? && !user_info['location']['name'].blank? && self.location.blank?
+
+      self.facebook_profile_picture_url = user_info['image'] if user_info['image'] && self.facebook_profile_picture_url.blank?
     end
     
     self.facebook_profile_picture_url = omniauth['user_info']['image'] if omniauth['user_info'] && self.facebook_profile_picture_url.blank?
