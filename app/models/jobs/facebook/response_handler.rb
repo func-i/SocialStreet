@@ -11,7 +11,7 @@ class Jobs::Facebook::ResponseHandler
         for entry in params["entry"]          
           user = User.find_by_fb_uid entry["uid"]          
           if user
-            Resque.enqueue(Jobs::CreateConnectionsFromFacebook, user.id) if entry["changed_fields"].include?("friends")
+            Resque.enqueue(Jobs::Facebook::CreateConnectionsFromFacebook, user.id) if entry["changed_fields"].include?("friends")
           end
         end
       end
