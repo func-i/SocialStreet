@@ -82,8 +82,9 @@ class UserMailer < ActionMailer::Base
     @actions = actions
     @subscription = subscription
     @user = user
-    
-    mail(:to => @subscription.user.email, :subject => "SocialStreet #{@subscription.frequency == SearchSubscription.frequencies[:daily] ? 'Daily' : 'Weekly'} Summary - #{subscription.name}") unless @subscription.user.email.blank?
+
+    return nil if @subscription.user.email.blank?
+    mail(:to => @subscription.user.email, :subject => "SocialStreet #{@subscription.frequency == SearchSubscription.frequencies[:daily] ? 'Daily' : 'Weekly'} Summary - #{subscription.name}") 
   end
 
   def send_feedback_mail(email, request)
@@ -95,13 +96,15 @@ class UserMailer < ActionMailer::Base
 
   def test_notice(user)
     @user = user
-    mail(:to => user.email, :subject => "This is a test email") unless user.email.blank?
+    return nil if user.email.blank?
+    mail(:to => user.email, :subject => "This is a test email")
   end
 
   def streetmeet_of_the_week(smow, email)
+    return nil if email.blank?
     mail(:to => email, :subject => "StreetMeet of the Week - FREE #{smow.title}") do |format|
       format.html {render :file => "/smows/_smow.html.erb", :locals => {:event => smow.event, :smow => smow}, :layout => false}
-    end unless email.blank?
+    end
   end
 
   #Send when a new comment thread is created in an event
@@ -110,7 +113,8 @@ class UserMailer < ActionMailer::Base
     @organizer = organizer
     @event = event
 
-    mail(:to => @organizer.email, :subject => "#{@comment.user.name} posted on your StreetMeet - #{event.title}") unless organizer.email.blank?
+    return nil if organizer.email.blank?
+    mail(:to => @organizer.email, :subject => "#{@comment.user.name} posted on your StreetMeet - #{event.title}")
   end
 
   # => Send a message from the organizer to the attendee
@@ -118,8 +122,9 @@ class UserMailer < ActionMailer::Base
     @event = event
     @attendee = attendee
     @message = message
-    
-    mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}") unless attendee.user.email.blank?
+
+    return nil if attendee.user.email.blank?
+    mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}")
   end
 
   def streetmeet_of_the_week_summary(body)
