@@ -1,11 +1,7 @@
-class Jobs::Facebook::UpdateOpenGraph
-  include ActionController::UrlWriter
-  require 'UrlHelper'
-  
+class Jobs::Facebook::UpdateOpenGraph  
   @queue = :actions
 
   def self.perform(event_id)
-    event = Event.find event_id
-    Net::HTTP.post('http://graph.facebook.com/' + event_url(event, :host => "www.socialstreet.com"), 'scrape=true')
+    Net::HTTP.post("http://graph.facebook.com/http://www.socialstreet.com/events/#{event_id}/?scrape=true")
   end
 end
