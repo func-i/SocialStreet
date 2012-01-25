@@ -74,19 +74,19 @@ class Jobs::Facebook::CreateConnectionsFromFacebook
     
     # => Remove the job from the queue it is in there so we don't get duplicate connection creation jobs conflicting
     begin
-      Resque.dequeue(Jobs::CreateConnectionsFromFacebook, user_id)
+      Resque.dequeue(Jobs::Facebook::CreateConnectionsFromFacebook, user_id)
     rescue Exception => e
       # => The queue probably could not be found
     end
     
-    unless Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
-      while !Jobs::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+    unless Jobs::Facebook::CreateConnectionsFromFacebook.find_worker(user_id).nil?
+      while !Jobs::Facebook::CreateConnectionsFromFacebook.find_worker(user_id).nil?
         # => Do nothing, just keep checking for the completion of the worker
       end
     else
       # => Check one more time to see if it completed after the dequeue
       unless User.find(user_id).facebook_friends_imports?
-        Jobs::CreateConnectionsFromFacebook.perform(user_id)
+        Jobs::Facebook::CreateConnectionsFromFacebook.perform(user_id)
       end
     end
   end
