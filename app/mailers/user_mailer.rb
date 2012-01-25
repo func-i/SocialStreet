@@ -16,21 +16,21 @@ class UserMailer < ActionMailer::Base
   #Sent when the user first logs in
   def user_welcome_notice(user)
     @user = user
-    mail(:to => @user.email, :subject => "Welcome to SocialStreet")
+    mail(:to => @user.email, :subject => "Welcome to SocialStreet") unless @user.email.blank?
   end
 
   #Sent when an event is canceled
   def event_cancel_notice(user, event)
     @user = user
     @event = event
-    mail(:to => @user.email, :subject => "StreetMeet - #{event.title}' has been cancelled")
+    mail(:to => @user.email, :subject => "StreetMeet - #{event.title}' has been cancelled") unless @user.email.blank?
   end
 
   #Sent when an event details are changed...TODO - should only be important details
   def event_edit_notice(user, event)
     @user = user
     @event = event
-    mail(:to => @user.email, :subject => "StreetMeet - #{event.title}' has been edited")
+    mail(:to => @user.email, :subject => "StreetMeet - #{event.title}' has been edited") unless @user.email.blank?
   end
 
   #Send when a user is invited to an event
@@ -38,7 +38,8 @@ class UserMailer < ActionMailer::Base
     @user = invitation.user
     @invitation = invitation
     @event = invitation.event
-    mail(:to => (invitation.email || @user.try(:email)), :subject => "#{invitation.invitor.name} invited you to '#{invitation.event.title}' on SocialStreet")
+    email = invitation.email || @user.try(:email)
+    mail(:to => email, :subject => "#{invitation.invitor.name} invited you to '#{invitation.event.title}' on SocialStreet") unless email.blank?
   end
 
   #Send when a new comment thread is created in an event
@@ -47,7 +48,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     @event = event
     
-    mail(:to => @user.email, :subject => "#{@action.user.name} posted on your StreetMeet - #{event.title}")
+    mail(:to => @user.email, :subject => "#{@action.user.name} posted on your StreetMeet - #{event.title}") unless @user.email.blank?
   end
 
   #Send when a new action is posted to a thread the user already participated in
@@ -56,7 +57,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     @new_action = new_action
 
-    mail(:to => @user.email, :subject => "#{new_action.user.name} replied to your SocialStreet Message")
+    mail(:to => @user.email, :subject => "#{new_action.user.name} replied to your SocialStreet Message") unless @user.email.blank?
   end
 
   #Send when a new action matches a users instant subscription
@@ -73,7 +74,7 @@ class UserMailer < ActionMailer::Base
       subject = "SocialStreet Message - #{subscription.name}"
     end
 
-    mail(:to => @user.email, :subject => subject)
+    mail(:to => @user.email, :subject => subject) unless @user.email.blank?
   end
 
   #Send when a new action matches a users summary suscription and the cron task is run (daily/weekly)
@@ -82,7 +83,7 @@ class UserMailer < ActionMailer::Base
     @subscription = subscription
     @user = user
     
-    mail(:to => @subscription.user.email, :subject => "SocialStreet #{@subscription.frequency == SearchSubscription.frequencies[:daily] ? 'Daily' : 'Weekly'} Summary - #{subscription.name}")
+    mail(:to => @subscription.user.email, :subject => "SocialStreet #{@subscription.frequency == SearchSubscription.frequencies[:daily] ? 'Daily' : 'Weekly'} Summary - #{subscription.name}") unless @subscription.user.email.blank?
   end
 
   def send_feedback_mail(email, request)
@@ -94,13 +95,13 @@ class UserMailer < ActionMailer::Base
 
   def test_notice(user)
     @user = user
-    mail(:to => user.email, :subject => "This is a test email")
+    mail(:to => user.email, :subject => "This is a test email") unless user.email.blank?
   end
 
   def streetmeet_of_the_week(smow, email)
     mail(:to => email, :subject => "StreetMeet of the Week - FREE #{smow.title}") do |format|
       format.html {render :file => "/smows/_smow.html.erb", :locals => {:event => smow.event, :smow => smow}, :layout => false}
-    end
+    end unless email.blank?
   end
 
   #Send when a new comment thread is created in an event
@@ -109,7 +110,7 @@ class UserMailer < ActionMailer::Base
     @organizer = organizer
     @event = event
 
-    mail(:to => @organizer.email, :subject => "#{@comment.user.name} posted on your StreetMeet - #{event.title}")
+    mail(:to => @organizer.email, :subject => "#{@comment.user.name} posted on your StreetMeet - #{event.title}") unless organizer.email.blank?
   end
 
   # => Send a message from the organizer to the attendee
@@ -118,11 +119,11 @@ class UserMailer < ActionMailer::Base
     @attendee = attendee
     @message = message
     
-    mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}") unless attendee.user.email.nil?
+    mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}") unless attendee.user.email.blank?
   end
 
   def streetmeet_of_the_week_summary(body)
-    mail(:to => ["jon.salis@railias.ca", "jborts@gmail.com", "paul@socialstreet.com", "unclemike@socialstreet.com"], :subject => "Streetmeet #{Date.today.to_s} Stats") do |format|
+    mail(:to => ["jon.salis@railias.ca", "jborts@gmail.com", "paul@socialstreet.com"], :subject => "Streetmeet #{Date.today.to_s} Stats") do |format|
       format.html {render :text => body}
     end
   end
