@@ -3,7 +3,7 @@ class Jobs::Facebook::ResponseHandler
 
   @queue = :connections
 
-  def self.perform(user_id)
+  def self.perform(params)
     case params["object"]
     when "user"
       # => Right now everything will be a user, but set it up so it can be something else.
