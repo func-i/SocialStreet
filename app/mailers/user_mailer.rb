@@ -118,7 +118,7 @@ class UserMailer < ActionMailer::Base
     @attendee = attendee
     @message = message
     
-    mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}")
+    mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}") if attendee.user.try(:email)
   end
 
   def streetmeet_of_the_week_summary(body)
