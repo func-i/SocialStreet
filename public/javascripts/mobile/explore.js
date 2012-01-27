@@ -50,7 +50,7 @@ $('#map-view-explore').live("pageinit", function() {
     bounds = bounds.split(',')
     neBounds = new google.maps.LatLng(parseFloat(bounds[0]), parseFloat(bounds[1]));
     swBounds = new google.maps.LatLng(parseFloat(bounds[2]), parseFloat(bounds[3]));
-//    if(!exploreMap.getBounds().contains(neBounds) || !exploreMap.getBounds().contains(swBounds))
+    //    if(!exploreMap.getBounds().contains(neBounds) || !exploreMap.getBounds().contains(swBounds))
     exploreMap.fitBounds(new google.maps.LatLngBounds(swBounds, neBounds));
 
     markerManager = new MarkerManager({
@@ -308,6 +308,10 @@ function clearExploreMarkers(){
 
     if(markerInterval != null)
         clearTimeout(markerInterval);
+
+    $('#display_results li').each(function() {        
+        $(this).remove();
+    })
 
 }
 
