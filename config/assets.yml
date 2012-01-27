@@ -42,7 +42,7 @@ javascripts:
     - public/javascripts/bookmark_bubble.js
     - public/javascripts/iscroll-lite.js
     - public/javascripts/ss_MarkerManager.js
-    - public/javascripts/jquery.dotdotdot-1.3.0.js
+    - public/javascripts/jquery.dotdotdot-1.3.0.js    
 
 stylesheets:
   common:

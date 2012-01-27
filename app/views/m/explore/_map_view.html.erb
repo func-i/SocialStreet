@@ -8,9 +8,9 @@
   <input type="text" name="name" id="explore_change_map_address" value="" placeholder="Enter an Address or Drag Map" />
 </div>
 
-<div id="explore_event_details_wrapper" style="max-height:130px;width:100%;position:absolute;z-index:1000;overflow:hidden">
+<div id="explore_event_details_wrapper" style="max-height: 130px; width: 100%; position: absolute; z-index: 1000; overflow: auto;">
   <div id="explore_event_details">
-    <ul data-role="listview" data-theme="a" data-inset="true" data-scroll="true" id="display_results">
+    <ul id="display_results" data-scroll="true"  data-role="listview" data-theme="a" data-inset="true">
 
     </ul>
   </div>
@@ -21,6 +21,6 @@
 
 <script type="text/javascript">
   $(function(){
-    //attach_iScroll('explore_event_details_wrapper');
+    attach_iScroll('#explore_event_details_wrapper');
   });
 </script>
