@@ -15,7 +15,7 @@ SocialStreetReborn::Application.routes.draw do
   resources :event_types, :only => [:index]
 
   match "e/:id" => "events#show"
-  match "e/smow" => "events#smow"
+  match "e/smow" => "events#streetmeet_of_the_week"
   resources :events do
     collection do
       match 'streetmeet_of_the_week'
