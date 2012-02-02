@@ -9,8 +9,12 @@ class Jobs::Email::EmailEventAdminForAction
     admin_rsvp = event.organizers_rsvps_list
 
     admin_rsvp.each do |rsvp|
-      email = UserMailer.event_admin_message_notice(comment, rsvp.user, event) if rsvp.user != comment.user
-      email.deliver if email
+      begin
+        email = UserMailer.event_admin_message_notice(comment, rsvp.user, event) if rsvp.user != comment.user
+        email.deliver if email
+      rescue Exception => e
+        next
+      end
     end
   end
 end

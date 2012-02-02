@@ -6,8 +6,12 @@ class Jobs::Email::EmailUserCancelEvent
     event = Event.find_by_id event_id
     
     event.event_rsvps.attending_or_maybe_attending.each do |rsvp|
-      email = UserMailer.event_cancel_notice(rsvp.user, event)
-      email.deliver
+      begin
+        email = UserMailer.event_cancel_notice(rsvp.user, event)
+        email.deliver
+      rescue Exception => e
+        next
+      end
     end
   end
 end

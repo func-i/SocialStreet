@@ -15,8 +15,13 @@ class Jobs::Email::EmailUserEventInvitation
 
     # make sure the user has not already RSVP'd to the event they are being invited to
     if email_address && invitation.status == EventRsvp.statuses[:invited]
-      email = UserMailer.event_invitation_notice(invitation)
-      email.deliver
+      begin
+        email = UserMailer.event_invitation_notice(invitation)
+        email.deliver
+      rescue Exception => e
+        next
+      end
+
     end
   end
 end

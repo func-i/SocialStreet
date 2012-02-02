@@ -7,11 +7,15 @@ class Jobs::Email::EmailEventUsersAdminMessage
     event = Event.find event_id
     if event
       event.event_rsvps.attending_or_maybe_attending.each do |attendee|
-        unless attendee.user.email.blank?
-          mail = UserMailer.event_admin_message_to_attendee(event, attendee, message)
-          mail.deliver if mail
+        begin
+          unless attendee.user.email.blank?
+            mail = UserMailer.event_admin_message_to_attendee(event, attendee, message)
+            mail.deliver if mail
+          end
+        rescue Exception => e
+          next
         end
       end
-    end    
+    end
   end
 end
