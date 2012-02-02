@@ -28,7 +28,7 @@ gem 'resque-scheduler', :require => ['resque_scheduler']
 gem 'json'
 
 gem 'jammit'
-#gem 'airbrake'
+gem 'airbrake'
 gem 'rpm_contrib'
 gem 'newrelic_rpm'
 
