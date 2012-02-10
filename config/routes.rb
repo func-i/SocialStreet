@@ -24,6 +24,7 @@ SocialStreetReborn::Application.routes.draw do
     member do
       match 'create_message'
       match 'send_message'
+      match 'add_prompt'
     end
 
     resources :event_rsvps, :only => [:new, :edit]

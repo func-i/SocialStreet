@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   before_filter :store_current_path, :only => [:show]
   before_filter :store_create_request, :only => [:create]
   before_filter :ss_authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
-  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message]
+  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message, :add_prompt]
  
   def show
     raise ActiveRecord::RecordNotFound if !@event.can_view?(current_user)
@@ -107,6 +107,12 @@ class EventsController < ApplicationController
     end
 
     redirect_to @event
+  end
+
+  def add_prompt
+    if @event && !params[:message].blank?
+      @event.update_attribute("prompt_question", params[:message])
+    end
   end
 
   protected

@@ -23,7 +23,10 @@
         <%= link_to "Edit StreetMeet", edit_event_path(@event), :id=>"edit_event_link" %>
         <%= link_to "Cancel StreetMeet", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link" %>
         <%= link_to "Send Message", '#', :class => 'admin-link', :id => "event_organizer_message" %>
-        <%= link_to "SMOW", new_event_smow_path(@event), :class => "admin-link" if @current_user.god? %>
+        <% if @current_user.god? %>
+          <%= link_to "SMOW", new_event_smow_path(@event), :class => "admin-link" %>
+          <%= link_to "Prompt", '#', :id => 'event_organizer_prompt', :class => "admin-link" %>
+        <% end %>
       </div>
     <% end %>
 
@@ -137,6 +140,7 @@
   </div>
   <%= render :partial => 'groups/group_permissions' %>
   <%= render :partial => 'create_message' %>
+  <%= render :partial => 'create_prompt' %>
 <% end %>
 
 <% unless params[:invite].blank? %>

@@ -48,7 +48,7 @@ class ProfilesController < ApplicationController
         user_group.save
       end
 
-      render :nothing => true
+      #render :nothing => true
     else
       puts "NOT BLANK"
       #Validate group code

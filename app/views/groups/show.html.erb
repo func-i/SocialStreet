@@ -1,7 +1,7 @@
 <% content_for :right_side_pane do %>
   <% unless @group.is_member?(current_user) %>
     <div style="margin:17px auto 0 auto; text-align:center;">
-      <%= image_tag('join_group_btn.png', :id => "join_group_btn", "data-permission-required" => !@group.join_code_description.blank?) %>
+      <%= image_tag('join_group_btn.png', :id => "join_group_btn", "data-permission-required" => !@group.join_code_description.blank?, "data-group-id" => @group.id) %>
       <%= hidden_field_tag 'group_btn_id', @group.id%>
       <%= hidden_field_tag 'group_btn_name', @group.name%>
       <%= hidden_field_tag 'group_btn_join_code_description', @group.join_code_description%>

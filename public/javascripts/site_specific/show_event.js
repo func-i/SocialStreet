@@ -50,6 +50,10 @@ $(function(){
         $('#send_message_form').submit();
     });
 
+    $('#send_prompt_button').live('click', function() {
+        $('#send_prompt_form').submit();
+    });
+
     $('#event_organizer_message').live('click', function() {
         showEventOrganizerMessage();
         return false;
@@ -57,6 +61,15 @@ $(function(){
 
     $('#close_event_organizer_message_btn').live('click', function() {
         hideEventOrganizerMessage();
+    });
+
+    $('#event_organizer_prompt').live('click', function() {
+        showEventOrganizerPrompt();
+        return false;
+    });
+
+    $('#close_event_organizer_prompt_btn').live('click', function() {
+        hideEventOrganizerPrompt();
     });
 
     $('.event-wall-comment').live('mouseenter', function(){
@@ -482,4 +495,15 @@ function hideEventOrganizerMessage(){
     resizePageElements();
 
     $(document).unbind('.messages');
+}
+
+function showEventOrganizerPrompt(){
+    $('#event_organizer_prompt_holder').removeClass('hidden');
+    openCenterPane();
+    resizePageElements();   
+}
+function hideEventOrganizerPrompt(){
+    $('#event_organizer_prompt_holder').addClass('hidden');
+    closeCenterPane();
+    resizePageElements();
 }

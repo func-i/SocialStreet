@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111118155554) do
+ActiveRecord::Schema.define(:version => 20120209201940) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -22,6 +23,18 @@ ActiveRecord::Schema.define(:version => 20111118155554) do
   end
 
   add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
+
+  create_table "chat_rooms", :force => true do |t|
+    t.string   "name"
+    t.integer  "location_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "chat_rooms_users", :id => false, :force => true do |t|
+    t.integer "chat_room_id"
+    t.integer "user_id"
+  end
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
@@ -77,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20111118155554) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
+    t.string   "prompt_answer"
   end
 
   add_index "event_rsvps", ["event_id"], :name => "index_event_rsvps_on_event_id"
@@ -102,11 +116,12 @@ ActiveRecord::Schema.define(:version => 20111118155554) do
     t.datetime "end_date"
     t.integer  "location_id"
     t.integer  "user_id"
-    t.boolean  "canceled",    :default => false
-    t.boolean  "promoted",    :default => false
+    t.boolean  "canceled",        :default => false
+    t.boolean  "promoted",        :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "private",     :default => false
+    t.boolean  "private",         :default => false
+    t.string   "prompt_question"
   end
 
   add_index "events", ["location_id"], :name => "index_events_on_location_id"
@@ -141,6 +156,16 @@ ActiveRecord::Schema.define(:version => 20111118155554) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "messages", :force => true do |t|
+    t.text     "content"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "chat_room_id"
+  end
+
+  add_index "messages", ["chat_room_id"], :name => "index_messages_on_chat_room_id"
 
   create_table "smows", :force => true do |t|
     t.integer  "event_id"

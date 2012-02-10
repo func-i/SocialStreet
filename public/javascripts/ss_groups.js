@@ -92,7 +92,7 @@ $(function(){
             showGroupPermissionHolder();
         }
         else{
-            addGroup($(this).data('group-id'), null);
+            addGroup($this.data('group-id'), null);
         }
     });
 });
