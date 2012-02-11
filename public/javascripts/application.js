@@ -203,7 +203,11 @@ $(function() {
             href = href + '&prompt_answer=' + promptAnswer;
 
         hidePrompt();
-        $.getScript(href);
+        cleanup();
+        $.getScript(href, function() {
+            resizePageElements();
+            setPlaceholdersInInternetExplorer();
+        });
         
     });
 
@@ -218,18 +222,32 @@ function navLink(link, e){
         href = link.href;
     }
 
-    if(href != undefined) {
-        cleanup();
-        
+    if(href != undefined) {        
         if(history && history.pushState) {
 
-            $.getScript(href, function() {
-                resizePageElements();
-                setPlaceholdersInInternetExplorer();
-            });
+            if($(link).attr("confirm") != undefined) {
+                if(confirm($(link).attr("confirm")))
+                    cleanup();
+                $.getScript(href, function() {
+                    resizePageElements();
+                    setPlaceholdersInInternetExplorer();
+                });
+            }
+            else if($(link).data("prompt") != undefined) {
+                customPrompt($(link).data("prompt"), href);
+            }
+            else {
+                cleanup();
+                $.getScript(href, function() {
+                    resizePageElements();
+                    setPlaceholdersInInternetExplorer();
+                });
+            }
+
+            
             history.pushState({}, "", href);
         }
-        else{
+        else {
             window.location = href;
         }
     }
@@ -242,7 +260,7 @@ function ajaxLink(link){
     else if(link.href != undefined) {
         href = link.href;
     }
-
+    
     if(href != undefined)
         if($(link).attr("confirm") != undefined) {
             if(confirm($(link).attr("confirm")))
@@ -264,12 +282,10 @@ function customPrompt(promptText, href) {
 
 function showPrompt(){
     $('#prompt_holder').removeClass('hidden');
-    openCenterPane();
     resizePageElements();
 }
 function hidePrompt(){
     $('#prompt_holder').addClass('hidden');
-    closeCenterPane();
     resizePageElements();
 }
 
