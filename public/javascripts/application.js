@@ -195,6 +195,10 @@ $(function() {
         }, 200);
     });
 
+    $('#create_prompt_button').live('click', function() {
+        $('#send_prompt_form').submit();
+    });
+
     $('#send_prompt_button').live('click', function() {
         var href = $('#prompt_follow_href').val();
 
@@ -204,10 +208,13 @@ $(function() {
 
         hidePrompt();
         cleanup();
-        $.getScript(href, function() {
-            resizePageElements();
-            setPlaceholdersInInternetExplorer();
-        });
+        if(history && history.pushState) 
+            $.getScript(href, function() {
+                resizePageElements();
+                setPlaceholdersInInternetExplorer();
+            });        
+        else
+            window.location = href;
         
     });
 
@@ -222,7 +229,7 @@ function navLink(link, e){
         href = link.href;
     }
 
-    if(href != undefined) {        
+    if(href != undefined) {
         if(history && history.pushState) {
 
             if($(link).attr("confirm") != undefined) {
@@ -243,12 +250,14 @@ function navLink(link, e){
                     setPlaceholdersInInternetExplorer();
                 });
             }
-
             
             history.pushState({}, "", href);
         }
         else {
-            window.location = href;
+            if($(link).data("prompt") != undefined) 
+                customPrompt($(link).data("prompt"), href);
+            else
+                window.location = href;
         }
     }
 }
@@ -266,11 +275,11 @@ function ajaxLink(link){
             if(confirm($(link).attr("confirm")))
                 $.getScript(href);
         }
-        else if($(link).data("prompt") != undefined) {
-            customPrompt($(link).data("prompt"), href);
-        }
-        else
-            $.getScript(href);
+    else if($(link).data("prompt") != undefined) {
+        customPrompt($(link).data("prompt"), href);
+    }
+    else
+        $.getScript(href);
 }
 
 function customPrompt(promptText, href) {
@@ -548,7 +557,7 @@ function initScrollPane(scroll_pane) {
     var that = $myElem;
     $(window).bind('resize', function() {
         //resizeScrollPane(that);
-        });
+    });
 }
 
 function initializeScrollPanes() {

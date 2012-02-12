@@ -7,7 +7,7 @@
   <div class="popup-fields-holder">
     <%= form_tag add_prompt_event_path(@event), :remote => true, :id => "send_prompt_form" do %>
       <%= text_area_tag :message, @event.prompt_question, :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
-      <%= image_tag('continue-button.png', :id=>'send_prompt_button', :class=>"next-arrow drop-shadow") %>
+      <%= image_tag('continue-button.png', :id=>'create_prompt_button', :class=>"next-arrow drop-shadow") %>
     <% end %>
   </div>
   <div style="clear: both"></div>  
