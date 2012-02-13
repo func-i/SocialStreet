@@ -258,3 +258,5 @@
 { display: inline-block; background: url('../images/event_types/saa_small.png') no-repeat; width: 55px; height: 55px; }
 .event-type-saa-medium-sprite
 { display: inline-block; background: url('../images/event_types/saa_medium.png') no-repeat; width: 70px; height: 70px;}
+.event-type-skating-small-sprite { display: inline-block; background: url('../images/event_types/small_sprite.png') no-repeat;  background-position: -110px -550px; width: 55px; height: 55px; }
+.event-type-skating-medium-sprite { display: inline-block; background: url('../images/event_types/medium_sprite.png') no-repeat; background-position: -140px -700px; width: 70px; height: 70px; }
