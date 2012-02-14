@@ -5,7 +5,7 @@ class AddSkatingEventTypeAndIcon < ActiveRecord::Migration
 
     # => Col and Row starts at 0
     images = [
-      {:et_name => "Skating", :image_path => "images/event_types/skating.png", :col => 2, :row => 10}
+      {:et_name => "Skating", :image_path => "/images/event_types/skating.png", :col => 2, :row => 10}
     ]
 
     File.open(File.join(Rails.root, "public", "stylesheets", "event_type_sprite.css"), "a") do |file|
@@ -23,7 +23,7 @@ class AddSkatingEventTypeAndIcon < ActiveRecord::Migration
   def self.down
 
     images = [
-      {:et_name => "Skating", :image_path => "images/event_types/skating.png"}
+      {:et_name => "Skating", :image_path => "/images/event_types/skating.png"}
     ]
 
     images.each do |img|
