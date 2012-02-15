@@ -290,10 +290,12 @@ function customPrompt(promptText, href) {
 }
 
 function showPrompt(){
+    $('#prompt_container').removeClass('invisible');
     $('#prompt_holder').removeClass('hidden');
     resizePageElements();
 }
 function hidePrompt(){
+    $('#prompt_container').addClass('invisible');
     $('#prompt_holder').addClass('hidden');
     resizePageElements();
 }
