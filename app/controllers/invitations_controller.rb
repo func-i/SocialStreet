@@ -55,13 +55,14 @@ class InvitationsController < ApplicationController
   def create_invitation(event, from_user, to_user, email = nil)
     return if to_user && event.event_rsvps.where(:user_id => to_user).count > 0
 
-    invitation = event.event_rsvps.create :user => to_user, :invitor => from_user, :status => EventRsvp.statuses[:invited], :email => email
-    invitation.save
+    invitation = event.event_rsvps.build :user => to_user, :invitor => from_user, :status => EventRsvp.statuses[:invited], :email => email
 
-    if (to_user.nil? || !to_user.sign_in_count.zero?) && (email || to_user.email)
-      Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
-    elsif to_user
-      Resque.enqueue(Jobs::Facebook::PostEventInvitation, from_user.id, to_user.id, @event.id) if to_user
+    if invitation.save
+      if (to_user.nil? || !to_user.sign_in_count.zero?) && (email || to_user.email)
+        Resque.enqueue(Jobs::Email::EmailUserEventInvitation, invitation.id)
+      elsif to_user
+        Resque.enqueue(Jobs::Facebook::PostEventInvitation, from_user.id, to_user.id, @event.id) if to_user
+      end
     end
   end
 end

@@ -11,7 +11,7 @@ class EventRsvp < ActiveRecord::Base
   belongs_to :event
   belongs_to :invitor, :class_name => "User"
 
-  validates :event_id, :uniqueness => {:scope => [:user_id] }
+  validates :event_id, :uniqueness => {:scope => [:user_id, :email] }
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }
   scope :by_user, lambda {|user| where(:user_id => user.id) }
