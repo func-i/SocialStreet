@@ -74,9 +74,11 @@
             <%= yield :left_side_pane%>
           </div>
           <div id="center_pane" class="invisible content-group">
-            <%= yield :center_pane%>            
+            <%= yield :center_pane%>
           </div>
-          <%= render "shared/prompt" %>
+          <div id="prompt_container" class="content-group">
+            <%= render "shared/prompt" %>
+          </div>
           <div id="other_content" class="content-group">
             <%= yield %>
           </div>

@@ -461,12 +461,12 @@ function resizeLayout(){
     var docWidth = $(window).width();
     var rightPaneWidth = !$('#right_side_pane').is(":visible") ? 0 : $('#right_side_pane').width();
     var leftPaneWidth = !$('#left_side_pane').is(":visible") ? 0 : $('#left_side_pane').width();
-    $('#center_pane').css('left', leftPaneWidth + 40);//40 is for 2x20px gutters
-    $('#center_pane').width(docWidth - leftPaneWidth - 40 - rightPaneWidth - 40);//20 is for 20px gutters
+    $('#center_pane, #prompt_container').css('left', leftPaneWidth + 40);//40 is for 2x20px gutters
+    $('#center_pane, #prompt_container').width(docWidth - leftPaneWidth - 40 - rightPaneWidth - 40);//20 is for 20px gutters
 
     var docHeight = $(window).height();
     var centerPaneTopOffset = $('#center_pane').offset().top;
-    $('#center_pane').height(docHeight - centerPaneTopOffset - 40);//40 is for 40px gutters
+    $('#center_pane, #prompt_container').height(docHeight - centerPaneTopOffset - 40);//40 is for 40px gutters
 }
 
 function resizeExpandHeightContainer() {

@@ -97,6 +97,7 @@ END OF RESET
     overflow: hidden;
     z-index: 10;
 }
+#prompt_container,
 #center_pane{
     top: 20px;
     height: 100%;
