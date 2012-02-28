@@ -914,7 +914,8 @@ END OF RESET
 #show_maybe_attendees_holder,
 #show_attendees_holder{
     width: 200px;
-    max-height: 165px;
+    /*max-height: 165px;*/
+    max-height: 488px;
     overflow-y: auto;
 }
 .show-attendee{

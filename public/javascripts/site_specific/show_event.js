@@ -194,7 +194,7 @@ function removeComment(comment){
 
 function resizeAttendees() {
 
-    if($('#show_attendees_holder').height() > 150){
+    if($('#show_attendees_holder').height() > 450){
         initScrollPane($('#show_attendees_holder'));
     }
 
