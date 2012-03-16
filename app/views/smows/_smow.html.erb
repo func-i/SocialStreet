@@ -52,9 +52,11 @@
                   </td>
                   <td>
                     <br />
-                    <span style="font-size: 24px; font-weight: 900; color: #FFC233; text-shadow: 2px 2px #333; position: relative; top: -5px;">
-                      FREE
-                    </span>
+                    <% if smow.free? %>
+                      <span style="font-size: 24px; font-weight: 900; color: #FFC233; text-shadow: 2px 2px #333; position: relative; top: -5px;">
+                        FREE
+                      </span>
+                    <% end %>
                     <span style="font-size: 24px; font-weight: 900; text-shadow: 2px 2px #333; position: relative; top: -5px; color: rgb(255, 252, 213);">
                       <%= smow.title %>
                     </span>
@@ -71,7 +73,7 @@
                       <%= smow.what_text %>
                     </p>
                     <p style="color: rgb(255, 252, 213);">
-                      If you can't make it be sure to stay posted for next week's StreetMeet of the Week where it's always guaranteed to be a great time... on us.
+                      If you can't make it be sure to stay posted for next week's StreetMeet of the Week where it's always guaranteed to be a great time.<%= ".. on us." if smow.free? %>
                     </p>
                   </td>
                 </tr>

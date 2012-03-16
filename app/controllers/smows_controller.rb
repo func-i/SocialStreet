@@ -67,6 +67,7 @@ class SmowsController < ApplicationController
     if @smow.update_attributes(params[:smow])
 
       directory = File.join("public", "images", "smow", @smow.id.to_s)
+      FileUtils.mkdir_p(directory)
 
       t_name = params[:top_image_url].original_filename
 

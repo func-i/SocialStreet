@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120213211656) do
+ActiveRecord::Schema.define(:version => 20120316152706) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20120213211656) do
     t.string   "title"
     t.string   "icon_path"
     t.string   "bottom_text"
+    t.boolean  "free",             :default => true
   end
 
   create_table "user_groups", :force => true do |t|
