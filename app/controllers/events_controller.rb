@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   before_filter :store_current_path, :only => [:show]
   before_filter :store_create_request, :only => [:create]
   before_filter :ss_authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
-  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message, :add_prompt]
+  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message, :add_prompt, :report]
  
   def show
     raise ActiveRecord::RecordNotFound if !@event.can_view?(current_user)
@@ -110,9 +110,37 @@ class EventsController < ApplicationController
   end
 
   def add_prompt
+    raise ActiveRecord::RecordNotFound unless current.god?
     if @event && !params[:message].blank?
       @event.update_attribute("prompt_question", params[:message])
     end
+  end
+
+  def report
+    raise ActiveRecord::RecordNotFound unless current_user.god?
+    require 'csv'
+    csv_string = CSV.generate do |csv|
+      # header row
+      csv << ["First Name", "Last Name", "Prompt Answers", "Gender", "City", "Facebook Email"]
+
+      # data rows
+      @event.event_rsvps.attending.each do |a|
+        auth_data = a.user.authentications.first.auth_response["extra"]["raw_info"]
+        csv << [
+          a.user.first_name,
+          a.user.last_name,
+          a.prompt_answer,
+          auth_data["gender"],
+          (auth_data["location"]["name"] rescue nil),
+          auth_data["email"]
+        ] 
+      end
+    end
+
+    # send it to the browsah
+    send_data csv_string,
+      :type => 'text/csv; charset=iso-8859-1; header=present',
+      :disposition => "attachment; filename=Event_#{@event.id}_report.csv"
   end
 
   protected
