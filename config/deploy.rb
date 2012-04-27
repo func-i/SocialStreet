@@ -10,7 +10,7 @@ set :default_stage, "production"
 require 'capistrano/ext/multistage'
 
 set :application, "SocialStreet"
-set :repository,  "git@github.com:JBorts/SocialStreet.git"
+set :repository,  "git@github.com:func-i/SocialStreet.git"
 
 set :scm, :git
 
