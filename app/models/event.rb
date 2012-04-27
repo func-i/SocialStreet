@@ -132,7 +132,7 @@ class Event < ActiveRecord::Base
   end
 
   def can_edit?(user)
-    user && !canceled && event_rsvps.by_user(user).first.try(:organizer)
+    user && (user.god? || !canceled && event_rsvps.by_user(user).first.try(:organizer))
   end
 
   def can_view?(user)
