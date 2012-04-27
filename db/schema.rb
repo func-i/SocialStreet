@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120316152706) do
+ActiveRecord::Schema.define(:version => 20120427174423) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -79,6 +79,15 @@ ActiveRecord::Schema.define(:version => 20120316152706) do
 
   add_index "event_keywords", ["event_id"], :name => "index_event_keywords_on_event_id"
   add_index "event_keywords", ["event_type_id"], :name => "index_event_keywords_on_event_type_id"
+
+  create_table "event_prompts", :force => true do |t|
+    t.integer  "event_id"
+    t.text     "prompt_question"
+    t.integer  "sequence"
+    t.string   "answer_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "event_rsvps", :force => true do |t|
     t.integer  "user_id"

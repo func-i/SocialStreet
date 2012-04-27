@@ -1,0 +1,38 @@
+<% content_for :center_pane do %>  
+  <div id="scroller" class="scroll-pane container" style="overflow: auto; padding:10px; color:white;">
+    <h2>Event Prompts for event <%= @event.title %></h2>
+    <%= form_for @event, :url => event_event_prompts_path(@event), :method => :post do |form| %>
+      <table style="width: 90%">
+        <% @event.event_prompts.each do |ep| %>
+          <%= form.fields_for :event_prompts, ep do |prompt_fields| %>
+            <tr>
+              <td style="width: 200px;">Sequence</td>
+              <td>
+                <%= prompt_fields.select :sequence, options_for_select((1..3).to_a, ep.sequence) %>
+              </td>
+            </tr>
+            <tr>
+              <td>Prompt Question</td>
+              <td>
+                <%= prompt_fields.text_area :prompt_question, :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
+              </td>
+            </tr>
+            <tr>
+              <td>Answer Type:</td>
+              <td>
+                <%= prompt_fields.select :answer_type, options_for_select(EventPrompt.answer_types) %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+        <tr>
+          <td></td>
+          <td><%= form.submit %></td>
+        </tr>
+      </table>
+
+    <% end %>
+  </div>
+<% end %>
+
+<%= javascript_include_tag 'site_specific/event_prompts' %>

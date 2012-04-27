@@ -24,11 +24,11 @@ SocialStreetReborn::Application.routes.draw do
     member do
       match 'create_message'
       match 'send_message'
-      match 'add_prompt'
       match 'report'
     end
 
     resources :event_rsvps, :only => [:new, :edit]
+    resources :event_prompts
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
     resources :smows do

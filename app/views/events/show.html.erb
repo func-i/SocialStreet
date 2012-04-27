@@ -25,7 +25,7 @@
         <%= link_to "Send Message", '#', :class => 'admin-link', :id => "event_organizer_message" %>        
         <% if @current_user.god? %>
           <%= link_to "SMOW", new_event_smow_path(@event), :class => "admin-link" %>
-          <%= link_to "Prompt", '#', :id => 'event_organizer_prompt', :class => "admin-link" %>
+          <%= link_to "Prompt", new_event_event_prompt_path(@event), :class => "admin-link" %>
           <%= link_to "Report", report_event_path(@event), :id => 'event_organizer_report', :class => "admin-link" %>
         <% end %>
       </div>
@@ -141,7 +141,6 @@
   </div>
   <%= render :partial => 'groups/group_permissions' %>
   <%= render :partial => 'create_message' %>
-  <%= render :partial => 'create_prompt' %>
 <% end %>
 
 <% unless params[:invite].blank? %>

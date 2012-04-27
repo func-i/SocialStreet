@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
 
   before_save Proc.new{|event| event.description = event.description.gsub("\r", "<br />") if event.description}
 
-  after_save :update_facebook_og
+  #after_save :update_facebook_og
   
   has_many :event_keywords, :order => 'event_keywords.id ASC'
   has_many :event_rsvps
@@ -16,10 +16,12 @@ class Event < ActiveRecord::Base
 
   has_many :event_groups
   has_many :groups, :through => :event_groups
+  has_many :event_prompts 
 
   has_one :smow
 
   accepts_nested_attributes_for :event_keywords, :location, :event_groups
+  accepts_nested_attributes_for :event_prompts, :reject_if => proc { |attributes| attributes['prompt_question'].blank? }
 
   scope :valid, where(:canceled => false);
   scope :upcoming, where("events.end_date > ?", Time.now)

@@ -1,12 +1,18 @@
 <div id="event_organizer_prompt_holder" class="popup-holder container hidden">
-  <div id="close_event_organizer_prompt_btn" class="popup-close"><%= image_tag "btn-close5.png" %></div>
-  <div class="popup-text text-shadow" style="margin: 20px 0px 15px 0px;">
-    Please type your message:
-  </div>
+  <div id="close_event_organizer_prompt_btn" class="popup-close"><%= image_tag "btn-close5.png" %></div>  
   <div style="clear: both"></div>
-  <div class="popup-fields-holder">
+  <div class="popup-fields-holder scroll-pane">
     <%= form_tag add_prompt_event_path(@event), :remote => true, :id => "send_prompt_form" do %>
-      <%= text_area_tag :message, @event.prompt_question, :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
+      <% @event.event_prompts.each_with_index do |prompt, index| %>
+        <div class="popup-text text-shadow">
+          Prompt Question: <br/>
+          <%= text_area_tag "prompts[][prompt_question][#{index}]", @event.event_prompts.where(:sequence => index).first.try(:prompt_question), :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
+          <br/>
+          Answer Type:
+          <%= select_tag "prompts[][type][#{index}]", options_for_select(EventPrompt.answer_types) %>
+        </div>
+
+      <% end %>
       <%= image_tag('continue-button.png', :id=>'create_prompt_button', :class=>"next-arrow drop-shadow") %>
     <% end %>
   </div>
