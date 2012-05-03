@@ -117,23 +117,31 @@ class EventsController < ApplicationController
   end
 
   def report
-    raise ActiveRecord::RecordNotFound unless current_user.god?
+    raise ActiveRecord::RecordNotFound unless @event.can_edit?(current_user)
     require 'csv'
     csv_string = CSV.generate do |csv|
       # header row
-      csv << ["First Name", "Last Name", "Prompt Answers", "Gender", "City", "Facebook Email"]
+      csv << ["First Name", "Last Name", "Gender", "City", "Facebook Email"]
 
       # data rows
       @event.event_rsvps.attending.each do |a|
         auth_data = a.user.authentications.first.auth_response["extra"]["raw_info"]
-        csv << [
+        
+        merge_array = [
           a.user.first_name,
-          a.user.last_name,
-          a.prompt_answer,
+          a.user.last_name]
+          
+        merge_array += [
           auth_data["gender"],
           (auth_data["location"]["name"] rescue nil),
           auth_data["email"]
-        ] 
+        ]
+
+        a.event_prompt_answers.each do |pa|
+          merge_array += [pa.event_prompt.prompt_question, pa.value]
+        end
+
+        csv << merge_array
       end
     end
 

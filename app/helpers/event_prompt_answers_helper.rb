@@ -1,0 +1,2 @@
+module EventPromptAnswersHelper
+end

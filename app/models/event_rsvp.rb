@@ -11,6 +11,9 @@ class EventRsvp < ActiveRecord::Base
   belongs_to :event
   belongs_to :invitor, :class_name => "User"
 
+  has_many :event_prompt_answers
+  has_many :event_prompts, :through => :event_prompt_answers
+
   validates :event_id, :uniqueness => {:scope => [:user_id, :email] }
 
   scope :for_event, lambda {|event| where(:event_id => event.id) }

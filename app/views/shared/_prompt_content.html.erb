@@ -7,9 +7,9 @@
       </div>
       <div style="clear: both"></div>
       <div class="popup-fields-holder">
-        <%= text_field_tag "prompt_answers[][#{i+1}]", nil, :style => "width: 100%;" %>
+        <%= text_field_tag "prompt_answers[#{i+1}]", nil, :style => "width: 100%;", :class => "prompt-answer" %>
       </div>
-      <%= image_tag('continue-button.png', :class=>"next-arrow drop-shadow next-prompt #{'send_prompt_button' if event.event_prompts.size == i+1}", 'data-next-prompt' => "prompt_#{i+2}") %>
+      <%= image_tag('continue-button.png', :class=>"next-arrow drop-shadow next-prompt #{'send-prompt-button' if event.event_prompts.size == i+1}", 'data-next-prompt' => "prompt_#{i+2}") %>
       
       <div style="clear: both"></div>
     </div>

@@ -1,12 +1,12 @@
 $(function() {
 
     $('.next-prompt').live('click', function() {
-        if($(this).attr('id') == 'send_prompt_button') {
+        if($(this).hasClass('send-prompt-button')) {
             var href = $('#prompt_follow_href').val();
 
-            var promptAnswer = $('#prompt_form').serialize();
+            var promptAnswer = $('#prompt_form .prompt-answer').serialize();
             if(promptAnswer != '')
-                href = href + '&prompt_answer=' + promptAnswer;
+                href = href + '?' + promptAnswer;
 
             hidePrompt();
             cleanup();
@@ -20,7 +20,6 @@ $(function() {
         }
         else {
             $(this).parent('.event-prompt').addClass('hidden');
-            console.log($(this).attr('data-next-prompt'));
             $('#' + $(this).attr('data-next-prompt')).removeClass('hidden');
         }
     });

@@ -1,4 +1,6 @@
 SocialStreetReborn::Application.routes.draw do
+  resources :event_prompt_answers
+
   get "smows/_form"
 
   get "smows/new"
