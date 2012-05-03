@@ -199,28 +199,6 @@ $(function() {
         $('#send_prompt_form').submit();
     });
 
-    $('#send_prompt_button').live('click', function() {
-        var href = $('#prompt_follow_href').val();
-
-        var promptAnswer = $('#prompt_answer').val();
-        if(promptAnswer != '')
-            href = href + '&prompt_answer=' + promptAnswer;
-
-        hidePrompt();
-        cleanup();
-        if(history && history.pushState) 
-            $.getScript(href, function() {
-                resizePageElements();
-                setPlaceholdersInInternetExplorer();
-            });        
-        else
-            window.location = href;
-        
-    });
-
-    $('#close_prompt_btn').live('click', function(){
-        hidePrompt();
-    });
 });
 
 function navLink(link, e){
@@ -280,24 +258,6 @@ function ajaxLink(link){
     }
     else
         $.getScript(href);
-}
-
-function customPrompt(promptText, href) {
-    showPrompt();
-
-    $('#prompt_text').html(promptText);
-    $('#prompt_follow_href').val(href);
-}
-
-function showPrompt(){
-    $('#prompt_container').removeClass('invisible');
-    $('#prompt_holder').removeClass('hidden');
-    resizePageElements();
-}
-function hidePrompt(){
-    $('#prompt_container').addClass('invisible');
-    $('#prompt_holder').addClass('hidden');
-    resizePageElements();
 }
 
 function setPlaceholdersInInternetExplorer(){

@@ -1,0 +1,23 @@
+<div id="close_prompt_btn" class="popup-close"><%= image_tag "btn-close5.png" %></div>
+<%= form_tag '#', :id => "prompt_form" do %>
+  <% event.event_prompts.order(:sequence).each_with_index do |prompt, i| %>
+    <div id="prompt_<%= i+1 %>" class="hidden event-prompt">
+      <div id="prompt_text" class="popup-text text-shadow" style="margin: 20px 0px 15px 0px;">
+        <%= prompt.prompt_question %>
+      </div>
+      <div style="clear: both"></div>
+      <div class="popup-fields-holder">
+        <%= text_field_tag "prompt_answers[][#{i+1}]", nil, :style => "width: 100%;" %>
+      </div>
+      <%= image_tag('continue-button.png', :class=>"next-arrow drop-shadow next-prompt #{'send_prompt_button' if event.event_prompts.size == i+1}", 'data-next-prompt' => "prompt_#{i+2}") %>
+      
+      <div style="clear: both"></div>
+    </div>
+
+  <% end %>
+<% end %>
+
+<%= hidden_field_tag "prompt_follow_href" %>
+
+<!-- TODO different types of answers based on event_prompt_type -->
+

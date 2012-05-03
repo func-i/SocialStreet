@@ -1,8 +1,7 @@
 class EventPromptsController < ApplicationController
 
-  before_filter :ss_authenticate_user!
-  before_filter :authenticate_god
-  before_filter :load_event
+  before_filter :ss_authenticate_user!, :except => :load_prompt_content
+  before_filter :load_event, :except => :load_prompt_content
 
   def new
     if @event.event_prompts.blank?
@@ -20,15 +19,16 @@ class EventPromptsController < ApplicationController
     end
   end
 
+  def load_prompt_content
+    @event = Event.find params[:event_id]
+    render :partial => 'shared/prompt_content', :locals => {:event => @event}
+  end
 
   protected
 
-  def authenticate_god
-    raise ActiveRecord::RecordNotFound unless current_user.god?
-  end
-
   def load_event
     @event = Event.find params[:event_id]
+    raise ActiveRecord::RecordNotFound unless @event.can_view?(current_user)
   end
 
 end

@@ -28,7 +28,11 @@ SocialStreetReborn::Application.routes.draw do
     end
 
     resources :event_rsvps, :only => [:new, :edit]
-    resources :event_prompts
+    resources :event_prompts do
+      collection do
+        match 'load_prompt_content'
+      end
+    end
     resources :invitations, :only => [:new]
     resources :comments, :only => [:create, :destroy]
     resources :smows do

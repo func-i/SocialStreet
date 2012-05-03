@@ -25,8 +25,11 @@
     im_in_options = {:class=>"join-event-btn #{on_show ? 'ajax-link' : 'nav-link'}", "data-ajax-href" => new_event_event_rsvp_path(event, :show_event => on_show)}
     maybe_options = {:class=>"join-event-btn #{on_show ? 'ajax-link' : 'nav-link'}", "data-ajax-href" => new_event_event_rsvp_path(event, :show_event => on_show, :status => "maybe_attending")}
 
-    im_in_options.merge!('data-prompt' => event.prompt_question) if event.prompt_question
-    maybe_options.merge!('data-prompt' => event.prompt_question) if event.prompt_question
+    #im_in_options.merge!('data-prompt' => event.prompt_question) if event.prompt_question
+    #maybe_options.merge!('data-prompt' => event.prompt_question) if event.prompt_question
+
+    im_in_options.merge!('data-prompt' => load_prompt_content_event_event_prompts_path(event)) unless event.event_prompts.empty?
+    maybe_options.merge!('data-prompt' => load_prompt_content_event_event_prompts_path(event)) unless event.event_prompts.empty?
   %>
 
     <%= image_tag('im_in.png', im_in_options) %>
