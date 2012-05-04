@@ -19,4 +19,21 @@ $(function(){
         $('.logo').click();
     });
 
+    $('.toggle-fields').click(function() {        
+        $(this).closest('table').find('.prompt-field').each(function(i, element) {
+            console.log(element);
+            $(element).toggleDisabled();
+        });
+    });
+
 });
+
+(function($) {
+    $.fn.toggleDisabled = function() {
+        return this.each(function() {
+            var $this = $(this);
+            if ($this.attr('disabled')) $this.removeAttr('disabled');
+            else $this.attr('disabled', 'disabled');
+        });
+    };
+})(jQuery);

@@ -2,31 +2,31 @@
   <div id="scroller" class="scroll-pane container" style="overflow: auto; padding:10px; color:white;">
     <h2>Event Prompts for event <%= @event.title %></h2>
     <%= form_for @event, :url => event_event_prompts_path(@event), :method => :post do |form| %>
-      <table style="width: 90%">
-        <% @event.event_prompts.each do |ep| %>
-          <%= form.fields_for :event_prompts, ep do |prompt_fields| %>
+
+      <% @event.event_prompts.each do |ep| %>
+        <%= form.fields_for :event_prompts, ep do |prompt_fields| %>
+          <table style="width: 90%;">
             <tr>
-              <td style="width: 200px;">Sequence</td>
+              <td style="width: 200px;">
+                <%= prompt_fields.select :sequence, options_for_select((1..3).to_a, ep.sequence), {}, :class => "prompt-field" %>
+              </td>
               <td>
-                <%= prompt_fields.select :sequence, options_for_select((1..3).to_a, ep.sequence) %>
+                <%= prompt_fields.select :answer_type, options_for_select(EventPrompt.answer_types), {}, :class => "prompt-field" %>
+                <%= check_box_tag :enable, true, true, :class => 'toggle-fields' %> Include
               </td>
             </tr>
             <tr>
-              <td>Prompt Question</td>
-              <td>
-                <%= prompt_fields.text_area :prompt_question, :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
+              <td style="vertical-align: top;">Prompt Question:</td>
+              <td style="padding-bottom: 10px;">
+                <%= prompt_fields.text_area :prompt_question, :rows => "5", :class => "textarea-resize prompt-field", :style => "width: 90%" %>
               </td>
             </tr>
-            <tr>
-              <td>Answer Type:</td>
-              <td>
-                <%= prompt_fields.select :answer_type, options_for_select(EventPrompt.answer_types) %>
-              </td>
-            </tr>
-          <% end %>
+          </table>
         <% end %>
+      <% end %>
+      <table style="width: 90%;">
         <tr>
-          <td></td>
+          <td style="width: 200px;"></td>
           <td><%= form.submit %></td>
         </tr>
       </table>
