@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
           return_path = stored_path + "?&create_event=1"
         end
 
-      elsif session[:stored_redirect][:controller] == 'event_rsvps' && session[:stored_redirect][:action] == 'new'
+      elsif session[:stored_redirect][:controller] == 'event_rsvps' && session[:stored_redirect][:action] == 'new'        
         if attending_event_rsvp(session[:stored_redirect][:params][:event_id].to_i, nil, session[:stored_redirect][:params][:prompt_answers])
           return_path = event_path(@event, :invite => true)
         end
@@ -187,6 +187,9 @@ class ApplicationController < ActionController::Base
     rsvp.status = status ? EventRsvp.statuses[status.to_sym] : EventRsvp.statuses[:attending]
     # => Old version
     #rsvp.prompt_answer = prompt_answer
+
+    # => Clear any pre-existing prompt answers
+    rsvp.event_prompt_answers.destroy_all
 
     # => New version
     prompt_answers.each do |prompt_answer|

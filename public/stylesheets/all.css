@@ -801,6 +801,7 @@ END OF RESET
     padding:15px 20px 25px 20px;
     height: 80px;
     position: relative;
+    clear: left;
 }
 #show_event_text{
     color: white;
@@ -901,6 +902,8 @@ END OF RESET
     top:65px;/*15px + 80 - 30 = 65*/
     right:20px;
 }
+
+
 #show_maybe_attendees_title,
 #show_attendees_title {
     background-color: #4F4F4D;
@@ -909,6 +912,21 @@ END OF RESET
     font-weight: bold;
     text-align: center;
     margin-top:17px;
+}
+
+#attendee_footer {
+    background-color: #4F4F4D;
+    width: 200px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFD8B;
+}
+
+.event-link {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 #show_maybe_attendees_holder,
@@ -965,6 +983,7 @@ END OF RESET
 #edit_event_links{
     margin: 0 auto;
     text-align: center;
+    width: 90%;
 }
 #event_wall_text_field_holder{
     margin:10px auto;
