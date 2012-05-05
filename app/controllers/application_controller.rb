@@ -190,8 +190,9 @@ class ApplicationController < ActionController::Base
 
     # => Clear any pre-existing prompt answers
     rsvp.event_prompt_answers.destroy_all
-
+    
     # => New version
+    prompt_answers ||= []
     prompt_answers.each do |prompt_answer|
       event_prompt = @event.event_prompts.order(:sequence)[prompt_answer[0].to_i - 1]
       rsvp.event_prompt_answers.create!(:event_prompt => event_prompt, :value => prompt_answer[1])

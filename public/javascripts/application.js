@@ -247,7 +247,7 @@ function ajaxLink(link){
     else if(link.href != undefined) {
         href = link.href;
     }
-    
+
     if(href != undefined)
         if($(link).attr("confirm") != undefined) {
             if(confirm($(link).attr("confirm")))

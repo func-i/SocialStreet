@@ -21,8 +21,9 @@ $(function(){
 
     $('.toggle-fields').click(function() {        
         $(this).closest('table').find('.prompt-field').each(function(i, element) {
-            console.log(element);
             $(element).toggleDisabled();
+            var $destroy = $(this).closest('table').next('input');
+            $destroy.val($destroy.val()=="true" ? false : true);
         });
     });
 

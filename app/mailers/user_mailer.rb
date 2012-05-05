@@ -127,6 +127,16 @@ class UserMailer < ActionMailer::Base
     mail(:to => attendee.user.email, :subject => "A new message from the organizer - #{event.title}")
   end
 
+  # => Send a message from the organizer to the attendee
+  def event_rsvp_created(event, attendee)
+    @event = event
+    @attendee = attendee
+    @message = @event.rsvp_text
+
+    return nil if attendee.user.email.blank?
+    mail(:to => attendee.user.email, :subject => "You have RSVP'd to #{event.title}")
+  end
+
   def streetmeet_of_the_week_summary(body)
     mail(:to => ["jon.salis@railias.ca", "jborts@gmail.com", "paul@socialstreet.com"], :subject => "Streetmeet #{Date.today.to_s} Stats") do |format|
       format.html {render :text => body}

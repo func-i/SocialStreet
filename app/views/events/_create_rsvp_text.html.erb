@@ -1,0 +1,18 @@
+<div id="event_organizer_rsvp_text_holder" class="popup-holder container hidden">
+  <div id="close_event_organizer_rsvp_text_btn" class="popup-close"><%= image_tag "btn-close5.png" %></div>
+  <div class="popup-text text-shadow">
+    Add text to the email sent to people who join <br />
+    this event.
+  </div>
+  <div class="popup-text text-shadow" style="margin: 20px 0px 15px 0px;">
+    Please type your message:
+  </div>
+  <div style="clear: both"></div>
+  <div class="popup-fields-holder">
+    <%= form_tag url_for(:action => :set_rsvp_text), :remote => true, :id => "set_rsvp_text_form" do %>
+      <%= text_area_tag :message, @event.rsvp_text, :rows => "5", :class => "textarea-resize", :style => "width: 90%" %>
+      <%= image_tag('continue-button.png', :id=>'set_rsvp_text_button', :class=>"next-arrow drop-shadow") %>
+    <% end %>
+  </div>
+  <div style="clear: both"></div>  
+</div>

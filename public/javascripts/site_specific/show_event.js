@@ -54,8 +54,17 @@ $(function(){
         $('#send_prompt_form').submit();
     });
 
+    $('#set_rsvp_text_button').live('click', function() {
+        $('#set_rsvp_text_form').submit();
+    });
+
     $('#event_organizer_message').live('click', function() {
         showEventOrganizerMessage();
+        return false;
+    });
+
+    $('#event_organizer_rsvp_text').live('click', function() {        
+        showEventOrganizerRsvpText();
         return false;
     });
 
@@ -70,6 +79,10 @@ $(function(){
 
     $('#close_event_organizer_prompt_btn').live('click', function() {
         hideEventOrganizerPrompt();
+    });
+
+    $('#close_event_organizer_rsvp_text_btn').live('click', function() {
+        hideEventOrganizerRsvpText();
     });
 
     $('.event-wall-comment').live('mouseenter', function(){
@@ -488,6 +501,7 @@ function showEventOrganizerMessage(){
         }
     });
 }
+
 function hideEventOrganizerMessage(){
     $('#event_organizer_message_holder').addClass('hidden');
     closeCenterPane();
@@ -495,6 +509,18 @@ function hideEventOrganizerMessage(){
     resizePageElements();
 
     $(document).unbind('.messages');
+}
+
+function showEventOrganizerRsvpText(){
+    $('#event_organizer_rsvp_text_holder').removeClass('hidden');
+    openCenterPane();
+    resizePageElements();
+}
+
+function hideEventOrganizerRsvpText(){
+    $('#event_organizer_rsvp_text_holder').addClass('hidden');
+    closeCenterPane();
+    resizePageElements();
 }
 
 function showEventOrganizerPrompt(){

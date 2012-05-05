@@ -24,6 +24,7 @@
         <%= link_to "Cancel StreetMeet", [@event], :method=>'delete', :confirm => 'Are you sure you want to cancel this StreetMeet?', :id=>"destroy_event_link", :class => 'event-link' %>
         <%= link_to "Send Message", '#', :class => 'admin-link event-link', :id => "event_organizer_message" %>
         <%= link_to "Set RSVP Questions", new_event_event_prompt_path(@event), :class => "admin-link event-link" %>
+        <%= link_to "Set RSVP Email Text", '#', :class => "admin-link event-link", :id => "event_organizer_rsvp_text" %>
         <% if @current_user.god? %>
           <%= link_to "SMOW", new_event_smow_path(@event), :class => "admin-link" %>
         <% end %>
@@ -113,9 +114,11 @@
       <% end %>
     </ul>
   </div>
-  <div id="attendee_footer">
-    <%= link_to "Export", report_event_path(@event), :id => 'event_organizer_report' %>
-  </div>
+  <% if @event.can_edit?(current_user) %>
+    <div id="attendee_footer">
+      <%= link_to "Export", report_event_path(@event), :id => 'event_organizer_report' %>
+    </div>
+  <% end %>
 <% end %>
 
 
@@ -143,6 +146,7 @@
   </div>
   <%= render :partial => 'groups/group_permissions' %>
   <%= render :partial => 'create_message' %>
+  <%= render :partial => 'create_rsvp_text' %>
 <% end %>
 
 <% unless params[:invite].blank? %>

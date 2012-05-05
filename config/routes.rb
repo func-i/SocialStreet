@@ -27,6 +27,7 @@ SocialStreetReborn::Application.routes.draw do
       match 'create_message'
       match 'send_message'
       match 'report'
+      match 'set_rsvp_text'
     end
 
     resources :event_rsvps, :only => [:new, :edit]

@@ -23,4 +23,13 @@ class EventRsvp < ActiveRecord::Base
   scope :maybe_attending, where(:status => @@statuses[:maybe_attending])
   scope :attending_or_maybe_attending, where("event_rsvps.status IN (?)", @@statuses.except(:not_attending).except(:invited).values)
   scope :organizers, where(:organizer => true)
+
+  after_create :send_rsvp_email
+
+  protected
+
+  def send_rsvp_email
+    mail = UserMailer.event_rsvp_created(self.event, self)
+    mail.deliver if mail && self.user != self.event.user
+  end
 end

@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
   has_one :smow
 
   accepts_nested_attributes_for :event_keywords, :location, :event_groups
-  accepts_nested_attributes_for :event_prompts, :reject_if => proc { |attributes| attributes['prompt_question'].blank? }
+  accepts_nested_attributes_for :event_prompts, :reject_if => proc { |attributes| attributes['prompt_question'].blank? }, :allow_destroy => true
 
   scope :valid, where(:canceled => false);
   scope :upcoming, where("events.end_date > ?", Time.now)

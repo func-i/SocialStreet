@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   before_filter :store_current_path, :only => [:show]
   before_filter :store_create_request, :only => [:create]
   before_filter :ss_authenticate_user!, :only => [:create, :edit, :update, :destroy, :post_to_facebook]
-  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message, :add_prompt, :report]
+  before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message, :add_prompt, :report, :set_rsvp_text]
+  before_filter :auth_edit_for_event, :only => [:edit, :update, :destroy, :set_rsvp_text, :report]
  
   def show
     raise ActiveRecord::RecordNotFound if !@event.can_view?(current_user)
@@ -55,9 +56,6 @@ class EventsController < ApplicationController
   end
 
   def edit
-
-    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
-
     @page_title = "Edit StreetMeet - #{@event.title}"
 
     @event_types = EventType.order('name').all
@@ -70,8 +68,6 @@ class EventsController < ApplicationController
   end
 
   def update
-    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
-
     # => TODO, what happens if the save fails?s
     if create_or_edit_event(params, :edit)
 
@@ -82,7 +78,6 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    raise ActiveRecord::RecordNotFound if !@event.can_edit?(current_user)
 
     @event.canceled = true
     @event.save
@@ -116,8 +111,7 @@ class EventsController < ApplicationController
     end
   end
 
-  def report
-    raise ActiveRecord::RecordNotFound unless @event.can_edit?(current_user)
+  def report    
     require 'csv'
     csv_string = CSV.generate do |csv|
       # header row
@@ -151,6 +145,10 @@ class EventsController < ApplicationController
       :disposition => "attachment; filename=Event_#{@event.id}_report.csv"
   end
 
+  def set_rsvp_text
+    @event.update_attributes(:rsvp_text => params[:message]) unless params[:message].blank?
+  end
+
   protected
 
   def store_create_request
@@ -175,5 +173,9 @@ class EventsController < ApplicationController
     end
 
     @invitation_user_connections = current_user.connections.includes(:to_user).order("connections.strength DESC NULLS LAST, users.last_name ASC").limit(50).all if current_user
+  end
+
+  def auth_edit_for_event
+    raise ActiveRecord::RecordNotFound unless @event.can_edit?(current_user)
   end
 end

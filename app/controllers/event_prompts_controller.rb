@@ -4,14 +4,14 @@ class EventPromptsController < ApplicationController
   before_filter :load_event, :except => :load_prompt_content
 
   def new
-    if @event.event_prompts.blank?
-      (1..3).to_a.each do |i|
+    unless @event.event_prompts.size == 3
+      (3 - @event.event_prompts.size).times do |i|
         @event.event_prompts.build(:sequence => i)
       end
     end
   end
 
-  def create
+  def create    
     if @event.update_attributes(params[:event])
       redirect_to @event
     else

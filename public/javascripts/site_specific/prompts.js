@@ -3,6 +3,7 @@ $(function() {
     $('.next-prompt').live('click', function() {
         if($(this).hasClass('send-prompt-button')) {
             var href = $('#prompt_follow_href').val();
+            console.log(href)
 
             var promptAnswer = $('#prompt_form .prompt-answer').serialize();            
             if(promptAnswer != '')
@@ -43,12 +44,11 @@ function customPrompt(promptPath, href) {
         url: promptPath,
         success: function(data) {
             $('#prompt_holder').html(data);
-            $('#prompt_holder .event-prompt').first().removeClass('hidden')
+            $('#prompt_holder .event-prompt').first().removeClass('hidden');
+            $('#prompt_follow_href').val(href);
         }
-    });
-    
+    });    
     showPrompt();
-    $('#prompt_follow_href').val(href);
 }
 
 function showPrompt(){
