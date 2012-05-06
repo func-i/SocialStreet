@@ -3,12 +3,13 @@ $(function() {
     $('.next-prompt').live('click', function() {
         if($(this).hasClass('send-prompt-button')) {
             var href = $('#prompt_follow_href').val();
-            console.log(href)
-
             var promptAnswer = $('#prompt_form .prompt-answer').serialize();            
-            if(promptAnswer != '')
-                href = href + '?' + promptAnswer;
 
+            if(promptAnswer != '')
+                if(href.indexOf("?") != -1)
+                    href = href + '&' + promptAnswer;
+                else
+                    href = href + '?' + promptAnswer;
             hidePrompt();
             cleanup();
             if(history && history.pushState)
@@ -40,6 +41,7 @@ $(function() {
 
 
 function customPrompt(promptPath, href) {
+    $('#prompt_holder').html('');
     $.ajax({
         url: promptPath,
         success: function(data) {

@@ -2,7 +2,7 @@ class EventRsvpsController < ApplicationController
   before_filter :store_new_rsvp_request, :only => [:new]
   before_filter :ss_authenticate_user!, :only => [:new, :edit]
 
-  def new
+  def new    
     rtn_code = attending_event_rsvp(params[:event_id].to_i, params[:status], params[:prompt_answers])
 
     if -1 == rtn_code
