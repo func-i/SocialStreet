@@ -115,7 +115,12 @@ class EventsController < ApplicationController
     require 'csv'
     csv_string = CSV.generate do |csv|
       # header row
-      csv << ["First Name", "Last Name", "Gender", "City", "Facebook Email"]
+      header_array = ["First Name", "Last Name", "Gender", "City", "Facebook Email"]
+      @event.event_prompts.order(:sequence).each do |ep|
+        header_array += [ep.prompt_question]
+      end
+
+      csv << header_array
 
       # data rows
       @event.event_rsvps.attending.each do |a|
@@ -131,9 +136,9 @@ class EventsController < ApplicationController
           auth_data["email"]
         ]
 
-        a.event_prompt_answers.each do |pa|
-          merge_array += [pa.event_prompt.prompt_question, pa.value]
-        end
+        @event.event_prompts.order(:sequence).each do |ep|
+          merge_array += [a.event_prompt_answers.where(:event_prompt_id => ep.id).first.try(&:value) || "Clicked Continue"]
+        end      
 
         csv << merge_array
       end
