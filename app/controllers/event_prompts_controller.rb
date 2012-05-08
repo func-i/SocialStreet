@@ -4,8 +4,8 @@ class EventPromptsController < ApplicationController
   before_filter :load_event, :except => :load_prompt_content
 
   def new
-    unless @event.event_prompts.size == 3
-      (3 - @event.event_prompts.size).times do |i|
+    unless @event.event_prompts.size == 4
+      (4 - @event.event_prompts.size).times do |i|
         @event.event_prompts.build(:sequence => i)
       end
     end

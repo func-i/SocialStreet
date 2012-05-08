@@ -82,7 +82,7 @@ class EventsController < ApplicationController
     @event.canceled = true
     @event.save
 
-    if(@event.upcoming)
+    if(@event.upcoming)      
       Resque.enqueue(Jobs::Email::EmailUserCancelEvent, @event.id)
     end
 

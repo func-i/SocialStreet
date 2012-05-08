@@ -9,7 +9,7 @@ class EventPrompt < ActiveRecord::Base
   cattr_accessor :answer_type_values
 
   @@answer_types = [
-    ['None', EventPrompt.answer_type_values[:none]],
+    ['Disclaimer', EventPrompt.answer_type_values[:none]],
     ["Yes/No", EventPrompt.answer_type_values[:yes_no]],
     ["Text", EventPrompt.answer_type_values[:text]]    
   ]  

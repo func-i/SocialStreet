@@ -3,16 +3,17 @@
     <h2>Event Prompts for event <%= @event.title %></h2>
     <%= form_for @event, :url => event_event_prompts_path(@event), :method => :post do |form| %>
 
-      <% @event.event_prompts.each do |ep| %>
+      <% @event.event_prompts.each_with_index do |ep, index| %>
         <%= form.fields_for :event_prompts, ep do |prompt_fields| %>
           <table style="width: 90%;">
             <tr>
               <td style="width: 200px;">
-                <%= prompt_fields.select :sequence, options_for_select((1..3).to_a, ep.sequence), {}, :class => "prompt-field" %>
+                Question Type:
+                <%= prompt_fields.hidden_field :sequence, :value => index, :class => "prompt-field" %>
               </td>
               <td>
                 <%= prompt_fields.select :answer_type, options_for_select(EventPrompt.answer_types), {}, :class => "prompt-field" %>
-                <%= check_box_tag :enable, true, true, :class => 'toggle-fields' %> Include
+                <%= check_box_tag :enable, true, !ep.prompt_question.blank?, :class => 'toggle-fields' %> Include
               </td>
             </tr>
             <tr>
