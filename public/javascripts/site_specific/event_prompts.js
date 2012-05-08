@@ -19,12 +19,9 @@ $(function(){
         $('.logo').click();
     });
 
-    $('.toggle-fields').click(function() {        
-        $(this).closest('table').find('.prompt-field').each(function(i, element) {
-            $(element).toggleDisabled();
-            var $destroy = $(this).closest('table').next('input');
-            $destroy.val($destroy.val()=="true" ? false : true);
-        });
+    $('.toggle-fields').click(function() {
+        var $destroy = $(this).closest('table').next('input');
+        $destroy.val(!$(this).is(':checked'));
     });
 
 });
