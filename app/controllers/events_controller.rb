@@ -170,13 +170,6 @@ class EventsController < ApplicationController
   def prepare_for_show
     @comments = @event.comments.order('created_at DESC').all
     @comment = @event.comments.build
-
-    if @event.event_prompts.blank?
-      3.times do
-        @event.event_prompts.build
-      end
-    end
-
     @invitation_user_connections = current_user.connections.includes(:to_user).order("connections.strength DESC NULLS LAST, users.last_name ASC").limit(50).all if current_user
   end
 
