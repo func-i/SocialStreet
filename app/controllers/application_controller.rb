@@ -193,9 +193,9 @@ class ApplicationController < ActionController::Base
 
     if rsvp.save
       # => New version
-      prompt_answers ||= []
-      prompt_answers.each do |prompt_answer|
-        event_prompt = @event.event_prompts.order(:sequence)[prompt_answer[0].to_i - 1]
+      prompt_answers ||= []      
+      prompt_answers.each do |prompt_answer|        
+        event_prompt = @event.event_prompts.where(:sequence => prompt_answer[0].to_i).first
         rsvp.event_prompt_answers.create!(:event_prompt => event_prompt, :value => prompt_answer[1])
       end
       

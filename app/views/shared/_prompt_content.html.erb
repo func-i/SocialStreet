@@ -1,7 +1,8 @@
 <div id="close_prompt_btn" class="popup-close"><%= image_tag "btn-close5.png" %></div>
 <%= form_tag '#', :id => "prompt_form" do %>
-  <% event.event_prompts.order(:sequence).each_with_index do |prompt, i| %>
-    <div id="prompt_<%= i+1 %>" class="hidden event-prompt">
+  <% event.event_prompts.order(:sequence).each do |prompt| %>
+    <% i = prompt.sequence %>
+    <div id="prompt_<%= i %>" class="hidden event-prompt">
       <div id="prompt_text" class="popup-text text-shadow" style="margin: 20px 0px 15px 0px;">
         <%= prompt.prompt_question %>
       </div>
@@ -10,18 +11,18 @@
 
         <% case prompt.answer_type %>
         <% when EventPrompt.answer_type_values[:text] %>
-          <%= text_field_tag "prompt_answers[#{i+1}]", nil, :style => "width: 100%;", :class => "prompt-answer" %>
+          <%= text_field_tag "prompt_answers[#{i}]", nil, :style => "width: 100%;", :class => "prompt-answer" %>
         <% when EventPrompt.answer_type_values[:yes_no] %>
-          <%= hidden_field_tag "prompt_answers[#{i+1}]", nil, :class => "prompt-answer" %>
+          <%= hidden_field_tag "prompt_answers[#{i}]", nil, :class => "prompt-answer" %>
         <% end %>
       </div>
 
       <% case prompt.answer_type %>
       <% when EventPrompt.answer_type_values[:text], EventPrompt.answer_type_values[:none] %>
-        <%= image_tag('continue-button.png', :class=>"next-arrow drop-shadow next-prompt #{'send-prompt-button' if event.event_prompts.size == i+1}", 'data-next-prompt' => "prompt_#{i+2}") %>
+        <%= image_tag('continue-button.png', :class=>"next-arrow drop-shadow next-prompt #{'send-prompt-button' if event.event_prompts.size - 1 == i}", 'data-next-prompt' => "prompt_#{i+1}") %>
       <% when EventPrompt.answer_type_values[:yes_no] %>
-        <%= image_tag('yes.png', :class=>"next-arrow drop-shadow next-prompt yes-prompt #{'send-prompt-button' if event.event_prompts.size == i+1}", 'data-next-prompt' => "prompt_#{i+2}") %>
-        <%= image_tag('no.png', :class=>"next-arrow drop-shadow next-prompt no-prompt #{'send-prompt-button' if event.event_prompts.size == i+1}", 'data-next-prompt' => "prompt_#{i+2}") %>
+        <%= image_tag('yes.png', :class=>"next-arrow drop-shadow next-prompt yes-prompt #{'send-prompt-button' if event.event_prompts.size - 1 == i}", 'data-next-prompt' => "prompt_#{i+1}") %>
+        <%= image_tag('no.png', :class=>"next-arrow drop-shadow next-prompt no-prompt #{'send-prompt-button' if event.event_prompts.size - 1 == i}", 'data-next-prompt' => "prompt_#{i+1}") %>
       <% end %>
 
       <div style="clear: both"></div>
