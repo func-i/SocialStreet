@@ -920,7 +920,7 @@ END OF RESET
     font-size: 16px;
     font-weight: bold;
     text-align: center;
-    color: #FFFD8B;
+    /*color: #FFFD8B;*/
 }
 
 .event-link {

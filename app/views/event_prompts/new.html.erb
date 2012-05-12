@@ -12,7 +12,7 @@
                 <%= prompt_fields.hidden_field :sequence, :value => index, :class => "prompt-field" %>
               </td>
               <td>
-                <%= prompt_fields.select :answer_type, options_for_select(EventPrompt.answer_types), {}, :class => "prompt-field" %>
+                <%= prompt_fields.select :answer_type, options_for_select(EventPrompt.answer_types, ep.answer_type), {}, :class => "prompt-field" %>
                 <%= check_box_tag :enable, true, !ep.prompt_question.blank?, :class => 'toggle-fields' %> Include
               </td>
             </tr>

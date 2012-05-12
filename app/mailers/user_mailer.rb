@@ -102,7 +102,7 @@ class UserMailer < ActionMailer::Base
 
   def streetmeet_of_the_week(smow, email)
     return nil if email.blank?
-    mail(:to => email, :subject => "StreetMeet of the Week - FREE #{smow.title}") do |format|
+    mail(:to => email, :subject => "StreetMeet of the Week - #{smow.free? ? "FREE " : ""}#{smow.title}") do |format|
       format.html {render :file => "/smows/_smow.html.erb", :locals => {:event => smow.event, :smow => smow}, :layout => false}
     end
   end

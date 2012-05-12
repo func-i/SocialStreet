@@ -115,7 +115,7 @@
     </ul>
   </div>
   <% if @event.can_edit?(current_user) %>
-    <div id="attendee_footer">
+    <div id="attendee_footer" class="important-color text-shadow">
       <%= link_to "Export", report_event_path(@event), :id => 'event_organizer_report' %>
     </div>
   <% end %>
