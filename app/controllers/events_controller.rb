@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   before_filter :load_event, :only => [:show, :edit, :update, :destroy, :create_message, :send_message, :add_prompt, :report, :set_rsvp_text]
   before_filter :auth_edit_for_event, :only => [:edit, :update, :destroy, :set_rsvp_text, :report]
  
-  def show
+  def show    
     raise ActiveRecord::RecordNotFound if !@event.can_view?(current_user)
 
     @page_title = "StreetMeet - #{@event.title}"

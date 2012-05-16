@@ -403,7 +403,8 @@ function addEmail(email_address){
         var emailElem = $(document.createElement('li'));
         emailElem.addClass('already-invited-email');
         emailElem[0].id = invitationCounter;
-        emailElem.text(email_address.replace("@", " '@' "));
+        //emailElem.text(email_address.replace("@", " '@' "));
+        emailElem.text(email_address);
         $('#invited_user_list').prepend(emailElem);
 
         invitationCounter++;

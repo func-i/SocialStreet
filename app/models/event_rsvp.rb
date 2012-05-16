@@ -29,7 +29,9 @@ class EventRsvp < ActiveRecord::Base
   protected
 
   def send_rsvp_email
-    mail = UserMailer.event_rsvp_created(self.event, self)
-    mail.deliver if mail && self.user != self.event.user && status != @@statuses[:invited]
+    if self.user && self.user != self.event.user && status != @@statuses[:invited]
+      mail = UserMailer.event_rsvp_created(self.event, self)
+      mail.deliver
+    end
   end
 end
