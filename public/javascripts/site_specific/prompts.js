@@ -37,6 +37,10 @@ $(function() {
     $('#close_prompt_btn').live('click', function(){
         hidePrompt();
     });
+
+    $('#close_full_event_btn').live('click', function(){
+        hideFullEvent();
+    });
 });
 
 
@@ -62,4 +66,8 @@ function hidePrompt(){
     $('#prompt_container').addClass('invisible');
     $('#prompt_holder').addClass('hidden');
     resizePageElements();
+}
+
+function hideFullEvent(){
+    $('#alert_container').addClass('invisible');
 }

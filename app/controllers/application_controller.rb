@@ -58,8 +58,11 @@ class ApplicationController < ActionController::Base
         end
 
       elsif session[:stored_redirect][:controller] == 'event_rsvps' && session[:stored_redirect][:action] == 'new'
-        if attending_event_rsvp(session[:stored_redirect][:params][:event_id].to_i, nil, session[:stored_redirect][:params][:prompt_answers])
+        rtn_code = attending_event_rsvp(session[:stored_redirect][:params][:event_id].to_i, nil, session[:stored_redirect][:params][:prompt_answers])
+        unless rtn_code.eql?(-2)
           return_path = event_path(@event, :invite => true)
+        else
+          return_path = event_path(@event, :full => true)
         end
 
       elsif session[:stored_redirect][:controller] == 'profiles' && session[:stored_redirect][:action] == 'add_group'
@@ -172,6 +175,7 @@ class ApplicationController < ActionController::Base
     return -1 unless current_user #error
 
     @event = Event.find event_id
+    return -2 if @event.is_full?
 
     unless @event.can_attend?(current_user) 
       return 1 #Show groups

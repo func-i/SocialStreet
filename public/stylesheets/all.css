@@ -98,7 +98,8 @@ END OF RESET
     z-index: 10;
 }
 #prompt_container,
-#center_pane{
+#alert_container,
+#center_pane {
     top: 20px;
     height: 100%;
     position: absolute;
@@ -1565,6 +1566,12 @@ END OF RESET
     color: white;
     text-align: left;
     font: 16px/16px Arial, Helvetica, sans-serif;
+}
+
+.alert-text {
+    padding-top: 5px;
+    font: 16px/16px Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }
 
 popup-fields-holder,

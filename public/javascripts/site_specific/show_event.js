@@ -238,7 +238,10 @@ function setupShowEventPage(){
     initializeScrollPanes();
 
     invitationView = $('#invite_view_bool').val();
-    if(invitationView){
+    eventFull = $('#event_full_bool').val();
+    if(eventFull)
+        showFullEvent();
+    else if(invitationView){
         showInvitationView();
     }
     else{
@@ -292,6 +295,13 @@ function showInvitationView(){
 
     resizeLayout();
 }
+
+function showFullEvent(){
+    $('#alert_container').removeClass('invisible');
+    hideMarkers();
+    resizeLayout();
+}
+
 function showEventView(){
     $('.event-invitation-view').addClass('hidden');
     closeCenterPane();

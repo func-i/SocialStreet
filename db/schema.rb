@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120505192827) do
+ActiveRecord::Schema.define(:version => 20120519000027) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(:version => 20120505192827) do
     t.boolean  "private",         :default => false
     t.string   "prompt_question"
     t.text     "rsvp_text"
+    t.boolean  "is_full",         :default => false
   end
 
   add_index "events", ["location_id"], :name => "index_events_on_location_id"

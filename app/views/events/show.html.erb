@@ -153,7 +153,9 @@
   <%= render :partial => 'invitations/index.html', :locals => {:event => @event, :user_list => @invitation_user_connections} %>
 <% end %>
 
+  
 <%= hidden_field_tag 'invite_view_bool', params[:invite] %>
+<%= hidden_field_tag 'event_full_bool', params[:full] %>
 <%= hidden_field_tag 'group_view_bool', params[:group] %>
 
 <%= hidden_field_tag 'lat', @event.location.latitude %>

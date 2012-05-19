@@ -3,10 +3,14 @@ class EventRsvpsController < ApplicationController
   before_filter :ss_authenticate_user!, :only => [:new, :edit]
 
   def new    
-    rtn_code = attending_event_rsvp(params[:event_id].to_i, params[:status], params[:prompt_answers])
-
+    rtn_code = attending_event_rsvp(params[:event_id].to_i, params[:status], params[:prompt_answers])    
     if -1 == rtn_code
       raise 'Sorry, there was an error. We are doing our best to see that no one ever makes an error again'
+    elsif -2 == rtn_code
+      # => The event is full      
+      render :update do |page|
+        page.redirect_to event_path(@event, :full => true)
+      end
     elsif 1 == rtn_code
       if request.xhr?
         if params[:show_event]
